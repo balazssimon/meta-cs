@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Compiler", "Main\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Core", "Main\MetaDslx.Core\MetaDslx.Core.csproj", "{0C605C74-47DD-4316-AE55-AD65FCD34DDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Compiler.Test", "MetaDslx.Compiler.Test\MetaDslx.Compiler.Test.csproj", "{613976F1-45A7-4947-BDBE-233EB1CB2BCA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Compiler.Test", "Test\MetaDslx.Compiler.Test\MetaDslx.Compiler.Test.csproj", "{613976F1-45A7-4947-BDBE-233EB1CB2BCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
