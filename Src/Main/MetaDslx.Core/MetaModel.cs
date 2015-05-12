@@ -24,6 +24,7 @@ namespace MetaDslx.Core
     
     public interface MetaModel
     {
+        string Name { get; set; }
         string Namespace { get; set; }
         string NamespaceUri { get; set; }
         ICollection<MetaType> Types { get; }
@@ -36,6 +37,14 @@ namespace MetaDslx.Core
         {
             this.MSetValue(MetaModelImpl.TypesProperty, new ModelSet<MetaType>(this, MetaModelImpl.TypesProperty));
             MetaImplementationProvider.Implementation.MetaModel_MetaModel(this);
+        }
+        
+        internal static readonly ModelProperty NameProperty =
+            ModelProperty.Register("Name", typeof(string), typeof(MetaModelImpl));
+        public string Name
+        {
+            get { return (string)this.MGetValue(MetaModelImpl.NameProperty); }
+            set { this.MSetValue(MetaModelImpl.NameProperty, value); }
         }
         
         internal static readonly ModelProperty NamespaceProperty =
