@@ -45,6 +45,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="MetaLexer.ag4" />
+    <Antlr4 Include="MetaLexer.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <Listener>True</Listener>
+      <Visitor>True</Visitor>
+      <TargetLanguage>CSharp</TargetLanguage>
+    </Antlr4>
+    <None Include="MetaParser.ag4" />
+    <Antlr4 Include="MetaParser.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <Listener>True</Listener>
+      <Visitor>True</Visitor>
+      <TargetLanguage>CSharp</TargetLanguage>
+    </Antlr4>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
