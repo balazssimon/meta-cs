@@ -39,14 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MetaCollection.cs" />
-    <Compile Include="MetaException.cs" />
-    <Compile Include="MetaFactory.cs" />
-    <Compile Include="MetaList.cs" />
-    <Compile Include="MetaObject.cs" />
-    <Compile Include="MetaProperty.cs" />
-    <Compile Include="MetaPropertyAttribute.cs" />
-    <Compile Include="MetaSet.cs" />
+    <Compile Include="MetaImplementation.cs" />
+    <Compile Include="MetaModel.cs" />
+    <Compile Include="ModelCollection.cs" />
+    <Compile Include="ModelException.cs" />
+    <Compile Include="ModelFactory.cs" />
+    <Compile Include="ModelList.cs" />
+    <Compile Include="ModelObject.cs" />
+    <Compile Include="ModelProperty.cs" />
+    <Compile Include="ModelPropertyAttribute.cs" />
+    <Compile Include="ModelSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

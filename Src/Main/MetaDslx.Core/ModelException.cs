@@ -5,20 +5,20 @@ using System.Text;
 
 namespace MetaDslx.Core
 {
-    public class MetaException : Exception
+    public class ModelException : Exception
     {
-        public MetaException()
+        public ModelException()
         {
 
         }
 
-        public MetaException(string message)
+        public ModelException(string message)
             : base(message)
         {
 
         }
 
-        public MetaException(string message, Exception innerException)
+        public ModelException(string message, Exception innerException)
             : base(message, innerException)
         {
 

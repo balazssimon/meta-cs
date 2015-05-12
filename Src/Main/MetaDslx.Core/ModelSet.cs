@@ -6,12 +6,12 @@ using System.Collections;
 
 namespace MetaDslx.Core
 {
-    public class MetaSet<T> : MetaCollection, ICollection<T>
+    public class ModelSet<T> : ModelCollection, ICollection<T>
         where T: class
     {
         private HashSet<T> items;
 
-        public MetaSet(MetaObject owner, MetaProperty ownerProperty)
+        public ModelSet(ModelObject owner, ModelProperty ownerProperty)
             : base(owner, ownerProperty)
         {
             this.items = new HashSet<T>();
@@ -24,7 +24,7 @@ namespace MetaDslx.Core
         {
             if (this.items.Add(item))
             {
-                this.Owner.MetaOnAddValue(this.OwnerProperty, item, true);
+                this.Owner.MOnAddValue(this.OwnerProperty, item, true);
             }
         }
 
@@ -34,7 +34,7 @@ namespace MetaDslx.Core
             this.items = new HashSet<T>();
             foreach (var item in oldItems)
             {
-                this.Owner.MetaOnRemoveValue(this.OwnerProperty, item, true);
+                this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
             }
         }
 
@@ -62,7 +62,7 @@ namespace MetaDslx.Core
         {
             if (this.items.Remove(item))
             {
-                this.Owner.MetaOnRemoveValue(this.OwnerProperty, item, true);
+                this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
                 return true;
             }
             return false;
@@ -91,7 +91,7 @@ namespace MetaDslx.Core
 
         #region IModelCollection Members
 
-        internal override bool MetaAdd(object item)
+        internal override bool MAdd(object item)
         {
             if (!this.Contains((T)item))
             {
@@ -101,7 +101,7 @@ namespace MetaDslx.Core
             return false;
         }
 
-        internal override bool MetaRemove(object item)
+        internal override bool MRemove(object item)
         {
             if (this.Contains((T)item))
             {

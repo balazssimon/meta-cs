@@ -5,35 +5,35 @@ using System.Text;
 
 namespace MetaDslx.Core
 {
-    public abstract class MetaObject
+    public abstract class ModelObject
     {
-        private Dictionary<MetaProperty, object> values;
-        private Dictionary<MetaProperty, Func<object>> initializers;
+        private Dictionary<ModelProperty, object> values;
+        private Dictionary<ModelProperty, Func<object>> initializers;
 
-        public MetaObject()
+        public ModelObject()
         {
             this.MetaID = Guid.NewGuid().ToString();
-            this.values = new Dictionary<MetaProperty, object>();
-            this.initializers = new Dictionary<MetaProperty, Func<object>>();
+            this.values = new Dictionary<ModelProperty, object>();
+            this.initializers = new Dictionary<ModelProperty, Func<object>>();
         }
 
-        public bool MetaIsSet(MetaProperty property)
+        public bool MIsSet(ModelProperty property)
         {
             return this.values.ContainsKey(property) || this.initializers.ContainsKey(property);
         }
         
-        public void MetaInitValue(MetaProperty property, Func<object> value)
+        public void MInitValue(ModelProperty property, Func<object> value)
         {
             object oldValue;
             if (this.values.TryGetValue(property, out oldValue))
             {
                 if (property.IsCollection)
                 {
-                    throw new MetaException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
+                    throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
                 }
                 else if (property.IsReadonly)
                 {
-                    throw new MetaException("Error in '" + this.ToString() + "'. Cannot reassign a readonly property '" + property.ToString() + "'.");
+                    throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a readonly property '" + property.ToString() + "'.");
                 }
                 else
                 {
@@ -43,7 +43,7 @@ namespace MetaDslx.Core
             this.initializers[property] = value;
         }
 
-        public void MetaSetValue(MetaProperty property, object newValue)
+        public void MSetValue(ModelProperty property, object newValue)
         {
             object oldValue;
             if (this.values.TryGetValue(property, out oldValue))
@@ -51,11 +51,11 @@ namespace MetaDslx.Core
                 if (newValue == oldValue) return;
                 if (property.IsCollection)
                 {
-                    throw new MetaException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
+                    throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
                 }
                 else if (property.IsReadonly)
                 {
-                    throw new MetaException("Error in '" + this.ToString() + "'. Cannot reassign a readonly property '" + property.ToString() + "'.");
+                    throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a readonly property '" + property.ToString() + "'.");
                 }
             }
             if (property.IsCollection)
@@ -64,11 +64,11 @@ namespace MetaDslx.Core
             }
             else
             {
-                this.MetaOnAddValue(property, newValue, true);
+                this.MOnAddValue(property, newValue, true);
             }
         }
 
-        public object MetaGetValue(MetaProperty property)
+        public object MGetValue(ModelProperty property)
         {
             object value;
             if (this.values.TryGetValue(property, out value))
@@ -84,7 +84,7 @@ namespace MetaDslx.Core
                     this.values[property] = value;
                     if (!property.IsCollection)
                     {
-                        this.MetaOnAddValue(property, value, true);
+                        this.MOnAddValue(property, value, true);
                     }
                     return value;
                 }
@@ -92,54 +92,54 @@ namespace MetaDslx.Core
             return null;
         }
 
-        public IEnumerable<MetaProperty> MetaGetAllProperties()
+        public IEnumerable<ModelProperty> MGetAllProperties()
         {
-            HashSet<MetaProperty> result = new HashSet<MetaProperty>();
-            foreach (MetaProperty prop in this.values.Keys)
+            HashSet<ModelProperty> result = new HashSet<ModelProperty>();
+            foreach (ModelProperty prop in this.values.Keys)
             {
                 result.Add(prop);
             }
-            foreach (MetaProperty prop in MetaProperty.GetPropertiesForType(this.GetType()))
+            foreach (ModelProperty prop in ModelProperty.GetPropertiesForType(this.GetType()))
             {
                 result.Add(prop);
             }
             return result;
         }
 
-        public MetaProperty MetaFindProperty(string name)
+        public ModelProperty MFindProperty(string name)
         {
-            return this.SelectSingleProperty(this.MetaFindProperties(name));
+            return this.SelectSingleProperty(this.MFindProperties(name));
         }
 
-        public IEnumerable<MetaProperty> MetaFindProperties(string name)
+        public IEnumerable<ModelProperty> MFindProperties(string name)
         {
             var results =
-                from p in this.MetaGetAllProperties()
+                from p in this.MGetAllProperties()
                 where p.Name == name
                 select p;
             return results.ToList();
         }
 
-        public MetaProperty MetaFindProperty(string name, Type declaringType)
+        public ModelProperty MFindProperty(string name, Type declaringType)
         {
-            return this.SelectSingleProperty(this.MetaFindProperties(name, declaringType));
+            return this.SelectSingleProperty(this.MFindProperties(name, declaringType));
         }
 
-        public IEnumerable<MetaProperty> MetaFindProperties(string name, Type declaringType)
+        public IEnumerable<ModelProperty> MFindProperties(string name, Type declaringType)
         {
             var results =
-                from p in this.MetaGetAllProperties()
+                from p in this.MGetAllProperties()
                 where p.Name == name && declaringType.IsAssignableFrom(p.OwningType)
                 select p;
             return results.ToList();
         }
 
-        private MetaProperty SelectSingleProperty(IEnumerable<MetaProperty> properties)
+        private ModelProperty SelectSingleProperty(IEnumerable<ModelProperty> properties)
         {
-            List<MetaProperty> results = properties.ToList();
+            List<ModelProperty> results = properties.ToList();
             if (results.Count == 0) return null;
             if (results.Count == 1) return results[0];
-            throw new MetaException("More than one property found.");
+            throw new ModelException("More than one property found.");
         }
 
         public string MetaID
@@ -148,15 +148,15 @@ namespace MetaDslx.Core
             set;
         }
 
-        internal void MetaOnAddValue(MetaProperty property, object value, bool firstCall)
+        internal void MOnAddValue(ModelProperty property, object value, bool firstCall)
         {
             bool added = false;
             if (property.IsCollection)
             {
-                MetaCollection collection = this.MetaGetValue(property) as MetaCollection;
+                ModelCollection collection = this.MGetValue(property) as ModelCollection;
                 if (collection != null)
                 {
-                    if (value != null && collection.MetaAdd(value))
+                    if (value != null && collection.MAdd(value))
                     {
                         added = true;
                     }
@@ -168,12 +168,12 @@ namespace MetaDslx.Core
             }
             else
             {
-                object oldValue = this.MetaGetValue(property);
+                object oldValue = this.MGetValue(property);
                 if (value != oldValue)
                 {
                     if (oldValue != null)
                     {
-                        this.MetaOnRemoveValue(property, oldValue, false);
+                        this.MOnRemoveValue(property, oldValue, false);
                     }
                     this.values[property] = value;
                     added = value != null;
@@ -187,32 +187,32 @@ namespace MetaDslx.Core
             {
                 if (property.IsContainment)
                 {
-                    MetaObject mofObjectValue = value as MetaObject;
+                    ModelObject mofObjectValue = value as ModelObject;
                     if (mofObjectValue != null)
                     {
-                        mofObjectValue.MetaParent = this;
+                        mofObjectValue.MParent = this;
                     }
                 }
-                foreach (MetaProperty oppositeProperty in property.OppositeProperties)
+                foreach (ModelProperty oppositeProperty in property.OppositeProperties)
                 {
-                    MetaObject oppositeObject = value as MetaObject;
+                    ModelObject oppositeObject = value as ModelObject;
                     if (oppositeObject != null)
                     {
-                        oppositeObject.MetaOnAddValue(oppositeProperty, this, false);
+                        oppositeObject.MOnAddValue(oppositeProperty, this, false);
                     }
                 }
             }
         }
 
-        internal void MetaOnRemoveValue(MetaProperty property, object value, bool firstCall)
+        internal void MOnRemoveValue(ModelProperty property, object value, bool firstCall)
         {
             bool removed = false;
             if (property.IsCollection)
             {
-                MetaCollection collection = this.MetaGetValue(property) as MetaCollection;
+                ModelCollection collection = this.MGetValue(property) as ModelCollection;
                 if (collection != null)
                 {
-                    if (value != null && collection.MetaRemove(value))
+                    if (value != null && collection.MRemove(value))
                     {
                         removed = true;
                     }
@@ -224,7 +224,7 @@ namespace MetaDslx.Core
             }
             else
             {
-                object oldValue = this.MetaGetValue(property);
+                object oldValue = this.MGetValue(property);
                 if (value == oldValue) 
                 {
                     this.values[property] = null;
@@ -235,18 +235,18 @@ namespace MetaDslx.Core
             {
                 if (property.IsContainment)
                 {
-                    MetaObject mofObjectValue = value as MetaObject;
+                    ModelObject mofObjectValue = value as ModelObject;
                     if (mofObjectValue != null)
                     {
-                        mofObjectValue.MetaParent = null;
+                        mofObjectValue.MParent = null;
                     }
                 }
-                foreach (MetaProperty oppositeProperty in property.OppositeProperties)
+                foreach (ModelProperty oppositeProperty in property.OppositeProperties)
                 {
-                    MetaObject oppositeObject = value as MetaObject;
+                    ModelObject oppositeObject = value as ModelObject;
                     if (oppositeObject != null)
                     {
-                        oppositeObject.MetaOnRemoveValue(oppositeProperty, this, false);
+                        oppositeObject.MOnRemoveValue(oppositeProperty, this, false);
                     }
                 }
             }
@@ -257,10 +257,10 @@ namespace MetaDslx.Core
             return "[" + this.MetaID + "]";
         }
 
-        private MetaObject parent;
-        private HashSet<MetaObject> children = new HashSet<MetaObject>();
+        private ModelObject parent;
+        private HashSet<ModelObject> children = new HashSet<ModelObject>();
 
-        public MetaObject MetaParent
+        public ModelObject MParent
         {
             get { return this.parent; }
             private set
@@ -271,7 +271,7 @@ namespace MetaDslx.Core
                     {
                         if (value != null)
                         {
-                            throw new MetaException("Invalid new container parent "+value+". The object "+this+" is already contained by "+this.parent+".");
+                            throw new ModelException("Invalid new container parent "+value+". The object "+this+" is already contained by "+this.parent+".");
                         }
                         else
                         {
@@ -288,7 +288,7 @@ namespace MetaDslx.Core
             }
         }
 
-        public IEnumerable<MetaObject> MetaChildren
+        public IEnumerable<ModelObject> MChildren
         {
             get
             {
@@ -296,27 +296,27 @@ namespace MetaDslx.Core
             }
         }
 
-        private HashSet<MetaObject> FindAllObjectsByID(string ID)
+        private HashSet<ModelObject> FindAllObjectsByID(string ID)
         {
-            HashSet<MetaObject> result = new HashSet<MetaObject>();
+            HashSet<ModelObject> result = new HashSet<ModelObject>();
             if (this.MetaID == ID)
             {
                 result.Add(this);
             }
-            foreach (var child in this.MetaChildren)
+            foreach (var child in this.MChildren)
             {
-                HashSet<MetaObject> childResults = child.FindAllObjectsByID(ID);
+                HashSet<ModelObject> childResults = child.FindAllObjectsByID(ID);
                 result.UnionWith(childResults);
             }
             return result;
         }
 
-        public MetaObject MetaFindObjectByID(string ID)
+        public ModelObject MFindObjectByID(string ID)
         {
             if (this.MetaID == ID) return this;
-            foreach (var child in this.MetaChildren)
+            foreach (var child in this.MChildren)
             {
-                MetaObject result = child.MetaFindObjectByID(ID);
+                ModelObject result = child.MFindObjectByID(ID);
                 if (result != null)
                 {
                     return result;
@@ -325,19 +325,19 @@ namespace MetaDslx.Core
             return null;
         }
 
-        public T MetaFindObjectByID<T>(string ID) where T : MetaObject
+        public T MFindObjectByID<T>(string ID) where T : ModelObject
         {
-            return this.MetaFindObjectByID(ID) as T;
+            return this.MFindObjectByID(ID) as T;
         }
 
-        private HashSet<T> FindAllObjects<T>() where T : MetaObject
+        private HashSet<T> FindAllObjects<T>() where T : ModelObject
         {
             HashSet<T> result = new HashSet<T>();
             if (this is T)
             {
                 result.Add((T)this);
             }
-            foreach (var child in this.MetaChildren)
+            foreach (var child in this.MChildren)
             {
                 HashSet<T> childResults = child.FindAllObjects<T>();
                 result.UnionWith(childResults);
@@ -345,7 +345,7 @@ namespace MetaDslx.Core
             return result;
         }
 
-        public IEnumerable<T> MetaFindObjects<T>() where T : MetaObject
+        public IEnumerable<T> MFindObjects<T>() where T : ModelObject
         {
             return this.FindAllObjects<T>();
         }

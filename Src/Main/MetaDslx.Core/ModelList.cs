@@ -6,12 +6,12 @@ using System.Collections;
 
 namespace MetaDslx.Core
 {
-    public class MetaList<T> : MetaCollection, IList<T>
+    public class ModelList<T> : ModelCollection, IList<T>
         where T: class
     {
         private List<T> items;
 
-        public MetaList(MetaObject owner, MetaProperty ownerProperty)
+        public ModelList(ModelObject owner, ModelProperty ownerProperty)
             : base(owner, ownerProperty)
         {
             this.items = new List<T>();
@@ -27,14 +27,14 @@ namespace MetaDslx.Core
         public void Insert(int index, T item)
         {
             this.items.Insert(index, item);
-            this.Owner.MetaOnAddValue(this.OwnerProperty, item, true);
+            this.Owner.MOnAddValue(this.OwnerProperty, item, true);
         }
 
         public void RemoveAt(int index)
         {
             object item = this.items[index];
             this.items.RemoveAt(index);
-            this.Owner.MetaOnRemoveValue(this.OwnerProperty, item, true);
+            this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
         }
 
         public T this[int index]
@@ -47,10 +47,10 @@ namespace MetaDslx.Core
             {
                 object item = this.items[index];
                 this.items[index] = null;
-                this.Owner.MetaOnRemoveValue(this.OwnerProperty, item, true);
+                this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
                 item = value;
                 this.items[index] = value;
-                this.Owner.MetaOnAddValue(this.OwnerProperty, item, true);
+                this.Owner.MOnAddValue(this.OwnerProperty, item, true);
             }
         }
 
@@ -63,7 +63,7 @@ namespace MetaDslx.Core
             if (!this.items.Contains(item))
             {
                 this.items.Add(item);
-                this.Owner.MetaOnAddValue(this.OwnerProperty, item, true);
+                this.Owner.MOnAddValue(this.OwnerProperty, item, true);
             }
         }
 
@@ -73,7 +73,7 @@ namespace MetaDslx.Core
             this.items = new List<T>();
             foreach (var item in oldItems)
             {
-                this.Owner.MetaOnRemoveValue(this.OwnerProperty, item, true);
+                this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
             }
         }
 
@@ -101,7 +101,7 @@ namespace MetaDslx.Core
         {
             if (this.items.Remove(item))
             {
-                this.Owner.MetaOnRemoveValue(this.OwnerProperty, item, true);
+                this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
                 return true;
             }
             return false;
@@ -116,7 +116,7 @@ namespace MetaDslx.Core
             }
             if (removed)
             {
-                this.Owner.MetaOnRemoveValue(this.OwnerProperty, item, true);
+                this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
             }
         }
 
@@ -148,7 +148,7 @@ namespace MetaDslx.Core
             }
         }
 
-        internal override bool MetaAdd(object item)
+        internal override bool MAdd(object item)
         {
             if (!this.Contains((T)item))
             {
@@ -158,7 +158,7 @@ namespace MetaDslx.Core
             return false;
         }
 
-        internal override bool MetaRemove(object item)
+        internal override bool MRemove(object item)
         {
             if (this.Contains((T)item))
             {

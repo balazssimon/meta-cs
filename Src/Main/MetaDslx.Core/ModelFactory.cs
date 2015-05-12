@@ -5,36 +5,36 @@ using System.Text;
 
 namespace MetaDslx.Core
 {
-    public class MetaFactory
+    public class ModelFactory
     {
         private string namespaceName;
 
-        public MetaFactory()
+        public ModelFactory()
         {
             this.namespaceName = this.GetType().Namespace;
         }
 
-        protected MetaObject Create(string name)
+        protected ModelObject Create(string name)
         {
-            MetaObject result = null;
+            ModelObject result = null;
             string typeName = this.namespaceName + "." + name + "Impl";
             Type type = this.GetType().Assembly.GetType(typeName);
             //Type type = Type.GetType(typeName);
             if (type != null && type.IsClass)
             {
                 object obj = Activator.CreateInstance(type);
-                if (obj is MetaObject)
+                if (obj is ModelObject)
                 {
-                    result = (MetaObject)obj;
+                    result = (ModelObject)obj;
                 }
                 else
                 {
-                    throw new MetaException("Class type '" + typeName + "' is not a descendant of '" + typeof(MetaObject).FullName + "'.");
+                    throw new ModelException("Class type '" + typeName + "' is not a descendant of '" + typeof(ModelObject).FullName + "'.");
                 }
             }
             else
             {
-                throw new MetaException("Class type '" + typeName + "' not found.");
+                throw new ModelException("Class type '" + typeName + "' not found.");
             }
             return result;
         }

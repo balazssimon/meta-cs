@@ -6,31 +6,31 @@ using System.Reflection;
 
 namespace MetaDslx.Core
 {
-    public class MetaProperty
+    public class ModelProperty
     {
-        internal static Dictionary<Type, Dictionary<string, MetaProperty>> properties;
+        internal static Dictionary<Type, Dictionary<string, ModelProperty>> properties;
 
-        static MetaProperty()
+        static ModelProperty()
         {
-            MetaProperty.properties = new Dictionary<Type, Dictionary<string, MetaProperty>>();
+            ModelProperty.properties = new Dictionary<Type, Dictionary<string, ModelProperty>>();
         }
 
         private bool initialized = false;
-        private List<MetaProperty> oppositeProperties;
+        private List<ModelProperty> oppositeProperties;
         private bool isReadonly = false;
         private bool isContainment = false;
 
-        protected MetaProperty(string name, Type type, Type owningType, string declaredName, Type declaringType)
+        protected ModelProperty(string name, Type type, Type owningType, string declaredName, Type declaringType)
         {
             this.Name = name;
             this.DeclaredName = declaredName;
             this.Type = type;
             this.OwningType = owningType;
             this.DeclaringType = declaringType;
-            this.oppositeProperties = new List<MetaProperty>();
-            if (!typeof(MetaObject).IsAssignableFrom(this.OwningType))
+            this.oppositeProperties = new List<ModelProperty>();
+            if (!typeof(ModelObject).IsAssignableFrom(this.OwningType))
             {
-                throw new MetaException("Error in ModelProperty '" + this.ToString() + "'. The property must have an owning type that is a subclass of ModelObject.");
+                throw new ModelException("Error in ModelProperty '" + this.ToString() + "'. The property must have an owning type that is a subclass of ModelObject.");
             }
         }
 
@@ -40,7 +40,7 @@ namespace MetaDslx.Core
         public Type OwningType { get; private set; }
         public Type DeclaringType { get; private set; }
 
-        public IEnumerable<MetaProperty> OppositeProperties
+        public IEnumerable<ModelProperty> OppositeProperties
         {
             get
             {
@@ -78,21 +78,21 @@ namespace MetaDslx.Core
                     OppositeAttribute oppositeAttribute = attribute as OppositeAttribute;
                     if (oppositeAttribute != null)
                     {
-                        if (typeof(MetaObject).IsAssignableFrom(this.Type) || typeof(MetaCollection).IsAssignableFrom(this.Type))
+                        if (typeof(ModelObject).IsAssignableFrom(this.Type) || typeof(ModelCollection).IsAssignableFrom(this.Type))
                         {
-                            MetaProperty modelProperty = MetaProperty.Find(oppositeAttribute.DeclaringType, oppositeAttribute.PropertyName);
+                            ModelProperty modelProperty = ModelProperty.Find(oppositeAttribute.DeclaringType, oppositeAttribute.PropertyName);
                             if (modelProperty != null)
                             {
                                 this.oppositeProperties.Add(modelProperty);
                             }
                             else
                             {
-                                throw new MetaException("Error in ModelProperty '" + this.ToString() + "'. Opposite property '" + oppositeAttribute.DeclaringType.FullName + "." + oppositeAttribute.PropertyName + "' could not be found.");
+                                throw new ModelException("Error in "+this.GetType().Name+" '" + this.ToString() + "'. Opposite property '" + oppositeAttribute.DeclaringType.FullName + "." + oppositeAttribute.PropertyName + "' could not be found.");
                             }
                         }
                         else
                         {
-                            throw new MetaException("Error in ModelProperty '" + this.ToString() + "'. A property with an opposite property must have a type that is a descendant of either ModelObject or ModelCollection.");
+                            throw new ModelException("Error in " + this.GetType().Name + " '" + this.ToString() + "'. A property with an opposite property must have a type that is a descendant of either " + typeof(ModelObject).Name + " or " + typeof(ModelCollection).Name + ".");
                         }
                     }
                 }
@@ -116,36 +116,36 @@ namespace MetaDslx.Core
         {
             get
             {
-                return typeof(MetaCollection).IsAssignableFrom(this.Type);
+                return typeof(ModelCollection).IsAssignableFrom(this.Type);
             }
         }
 
-        public static MetaProperty Register(string name, Type type, Type owningType)
+        public static ModelProperty Register(string name, Type type, Type owningType)
         {
-            return MetaProperty.RegisterProperty(owningType, name, new MetaProperty(name, type, owningType, name, owningType));
+            return ModelProperty.RegisterProperty(owningType, name, new ModelProperty(name, type, owningType, name, owningType));
         }
 
-        public static MetaProperty Register(string name, Type type, Type owningType, string declaredName)
+        public static ModelProperty Register(string name, Type type, Type owningType, string declaredName)
         {
-            return MetaProperty.RegisterProperty(owningType, name, new MetaProperty(name, type, owningType, declaredName, owningType));
+            return ModelProperty.RegisterProperty(owningType, name, new ModelProperty(name, type, owningType, declaredName, owningType));
         }
 
-        public static MetaProperty Register(string name, Type type, Type owningType, Type declaringType)
+        public static ModelProperty Register(string name, Type type, Type owningType, Type declaringType)
         {
-            return MetaProperty.RegisterProperty(owningType, name, new MetaProperty(name, type, owningType, name, declaringType));
+            return ModelProperty.RegisterProperty(owningType, name, new ModelProperty(name, type, owningType, name, declaringType));
         }
 
-        public static MetaProperty Register(string name, Type type, Type owningType, string declaredName, Type declaringType)
+        public static ModelProperty Register(string name, Type type, Type owningType, string declaredName, Type declaringType)
         {
-            return MetaProperty.RegisterProperty(owningType, name, new MetaProperty(name, type, owningType, declaredName, declaringType));
+            return ModelProperty.RegisterProperty(owningType, name, new ModelProperty(name, type, owningType, declaredName, declaringType));
         }
 
-        public static MetaProperty Find(Type declaringType, string name)
+        public static ModelProperty Find(Type declaringType, string name)
         {
-            Dictionary<string, MetaProperty> propertyList;
-            if (MetaProperty.properties.TryGetValue(declaringType, out propertyList))
+            Dictionary<string, ModelProperty> propertyList;
+            if (ModelProperty.properties.TryGetValue(declaringType, out propertyList))
             {
-                MetaProperty result;
+                ModelProperty result;
                 if (propertyList.TryGetValue(name, out result))
                 {
                     return result;
@@ -154,30 +154,30 @@ namespace MetaDslx.Core
             return null;
         }
 
-        protected static MetaProperty RegisterProperty(Type declaringType, string name, MetaProperty property)
+        protected static ModelProperty RegisterProperty(Type declaringType, string name, ModelProperty property)
         {
-            Dictionary<string, MetaProperty> propertyList;
-            if (!MetaProperty.properties.TryGetValue(declaringType, out propertyList))
+            Dictionary<string, ModelProperty> propertyList;
+            if (!ModelProperty.properties.TryGetValue(declaringType, out propertyList))
             {
-                propertyList = new Dictionary<string, MetaProperty>();
-                MetaProperty.properties.Add(declaringType, propertyList);
+                propertyList = new Dictionary<string, ModelProperty>();
+                ModelProperty.properties.Add(declaringType, propertyList);
             }
             if (propertyList.ContainsKey(name))
             {
-                throw new MetaException("Property '" + property + "' is already registered as '" + propertyList[name] + "'.");
+                throw new ModelException("Property '" + property + "' is already registered as '" + propertyList[name] + "'.");
             }
             propertyList.Add(name, property);
             return property;
         }
 
-        public static IEnumerable<MetaProperty> GetPropertiesForType(Type declaringType)
+        public static IEnumerable<ModelProperty> GetPropertiesForType(Type declaringType)
         {
-            Dictionary<string, MetaProperty> propertyList;
-            if (MetaProperty.properties.TryGetValue(declaringType, out propertyList))
+            Dictionary<string, ModelProperty> propertyList;
+            if (ModelProperty.properties.TryGetValue(declaringType, out propertyList))
             {
                 return propertyList.Values;
             }
-            return new MetaProperty[0];
+            return new ModelProperty[0];
         }
 
         public override string ToString()
