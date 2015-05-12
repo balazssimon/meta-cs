@@ -22,11 +22,52 @@ namespace MetaDslx.Core
         Containment,
     }
     
+    public interface MetaNamespace
+    {
+        string Name { get; set; }
+        string Uri { get; set; }
+        ICollection<MetaModel> Models { get; }
+    
+    }
+    
+    internal class MetaNamespaceImpl : ModelObject, MetaNamespace
+    {
+        internal MetaNamespaceImpl()
+        {
+            this.MSetValue(MetaNamespaceImpl.ModelsProperty, new ModelSet<MetaModel>(this, MetaNamespaceImpl.ModelsProperty));
+            MetaImplementationProvider.Implementation.MetaNamespace_MetaNamespace(this);
+        }
+        
+        internal static readonly ModelProperty NameProperty =
+            ModelProperty.Register("Name", typeof(string), typeof(MetaNamespaceImpl));
+        public string Name
+        {
+            get { return (string)this.MGetValue(MetaNamespaceImpl.NameProperty); }
+            set { this.MSetValue(MetaNamespaceImpl.NameProperty, value); }
+        }
+        
+        internal static readonly ModelProperty UriProperty =
+            ModelProperty.Register("Uri", typeof(string), typeof(MetaNamespaceImpl));
+        public string Uri
+        {
+            get { return (string)this.MGetValue(MetaNamespaceImpl.UriProperty); }
+            set { this.MSetValue(MetaNamespaceImpl.UriProperty, value); }
+        }
+        
+        [ContainmentAttribute]
+        [OppositeAttribute(typeof(MetaModelImpl), "Namespace")]
+        internal static readonly ModelProperty ModelsProperty =
+            ModelProperty.Register("Models", typeof(ModelSet<MetaModel>), typeof(MetaNamespaceImpl));
+        public ICollection<MetaModel> Models
+        {
+            get { return (ICollection<MetaModel>)this.MGetValue(MetaNamespaceImpl.ModelsProperty); }
+        }
+    }
+    
     public interface MetaModel
     {
         string Name { get; set; }
-        string Namespace { get; set; }
-        string NamespaceUri { get; set; }
+        MetaNamespace Namespace { get; set; }
         ICollection<MetaType> Types { get; }
     
     }
@@ -47,20 +88,13 @@ namespace MetaDslx.Core
             set { this.MSetValue(MetaModelImpl.NameProperty, value); }
         }
         
+        [OppositeAttribute(typeof(MetaNamespaceImpl), "Models")]
         internal static readonly ModelProperty NamespaceProperty =
-            ModelProperty.Register("Namespace", typeof(string), typeof(MetaModelImpl));
-        public string Namespace
+            ModelProperty.Register("Namespace", typeof(MetaNamespaceImpl), typeof(MetaModelImpl));
+        public MetaNamespace Namespace
         {
-            get { return (string)this.MGetValue(MetaModelImpl.NamespaceProperty); }
+            get { return (MetaNamespace)this.MGetValue(MetaModelImpl.NamespaceProperty); }
             set { this.MSetValue(MetaModelImpl.NamespaceProperty, value); }
-        }
-        
-        internal static readonly ModelProperty NamespaceUriProperty =
-            ModelProperty.Register("NamespaceUri", typeof(string), typeof(MetaModelImpl));
-        public string NamespaceUri
-        {
-            get { return (string)this.MGetValue(MetaModelImpl.NamespaceUriProperty); }
-            set { this.MSetValue(MetaModelImpl.NamespaceUriProperty, value); }
         }
         
         [ContainmentAttribute]
@@ -77,6 +111,7 @@ namespace MetaDslx.Core
     {
         string Name { get; set; }
         MetaModel Model { get; set; }
+        MetaNamespace Namespace { get; }
     
     }
     
@@ -102,6 +137,14 @@ namespace MetaDslx.Core
         {
             get { return (MetaModel)this.MGetValue(MetaTypeImpl.ModelProperty); }
             set { this.MSetValue(MetaTypeImpl.ModelProperty, value); }
+        }
+        
+        [ReadonlyAttribute]
+        internal static readonly ModelProperty NamespaceProperty =
+            ModelProperty.Register("Namespace", typeof(MetaNamespaceImpl), typeof(MetaTypeImpl));
+        public MetaNamespace Namespace
+        {
+            get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
         }
     }
     
@@ -146,6 +189,11 @@ namespace MetaDslx.Core
             get { return (MetaModel)this.MGetValue(MetaTypeImpl.ModelProperty); }
             set { this.MSetValue(MetaTypeImpl.ModelProperty, value); }
         }
+        
+        public MetaNamespace Namespace
+        {
+            get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
+        }
     }
     
     public interface MetaNullableType : MetaType
@@ -180,6 +228,11 @@ namespace MetaDslx.Core
             get { return (MetaModel)this.MGetValue(MetaTypeImpl.ModelProperty); }
             set { this.MSetValue(MetaTypeImpl.ModelProperty, value); }
         }
+        
+        public MetaNamespace Namespace
+        {
+            get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
+        }
     }
     
     public interface MetaPrimitiveType : MetaType
@@ -204,6 +257,11 @@ namespace MetaDslx.Core
         {
             get { return (MetaModel)this.MGetValue(MetaTypeImpl.ModelProperty); }
             set { this.MSetValue(MetaTypeImpl.ModelProperty, value); }
+        }
+        
+        public MetaNamespace Namespace
+        {
+            get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
         }
     }
     
@@ -249,6 +307,11 @@ namespace MetaDslx.Core
         {
             get { return (MetaModel)this.MGetValue(MetaTypeImpl.ModelProperty); }
             set { this.MSetValue(MetaTypeImpl.ModelProperty, value); }
+        }
+        
+        public MetaNamespace Namespace
+        {
+            get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
         }
     }
     
@@ -296,6 +359,11 @@ namespace MetaDslx.Core
         {
             get { return (MetaModel)this.MGetValue(MetaTypeImpl.ModelProperty); }
             set { this.MSetValue(MetaTypeImpl.ModelProperty, value); }
+        }
+        
+        public MetaNamespace Namespace
+        {
+            get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
         }
     }
     
@@ -481,6 +549,16 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
+        /// Creates a new instance of MetaNamespace.
+        /// </summary>
+        public MetaNamespace CreateMetaNamespace()
+    	{
+    		MetaNamespace result = new MetaNamespaceImpl();
+    		return result;
+    	}
+    
+    
+        /// <summary>
         /// Creates a new instance of MetaModel.
         /// </summary>
         public MetaModel CreateMetaModel()
@@ -609,6 +687,13 @@ namespace MetaDslx.Core
     internal abstract class MetaImplementationBase
     {
         /// <summary>
+    	/// Implements the constructor: MetaNamespace()
+        /// </summary>
+        public virtual void MetaNamespace_MetaNamespace(MetaNamespace @this)
+        {
+        }
+    
+        /// <summary>
     	/// Implements the constructor: MetaModel()
         /// </summary>
         public virtual void MetaModel_MetaModel(MetaModel @this)
@@ -620,6 +705,14 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaType_MetaType(MetaType @this)
         {
+        }
+    
+        /// <summary>
+        /// Returns the value of the derived property: MetaType.Namespace
+        /// </summary>
+        public virtual MetaNamespace MetaType_Namespace(MetaType @this)
+        {
+            throw new NotImplementedException();
         }
     
         /// <summary>
