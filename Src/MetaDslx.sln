@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Core", "Main\MetaD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Compiler.Test", "Test\MetaDslx.Compiler.Test\MetaDslx.Compiler.Test.csproj", "{613976F1-45A7-4947-BDBE-233EB1CB2BCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.TempConsole", "Test\MetaDslx.TempConsole\MetaDslx.TempConsole.csproj", "{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{613976F1-45A7-4947-BDBE-233EB1CB2BCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{613976F1-45A7-4947-BDBE-233EB1CB2BCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{613976F1-45A7-4947-BDBE-233EB1CB2BCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
