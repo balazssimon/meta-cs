@@ -59,6 +59,7 @@
     <Compile Include="MetaParserBaseVisitor.cs" />
     <Compile Include="MetaParserListener.cs" />
     <Compile Include="MetaParserVisitor.cs" />
+    <Compile Include="MetaScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

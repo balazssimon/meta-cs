@@ -126,9 +126,9 @@ BEGIN_ARG_ACTION
 // their option block, as this is teh easiest way to parse it separate
 // to an ACTION block, despite it usingthe same {} delimiters.
 //
-@Syntax(kind=SyntaxKind.Options)
+@Syntax(kind=Antlr4SyntaxKind.Options)
 OPTIONS      : 'options' [ \t\f\n\r]* '{'  ;
-@Syntax(kind=SyntaxKind.Tokens)
+@Syntax(kind=Antlr4SyntaxKind.Tokens)
 TOKENS		 : 'tokens'  [ \t\f\n\r]* '{'  ;
 
 @Syntax(first=IMPORT, last=NULL, kind=SyntaxKind.Keyword)
@@ -256,7 +256,7 @@ WS  :	[ \t\r\n\f]+ -> channel(HIDDEN)	;
 // that they are delimited by ' or " and so consume these
 // in their own alts so as not to inadvertantly match {}.
 
-@Syntax(kind=SyntaxKind.Action)
+@Syntax(kind=Antlr4SyntaxKind.Action)
 ACTION
 	:	'{'
 		(	ACTION
@@ -300,7 +300,7 @@ ERRCHAR
 	:	.	-> channel(HIDDEN)
 	;
 
-@Syntax(kind=SyntaxKind.Action)
+@Syntax(kind=Antlr4SyntaxKind.Action)
 mode ArgAction; // E.g., [int x, List<String> a[]]
 
 	NESTED_ARG_ACTION

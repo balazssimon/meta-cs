@@ -26,7 +26,7 @@ namespace MetaDslx.Compiler
             annotList = new List<object>();
             this.modeAnnotations.Add(AnnotatedAntlr4Lexer.ArgAction, annotList);
             SyntaxAnnotation __tmp1 = new SyntaxAnnotation();
-            __tmp1.Kind = SyntaxKind.Action;
+            __tmp1.Kind = Antlr4SyntaxKind.Action;
             annotList.Add(__tmp1);
             
             annotList = new List<object>();
@@ -50,13 +50,13 @@ namespace MetaDslx.Compiler
             annotList = new List<object>();
             this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.OPTIONS, annotList);
             SyntaxAnnotation __tmp5 = new SyntaxAnnotation();
-            __tmp5.Kind = SyntaxKind.Options;
+            __tmp5.Kind = Antlr4SyntaxKind.Options;
             annotList.Add(__tmp5);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.TOKENS, annotList);
             SyntaxAnnotation __tmp6 = new SyntaxAnnotation();
-            __tmp6.Kind = SyntaxKind.Tokens;
+            __tmp6.Kind = Antlr4SyntaxKind.Tokens;
             annotList.Add(__tmp6);
             
             annotList = new List<object>();
@@ -94,7 +94,7 @@ namespace MetaDslx.Compiler
             annotList = new List<object>();
             this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.ACTION, annotList);
             SyntaxAnnotation __tmp12 = new SyntaxAnnotation();
-            __tmp12.Kind = SyntaxKind.Action;
+            __tmp12.Kind = Antlr4SyntaxKind.Action;
             annotList.Add(__tmp12);
             
             annotList = new List<object>();

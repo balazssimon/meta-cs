@@ -38,6 +38,11 @@ namespace MetaDslx.Compiler
             cmp = this.TextSpan.CompareTo(other.TextSpan);
             return cmp;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} in '{1}' ({2},{3}): {4}", this.Severity, this.FileName, this.TextSpan.StartLine, this.TextSpan.StartPosition, this.Message);
+        }
     }
 
     public struct TextSpan : IComparable<TextSpan>

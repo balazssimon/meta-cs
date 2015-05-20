@@ -14,70 +14,76 @@ namespace MetaDslx.TempConsole
         {
             try
             {
-                string fileName = @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4Lexer.ag4";
-                string outputFileName = @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4LexerAnnotator.cs";
-                string antlr4FileName = @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4Lexer.g4";
-                string source;
-                using (StreamReader reader = new StreamReader(fileName))
-                {
-                    source = reader.ReadToEnd();
-                }
-                AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(source, fileName);
-                compiler.CSharpNamespace = "MetaDslx.Compiler";
-                compiler.Compile();
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(compiler.GeneratedSource);
-                }
-                using (StreamWriter writer = new StreamWriter(antlr4FileName))
-                {
-                    writer.WriteLine(compiler.Antlr4Source);
-                }
-
+                CompileAG4(
+                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4Lexer.ag4",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4LexerAnnotator.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4Lexer.g4"
+                    );
                 Console.WriteLine("----");
-                fileName = @"..\..\..\..\Main\MetaDslx.Compiler\MetaLexer.ag4";
-                outputFileName = @"..\..\..\..\Main\MetaDslx.Compiler\MetaLexerAnnotator.cs";
-                antlr4FileName = @"..\..\..\..\Main\MetaDslx.Compiler\MetaLexer.g4";
-                using (StreamReader reader = new StreamReader(fileName))
-                {
-                    source = reader.ReadToEnd();
-                }
-                compiler = new AnnotatedAntlr4Compiler(source, fileName);
-                compiler.CSharpNamespace = "MetaDslx.Compiler";
-                compiler.Compile();
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(compiler.GeneratedSource);
-                }
-                using (StreamWriter writer = new StreamWriter(antlr4FileName))
-                {
-                    writer.WriteLine(compiler.Antlr4Source);
-                }
-
+                CompileAG4(
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaLexer.ag4",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaLexerAnnotator.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaLexer.g4"
+                    );
                 Console.WriteLine("----");
-
-                fileName = @"..\..\..\..\Main\MetaDslx.Compiler\MetaParser.ag4";
-                outputFileName = @"..\..\..\..\Main\MetaDslx.Compiler\MetaParserAnnotator.cs";
-                antlr4FileName = @"..\..\..\..\Main\MetaDslx.Compiler\MetaParser.g4";
-                using (StreamReader reader = new StreamReader(fileName))
-                {
-                    source = reader.ReadToEnd();
-                }
-                compiler = new AnnotatedAntlr4Compiler(source, fileName);
-                compiler.CSharpNamespace = "MetaDslx.Compiler";
-                compiler.Compile();
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(compiler.GeneratedSource);
-                }
-                using (StreamWriter writer = new StreamWriter(antlr4FileName))
-                {
-                    writer.WriteLine(compiler.Antlr4Source);
-                }
+                CompileAG4(
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaParser.ag4",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaParserAnnotator.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaParser.g4"
+                    );
+                Console.WriteLine("----");
+                CompileMeta(
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
+                    );
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+            }
+        }
+
+        private static void CompileAG4(string fileName, string outputFileName, string antlr4FileName)
+        {
+            string source;
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                source = reader.ReadToEnd();
+            }
+            AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(source, fileName);
+            compiler.CSharpNamespace = "MetaDslx.Compiler";
+            compiler.Compile();
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(compiler.GeneratedSource);
+            }
+            using (StreamWriter writer = new StreamWriter(antlr4FileName))
+            {
+                writer.WriteLine(compiler.Antlr4Source);
+            }
+            foreach (var msg in compiler.Diagnostics.GetMessages())
+            {
+                Console.WriteLine(msg);
+            }
+        }
+
+        private static void CompileMeta(string fileName, string outputFileName)
+        {
+            string source;
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                source = reader.ReadToEnd();
+            }
+            MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
+            //compiler.CSharpNamespace = "MetaDslx.Core";
+            compiler.Compile();
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(compiler.GeneratedSource);
+            }
+            foreach (var msg in compiler.Diagnostics.GetMessages())
+            {
+                Console.WriteLine(msg);
             }
         }
     }
