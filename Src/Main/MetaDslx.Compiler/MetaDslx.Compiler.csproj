@@ -41,58 +41,55 @@
     <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnnotatedAntlr4Compiler.cs" />
-    <Compile Include="AnnotatedAntlr4Lexer.cs" />
-    <Compile Include="AnnotatedAntlr4LexerAnnotator.cs" />
-    <Compile Include="AnnotatedAntlr4Parser.cs" />
-    <Compile Include="AnnotatedAntlr4ParserBaseListener.cs" />
-    <Compile Include="AnnotatedAntlr4ParserBaseVisitor.cs" />
-    <Compile Include="AnnotatedAntlr4ParserListener.cs" />
-    <Compile Include="AnnotatedAntlr4ParserVisitor.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4Compiler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4LexerAnnotator.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserBaseListener.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserBaseVisitor.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserListener.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserVisitor.cs" />
     <Compile Include="MetaCompiler.cs" />
     <Compile Include="MetaCompilerDiagnostics.cs" />
-    <Compile Include="MetaLexer.cs" />
-    <Compile Include="MetaLexerAnnotator.cs" />
-    <Compile Include="MetaParser.cs" />
-    <Compile Include="MetaParserAnnotator.cs" />
-    <Compile Include="MetaParserBaseListener.cs" />
-    <Compile Include="MetaParserBaseVisitor.cs" />
-    <Compile Include="MetaParserListener.cs" />
-    <Compile Include="MetaParserVisitor.cs" />
+    <Compile Include="MetaModel\MetaModelCompiler.cs" />
+    <Compile Include="MetaModel\MetaModelLexer.cs" />
+    <Compile Include="MetaModel\MetaModelLexerAnnotator.cs" />
+    <Compile Include="MetaModel\MetaModelParser.cs" />
+    <Compile Include="MetaModel\MetaModelParserAnnotator.cs" />
+    <Compile Include="MetaModel\MetaModelParserBaseListener.cs" />
+    <Compile Include="MetaModel\MetaModelParserBaseVisitor.cs" />
+    <Compile Include="MetaModel\MetaModelParserListener.cs" />
+    <Compile Include="MetaModel\MetaModelParserVisitor.cs" />
     <Compile Include="MetaScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Antlr4 Include="AnnotatedAntlr4Lexer.g4">
+    <Antlr4 Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
       <Listener>True</Listener>
       <Visitor>True</Visitor>
       <TargetLanguage>CSharp</TargetLanguage>
     </Antlr4>
-    <Antlr4 Include="AnnotatedAntlr4Parser.g4">
+    <Antlr4 Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
       <Listener>True</Listener>
       <Visitor>True</Visitor>
       <TargetLanguage>CSharp</TargetLanguage>
     </Antlr4>
-    <None Include="AnnotatedAntlr4Lexer.ag4" />
-    <None Include="MetaLexer.ag4" />
-    <Antlr4 Include="MetaLexer.g4">
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.ag4" />
+    <None Include="MetaModel\MetaModelLexer.ag4" />
+    <Antlr4 Include="MetaModel\MetaModelLexer.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
-      <Listener>True</Listener>
-      <Visitor>True</Visitor>
-      <TargetLanguage>CSharp</TargetLanguage>
     </Antlr4>
-    <None Include="MetaParser.ag4" />
-    <Antlr4 Include="MetaParser.g4">
+    <None Include="MetaModel\MetaModelParser.ag4" />
+    <Antlr4 Include="MetaModel\MetaModelParser.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
-      <Listener>True</Listener>
-      <Visitor>True</Visitor>
-      <TargetLanguage>CSharp</TargetLanguage>
     </Antlr4>
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +98,7 @@
       <Name>MetaDslx.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

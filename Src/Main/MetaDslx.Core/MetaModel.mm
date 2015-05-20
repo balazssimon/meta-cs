@@ -110,6 +110,7 @@
 		}
 
 		association MetaClass.Properties with MetaProperty.Class;
+		association MetaProperty.Opposites with MetaProperty.Opposites;
 
 	}
 }

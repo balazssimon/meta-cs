@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from MetaLexer.g4 by ANTLR 4.5
+// Generated from MetaModelLexer.g4 by ANTLR 4.5
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -26,7 +26,7 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.5")]
 [System.CLSCompliant(false)]
-public partial class MetaLexer : Lexer {
+public partial class MetaModelLexer : Lexer {
 	public const int
 		KNamespace=1, KMetamodel=2, KAbstract=3, KClass=4, KEnum=5, KAssociation=6, 
 		KContainment=7, KWith=8, KNull=9, KTrue=10, KFalse=11, KVoid=12, KObject=13, 
@@ -69,7 +69,7 @@ public partial class MetaLexer : Lexer {
 	};
 
 
-	public MetaLexer(ICharStream input)
+	public MetaModelLexer(ICharStream input)
 		: base(input)
 	{
 		Interpreter = new LexerATNSimulator(this,_ATN);
@@ -108,7 +108,7 @@ public partial class MetaLexer : Lexer {
 		}
 	}
 
-	public override string GrammarFileName { get { return "MetaLexer.g4"; } }
+	public override string GrammarFileName { get { return "MetaModelLexer.g4"; } }
 
 	public override string[] RuleNames { get { return ruleNames; } }
 

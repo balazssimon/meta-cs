@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from MetaParser.g4 by ANTLR 4.5
+// Generated from MetaModelParser.g4 by ANTLR 4.5
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -30,7 +30,7 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.5")]
 [System.CLSCompliant(false)]
-public partial class MetaParser : Parser {
+public partial class MetaModelParser : Parser {
 	public const int
 		KNamespace=1, KMetamodel=2, KAbstract=3, KClass=4, KEnum=5, KAssociation=6, 
 		KContainment=7, KWith=8, KNull=9, KTrue=10, KFalse=11, KVoid=12, KObject=13, 
@@ -104,13 +104,13 @@ public partial class MetaParser : Parser {
 		}
 	}
 
-	public override string GrammarFileName { get { return "MetaParser.g4"; } }
+	public override string GrammarFileName { get { return "MetaModelParser.g4"; } }
 
 	public override string[] RuleNames { get { return ruleNames; } }
 
 	public override string SerializedAtn { get { return _serializedATN; } }
 
-	public MetaParser(ITokenStream input)
+	public MetaModelParser(ITokenStream input)
 		: base(input)
 	{
 		Interpreter = new ParserATNSimulator(this,_ATN);
@@ -128,15 +128,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_main; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterMain(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitMain(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMain(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -183,9 +183,9 @@ public partial class MetaParser : Parser {
 		public IdentifierContext identifier(int i) {
 			return GetRuleContext<IdentifierContext>(i);
 		}
-		public ITerminalNode[] TDot() { return GetTokens(MetaParser.TDot); }
+		public ITerminalNode[] TDot() { return GetTokens(MetaModelParser.TDot); }
 		public ITerminalNode TDot(int i) {
-			return GetToken(MetaParser.TDot, i);
+			return GetToken(MetaModelParser.TDot, i);
 		}
 		public QualifiedNameContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -193,15 +193,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_qualifiedName; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterQualifiedName(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitQualifiedName(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitQualifiedName(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -250,9 +250,9 @@ public partial class MetaParser : Parser {
 		public IdentifierContext identifier(int i) {
 			return GetRuleContext<IdentifierContext>(i);
 		}
-		public ITerminalNode[] TComma() { return GetTokens(MetaParser.TComma); }
+		public ITerminalNode[] TComma() { return GetTokens(MetaModelParser.TComma); }
 		public ITerminalNode TComma(int i) {
-			return GetToken(MetaParser.TComma, i);
+			return GetToken(MetaModelParser.TComma, i);
 		}
 		public IdentifierListContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -260,15 +260,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_identifierList; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterIdentifierList(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitIdentifierList(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifierList(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -317,9 +317,9 @@ public partial class MetaParser : Parser {
 		public QualifiedNameContext qualifiedName(int i) {
 			return GetRuleContext<QualifiedNameContext>(i);
 		}
-		public ITerminalNode[] TComma() { return GetTokens(MetaParser.TComma); }
+		public ITerminalNode[] TComma() { return GetTokens(MetaModelParser.TComma); }
 		public ITerminalNode TComma(int i) {
-			return GetToken(MetaParser.TComma, i);
+			return GetToken(MetaModelParser.TComma, i);
 		}
 		public QualifiedNameListContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -327,15 +327,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_qualifiedNameList; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterQualifiedNameList(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitQualifiedNameList(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitQualifiedNameList(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -378,16 +378,16 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class NamespaceDeclarationContext : ParserRuleContext {
-		public ITerminalNode KNamespace() { return GetToken(MetaParser.KNamespace, 0); }
+		public ITerminalNode KNamespace() { return GetToken(MetaModelParser.KNamespace, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
 		}
-		public ITerminalNode TEquals() { return GetToken(MetaParser.TEquals, 0); }
+		public ITerminalNode TEquals() { return GetToken(MetaModelParser.TEquals, 0); }
 		public StringLiteralContext stringLiteral() {
 			return GetRuleContext<StringLiteralContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(MetaParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(MetaParser.TCloseBrace, 0); }
+		public ITerminalNode TOpenBrace() { return GetToken(MetaModelParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(MetaModelParser.TCloseBrace, 0); }
 		public MetamodelDeclarationContext[] metamodelDeclaration() {
 			return GetRuleContexts<MetamodelDeclarationContext>();
 		}
@@ -400,15 +400,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_namespaceDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterNamespaceDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitNamespaceDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNamespaceDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -455,12 +455,12 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class MetamodelDeclarationContext : ParserRuleContext {
-		public ITerminalNode KMetamodel() { return GetToken(MetaParser.KMetamodel, 0); }
+		public ITerminalNode KMetamodel() { return GetToken(MetaModelParser.KMetamodel, 0); }
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(MetaParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(MetaParser.TCloseBrace, 0); }
+		public ITerminalNode TOpenBrace() { return GetToken(MetaModelParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(MetaModelParser.TCloseBrace, 0); }
 		public DeclarationContext[] declaration() {
 			return GetRuleContexts<DeclarationContext>();
 		}
@@ -473,15 +473,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_metamodelDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterMetamodelDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitMetamodelDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMetamodelDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -544,15 +544,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_declaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -606,16 +606,16 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class EnumDeclarationContext : ParserRuleContext {
-		public ITerminalNode KEnum() { return GetToken(MetaParser.KEnum, 0); }
+		public ITerminalNode KEnum() { return GetToken(MetaModelParser.KEnum, 0); }
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(MetaParser.TOpenBrace, 0); }
+		public ITerminalNode TOpenBrace() { return GetToken(MetaModelParser.TOpenBrace, 0); }
 		public EnumValuesContext enumValues() {
 			return GetRuleContext<EnumValuesContext>(0);
 		}
-		public ITerminalNode TCloseBrace() { return GetToken(MetaParser.TCloseBrace, 0); }
-		public ITerminalNode TSemicolon() { return GetToken(MetaParser.TSemicolon, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(MetaModelParser.TCloseBrace, 0); }
+		public ITerminalNode TSemicolon() { return GetToken(MetaModelParser.TSemicolon, 0); }
 		public EnumMemberDeclarationContext[] enumMemberDeclaration() {
 			return GetRuleContexts<EnumMemberDeclarationContext>();
 		}
@@ -628,15 +628,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_enumDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterEnumDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitEnumDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitEnumDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -699,15 +699,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_enumValues; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterEnumValues(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitEnumValues(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitEnumValues(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -744,15 +744,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_enumMemberDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterEnumMemberDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitEnumMemberDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitEnumMemberDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -780,14 +780,14 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class ClassDeclarationContext : ParserRuleContext {
-		public ITerminalNode KClass() { return GetToken(MetaParser.KClass, 0); }
+		public ITerminalNode KClass() { return GetToken(MetaModelParser.KClass, 0); }
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(MetaParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(MetaParser.TCloseBrace, 0); }
-		public ITerminalNode KAbstract() { return GetToken(MetaParser.KAbstract, 0); }
-		public ITerminalNode TColon() { return GetToken(MetaParser.TColon, 0); }
+		public ITerminalNode TOpenBrace() { return GetToken(MetaModelParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(MetaModelParser.TCloseBrace, 0); }
+		public ITerminalNode KAbstract() { return GetToken(MetaModelParser.KAbstract, 0); }
+		public ITerminalNode TColon() { return GetToken(MetaModelParser.TColon, 0); }
 		public ClassAncestorsContext classAncestors() {
 			return GetRuleContext<ClassAncestorsContext>(0);
 		}
@@ -803,15 +803,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_classDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterClassDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitClassDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitClassDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -879,9 +879,9 @@ public partial class MetaParser : Parser {
 		public ClassAncestorContext classAncestor(int i) {
 			return GetRuleContext<ClassAncestorContext>(i);
 		}
-		public ITerminalNode[] TComma() { return GetTokens(MetaParser.TComma); }
+		public ITerminalNode[] TComma() { return GetTokens(MetaModelParser.TComma); }
 		public ITerminalNode TComma(int i) {
-			return GetToken(MetaParser.TComma, i);
+			return GetToken(MetaModelParser.TComma, i);
 		}
 		public ClassAncestorsContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -889,15 +889,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_classAncestors; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterClassAncestors(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitClassAncestors(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitClassAncestors(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -949,15 +949,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_classAncestor; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterClassAncestor(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitClassAncestor(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitClassAncestor(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -997,15 +997,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_classMemberDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterClassMemberDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitClassMemberDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitClassMemberDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1050,26 +1050,26 @@ public partial class MetaParser : Parser {
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
-		public ITerminalNode TSemicolon() { return GetToken(MetaParser.TSemicolon, 0); }
-		public ITerminalNode KContainment() { return GetToken(MetaParser.KContainment, 0); }
-		public ITerminalNode KReadonly() { return GetToken(MetaParser.KReadonly, 0); }
-		public ITerminalNode KLazy() { return GetToken(MetaParser.KLazy, 0); }
-		public ITerminalNode KDerived() { return GetToken(MetaParser.KDerived, 0); }
+		public ITerminalNode TSemicolon() { return GetToken(MetaModelParser.TSemicolon, 0); }
+		public ITerminalNode KContainment() { return GetToken(MetaModelParser.KContainment, 0); }
+		public ITerminalNode KReadonly() { return GetToken(MetaModelParser.KReadonly, 0); }
+		public ITerminalNode KLazy() { return GetToken(MetaModelParser.KLazy, 0); }
+		public ITerminalNode KDerived() { return GetToken(MetaModelParser.KDerived, 0); }
 		public FieldDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_fieldDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterFieldDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitFieldDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitFieldDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1115,15 +1115,15 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class ConstDeclarationContext : ParserRuleContext {
-		public ITerminalNode KConst() { return GetToken(MetaParser.KConst, 0); }
+		public ITerminalNode KConst() { return GetToken(MetaModelParser.KConst, 0); }
 		public TypeReferenceContext typeReference() {
 			return GetRuleContext<TypeReferenceContext>(0);
 		}
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
-		public ITerminalNode TSemicolon() { return GetToken(MetaParser.TSemicolon, 0); }
-		public ITerminalNode TEquals() { return GetToken(MetaParser.TEquals, 0); }
+		public ITerminalNode TSemicolon() { return GetToken(MetaModelParser.TSemicolon, 0); }
+		public ITerminalNode TEquals() { return GetToken(MetaModelParser.TEquals, 0); }
 		public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
@@ -1133,15 +1133,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_constDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterConstDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitConstDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitConstDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1194,15 +1194,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_typeReference; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterTypeReference(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitTypeReference(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTypeReference(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1267,15 +1267,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_simpleType; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterSimpleType(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitSimpleType(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSimpleType(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1331,22 +1331,22 @@ public partial class MetaParser : Parser {
 		public PrimitiveTypeContext primitiveType() {
 			return GetRuleContext<PrimitiveTypeContext>(0);
 		}
-		public ITerminalNode TQuestion() { return GetToken(MetaParser.TQuestion, 0); }
+		public ITerminalNode TQuestion() { return GetToken(MetaModelParser.TQuestion, 0); }
 		public NullableTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_nullableType; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterNullableType(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitNullableType(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNullableType(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1383,23 +1383,23 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class ObjectTypeContext : ParserRuleContext {
-		public ITerminalNode KObject() { return GetToken(MetaParser.KObject, 0); }
-		public ITerminalNode KString() { return GetToken(MetaParser.KString, 0); }
+		public ITerminalNode KObject() { return GetToken(MetaModelParser.KObject, 0); }
+		public ITerminalNode KString() { return GetToken(MetaModelParser.KString, 0); }
 		public ObjectTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_objectType; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterObjectType(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitObjectType(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitObjectType(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1435,27 +1435,27 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class PrimitiveTypeContext : ParserRuleContext {
-		public ITerminalNode KInt() { return GetToken(MetaParser.KInt, 0); }
-		public ITerminalNode KLong() { return GetToken(MetaParser.KLong, 0); }
-		public ITerminalNode KFloat() { return GetToken(MetaParser.KFloat, 0); }
-		public ITerminalNode KDouble() { return GetToken(MetaParser.KDouble, 0); }
-		public ITerminalNode KByte() { return GetToken(MetaParser.KByte, 0); }
-		public ITerminalNode KBool() { return GetToken(MetaParser.KBool, 0); }
+		public ITerminalNode KInt() { return GetToken(MetaModelParser.KInt, 0); }
+		public ITerminalNode KLong() { return GetToken(MetaModelParser.KLong, 0); }
+		public ITerminalNode KFloat() { return GetToken(MetaModelParser.KFloat, 0); }
+		public ITerminalNode KDouble() { return GetToken(MetaModelParser.KDouble, 0); }
+		public ITerminalNode KByte() { return GetToken(MetaModelParser.KByte, 0); }
+		public ITerminalNode KBool() { return GetToken(MetaModelParser.KBool, 0); }
 		public PrimitiveTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_primitiveType; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterPrimitiveType(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitPrimitiveType(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitPrimitiveType(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1491,28 +1491,28 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class CollectionTypeContext : ParserRuleContext {
-		public ITerminalNode TLessThan() { return GetToken(MetaParser.TLessThan, 0); }
+		public ITerminalNode TLessThan() { return GetToken(MetaModelParser.TLessThan, 0); }
 		public SimpleTypeContext simpleType() {
 			return GetRuleContext<SimpleTypeContext>(0);
 		}
-		public ITerminalNode TGreaterThan() { return GetToken(MetaParser.TGreaterThan, 0); }
-		public ITerminalNode KSet() { return GetToken(MetaParser.KSet, 0); }
-		public ITerminalNode KList() { return GetToken(MetaParser.KList, 0); }
+		public ITerminalNode TGreaterThan() { return GetToken(MetaModelParser.TGreaterThan, 0); }
+		public ITerminalNode KSet() { return GetToken(MetaModelParser.KSet, 0); }
+		public ITerminalNode KList() { return GetToken(MetaModelParser.KList, 0); }
 		public CollectionTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_collectionType; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterCollectionType(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitCollectionType(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitCollectionType(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1551,22 +1551,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class VoidTypeContext : ParserRuleContext {
-		public ITerminalNode KVoid() { return GetToken(MetaParser.KVoid, 0); }
+		public ITerminalNode KVoid() { return GetToken(MetaModelParser.KVoid, 0); }
 		public VoidTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_voidType; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterVoidType(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitVoidType(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitVoidType(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1606,15 +1606,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_returnType; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterReturnType(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitReturnType(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitReturnType(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1671,10 +1671,10 @@ public partial class MetaParser : Parser {
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
-		public ITerminalNode TOpenBracket() { return GetToken(MetaParser.TOpenBracket, 0); }
-		public ITerminalNode TCloseBracket() { return GetToken(MetaParser.TCloseBracket, 0); }
-		public ITerminalNode TSemicolon() { return GetToken(MetaParser.TSemicolon, 0); }
-		public ITerminalNode KStatic() { return GetToken(MetaParser.KStatic, 0); }
+		public ITerminalNode TOpenBracket() { return GetToken(MetaModelParser.TOpenBracket, 0); }
+		public ITerminalNode TCloseBracket() { return GetToken(MetaModelParser.TCloseBracket, 0); }
+		public ITerminalNode TSemicolon() { return GetToken(MetaModelParser.TSemicolon, 0); }
+		public ITerminalNode KStatic() { return GetToken(MetaModelParser.KStatic, 0); }
 		public ParameterListContext parameterList() {
 			return GetRuleContext<ParameterListContext>(0);
 		}
@@ -1684,15 +1684,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_operationDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterOperationDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitOperationDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitOperationDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1747,9 +1747,9 @@ public partial class MetaParser : Parser {
 		public ParameterContext parameter(int i) {
 			return GetRuleContext<ParameterContext>(i);
 		}
-		public ITerminalNode[] TComma() { return GetTokens(MetaParser.TComma); }
+		public ITerminalNode[] TComma() { return GetTokens(MetaModelParser.TComma); }
 		public ITerminalNode TComma(int i) {
-			return GetToken(MetaParser.TComma, i);
+			return GetToken(MetaModelParser.TComma, i);
 		}
 		public ParameterListContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1757,15 +1757,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_parameterList; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterParameterList(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitParameterList(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitParameterList(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1814,7 +1814,7 @@ public partial class MetaParser : Parser {
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
-		public ITerminalNode TEquals() { return GetToken(MetaParser.TEquals, 0); }
+		public ITerminalNode TEquals() { return GetToken(MetaModelParser.TEquals, 0); }
 		public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
@@ -1824,15 +1824,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_parameter; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterParameter(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitParameter(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitParameter(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1883,15 +1883,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_expression; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterExpression(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitExpression(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitExpression(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -1945,9 +1945,9 @@ public partial class MetaParser : Parser {
 	public partial class AssociationDeclarationContext : ParserRuleContext {
 		public QualifiedNameContext source;
 		public QualifiedNameContext target;
-		public ITerminalNode KAssociation() { return GetToken(MetaParser.KAssociation, 0); }
-		public ITerminalNode KWith() { return GetToken(MetaParser.KWith, 0); }
-		public ITerminalNode TSemicolon() { return GetToken(MetaParser.TSemicolon, 0); }
+		public ITerminalNode KAssociation() { return GetToken(MetaModelParser.KAssociation, 0); }
+		public ITerminalNode KWith() { return GetToken(MetaModelParser.KWith, 0); }
+		public ITerminalNode TSemicolon() { return GetToken(MetaModelParser.TSemicolon, 0); }
 		public QualifiedNameContext[] qualifiedName() {
 			return GetRuleContexts<QualifiedNameContext>();
 		}
@@ -1960,15 +1960,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_associationDeclaration; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterAssociationDeclaration(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitAssociationDeclaration(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAssociationDeclaration(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2000,22 +2000,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class IdentifierContext : ParserRuleContext {
-		public ITerminalNode IdentifierNormal() { return GetToken(MetaParser.IdentifierNormal, 0); }
+		public ITerminalNode IdentifierNormal() { return GetToken(MetaModelParser.IdentifierNormal, 0); }
 		public IdentifierContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_identifier; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterIdentifier(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitIdentifier(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifier(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2067,15 +2067,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_literal; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2146,22 +2146,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class NullLiteralContext : ParserRuleContext {
-		public ITerminalNode KNull() { return GetToken(MetaParser.KNull, 0); }
+		public ITerminalNode KNull() { return GetToken(MetaModelParser.KNull, 0); }
 		public NullLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_nullLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterNullLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitNullLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNullLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2189,23 +2189,23 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class BooleanLiteralContext : ParserRuleContext {
-		public ITerminalNode KTrue() { return GetToken(MetaParser.KTrue, 0); }
-		public ITerminalNode KFalse() { return GetToken(MetaParser.KFalse, 0); }
+		public ITerminalNode KTrue() { return GetToken(MetaModelParser.KTrue, 0); }
+		public ITerminalNode KFalse() { return GetToken(MetaModelParser.KFalse, 0); }
 		public BooleanLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_booleanLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterBooleanLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitBooleanLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitBooleanLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2256,15 +2256,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_numberLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterNumberLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitNumberLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNumberLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2311,22 +2311,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class IntegerLiteralContext : ParserRuleContext {
-		public ITerminalNode IntegerLiteral() { return GetToken(MetaParser.IntegerLiteral, 0); }
+		public ITerminalNode IntegerLiteral() { return GetToken(MetaModelParser.IntegerLiteral, 0); }
 		public IntegerLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_integerLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterIntegerLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitIntegerLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIntegerLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2354,22 +2354,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class DecimalLiteralContext : ParserRuleContext {
-		public ITerminalNode DecimalLiteral() { return GetToken(MetaParser.DecimalLiteral, 0); }
+		public ITerminalNode DecimalLiteral() { return GetToken(MetaModelParser.DecimalLiteral, 0); }
 		public DecimalLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_decimalLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterDecimalLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitDecimalLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDecimalLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2397,22 +2397,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class ScientificLiteralContext : ParserRuleContext {
-		public ITerminalNode ScientificLiteral() { return GetToken(MetaParser.ScientificLiteral, 0); }
+		public ITerminalNode ScientificLiteral() { return GetToken(MetaModelParser.ScientificLiteral, 0); }
 		public ScientificLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_scientificLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterScientificLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitScientificLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitScientificLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2458,15 +2458,15 @@ public partial class MetaParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_dateOrTimeLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterDateOrTimeLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitDateOrTimeLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDateOrTimeLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2519,22 +2519,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class DateTimeOffsetLiteralContext : ParserRuleContext {
-		public ITerminalNode DateTimeOffsetLiteral() { return GetToken(MetaParser.DateTimeOffsetLiteral, 0); }
+		public ITerminalNode DateTimeOffsetLiteral() { return GetToken(MetaModelParser.DateTimeOffsetLiteral, 0); }
 		public DateTimeOffsetLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_dateTimeOffsetLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterDateTimeOffsetLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitDateTimeOffsetLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDateTimeOffsetLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2562,22 +2562,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class DateTimeLiteralContext : ParserRuleContext {
-		public ITerminalNode DateTimeLiteral() { return GetToken(MetaParser.DateTimeLiteral, 0); }
+		public ITerminalNode DateTimeLiteral() { return GetToken(MetaModelParser.DateTimeLiteral, 0); }
 		public DateTimeLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_dateTimeLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterDateTimeLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitDateTimeLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDateTimeLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2605,22 +2605,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class DateLiteralContext : ParserRuleContext {
-		public ITerminalNode DateLiteral() { return GetToken(MetaParser.DateLiteral, 0); }
+		public ITerminalNode DateLiteral() { return GetToken(MetaModelParser.DateLiteral, 0); }
 		public DateLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_dateLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterDateLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitDateLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDateLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2648,22 +2648,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class TimeLiteralContext : ParserRuleContext {
-		public ITerminalNode TimeLiteral() { return GetToken(MetaParser.TimeLiteral, 0); }
+		public ITerminalNode TimeLiteral() { return GetToken(MetaModelParser.TimeLiteral, 0); }
 		public TimeLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_timeLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterTimeLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitTimeLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTimeLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2691,22 +2691,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class StringLiteralContext : ParserRuleContext {
-		public ITerminalNode RegularStringLiteral() { return GetToken(MetaParser.RegularStringLiteral, 0); }
+		public ITerminalNode RegularStringLiteral() { return GetToken(MetaModelParser.RegularStringLiteral, 0); }
 		public StringLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_stringLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterStringLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitStringLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitStringLiteral(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -2734,22 +2734,22 @@ public partial class MetaParser : Parser {
 	}
 
 	public partial class GuidLiteralContext : ParserRuleContext {
-		public ITerminalNode GuidLiteral() { return GetToken(MetaParser.GuidLiteral, 0); }
+		public ITerminalNode GuidLiteral() { return GetToken(MetaModelParser.GuidLiteral, 0); }
 		public GuidLiteralContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_guidLiteral; } }
 		public override void EnterRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.EnterGuidLiteral(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
-			IMetaParserListener typedListener = listener as IMetaParserListener;
+			IMetaModelParserListener typedListener = listener as IMetaModelParserListener;
 			if (typedListener != null) typedListener.ExitGuidLiteral(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
+			IMetaModelParserVisitor<TResult> typedVisitor = visitor as IMetaModelParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitGuidLiteral(this);
 			else return visitor.VisitChildren(this);
 		}

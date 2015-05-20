@@ -15,21 +15,21 @@ namespace MetaDslx.TempConsole
             try
             {
                 CompileAG4(
-                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4Lexer.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4LexerAnnotator.cs",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4Lexer.g4"
+                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4Lexer.ag4",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4LexerAnnotator.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4Lexer.g4"
                     );
                 Console.WriteLine("----");
                 CompileAG4(
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaLexer.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaLexerAnnotator.cs",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaLexer.g4"
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.ag4",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexerAnnotator.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.g4"
                     );
                 Console.WriteLine("----");
                 CompileAG4(
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaParser.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaParserAnnotator.cs",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaParser.g4"
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.ag4",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParserAnnotator.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.g4"
                     );
                 Console.WriteLine("----");
                 CompileMeta(
@@ -66,7 +66,7 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine(msg);
             }
         }
-
+        
         private static void CompileMeta(string fileName, string outputFileName)
         {
             string source;
@@ -84,6 +84,10 @@ namespace MetaDslx.TempConsole
             foreach (var msg in compiler.Diagnostics.GetMessages())
             {
                 Console.WriteLine(msg);
+            }
+            foreach (var entry in compiler.GlobalScope.Children)
+            {
+                Console.WriteLine(entry);
             }
         }
     }

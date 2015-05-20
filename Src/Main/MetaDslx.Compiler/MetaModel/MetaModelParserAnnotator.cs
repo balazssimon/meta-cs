@@ -8,9 +8,9 @@ using Antlr4.Runtime.Tree;
 
 namespace MetaDslx.Compiler
 {
-    internal class MetaParserAnnotator : MetaParserBaseVisitor<object>
+    internal class MetaModelParserAnnotator : MetaModelParserBaseVisitor<object>
     {
-        private MetaLexerAnnotator lexerAnnotator = new MetaLexerAnnotator();
+        private MetaModelLexerAnnotator lexerAnnotator = new MetaModelLexerAnnotator();
         private List<object> grammarAnnotations = new List<object>();
         private Dictionary<Type, List<object>> ruleAnnotations = new Dictionary<Type, List<object>>();
         private Dictionary<object, List<object>> treeAnnotations = new Dictionary<object, List<object>>();
@@ -44,31 +44,31 @@ namespace MetaDslx.Compiler
         private NameUseAnnotation associationDeclaration_Target_NameUse;
         private IdentifierAnnotation identifier_Identifier;
         
-        public MetaParserAnnotator()
+        public MetaModelParserAnnotator()
         {
             List<object> annotList = null;
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaParser.QualifiedNameContext), annotList);
+            this.ruleAnnotations.Add(typeof(MetaModelParser.QualifiedNameContext), annotList);
             this.qualifiedName_QualifiedName = new QualifiedNameAnnotation();
             annotList.Add(this.qualifiedName_QualifiedName);
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaParser.NamespaceDeclarationContext), annotList);
+            this.ruleAnnotations.Add(typeof(MetaModelParser.NamespaceDeclarationContext), annotList);
             this.namespaceDeclaration_Scope = new ScopeAnnotation();
             annotList.Add(this.namespaceDeclaration_Scope);
             this.namespaceDeclaration_QualifiedName_NameDef = new NameDefAnnotation();
             this.namespaceDeclaration_QualifiedName_NameDef.Kind = NameKind.Namespace;
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaParser.MetamodelDeclarationContext), annotList);
+            this.ruleAnnotations.Add(typeof(MetaModelParser.MetamodelDeclarationContext), annotList);
             this.metamodelDeclaration_TypeDef = new TypeDefAnnotation();
             annotList.Add(this.metamodelDeclaration_TypeDef);
             this.metamodelDeclaration_Identifier_NameDef = new NameDefAnnotation();
             this.metamodelDeclaration_Identifier_NameDef.Kind = NameKind.Metamodel;
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaParser.EnumDeclarationContext), annotList);
+            this.ruleAnnotations.Add(typeof(MetaModelParser.EnumDeclarationContext), annotList);
             this.enumDeclaration_TypeDef = new TypeDefAnnotation();
             annotList.Add(this.enumDeclaration_TypeDef);
             this.enumDeclaration_Identifier_NameDef = new NameDefAnnotation();
@@ -78,7 +78,7 @@ namespace MetaDslx.Compiler
             this.enumValues_IdentifierList_NameDef.Kind = NameKind.EnumValue;
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaParser.ClassDeclarationContext), annotList);
+            this.ruleAnnotations.Add(typeof(MetaModelParser.ClassDeclarationContext), annotList);
             this.classDeclaration_TypeDef = new TypeDefAnnotation();
             annotList.Add(this.classDeclaration_TypeDef);
             this.classDeclaration_Identifier_NameDef = new NameDefAnnotation();
@@ -94,17 +94,17 @@ namespace MetaDslx.Compiler
             this.constDeclaration_Identifier_NameDef.Kind = NameKind.Const;
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaParser.TypeReferenceContext), annotList);
+            this.ruleAnnotations.Add(typeof(MetaModelParser.TypeReferenceContext), annotList);
             this.typeReference_TypeUse = new TypeUseAnnotation();
             annotList.Add(this.typeReference_TypeUse);
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaParser.ReturnTypeContext), annotList);
+            this.ruleAnnotations.Add(typeof(MetaModelParser.ReturnTypeContext), annotList);
             this.returnType_TypeUse = new TypeUseAnnotation();
             annotList.Add(this.returnType_TypeUse);
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaParser.OperationDeclarationContext), annotList);
+            this.ruleAnnotations.Add(typeof(MetaModelParser.OperationDeclarationContext), annotList);
             this.operationDeclaration_Scope = new ScopeAnnotation();
             annotList.Add(this.operationDeclaration_Scope);
             this.operationDeclaration_Identifier_NameDef = new NameDefAnnotation();
@@ -119,7 +119,7 @@ namespace MetaDslx.Compiler
             this.associationDeclaration_Target_NameUse.Kind = NameKind.Property;
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaParser.IdentifierContext), annotList);
+            this.ruleAnnotations.Add(typeof(MetaModelParser.IdentifierContext), annotList);
             this.identifier_Identifier = new IdentifierAnnotation();
             annotList.Add(this.identifier_Identifier);
         }
@@ -129,12 +129,12 @@ namespace MetaDslx.Compiler
             return this.lexerAnnotator.VisitTerminal(node, treeAnnotations);
         }
         
-        public override object VisitMain(MetaParser.MainContext context)
+        public override object VisitMain(MetaModelParser.MainContext context)
         {
             return base.VisitMain(context);
         }
         
-        public override object VisitQualifiedName(MetaParser.QualifiedNameContext context)
+        public override object VisitQualifiedName(MetaModelParser.QualifiedNameContext context)
         {
             List<object> treeAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
@@ -146,17 +146,17 @@ namespace MetaDslx.Compiler
             return base.VisitQualifiedName(context);
         }
         
-        public override object VisitIdentifierList(MetaParser.IdentifierListContext context)
+        public override object VisitIdentifierList(MetaModelParser.IdentifierListContext context)
         {
             return base.VisitIdentifierList(context);
         }
         
-        public override object VisitQualifiedNameList(MetaParser.QualifiedNameListContext context)
+        public override object VisitQualifiedNameList(MetaModelParser.QualifiedNameListContext context)
         {
             return base.VisitQualifiedNameList(context);
         }
         
-        public override object VisitNamespaceDeclaration(MetaParser.NamespaceDeclarationContext context)
+        public override object VisitNamespaceDeclaration(MetaModelParser.NamespaceDeclarationContext context)
         {
             List<object> treeAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
@@ -175,7 +175,7 @@ namespace MetaDslx.Compiler
             return base.VisitNamespaceDeclaration(context);
         }
         
-        public override object VisitMetamodelDeclaration(MetaParser.MetamodelDeclarationContext context)
+        public override object VisitMetamodelDeclaration(MetaModelParser.MetamodelDeclarationContext context)
         {
             List<object> treeAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
@@ -194,12 +194,12 @@ namespace MetaDslx.Compiler
             return base.VisitMetamodelDeclaration(context);
         }
         
-        public override object VisitDeclaration(MetaParser.DeclarationContext context)
+        public override object VisitDeclaration(MetaModelParser.DeclarationContext context)
         {
             return base.VisitDeclaration(context);
         }
         
-        public override object VisitEnumDeclaration(MetaParser.EnumDeclarationContext context)
+        public override object VisitEnumDeclaration(MetaModelParser.EnumDeclarationContext context)
         {
             List<object> treeAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
@@ -218,7 +218,7 @@ namespace MetaDslx.Compiler
             return base.VisitEnumDeclaration(context);
         }
         
-        public override object VisitEnumValues(MetaParser.EnumValuesContext context)
+        public override object VisitEnumValues(MetaModelParser.EnumValuesContext context)
         {
             List<object> elemAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context.identifierList(), out elemAnnotList))
@@ -230,12 +230,12 @@ namespace MetaDslx.Compiler
             return base.VisitEnumValues(context);
         }
         
-        public override object VisitEnumMemberDeclaration(MetaParser.EnumMemberDeclarationContext context)
+        public override object VisitEnumMemberDeclaration(MetaModelParser.EnumMemberDeclarationContext context)
         {
             return base.VisitEnumMemberDeclaration(context);
         }
         
-        public override object VisitClassDeclaration(MetaParser.ClassDeclarationContext context)
+        public override object VisitClassDeclaration(MetaModelParser.ClassDeclarationContext context)
         {
             List<object> treeAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
@@ -254,12 +254,12 @@ namespace MetaDslx.Compiler
             return base.VisitClassDeclaration(context);
         }
         
-        public override object VisitClassAncestors(MetaParser.ClassAncestorsContext context)
+        public override object VisitClassAncestors(MetaModelParser.ClassAncestorsContext context)
         {
             return base.VisitClassAncestors(context);
         }
         
-        public override object VisitClassAncestor(MetaParser.ClassAncestorContext context)
+        public override object VisitClassAncestor(MetaModelParser.ClassAncestorContext context)
         {
             List<object> elemAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context.qualifiedName(), out elemAnnotList))
@@ -271,12 +271,12 @@ namespace MetaDslx.Compiler
             return base.VisitClassAncestor(context);
         }
         
-        public override object VisitClassMemberDeclaration(MetaParser.ClassMemberDeclarationContext context)
+        public override object VisitClassMemberDeclaration(MetaModelParser.ClassMemberDeclarationContext context)
         {
             return base.VisitClassMemberDeclaration(context);
         }
         
-        public override object VisitFieldDeclaration(MetaParser.FieldDeclarationContext context)
+        public override object VisitFieldDeclaration(MetaModelParser.FieldDeclarationContext context)
         {
             List<object> elemAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context.identifier(), out elemAnnotList))
@@ -288,7 +288,7 @@ namespace MetaDslx.Compiler
             return base.VisitFieldDeclaration(context);
         }
         
-        public override object VisitConstDeclaration(MetaParser.ConstDeclarationContext context)
+        public override object VisitConstDeclaration(MetaModelParser.ConstDeclarationContext context)
         {
             List<object> elemAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context.identifier(), out elemAnnotList))
@@ -300,7 +300,7 @@ namespace MetaDslx.Compiler
             return base.VisitConstDeclaration(context);
         }
         
-        public override object VisitTypeReference(MetaParser.TypeReferenceContext context)
+        public override object VisitTypeReference(MetaModelParser.TypeReferenceContext context)
         {
             List<object> treeAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
@@ -312,37 +312,37 @@ namespace MetaDslx.Compiler
             return base.VisitTypeReference(context);
         }
         
-        public override object VisitSimpleType(MetaParser.SimpleTypeContext context)
+        public override object VisitSimpleType(MetaModelParser.SimpleTypeContext context)
         {
             return base.VisitSimpleType(context);
         }
         
-        public override object VisitNullableType(MetaParser.NullableTypeContext context)
+        public override object VisitNullableType(MetaModelParser.NullableTypeContext context)
         {
             return base.VisitNullableType(context);
         }
         
-        public override object VisitObjectType(MetaParser.ObjectTypeContext context)
+        public override object VisitObjectType(MetaModelParser.ObjectTypeContext context)
         {
             return base.VisitObjectType(context);
         }
         
-        public override object VisitPrimitiveType(MetaParser.PrimitiveTypeContext context)
+        public override object VisitPrimitiveType(MetaModelParser.PrimitiveTypeContext context)
         {
             return base.VisitPrimitiveType(context);
         }
         
-        public override object VisitCollectionType(MetaParser.CollectionTypeContext context)
+        public override object VisitCollectionType(MetaModelParser.CollectionTypeContext context)
         {
             return base.VisitCollectionType(context);
         }
         
-        public override object VisitVoidType(MetaParser.VoidTypeContext context)
+        public override object VisitVoidType(MetaModelParser.VoidTypeContext context)
         {
             return base.VisitVoidType(context);
         }
         
-        public override object VisitReturnType(MetaParser.ReturnTypeContext context)
+        public override object VisitReturnType(MetaModelParser.ReturnTypeContext context)
         {
             List<object> treeAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
@@ -354,7 +354,7 @@ namespace MetaDslx.Compiler
             return base.VisitReturnType(context);
         }
         
-        public override object VisitOperationDeclaration(MetaParser.OperationDeclarationContext context)
+        public override object VisitOperationDeclaration(MetaModelParser.OperationDeclarationContext context)
         {
             List<object> treeAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
@@ -373,12 +373,12 @@ namespace MetaDslx.Compiler
             return base.VisitOperationDeclaration(context);
         }
         
-        public override object VisitParameterList(MetaParser.ParameterListContext context)
+        public override object VisitParameterList(MetaModelParser.ParameterListContext context)
         {
             return base.VisitParameterList(context);
         }
         
-        public override object VisitParameter(MetaParser.ParameterContext context)
+        public override object VisitParameter(MetaModelParser.ParameterContext context)
         {
             List<object> elemAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context.identifier(), out elemAnnotList))
@@ -390,12 +390,12 @@ namespace MetaDslx.Compiler
             return base.VisitParameter(context);
         }
         
-        public override object VisitExpression(MetaParser.ExpressionContext context)
+        public override object VisitExpression(MetaModelParser.ExpressionContext context)
         {
             return base.VisitExpression(context);
         }
         
-        public override object VisitAssociationDeclaration(MetaParser.AssociationDeclarationContext context)
+        public override object VisitAssociationDeclaration(MetaModelParser.AssociationDeclarationContext context)
         {
             List<object> elemAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context.source, out elemAnnotList))
@@ -413,7 +413,7 @@ namespace MetaDslx.Compiler
             return base.VisitAssociationDeclaration(context);
         }
         
-        public override object VisitIdentifier(MetaParser.IdentifierContext context)
+        public override object VisitIdentifier(MetaModelParser.IdentifierContext context)
         {
             List<object> treeAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
@@ -425,72 +425,72 @@ namespace MetaDslx.Compiler
             return base.VisitIdentifier(context);
         }
         
-        public override object VisitLiteral(MetaParser.LiteralContext context)
+        public override object VisitLiteral(MetaModelParser.LiteralContext context)
         {
             return base.VisitLiteral(context);
         }
         
-        public override object VisitNullLiteral(MetaParser.NullLiteralContext context)
+        public override object VisitNullLiteral(MetaModelParser.NullLiteralContext context)
         {
             return base.VisitNullLiteral(context);
         }
         
-        public override object VisitBooleanLiteral(MetaParser.BooleanLiteralContext context)
+        public override object VisitBooleanLiteral(MetaModelParser.BooleanLiteralContext context)
         {
             return base.VisitBooleanLiteral(context);
         }
         
-        public override object VisitNumberLiteral(MetaParser.NumberLiteralContext context)
+        public override object VisitNumberLiteral(MetaModelParser.NumberLiteralContext context)
         {
             return base.VisitNumberLiteral(context);
         }
         
-        public override object VisitIntegerLiteral(MetaParser.IntegerLiteralContext context)
+        public override object VisitIntegerLiteral(MetaModelParser.IntegerLiteralContext context)
         {
             return base.VisitIntegerLiteral(context);
         }
         
-        public override object VisitDecimalLiteral(MetaParser.DecimalLiteralContext context)
+        public override object VisitDecimalLiteral(MetaModelParser.DecimalLiteralContext context)
         {
             return base.VisitDecimalLiteral(context);
         }
         
-        public override object VisitScientificLiteral(MetaParser.ScientificLiteralContext context)
+        public override object VisitScientificLiteral(MetaModelParser.ScientificLiteralContext context)
         {
             return base.VisitScientificLiteral(context);
         }
         
-        public override object VisitDateOrTimeLiteral(MetaParser.DateOrTimeLiteralContext context)
+        public override object VisitDateOrTimeLiteral(MetaModelParser.DateOrTimeLiteralContext context)
         {
             return base.VisitDateOrTimeLiteral(context);
         }
         
-        public override object VisitDateTimeOffsetLiteral(MetaParser.DateTimeOffsetLiteralContext context)
+        public override object VisitDateTimeOffsetLiteral(MetaModelParser.DateTimeOffsetLiteralContext context)
         {
             return base.VisitDateTimeOffsetLiteral(context);
         }
         
-        public override object VisitDateTimeLiteral(MetaParser.DateTimeLiteralContext context)
+        public override object VisitDateTimeLiteral(MetaModelParser.DateTimeLiteralContext context)
         {
             return base.VisitDateTimeLiteral(context);
         }
         
-        public override object VisitDateLiteral(MetaParser.DateLiteralContext context)
+        public override object VisitDateLiteral(MetaModelParser.DateLiteralContext context)
         {
             return base.VisitDateLiteral(context);
         }
         
-        public override object VisitTimeLiteral(MetaParser.TimeLiteralContext context)
+        public override object VisitTimeLiteral(MetaModelParser.TimeLiteralContext context)
         {
             return base.VisitTimeLiteral(context);
         }
         
-        public override object VisitStringLiteral(MetaParser.StringLiteralContext context)
+        public override object VisitStringLiteral(MetaModelParser.StringLiteralContext context)
         {
             return base.VisitStringLiteral(context);
         }
         
-        public override object VisitGuidLiteral(MetaParser.GuidLiteralContext context)
+        public override object VisitGuidLiteral(MetaModelParser.GuidLiteralContext context)
         {
             return base.VisitGuidLiteral(context);
         }

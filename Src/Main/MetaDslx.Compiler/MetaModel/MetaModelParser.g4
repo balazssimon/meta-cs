@@ -1,41 +1,41 @@
-﻿parser grammar MetaParser;
+parser grammar MetaModelParser;
 
 options
 {
-    tokenVocab = MetaLexer; 
+    tokenVocab = MetaModelLexer; 
 }
 
 main: namespaceDeclaration*;
 
-@QualifiedName
+
 qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
-@Scope 
-namespaceDeclaration: KNamespace @NameDef(kind=NameKind.Namespace) qualifiedName TEquals stringLiteral TOpenBrace metamodelDeclaration* TCloseBrace;
+ 
+namespaceDeclaration: KNamespace  qualifiedName TEquals stringLiteral TOpenBrace metamodelDeclaration* TCloseBrace;
 
-@TypeDef
-metamodelDeclaration: KMetamodel @NameDef(kind=NameKind.Metamodel) identifier TOpenBrace declaration* TCloseBrace;
+
+metamodelDeclaration: KMetamodel  identifier TOpenBrace declaration* TCloseBrace;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
-@TypeDef
-enumDeclaration : KEnum @NameDef(kind=NameKind.Enum) identifier TOpenBrace enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
-enumValues :  @NameDef(kind=NameKind.EnumValue) identifierList;
+
+enumDeclaration : KEnum  identifier TOpenBrace enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
+enumValues :   identifierList;
 enumMemberDeclaration : operationDeclaration;
 
-@TypeDef
-classDeclaration : KAbstract? KClass @NameDef(kind=NameKind.Class) identifier (TColon classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+
+classDeclaration : KAbstract? KClass  identifier (TColon classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor : @TypeUse(kind=NameKind.Class) qualifiedName;
+classAncestor :  qualifiedName;
 classMemberDeclaration : fieldDeclaration | operationDeclaration;
 
-fieldDeclaration : (KContainment | KReadonly | KLazy | KDerived)? typeReference @NameDef(kind=NameKind.Property) identifier TSemicolon;
+fieldDeclaration : (KContainment | KReadonly | KLazy | KDerived)? typeReference  identifier TSemicolon;
 
-constDeclaration : KConst typeReference @NameDef(kind=NameKind.Const) identifier (TEquals expression)? TSemicolon;
+constDeclaration : KConst typeReference  identifier (TEquals expression)? TSemicolon;
 
-@TypeUse
+
 typeReference : collectionType | simpleType;
 simpleType : objectType | nullableType | qualifiedName;
 nullableType : primitiveType TQuestion?;
@@ -43,23 +43,23 @@ objectType : KObject | KString;
 primitiveType : KInt | KLong | KFloat | KDouble | KByte | KBool;
 collectionType : (KSet | KList) TLessThan simpleType TGreaterThan;
 voidType : KVoid;
-@TypeUse
+
 returnType : typeReference | voidType;
 
-@Scope
-operationDeclaration : KStatic? returnType @NameDef(kind=NameKind.Operation) identifier TOpenBracket parameterList? TCloseBracket TSemicolon;
+
+operationDeclaration : KStatic? returnType  identifier TOpenBracket parameterList? TCloseBracket TSemicolon;
 parameterList : parameter (TComma parameter)*;
-parameter : typeReference @NameDef(kind=NameKind.Parameter) identifier (TEquals expression)?;
+parameter : typeReference  identifier (TEquals expression)?;
 
 expression : literal | qualifiedName;
 
-associationDeclaration : KAssociation @NameUse(kind=NameKind.Property) source=qualifiedName KWith @NameUse(kind=NameKind.Property) target=qualifiedName TSemicolon;
+associationDeclaration : KAssociation  source=qualifiedName KWith  target=qualifiedName TSemicolon;
 
 
 // Additional rules for lexer:
 
 // Identifiers
-@Identifier
+
 identifier : IdentifierNormal /*| IdentifierVerbatim*/;
 //identifier : IdentifierGeneral | IdentifierVerbatim;
 
@@ -93,4 +93,5 @@ stringLiteral : RegularStringLiteral /*| DoubleQuoteVerbatimStringLiteral | Sing
 
 // Guid literal
 guidLiteral : GuidLiteral;
+
 
