@@ -1,4 +1,4 @@
-﻿lexer grammar MetaLexer;
+lexer grammar MetaLexer;
 
 // Keywords
 
@@ -174,3 +174,4 @@ mode VERBATIM_IDENTIFIER;
 IdentifierVerbatimText : IdentifierVerbatimCharacter -> more;
 IdentifierVerbatim : ']' -> mode(DEFAULT_MODE);
 */
+

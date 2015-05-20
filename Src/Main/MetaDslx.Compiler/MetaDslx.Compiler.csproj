@@ -11,6 +11,7 @@
     <AssemblyName>MetaDslx.Compiler</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>39dbf24a</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Antlr4.Runtime.net45">
-      <HintPath>..\..\packages\Antlr4.Runtime.4.3.0\lib\net45\Antlr4.Runtime.net45.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,11 +38,45 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnnotatedAntlr4Compiler.cs" />
+    <Compile Include="AnnotatedAntlr4Lexer.cs" />
+    <Compile Include="AnnotatedAntlr4LexerAnnotator.cs" />
+    <Compile Include="AnnotatedAntlr4Parser.cs" />
+    <Compile Include="AnnotatedAntlr4ParserBaseListener.cs" />
+    <Compile Include="AnnotatedAntlr4ParserBaseVisitor.cs" />
+    <Compile Include="AnnotatedAntlr4ParserListener.cs" />
+    <Compile Include="AnnotatedAntlr4ParserVisitor.cs" />
+    <Compile Include="MetaCompiler.cs" />
+    <Compile Include="MetaCompilerDiagnostics.cs" />
+    <Compile Include="MetaLexer.cs" />
+    <Compile Include="MetaLexerAnnotator.cs" />
+    <Compile Include="MetaParser.cs" />
+    <Compile Include="MetaParserAnnotator.cs" />
+    <Compile Include="MetaParserBaseListener.cs" />
+    <Compile Include="MetaParserBaseVisitor.cs" />
+    <Compile Include="MetaParserListener.cs" />
+    <Compile Include="MetaParserVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Antlr4 Include="AnnotatedAntlr4Lexer.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <Listener>True</Listener>
+      <Visitor>True</Visitor>
+      <TargetLanguage>CSharp</TargetLanguage>
+    </Antlr4>
+    <Antlr4 Include="AnnotatedAntlr4Parser.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <Listener>True</Listener>
+      <Visitor>True</Visitor>
+      <TargetLanguage>CSharp</TargetLanguage>
+    </Antlr4>
+    <None Include="AnnotatedAntlr4Lexer.ag4" />
     <None Include="MetaLexer.ag4" />
     <Antlr4 Include="MetaLexer.g4">
       <Generator>MSBuild:Compile</Generator>
@@ -61,7 +93,6 @@
       <Visitor>True</Visitor>
       <TargetLanguage>CSharp</TargetLanguage>
     </Antlr4>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">

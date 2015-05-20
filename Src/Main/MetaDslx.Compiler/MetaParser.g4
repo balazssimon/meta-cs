@@ -1,8 +1,8 @@
-﻿parser grammar MetaParser;
+parser grammar MetaParser;
 
 options
 {
-    tokenVocab = MofLexer; 
+    tokenVocab = MetaLexer; 
 }
 
 main: namespaceDeclaration*;
@@ -93,4 +93,5 @@ stringLiteral : RegularStringLiteral /*| DoubleQuoteVerbatimStringLiteral | Sing
 
 // Guid literal
 guidLiteral : GuidLiteral;
+
 
