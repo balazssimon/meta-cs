@@ -126,4 +126,173 @@ namespace MetaDslx.Core.Test
             get { return (ICollection<User>)this.MGetValue(Role.UsersProperty); }
         }
     }
+
+    class Person : ModelObject
+    {
+        public Person()
+        {
+            this.MSetValue(Person.PetsProperty, new ModelSet<Pet>(this, Person.PetsProperty));
+        }
+
+        [OppositeAttribute(typeof(Pet), "Owner")]
+        public static readonly ModelProperty PetsProperty =
+            ModelProperty.Register("Pets", typeof(ModelSet<Pet>), typeof(Person));
+
+        public ICollection<Pet> Pets
+        {
+            get { return (ICollection<Pet>)this.MGetValue(Person.PetsProperty); }
+        }
+    }
+
+    class Student : Person
+    {
+        public Student()
+        {
+            this.MSetValue(Student.DogsProperty, new ModelSet<Dog>(this, Student.DogsProperty));
+        }
+
+        [OppositeAttribute(typeof(Dog), "Friend")]
+        public static readonly ModelProperty DogsProperty =
+            ModelProperty.Register("Dogs", typeof(ModelSet<Dog>), typeof(Student));
+
+        public ICollection<Dog> Dogs
+        {
+            get { return (ICollection<Dog>)this.MGetValue(Student.DogsProperty); }
+        }
+    }
+
+    class Pet : ModelObject
+    {
+        public Pet()
+        {
+        }
+
+        [OppositeAttribute(typeof(Person), "Pets")]
+        public static readonly ModelProperty OwnerProperty =
+            ModelProperty.Register("Owner", typeof(Person), typeof(Pet));
+
+        public Person Owner
+        {
+            get { return (Person)this.MGetValue(Pet.OwnerProperty); }
+            set { this.MSetValue(Pet.OwnerProperty, value); }
+        }
+    }
+
+    class Dog : Pet
+    {
+        public Dog()
+        {
+        }
+
+        [OppositeAttribute(typeof(Student), "Dogs")]
+        public static readonly ModelProperty FriendProperty =
+            ModelProperty.Register("Friend", typeof(Student), typeof(Dog));
+
+        public Student Friend
+        {
+            get { return (Student)this.MGetValue(Dog.FriendProperty); }
+            set { this.MSetValue(Dog.FriendProperty, value); }
+        }
+    }
+
+    interface IPersonX
+    {
+        ICollection<IPetX> Pets { get; }
+    }
+
+    interface IStudentX : IPersonX
+    {
+        ICollection<IDogX> Dogs { get; }
+    }
+
+    interface IPetX
+    {
+        IPersonX Owner { get; set; }
+    }
+
+    interface IDogX : IPetX
+    {
+        IStudentX Friend { get; set; }
+    }
+
+    class PersonX : ModelObject, IPersonX
+    {
+        public PersonX()
+        {
+            this.MSetValue(PersonX.PetsProperty, new ModelSet<IPetX>(this, PersonX.PetsProperty));
+        }
+
+        [OppositeAttribute(typeof(PetX), "Owner")]
+        public static readonly ModelProperty PetsProperty =
+            ModelProperty.Register("Pets", typeof(ICollection<IPetX>), typeof(PersonX));
+
+        public ICollection<IPetX> Pets
+        {
+            get { return (ICollection<IPetX>)this.MGetValue(PersonX.PetsProperty); }
+        }
+    }
+
+    class StudentX : ModelObject, IStudentX
+    {
+        public StudentX()
+        {
+            this.MSetValue(StudentX.DogsProperty, new ModelSet<IDogX>(this, StudentX.DogsProperty));
+            this.MSetValue(PersonX.PetsProperty, new ModelSet<IPetX>(this, PersonX.PetsProperty));
+        }
+
+        [OppositeAttribute(typeof(DogX), "Friend")]
+        public static readonly ModelProperty DogsProperty =
+            ModelProperty.Register("Dogs", typeof(ICollection<IDogX>), typeof(StudentX));
+
+        public ICollection<IDogX> Dogs
+        {
+            get { return (ICollection<IDogX>)this.MGetValue(StudentX.DogsProperty); }
+        }
+
+        public ICollection<IPetX> Pets
+        {
+            get { return (ICollection<IPetX>)this.MGetValue(PersonX.PetsProperty); }
+        }
+    }
+
+    class PetX : ModelObject, IPetX
+    {
+        public PetX()
+        {
+        }
+
+        [OppositeAttribute(typeof(PersonX), "Pets")]
+        public static readonly ModelProperty OwnerProperty =
+            ModelProperty.Register("Owner", typeof(IPersonX), typeof(PetX));
+
+        public IPersonX Owner
+        {
+            get { return (IPersonX)this.MGetValue(PetX.OwnerProperty); }
+            set { this.MSetValue(PetX.OwnerProperty, value); }
+        }
+    }
+
+    class DogX : ModelObject, IDogX
+    {
+        public DogX()
+        {
+        }
+
+        [OppositeAttribute(typeof(StudentX), "Dogs")]
+        public static readonly ModelProperty FriendProperty =
+            ModelProperty.Register("Friend", typeof(IStudentX), typeof(DogX));
+
+        public IStudentX Friend
+        {
+            get { return (IStudentX)this.MGetValue(DogX.FriendProperty); }
+            set { this.MSetValue(DogX.FriendProperty, value); }
+        }
+
+        public IPersonX Owner
+        {
+            get { return (IPersonX)this.MGetValue(PetX.OwnerProperty); }
+            set { this.MSetValue(PetX.OwnerProperty, value); }
+        }
+    }
+
 }

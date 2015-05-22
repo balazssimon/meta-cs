@@ -116,7 +116,17 @@ namespace MetaDslx.Compiler
             if (token != null)
             {
                 List<object> annotList = null;
-                if (this.tokenAnnotations.TryGetValue(token.Type, out annotList))
+                List<object> staticAnnotList = null;
+                if (this.tokenAnnotations.TryGetValue(token.Type, out staticAnnotList))
+                {
+                    annotList = new List<object>(staticAnnotList);
+                }
+                switch (token.Type)
+                {
+                    default:
+                        break;
+                }
+                if (annotList != null)
                 {
                     List<object> treeAnnotList = null;
                     if (!treeAnnotations.TryGetValue(node, out treeAnnotList))

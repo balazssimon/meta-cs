@@ -27,7 +27,7 @@ namespace MetaDslx.Core
             object oldValue;
             if (this.values.TryGetValue(property, out oldValue))
             {
-                if (property.IsCollection)
+                if (oldValue is ModelCollection)
                 {
                     throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
                 }
@@ -49,7 +49,7 @@ namespace MetaDslx.Core
             if (this.values.TryGetValue(property, out oldValue))
             {
                 if (newValue == oldValue) return;
-                if (property.IsCollection)
+                if (oldValue is ModelCollection || newValue is ModelCollection)
                 {
                     throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
                 }
@@ -58,7 +58,7 @@ namespace MetaDslx.Core
                     throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a readonly property '" + property.ToString() + "'.");
                 }
             }
-            if (property.IsCollection)
+            if (newValue is ModelCollection)
             {
                 this.values[property] = newValue;
             }
@@ -82,7 +82,7 @@ namespace MetaDslx.Core
                 {
                     value = initializer();
                     this.values[property] = value;
-                    if (!property.IsCollection)
+                    if (!(value is ModelCollection))
                     {
                         this.MOnAddValue(property, value, true);
                     }
@@ -99,10 +99,7 @@ namespace MetaDslx.Core
             {
                 result.Add(prop);
             }
-            foreach (ModelProperty prop in ModelProperty.GetPropertiesForType(this.GetType()))
-            {
-                result.Add(prop);
-            }
+            result.UnionWith(ModelProperty.GetAllPropertiesForType(this.GetType()));
             return result;
         }
 
@@ -148,27 +145,34 @@ namespace MetaDslx.Core
             set;
         }
 
+        public void MAdd(ModelProperty property, object value)
+        {
+            this.MOnAddValue(property, value, true);
+        }
+
+        public void MRemove(ModelProperty property, object value)
+        {
+            this.MOnRemoveValue(property, value, true);
+        }
+
         internal void MOnAddValue(ModelProperty property, object value, bool firstCall)
         {
             bool added = false;
-            if (property.IsCollection)
+            object oldValue = this.MGetValue(property);
+            ModelCollection collection = oldValue as ModelCollection;
+            if (collection != null)
             {
-                ModelCollection collection = this.MGetValue(property) as ModelCollection;
-                if (collection != null)
+                if (value != null && collection.MAdd(value))
                 {
-                    if (value != null && collection.MAdd(value))
-                    {
-                        added = true;
-                    }
-                    else if (value != null && firstCall)
-                    {
-                        added = true;
-                    }
+                    added = true;
+                }
+                else if (value != null && firstCall)
+                {
+                    added = true;
                 }
             }
             else
             {
-                object oldValue = this.MGetValue(property);
                 if (value != oldValue)
                 {
                     if (oldValue != null)
@@ -200,6 +204,10 @@ namespace MetaDslx.Core
                     {
                         oppositeObject.MOnAddValue(oppositeProperty, this, false);
                     }
+                    else
+                    {
+                        throw new ModelException("Error adding value of " + this.GetType().Name + "." + property.Name + ": the value of the opposite property " + oppositeProperty + " must be a descendant of " + typeof(ModelObject) + ".");
+                    }
                 }
             }
         }
@@ -207,24 +215,21 @@ namespace MetaDslx.Core
         internal void MOnRemoveValue(ModelProperty property, object value, bool firstCall)
         {
             bool removed = false;
-            if (property.IsCollection)
+            object oldValue = this.MGetValue(property);
+            ModelCollection collection = oldValue as ModelCollection;
+            if (collection != null)
             {
-                ModelCollection collection = this.MGetValue(property) as ModelCollection;
-                if (collection != null)
+                if (value != null && collection.MRemove(value))
                 {
-                    if (value != null && collection.MRemove(value))
-                    {
-                        removed = true;
-                    }
-                    else if (value != null && firstCall)
-                    {
-                        removed = true;
-                    }
+                    removed = true;
+                }
+                else if (value != null && firstCall)
+                {
+                    removed = true;
                 }
             }
             else
             {
-                object oldValue = this.MGetValue(property);
                 if (value == oldValue) 
                 {
                     this.values[property] = null;
@@ -248,13 +253,17 @@ namespace MetaDslx.Core
                     {
                         oppositeObject.MOnRemoveValue(oppositeProperty, this, false);
                     }
+                    else
+                    {
+                        throw new ModelException("Error removing value of " + this.GetType().Name + "." + property.Name + ": the value of the opposite property "+oppositeProperty+" must be a descendant of " + typeof(ModelObject) + ".");
+                    }
                 }
             }
         }
 
         public override string ToString()
         {
-            return "[" + this.MetaID + "]";
+            return this.GetType() + "[" + this.MetaID + "]";
         }
 
         private ModelObject parent;

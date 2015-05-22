@@ -6,6 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+ * Reserved annotations:
+ *  @DynamicAnnotations on grammar
+ *  @Map
+ */
+
 namespace MetaDslx.Compiler
 {
     public class Antlr4SyntaxKind
@@ -186,13 +192,16 @@ namespace MetaDslx.Compiler
             currentMode.Name = "DEFAULT_MODE";
             currentGrammar.Modes.Add(currentMode);
             this.CollectAnnotations(context.annotation());
+
+            this.dynamicAnnotations.Add("Map");
             foreach (var annot in currentGrammar.Annotations)
             {
                 if (annot.Type.Name == "DynamicAnnotations")
-                { 
+                {
                     // TODO
                 }
             }
+
             return base.VisitGrammarSpec(context);
         }
 
@@ -978,6 +987,9 @@ namespace MetaDslx.Compiler
                 {
                     if (elem.Annotations.Count > 0)
                     {
+                        WriteLine("if (context.{0} != null)", elem.GetAccessorName());
+                        WriteLine("{");
+                        IncIndent();
                         WriteLine("if (!this.treeAnnotations.TryGetValue(context.{0}, out elemAnnotList))", elem.GetAccessorName());
                         WriteLine("{");
                         IncIndent();
@@ -995,9 +1007,11 @@ namespace MetaDslx.Compiler
                             {
                                 string tmp = this.GetTmpVariable();
                                 this.GenerateAnnotationCreation(annot, tmp, true);
-                                WriteLine("treeAnnotList.Add({0});", tmp);
+                                WriteLine("elemAnnotList.Add({0});", tmp);
                             }
                         }
+                        DecIndent();
+                        WriteLine("}");
                     }
                 }
             }

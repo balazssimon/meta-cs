@@ -142,6 +142,18 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitEnumValues([NotNull] MetaModelParser.EnumValuesContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.enumValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEnumValue([NotNull] MetaModelParser.EnumValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.enumValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEnumValue([NotNull] MetaModelParser.EnumValueContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.enumMemberDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

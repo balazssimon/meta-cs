@@ -17,7 +17,7 @@ namespace MetaDslx.Core
             this.OwnerProperty = ownerProperty;
         }
 
-        internal abstract bool MAdd(object value);
-        internal abstract bool MRemove(object value);
+        public abstract bool MAdd(object value);
+        public abstract bool MRemove(object value);
     }
 }

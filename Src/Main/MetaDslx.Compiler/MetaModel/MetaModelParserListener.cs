@@ -120,6 +120,16 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitEnumValues([NotNull] MetaModelParser.EnumValuesContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.enumValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEnumValue([NotNull] MetaModelParser.EnumValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.enumValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEnumValue([NotNull] MetaModelParser.EnumValueContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.enumMemberDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

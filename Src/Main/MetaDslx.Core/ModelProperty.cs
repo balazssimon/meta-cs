@@ -9,10 +9,12 @@ namespace MetaDslx.Core
     public class ModelProperty
     {
         internal static Dictionary<Type, Dictionary<string, ModelProperty>> properties;
+        internal static Dictionary<Type, HashSet<Type>> ancestors;
 
         static ModelProperty()
         {
             ModelProperty.properties = new Dictionary<Type, Dictionary<string, ModelProperty>>();
+            ModelProperty.ancestors = new Dictionary<Type, HashSet<Type>>();
         }
 
         private bool initialized = false;
@@ -78,7 +80,12 @@ namespace MetaDslx.Core
                     OppositeAttribute oppositeAttribute = attribute as OppositeAttribute;
                     if (oppositeAttribute != null)
                     {
-                        if (typeof(ModelObject).IsAssignableFrom(this.Type) || typeof(ModelCollection).IsAssignableFrom(this.Type))
+                        ModelProperty modelProperty = ModelProperty.Find(oppositeAttribute.DeclaringType, oppositeAttribute.PropertyName);
+                        if (modelProperty != null)
+                        {
+                            this.oppositeProperties.Add(modelProperty);
+                        }
+                        /*if (typeof(ModelObject).IsAssignableFrom(this.Type) || typeof(ModelCollection).IsAssignableFrom(this.Type))
                         {
                             ModelProperty modelProperty = ModelProperty.Find(oppositeAttribute.DeclaringType, oppositeAttribute.PropertyName);
                             if (modelProperty != null)
@@ -93,7 +100,7 @@ namespace MetaDslx.Core
                         else
                         {
                             throw new ModelException("Error in " + this.GetType().Name + " '" + this.ToString() + "'. A property with an opposite property must have a type that is a descendant of either " + typeof(ModelObject).Name + " or " + typeof(ModelCollection).Name + ".");
-                        }
+                        }*/
                     }
                 }
                 foreach (var attribute in info.GetCustomAttributes(typeof(ReadonlyAttribute), true))
@@ -103,6 +110,9 @@ namespace MetaDslx.Core
                     {
                         this.isReadonly = true;
                     }
+                }
+                foreach (var attribute in info.GetCustomAttributes(typeof(ContainmentAttribute), true))
+                {
                     ContainmentAttribute containmentAttribute = attribute as ContainmentAttribute;
                     if (containmentAttribute != null)
                     {
@@ -112,12 +122,16 @@ namespace MetaDslx.Core
             }
         }
 
-        public bool IsCollection
+        public static void RegisterAncestor(Type type, Type ancestorType)
         {
-            get
+            if (type == null || ancestorType == null) return;
+            HashSet<Type> ancestorsSet = null;
+            if (!ModelProperty.ancestors.TryGetValue(type, out ancestorsSet))
             {
-                return typeof(ModelCollection).IsAssignableFrom(this.Type);
+                ancestorsSet = new HashSet<Type>();
+                ModelProperty.ancestors.Add(type, ancestorsSet);
             }
+            ancestorsSet.Add(ancestorType);
         }
 
         public static ModelProperty Register(string name, Type type, Type owningType)
@@ -180,9 +194,35 @@ namespace MetaDslx.Core
             return new ModelProperty[0];
         }
 
+        public static IEnumerable<ModelProperty> GetAllPropertiesForType(Type declaringType)
+        {
+            List<ModelProperty> result = new List<ModelProperty>();
+            Dictionary<string, ModelProperty> propertyList;
+            if (ModelProperty.properties.TryGetValue(declaringType, out propertyList))
+            {
+                result.AddRange(propertyList.Values);
+            }
+            HashSet<Type> ancestorSet;
+            if (ModelProperty.ancestors.TryGetValue(declaringType, out ancestorSet))
+            {
+                foreach (var ancestor in ancestorSet)
+                {
+                    result.AddRange(ModelProperty.GetAllPropertiesForType(ancestor));
+                }
+            }
+            return result;
+        }
+
         public override string ToString()
         {
-            return this.OwningType.FullName + "." + this.Name + " (" + this.DeclaringType.FullName + "." + this.DeclaredName + ")";
+            if (this.DeclaringType != this.OwningType)
+            {
+                return this.OwningType.FullName + "." + this.Name + " (" + this.DeclaringType.FullName + "." + this.DeclaredName + ")";
+            }
+            else
+            {
+                return this.OwningType.FullName + "." + this.Name;
+            }
         }
 
        

@@ -12,48 +12,66 @@ qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
+
  
-namespaceDeclaration: KNamespace  qualifiedName TEquals stringLiteral TOpenBrace metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: KNamespace   qualifiedName TEquals  stringLiteral TOpenBrace metamodelDeclaration* TCloseBrace;
 
 
-metamodelDeclaration: KMetamodel  identifier TOpenBrace declaration* TCloseBrace;
+
+
+metamodelDeclaration: KMetamodel   identifier TOpenBrace declaration* TCloseBrace;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
 
-enumDeclaration : KEnum  identifier TOpenBrace enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
-enumValues :   identifierList;
+
+
+enumDeclaration : KEnum   identifier TOpenBrace enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
+enumValues : enumValue (TComma enumValue)*;
+enumValue :   identifier;
 enumMemberDeclaration : operationDeclaration;
 
 
-classDeclaration : KAbstract? KClass  identifier (TColon classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+
+
+classDeclaration :  KAbstract? KClass   identifier (TColon classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
+
 classAncestor :  qualifiedName;
 classMemberDeclaration : fieldDeclaration | operationDeclaration;
 
-fieldDeclaration : (KContainment | KReadonly | KLazy | KDerived)? typeReference  identifier TSemicolon;
+
+
+fieldDeclaration : (KContainment | KReadonly | KLazy | KDerived)?  typeReference   identifier TSemicolon;
 
 constDeclaration : KConst typeReference  identifier (TEquals expression)? TSemicolon;
 
 
 typeReference : collectionType | simpleType;
 simpleType : objectType | nullableType | qualifiedName;
+
 nullableType : primitiveType TQuestion?;
 objectType : KObject | KString;
 primitiveType : KInt | KLong | KFloat | KDouble | KByte | KBool;
+
 collectionType : (KSet | KList) TLessThan simpleType TGreaterThan;
 voidType : KVoid;
 
 returnType : typeReference | voidType;
 
 
-operationDeclaration : KStatic? returnType  identifier TOpenBracket parameterList? TCloseBracket TSemicolon;
+
+
+
+operationDeclaration : KStatic?  returnType   identifier TOpenBracket parameterList? TCloseBracket TSemicolon;
 parameterList : parameter (TComma parameter)*;
-parameter : typeReference  identifier (TEquals expression)?;
+
+
+parameter :  typeReference   identifier (TEquals expression)?;
 
 expression : literal | qualifiedName;
 
-associationDeclaration : KAssociation  source=qualifiedName KWith  target=qualifiedName TSemicolon;
+associationDeclaration : KAssociation   source=qualifiedName KWith   target=qualifiedName TSemicolon;
 
 
 // Additional rules for lexer:

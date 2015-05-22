@@ -32,7 +32,7 @@ namespace MetaDslx.Core
     
     internal class MetaNamespaceImpl : ModelObject, MetaNamespace
     {
-        internal MetaNamespaceImpl()
+        public MetaNamespaceImpl()
         {
             this.MSetValue(MetaNamespaceImpl.ModelsProperty, new ModelSet<MetaModel>(this, MetaNamespaceImpl.ModelsProperty));
             MetaImplementationProvider.Implementation.MetaNamespace_MetaNamespace(this);
@@ -74,7 +74,7 @@ namespace MetaDslx.Core
     
     internal class MetaModelImpl : ModelObject, MetaModel
     {
-        internal MetaModelImpl()
+        public MetaModelImpl()
         {
             this.MSetValue(MetaModelImpl.TypesProperty, new ModelSet<MetaType>(this, MetaModelImpl.TypesProperty));
             MetaImplementationProvider.Implementation.MetaModel_MetaModel(this);
@@ -117,9 +117,14 @@ namespace MetaDslx.Core
     
     internal class MetaTypeImpl : ModelObject, MetaType
     {
-        internal MetaTypeImpl()
+        public MetaTypeImpl()
         {
             MetaImplementationProvider.Implementation.MetaType_MetaType(this);
+        }
+
+        internal static void TriggerStaticInitializer()
+        {
+
         }
         
         internal static readonly ModelProperty NameProperty =
@@ -157,7 +162,7 @@ namespace MetaDslx.Core
     
     internal class MetaCollectionTypeImpl : ModelObject, MetaCollectionType
     {
-        internal MetaCollectionTypeImpl()
+        public MetaCollectionTypeImpl()
         {
             MetaImplementationProvider.Implementation.MetaCollectionType_MetaCollectionType(this);
         }
@@ -204,7 +209,7 @@ namespace MetaDslx.Core
     
     internal class MetaNullableTypeImpl : ModelObject, MetaNullableType
     {
-        internal MetaNullableTypeImpl()
+        public MetaNullableTypeImpl()
         {
             MetaImplementationProvider.Implementation.MetaNullableType_MetaNullableType(this);
         }
@@ -242,7 +247,7 @@ namespace MetaDslx.Core
     
     internal class MetaPrimitiveTypeImpl : ModelObject, MetaPrimitiveType
     {
-        internal MetaPrimitiveTypeImpl()
+        public MetaPrimitiveTypeImpl()
         {
             MetaImplementationProvider.Implementation.MetaPrimitiveType_MetaPrimitiveType(this);
         }
@@ -274,7 +279,13 @@ namespace MetaDslx.Core
     
     internal class MetaEnumImpl : ModelObject, MetaEnum
     {
-        internal MetaEnumImpl()
+        static MetaEnumImpl()
+        {
+            MetaTypeImpl.TriggerStaticInitializer();
+            ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaTypeImpl));
+        }
+        
+        public MetaEnumImpl()
         {
             this.MSetValue(MetaEnumImpl.EnumLiteralsProperty, new List<string>());
             this.MSetValue(MetaEnumImpl.OperationsProperty, new ModelSet<MetaOperation>(this, MetaEnumImpl.OperationsProperty));
@@ -324,13 +335,19 @@ namespace MetaDslx.Core
     
     internal class MetaClassImpl : ModelObject, MetaClass
     {
-        internal MetaClassImpl()
+        static MetaClassImpl()
+        {
+            MetaTypeImpl.TriggerStaticInitializer();
+            ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaTypeImpl));
+        }
+
+        public MetaClassImpl()
         {
             this.MSetValue(MetaClassImpl.PropertiesProperty, new ModelSet<MetaProperty>(this, MetaClassImpl.PropertiesProperty));
             this.MSetValue(MetaClassImpl.OperationsProperty, new ModelSet<MetaOperation>(this, MetaClassImpl.OperationsProperty));
             MetaImplementationProvider.Implementation.MetaClass_MetaClass(this);
         }
-        
+
         [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaPropertyImpl), "Class")]
         internal static readonly ModelProperty PropertiesProperty =
@@ -379,7 +396,7 @@ namespace MetaDslx.Core
     
     internal class MetaOperationImpl : ModelObject, MetaOperation
     {
-        internal MetaOperationImpl()
+        public MetaOperationImpl()
         {
             this.MSetValue(MetaOperationImpl.ParametersProperty, new ModelList<MetaParameter>(this, MetaOperationImpl.ParametersProperty));
             MetaImplementationProvider.Implementation.MetaOperation_MetaOperation(this);
@@ -439,7 +456,7 @@ namespace MetaDslx.Core
     
     internal class MetaParameterImpl : ModelObject, MetaParameter
     {
-        internal MetaParameterImpl()
+        public MetaParameterImpl()
         {
             MetaImplementationProvider.Implementation.MetaParameter_MetaParameter(this);
         }
@@ -482,7 +499,7 @@ namespace MetaDslx.Core
     
     internal class MetaPropertyImpl : ModelObject, MetaProperty
     {
-        internal MetaPropertyImpl()
+        public MetaPropertyImpl()
         {
             this.MSetValue(MetaPropertyImpl.OppositesProperty, new ModelSet<MetaProperty>(this, MetaPropertyImpl.OppositesProperty));
             MetaImplementationProvider.Implementation.MetaProperty_MetaProperty(this);

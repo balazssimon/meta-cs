@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,10 @@ namespace MetaDslx.Compiler
         public NameKind? Kind { get; set; }
     }
 
+    public class TypeConstructorAnnotation
+    {
+    }
+
     public class ScopeAnnotation
     {
 
@@ -63,6 +68,21 @@ namespace MetaDslx.Compiler
 
     }
 
+    public class MapAnnotation
+    {
+        public string Type { get; set; }
+        public IRuleNode Object { get; set; }
+        public string Property { get; set; }
+
+        private object value;
+        public object Value 
+        {
+            get { return this.value; }
+            set { this.value = value; this.HasValue = true; }
+        }
+        public bool HasValue { get; set; }
+    }
+
     public class MetaModelCompiler : MetaCompiler
     {
         public MetaModelCompiler(string source, string fileName = null)
@@ -73,6 +93,7 @@ namespace MetaDslx.Compiler
         public override void Compile()
         {
             this.GlobalScope = new Scope(null, ScopeEntryKind.None, null);
+            this.ScopeEntries = new Dictionary<IParseTree, List<ScopeEntry>>();
             var voidType = new PrimitiveTypeDefinition("void", this.GlobalScope);
             var intType = new PrimitiveTypeDefinition("int", this.GlobalScope);
             var longType = new PrimitiveTypeDefinition("long", this.GlobalScope);
@@ -102,6 +123,12 @@ namespace MetaDslx.Compiler
             firstPass.Visit(this.ParseTree);
             MetaVisitorSecondPass secondPass = new MetaVisitorSecondPass(this);
             secondPass.Visit(this.ParseTree);
+
+            this.ModelObjects = new Dictionary<IParseTree, ModelObject>();
+            MetaVisitorThirdPass thirdPass = new MetaVisitorThirdPass(this);
+            thirdPass.Visit(this.ParseTree);
+            MetaVisitorFourthPass fourthPass = new MetaVisitorFourthPass(this);
+            fourthPass.Visit(this.ParseTree);
         }
 
         public Scope GlobalScope { get; private set; }
@@ -117,6 +144,9 @@ namespace MetaDslx.Compiler
         public Dictionary<int, List<object>> TokenAnnotations { get; private set; }
         public Dictionary<Type, List<object>> RuleAnnotations { get; private set; }
         public Dictionary<object, List<object>> TreeAnnotations { get; private set; }
+
+        public Dictionary<IParseTree, ModelObject> ModelObjects { get; private set; }
+        public Dictionary<IParseTree, List<ScopeEntry>> ScopeEntries { get; private set; }
     }
 
     public class PrimitiveTypeDefinition : TypeDefinition
@@ -175,7 +205,7 @@ namespace MetaDslx.Compiler
 
     internal class MetaCompilerVisitor : MetaModelParserBaseVisitor<object>
     {
-        private MetaModelCompiler compiler;
+        protected MetaModelCompiler compiler;
 
         public MetaCompilerVisitor(MetaModelCompiler compiler)
         {
@@ -312,7 +342,6 @@ namespace MetaDslx.Compiler
 
     internal class MetaVisitorFirstPass : MetaCompilerVisitor
     {
-        private MetaModelCompiler compiler;
         private Scope global;
         private Scope currentScope;
         private TypeDefinition currentType;
@@ -320,9 +349,24 @@ namespace MetaDslx.Compiler
         public MetaVisitorFirstPass(MetaModelCompiler compiler)
             : base(compiler)
         {
-            this.compiler = compiler;
             this.global = compiler.GlobalScope;
             this.currentScope = this.global;
+        }
+
+        private void AddScopeEntry(IParseTree node, ScopeEntry entry)
+        {
+            if (node == null) return;
+            if (entry == null) return;
+            List<ScopeEntry> entries = null;
+            if (!compiler.ScopeEntries.TryGetValue(node, out entries))
+            {
+                entries = new List<ScopeEntry>();
+                compiler.ScopeEntries.Add(node, entries);
+            }
+            if (!entries.Contains(entry))
+            {
+                entries.Add(entry);
+            }
         }
 
         public override object VisitChildren(IRuleNode node)
@@ -335,6 +379,7 @@ namespace MetaDslx.Compiler
                 {
                     NameReference nameRef = new NameReference(null, nua.Kind, currentScope);
                     nameRef.TreeNodes.Add(name);
+                    this.AddScopeEntry(name, nameRef);
                 }
             }
             TypeUseAnnotation tua = this.GetAnnotationFor<TypeUseAnnotation>(node);
@@ -342,6 +387,7 @@ namespace MetaDslx.Compiler
             {
                 TypeReference typeRef = new TypeReference(null, null, currentScope);
                 typeRef.TreeNodes.Add(node);
+                this.AddScopeEntry(node, typeRef);
             }
             ScopeAnnotation sa = this.GetAnnotationFor<ScopeAnnotation>(node);
             TypeDefAnnotation tda = this.GetAnnotationFor<TypeDefAnnotation>(node);
@@ -426,6 +472,7 @@ namespace MetaDslx.Compiler
                                             scope = new Scope(identifiers[i].GetText(), nameKind, scope);
                                         }
                                         scope.TreeNodes.Add(identifiers[i]);
+                                        this.AddScopeEntry(identifiers[i], scope);
                                     }
                                 }
                             }
@@ -437,6 +484,7 @@ namespace MetaDslx.Compiler
                     }
                 }
                 scope.TreeNodes.Add(node);
+                this.AddScopeEntry(node, scope);
                 currentScope = scope;
                 base.VisitChildren(node);
                 currentType = previousType;
@@ -473,7 +521,9 @@ namespace MetaDslx.Compiler
                                 {
                                     var nameDef = new NameDefinition(identifiers[i].GetText(), nda.Kind, currentScope);
                                     nameDef.TreeNodes.Add(identifiers[i]);
+                                    this.AddScopeEntry(identifiers[i], nameDef);
                                     nameDef.TreeNodes.Add(qnameNode);
+                                    this.AddScopeEntry(qnameNode, nameDef);
                                     if (tda == null)
                                     {
                                         var tras = this.GetTypeRefs(node.Parent);
@@ -507,14 +557,12 @@ namespace MetaDslx.Compiler
 
     internal class MetaVisitorSecondPass : MetaCompilerVisitor
     {
-        private MetaModelCompiler compiler;
         private Scope global;
         private Scope currentScope;
 
         public MetaVisitorSecondPass(MetaModelCompiler compiler)
             : base(compiler)
         {
-            this.compiler = compiler;
             this.global = compiler.GlobalScope;
             this.currentScope = this.global;
         }
@@ -768,4 +816,259 @@ namespace MetaDslx.Compiler
         }
     }
 
+    internal class MetaVisitorThirdPass : MetaCompilerVisitor
+    {
+        private ModelObject currentObject;
+        private Scope currentScope;
+
+        public MetaVisitorThirdPass(MetaModelCompiler compiler)
+            : base(compiler)
+        {
+            this.currentObject = null;
+            this.currentScope = compiler.GlobalScope;
+        }
+
+        public override object VisitChildren(IRuleNode node)
+        {
+            ModelObject prevObject = this.currentObject;
+            List<ScopeEntry> entries = null;
+            this.compiler.ScopeEntries.TryGetValue(node, out entries);
+            foreach (var ma in this.GetAnnotationsFor<MapAnnotation>(node))
+            {
+                if (ma.Type != null && ma.Property == null)
+                {
+                    if (entries != null)
+                    {
+                        ModelObject obj = MetaFactory.Instance.Create(ma.Type);
+                        this.compiler.ModelObjects.Add(node, obj);
+                        this.currentObject = obj;
+                        foreach (var entry in entries)
+                        {
+                            entry.ModelObject = obj;
+                        }
+                    }
+                    else
+                    {
+                        ModelObject obj = null;
+                        var nameDefNodes = this.GetNameDefs(node);
+                        foreach (var nameDef in nameDefNodes)
+                        {
+                            if (this.compiler.ScopeEntries.TryGetValue(nameDef, out entries))
+                            {
+                                obj = MetaFactory.Instance.Create(ma.Type);
+                                this.compiler.ModelObjects.Add(nameDef, obj);
+                                this.currentObject = obj;
+                                foreach (var entry in entries)
+                                {
+                                    entry.ModelObject = obj;
+                                }
+                            }
+                        }
+                        if (obj != null)
+                        {
+                            this.compiler.ModelObjects.Add(node, obj);
+                        }
+                    }
+                }
+            }
+            return base.VisitChildren(node);
+        }
+    }
+
+    internal class MetaVisitorFourthPass : MetaCompilerVisitor
+    {
+        private ModelObject currentObject;
+        private ModelProperty currentProperty;
+        private Scope currentScope;
+
+        public MetaVisitorFourthPass(MetaModelCompiler compiler)
+            : base(compiler)
+        {
+            this.currentObject = null;
+            this.currentProperty = null;
+            this.currentScope = compiler.GlobalScope;
+        }
+
+        public override object VisitChildren(IRuleNode node)
+        {
+            ModelObject prevObject = this.currentObject;
+            ModelProperty prevProperty = this.currentProperty;
+
+            ModelObject modelObject = null;
+            this.compiler.ModelObjects.TryGetValue(node, out modelObject);
+            
+            foreach (var ma in this.GetAnnotationsFor<MapAnnotation>(node))
+            {
+                if (ma.Type == null)
+                {
+                    if (this.currentObject == null)
+                    {
+                        this.compiler.Diagnostics.AddWarning("There is no current model object. The @Map annotation is ignored.", this.compiler.FileName, new TextSpan(node));
+                    }
+                    else
+                    {
+                        if (ma.Object != null)
+                        {
+                            object obj = ma.Object;
+                            IParseTree nodeValue = obj as IParseTree;
+                            if (nodeValue != null)
+                            {
+                                obj = this.TreeNodeToModelObject(nodeValue);
+                            }
+                            ModelObject mobj = obj as ModelObject;
+                            if (mobj != null)
+                            {
+                                this.currentObject = mobj;
+                            }
+                            else if (obj != null)
+                            {
+                                this.currentObject = null;
+                                this.compiler.Diagnostics.AddError("The referenced object ("+obj.GetType()+") is not an instance of '" + typeof(ModelObject) + "'.", this.compiler.FileName, new TextSpan(node));
+                            }
+                            else
+                            {
+                                this.currentObject = null;
+                            }
+                        }
+                        if (this.currentObject != null)
+                        {
+                            if (ma.Property != null)
+                            {
+                                ModelProperty prop = this.currentObject.MFindProperty(ma.Property);
+                                this.currentProperty = prop;
+                                if (prop == null)
+                                {
+                                    this.compiler.Diagnostics.AddWarning("Could not find property '" + ma.Property + "' for '" + this.currentObject + "'.", this.compiler.FileName, new TextSpan(node));
+                                }
+                            }
+                            if (this.currentProperty != null)
+                            {
+                                if (ma.HasValue)
+                                {
+                                    object value = ma.Value;
+                                    IParseTree nodeValue = value as IParseTree;
+                                    if (nodeValue != null)
+                                    {
+                                        value = this.TreeNodeToModelObject(nodeValue);
+                                    }
+                                    this.currentObject.MAdd(this.currentProperty, value);
+                                }
+                                else if (this.currentProperty.Type.IsPrimitive || this.currentProperty.Type.IsValueType || this.currentProperty.Type.IsEnum || this.currentProperty.Type == typeof(string))
+                                {
+                                    string text = node.GetText();
+                                    ScopeEntry entry = this.TreeNodeToScopeEntry(node);
+                                    if (entry != null && entry.Name != null)
+                                    {
+                                        text = entry.Name;
+                                    }
+                                    this.currentObject.MAdd(this.currentProperty, text);
+                                }
+                                else if (modelObject != null)
+                                {
+                                    this.currentObject.MAdd(this.currentProperty, modelObject);
+                                }
+                                else
+                                {
+                                    ScopeEntry entry = this.TreeNodeToScopeEntry(node);
+                                    if (entry != null && entry.ModelObject != null)
+                                    {
+                                        this.currentObject.MAdd(this.currentProperty, entry.ModelObject);
+                                    }
+                                }
+                            }
+                        }
+                        if (ma.Object != null && ma.Property != null)
+                        {
+                            this.currentProperty = prevProperty;
+                        }
+                    }
+                }
+            }
+            foreach (var ma in this.GetAnnotationsFor<MapAnnotation>(node))
+            {
+                ModelObject mobj = null;
+                if (ma.Type != null && ma.Property == null && this.compiler.ModelObjects.TryGetValue(node, out mobj))
+                {
+                    this.currentObject = mobj;
+                    base.VisitChildren(node);
+                    this.currentObject = prevObject;
+                    this.currentProperty = prevProperty;
+                    return null;
+                }
+            }
+            base.VisitChildren(node);
+            this.currentObject = prevObject;
+            this.currentProperty = prevProperty;
+            return null;
+        }
+
+        private ScopeEntry TreeNodeToScopeEntry(IParseTree node)
+        {
+            List<ScopeEntry> entries = null;
+            if (this.compiler.ScopeEntries.TryGetValue(node, out entries))
+            {
+                foreach (var entry in entries)
+                {
+                    NameReference nr = entry as NameReference;
+                    if (nr != null && nr.NameDef != null)
+                    {
+                        return nr.NameDef;
+                    }
+                    TypeReference tr = entry as TypeReference;
+                    if (tr != null && tr.TypeDef != null)
+                    {
+                        return tr.TypeDef;
+                    }
+                }
+                return entries.FirstOrDefault();
+            }
+            return null;
+        }
+
+        private ModelObject TreeNodeToModelObject(IParseTree node)
+        {
+            ModelObject mobj = null;
+            if (!this.compiler.ModelObjects.TryGetValue(node, out mobj))
+            {
+                List<ScopeEntry> entries = null;
+                if (this.compiler.ScopeEntries.TryGetValue(node, out entries))
+                {
+                    List<ModelObject> mobjs = entries.Where(e => e.ModelObject != null).Select(e => e.ModelObject).ToList();
+                    if (mobjs.Count == 0)
+                    {
+                        foreach (var entry in entries)
+                        {
+                            NameReference nr = entry as NameReference;
+                            if (nr != null && nr.NameDef != null && nr.NameDef.ModelObject != null)
+                            {
+                                mobjs.Add(nr.NameDef.ModelObject);
+                            }
+                            TypeReference tr = entry as TypeReference;
+                            if (tr != null && tr.TypeDef != null && tr.TypeDef.ModelObject != null)
+                            {
+                                mobjs.Add(tr.TypeDef.ModelObject);
+                            }
+                        }
+                    }
+                    if (mobjs.Count == 1)
+                    {
+                        return mobjs[0];
+                    }
+                    else if (mobjs.Count == 0)
+                    {
+                        this.compiler.Diagnostics.AddError("Could not map the tree node to a model object.", this.compiler.FileName, new TextSpan(node));
+                    }
+                    else
+                    {
+                        this.compiler.Diagnostics.AddError("There are multiple model objects that can be mapped from the tree node.", this.compiler.FileName, new TextSpan(node));
+                    }
+                }
+                else
+                {
+                    this.compiler.Diagnostics.AddError("Could not map the tree node to a model object.", this.compiler.FileName, new TextSpan(node));
+                }
+            }
+            return mobj;
+        }
+    }
 }

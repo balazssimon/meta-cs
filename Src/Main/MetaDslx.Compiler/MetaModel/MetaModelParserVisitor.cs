@@ -85,6 +85,12 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitEnumValues([NotNull] MetaModelParser.EnumValuesContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.enumValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEnumValue([NotNull] MetaModelParser.EnumValueContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.enumMemberDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

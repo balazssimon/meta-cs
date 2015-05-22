@@ -14,15 +14,23 @@ namespace MetaDslx.Core
             this.namespaceName = this.GetType().Namespace;
         }
 
-        protected ModelObject Create(string name)
+        public ModelObject Create(string name)
         {
-            ModelObject result = null;
-            string typeName = this.namespaceName + "." + name + "Impl";
+            if (name == null) return null;
+            string typeName = this.GetType().Namespace + "." + name;
             Type type = this.GetType().Assembly.GetType(typeName);
-            //Type type = Type.GetType(typeName);
-            if (type != null && type.IsClass)
+            return this.Create(type);
+        }
+
+        public ModelObject Create(Type type)
+        {
+            if (type == null) return null;
+            ModelObject result = null;
+            string typeName = type.FullName + "Impl";
+            Type implType = type.Assembly.GetType(typeName);
+            if (implType != null && implType.IsClass)
             {
-                object obj = Activator.CreateInstance(type);
+                object obj = Activator.CreateInstance(implType);
                 if (obj is ModelObject)
                 {
                     result = (ModelObject)obj;
@@ -37,6 +45,22 @@ namespace MetaDslx.Core
                 throw new ModelException("Class type '" + typeName + "' not found.");
             }
             return result;
+        }
+
+        public T Create<T>()
+            where T : class
+        {
+            ModelObject result = this.Create(typeof(T));
+            if (result == null)
+            {
+                throw new ModelException("Implementation of '" + typeof(T) + "' is not found.");
+            }
+            T typedResult = result as T;
+            if (typedResult == null)
+            {
+                throw new ModelException("Implementation is not a descendant of '" + typeof(T) + "'.");
+            }
+            return typedResult;
         }
     }
 }

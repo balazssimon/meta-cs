@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler;
+using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -88,6 +89,37 @@ namespace MetaDslx.TempConsole
             foreach (var entry in compiler.GlobalScope.Children)
             {
                 Console.WriteLine(entry);
+            }
+            Console.WriteLine("=");
+            foreach (var mo in compiler.ModelObjects.Values)
+            {
+                Console.WriteLine(mo);
+                Console.WriteLine("  Parent=" + mo.MParent);
+                ModelProperty mp;
+                mp = mo.MFindProperty("Name");
+                if (mp != null)
+                {
+                    Console.WriteLine("  Name=" + mo.MGetValue(mp));
+                }
+                mp = mo.MFindProperty("Type");
+                if (mp != null)
+                {
+                    Console.WriteLine("  Type=" + mo.MGetValue(mp));
+                }
+                mp = mo.MFindProperty("ReturnType");
+                if (mp != null)
+                {
+                    Console.WriteLine("  ReturnType=" + mo.MGetValue(mp));
+                }
+                mp = mo.MFindProperty("EnumLiterals");
+                if (mp != null)
+                {
+                    Console.WriteLine("  EnumLiterals:");
+                    foreach (var el in (IList<string>)mo.MGetValue(mp))
+                    {
+                        Console.WriteLine("    "+el);
+                    }
+                }
             }
         }
     }

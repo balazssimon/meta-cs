@@ -91,7 +91,7 @@ namespace MetaDslx.Core
 
         #region IModelCollection Members
 
-        internal override bool MAdd(object item)
+        public override bool MAdd(object item)
         {
             if (!this.Contains((T)item))
             {
@@ -101,7 +101,7 @@ namespace MetaDslx.Core
             return false;
         }
 
-        internal override bool MRemove(object item)
+        public override bool MRemove(object item)
         {
             if (this.Contains((T)item))
             {
