@@ -197,7 +197,8 @@ namespace MetaDslx.Core
                         mofObjectValue.MParent = this;
                     }
                 }
-                foreach (ModelProperty oppositeProperty in property.OppositeProperties)
+                List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
+                foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
                 {
                     ModelObject oppositeObject = value as ModelObject;
                     if (oppositeObject != null)
@@ -246,7 +247,8 @@ namespace MetaDslx.Core
                         mofObjectValue.MParent = null;
                     }
                 }
-                foreach (ModelProperty oppositeProperty in property.OppositeProperties)
+                List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
+                foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
                 {
                     ModelObject oppositeObject = value as ModelObject;
                     if (oppositeObject != null)

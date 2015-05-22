@@ -42,7 +42,8 @@ classMemberDeclaration : fieldDeclaration | operationDeclaration;
 
 @Map(property='Properties')
 @Map(type='MetaProperty')
-fieldDeclaration : (KContainment | KReadonly | KLazy | KDerived)? @Map(property='Type') typeReference @Map(property='Name') @NameDef(kind=NameKind.Property) identifier TSemicolon;
+fieldDeclaration : fieldModifier? @Map(property='Type') typeReference @Map(property='Name') @NameDef(kind=NameKind.Property) identifier TSemicolon;
+fieldModifier : @Map(property='Kind',value=MetaPropertyKind.Containment) KContainment | @Map(property='Kind',value=MetaPropertyKind.Readonly) KReadonly | @Map(property='Kind',value=MetaPropertyKind.Lazy) KLazy | @Map(property='Kind',value=MetaPropertyKind.Derived) KDerived;
 
 constDeclaration : KConst typeReference @NameDef(kind=NameKind.Const) identifier (TEquals expression)? TSemicolon;
 

@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="MetaImplementation.cs" />
     <Compile Include="MetaModel.cs" />
+    <Compile Include="MetaModelGenerator.cs" />
     <Compile Include="ModelCollection.cs" />
     <Compile Include="ModelException.cs" />
     <Compile Include="ModelFactory.cs" />
@@ -53,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="MetaModel.mm" />
+    <None Include="MetaModelGenerator.mgen" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

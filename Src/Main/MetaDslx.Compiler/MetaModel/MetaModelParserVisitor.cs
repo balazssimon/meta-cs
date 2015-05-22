@@ -127,6 +127,12 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFieldDeclaration([NotNull] MetaModelParser.FieldDeclarationContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.fieldModifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFieldModifier([NotNull] MetaModelParser.FieldModifierContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.constDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

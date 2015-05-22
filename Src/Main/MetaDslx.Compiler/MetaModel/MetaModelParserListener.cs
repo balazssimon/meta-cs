@@ -190,6 +190,16 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFieldDeclaration([NotNull] MetaModelParser.FieldDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.fieldModifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFieldModifier([NotNull] MetaModelParser.FieldModifierContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.fieldModifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFieldModifier([NotNull] MetaModelParser.FieldModifierContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.constDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

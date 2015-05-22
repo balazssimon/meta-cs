@@ -32,6 +32,11 @@ namespace MetaDslx.Core
     
     internal class MetaNamespaceImpl : ModelObject, MetaNamespace
     {
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaNamespaceImpl()
         {
             this.MSetValue(MetaNamespaceImpl.ModelsProperty, new ModelSet<MetaModel>(this, MetaNamespaceImpl.ModelsProperty));
@@ -57,7 +62,7 @@ namespace MetaDslx.Core
         [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaModelImpl), "Namespace")]
         internal static readonly ModelProperty ModelsProperty =
-            ModelProperty.Register("Models", typeof(ModelSet<MetaModel>), typeof(MetaNamespaceImpl));
+            ModelProperty.Register("Models", typeof(ICollection<MetaModel>), typeof(MetaNamespaceImpl));
         public ICollection<MetaModel> Models
         {
             get { return (ICollection<MetaModel>)this.MGetValue(MetaNamespaceImpl.ModelsProperty); }
@@ -74,6 +79,11 @@ namespace MetaDslx.Core
     
     internal class MetaModelImpl : ModelObject, MetaModel
     {
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaModelImpl()
         {
             this.MSetValue(MetaModelImpl.TypesProperty, new ModelSet<MetaType>(this, MetaModelImpl.TypesProperty));
@@ -90,7 +100,7 @@ namespace MetaDslx.Core
         
         [OppositeAttribute(typeof(MetaNamespaceImpl), "Models")]
         internal static readonly ModelProperty NamespaceProperty =
-            ModelProperty.Register("Namespace", typeof(MetaNamespaceImpl), typeof(MetaModelImpl));
+            ModelProperty.Register("Namespace", typeof(MetaNamespace), typeof(MetaModelImpl));
         public MetaNamespace Namespace
         {
             get { return (MetaNamespace)this.MGetValue(MetaModelImpl.NamespaceProperty); }
@@ -100,7 +110,7 @@ namespace MetaDslx.Core
         [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaTypeImpl), "Model")]
         internal static readonly ModelProperty TypesProperty =
-            ModelProperty.Register("Types", typeof(ModelSet<MetaType>), typeof(MetaModelImpl));
+            ModelProperty.Register("Types", typeof(ICollection<MetaType>), typeof(MetaModelImpl));
         public ICollection<MetaType> Types
         {
             get { return (ICollection<MetaType>)this.MGetValue(MetaModelImpl.TypesProperty); }
@@ -117,14 +127,14 @@ namespace MetaDslx.Core
     
     internal class MetaTypeImpl : ModelObject, MetaType
     {
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaTypeImpl()
         {
             MetaImplementationProvider.Implementation.MetaType_MetaType(this);
-        }
-
-        internal static void TriggerStaticInitializer()
-        {
-
         }
         
         internal static readonly ModelProperty NameProperty =
@@ -137,7 +147,7 @@ namespace MetaDslx.Core
         
         [OppositeAttribute(typeof(MetaModelImpl), "Types")]
         internal static readonly ModelProperty ModelProperty =
-            ModelProperty.Register("Model", typeof(MetaModelImpl), typeof(MetaTypeImpl));
+            ModelProperty.Register("Model", typeof(MetaModel), typeof(MetaTypeImpl));
         public MetaModel Model
         {
             get { return (MetaModel)this.MGetValue(MetaTypeImpl.ModelProperty); }
@@ -146,7 +156,7 @@ namespace MetaDslx.Core
         
         [ReadonlyAttribute]
         internal static readonly ModelProperty NamespaceProperty =
-            ModelProperty.Register("Namespace", typeof(MetaNamespaceImpl), typeof(MetaTypeImpl));
+            ModelProperty.Register("Namespace", typeof(MetaNamespace), typeof(MetaTypeImpl));
         public MetaNamespace Namespace
         {
             get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
@@ -162,6 +172,16 @@ namespace MetaDslx.Core
     
     internal class MetaCollectionTypeImpl : ModelObject, MetaCollectionType
     {
+        static MetaCollectionTypeImpl()
+        {
+    		MetaTypeImpl.TriggerStaticInitialization();
+    		ModelProperty.RegisterAncestor(typeof(MetaCollectionTypeImpl), typeof(MetaTypeImpl));
+        }
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaCollectionTypeImpl()
         {
             MetaImplementationProvider.Implementation.MetaCollectionType_MetaCollectionType(this);
@@ -176,7 +196,7 @@ namespace MetaDslx.Core
         }
         
         internal static readonly ModelProperty InnerTypeProperty =
-            ModelProperty.Register("InnerType", typeof(MetaTypeImpl), typeof(MetaCollectionTypeImpl));
+            ModelProperty.Register("InnerType", typeof(MetaType), typeof(MetaCollectionTypeImpl));
         public MetaType InnerType
         {
             get { return (MetaType)this.MGetValue(MetaCollectionTypeImpl.InnerTypeProperty); }
@@ -209,13 +229,23 @@ namespace MetaDslx.Core
     
     internal class MetaNullableTypeImpl : ModelObject, MetaNullableType
     {
+        static MetaNullableTypeImpl()
+        {
+    		MetaTypeImpl.TriggerStaticInitialization();
+    		ModelProperty.RegisterAncestor(typeof(MetaNullableTypeImpl), typeof(MetaTypeImpl));
+        }
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaNullableTypeImpl()
         {
             MetaImplementationProvider.Implementation.MetaNullableType_MetaNullableType(this);
         }
         
         internal static readonly ModelProperty InnerTypeProperty =
-            ModelProperty.Register("InnerType", typeof(MetaTypeImpl), typeof(MetaNullableTypeImpl));
+            ModelProperty.Register("InnerType", typeof(MetaType), typeof(MetaNullableTypeImpl));
         public MetaType InnerType
         {
             get { return (MetaType)this.MGetValue(MetaNullableTypeImpl.InnerTypeProperty); }
@@ -247,6 +277,16 @@ namespace MetaDslx.Core
     
     internal class MetaPrimitiveTypeImpl : ModelObject, MetaPrimitiveType
     {
+        static MetaPrimitiveTypeImpl()
+        {
+    		MetaTypeImpl.TriggerStaticInitialization();
+    		ModelProperty.RegisterAncestor(typeof(MetaPrimitiveTypeImpl), typeof(MetaTypeImpl));
+        }
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaPrimitiveTypeImpl()
         {
             MetaImplementationProvider.Implementation.MetaPrimitiveType_MetaPrimitiveType(this);
@@ -272,7 +312,7 @@ namespace MetaDslx.Core
     
     public interface MetaEnum : MetaType
     {
-        IList<string> EnumLiterals { get; }
+        IList<MetaEnumLiteral> EnumLiterals { get; }
         ICollection<MetaOperation> Operations { get; }
     
     }
@@ -281,28 +321,33 @@ namespace MetaDslx.Core
     {
         static MetaEnumImpl()
         {
-            MetaTypeImpl.TriggerStaticInitializer();
-            ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaTypeImpl));
+    		MetaTypeImpl.TriggerStaticInitialization();
+    		ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaTypeImpl));
         }
-        
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaEnumImpl()
         {
-            this.MSetValue(MetaEnumImpl.EnumLiteralsProperty, new List<string>());
+            this.MSetValue(MetaEnumImpl.EnumLiteralsProperty, new ModelList<MetaEnumLiteral>(this, MetaEnumImpl.EnumLiteralsProperty));
             this.MSetValue(MetaEnumImpl.OperationsProperty, new ModelSet<MetaOperation>(this, MetaEnumImpl.OperationsProperty));
             MetaImplementationProvider.Implementation.MetaEnum_MetaEnum(this);
         }
         
+        [ContainmentAttribute]
         internal static readonly ModelProperty EnumLiteralsProperty =
-            ModelProperty.Register("EnumLiterals", typeof(List<string>), typeof(MetaEnumImpl));
-        public IList<string> EnumLiterals
+            ModelProperty.Register("EnumLiterals", typeof(IList<MetaEnumLiteral>), typeof(MetaEnumImpl));
+        public IList<MetaEnumLiteral> EnumLiterals
         {
-            get { return (IList<string>)this.MGetValue(MetaEnumImpl.EnumLiteralsProperty); }
+            get { return (IList<MetaEnumLiteral>)this.MGetValue(MetaEnumImpl.EnumLiteralsProperty); }
         }
         
         [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaOperationImpl), "Enum")]
         internal static readonly ModelProperty OperationsProperty =
-            ModelProperty.Register("Operations", typeof(ModelSet<MetaOperation>), typeof(MetaEnumImpl));
+            ModelProperty.Register("Operations", typeof(ICollection<MetaOperation>), typeof(MetaEnumImpl));
         public ICollection<MetaOperation> Operations
         {
             get { return (ICollection<MetaOperation>)this.MGetValue(MetaEnumImpl.OperationsProperty); }
@@ -326,32 +371,75 @@ namespace MetaDslx.Core
         }
     }
     
+    public interface MetaEnumLiteral
+    {
+        string Name { get; set; }
+    
+    }
+    
+    internal class MetaEnumLiteralImpl : ModelObject, MetaEnumLiteral
+    {
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
+        public MetaEnumLiteralImpl()
+        {
+            MetaImplementationProvider.Implementation.MetaEnumLiteral_MetaEnumLiteral(this);
+        }
+        
+        internal static readonly ModelProperty NameProperty =
+            ModelProperty.Register("Name", typeof(string), typeof(MetaEnumLiteralImpl));
+        public string Name
+        {
+            get { return (string)this.MGetValue(MetaEnumLiteralImpl.NameProperty); }
+            set { this.MSetValue(MetaEnumLiteralImpl.NameProperty, value); }
+        }
+    }
+    
     public interface MetaClass : MetaType
     {
+        IList<MetaClass> SuperClasses { get; }
         ICollection<MetaProperty> Properties { get; }
         ICollection<MetaOperation> Operations { get; }
     
+        ICollection<MetaClass> GetAllSuperClasses();
+        ICollection<MetaProperty> GetAllProperties();
+        ICollection<MetaOperation> GetAllOperations();
     }
     
     internal class MetaClassImpl : ModelObject, MetaClass
     {
         static MetaClassImpl()
         {
-            MetaTypeImpl.TriggerStaticInitializer();
-            ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaTypeImpl));
+    		MetaTypeImpl.TriggerStaticInitialization();
+    		ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaTypeImpl));
         }
-
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaClassImpl()
         {
+            this.MSetValue(MetaClassImpl.SuperClassesProperty, new ModelList<MetaClass>(this, MetaClassImpl.SuperClassesProperty));
             this.MSetValue(MetaClassImpl.PropertiesProperty, new ModelSet<MetaProperty>(this, MetaClassImpl.PropertiesProperty));
             this.MSetValue(MetaClassImpl.OperationsProperty, new ModelSet<MetaOperation>(this, MetaClassImpl.OperationsProperty));
             MetaImplementationProvider.Implementation.MetaClass_MetaClass(this);
         }
-
+        
+        internal static readonly ModelProperty SuperClassesProperty =
+            ModelProperty.Register("SuperClasses", typeof(IList<MetaClass>), typeof(MetaClassImpl));
+        public IList<MetaClass> SuperClasses
+        {
+            get { return (IList<MetaClass>)this.MGetValue(MetaClassImpl.SuperClassesProperty); }
+        }
+        
         [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaPropertyImpl), "Class")]
         internal static readonly ModelProperty PropertiesProperty =
-            ModelProperty.Register("Properties", typeof(ModelSet<MetaProperty>), typeof(MetaClassImpl));
+            ModelProperty.Register("Properties", typeof(ICollection<MetaProperty>), typeof(MetaClassImpl));
         public ICollection<MetaProperty> Properties
         {
             get { return (ICollection<MetaProperty>)this.MGetValue(MetaClassImpl.PropertiesProperty); }
@@ -360,7 +448,7 @@ namespace MetaDslx.Core
         [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaOperationImpl), "Class")]
         internal static readonly ModelProperty OperationsProperty =
-            ModelProperty.Register("Operations", typeof(ModelSet<MetaOperation>), typeof(MetaClassImpl));
+            ModelProperty.Register("Operations", typeof(ICollection<MetaOperation>), typeof(MetaClassImpl));
         public ICollection<MetaOperation> Operations
         {
             get { return (ICollection<MetaOperation>)this.MGetValue(MetaClassImpl.OperationsProperty); }
@@ -382,6 +470,21 @@ namespace MetaDslx.Core
         {
             get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
         }
+        
+        public ICollection<MetaClass> GetAllSuperClasses()
+        {
+            return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperClasses(this);
+        }
+        
+        public ICollection<MetaProperty> GetAllProperties()
+        {
+            return MetaImplementationProvider.Implementation.MetaClass_GetAllProperties(this);
+        }
+        
+        public ICollection<MetaOperation> GetAllOperations()
+        {
+            return MetaImplementationProvider.Implementation.MetaClass_GetAllOperations(this);
+        }
     }
     
     public interface MetaOperation
@@ -396,6 +499,11 @@ namespace MetaDslx.Core
     
     internal class MetaOperationImpl : ModelObject, MetaOperation
     {
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaOperationImpl()
         {
             this.MSetValue(MetaOperationImpl.ParametersProperty, new ModelList<MetaParameter>(this, MetaOperationImpl.ParametersProperty));
@@ -413,14 +521,14 @@ namespace MetaDslx.Core
         [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaParameterImpl), "Operation")]
         internal static readonly ModelProperty ParametersProperty =
-            ModelProperty.Register("Parameters", typeof(ModelList<MetaParameter>), typeof(MetaOperationImpl));
+            ModelProperty.Register("Parameters", typeof(IList<MetaParameter>), typeof(MetaOperationImpl));
         public IList<MetaParameter> Parameters
         {
             get { return (IList<MetaParameter>)this.MGetValue(MetaOperationImpl.ParametersProperty); }
         }
         
         internal static readonly ModelProperty ReturnTypeProperty =
-            ModelProperty.Register("ReturnType", typeof(MetaTypeImpl), typeof(MetaOperationImpl));
+            ModelProperty.Register("ReturnType", typeof(MetaType), typeof(MetaOperationImpl));
         public MetaType ReturnType
         {
             get { return (MetaType)this.MGetValue(MetaOperationImpl.ReturnTypeProperty); }
@@ -429,7 +537,7 @@ namespace MetaDslx.Core
         
         [OppositeAttribute(typeof(MetaClassImpl), "Operations")]
         internal static readonly ModelProperty ClassProperty =
-            ModelProperty.Register("Class", typeof(MetaClassImpl), typeof(MetaOperationImpl));
+            ModelProperty.Register("Class", typeof(MetaClass), typeof(MetaOperationImpl));
         public MetaClass Class
         {
             get { return (MetaClass)this.MGetValue(MetaOperationImpl.ClassProperty); }
@@ -438,7 +546,7 @@ namespace MetaDslx.Core
         
         [OppositeAttribute(typeof(MetaEnumImpl), "Operations")]
         internal static readonly ModelProperty EnumProperty =
-            ModelProperty.Register("Enum", typeof(MetaEnumImpl), typeof(MetaOperationImpl));
+            ModelProperty.Register("Enum", typeof(MetaEnum), typeof(MetaOperationImpl));
         public MetaEnum Enum
         {
             get { return (MetaEnum)this.MGetValue(MetaOperationImpl.EnumProperty); }
@@ -451,11 +559,17 @@ namespace MetaDslx.Core
         string Name { get; set; }
         MetaType Type { get; set; }
         MetaOperation Operation { get; set; }
+        object DefaultValue { get; set; }
     
     }
     
     internal class MetaParameterImpl : ModelObject, MetaParameter
     {
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaParameterImpl()
         {
             MetaImplementationProvider.Implementation.MetaParameter_MetaParameter(this);
@@ -470,7 +584,7 @@ namespace MetaDslx.Core
         }
         
         internal static readonly ModelProperty TypeProperty =
-            ModelProperty.Register("Type", typeof(MetaTypeImpl), typeof(MetaParameterImpl));
+            ModelProperty.Register("Type", typeof(MetaType), typeof(MetaParameterImpl));
         public MetaType Type
         {
             get { return (MetaType)this.MGetValue(MetaParameterImpl.TypeProperty); }
@@ -479,11 +593,19 @@ namespace MetaDslx.Core
         
         [OppositeAttribute(typeof(MetaOperationImpl), "Parameters")]
         internal static readonly ModelProperty OperationProperty =
-            ModelProperty.Register("Operation", typeof(MetaOperationImpl), typeof(MetaParameterImpl));
+            ModelProperty.Register("Operation", typeof(MetaOperation), typeof(MetaParameterImpl));
         public MetaOperation Operation
         {
             get { return (MetaOperation)this.MGetValue(MetaParameterImpl.OperationProperty); }
             set { this.MSetValue(MetaParameterImpl.OperationProperty, value); }
+        }
+        
+        internal static readonly ModelProperty DefaultValueProperty =
+            ModelProperty.Register("DefaultValue", typeof(object), typeof(MetaParameterImpl));
+        public object DefaultValue
+        {
+            get { return (object)this.MGetValue(MetaParameterImpl.DefaultValueProperty); }
+            set { this.MSetValue(MetaParameterImpl.DefaultValueProperty, value); }
         }
     }
     
@@ -499,6 +621,11 @@ namespace MetaDslx.Core
     
     internal class MetaPropertyImpl : ModelObject, MetaProperty
     {
+    
+    	public static void TriggerStaticInitialization()
+    	{
+    	}
+    
         public MetaPropertyImpl()
         {
             this.MSetValue(MetaPropertyImpl.OppositesProperty, new ModelSet<MetaProperty>(this, MetaPropertyImpl.OppositesProperty));
@@ -522,7 +649,7 @@ namespace MetaDslx.Core
         }
         
         internal static readonly ModelProperty TypeProperty =
-            ModelProperty.Register("Type", typeof(MetaTypeImpl), typeof(MetaPropertyImpl));
+            ModelProperty.Register("Type", typeof(MetaType), typeof(MetaPropertyImpl));
         public MetaType Type
         {
             get { return (MetaType)this.MGetValue(MetaPropertyImpl.TypeProperty); }
@@ -531,15 +658,16 @@ namespace MetaDslx.Core
         
         [OppositeAttribute(typeof(MetaClassImpl), "Properties")]
         internal static readonly ModelProperty ClassProperty =
-            ModelProperty.Register("Class", typeof(MetaClassImpl), typeof(MetaPropertyImpl));
+            ModelProperty.Register("Class", typeof(MetaClass), typeof(MetaPropertyImpl));
         public MetaClass Class
         {
             get { return (MetaClass)this.MGetValue(MetaPropertyImpl.ClassProperty); }
             set { this.MSetValue(MetaPropertyImpl.ClassProperty, value); }
         }
         
+        [OppositeAttribute(typeof(MetaPropertyImpl), "Opposites")]
         internal static readonly ModelProperty OppositesProperty =
-            ModelProperty.Register("Opposites", typeof(ModelSet<MetaProperty>), typeof(MetaPropertyImpl));
+            ModelProperty.Register("Opposites", typeof(ICollection<MetaProperty>), typeof(MetaPropertyImpl));
         public ICollection<MetaProperty> Opposites
         {
             get { return (ICollection<MetaProperty>)this.MGetValue(MetaPropertyImpl.OppositesProperty); }
@@ -631,6 +759,16 @@ namespace MetaDslx.Core
         public MetaEnum CreateMetaEnum()
     	{
     		MetaEnum result = new MetaEnumImpl();
+    		return result;
+    	}
+    
+    
+        /// <summary>
+        /// Creates a new instance of MetaEnumLiteral.
+        /// </summary>
+        public MetaEnumLiteral CreateMetaEnumLiteral()
+    	{
+    		MetaEnumLiteral result = new MetaEnumLiteralImpl();
     		return result;
     	}
     
@@ -769,12 +907,43 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
+    	/// Implements the constructor: MetaEnumLiteral()
+        /// </summary>
+        public virtual void MetaEnumLiteral_MetaEnumLiteral(MetaEnumLiteral @this)
+        {
+        }
+    
+        /// <summary>
     	/// Implements the constructor: MetaClass()
     	/// Direct superclasses: MetaType
     	/// All superclasses: MetaType
         /// </summary>
         public virtual void MetaClass_MetaClass(MetaClass @this)
         {
+        }
+    
+        /// <summary>
+        /// Implements the operation: MetaClass.GetAllSuperClasses()
+        /// </summary>
+        public virtual ICollection<MetaClass> MetaClass_GetAllSuperClasses(MetaClass @this)
+        {
+            throw new NotImplementedException();
+        }
+    
+        /// <summary>
+        /// Implements the operation: MetaClass.GetAllProperties()
+        /// </summary>
+        public virtual ICollection<MetaProperty> MetaClass_GetAllProperties(MetaClass @this)
+        {
+            throw new NotImplementedException();
+        }
+    
+        /// <summary>
+        /// Implements the operation: MetaClass.GetAllOperations()
+        /// </summary>
+        public virtual ICollection<MetaOperation> MetaClass_GetAllOperations(MetaClass @this)
+        {
+            throw new NotImplementedException();
         }
     
         /// <summary>

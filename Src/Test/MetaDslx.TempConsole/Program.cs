@@ -37,6 +37,11 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
+                Console.WriteLine("----");
+                CompileGenerator(
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.cs"
+                    );
             }
             catch (Exception ex)
             {
@@ -115,12 +120,32 @@ namespace MetaDslx.TempConsole
                 if (mp != null)
                 {
                     Console.WriteLine("  EnumLiterals:");
-                    foreach (var el in (IList<string>)mo.MGetValue(mp))
+                    foreach (var el in (IList<MetaEnumLiteral>)mo.MGetValue(mp))
                     {
                         Console.WriteLine("    "+el);
                     }
                 }
             }
         }
+
+        private static void CompileGenerator(string fileName, string outputFileName)
+        {
+            string source;
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                source = reader.ReadToEnd();
+            }
+            MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(source, fileName);
+            compiler.Compile();
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(compiler.GeneratedSource);
+            }
+            foreach (var msg in compiler.Diagnostics.GetMessages())
+            {
+                Console.WriteLine(msg);
+            }
+        }
+
     }
 }

@@ -226,6 +226,18 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFieldDeclaration([NotNull] MetaModelParser.FieldDeclarationContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.fieldModifier"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFieldModifier([NotNull] MetaModelParser.FieldModifierContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.fieldModifier"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFieldModifier([NotNull] MetaModelParser.FieldModifierContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.constDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

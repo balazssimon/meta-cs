@@ -129,6 +129,10 @@ namespace MetaDslx.Compiler
             thirdPass.Visit(this.ParseTree);
             MetaVisitorFourthPass fourthPass = new MetaVisitorFourthPass(this);
             fourthPass.Visit(this.ParseTree);
+
+            var namespaces = this.ModelObjects.Values.OfType<MetaNamespace>().Distinct().ToList();
+            MetaModelGenerator generator = new MetaModelGenerator(namespaces);
+            this.GeneratedSource = generator.Generate();
         }
 
         public Scope GlobalScope { get; private set; }

@@ -1,0 +1,398 @@
+﻿namespace MetaDslx.Core;
+generator MetaModelGenerator for IEnumerable<MetaNamespace>;
+
+template Generate()
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+^
+	[loop(ns:Instances)]
+[GenerateNamespace(ns)]
+	[end loop]
+end template
+
+template GenerateNamespace(MetaNamespace ns)
+namespace [ns.Name]
+{
+	[loop(ns->model:Models)]
+		[loop(model->Types->enm:typeof(MetaEnum))]
+    [GenerateEnum(enm)]
+		[end loop]
+		[loop(model->Types->cls:typeof(MetaClass))]
+    [GenerateInterface(cls)]
+    [GenerateInterfaceImpl(model, cls)]
+		[end loop]
+    [GenerateFactory(model)]
+    [GenerateImplementationProvider(model)]
+	[end loop]
+}
+end template
+
+template GenerateEnum(MetaEnum enm)
+public enum [enm.Name]
+{
+    [loop(enm->value:EnumLiterals)]
+    [value],
+	[end loop]
+}
+^
+end template
+
+function string GetAncestors(MetaClass cls)
+	string result = "";
+	string nsName = cls.Namespace.CSharpPrefix();
+	loop(cls->super:SuperClasses; string delim = " : "; delim = ", ")
+		result += delim+nsName+super.Name;
+	end loop
+	return result;
+end function
+
+template GenerateInterface(MetaClass cls)
+public interface [cls.Name][GetAncestors(cls)]
+{
+    [loop(cls->prop:Properties)]
+    [GenerateProperty(prop)]
+	[end loop]
+^
+    [loop(cls->op:Operations)]
+    [GenerateOperation(op)]
+	[end loop]
+}
+^
+end template
+
+template GenerateProperty(MetaProperty prop)
+	[if((prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) && !(prop.Type is MetaCollectionType))]
+[prop.Type.CSharpPublicName()] [prop.Name] { get; set; }
+	[else]
+[prop.Type.CSharpPublicName()] [prop.Name] { get; }
+	[end if]
+end template
+
+function string GetParameters(MetaOperation op, bool defaultValues)
+	string result = "";
+	loop(op->param:Parameters; string delim = ""; delim = ", ")
+		result += delim+param.Type.CSharpPublicName()+" "+param.Name;
+		if (defaultValues && param.DefaultValue != null)
+			result += " = "+param.DefaultValue;
+		end if
+	end loop
+	return result;
+end function
+
+function string GetImplParameters(MetaClass cls, MetaOperation op)
+	string result = cls.CSharpName()+" @this";
+	string delim = ", ";
+	loop(op->param:Parameters)
+		result += delim+param.Type.CSharpPublicName()+" "+param.Name;
+	end loop
+	return result;
+end function
+
+function string GetImplParameters(MetaEnum enm, MetaOperation op)
+	string result = enm.CSharpName()+" @this";
+	string delim = ", ";
+	loop(op->param:Parameters)
+		result += delim+param.Type.CSharpPublicName()+" "+param.Name;
+	end loop
+	return result;
+end function
+
+function string GetEnumImplParameters(MetaEnum enm, MetaOperation op)
+	string result = "this "+enm.CSharpName()+" @this";
+	string delim = ", ";
+	loop(op->param:Parameters)
+		result += delim+param.Type.CSharpPublicName()+" "+param.Name;
+	end loop
+	return result;
+end function
+
+function string GetEnumImplCallParameterNames(MetaOperation op)
+	string result = "@this";
+	string delim = ", ";
+	loop(op->param:Parameters)
+		result += delim+param.Name;
+	end loop
+	return result;
+end function
+
+function string GetImplCallParameterNames(MetaOperation op)
+	string result = "this";
+	string delim = ", ";
+	loop(op->param:Parameters)
+		result += delim+param.Name;
+	end loop
+	return result;
+end function
+
+template GenerateOperation(MetaOperation op)
+[op.ReturnType.CSharpPublicName()] [op.Name]([GetParameters(op, true)]);
+end template
+
+template GenerateInterfaceImpl(MetaModel model, MetaClass cls)
+internal class [cls.Name]Impl : ModelObject, [cls.Namespace.CSharpPrefix()][cls.Name]
+{
+[if (hasloop(cls->sup:GetAllSuperClasses(false)))]
+    static [cls.Name]Impl()
+    {
+		[loop(cls->sup:GetAllSuperClasses(false))]
+		[sup.Name]Impl.TriggerStaticInitialization();
+		[end loop]
+		[loop(cls->sup:GetAllSuperClasses(false))]
+		ModelProperty.RegisterAncestor(typeof([cls.Name]Impl), typeof([sup.Name]Impl));
+		[end loop]
+    }
+^
+[end if]
+	public static void TriggerStaticInitialization()
+	{
+	}
+^
+    [GenerateConstructorImpl(model, cls)]
+    [loop(cls->prop:GetAllProperties())]
+    [GeneratePropertyImpl(model, cls, prop)]
+	[end loop]
+    [loop(cls->op:GetAllOperations())]
+    [GenerateOperationImpl(model, op)]
+	[end loop]
+}
+^
+end template
+
+template GeneratePropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
+^
+[if(prop.Class == cls)]
+[if(prop.Kind == MetaPropertyKind.Containment)]
+["[ContainmentAttribute]"]
+[end if]
+[if(prop.Kind != MetaPropertyKind.Normal && prop.Kind != MetaPropertyKind.Containment && !(prop.Type is MetaCollectionType))]
+["[ReadonlyAttribute]"]
+[end if]
+[loop(opp:prop.Opposites)]
+["[OppositeAttribute(typeof("][opp.Class.CSharpImplName()]["), \""][opp.Name]["\")]"]
+[end if]
+internal static readonly ModelProperty [prop.Name]Property =
+    ModelProperty.Register("[prop.Name]", typeof([prop.Type.CSharpPublicName()]), typeof([prop.Class.CSharpImplName()]));
+[end if]
+public [prop.Type.CSharpPublicName()] [prop.Name]
+{
+	[if(prop.Kind == MetaPropertyKind.Derived)]
+    get { return [model.CSharpName()]ImplementationProvider.Implementation.[prop.Class.Name]_[prop.Name](this); }
+	[else]
+    get { return ([prop.Type.CSharpPublicName()])this.MGetValue([prop.Class.CSharpImplName()].[prop.Name]Property); }
+	[end if]
+	[if((prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) && !(prop.Type is MetaCollectionType))]
+    set { this.MSetValue([prop.Class.CSharpImplName()].[prop.Name]Property, value); }
+	[end if]
+}
+end template
+
+function string GetCollectionConstructorParams(MetaProperty prop)
+	MetaCollectionType mct = prop.Type as MetaCollectionType;
+	if(mct != null && mct.InnerType is MetaClass)
+		return "this, " + prop.Class.CSharpName() + "Impl." + prop.Name + "Property";
+	else
+		return "";
+	end if
+end function
+
+template GenerateConstructorImpl(MetaModel model, MetaClass cls)
+public [cls.Name]Impl()
+{
+	[loop(cls->prop:GetAllProperties())]
+		[if(prop.Type is MetaCollectionType)]
+			[if (prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment)]
+    this.MSetValue([prop.Class.CSharpImplName()].[prop.Name]Property, new [prop.Type.CSharpName()]([GetCollectionConstructorParams(prop)]));
+			[else if (prop.Kind == MetaPropertyKind.Lazy)]
+    this.MInitValue([prop.Class.CSharpImplName()].[prop.Name]Property, () => [model.CSharpName()]ImplementationProvider.Implementation.[prop.Class.Name]_[prop.Name](this));
+			[else if (prop.Kind == MetaPropertyKind.Readonly)]
+    // Init [prop.Class.CSharpImplName()].[prop.Name]Property in [model.CSharpName()]Implementation.[cls.Name]_[cls.Name]
+			[end if]
+	    [else]
+			[if(prop.Kind == MetaPropertyKind.Lazy)]
+    this.MInitValue([prop.Class.CSharpImplName()].[prop.Name]Property, () => [model.CSharpName()]ImplementationProvider.Implementation.[prop.Class.Name]_[prop.Name](this));
+			[else if (prop.Kind == MetaPropertyKind.Readonly)]
+    // Init [prop.Class.CSharpImplName()].[prop.Name]Property in [model.CSharpName()]Implementation.[cls.Name]_[cls.Name]
+			[end if]
+		[end if]
+	[end loop]
+    [cls.Model.CSharpName()]ImplementationProvider.Implementation.[cls.Name]_[cls.Name](this);
+    [loop(cls->prop:GetAllProperties())]
+		[if (prop.Kind == MetaPropertyKind.Readonly)]
+    if (!this.MIsSet([prop.Class.CSharpImplName()].[prop.Name]Property)) throw new ModelException("Readonly property [prop.Class.CSharpImplName()].[prop.Name]Property was not set in [cls.Name]_[cls.Name]().");
+		[end if]
+	[end loop]
+}
+end template
+
+function string GetReturn(MetaOperation op)
+    if (op.ReturnType.Name == "void") 
+		return "";
+	else 
+		return "return ";
+	end if
+end function
+
+template GenerateOperationImpl(MetaModel model, MetaOperation op)
+^
+public [op.ReturnType.CSharpPublicName()] [op.Name]([GetParameters(op, false)])
+{
+    [GetReturn(op)][model.CSharpName()]ImplementationProvider.Implementation.[op.Class.Name]_[op.Name]([GetImplCallParameterNames(op)]);
+}
+end template
+
+function string GetSuperClasses(MetaClass cls)
+	string result = "";
+    loop(cls->sup:SuperClasses; string delim = ""; delim = ", ")
+		result += delim+sup.Name;
+	end loop
+	return result;
+end function
+
+function string GetAllSuperClasses(MetaClass cls)
+	string result = "";
+    loop(cls->sup:GetAllSuperClasses(false); string delim = ""; delim = ", ")
+		result += delim+sup.Name;
+	end loop
+	return result;
+end function
+
+template GenerateImplementationProvider(MetaModel model)
+internal static class [model.Name]ImplementationProvider
+{
+    // If there is a compile error at this line, create a new class called [model.Name]Implementation
+	// which is a subclass of [model.Name]ImplementationBase:
+    private static [model.Name]Implementation implementation = new [model.Name]Implementation();
+^
+    public static [model.Name]Implementation Implementation
+    {
+        get { return [model.Name]ImplementationProvider.implementation; }
+    }
+}
+	[loop(model->Types->enm:typeof(MetaEnum))]
+^
+public static class [model.Name][enm.Name]Extensions
+{
+    [loop(enm->op:Operations)]
+    public static [op.ReturnType.CSharpPublicName()] [op.Name]([GetEnumImplParameters(enm, op)])
+    {
+        [GetReturn(op)][model.CSharpName()]ImplementationProvider.Implementation.[op.Enum.Name]_[op.Name]([GetEnumImplCallParameterNames(op)]);
+    }
+	[end loop]
+}
+	[end loop]
+^
+/// <summary>
+/// Base class for implementing the behavior of the model elements.
+/// This class has to be be overriden in [model.Name]Implementation to provide custom
+/// implementation for the constructors, operations and property values.
+/// </summary>
+internal abstract class [model.Name]ImplementationBase
+{
+	[string delim = ""]
+	[loop(model->Types->cls:typeof(MetaClass))]
+    /// <summary>
+	/// Implements the constructor: [cls.Name]()
+	[if (hasloop(cls->sup:SuperClasses))]
+	/// Direct superclasses: [GetSuperClasses(cls)]
+	/// All superclasses: [GetAllSuperClasses(cls)]
+	[end if]
+	[if (hasloop(cls->prop:GetAllProperties() where prop.Kind == MetaPropertyKind.Readonly))]
+    // Initializes the following readonly properties:
+	[end if]
+    [loop(cls->prop:GetAllProperties())]
+	[if (prop.Kind == MetaPropertyKind.Readonly)]
+    ///    [prop.Class.Name].[prop.Name]
+	[end if]
+	[end loop]
+    /// </summary>
+    public virtual void [cls.Name]_[cls.Name]([cls.CSharpName()] @this)
+    {
+    }
+    [loop(cls->prop:Properties)]
+	[if (prop.Kind == MetaPropertyKind.Derived)]
+^
+    /// <summary>
+    /// Returns the value of the derived property: [cls.Name].[prop.Name]
+    /// </summary>
+    public virtual [prop.Type.CSharpName()] [cls.Name]_[prop.Name]([cls.Name] @this)
+    {
+        throw new NotImplementedException();
+    }
+	[else if (prop.Kind == MetaPropertyKind.Lazy)]
+^
+    /// <summary>
+    /// Returns the value of the lazy property: [cls.Name].[prop.Name]
+    /// </summary>
+    public virtual [prop.Type.CSharpName()] [cls.Name]_[prop.Name]([cls.Name] @this)
+    {
+        throw new NotImplementedException();
+    }
+	[end if]
+	[end loop]
+    [loop(cls->op:Operations)]
+^
+    /// <summary>
+    /// Implements the operation: [cls.Name].[op.Name]()
+    /// </summary>
+    public virtual [op.ReturnType.CSharpPublicName()] [cls.Name]_[op.Name]([GetImplParameters(cls, op)])
+    {
+        throw new NotImplementedException();
+    }
+	[end loop]
+^
+	[end loop]
+	[loop(model->Types->enm:typeof(MetaEnum))]
+    [loop(enm->op:Operations)]
+^
+    /// <summary>
+    /// Implements the operation: [enm.Name].[op.Name]
+    /// </summary>
+    public virtual [op.ReturnType.CSharpPublicName()] [enm.Name]_[op.Name]([GetImplParameters(enm, op)])
+    {
+        throw new NotImplementedException();
+    }
+	[end loop]
+^
+	[end loop]
+}
+^
+end template
+
+template GenerateFactory(MetaModel model)
+/// <summary>
+/// Factory class for creating instances of model elements.
+/// </summary>
+public class [model.Name]Factory : ModelFactory
+{
+    private static [model.Name]Factory instance = new [model.Name]Factory();
+^
+	private [model.Name]Factory()
+	{
+	}
+^
+    /// <summary>
+    /// The singleton instance of the factory.
+    /// </summary>
+    public static [model.Name]Factory Instance
+    {
+        get { return [model.Name]Factory.instance; }
+    }
+	[loop(model->Types->cls:typeof(MetaClass))]
+^
+    /// <summary>
+    /// Creates a new instance of [cls.Name].
+    /// </summary>
+    public [cls.Name] Create[cls.Name]()
+	{
+		[cls.Name] result = new [cls.Name]Impl();
+		return result;
+	}
+^
+	[end loop]
+}
+^
+end template

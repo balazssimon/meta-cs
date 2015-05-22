@@ -42,7 +42,8 @@ classMemberDeclaration : fieldDeclaration | operationDeclaration;
 
 
 
-fieldDeclaration : (KContainment | KReadonly | KLazy | KDerived)?  typeReference   identifier TSemicolon;
+fieldDeclaration : fieldModifier?  typeReference   identifier TSemicolon;
+fieldModifier :  KContainment |  KReadonly |  KLazy |  KDerived;
 
 constDeclaration : KConst typeReference  identifier (TEquals expression)? TSemicolon;
 

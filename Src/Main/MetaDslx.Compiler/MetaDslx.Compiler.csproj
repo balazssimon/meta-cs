@@ -53,6 +53,13 @@
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserVisitor.cs" />
     <Compile Include="MetaCompiler.cs" />
     <Compile Include="MetaCompilerDiagnostics.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorCompiler.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorLexer.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorParser.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorParserBaseListener.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorParserBaseVisitor.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorParserListener.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorParserVisitor.cs" />
     <Compile Include="MetaModel\MetaModelCompiler.cs" />
     <Compile Include="MetaModel\MetaModelLexer.cs" />
     <Compile Include="MetaModel\MetaModelLexerAnnotator.cs" />
@@ -81,6 +88,14 @@
       <TargetLanguage>CSharp</TargetLanguage>
     </Antlr4>
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.ag4" />
+    <Antlr4 Include="MetaGenerator\MetaGeneratorLexer.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler.MetaGenerator</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="MetaGenerator\MetaGeneratorParser.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler.MetaGenerator</CustomToolNamespace>
+    </Antlr4>
     <None Include="MetaModel\MetaModelLexer.ag4" />
     <Antlr4 Include="MetaModel\MetaModelLexer.g4">
       <Generator>MSBuild:Compile</Generator>

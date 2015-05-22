@@ -60,14 +60,23 @@
 
 		class MetaEnum : MetaType
 		{
-			list<string> EnumLiterals;
+			containment list<MetaEnumLiteral> EnumLiterals;
 			containment set<MetaOperation> Operations;
+		}
+
+		class MetaEnumLiteral
+		{
+			string Name;
 		}
 
 		class MetaClass : MetaType
 		{
+			list<MetaClass> SuperClasses;
 			containment set<MetaProperty> Properties;
 			containment set<MetaOperation> Operations;
+			set<MetaClass> GetAllSuperClasses();
+			set<MetaProperty> GetAllProperties();
+			set<MetaOperation> GetAllOperations();
 		}
 
 		class MetaOperation
