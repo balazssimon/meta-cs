@@ -173,6 +173,8 @@ POUND        : '#'                    ;
 NOT          : '~'                    ;
 LBRACE       : '{'                    ;
 RBRACE       : '}'                    ;
+LBRACKET     : '['                    ;
+RBRACKET     : ']'                    ;
 
 /** Allow unicode rule/token names */
 @Syntax(kind=SyntaxKind.Identifier)
@@ -206,8 +208,18 @@ NameStartChar
 	; // ignores | ['\u10000-'\uEFFFF] ;
 
 @Syntax(kind=SyntaxKind.Number)
-INT	: [0-9]+
-	;
+INTEGER_LITERAL : DecimalDigits | Hexadecimal;
+
+@Syntax(kind=SyntaxKind.Number)
+DECIMAL_LITERAL : DecimalDigit+ '.' DecimalDigit+;
+
+@Syntax(kind=SyntaxKind.Number)
+SCIENTIFIC_LITERAL : DECIMAL_LITERAL [eE] Sign? DecimalDigit+;
+fragment DecimalDigits : DecimalDigit+;
+fragment DecimalDigit : [0-9];
+fragment Sign : '+' | '-';
+fragment Hexadecimal : ('0x'|'0X') HexDigit*;
+fragment HexDigit : [0-9a-fA-F];
 
 // ANTLR makes no distinction between a single character literal and a
 // multi-character string. All literals are single quote delimited and

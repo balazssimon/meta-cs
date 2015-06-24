@@ -12,67 +12,175 @@ qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
-@Map(type='MetaNamespace')
-@Scope 
-namespaceDeclaration: KNamespace @Map(property='Name') @NameDef(kind=NameKind.Namespace) qualifiedName TEquals @Map(property='Uri') stringLiteral TOpenBrace metamodelDeclaration* TCloseBrace;
+@NameCtr(symbolType=MetaNamespace,merge=true)
+@Scope
+namespaceDeclaration: KNamespace @Property(Name) @Value @NameDef qualifiedName TEquals @Property(Uri) @Value stringLiteral TOpenBrace @Property(Models) metamodelDeclaration* TCloseBrace;
 
-@Map(property='Models')
-@Map(type='MetaModel')
-@TypeDef
-metamodelDeclaration: KMetamodel @Map(property='Name') @NameDef(kind=NameKind.Metamodel) identifier TOpenBrace declaration* TCloseBrace;
+@TypeCtr(MetaModel)
+@Scope
+metamodelDeclaration: KMetamodel @Property(Name) @Value @TypeDef identifier TOpenBrace @Property(Types) declaration* TCloseBrace;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
-@Map(property='Types')
-@Map(type='MetaEnum')
-@TypeDef
-enumDeclaration : KEnum @Map(property='Name') @NameDef(kind=NameKind.Enum) identifier TOpenBrace enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
+@TypeCtr(MetaEnum)
+@Scope
+enumDeclaration : KEnum @Property(Name) @Value  @TypeDef identifier TOpenBrace @Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
-enumValue : @Map(property='EnumLiterals') @NameDef(kind=NameKind.EnumValue) identifier;
-enumMemberDeclaration : operationDeclaration;
+@NameCtr(MetaEnumLiteral)
+enumValue : @Property(Name) @Value  @NameDef identifier;
+enumMemberDeclaration : @Property(Operations) operationDeclaration;
 
-@Map(property='Types')
-@Map(type='MetaClass')
-@TypeDef
-classDeclaration : @Map(property='IsAbstract',value=true) KAbstract? KClass @Map(property='Name') @NameDef(kind=NameKind.Class) identifier (TColon classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+@TypeCtr(MetaClass)
+@Scope
+classDeclaration : @Property(IsAbstract) @Value(true) KAbstract? KClass @Property(Name) @Value @TypeDef identifier (TColon @Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-@Map(property='Ancestors')
-classAncestor : @TypeUse(kind=NameKind.Class) qualifiedName;
-classMemberDeclaration : fieldDeclaration | operationDeclaration;
+classAncestor : @TypeUse(MetaClass) qualifiedName;
+classMemberDeclaration : @Property(Properties) fieldDeclaration | @Property(Operations) operationDeclaration;
 
-@Map(property='Properties')
-@Map(type='MetaProperty')
-fieldDeclaration : fieldModifier? @Map(property='Type') typeReference @Map(property='Name') @NameDef(kind=NameKind.Property) identifier TSemicolon;
-fieldModifier : @Map(property='Kind',value=MetaPropertyKind.Containment) KContainment | @Map(property='Kind',value=MetaPropertyKind.Readonly) KReadonly | @Map(property='Kind',value=MetaPropertyKind.Lazy) KLazy | @Map(property='Kind',value=MetaPropertyKind.Derived) KDerived;
+@NameCtr(MetaProperty)
+fieldDeclaration : @Property(Kind) fieldModifier? typeReference @Property(Name) @Value @NameDef identifier TSemicolon;
+fieldModifier : @Value(MetaPropertyKind.Containment) KContainment | @Value(MetaPropertyKind.Readonly) KReadonly | @Value(MetaPropertyKind.Lazy) KLazy | @Value(MetaPropertyKind.Derived) KDerived;
 
-constDeclaration : KConst typeReference @NameDef(kind=NameKind.Const) identifier (TEquals expression)? TSemicolon;
+//@NameCtr(MetaConstant)
+constDeclaration : KConst typeReference /*@NameDef*/ identifier /*(TEquals expression)?*/ TSemicolon;
 
-@TypeUse
-typeReference : collectionType | simpleType;
-simpleType : objectType | nullableType | qualifiedName;
-@TypeConstructor
-nullableType : primitiveType TQuestion?;
-objectType : KObject | KString;
-primitiveType : KInt | KLong | KFloat | KDouble | KByte | KBool;
-@TypeConstructor
-collectionType : (KSet | KList) TLessThan simpleType TGreaterThan;
-voidType : KVoid;
 @TypeUse
 returnType : typeReference | voidType;
+@TypeUse
+typeReference : collectionType | simpleType;
+@TypeUse
+simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
-@Map(property='Operations')
-@Map(type='MetaOperation')
+@TypeCtr(symbolType=MetaPrimitiveType, merge=true)
+objectType 
+	: @PreDefSymbol(MetaBuiltInType.Object) KObject 
+	| @PreDefSymbol(MetaBuiltInType.String) KString
+	;
+@TypeCtr(symbolType=MetaPrimitiveType, merge=true)
+primitiveType 
+	: @PreDefSymbol(MetaBuiltInType.Int) KInt 
+	| @PreDefSymbol(MetaBuiltInType.Long) KLong 
+	| @PreDefSymbol(MetaBuiltInType.Float) KFloat 
+	| @PreDefSymbol(MetaBuiltInType.Double) KDouble 
+	| @PreDefSymbol(MetaBuiltInType.Byte) KByte 
+	| @PreDefSymbol(MetaBuiltInType.Bool) KBool
+	;
+@TypeCtr(symbolType=MetaPrimitiveType, merge=true)
+voidType : @PreDefSymbol(MetaBuiltInType.Void) KVoid;
+
+@TypeCtr(MetaNullableType)
+nullableType : @Property(InnerType) primitiveType TQuestion;
+
+@TypeCtr(MetaCollectionType)
+collectionType : @Property(Kind) collectionKind TLessThan @Property(InnerType) simpleType TGreaterThan;
+collectionKind : @Value(MetaCollectionKind.Set) KSet | @Value(MetaCollectionKind.List) KList;
+
+@NameCtr(MetaOperation)
+@TypeCtr(symbolType=MetaOperation, noScope=true)
 @Scope
-@TypeConstructor
-operationDeclaration : KStatic? @Map(property='ReturnType') returnType @Map(property='Name') @NameDef(kind=NameKind.Operation) identifier TOpenBracket parameterList? TCloseBracket TSemicolon;
+operationDeclaration : KStatic? @Property(ReturnType) returnType @Property(Name) @Value @TypeDef @NameDef identifier TOpenBracket @Property(Parameters) parameterList? TCloseBracket TSemicolon;
 parameterList : parameter (TComma parameter)*;
-@Map(property='Parameters')
-@Map(type='MetaParameter')
-parameter : @Map(property='Type') typeReference @Map(property='Name') @NameDef(kind=NameKind.Parameter) identifier (TEquals expression)?;
 
-expression : literal | qualifiedName;
+@NameCtr(MetaParameter)
+parameter : @Property(Type) typeReference @NameDef identifier /*(TEquals expression)? { expression.ExpectedType = typeReference; }*/;
 
-associationDeclaration : KAssociation @Map(object=associationDeclaration.target, property='Opposites') @NameUse(kind=NameKind.Property) source=qualifiedName KWith @Map(object=associationDeclaration.source, property='Opposites') @NameUse(kind=NameKind.Property) target=qualifiedName TSemicolon;
+/*
+expressionList : expression (',' expression)*; 
+
+@Expression
+expression 
+	: '(' typeReference ')' expression #castExpression @Symbol(TypeConversionExpression) { Type = typeReference; }
+    | 'typeof' '(' typeReference ')' #typeofExpression @Symbol(TypeOfExpression) { Type = typeof(MetaType); }
+	| '(' expression ')' #bracketExpression @Symbol(BracketExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
+	| literal #constantExpression @Symbol(ConstantExpression) { literal.ExpectedType = ExpectedType; }
+	| identifier #identifierExpression @Symbol(IdentifierExpression) { identifier.ExpectedType = ExpectedType; Definition = bind; Type = Definition.Type; }
+    | expression '[' expressionList ']' #indexerExpression @Symbol(IndexerExpression) { Definition = bind; Type = Definition.ReturnType; }
+    | expression '(' expressionList? ')' #functionCallExpression @Symbol(FunctionCallExpression) { Definition = bind; Type = Definition.ReturnType; }
+    | expression '.' identifier #memberAccessExpression @Symbol(MemberAccessExpression) { Definition = bind; Type = Definition.Type; }
+    | expression operator=postOperator #postExpression @Symbol(UnaryExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
+    | operator=preOperator expression #preExpression @Symbol(UnaryExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
+    | operator=unaryOperator expression #unaryExpression @Symbol(UnaryExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
+    | expression 'as' typeReference #typeConversionExpression @Symbol(TypeConversionExpression) { Operator = OperatorKind.TypeAs; Type = typeReference; }
+    | expression 'is' typeReference #typeConversionExpression @Symbol(TypeConversionExpression) { Operator = OperatorKind.TypeIs; Type = BuiltInType.Bool; }
+    | left=expression operator=multiplicativeOperator right=expression #multiplicativeExpression @Symbol(BinaryExpression)
+    | left=expression operator=additiveOperator right=expression #additiveExpression @Symbol(BinaryExpression)
+    | left=expression operator=shiftOperator right=expression #shiftExpression @Symbol(BinaryExpression)
+    | left=expression operator=comparisonOperator right=expression #comparisonExpression @Symbol(BinaryExpression)
+    | left=expression operator=equalityOperator right=expression #equalityExpression @Symbol(BinaryExpression)
+    | left=expression '&' right=expression #bitwiseAndExpression @Symbol(BinaryExpression) { Operator = OperatorKind.And; }
+    | left=expression '^' right=expression #bitwiseXorExpression @Symbol(BinaryExpression) { Operator = OperatorKind.ExclusiveOr; }
+    | left=expression '|' right=expression #bitwiseOrExpression @Symbol(BinaryExpression) { Operator = OperatorKind.Or; }
+    | left=expression '&&' right=expression #logicalAndExpression @Symbol(BinaryExpression) { Operator = OperatorKind.AndAlso; }
+    | left=expression '||' right=expression #logicalOrExpression @Symbol(BinaryExpression) { Operator = OperatorKind.OrElse; }
+    | left=expression '??' right=expression #nullCoalescingExpression @Symbol(BinaryExpression) { Operator = OperatorKind.Coalesce; }
+    | expression '?' then=expression ':' else=expression #conditionalExpression @Symbol(ConditionalExpression)
+    | expression operator=assignmentOperator value=expression #assignmentExpression @Symbol(AssignmentExpression) 	
+	;
+
+postOperator
+	: @Value(OperatorKind.PostIncrementAssign) '++'
+	| @Value(OperatorKind.PostDecrementAssign) '--'
+	;
+
+preOperator
+	: @Value(OperatorKind.PreIncrementAssign) '++'
+	| @Value(OperatorKind.PreDecrementAssign) '--'
+	;
+
+unaryOperator
+	: @Value(OperatorKind.UnaryPlus) '+'
+	| @Value(OperatorKind.Negate) '-'
+	| @Value(OperatorKind.OnesComplement) '~'
+	| @Value(OperatorKind.Not) '!'
+	;
+
+multiplicativeOperator
+	: @Value(OperatorKind.Multiply) '*'
+	| @Value(OperatorKind.Divide) '/'
+	| @Value(OperatorKind.Modulo) '%'
+	;
+
+additiveOperator
+	: @Value(OperatorKind.Add) '+'
+	| @Value(OperatorKind.Subtract) '-'
+	;
+
+shiftOperator
+	: @Value(OperatorKind.LeftShift) '<<'
+	| @Value(OperatorKind.RightShift) '>>'
+	;
+
+comparisonOperator
+	: @Value(OperatorKind.LessThan) '<'
+	| @Value(OperatorKind.GreaterThan) '>'
+	| @Value(OperatorKind.LessThanOrEqual) '<='
+	| @Value(OperatorKind.GreaterThanOrEqual) '>='
+	;
+
+equalityOperator
+	: @Value(OperatorKind.Equal) '=='
+	| @Value(OperatorKind.NotEqual) '!='
+	;
+
+assignmentOperator
+	: @Value(OperatorKind.Assign) '='  
+	| @Value(OperatorKind.MultiplyAssign) '*=' 
+	| @Value(OperatorKind.DivideAssign) '/=' 
+	| @Value(OperatorKind.ModuloAssign) '%=' 
+	| @Value(OperatorKind.AddAssign) '+=' 
+	| @Value(OperatorKind.SubtractAssign) '-=' 
+	| @Value(OperatorKind.LeftShiftAssign) '<<='
+	| @Value(OperatorKind.RightShiftAssign) '>>='
+	| @Value(OperatorKind.AndAssign) '&=' 
+	| @Value(OperatorKind.ExclusiveOrAssign) '^=' 
+	| @Value(OperatorKind.OrAssign) '|=' 
+	;
+*/
+
+associationDeclaration : KAssociation @NameUse(MetaProperty) source=qualifiedName KWith @NameUse(MetaProperty) target=qualifiedName TSemicolon
+{
+	source.Opposites = target;
+};
 
 
 // Additional rules for lexer:
@@ -84,8 +192,13 @@ identifier : IdentifierNormal /*| IdentifierVerbatim*/;
 
 // Literals
 literal 
-    : nullLiteral | booleanLiteral | numberLiteral | dateOrTimeLiteral  
-    | stringLiteral | guidLiteral;
+    : nullLiteral { Type = BuiltInType.Null; Value = null; }
+	| booleanLiteral { Type = BuiltInType.Bool; Value = valueof(booleanLiteral); }
+	| integerLiteral { Type = BuiltInType.Int; Value = valueof(integerLiteral); }
+	| decimalLiteral { Type = BuiltInType.Double; Value = valueof(decimalLiteral); }
+	| scientificLiteral { Type = BuiltInType.Double; Value = valueof(scientificLiteral); }
+    | stringLiteral { Type = BuiltInType.String; Value = valueof(stringLiteral); }
+	;
 
 // Null literal
 nullLiteral : KNull;
@@ -94,10 +207,17 @@ nullLiteral : KNull;
 booleanLiteral : KTrue | KFalse;
 
 // Number literals
-numberLiteral : integerLiteral | decimalLiteral | scientificLiteral;
 integerLiteral : IntegerLiteral;
 decimalLiteral : DecimalLiteral;
 scientificLiteral : ScientificLiteral;
+
+// String literals
+stringLiteral : RegularStringLiteral;
+
+
+/*
+
+ | DoubleQuoteVerbatimStringLiteral | SingleQuoteVerbatimStringLiteral
 
 // Date and time literals  
 dateOrTimeLiteral 
@@ -107,9 +227,17 @@ dateTimeLiteral : DateTimeLiteral;
 dateLiteral : DateLiteral;
 timeLiteral : TimeLiteral;
 
-// String literals
-stringLiteral : RegularStringLiteral /*| DoubleQuoteVerbatimStringLiteral | SingleQuoteVerbatimStringLiteral*/;
-
 // Guid literal
 guidLiteral : GuidLiteral;
 
+@Symbol(MetaClass)
+@TypeDef
+classDeclaration : @Property(IsAbstract) @Value(true) KAbstract? KClass @NameDef identifier @Property(TypeParams) genericTypeParams? (TColon @Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+
+genericTypeParams : LT genericTypeParam (COMMA genericTypeParam)* GT;
+
+@Symbol(MetaTypeParam)
+@TypeParam
+genericTypeParam : identifier;
+
+*/

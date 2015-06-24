@@ -175,6 +175,12 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCollectionType([NotNull] MetaModelParser.CollectionTypeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.collectionKind"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCollectionKind([NotNull] MetaModelParser.CollectionKindContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.voidType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -204,12 +210,6 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitParameter([NotNull] MetaModelParser.ParameterContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitExpression([NotNull] MetaModelParser.ExpressionContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.associationDeclaration"/>.
 	/// </summary>
@@ -241,12 +241,6 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBooleanLiteral([NotNull] MetaModelParser.BooleanLiteralContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.numberLiteral"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNumberLiteral([NotNull] MetaModelParser.NumberLiteralContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.integerLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -265,46 +259,10 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitScientificLiteral([NotNull] MetaModelParser.ScientificLiteralContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.dateOrTimeLiteral"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitDateOrTimeLiteral([NotNull] MetaModelParser.DateOrTimeLiteralContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.dateTimeOffsetLiteral"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitDateTimeOffsetLiteral([NotNull] MetaModelParser.DateTimeOffsetLiteralContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.dateTimeLiteral"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitDateTimeLiteral([NotNull] MetaModelParser.DateTimeLiteralContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.dateLiteral"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitDateLiteral([NotNull] MetaModelParser.DateLiteralContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.timeLiteral"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTimeLiteral([NotNull] MetaModelParser.TimeLiteralContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.stringLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitStringLiteral([NotNull] MetaModelParser.StringLiteralContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.guidLiteral"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitGuidLiteral([NotNull] MetaModelParser.GuidLiteralContext context);
 }
 } // namespace MetaDslx.Compiler

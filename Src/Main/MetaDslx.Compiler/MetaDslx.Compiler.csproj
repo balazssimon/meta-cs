@@ -53,6 +53,7 @@
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserVisitor.cs" />
     <Compile Include="MetaCompiler.cs" />
     <Compile Include="MetaCompilerDiagnostics.cs" />
+    <Compile Include="MetaCompilerException.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorCompiler.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorLexer.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorParser.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="MetaModel\MetaModelParserListener.cs" />
     <Compile Include="MetaModel\MetaModelParserVisitor.cs" />
     <Compile Include="MetaScope.cs" />
+    <Compile Include="MetaSymbol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

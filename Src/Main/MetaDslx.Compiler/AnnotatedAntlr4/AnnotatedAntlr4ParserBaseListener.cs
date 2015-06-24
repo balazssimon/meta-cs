@@ -370,6 +370,90 @@ public partial class AnnotatedAntlr4ParserBaseListener : IAnnotatedAntlr4ParserL
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLabeledAlt([NotNull] AnnotatedAntlr4Parser.LabeledAltContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.attributesBlock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAttributesBlock([NotNull] AnnotatedAntlr4Parser.AttributesBlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.attributesBlock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAttributesBlock([NotNull] AnnotatedAntlr4Parser.AttributesBlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.attributeAssignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAttributeAssignment([NotNull] AnnotatedAntlr4Parser.AttributeAssignmentContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.attributeAssignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAttributeAssignment([NotNull] AnnotatedAntlr4Parser.AttributeAssignmentContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExpressionList([NotNull] AnnotatedAntlr4Parser.ExpressionListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExpressionList([NotNull] AnnotatedAntlr4Parser.ExpressionListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.literalExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLiteralExpression([NotNull] AnnotatedAntlr4Parser.LiteralExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.literalExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLiteralExpression([NotNull] AnnotatedAntlr4Parser.LiteralExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.functionCallExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionCallExpression([NotNull] AnnotatedAntlr4Parser.FunctionCallExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.functionCallExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionCallExpression([NotNull] AnnotatedAntlr4Parser.FunctionCallExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.memberAccessExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMemberAccessExpression([NotNull] AnnotatedAntlr4Parser.MemberAccessExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.memberAccessExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMemberAccessExpression([NotNull] AnnotatedAntlr4Parser.MemberAccessExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.literal"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLiteral([NotNull] AnnotatedAntlr4Parser.LiteralContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.literal"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLiteral([NotNull] AnnotatedAntlr4Parser.LiteralContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.lexerRule"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -802,17 +886,17 @@ public partial class AnnotatedAntlr4ParserBaseListener : IAnnotatedAntlr4ParserL
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAnnotationAttribute([NotNull] AnnotatedAntlr4Parser.AnnotationAttributeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotationValue"/>.
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionValueList"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAnnotationValue([NotNull] AnnotatedAntlr4Parser.AnnotationValueContext context) { }
+	public virtual void EnterExpressionValueList([NotNull] AnnotatedAntlr4Parser.ExpressionValueListContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotationValue"/>.
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionValueList"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAnnotationValue([NotNull] AnnotatedAntlr4Parser.AnnotationValueContext context) { }
+	public virtual void ExitExpressionValueList([NotNull] AnnotatedAntlr4Parser.ExpressionValueListContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.qualifiedName"/>.
 	/// <para>The default implementation does nothing.</para>

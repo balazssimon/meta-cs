@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 /*
  * Reserved annotations:
  *  @DynamicAnnotations on grammar
- *  @Map
+ *  @Value
  */
 
 namespace MetaDslx.Compiler
@@ -32,9 +32,13 @@ namespace MetaDslx.Compiler
         public string Antlr4Source { get; private set; }
         public string GeneratedSource { get; private set; }
 
-        public List<object> LexerAnnotations { get; private set; }
-        public Dictionary<int, List<object>> ModeAnnotations { get; private set; }
-        public Dictionary<int, List<object>> TokenAnnotations { get; private set; }
+
+        public override List<object> LexerAnnotations { get; protected set; }
+        public override List<object> ParserAnnotations { get; protected set; }
+        public override Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
+        public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
+        public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
+        public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
 
         public AnnotatedAntlr4Compiler(string source, string fileName = null)
             : base(source, fileName)
@@ -86,6 +90,13 @@ namespace MetaDslx.Compiler
             rewriter.Delete(context.Start, context.Stop);
             return null;
             //return base.VisitAnnotation(context);
+        }
+
+        public override object VisitAttributesBlock(AnnotatedAntlr4Parser.AttributesBlockContext context)
+        {
+            removedText.Add(new TextSpan(context));
+            rewriter.Delete(context.Start, context.Stop);
+            return null;
         }
     }
 
@@ -193,7 +204,7 @@ namespace MetaDslx.Compiler
             currentGrammar.Modes.Add(currentMode);
             this.CollectAnnotations(context.annotation());
 
-            this.dynamicAnnotations.Add("Map");
+            this.dynamicAnnotations.Add("Value");
             foreach (var annot in currentGrammar.Annotations)
             {
                 if (annot.Type.Name == "DynamicAnnotations")
@@ -403,21 +414,45 @@ namespace MetaDslx.Compiler
                 {
                     this.compiler.Diagnostics.AddWarning("No parent for annotation: " + annotation.Type.Name, null, new TextSpan(annot));
                 }
-                if (annot.annotationBody() != null && annot.annotationBody().annotationAttributeList() != null)
+                if (annot.annotationBody() != null)
                 {
-                    foreach (var attr in annot.annotationBody().annotationAttributeList().annotationAttribute())
+                    if (annot.annotationBody().annotationAttributeList() != null)
                     {
-                        AnnotationProperty property = new AnnotationProperty();
-                        property.Name = attr.identifier().GetText();
-                        if (attr.annotationValue() != null)
+                        foreach (var attr in annot.annotationBody().annotationAttributeList().annotationAttribute())
                         {
-                            string value = attr.annotationValue().GetText();
-                            property.Value = value;
+                            AnnotationProperty property = new AnnotationProperty();
+                            property.Name = attr.identifier().GetText();
+                            if (attr.expression() != null)
+                            {
+                                string value = attr.expression().GetText();
+                                property.Value = value;
+                            }
+                            else if (attr.expressionValueList() != null)
+                            {
+                                foreach (var expr in attr.expressionValueList().expression())
+                                {
+                                    string value = expr.GetText();
+                                    property.Values.Add(value);
+                                }
+                            }
+                            annotation.Properties.Add(property);
+                            if (!annotationType.Properties.Contains(property.Name))
+                            {
+                                annotationType.Properties.Add(property.Name);
+                            }
                         }
-                        annotation.Properties.Add(property);
-                        if (!annotationType.Properties.Contains(property.Name))
+                    }
+                    else if (annot.annotationBody().expression() != null)
+                    {
+                        string value = annot.annotationBody().expression().GetText();
+                        annotation.Value = value;
+                    }
+                    else if (annot.annotationBody().expressionValueList() != null)
+                    {
+                        foreach (var expr in annot.annotationBody().expressionValueList().expression())
                         {
-                            annotationType.Properties.Add(property.Name);
+                            string value = expr.GetText();
+                            annotation.Values.Add(value);
                         }
                     }
                 }
@@ -479,7 +514,7 @@ namespace MetaDslx.Compiler
 
         private string ToValue(string value, bool dynamic)
         {
-            if (string.IsNullOrWhiteSpace(value)) return value;
+            if (string.IsNullOrWhiteSpace(value)) return null;
             if (value.Length >= 2 && value.StartsWith("'") && value.EndsWith("'"))
             {
                 StringBuilder sb = new StringBuilder();
@@ -1031,11 +1066,105 @@ namespace MetaDslx.Compiler
             {
                 WriteLine("{0} = new {1}();", variableName, annotName);
             }
+            if (annot.Values.Count > 0)
+            {
+                foreach (var value in annot.Values)
+                {
+                    if (annot.Type.Name == "TypeUse" || annot.Type.Name == "NameUse")
+                    {
+                        WriteLine("{0}.SymbolTypes.Add(typeof({1}));", variableName, value);
+                    }
+                    else
+                    {
+                        string annotValue = this.ToValue(value, annot.Type.IsDynamic);
+                        WriteLine("{0}.Values.Add({1});", variableName, annotValue);
+                    }
+                }
+            }
+            else
+            {
+                if (annot.Value != null)
+                {
+                    string annotValue = annot.Value;
+                    if (annot.Type.Name == "Symbol" || annot.Type.Name == "TypeCtr" || annot.Type.Name == "TypeDef" || annot.Type.Name == "NameCtr" || annot.Type.Name == "NameDef")
+                    {
+                        WriteLine("{0}.SymbolType = typeof({1});", variableName, annotValue);
+                    }
+                    else if (annot.Type.Name == "TypeUse" || annot.Type.Name == "NameUse")
+                    {
+                        WriteLine("{0}.SymbolTypes.Add(typeof({1}));", variableName, annotValue);
+                    }
+                    else if (annot.Type.Name == "Property")
+                    {
+                        WriteLine("{0}.Name = \"{1}\";", variableName, annotValue);
+                    }
+                    else if (annot.Type.Name == "Value" || annot.Type.Name == "PreDefSymbol")
+                    {
+                        WriteLine("{0}.Value = {1};", variableName, annotValue);
+                    }
+                    else
+                    {
+                        annotValue = this.ToValue(annot.Value, annot.Type.IsDynamic);
+                        WriteLine("{0}.Value = {1};", variableName, annotValue);
+                    }
+                }
+                else
+                {
+                    if (annot.Type.Name == "Value")
+                    {
+                        WriteLine("{0}.Value = context.GetText();", variableName);
+                    }
+                }
+            }
             foreach (var prop in annot.Properties)
             {
                 string propName = this.ToPascalCase(prop.Name);
-                string propValue = this.ToValue(prop.Value, annot.Type.IsDynamic);
-                WriteLine("{0}.{1} = {2};", variableName, propName, propValue);
+                if (prop.Values.Count > 0)
+                {
+                    foreach (var value in prop.Values)
+                    {
+                        if (prop.Name == "symbolTypes" && (annot.Type.Name == "TypeUse" || annot.Type.Name == "NameUse"))
+                        {
+                            WriteLine("{0}.{1}.Add(typeof({2}));", variableName, propName, value);
+                        }
+                        else
+                        {
+                            string propValue = this.ToValue(value, annot.Type.IsDynamic);
+                            WriteLine("{0}.{1}.Add({2});", variableName, propName, propValue);
+                        }
+                    }
+                }
+                else
+                {
+                    if (prop.Value != null)
+                    {
+                        if (prop.Name == "symbolType" && (annot.Type.Name == "Symbol" || annot.Type.Name == "TypeCtr" || annot.Type.Name == "TypeDef" || annot.Type.Name == "NameCtr" || annot.Type.Name == "NameDef"))
+                        {
+                            WriteLine("{0}.{1} = typeof({2});", variableName, propName, prop.Value);
+                        }
+                        else if (prop.Name == "symbolTypes" && (annot.Type.Name == "TypeUse" || annot.Type.Name == "NameUse"))
+                        {
+                            WriteLine("{0}.{1}.Add(typeof({2}));", variableName, propName, prop.Value);
+                        }
+                        else if (prop.Name == "name" && (annot.Type.Name == "Property"))
+                        {
+                            WriteLine("{0}.{1} = \"{2}\";", variableName, propName, prop.Value);
+                        }
+                        else if (prop.Name == "value" && (annot.Type.Name == "Value"))
+                        {
+                            WriteLine("{0}.{1} = {2};", variableName, propName, prop.Value);
+                        }
+                        else if (prop.Name == "value" && (annot.Type.Name == "PreDefSymbol"))
+                        {
+                            WriteLine("{0}.{1} = {2};", variableName, propName, prop.Value);
+                        }
+                        else
+                        {
+                            string propValue = this.ToValue(prop.Value, annot.Type.IsDynamic);
+                            WriteLine("{0}.{1} = {2};", variableName, propName, propValue);
+                        }
+                    }
+                }
             }
         }
 
@@ -1054,14 +1183,30 @@ namespace MetaDslx.Compiler
             public Annotation()
             {
                 this.Properties = new List<AnnotationProperty>();
+                this.Values = new List<string>();
             }
             public AnnotationType Type { get; set; }
             public List<AnnotationProperty> Properties { get; private set; }
+            public string Value
+            {
+                get;
+                set;
+            }
+            public List<string> Values { get; private set; }
         }
         public class AnnotationProperty
         {
+            public AnnotationProperty()
+            {
+                this.Values = new List<string>();
+            }
             public string Name { get; set; }
-            public string Value { get; set; }
+            public string Value
+            {
+                get;
+                set;
+            }
+            public List<string> Values { get; private set; }
         }
         public class Grammar
         {

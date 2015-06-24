@@ -322,6 +322,18 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCollectionType([NotNull] MetaModelParser.CollectionTypeContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.collectionKind"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCollectionKind([NotNull] MetaModelParser.CollectionKindContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.collectionKind"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCollectionKind([NotNull] MetaModelParser.CollectionKindContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.voidType"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -381,18 +393,6 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParameter([NotNull] MetaModelParser.ParameterContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterExpression([NotNull] MetaModelParser.ExpressionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitExpression([NotNull] MetaModelParser.ExpressionContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.associationDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -454,18 +454,6 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBooleanLiteral([NotNull] MetaModelParser.BooleanLiteralContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.numberLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumberLiteral([NotNull] MetaModelParser.NumberLiteralContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.numberLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumberLiteral([NotNull] MetaModelParser.NumberLiteralContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.integerLiteral"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -502,66 +490,6 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitScientificLiteral([NotNull] MetaModelParser.ScientificLiteralContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.dateOrTimeLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDateOrTimeLiteral([NotNull] MetaModelParser.DateOrTimeLiteralContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.dateOrTimeLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDateOrTimeLiteral([NotNull] MetaModelParser.DateOrTimeLiteralContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.dateTimeOffsetLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDateTimeOffsetLiteral([NotNull] MetaModelParser.DateTimeOffsetLiteralContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.dateTimeOffsetLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDateTimeOffsetLiteral([NotNull] MetaModelParser.DateTimeOffsetLiteralContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.dateTimeLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDateTimeLiteral([NotNull] MetaModelParser.DateTimeLiteralContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.dateTimeLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDateTimeLiteral([NotNull] MetaModelParser.DateTimeLiteralContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.dateLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDateLiteral([NotNull] MetaModelParser.DateLiteralContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.dateLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDateLiteral([NotNull] MetaModelParser.DateLiteralContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.timeLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterTimeLiteral([NotNull] MetaModelParser.TimeLiteralContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.timeLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitTimeLiteral([NotNull] MetaModelParser.TimeLiteralContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.stringLiteral"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -573,18 +501,6 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStringLiteral([NotNull] MetaModelParser.StringLiteralContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.guidLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterGuidLiteral([NotNull] MetaModelParser.GuidLiteralContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.guidLiteral"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitGuidLiteral([NotNull] MetaModelParser.GuidLiteralContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

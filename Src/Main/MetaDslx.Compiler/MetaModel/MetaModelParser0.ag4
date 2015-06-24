@@ -1,0 +1,115 @@
+﻿parser grammar MetaModelParser;
+
+options
+{
+    tokenVocab = MetaModelLexer; 
+}
+
+main: namespaceDeclaration*;
+
+@QualifiedName
+qualifiedName : identifier (TDot identifier)*;
+identifierList : identifier (TComma identifier)*;
+qualifiedNameList : qualifiedName (TComma qualifiedName)*;
+
+@Map(type='MetaNamespace')
+@Scope 
+namespaceDeclaration: KNamespace @Map(property='Name') @NameDef(kind=NameKind.Namespace) qualifiedName TEquals @Map(property='Uri') stringLiteral TOpenBrace metamodelDeclaration* TCloseBrace;
+
+@Map(property='Models')
+@Map(type='MetaModel')
+@TypeDef
+metamodelDeclaration: KMetamodel @Map(property='Name') @NameDef(kind=NameKind.Metamodel) identifier TOpenBrace declaration* TCloseBrace;
+
+declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
+
+@Map(property='Types')
+@Map(type='MetaEnum')
+@TypeDef
+enumDeclaration : KEnum @Map(property='Name') @NameDef(kind=NameKind.Enum) identifier TOpenBrace enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
+enumValues : enumValue (TComma enumValue)*;
+enumValue : @Map(property='EnumLiterals') @NameDef(kind=NameKind.EnumValue) identifier;
+enumMemberDeclaration : operationDeclaration;
+
+@Map(property='Types')
+@Map(type='MetaClass')
+@TypeDef
+classDeclaration : @Map(property='IsAbstract',value=true) KAbstract? KClass @Map(property='Name') @NameDef(kind=NameKind.Class) identifier (TColon classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+classAncestors : classAncestor (TComma classAncestor)*;
+@Map(property='Ancestors')
+classAncestor : @TypeUse(kind=NameKind.Class) qualifiedName;
+classMemberDeclaration : fieldDeclaration | operationDeclaration;
+
+@Map(property='Properties')
+@Map(type='MetaProperty')
+fieldDeclaration : fieldModifier? @Map(property='Type') typeReference @Map(property='Name') @NameDef(kind=NameKind.Property) identifier TSemicolon;
+fieldModifier : @Map(property='Kind',value=MetaPropertyKind.Containment) KContainment | @Map(property='Kind',value=MetaPropertyKind.Readonly) KReadonly | @Map(property='Kind',value=MetaPropertyKind.Lazy) KLazy | @Map(property='Kind',value=MetaPropertyKind.Derived) KDerived;
+
+constDeclaration : KConst typeReference @NameDef(kind=NameKind.Const) identifier (TEquals expression)? TSemicolon;
+
+@TypeUse
+typeReference : collectionType | simpleType;
+simpleType : objectType | nullableType | qualifiedName;
+@TypeConstructor
+nullableType : primitiveType TQuestion?;
+objectType : KObject | KString;
+primitiveType : KInt | KLong | KFloat | KDouble | KByte | KBool;
+@TypeConstructor
+collectionType : (KSet | KList) TLessThan simpleType TGreaterThan;
+voidType : KVoid;
+@TypeUse
+returnType : typeReference | voidType;
+
+@Map(property='Operations')
+@Map(type='MetaOperation')
+@Scope
+@TypeConstructor
+operationDeclaration : KStatic? @Map(property='ReturnType') returnType @Map(property='Name') @NameDef(kind=NameKind.Operation) identifier TOpenBracket parameterList? TCloseBracket TSemicolon;
+parameterList : parameter (TComma parameter)*;
+@Map(property='Parameters')
+@Map(type='MetaParameter')
+parameter : @Map(property='Type') typeReference @Map(property='Name') @NameDef(kind=NameKind.Parameter) identifier (TEquals expression)?;
+
+expression : literal | qualifiedName;
+
+associationDeclaration : KAssociation @Map(object=associationDeclaration.target, property='Opposites') @NameUse(kind=NameKind.Property) source=qualifiedName KWith @Map(object=associationDeclaration.source, property='Opposites') @NameUse(kind=NameKind.Property) target=qualifiedName TSemicolon;
+
+
+// Additional rules for lexer:
+
+// Identifiers
+@Identifier
+identifier : IdentifierNormal /*| IdentifierVerbatim*/;
+//identifier : IdentifierGeneral | IdentifierVerbatim;
+
+// Literals
+literal 
+    : nullLiteral | booleanLiteral | numberLiteral | dateOrTimeLiteral  
+    | stringLiteral | guidLiteral;
+
+// Null literal
+nullLiteral : KNull;
+
+// Boolean literals
+booleanLiteral : KTrue | KFalse;
+
+// Number literals
+numberLiteral : integerLiteral | decimalLiteral | scientificLiteral;
+integerLiteral : IntegerLiteral;
+decimalLiteral : DecimalLiteral;
+scientificLiteral : ScientificLiteral;
+
+// Date and time literals  
+dateOrTimeLiteral 
+    : dateTimeLiteral | dateTimeOffsetLiteral | dateLiteral | timeLiteral;
+dateTimeOffsetLiteral : DateTimeOffsetLiteral;
+dateTimeLiteral : DateTimeLiteral;
+dateLiteral : DateLiteral;
+timeLiteral : TimeLiteral;
+
+// String literals
+stringLiteral : RegularStringLiteral /*| DoubleQuoteVerbatimStringLiteral | SingleQuoteVerbatimStringLiteral*/;
+
+// Guid literal
+guidLiteral : GuidLiteral;
+

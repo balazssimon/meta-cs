@@ -9,53 +9,52 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler
 {
-    [Flags]
-    public enum ScopeEntryKind
-    {
-        None = 0,
-        Type = 1,
-        Name = 2
-    }
-
-    public enum NameKind
-    {
-        Namespace,
-        Metamodel,
-        Class,
-        Enum,
-        EnumValue,
-        Property,
-        Const,
-        Operation,
-        Parameter
-    }
-
     public class NameDefAnnotation
     {
-        public NameKind? Kind { get; set; }
+        public Type SymbolType { get; set; }
     }
 
     public class NameUseAnnotation
     {
-        public NameKind? Kind { get; set; }
+        public NameUseAnnotation()
+        {
+            this.SymbolTypes = new List<Type>();
+        }
+        public List<Type> SymbolTypes { get; set; }
     }
 
     public class TypeDefAnnotation
     {
+        public Type SymbolType { get; set; }
     }
 
     public class TypeUseAnnotation
     {
-        public NameKind? Kind { get; set; }
+        public TypeUseAnnotation()
+        {
+            this.SymbolTypes = new List<Type>();
+        }
+        public List<Type> SymbolTypes { get; set; }
     }
 
-    public class TypeConstructorAnnotation
+    public class TypeCtrAnnotation
     {
+        public Type SymbolType { get; set; }
+        public bool Merge { get; set; }
+        public bool Overload { get; set; }
+        public bool NoScope { get; set; }
+    }
+
+    public class NameCtrAnnotation
+    {
+        public Type SymbolType { get; set; }
+        public bool Merge { get; set; }
+        public bool Overload { get; set; }
+        public bool NoScope { get; set; }
     }
 
     public class ScopeAnnotation
     {
-
     }
 
     public class IdentifierAnnotation
@@ -68,12 +67,8 @@ namespace MetaDslx.Compiler
 
     }
 
-    public class MapAnnotation
+    public class ValueAnnotation
     {
-        public string Type { get; set; }
-        public IRuleNode Object { get; set; }
-        public string Property { get; set; }
-
         private object value;
         public object Value 
         {
@@ -81,6 +76,28 @@ namespace MetaDslx.Compiler
             set { this.value = value; this.HasValue = true; }
         }
         public bool HasValue { get; set; }
+    }
+
+    public class PreDefSymbolAnnotation
+    {
+        private object value;
+        public object Value
+        {
+            get { return this.value; }
+            set { this.value = value; this.HasValue = true; }
+        }
+        public bool HasValue { get; set; }
+    }
+
+    public class SymbolAnnotation
+    {
+        public Type SymbolType { get; set; }
+        public bool NoScope { get; set; }
+    }
+
+    public class PropertyAnnotation
+    {
+        public string Name { get; set; }
     }
 
     public class MetaModelCompiler : MetaCompiler
@@ -92,17 +109,10 @@ namespace MetaDslx.Compiler
 
         public override void Compile()
         {
-            this.GlobalScope = new Scope(null, ScopeEntryKind.None, null);
-            this.ScopeEntries = new Dictionary<IParseTree, List<ScopeEntry>>();
-            var voidType = new PrimitiveTypeDefinition("void", this.GlobalScope);
-            var intType = new PrimitiveTypeDefinition("int", this.GlobalScope);
-            var longType = new PrimitiveTypeDefinition("long", this.GlobalScope);
-            var floatType = new PrimitiveTypeDefinition("float", this.GlobalScope);
-            var doubleType = new PrimitiveTypeDefinition("double", this.GlobalScope);
-            var byteType = new PrimitiveTypeDefinition("byte", this.GlobalScope);
-            var boolType = new PrimitiveTypeDefinition("bool", this.GlobalScope);
-            var stringType = new PrimitiveTypeDefinition("string", this.GlobalScope);
-            var objectType = new PrimitiveTypeDefinition("object", this.GlobalScope);
+            /*foreach (var type in MetaBuiltInType.Types)
+            {
+                this.GlobalScope.RegisterTypeDef(type.Name, type);
+            }*/
 
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = new MetaModelLexer(inputStream);
@@ -119,92 +129,37 @@ namespace MetaDslx.Compiler
             this.TokenAnnotations = annotator.TokenAnnotations;
             this.RuleAnnotations = annotator.RuleAnnotations;
             this.TreeAnnotations = annotator.TreeAnnotations;
-            MetaVisitorFirstPass firstPass = new MetaVisitorFirstPass(this);
-            firstPass.Visit(this.ParseTree);
+            MetaCompilerDefinitionPhase definitionPhase = new MetaCompilerDefinitionPhase(this);
+            definitionPhase.VisitNode(this.ParseTree);
+            MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);
+            referencePhase.VisitNode(this.ParseTree);
+            /*MetaVisitorFirstPass firstPass = new MetaVisitorFirstPass(this);
+            firstPass.Visit(this.ParseTree);*/
             MetaVisitorSecondPass secondPass = new MetaVisitorSecondPass(this);
             secondPass.Visit(this.ParseTree);
 
-            this.ModelObjects = new Dictionary<IParseTree, ModelObject>();
-            MetaVisitorThirdPass thirdPass = new MetaVisitorThirdPass(this);
+            /*MetaVisitorThirdPass thirdPass = new MetaVisitorThirdPass(this);
             thirdPass.Visit(this.ParseTree);
             MetaVisitorFourthPass fourthPass = new MetaVisitorFourthPass(this);
-            fourthPass.Visit(this.ParseTree);
+            fourthPass.Visit(this.ParseTree);*/
 
-            var namespaces = this.ModelObjects.Values.OfType<MetaNamespace>().Distinct().ToList();
+            var namespaces = this.GlobalScope.GetSymbols().OfType<MetaNamespace>().Distinct().ToList();
             MetaModelGenerator generator = new MetaModelGenerator(namespaces);
             this.GeneratedSource = generator.Generate();
         }
 
-        public Scope GlobalScope { get; private set; }
         public MetaModelParser.MainContext ParseTree { get; private set; }
         public MetaModelLexer Lexer { get; private set; }
         public MetaModelParser Parser { get; private set; }
         public CommonTokenStream CommonTokenStream { get; private set; }
         public string GeneratedSource { get; private set; }
 
-        public List<object> LexerAnnotations { get; private set; }
-        public List<object> ParserAnnotations { get; private set; }
-        public Dictionary<int, List<object>> ModeAnnotations { get; private set; }
-        public Dictionary<int, List<object>> TokenAnnotations { get; private set; }
-        public Dictionary<Type, List<object>> RuleAnnotations { get; private set; }
-        public Dictionary<object, List<object>> TreeAnnotations { get; private set; }
-
-        public Dictionary<IParseTree, ModelObject> ModelObjects { get; private set; }
-        public Dictionary<IParseTree, List<ScopeEntry>> ScopeEntries { get; private set; }
-    }
-
-    public class PrimitiveTypeDefinition : TypeDefinition
-    {
-        public PrimitiveTypeDefinition(string name, Scope parent)
-            : base(name, ScopeEntryKind.Type, parent)
-        {
-        }
-
-        public override bool Equals(object obj)
-        {
-            PrimitiveTypeDefinition rhs = obj as PrimitiveTypeDefinition;
-            return rhs != null && this.Name == rhs.Name;
-        }
-    }
-
-    public enum CollectionTypeKind
-    {
-        List,
-        Set
-    }
-
-    public class CollectionTypeDefinition : TypeDefinition
-    {
-        public CollectionTypeDefinition(string name, CollectionTypeKind kind, Scope parent)
-            : base(name, ScopeEntryKind.Type, parent)
-        {
-            this.CollectionKind = kind;
-        }
-
-        public CollectionTypeKind CollectionKind { get; private set; }
-        public TypeDefinition InnerType { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            CollectionTypeDefinition rhs = obj as CollectionTypeDefinition;
-            return rhs != null && this.Kind == rhs.Kind && this.InnerType != null && this.InnerType.Equals(rhs.InnerType);
-        }
-    }
-
-    public class NullableTypeDefinition : TypeDefinition
-    {
-        public NullableTypeDefinition(string name, Scope parent)
-            : base(name, ScopeEntryKind.Type, parent)
-        {
-        }
-
-        public TypeDefinition InnerType { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            NullableTypeDefinition rhs = obj as NullableTypeDefinition;
-            return rhs != null && this.InnerType != null && this.InnerType.Equals(rhs.InnerType);
-        }
+        public override List<object> LexerAnnotations { get; protected set; }
+        public override List<object> ParserAnnotations { get; protected set; }
+        public override Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
+        public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
+        public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
+        public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
     }
 
     internal class MetaCompilerVisitor : MetaModelParserBaseVisitor<object>
@@ -318,7 +273,8 @@ namespace MetaDslx.Compiler
             {
                 IParseTree child = tree.GetChild(i);
                 TypeUseAnnotation tra = this.GetAnnotationFor<TypeUseAnnotation>(child);
-                if (tra != null)
+                TypeCtrAnnotation tca = this.GetAnnotationFor<TypeCtrAnnotation>(child);
+                if (tra != null || tca != null)
                 {
                     result.Add(child);
                 }
@@ -344,221 +300,823 @@ namespace MetaDslx.Compiler
         }
     }
 
-    internal class MetaVisitorFirstPass : MetaCompilerVisitor
+    public class MetaCompilerPhase
     {
-        private Scope global;
-        private Scope currentScope;
-        private TypeDefinition currentType;
+        public MetaCompiler Compiler { get; private set; }
 
-        public MetaVisitorFirstPass(MetaModelCompiler compiler)
+        public MetaCompilerPhase(MetaCompiler compiler)
+        {
+            this.Compiler = compiler;
+        }
+        public virtual void VisitNode(IParseTree node)
+        {
+            this.VisitChildren(node);
+        }
+
+        public virtual void VisitChildren(IParseTree node)
+        {
+            for (int i = 0; i < node.ChildCount; ++i)
+            {
+                this.VisitNode(node.GetChild(i));
+            }
+        }
+
+        protected T GetAnnotationFor<T>(IParseTree tree)
+        {
+            if (tree == null) return default(T);
+            return this.GetAnnotationsFor<T>(tree).FirstOrDefault();
+        }
+
+        protected IEnumerable<T> GetAnnotationsFor<T>(IParseTree tree)
+        {
+            if (tree == null) return new T[0];
+            List<object> annotList;
+            if (this.Compiler.TreeAnnotations.TryGetValue(tree, out annotList))
+            {
+                return annotList.OfType<T>();
+            }
+            return new T[0];
+        }
+
+        protected List<IParseTree> GetQualifiedNames(IParseTree tree)
+        {
+            List<IParseTree> result = new List<IParseTree>();
+            if (tree == null) return result;
+            QualifiedNameAnnotation qna = this.GetAnnotationFor<QualifiedNameAnnotation>(tree);
+            IdentifierAnnotation ia = this.GetAnnotationFor<IdentifierAnnotation>(tree);
+            if (qna != null || ia != null)
+            {
+                result.Add(tree);
+            }
+            else
+            {
+                for (int i = 0; i < tree.ChildCount; ++i)
+                {
+                    result.AddRange(this.GetQualifiedNames(tree.GetChild(i)));
+                }
+            }
+            return result;
+        }
+
+        protected List<IParseTree> GetIdentifiers(IParseTree tree)
+        {
+            List<IParseTree> result = new List<IParseTree>();
+            if (tree == null) return result;
+            IdentifierAnnotation ia = this.GetAnnotationFor<IdentifierAnnotation>(tree);
+            if (ia != null)
+            {
+                result.Add(tree);
+            }
+            else
+            {
+                for (int i = 0; i < tree.ChildCount; ++i)
+                {
+                    result.AddRange(this.GetIdentifiers(tree.GetChild(i)));
+                }
+            }
+            return result;
+        }
+    }
+
+    public class MetaCompilerDefinitionPhase : MetaCompilerPhase
+    {
+        public MetaCompilerDefinitionPhase(MetaCompiler compiler)
             : base(compiler)
         {
-            this.global = compiler.GlobalScope;
-            this.currentScope = this.global;
+            this.ModelFactory = new ModelFactory();
+            this.CurrentScope = this.Compiler.GlobalScope;
         }
 
-        private void AddScopeEntry(IParseTree node, ScopeEntry entry)
+        private int anonymousNameCounter = 0;
+        private int anonymousTypeCounter = 0;
+
+        protected Scope CurrentScope { get; set; }
+        protected TypeConstructor CurrentTypeCtr { get; set; }
+        protected IParseTree CurrentTypeCtrNode { get; set; }
+        protected NameConstructor CurrentNameCtr { get; set; }
+        protected IParseTree CurrentNameCtrNode { get; set; }
+        protected Type CurrentSymbolType { get; set; }
+        protected Type CurrentTypeSymbolType { get; set; }
+        protected Type CurrentNameSymbolType { get; set; }
+        protected List<object> CurrentSymbols { get; set; }
+        protected List<object> CurrentTypeSymbols { get; set; }
+        protected List<object> CurrentNameSymbols { get; set; }
+        protected ModelFactory ModelFactory { get; private set; }
+
+        public override void VisitNode(IParseTree node)
         {
-            if (node == null) return;
-            if (entry == null) return;
-            List<ScopeEntry> entries = null;
-            if (!compiler.ScopeEntries.TryGetValue(node, out entries))
+            Scope previousScope = this.CurrentScope;
+            Type previousSymbolType = this.CurrentSymbolType;
+            Type previousTypeSymbolType = this.CurrentTypeSymbolType;
+            Type previousNameSymbolType = this.CurrentNameSymbolType;
+            List<object> previousSymbols = this.CurrentSymbols;
+            List<object> previousTypeSymbols = this.CurrentTypeSymbols;
+            List<object> previousNameSymbols = this.CurrentNameSymbols;
+            TypeConstructor previousTypeCtr = this.CurrentTypeCtr;
+            IParseTree previousTypeCtrNode = this.CurrentTypeCtrNode;
+            NameConstructor previousNameCtr = this.CurrentNameCtr;
+            IParseTree previousNameCtrNode = this.CurrentNameCtrNode;
+            try
             {
-                entries = new List<ScopeEntry>();
-                compiler.ScopeEntries.Add(node, entries);
+                this.HandleSymbols(node);
+                this.HandleScope(node);
+                this.HandleNameUse(node);
+                this.HandleTypeUse(node);
+                this.HandleTypeDef(node);
+                this.HandleNameDef(node);
+                base.VisitNode(node);
+                this.HandleAnonymousSymbols(node);
             }
-            if (!entries.Contains(entry))
+            finally
             {
-                entries.Add(entry);
+                this.CurrentNameCtrNode = previousNameCtrNode;
+                this.CurrentNameCtr = previousNameCtr;
+                this.CurrentTypeCtrNode = previousTypeCtrNode;
+                this.CurrentTypeCtr = previousTypeCtr;
+                this.CurrentNameSymbols = previousNameSymbols;
+                this.CurrentTypeSymbols = previousTypeSymbols;
+                this.CurrentSymbols = previousSymbols;
+                this.CurrentSymbolType = previousSymbolType;
+                this.CurrentNameSymbolType = previousNameSymbolType;
+                this.CurrentTypeSymbolType = previousTypeSymbolType;
+                this.CurrentScope = previousScope;
             }
         }
 
-        public override object VisitChildren(IRuleNode node)
+        protected virtual string GetAnonymousType()
+        {
+            ++this.anonymousTypeCounter;
+            return "Type$" + this.anonymousTypeCounter;
+        }
+
+        protected virtual string GetAnonymousName()
+        {
+            ++this.anonymousNameCounter;
+            return "Name$" + this.anonymousNameCounter;
+        }
+
+        protected virtual void HandleSymbols(IParseTree node)
+        {
+            PreDefSymbolAnnotation pdva = this.GetAnnotationFor<PreDefSymbolAnnotation>(node);
+            if (pdva != null)
+            {
+                if (this.CurrentTypeCtr != null && this.CurrentTypeCtr.Symbol == null && pdva.HasValue)
+                {
+                    if (pdva.Value == null || this.CurrentTypeSymbolType.IsAssignableFrom(pdva.Value.GetType()))
+                    {
+                        this.TypeDef(node, node, null, pdva.Value);
+                    }
+                    else
+                    {
+                        this.Compiler.Diagnostics.AddError("Predefined value is not of type: " + this.CurrentTypeSymbolType.FullName, this.Compiler.FileName, new TextSpan(node), true);
+                    }
+                }
+                if (this.CurrentNameCtr != null && this.CurrentNameCtr.Symbol == null && pdva.HasValue)
+                {
+                    if (pdva.Value == null || this.CurrentTypeSymbolType.IsAssignableFrom(pdva.Value.GetType()))
+                    {
+                        this.NameDef(node, node, null, pdva.Value);
+                    }
+                    else
+                    {
+                        this.Compiler.Diagnostics.AddError("Predefined value is not of type: " + this.CurrentTypeSymbolType.FullName, this.Compiler.FileName, new TextSpan(node), true);
+                    }
+                }
+            }
+            Type symbolType = null;
+            SymbolAnnotation sa = this.GetAnnotationFor<SymbolAnnotation>(node);
+            TypeCtrAnnotation tca = this.GetAnnotationFor<TypeCtrAnnotation>(node);
+            NameCtrAnnotation nca = this.GetAnnotationFor<NameCtrAnnotation>(node);
+            if (sa != null || tca != null || nca != null)
+            {
+                this.CurrentSymbols = new List<object>();
+                this.CurrentSymbolType = null;
+                this.CurrentTypeSymbols = new List<object>();
+                this.CurrentTypeSymbolType = null;
+                this.CurrentNameSymbols = new List<object>();
+                this.CurrentNameSymbolType = null;
+                this.CurrentTypeCtr = null;
+                this.CurrentNameCtr = null;
+                this.CurrentTypeCtrNode = null;
+                this.CurrentNameCtrNode = null;
+            }
+            if (sa != null)
+            {
+                symbolType = sa.SymbolType;
+                this.CurrentSymbolType = symbolType;
+            }
+            if (tca != null)
+            {
+                if (tca.SymbolType != null)
+                {
+                    symbolType = tca.SymbolType;
+                }
+                if (symbolType != null)
+                {
+                    object symbol = this.Symbol(node, symbolType);
+                    if (symbol != null)
+                    {
+                        this.CurrentTypeSymbols.Add(symbol);
+                        if (tca != null)
+                        {
+                            this.CurrentTypeCtr = new TypeConstructor(null, symbolType, null);
+                            this.CurrentTypeCtr.CanMerge = tca.Merge;
+                            this.CurrentTypeCtr.CanOverload = tca.Overload;
+                            this.CurrentTypeCtr.NoScope = tca.NoScope;
+                            this.CurrentTypeCtrNode = node;
+                            this.CurrentTypeSymbolType = symbolType;
+                        }
+                    }
+                }
+            }
+            if (nca != null)
+            {
+                if (nca.SymbolType != null)
+                {
+                    symbolType = nca.SymbolType;
+                }
+                if (symbolType != null)
+                {
+                    object symbol = this.Symbol(node, symbolType);
+                    if (symbol != null)
+                    {
+                        this.CurrentNameSymbols.Add(symbol);
+                        if (nca != null)
+                        {
+                            this.CurrentNameCtr = new NameConstructor(null, symbolType, null);
+                            this.CurrentNameCtr.CanMerge = nca.Merge;
+                            this.CurrentNameCtr.CanOverload = nca.Overload;
+                            this.CurrentNameCtr.NoScope = nca.NoScope;
+                            this.CurrentNameCtrNode = node;
+                            this.CurrentNameSymbolType = symbolType;
+                        }
+                    }
+                }
+            }
+        }
+
+        protected virtual void HandleScope(IParseTree node)
+        {
+            ScopeAnnotation sca = this.GetAnnotationFor<ScopeAnnotation>(node);
+            if (sca != null)
+            {
+                Scope scope = null;
+                if (this.CurrentNameCtr != null && !this.CurrentNameCtr.NoScope)
+                {
+                    scope = new Scope(null, null, this.CurrentNameCtr, this.CurrentScope);
+                    this.CurrentNameCtr.Scope = scope;
+                }
+                if (this.CurrentTypeCtr != null && !this.CurrentTypeCtr.NoScope)
+                {
+                    if (scope != null)
+                    {
+                        this.Compiler.Diagnostics.AddError("Only one of the name and the type constructors can own the scope.", this.Compiler.FileName, new TextSpan(node), true);
+                    }
+                    else
+                    {
+                        scope = new Scope(null, null, this.CurrentTypeCtr, this.CurrentScope);
+                        this.CurrentTypeCtr.Scope = scope;
+                    }
+                }
+                if (scope == null)
+                {
+                    Type symbolType = null;
+                    SymbolAnnotation sa = this.GetAnnotationFor<SymbolAnnotation>(node);
+                    if (sa != null && !sa.NoScope)
+                    {
+                        symbolType = sa.SymbolType;
+                        if (this.CurrentSymbols.Count != 1)
+                        {
+                            symbolType = null;
+                        }
+                        scope = new Scope(null, symbolType, null, this.CurrentScope);
+                        if (this.CurrentSymbols.Count == 1)
+                        {
+                            scope.Symbol = this.CurrentSymbols[0];
+                        }
+                    }
+                    else
+                    {
+                        scope = new Scope(null, null, null, this.CurrentScope);
+                    }
+                }
+                if (scope != null)
+                {
+                    this.CurrentScope = scope;
+                }
+            }
+        }
+
+        protected virtual void HandleNameUse(IParseTree node)
         {
             NameUseAnnotation nua = this.GetAnnotationFor<NameUseAnnotation>(node);
             if (nua != null)
             {
-                var names = this.GetQualifiedNames(node);
-                foreach (var name in names)
-                {
-                    NameReference nameRef = new NameReference(null, nua.Kind, currentScope);
-                    nameRef.TreeNodes.Add(name);
-                    this.AddScopeEntry(name, nameRef);
-                }
+                this.NameUse(node, nua);
             }
+        }
+
+        protected virtual void HandleTypeUse(IParseTree node)
+        {
             TypeUseAnnotation tua = this.GetAnnotationFor<TypeUseAnnotation>(node);
             if (tua != null)
             {
-                TypeReference typeRef = new TypeReference(null, null, currentScope);
-                typeRef.TreeNodes.Add(node);
-                this.AddScopeEntry(node, typeRef);
+                this.TypeUse(node, tua);
             }
-            ScopeAnnotation sa = this.GetAnnotationFor<ScopeAnnotation>(node);
+        }
+
+        protected virtual void HandleTypeDef(IParseTree node)
+        {
             TypeDefAnnotation tda = this.GetAnnotationFor<TypeDefAnnotation>(node);
-            NameDefAnnotation nda = this.GetAnnotationFor<NameDefAnnotation>(node);
-            if (sa != null || tda != null)
+            if (tda != null)
             {
-                object nameKind = null;
-                if (nda != null)
+                var names = this.GetQualifiedNames(node);
+                foreach (var name in names)
                 {
-                    nameKind = nda.Kind;
-                }
-                Scope previousScope = currentScope;
-                TypeDefinition previousType = currentType;
-                Scope scope = currentScope;
-                var nameDefNodes = this.GetNameDefs(node);
-                if (nameDefNodes.Count == 0)
-                {
-                    if (tda != null)
+                    var identifiers = this.GetIdentifiers(name);
+                    if (identifiers.Count == 1)
                     {
-                        currentType = new TypeDefinition(null, nameKind, scope);
-                        scope = currentType;
+                        this.TypeDef(identifiers[0], node, tda, null);
+                    }
+                    else if (identifiers.Count == 0)
+                    {
+                        this.TypeDef(null, node, tda, null);
                     }
                     else
                     {
-                        scope = new Scope(null, nameKind, scope);
+                        this.Compiler.Diagnostics.AddError("The type definition name cannot be a qualified name: " + name.GetText(), this.Compiler.FileName, new TextSpan(name), true);
                     }
                 }
-                else
-                {
-                    foreach (var nameDefNode in nameDefNodes)
-                    {
-                        NameDefAnnotation cnda = this.GetAnnotationFor<NameDefAnnotation>(nameDefNode);
-                        nameKind = null;
-                        if (cnda != null)
-                        {
-                            nameKind = cnda.Kind;
-                        }
-                        var qnameNodes = this.GetQualifiedNames(nameDefNode);
-                        if (qnameNodes.Count == 0)
-                        {
-                            if (tda != null)
-                            {
-                                currentType = new TypeDefinition(null, nameKind, scope);
-                                scope = currentType;
-                            }
-                            else
-                            {
-                                scope = new Scope(null, nameKind, scope);
-                            }
-                        }
-                        else if (qnameNodes.Count == 1)
-                        {
-                            Scope parentScope = currentScope;
-                            foreach (var qnameNode in qnameNodes)
-                            {
-                                scope = parentScope;
-                                var identifiers = this.GetIdentifiers(qnameNode);
-                                if (identifiers.Count == 0)
-                                {
-                                    if (tda != null)
-                                    {
-                                        currentType = new TypeDefinition(null, nameKind, scope);
-                                        scope = currentType;
-                                    }
-                                    else
-                                    {
-                                        scope = new Scope(null, nameKind, scope);
-                                    }
-                                    //this.compiler.Diagnostics.AddError("The scope element has no name.", compiler.FileName, new TextSpan(qnameNode));
-                                }
-                                else
-                                {
-                                    for (int i = 0; i < identifiers.Count; ++i)
-                                    {
-                                        if (tda != null && i == identifiers.Count - 1)
-                                        {
-                                            currentType = new TypeDefinition(identifiers[i].GetText(), nameKind, scope);
-                                            scope = currentType;
-                                        }
-                                        else
-                                        {
-                                            scope = new Scope(identifiers[i].GetText(), nameKind, scope);
-                                        }
-                                        scope.TreeNodes.Add(identifiers[i]);
-                                        this.AddScopeEntry(identifiers[i], scope);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            this.compiler.Diagnostics.AddError("Only one type name can be defined at a time.", compiler.FileName, new TextSpan(nameDefNode));
-                        }
-                    }
-                }
-                scope.TreeNodes.Add(node);
-                this.AddScopeEntry(node, scope);
-                currentScope = scope;
-                base.VisitChildren(node);
-                currentType = previousType;
-                currentScope = previousScope;
             }
-            else if (nda != null)
+        }
+
+        protected virtual void HandleNameDef(IParseTree node)
+        {
+            NameDefAnnotation nda = this.GetAnnotationFor<NameDefAnnotation>(node);
+            if (nda != null)
             {
-                if (node.Parent != null)
+                var names = this.GetQualifiedNames(node);
+                foreach (var name in names)
                 {
-                    sa = this.GetAnnotationFor<ScopeAnnotation>(node.Parent);
-                    tda = this.GetAnnotationFor<TypeDefAnnotation>(node.Parent);
+                    this.NameDef(name, node, nda, null);
                 }
-                else
+            }
+        }
+
+        protected virtual object Symbol(IParseTree symbolNode, Type symbolType)
+        {
+            object symbol = null;
+            try
+            {
+                symbol = this.ModelFactory.Create(symbolType);
+                if (symbol == null)
                 {
-                    sa = null;
-                    tda = null;
+                    this.Compiler.Diagnostics.AddError("Could not create symbol: " + symbolType.FullName, this.Compiler.FileName, new TextSpan(symbolNode), true);
                 }
-                if (sa == null && tda == null)
-                {
-                    var nameDefNodes = this.GetNameDefs(node.Parent);
-                    foreach (var nameDefNode in nameDefNodes)
-                    {
-                        var qnameNodes = this.GetQualifiedNames(nameDefNode);
-                        foreach (var qnameNode in qnameNodes)
-                        {
-                            var identifiers = this.GetIdentifiers(qnameNode);
-                            if (identifiers.Count == 0)
-                            {
-                                this.compiler.Diagnostics.AddError("The named element has no name.", compiler.FileName, new TextSpan(qnameNode));
-                            }
-                            else if (identifiers.Count == 1)
-                            {
-                                for (int i = 0; i < identifiers.Count; ++i)
-                                {
-                                    var nameDef = new NameDefinition(identifiers[i].GetText(), nda.Kind, currentScope);
-                                    nameDef.TreeNodes.Add(identifiers[i]);
-                                    this.AddScopeEntry(identifiers[i], nameDef);
-                                    nameDef.TreeNodes.Add(qnameNode);
-                                    this.AddScopeEntry(qnameNode, nameDef);
-                                    if (tda == null)
-                                    {
-                                        var tras = this.GetTypeRefs(node.Parent);
-                                        if (tras.Count == 0)
-                                        {
-                                            nameDef.Type = currentType;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        nameDef.Type = currentType;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                this.compiler.Diagnostics.AddError("Qualified names must be defined as scopes.", compiler.FileName, new TextSpan(qnameNode));
-                            }
-                        }
-                    }
-                }
-                base.VisitChildren(node);
+            }
+            catch (ModelException ex)
+            {
+                this.Compiler.Diagnostics.AddError("Could not create symbol: " + symbolType.FullName + ". " + ex.Message, this.Compiler.FileName, new TextSpan(symbolNode), true);
+                symbol = null;
+            }
+            return symbol;
+        }
+
+        protected virtual void NameUse(IParseTree nameUseNode, NameUseAnnotation nameUseAnnotation)
+        {
+            this.CurrentScope.RegisterNameUse(GetNameUseName(nameUseNode, nameUseAnnotation), nameUseAnnotation.SymbolTypes, nameUseNode);
+        }
+
+        protected virtual void TypeUse(IParseTree typeUseNode, TypeUseAnnotation typeUseAnnotation)
+        {
+            this.CurrentScope.RegisterTypeUse(GetTypeUseName(typeUseNode, typeUseAnnotation), typeUseAnnotation.SymbolTypes, typeUseNode);
+        }
+
+        protected virtual void NameDef(IParseTree nameNode, IParseTree nameDefNode, NameDefAnnotation nameDefAnnotation, object preDefSymbol)
+        {
+            IParseTree targetNode = nameDefNode;
+            if (nameNode != null)
+            {
+                targetNode = nameNode;
+            }
+            if (this.CurrentNameCtr == null)
+            {
+                this.Compiler.Diagnostics.AddError("The @NameCtr annotation is missing.", this.Compiler.FileName, new TextSpan(targetNode), true);
+                return;
+            }
+            string name = GetNameDefName(nameNode, nameDefNode, nameDefAnnotation);
+            ScopeEntry existingName = this.CurrentScope.GetName(name, this.CurrentNameSymbolType);
+            NameDefinition nameDef = existingName as NameDefinition;
+            object symbol = null;
+            if (nameDef != null && this.MergeName(nameDef))
+            {
+                symbol = this.CurrentNameCtr.Symbol;
             }
             else
             {
-                base.VisitChildren(node);
+                if (preDefSymbol == null)
+                {
+                    if (this.CurrentNameCtr.Symbol != null || this.CurrentNameSymbols.Count == 0)
+                    {
+                        symbol = this.Symbol(targetNode, this.CurrentNameSymbolType);
+                        if (symbol != null)
+                        {
+                            this.CurrentNameSymbols.Add(symbol);
+                        }
+                    }
+                    else
+                    {
+                        symbol = this.CurrentNameSymbols[0];
+                    }
+                    this.CurrentScope.RegisterNameDef(name, this.CurrentNameCtr, symbol, targetNode);
+                }
+                else
+                {
+                    symbol = preDefSymbol;
+                    this.Compiler.GlobalScope.RegisterNameDef(name, this.CurrentNameCtr, symbol, targetNode);
+                }
             }
-            return null;
+        }
+
+        protected virtual void TypeDef(IParseTree nameNode, IParseTree typeDefNode, TypeDefAnnotation typeDefAnnotation, object preDefSymbol)
+        {
+            IParseTree targetNode = typeDefNode;
+            if (nameNode != null)
+            {
+                targetNode = nameNode;
+            }
+            if (this.CurrentTypeCtr == null)
+            {
+                this.Compiler.Diagnostics.AddError("The @TypeCtr annotation is missing.", this.Compiler.FileName, new TextSpan(targetNode), true);
+                return;
+            }
+            string name = GetTypeDefName(nameNode, typeDefNode, typeDefAnnotation);
+            TypeDefinition typeDef = this.CurrentScope.GetType(name, this.CurrentTypeSymbolType);
+            object symbol = null;
+            if (typeDef != null && this.MergeType(typeDef))
+            {
+                symbol = this.CurrentTypeCtr.Symbol;
+            }
+            else
+            {
+                if (preDefSymbol == null)
+                {
+                    if (this.CurrentTypeCtr.Symbol != null || this.CurrentTypeSymbols.Count == 0)
+                    {
+                        symbol = this.Symbol(targetNode, this.CurrentTypeSymbolType);
+                        if (symbol != null)
+                        {
+                            this.CurrentTypeSymbols.Add(symbol);
+                        }
+                    }
+                    else
+                    {
+                        symbol = this.CurrentTypeSymbols[0];
+                    }
+                    this.CurrentScope.RegisterTypeDef(name, this.CurrentTypeCtr, symbol, targetNode);
+                }
+                else
+                {
+                    symbol = preDefSymbol;
+                    this.Compiler.GlobalScope.RegisterTypeDef(name, this.CurrentTypeCtr, symbol, targetNode);
+                }
+            }
+        }
+
+        protected virtual bool MergeName(NameDefinition nameDef)
+        {
+            if (this.CurrentNameCtr.CanOverload) return false;
+            if (!this.CurrentNameCtr.CanMerge) return false;
+            object symbol = null;
+            Scope scope = null;
+            foreach (var ctr in nameDef.Constructors)
+            {
+                if (!ctr.CanMerge)
+                {
+                    return false;
+                }
+                else
+                {
+                    if (ctr.Scope != null)
+                    {
+                        scope = ctr.Scope;
+                    }
+                    if (ctr.Symbol != null)
+                    {
+                        symbol = ctr.Symbol;
+                    }
+                }
+            }
+            if (scope != null)
+            {
+                this.CurrentNameCtr.Scope = scope;
+            }
+            else
+            {
+                scope = this.CurrentNameCtr.Scope;
+            }
+            if (symbol != null)
+            {
+                this.CurrentNameCtr.Symbol = symbol;
+            }
+            else
+            {
+                symbol = this.CurrentNameCtr.Symbol;
+            }
+            foreach (var ctr in nameDef.Constructors)
+            {
+                ctr.Scope = scope;
+                ctr.Symbol = symbol;
+            }
+            return true;
+        }
+
+        protected virtual bool MergeType(TypeDefinition typeDef)
+        {
+            if (this.CurrentTypeCtr.CanOverload) return false;
+            if (!this.CurrentTypeCtr.CanMerge) return false;
+            object symbol = null;
+            Scope scope = null;
+            foreach (var ctr in typeDef.Constructors)
+            {
+                if (!ctr.CanMerge)
+                {
+                    return false;
+                }
+                else
+                {
+                    if (ctr.Scope != null)
+                    {
+                        scope = ctr.Scope;
+                    }
+                    if (ctr.Symbol != null)
+                    {
+                        symbol = ctr.Symbol;
+                    }
+                }
+            }
+            if (scope != null)
+            {
+                this.CurrentTypeCtr.Scope = scope;
+            }
+            else
+            {
+                scope = this.CurrentTypeCtr.Scope;
+            }
+            if (symbol != null)
+            {
+                this.CurrentTypeCtr.Symbol = symbol;
+            }
+            else
+            {
+                symbol = this.CurrentTypeCtr.Symbol;
+            }
+            foreach (var ctr in typeDef.Constructors)
+            {
+                ctr.Scope = scope;
+                ctr.Symbol = symbol;
+            }
+            return true;
+        }
+
+        protected virtual string GetNameUseName(IParseTree nameUseNode, NameUseAnnotation nameUseAnnotation)
+        {
+            return nameUseNode.GetText();
+        }
+
+        protected virtual string GetTypeUseName(IParseTree typeUseNode, TypeUseAnnotation typeUseAnnotation)
+        {
+            return typeUseNode.GetText();
+        }
+
+        protected virtual string GetNameDefName(IParseTree nameNode, IParseTree nameDefNode, NameDefAnnotation nameDefAnnotation)
+        {
+            if (nameNode == null) return null;
+            return nameNode.GetText();
+        }
+
+        protected virtual string GetTypeDefName(IParseTree nameNode, IParseTree typeDefNode, TypeDefAnnotation typeDefAnnotation)
+        {
+            if (nameNode == null) return null;
+            return nameNode.GetText();
+        }
+
+        protected virtual void HandleAnonymousSymbols(IParseTree node)
+        {
+            TypeCtrAnnotation tca = this.GetAnnotationFor<TypeCtrAnnotation>(node);
+            NameCtrAnnotation nca = this.GetAnnotationFor<NameCtrAnnotation>(node);
+            if (tca != null)
+            {
+                if (this.CurrentTypeCtr != null && this.CurrentTypeCtr.Symbol == null)
+                {
+                    this.TypeDef(null, node, null, null);
+                }
+            }
+            if (nca != null)
+            {
+                if (this.CurrentNameCtr != null && this.CurrentNameCtr.Symbol == null)
+                {
+                    this.NameDef(null, node, null, null);
+                }
+            }
         }
     }
 
+    public class MetaCompilerReferencePhase : MetaCompilerPhase
+    {
+        public MetaCompilerReferencePhase(MetaCompiler compiler)
+            : base(compiler)
+        {
+            this.ModelFactory = new ModelFactory();
+            this.CurrentScope = this.Compiler.GlobalScope;
+            this.CurrentSymbols = new List<object>();
+            this.CurrentProperties = new List<PropertyAnnotation>();
+        }
+
+        protected Scope CurrentScope { get; set; }
+        protected List<object> CurrentSymbols { get; set; }
+        protected ModelFactory ModelFactory { get; private set; }
+        protected List<PropertyAnnotation> CurrentProperties { get; set; }
+
+        public override void VisitNode(IParseTree node)
+        {
+            Scope previousScope = this.CurrentScope;
+            List<object> previousSymbols = this.CurrentSymbols;
+            List<PropertyAnnotation> previousProperties = this.CurrentProperties;
+            try
+            {
+                this.HandleProperties(node);
+                this.HandleValues(node);
+                Scope scope = this.CurrentScope.GetScope(node);
+                if (scope != null)
+                {
+                    this.CurrentScope = scope;
+                }
+                IEnumerable<object> symbols = this.Compiler.GlobalScope.GetSymbolByNode(node);
+                if (symbols != null)
+                {
+                    this.CurrentSymbols = new List<object>(symbols);
+                }
+                base.VisitNode(node);
+            }
+            finally
+            {
+                this.CurrentProperties = previousProperties;
+                this.CurrentSymbols = previousSymbols;
+                this.CurrentScope = previousScope;
+            }
+        }
+
+        protected virtual void HandleProperties(IParseTree node)
+        {
+            var pal = this.GetAnnotationsFor<PropertyAnnotation>(node).ToList();
+            if (pal.Count > 0)
+            {
+                this.CurrentProperties = pal;
+            }
+        }
+
+        protected virtual void HandleValues(IParseTree node)
+        {
+            ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
+            if (va != null && va.HasValue)
+            {
+                foreach (var symbol in this.CurrentSymbols)
+                {
+                    ModelObject mo = symbol as ModelObject;
+                    if (mo != null)
+                    {
+                        foreach (var pa in this.CurrentProperties)
+                        {
+                            if (pa.Name != null)
+                            {
+                                ModelProperty prop = mo.MFindProperty(pa.Name);
+                                if (prop != null)
+                                {
+                                    mo.MAdd(prop, va.Value);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                IEnumerable<object> symbols = this.Compiler.GlobalScope.GetSymbolByNode(node);
+                if (symbols != null)
+                {
+                    foreach (var symbol in this.CurrentSymbols)
+                    {
+                        ModelObject mo = symbol as ModelObject;
+                        if (mo != null)
+                        {
+                            foreach (var pa in this.CurrentProperties)
+                            {
+                                if (pa.Name != null)
+                                {
+                                    ModelProperty prop = mo.MFindProperty(pa.Name);
+                                    if (prop != null)
+                                    {
+                                        foreach (var sym in symbols)
+                                        {
+                                            mo.MAdd(prop, sym);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        protected virtual object ToValue(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return value;
+            if (value.Length >= 2 && value.StartsWith("'") && value.EndsWith("'"))
+            {
+                StringBuilder sb = new StringBuilder();
+                value = value.Substring(1, value.Length - 2);
+                for (int i = 0; i < value.Length; ++i)
+                {
+                    if (i + 1 < value.Length && value[i] == '\\')
+                    {
+                        sb.Append(value[i]);
+                        ++i;
+                        sb.Append(value[i]);
+                    }
+                    else if (value[i] == '"')
+                    {
+                        sb.Append("\\" + value[i]);
+                    }
+                    else
+                    {
+                        sb.Append(value[i]);
+                    }
+                }
+                value = '"' + sb.ToString() + '"';
+                return this.Unescape(value);
+            }
+            else if (value == "true" || value == "false")
+            {
+                return value == "true";
+            }
+            else
+            {
+                bool isIdentifier = char.IsLetter(value[0]) || value[0] == '_';
+                int dotCount = 0;
+                int i = 1;
+                while (isIdentifier && i < value.Length)
+                {
+                    isIdentifier = isIdentifier && (char.IsLetterOrDigit(value[i]) || value[i] == '_' || value[i] == '.');
+                    if (value[i] == '.') ++dotCount;
+                    ++i;
+                }
+                if (isIdentifier)
+                {
+                    return value;
+                }
+                else if (dotCount > 0)
+                {
+                    double d;
+                    double.TryParse(value, out d);
+                    return d;
+                }
+                else
+                {
+                    long l;
+                    long.TryParse(value, out l);
+                    return l;
+                }
+            }
+        }
+
+        protected string Unescape(string txt)
+        {
+            if (string.IsNullOrEmpty(txt)) { return txt; }
+            StringBuilder retval = new StringBuilder(txt.Length);
+            for (int ix = 0; ix < txt.Length; )
+            {
+                int jx = txt.IndexOf('\\', ix);
+                if (jx < 0 || jx == txt.Length - 1) jx = txt.Length;
+                retval.Append(txt, ix, jx - ix);
+                if (jx >= txt.Length) break;
+                switch (txt[jx + 1])
+                {
+                    case 'n': retval.Append('\n'); break;  // Line feed
+                    case 'r': retval.Append('\r'); break;  // Carriage return
+                    case 't': retval.Append('\t'); break;  // Tab
+                    case '\\': retval.Append('\\'); break; // Don't escape
+                    default:                                 // Unrecognized, copy as-is
+                        retval.Append('\\').Append(txt[jx + 1]); break;
+                }
+                ix = jx + 2;
+            }
+            return retval.ToString();
+        }
+    }
+
+    
     internal class MetaVisitorSecondPass : MetaCompilerVisitor
     {
         private Scope global;
@@ -574,171 +1132,58 @@ namespace MetaDslx.Compiler
         public override object VisitChildren(IRuleNode node)
         {
             if (node == null) return null;
-            if (currentScope != null)
+            /*
+            Scope previousScope = currentScope;
+            ScopeEntry entry = this.currentScope.GetEntryByNode(node);
+            if (entry is Scope)
             {
-                TypeUseAnnotation tua = this.GetAnnotationFor<TypeUseAnnotation>(node);
-                if (tua != null)
-                {
-                    TypeReference typeRef = currentScope.GetChild(node) as TypeReference;
-                    if (typeRef != null)
-                    {
-                        MetaMofVisitorTypeRef typeUseVisitor = null;
-                        ScopeAnnotation psa = this.GetAnnotationFor<ScopeAnnotation>(node.Parent);
-                        TypeDefAnnotation ptda = this.GetAnnotationFor<TypeDefAnnotation>(node.Parent);
-                        if (psa != null || ptda != null)
-                        {
-                            if (currentScope.Parent != null)
-                            {
-                                typeUseVisitor = new MetaMofVisitorTypeRef(compiler, global, currentScope.Parent, currentScope.Position, tua.Kind);
-                            }
-                        }
-                        if (typeUseVisitor == null)
-                        {
-                            typeUseVisitor = new MetaMofVisitorTypeRef(compiler, global, currentScope, typeRef.Position, tua.Kind);
-                        }
-                        TypeDefinition typeDef = typeUseVisitor.Visit(node);
-                        if (typeDef == null)
-                        {
-                            this.compiler.Diagnostics.AddError("Could not resolve type.", compiler.FileName, new TextSpan(node));
-                        }
-                        else
-                        {
-                            typeRef.TypeDef = typeDef;
-                            ScopeAnnotation npsa = null;
-                            TypeDefAnnotation nptda = null;
-                            if (node.Parent != null)
-                            {
-                                npsa = this.GetAnnotationFor<ScopeAnnotation>(node.Parent);
-                                nptda = this.GetAnnotationFor<TypeDefAnnotation>(node.Parent);
-                            }
-                            var nameDefNodes = this.GetNameDefs(node.Parent);
-                            if (currentScope != null && node.Parent != null && nameDefNodes.Count > 0 && npsa == null && nptda == null)
-                            {
-                                foreach (var nameDefNode in nameDefNodes)
-                                {
-                                    var qnameNodes = this.GetQualifiedNames(nameDefNode);
-                                    foreach (var qnameNode in qnameNodes)
-                                    {
-                                        var identifiers = this.GetIdentifiers(qnameNode);
-                                        if (identifiers.Count == 0)
-                                        {
-                                            this.compiler.Diagnostics.AddError("The element has no name.", compiler.FileName, new TextSpan(qnameNode));
-                                        }
-                                        else if (identifiers.Count == 1)
-                                        {
-                                            foreach (var identifier in identifiers)
-                                            {
-                                                NameDefinition nameDef = currentScope.GetChild(qnameNode) as NameDefinition;
-                                                if (nameDef == null)
-                                                {
-                                                    this.compiler.Diagnostics.AddError("Could not resolve name in second pass.", compiler.FileName, new TextSpan(identifier));
-                                                }
-                                                else
-                                                {
-                                                    nameDef.Type = typeDef;
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            this.compiler.Diagnostics.AddError("Qualified names must be defined as scopes.", compiler.FileName, new TextSpan(qnameNode));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        this.compiler.Diagnostics.AddError("Could not resolve type reference in second pass.", compiler.FileName, new TextSpan(node));
-                    }
-                }
-                NameUseAnnotation nua = this.GetAnnotationFor<NameUseAnnotation>(node);
-                if (nua != null)
-                {
-                    var names = this.GetQualifiedNames(node);
-                    foreach (var name in names)
-                    {
-                        NameReference nameRef = currentScope.GetChild(name) as NameReference;
-                        if (nameRef != null)
-                        {
-                            var identifiers = this.GetIdentifiers(name);
-                            foreach (var identifier in identifiers)
-                            {
-                                var identifiersText = identifiers.Select(id => id.GetText()).ToList();
-                                ScopeEntry nameDef = null;
-                                if (currentScope != null)
-                                {
-                                    ScopeAnnotation psa = this.GetAnnotationFor<ScopeAnnotation>(node.Parent);
-                                    TypeDefAnnotation ptda = this.GetAnnotationFor<TypeDefAnnotation>(node.Parent);
-                                    if (psa != null || ptda != null)
-                                    {
-                                        if (currentScope.Parent != null)
-                                        {
-                                            nameDef = currentScope.Parent.ResolveName(identifiersText, nua.Kind, currentScope.Position);
-                                        }
-                                        else
-                                        {
-                                            nameDef = null;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        nameDef = currentScope.ResolveName(identifiersText, nua.Kind, nameRef.Position);
-                                    }
-                                }
-                                if (nameDef != null)
-                                {
-                                    nameRef.NameDef = nameDef;
-                                }
-                                else
-                                {
-                                    this.compiler.Diagnostics.AddError("Could not resolve name.", compiler.FileName, new TextSpan(name));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            this.compiler.Diagnostics.AddError("Could not resolve name reference in second pass.", compiler.FileName, new TextSpan(node));
-                        }
-                    }
-                }
+                currentScope = entry as Scope;
             }
-            ScopeAnnotation sa = this.GetAnnotationFor<ScopeAnnotation>(node);
-            TypeDefAnnotation tda = this.GetAnnotationFor<TypeDefAnnotation>(node);
-            if (sa != null || tda != null)
+            if (entry is TypeConstructor)
             {
-                Scope previousScope = currentScope;
-                Scope scope = this.GetChildScope(currentScope, node);
-                if (scope != null)
+                this.compiler.Diagnostics.AddError("TODO: type constructor.", compiler.FileName, new TextSpan(node));
+            }
+            else if (entry is TypeReference)
+            {
+                TypeReference tr = entry as TypeReference;
+                TypeDefinition td = currentScope.GetType(tr.Name, tr.SymbolType);
+                if (td != null)
                 {
-                    currentScope = scope;
+                    tr.Symbol = td.Symbol;
                 }
                 else
                 {
-                    this.compiler.Diagnostics.AddError("Could not find scope in second pass.", compiler.FileName, new TextSpan(node));
+                    this.compiler.Diagnostics.AddError("Could not resolve type.", compiler.FileName, new TextSpan(node));
                 }
-                base.VisitChildren(node);
-                currentScope = previousScope;
             }
-            else
+            else if (entry is NameReference)
             {
-                base.VisitChildren(node);
+                NameReference nr = entry as NameReference;
+                ScopeEntry se = currentScope.GetName(nr.Name, nr.SymbolType);
+                if (se != null)
+                {
+                    nr.Symbol = se.Symbol;
+                }
+                else
+                {
+                    this.compiler.Diagnostics.AddError("Could not resolve name.", compiler.FileName, new TextSpan(node));
+                }
             }
+            base.VisitChildren(node);
+            currentScope = previousScope;*/
             return null;
         }
     }
-
-
+/*
     internal class MetaMofVisitorTypeRef : MetaModelParserBaseVisitor<TypeDefinition>
     {
         private MetaModelCompiler compiler;
         private Scope global;
         private Scope currentScope;
         private int position;
-        private NameKind? kind;
+        private List<Type> kind;
 
-        public MetaMofVisitorTypeRef(MetaModelCompiler compiler, Scope global, Scope currentScope, int position, NameKind? kind)
+        public MetaMofVisitorTypeRef(MetaModelCompiler compiler, Scope global, Scope currentScope, int position, List<Type> kind)
         {
             this.compiler = compiler;
             this.global = global;
@@ -780,8 +1225,11 @@ namespace MetaDslx.Compiler
             var innerType = this.Visit(context.primitiveType());
             if (context.TQuestion() != null)
             {
-                var result = new NullableTypeDefinition(innerType.Name + "?", this.global);
-                result.InnerType = innerType;
+                var result = new TypeConstructor(innerType.Name + "?", typeof(MetaNullableType), this.global);
+                result.TreeNodes.Add(context);
+                var symbol = MetaFactory.Instance.CreateMetaNullableType();
+                symbol.InnerType = (MetaType)innerType.Symbol;
+                this.compiler.SymbolTable.RegisterSymbol(result, symbol);
             }
             return innerType;
         }
@@ -789,12 +1237,19 @@ namespace MetaDslx.Compiler
         public override TypeDefinition VisitCollectionType(MetaModelParser.CollectionTypeContext context)
         {
             var innerType = this.Visit(context.simpleType());
-            CollectionTypeKind kind = CollectionTypeKind.List;
-            if (context.KSet() != null)
+            MetaCollectionKind kind = MetaCollectionKind.List;
+            if (context.collectionKind().KSet() != null)
             {
-                kind = CollectionTypeKind.Set;
+                kind = MetaCollectionKind.Set;
             }
-            return new CollectionTypeDefinition(context.GetText(), kind, this.global);
+            var result = new TypeConstructor(kind + "<" + innerType.Name + ">", typeof(MetaCollectionType), this.global);
+            result.TreeNodes.Add(context);
+            var symbol = MetaFactory.Instance.CreateMetaCollectionType();
+            symbol.InnerType = (MetaType)innerType.Symbol;
+            symbol.Kind = kind;
+            this.compiler.SymbolTable.RegisterSymbol(result, symbol);
+            //result.SymbolType = typeof(MetaCollectionType);
+            return result;
         }
 
         public override TypeDefinition VisitSimpleType(MetaModelParser.SimpleTypeContext context)
@@ -819,7 +1274,8 @@ namespace MetaDslx.Compiler
             return this.currentScope.ResolveType(context.GetText(), this.kind, this.position);
         }
     }
-
+    */
+    /*
     internal class MetaVisitorThirdPass : MetaCompilerVisitor
     {
         private ModelObject currentObject;
@@ -1074,5 +1530,158 @@ namespace MetaDslx.Compiler
             }
             return mobj;
         }
+    }*/
+}
+
+/*
+if (currentScope != null)
+{
+    TypeUseAnnotation tua = this.GetAnnotationFor<TypeUseAnnotation>(node);
+    if (tua != null)
+    {
+        TypeReference typeRef = currentScope.GetChild(node) as TypeReference;
+        if (typeRef != null)
+        {
+            MetaMofVisitorTypeRef typeUseVisitor = null;
+            ScopeAnnotation psa = this.GetAnnotationFor<ScopeAnnotation>(node.Parent);
+            TypeDefAnnotation ptda = this.GetAnnotationFor<TypeDefAnnotation>(node.Parent);
+            if (psa != null || ptda != null)
+            {
+                if (currentScope.Parent != null)
+                {
+                    typeUseVisitor = new MetaMofVisitorTypeRef(compiler, global, currentScope.Parent, currentScope.Position, tua.SymbolTypes);
+                }
+            }
+            if (typeUseVisitor == null)
+            {
+                typeUseVisitor = new MetaMofVisitorTypeRef(compiler, global, currentScope, typeRef.Position, tua.SymbolTypes);
+            }
+            TypeDefinition typeDef = typeUseVisitor.Visit(node);
+            if (typeDef == null)
+            {
+                this.compiler.Diagnostics.AddError("Could not resolve type.", compiler.FileName, new TextSpan(node));
+            }
+            else
+            {
+                typeRef.TypeDef = typeDef;
+                ScopeAnnotation npsa = null;
+                TypeDefAnnotation nptda = null;
+                if (node.Parent != null)
+                {
+                    npsa = this.GetAnnotationFor<ScopeAnnotation>(node.Parent);
+                    nptda = this.GetAnnotationFor<TypeDefAnnotation>(node.Parent);
+                }
+                var nameDefNodes = this.GetNameDefs(node.Parent);
+                if (currentScope != null && node.Parent != null && nameDefNodes.Count > 0 && npsa == null && nptda == null)
+                {
+                    foreach (var nameDefNode in nameDefNodes)
+                    {
+                        var qnameNodes = this.GetQualifiedNames(nameDefNode);
+                        foreach (var qnameNode in qnameNodes)
+                        {
+                            var identifiers = this.GetIdentifiers(qnameNode);
+                            if (identifiers.Count == 0)
+                            {
+                                this.compiler.Diagnostics.AddError("The element has no name.", compiler.FileName, new TextSpan(qnameNode));
+                            }
+                            else if (identifiers.Count == 1)
+                            {
+                                foreach (var identifier in identifiers)
+                                {
+                                    NameDefinition nameDef = currentScope.GetChild(qnameNode) as NameDefinition;
+                                    if (nameDef == null)
+                                    {
+                                        this.compiler.Diagnostics.AddError("Could not resolve name in second pass.", compiler.FileName, new TextSpan(identifier));
+                                    }
+                                    else
+                                    {
+                                        nameDef.Type = typeDef;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                this.compiler.Diagnostics.AddError("Qualified names must be defined as scopes.", compiler.FileName, new TextSpan(qnameNode));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            this.compiler.Diagnostics.AddError("Could not resolve type reference in second pass.", compiler.FileName, new TextSpan(node));
+        }
+    }
+    NameUseAnnotation nua = this.GetAnnotationFor<NameUseAnnotation>(node);
+    if (nua != null)
+    {
+        var names = this.GetQualifiedNames(node);
+        foreach (var name in names)
+        {
+            NameReference nameRef = currentScope.GetChild(name) as NameReference;
+            if (nameRef != null)
+            {
+                var identifiers = this.GetIdentifiers(name);
+                foreach (var identifier in identifiers)
+                {
+                    var identifiersText = identifiers.Select(id => id.GetText()).ToList();
+                    ScopeEntry nameDef = null;
+                    if (currentScope != null)
+                    {
+                        ScopeAnnotation psa = this.GetAnnotationFor<ScopeAnnotation>(node.Parent);
+                        TypeDefAnnotation ptda = this.GetAnnotationFor<TypeDefAnnotation>(node.Parent);
+                        if (psa != null || ptda != null)
+                        {
+                            if (currentScope.Parent != null)
+                            {
+                                nameDef = currentScope.Parent.ResolveName(identifiersText, nua.SymbolTypes, currentScope.Position);
+                            }
+                            else
+                            {
+                                nameDef = null;
+                            }
+                        }
+                        else
+                        {
+                            nameDef = currentScope.ResolveName(identifiersText, nua.SymbolTypes, nameRef.Position);
+                        }
+                    }
+                    if (nameDef != null)
+                    {
+                        nameRef.NameDef = nameDef;
+                    }
+                    else
+                    {
+                        this.compiler.Diagnostics.AddError("Could not resolve name.", compiler.FileName, new TextSpan(name));
+                    }
+                }
+            }
+            else
+            {
+                this.compiler.Diagnostics.AddError("Could not resolve name reference in second pass.", compiler.FileName, new TextSpan(node));
+            }
+        }
     }
 }
+ScopeAnnotation sa = this.GetAnnotationFor<ScopeAnnotation>(node);
+TypeDefAnnotation tda = this.GetAnnotationFor<TypeDefAnnotation>(node);
+if (sa != null || tda != null)
+{
+    Scope previousScope = currentScope;
+    Scope scope = this.GetChildScope(currentScope, node);
+    if (scope != null)
+    {
+        currentScope = scope;
+    }
+    else
+    {
+        this.compiler.Diagnostics.AddError("Could not find scope in second pass.", compiler.FileName, new TextSpan(node));
+    }
+    base.VisitChildren(node);
+    currentScope = previousScope;
+}
+else
+{
+    base.VisitChildren(node);
+}*/

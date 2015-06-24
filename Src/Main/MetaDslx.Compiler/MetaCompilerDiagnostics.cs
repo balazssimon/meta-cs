@@ -22,6 +22,7 @@ namespace MetaDslx.Compiler
         public TextSpan TextSpan { get; set; }
         public string Message { get; set; }
         public Severity Severity { get; set; }
+        public bool IsLog { get; set; }
 
         public int CompareTo(DiagnosticMessage other)
         {
@@ -106,6 +107,11 @@ namespace MetaDslx.Compiler
             if (cmp != 0) return cmp;
             return 0;
         }
+
+        public override string ToString()
+        {
+            return string.Format("({0},{1})", this.StartLine, this.StartPosition);
+        }
     }
 
 
@@ -114,6 +120,7 @@ namespace MetaDslx.Compiler
         private List<DiagnosticMessage> messages;
 
         private bool sorted = false;
+        private bool logsIncluded = false;
         private bool hasErrors = false;
         private bool hasWarnings = false;
         private List<DiagnosticMessage> sortedMessages;
@@ -128,20 +135,22 @@ namespace MetaDslx.Compiler
             return this.hasWarnings;
         }
 
-        public IEnumerable<DiagnosticMessage> GetMessages()
+        public IEnumerable<DiagnosticMessage> GetMessages(bool includeLog = false)
         {
-            if (!this.sorted)
+            if (!this.sorted || this.logsIncluded != includeLog)
             {
                 this.sortedMessages =
-                    this.messages.OrderBy(m => m.FileName).ThenBy(m => m.TextSpan).ToList();
+                    this.messages.Where(m => !m.IsLog || includeLog).OrderBy(m => m.FileName).ThenBy(m => m.TextSpan).ToList();
+                this.logsIncluded = includeLog;
+                this.sorted = true;
             }
             return this.sortedMessages;
         }
 
-        public IEnumerable<DiagnosticMessage> GetMessages(Severity severity)
+        public IEnumerable<DiagnosticMessage> GetMessages(Severity severity, bool includeLog = false)
         {
-            this.GetMessages();
-            return this.sortedMessages.Where(m => (m.Severity | severity) == m.Severity);
+            this.GetMessages(includeLog);
+            return this.sortedMessages.Where(m => (m.Severity | severity) == m.Severity && (!m.IsLog || includeLog));
         }
 
         public MetaCompilerDiagnostics()
@@ -149,7 +158,7 @@ namespace MetaDslx.Compiler
             this.messages = new List<DiagnosticMessage>();
         }
 
-        public void AddMessage(Severity severity, string message, string fileName, TextSpan textSpan)
+        public void AddMessage(Severity severity, string message, string fileName, TextSpan textSpan, bool isLog = false)
         {
             if (severity == Severity.Error)
             {
@@ -165,24 +174,25 @@ namespace MetaDslx.Compiler
                     Message = message,
                     FileName = fileName,
                     TextSpan = textSpan,
-                    Severity = severity
+                    Severity = severity,
+                    IsLog = isLog
                 });
             this.sorted = false;
         }
 
-        public void AddError(string message, string fileName, TextSpan textSpan)
+        public void AddError(string message, string fileName, TextSpan textSpan, bool isLog = false)
         {
-            this.AddMessage(Severity.Error, message, fileName, textSpan);
+            this.AddMessage(Severity.Error, message, fileName, textSpan, isLog);
         }
 
-        public void AddWarning(string message, string fileName, TextSpan textSpan)
+        public void AddWarning(string message, string fileName, TextSpan textSpan, bool isLog = false)
         {
-            this.AddMessage(Severity.Warning, message, fileName, textSpan);
+            this.AddMessage(Severity.Warning, message, fileName, textSpan, isLog);
         }
 
-        public void AddInfo(string message, string fileName, TextSpan textSpan)
+        public void AddInfo(string message, string fileName, TextSpan textSpan, bool isLog = false)
         {
-            this.AddMessage(Severity.Info, message, fileName, textSpan);
+            this.AddMessage(Severity.Info, message, fileName, textSpan, isLog);
         }
     }
 }

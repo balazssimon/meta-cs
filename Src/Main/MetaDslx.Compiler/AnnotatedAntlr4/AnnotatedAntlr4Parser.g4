@@ -76,7 +76,7 @@ optionValue
 	:	id (DOT id)*
 	|	STRING_LITERAL
 	|	ACTION
-	|	INT
+	|	INTEGER_LITERAL
 	;
 
 delegateGrammars
@@ -125,7 +125,7 @@ parserRuleSpec
         ruleReturns? throwsSpec? localsSpec?
 		rulePrequel*
 		COLON
-            ruleBlock
+        ruleBlock
 		SEMI
 		exceptionGroup
 	;
@@ -190,8 +190,33 @@ ruleAltList
 	;
 
 labeledAlt
-	:	alternative (annotation* POUND id)?
+	:	alternative (POUND id annotation*)? attributesBlock?
 	;
+
+attributesBlock
+	: LBRACE attributeAssignment* RBRACE
+	;
+
+attributeAssignment
+	: (ruleElement=id DOT)? property=id ASSIGN expression SEMI;
+
+expressionList
+	: expression (COMMA expression)*;
+
+expression
+	: literal #literalExpression
+	| qualifiedName LPAREN expressionList? RPAREN #functionCallExpression
+	| qualifiedName #memberAccessExpression
+	;
+
+literal 
+	: null
+	| boolean
+    | INTEGER_LITERAL
+	| SCIENTIFIC_LITERAL 
+    | STRING_LITERAL
+	;
+
 
 lexerRule
 	:	DOC_COMMENT? annotation* FRAGMENT?
@@ -251,7 +276,7 @@ lexerCommandName
 
 lexerCommandExpr
 	:	id
-	|	INT
+	|	INTEGER_LITERAL
 	;
 
 altList
@@ -373,25 +398,16 @@ annotation
     : AT qualifiedName annotationBody?;
 
 annotationBody
-    : LPAREN annotationAttributeList? RPAREN;
+    : LPAREN (expression | expressionValueList | annotationAttributeList) RPAREN;
 
 annotationAttributeList
     : annotationAttribute (COMMA annotationAttribute)*;
 
 annotationAttribute
-    : identifier (ASSIGN annotationValue)?;
+    : identifier ASSIGN (expression|expressionValueList);
 
-annotationValue
-    : qualifiedName 
-	//| annotation
-	//| annotationValueList
-	| null
-	| boolean
-    | INT 
-    | STRING_LITERAL;
-
-/*annotationValueList
-	: LBRACE annotationValue (COMMA annotationValue)* RBRACE;*/
+expressionValueList
+    : LBRACE expression (COMMA expression)* RBRACE;
 
 qualifiedName
 	: identifier (DOT identifier)*;

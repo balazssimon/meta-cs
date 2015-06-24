@@ -15,12 +15,13 @@ namespace MetaDslx.TempConsole
         {
             try
             {
-                CompileAG4(
+                /*CompileAG4(
                     @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4Lexer.ag4",
                     @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4LexerAnnotator.cs",
                     @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4Lexer.g4"
                     );
-                Console.WriteLine("----");
+                Console.WriteLine("----");*/
+                /*
                 CompileAG4(
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.ag4",
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexerAnnotator.cs",
@@ -32,16 +33,19 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParserAnnotator.cs",
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.g4"
                     );
+                //*/
+                //*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
-                Console.WriteLine("----");
+                //*/
+                /*Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.cs"
-                    );
+                    );*/
             }
             catch (Exception ex)
             {
@@ -67,7 +71,7 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(compiler.Antlr4Source);
             }
-            foreach (var msg in compiler.Diagnostics.GetMessages())
+            foreach (var msg in compiler.Diagnostics.GetMessages(true))
             {
                 Console.WriteLine(msg);
             }
@@ -87,7 +91,7 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(compiler.GeneratedSource);
             }
-            foreach (var msg in compiler.Diagnostics.GetMessages())
+            foreach (var msg in compiler.Diagnostics.GetMessages(true))
             {
                 Console.WriteLine(msg);
             }
@@ -96,33 +100,37 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine(entry);
             }
             Console.WriteLine("=");
-            foreach (var mo in compiler.ModelObjects.Values)
+            foreach (var symbol in compiler.GlobalScope.GetSymbols())
             {
-                Console.WriteLine(mo);
-                Console.WriteLine("  Parent=" + mo.MParent);
-                ModelProperty mp;
-                mp = mo.MFindProperty("Name");
-                if (mp != null)
+                ModelObject mo = symbol as ModelObject;
+                if (mo != null)
                 {
-                    Console.WriteLine("  Name=" + mo.MGetValue(mp));
-                }
-                mp = mo.MFindProperty("Type");
-                if (mp != null)
-                {
-                    Console.WriteLine("  Type=" + mo.MGetValue(mp));
-                }
-                mp = mo.MFindProperty("ReturnType");
-                if (mp != null)
-                {
-                    Console.WriteLine("  ReturnType=" + mo.MGetValue(mp));
-                }
-                mp = mo.MFindProperty("EnumLiterals");
-                if (mp != null)
-                {
-                    Console.WriteLine("  EnumLiterals:");
-                    foreach (var el in (IList<MetaEnumLiteral>)mo.MGetValue(mp))
+                    Console.WriteLine(mo);
+                    Console.WriteLine("  Parent=" + mo.MParent);
+                    ModelProperty mp;
+                    mp = mo.MFindProperty("Name");
+                    if (mp != null)
                     {
-                        Console.WriteLine("    "+el);
+                        Console.WriteLine("  Name=" + mo.MGetValue(mp));
+                    }
+                    mp = mo.MFindProperty("Type");
+                    if (mp != null)
+                    {
+                        Console.WriteLine("  Type=" + mo.MGetValue(mp));
+                    }
+                    mp = mo.MFindProperty("ReturnType");
+                    if (mp != null)
+                    {
+                        Console.WriteLine("  ReturnType=" + mo.MGetValue(mp));
+                    }
+                    mp = mo.MFindProperty("EnumLiterals");
+                    if (mp != null)
+                    {
+                        Console.WriteLine("  EnumLiterals:");
+                        foreach (var el in (IList<MetaEnumLiteral>)mo.MGetValue(mp))
+                        {
+                            Console.WriteLine("    " + el);
+                        }
                     }
                 }
             }
@@ -141,7 +149,7 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(compiler.GeneratedSource);
             }
-            foreach (var msg in compiler.Diagnostics.GetMessages())
+            foreach (var msg in compiler.Diagnostics.GetMessages(true))
             {
                 Console.WriteLine(msg);
             }

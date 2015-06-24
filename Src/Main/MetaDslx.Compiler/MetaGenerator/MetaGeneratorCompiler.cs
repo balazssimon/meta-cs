@@ -44,6 +44,13 @@ namespace MetaDslx.Compiler
         public MetaGeneratorParser Parser { get; private set; }
         public CommonTokenStream CommonTokenStream { get; private set; }
         public string GeneratedSource { get; private set; }
+
+        public override List<object> LexerAnnotations { get; protected set; }
+        public override List<object> ParserAnnotations { get; protected set; }
+        public override Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
+        public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
+        public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
+        public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
     }
 
     internal class LoopInfo

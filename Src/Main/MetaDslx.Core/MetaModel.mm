@@ -2,7 +2,7 @@
 {
 	metamodel Meta
 	{
-		const MetaPrimitiveType ObjectType;
+		/*const MetaPrimitiveType ObjectType;
 		const MetaPrimitiveType BoolType;
 		const MetaPrimitiveType StringType;
 		const MetaPrimitiveType ByteType;
@@ -10,7 +10,7 @@
 		const MetaPrimitiveType LongType;
 		const MetaPrimitiveType FloatType;
 		const MetaPrimitiveType DoubleType;
-		const MetaPrimitiveType VoidType;
+		const MetaPrimitiveType VoidType;*/
 
 		class MetaNamespace
 		{

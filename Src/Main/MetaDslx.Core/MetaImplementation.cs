@@ -5,6 +5,57 @@ using System.Text;
 
 namespace MetaDslx.Core
 {
+    public class MetaBuiltInType
+    {
+        private static List<MetaType> types = new List<MetaType>();
+
+        public static readonly MetaPrimitiveType Object;
+        public static readonly MetaPrimitiveType String;
+        public static readonly MetaPrimitiveType Int;
+        public static readonly MetaPrimitiveType Long;
+        public static readonly MetaPrimitiveType Float;
+        public static readonly MetaPrimitiveType Double;
+        public static readonly MetaPrimitiveType Byte;
+        public static readonly MetaPrimitiveType Bool;
+        public static readonly MetaPrimitiveType Void;
+
+        public static IEnumerable<MetaType> Types
+        {
+            get { return MetaBuiltInType.types; }
+        }
+
+        static MetaBuiltInType()
+        {
+            MetaBuiltInType.Object = MetaFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInType.Object.Name = "object";
+            MetaBuiltInType.types.Add(MetaBuiltInType.Object);
+            MetaBuiltInType.String = MetaFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInType.String.Name = "string";
+            MetaBuiltInType.types.Add(MetaBuiltInType.String);
+            MetaBuiltInType.Int = MetaFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInType.Int.Name = "int";
+            MetaBuiltInType.types.Add(MetaBuiltInType.Int);
+            MetaBuiltInType.Long = MetaFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInType.Long.Name = "long";
+            MetaBuiltInType.types.Add(MetaBuiltInType.Long);
+            MetaBuiltInType.Float = MetaFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInType.Float.Name = "float";
+            MetaBuiltInType.types.Add(MetaBuiltInType.Float);
+            MetaBuiltInType.Double = MetaFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInType.Double.Name = "double";
+            MetaBuiltInType.types.Add(MetaBuiltInType.Double);
+            MetaBuiltInType.Byte = MetaFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInType.Byte.Name = "byte";
+            MetaBuiltInType.types.Add(MetaBuiltInType.Byte);
+            MetaBuiltInType.Bool = MetaFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInType.Bool.Name = "bool";
+            MetaBuiltInType.types.Add(MetaBuiltInType.Bool);
+            MetaBuiltInType.Void = MetaFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInType.Void.Name = "void";
+            MetaBuiltInType.types.Add(MetaBuiltInType.Void);
+        }
+    }
+
     internal class MetaImplementation : MetaImplementationBase
     {
         public override void MetaProperty_MetaProperty(MetaProperty @this)
@@ -31,6 +82,12 @@ namespace MetaDslx.Core
         public override ICollection<MetaClass> MetaClass_GetAllSuperClasses(MetaClass @this)
         {
             return new List<MetaClass>();
+        }
+
+        public override void MetaCollectionType_MetaCollectionType(MetaCollectionType @this)
+        {
+            base.MetaCollectionType_MetaCollectionType(@this);
+            @this.Kind = MetaCollectionKind.List;
         }
     }
 

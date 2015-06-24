@@ -219,6 +219,13 @@ namespace MetaDslx.Core
         {
             get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
         }
+
+        public override bool Equals(object obj)
+        {
+            MetaCollectionType rhs = obj as MetaCollectionType;
+            if (rhs == null) return false;
+            return this.Kind == rhs.Kind && this.InnerType == rhs.InnerType;
+        }
     }
     
     public interface MetaNullableType : MetaType
@@ -268,6 +275,13 @@ namespace MetaDslx.Core
         {
             get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
         }
+
+        public override bool Equals(object obj)
+        {
+            MetaNullableType rhs = obj as MetaNullableType;
+            if (rhs == null) return false;
+            return this.InnerType == rhs.InnerType;
+        }
     }
     
     public interface MetaPrimitiveType : MetaType
@@ -307,6 +321,13 @@ namespace MetaDslx.Core
         public MetaNamespace Namespace
         {
             get { return MetaImplementationProvider.Implementation.MetaType_Namespace(this); }
+        }
+
+        public override bool Equals(object obj)
+        {
+            MetaPrimitiveType rhs = obj as MetaPrimitiveType;
+            if (rhs == null) return false;
+            return this.Name == rhs.Name;
         }
     }
     

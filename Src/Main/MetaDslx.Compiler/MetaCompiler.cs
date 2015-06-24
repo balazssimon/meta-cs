@@ -30,12 +30,18 @@ namespace MetaDslx.Compiler
         public MetaCompilerDiagnostics Diagnostics { get; private set; }
         public string FileName { get; private set; }
         public string Source { get; private set; }
+        public RootScope GlobalScope
+        {
+            get;
+            private set;
+        }
 
         public MetaCompiler(string source, string fileName = null)
         {
             this.Diagnostics = new MetaCompilerDiagnostics();
             this.Source = source;
             this.FileName = fileName;
+            this.GlobalScope = new RootScope();
         }
 
         public abstract void Compile();
@@ -64,5 +70,13 @@ namespace MetaDslx.Compiler
                 this.Diagnostics.AddError(msg, this.FileName, new TextSpan(line, charPositionInLine+1, line, charPositionInLine+1));
             }
         }
+
+        public abstract List<object> LexerAnnotations { get; protected set; }
+        public abstract List<object> ParserAnnotations { get; protected set; }
+        public abstract Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
+        public abstract Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
+        public abstract Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
+        public abstract Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
+
     }
 }

@@ -310,6 +310,82 @@ public interface IAnnotatedAntlr4ParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitLabeledAlt([NotNull] AnnotatedAntlr4Parser.LabeledAltContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.attributesBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAttributesBlock([NotNull] AnnotatedAntlr4Parser.AttributesBlockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.attributesBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAttributesBlock([NotNull] AnnotatedAntlr4Parser.AttributesBlockContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.attributeAssignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAttributeAssignment([NotNull] AnnotatedAntlr4Parser.AttributeAssignmentContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.attributeAssignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAttributeAssignment([NotNull] AnnotatedAntlr4Parser.AttributeAssignmentContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterExpressionList([NotNull] AnnotatedAntlr4Parser.ExpressionListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitExpressionList([NotNull] AnnotatedAntlr4Parser.ExpressionListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>literalExpression</c>
+	/// labeled alternative in <see cref="AnnotatedAntlr4Parser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLiteralExpression([NotNull] AnnotatedAntlr4Parser.LiteralExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>literalExpression</c>
+	/// labeled alternative in <see cref="AnnotatedAntlr4Parser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLiteralExpression([NotNull] AnnotatedAntlr4Parser.LiteralExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>functionCallExpression</c>
+	/// labeled alternative in <see cref="AnnotatedAntlr4Parser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionCallExpression([NotNull] AnnotatedAntlr4Parser.FunctionCallExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>functionCallExpression</c>
+	/// labeled alternative in <see cref="AnnotatedAntlr4Parser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionCallExpression([NotNull] AnnotatedAntlr4Parser.FunctionCallExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>memberAccessExpression</c>
+	/// labeled alternative in <see cref="AnnotatedAntlr4Parser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMemberAccessExpression([NotNull] AnnotatedAntlr4Parser.MemberAccessExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>memberAccessExpression</c>
+	/// labeled alternative in <see cref="AnnotatedAntlr4Parser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMemberAccessExpression([NotNull] AnnotatedAntlr4Parser.MemberAccessExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.literal"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLiteral([NotNull] AnnotatedAntlr4Parser.LiteralContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.literal"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLiteral([NotNull] AnnotatedAntlr4Parser.LiteralContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.lexerRule"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -670,15 +746,15 @@ public interface IAnnotatedAntlr4ParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAnnotationAttribute([NotNull] AnnotatedAntlr4Parser.AnnotationAttributeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotationValue"/>.
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionValueList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterAnnotationValue([NotNull] AnnotatedAntlr4Parser.AnnotationValueContext context);
+	void EnterExpressionValueList([NotNull] AnnotatedAntlr4Parser.ExpressionValueListContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotationValue"/>.
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionValueList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitAnnotationValue([NotNull] AnnotatedAntlr4Parser.AnnotationValueContext context);
+	void ExitExpressionValueList([NotNull] AnnotatedAntlr4Parser.ExpressionValueListContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.qualifiedName"/>.
 	/// </summary>
