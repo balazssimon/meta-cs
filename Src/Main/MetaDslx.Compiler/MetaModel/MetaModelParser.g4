@@ -13,9 +13,7 @@ identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
 
-
 namespaceDeclaration: KNamespace    qualifiedName TEquals   stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
-
 
 
 metamodelDeclaration: KMetamodel    identifier TOpenBrace  declaration* TCloseBrace;
@@ -23,13 +21,11 @@ metamodelDeclaration: KMetamodel    identifier TOpenBrace  declaration* TCloseBr
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
 
-
 enumDeclaration : KEnum     identifier TOpenBrace  enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
 
 enumValue :     identifier;
 enumMemberDeclaration :  operationDeclaration;
-
 
 
 classDeclaration :   KAbstract? KClass    identifier (TColon  classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
@@ -52,10 +48,14 @@ typeReference : collectionType | simpleType;
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
 
+
+
 objectType 
 	:  KObject 
 	|  KString
 	;
+
+
 
 primitiveType 
 	:  KInt 
@@ -66,15 +66,18 @@ primitiveType
 	|  KBool
 	;
 
+
+
 voidType :  KVoid;
+
 
 
 nullableType :  primitiveType TQuestion;
 
 
+
 collectionType :  collectionKind TLessThan  simpleType TGreaterThan;
 collectionKind :  KSet |  KList;
-
 
 
 
@@ -186,6 +189,7 @@ associationDeclaration : KAssociation  source=qualifiedName KWith  target=qualif
 // Additional rules for lexer:
 
 // Identifiers
+
 
 identifier : IdentifierNormal /*| IdentifierVerbatim*/;
 //identifier : IdentifierGeneral | IdentifierVerbatim;

@@ -25,18 +25,15 @@ namespace MetaDslx.Compiler
         
         private QualifiedNameAnnotation qualifiedName_QualifiedName;
         private NameCtrAnnotation namespaceDeclaration_NameCtr;
-        private ScopeAnnotation namespaceDeclaration_Scope;
         private PropertyAnnotation namespaceDeclaration_QualifiedName_Property;
         private NameDefAnnotation namespaceDeclaration_QualifiedName_NameDef;
         private PropertyAnnotation namespaceDeclaration_StringLiteral_Property;
         private PropertyAnnotation namespaceDeclaration_MetamodelDeclaration_Property;
         private TypeCtrAnnotation metamodelDeclaration_TypeCtr;
-        private ScopeAnnotation metamodelDeclaration_Scope;
         private PropertyAnnotation metamodelDeclaration_Identifier_Property;
         private TypeDefAnnotation metamodelDeclaration_Identifier_TypeDef;
         private PropertyAnnotation metamodelDeclaration_Declaration_Property;
         private TypeCtrAnnotation enumDeclaration_TypeCtr;
-        private ScopeAnnotation enumDeclaration_Scope;
         private PropertyAnnotation enumDeclaration_Identifier_Property;
         private TypeDefAnnotation enumDeclaration_Identifier_TypeDef;
         private PropertyAnnotation enumDeclaration_EnumValues_Property;
@@ -45,7 +42,6 @@ namespace MetaDslx.Compiler
         private NameDefAnnotation enumValue_Identifier_NameDef;
         private PropertyAnnotation enumMemberDeclaration_OperationDeclaration_Property;
         private TypeCtrAnnotation classDeclaration_TypeCtr;
-        private ScopeAnnotation classDeclaration_Scope;
         private PropertyAnnotation classDeclaration_KAbstract_Property;
         private PropertyAnnotation classDeclaration_Identifier_Property;
         private TypeDefAnnotation classDeclaration_Identifier_TypeDef;
@@ -60,9 +56,13 @@ namespace MetaDslx.Compiler
         private TypeUseAnnotation returnType_TypeUse;
         private TypeUseAnnotation typeReference_TypeUse;
         private TypeUseAnnotation simpleType_TypeUse;
+        private NameAnnotation objectType_Name;
+        private TypeUseAnnotation objectType_TypeUse;
         private TypeCtrAnnotation objectType_TypeCtr;
         private PreDefSymbolAnnotation objectType_KObject_PreDefSymbol;
         private PreDefSymbolAnnotation objectType_KString_PreDefSymbol;
+        private NameAnnotation primitiveType_Name;
+        private TypeUseAnnotation primitiveType_TypeUse;
         private TypeCtrAnnotation primitiveType_TypeCtr;
         private PreDefSymbolAnnotation primitiveType_KInt_PreDefSymbol;
         private PreDefSymbolAnnotation primitiveType_KLong_PreDefSymbol;
@@ -70,16 +70,19 @@ namespace MetaDslx.Compiler
         private PreDefSymbolAnnotation primitiveType_KDouble_PreDefSymbol;
         private PreDefSymbolAnnotation primitiveType_KByte_PreDefSymbol;
         private PreDefSymbolAnnotation primitiveType_KBool_PreDefSymbol;
+        private NameAnnotation voidType_Name;
+        private TypeUseAnnotation voidType_TypeUse;
         private TypeCtrAnnotation voidType_TypeCtr;
         private PreDefSymbolAnnotation voidType_KVoid_PreDefSymbol;
+        private TypeUseAnnotation nullableType_TypeUse;
         private TypeCtrAnnotation nullableType_TypeCtr;
         private PropertyAnnotation nullableType_PrimitiveType_Property;
+        private TypeUseAnnotation collectionType_TypeUse;
         private TypeCtrAnnotation collectionType_TypeCtr;
         private PropertyAnnotation collectionType_CollectionKind_Property;
         private PropertyAnnotation collectionType_SimpleType_Property;
         private NameCtrAnnotation operationDeclaration_NameCtr;
         private TypeCtrAnnotation operationDeclaration_TypeCtr;
-        private ScopeAnnotation operationDeclaration_Scope;
         private PropertyAnnotation operationDeclaration_ReturnType_Property;
         private PropertyAnnotation operationDeclaration_Identifier_Property;
         private TypeDefAnnotation operationDeclaration_Identifier_TypeDef;
@@ -90,6 +93,7 @@ namespace MetaDslx.Compiler
         private NameDefAnnotation parameter_Identifier_NameDef;
         private NameUseAnnotation associationDeclaration_Source_NameUse;
         private NameUseAnnotation associationDeclaration_Target_NameUse;
+        private NameAnnotation identifier_Name;
         private IdentifierAnnotation identifier_Identifier;
         
         public MetaModelParserAnnotator()
@@ -105,10 +109,9 @@ namespace MetaDslx.Compiler
             this.ruleAnnotations.Add(typeof(MetaModelParser.NamespaceDeclarationContext), annotList);
             this.namespaceDeclaration_NameCtr = new NameCtrAnnotation();
             this.namespaceDeclaration_NameCtr.SymbolType = typeof(MetaNamespace);
+            this.namespaceDeclaration_NameCtr.Scope = true;
             this.namespaceDeclaration_NameCtr.Merge = true;
             annotList.Add(this.namespaceDeclaration_NameCtr);
-            this.namespaceDeclaration_Scope = new ScopeAnnotation();
-            annotList.Add(this.namespaceDeclaration_Scope);
             this.namespaceDeclaration_QualifiedName_Property = new PropertyAnnotation();
             this.namespaceDeclaration_QualifiedName_Property.Name = "Name";
             this.namespaceDeclaration_QualifiedName_NameDef = new NameDefAnnotation();
@@ -122,8 +125,6 @@ namespace MetaDslx.Compiler
             this.metamodelDeclaration_TypeCtr = new TypeCtrAnnotation();
             this.metamodelDeclaration_TypeCtr.SymbolType = typeof(MetaModel);
             annotList.Add(this.metamodelDeclaration_TypeCtr);
-            this.metamodelDeclaration_Scope = new ScopeAnnotation();
-            annotList.Add(this.metamodelDeclaration_Scope);
             this.metamodelDeclaration_Identifier_Property = new PropertyAnnotation();
             this.metamodelDeclaration_Identifier_Property.Name = "Name";
             this.metamodelDeclaration_Identifier_TypeDef = new TypeDefAnnotation();
@@ -135,8 +136,6 @@ namespace MetaDslx.Compiler
             this.enumDeclaration_TypeCtr = new TypeCtrAnnotation();
             this.enumDeclaration_TypeCtr.SymbolType = typeof(MetaEnum);
             annotList.Add(this.enumDeclaration_TypeCtr);
-            this.enumDeclaration_Scope = new ScopeAnnotation();
-            annotList.Add(this.enumDeclaration_Scope);
             this.enumDeclaration_Identifier_Property = new PropertyAnnotation();
             this.enumDeclaration_Identifier_Property.Name = "Name";
             this.enumDeclaration_Identifier_TypeDef = new TypeDefAnnotation();
@@ -160,8 +159,6 @@ namespace MetaDslx.Compiler
             this.classDeclaration_TypeCtr = new TypeCtrAnnotation();
             this.classDeclaration_TypeCtr.SymbolType = typeof(MetaClass);
             annotList.Add(this.classDeclaration_TypeCtr);
-            this.classDeclaration_Scope = new ScopeAnnotation();
-            annotList.Add(this.classDeclaration_Scope);
             this.classDeclaration_KAbstract_Property = new PropertyAnnotation();
             this.classDeclaration_KAbstract_Property.Name = "IsAbstract";
             this.classDeclaration_Identifier_Property = new PropertyAnnotation();
@@ -206,8 +203,13 @@ namespace MetaDslx.Compiler
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ObjectTypeContext), annotList);
+            this.objectType_Name = new NameAnnotation();
+            annotList.Add(this.objectType_Name);
+            this.objectType_TypeUse = new TypeUseAnnotation();
+            annotList.Add(this.objectType_TypeUse);
             this.objectType_TypeCtr = new TypeCtrAnnotation();
             this.objectType_TypeCtr.SymbolType = typeof(MetaPrimitiveType);
+            this.objectType_TypeCtr.Scope = false;
             this.objectType_TypeCtr.Merge = true;
             annotList.Add(this.objectType_TypeCtr);
             this.objectType_KObject_PreDefSymbol = new PreDefSymbolAnnotation();
@@ -217,8 +219,13 @@ namespace MetaDslx.Compiler
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.PrimitiveTypeContext), annotList);
+            this.primitiveType_Name = new NameAnnotation();
+            annotList.Add(this.primitiveType_Name);
+            this.primitiveType_TypeUse = new TypeUseAnnotation();
+            annotList.Add(this.primitiveType_TypeUse);
             this.primitiveType_TypeCtr = new TypeCtrAnnotation();
             this.primitiveType_TypeCtr.SymbolType = typeof(MetaPrimitiveType);
+            this.primitiveType_TypeCtr.Scope = false;
             this.primitiveType_TypeCtr.Merge = true;
             annotList.Add(this.primitiveType_TypeCtr);
             this.primitiveType_KInt_PreDefSymbol = new PreDefSymbolAnnotation();
@@ -236,8 +243,13 @@ namespace MetaDslx.Compiler
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.VoidTypeContext), annotList);
+            this.voidType_Name = new NameAnnotation();
+            annotList.Add(this.voidType_Name);
+            this.voidType_TypeUse = new TypeUseAnnotation();
+            annotList.Add(this.voidType_TypeUse);
             this.voidType_TypeCtr = new TypeCtrAnnotation();
             this.voidType_TypeCtr.SymbolType = typeof(MetaPrimitiveType);
+            this.voidType_TypeCtr.Scope = false;
             this.voidType_TypeCtr.Merge = true;
             annotList.Add(this.voidType_TypeCtr);
             this.voidType_KVoid_PreDefSymbol = new PreDefSymbolAnnotation();
@@ -245,16 +257,22 @@ namespace MetaDslx.Compiler
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.NullableTypeContext), annotList);
+            this.nullableType_TypeUse = new TypeUseAnnotation();
+            annotList.Add(this.nullableType_TypeUse);
             this.nullableType_TypeCtr = new TypeCtrAnnotation();
             this.nullableType_TypeCtr.SymbolType = typeof(MetaNullableType);
+            this.nullableType_TypeCtr.Scope = false;
             annotList.Add(this.nullableType_TypeCtr);
             this.nullableType_PrimitiveType_Property = new PropertyAnnotation();
             this.nullableType_PrimitiveType_Property.Name = "InnerType";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.CollectionTypeContext), annotList);
+            this.collectionType_TypeUse = new TypeUseAnnotation();
+            annotList.Add(this.collectionType_TypeUse);
             this.collectionType_TypeCtr = new TypeCtrAnnotation();
             this.collectionType_TypeCtr.SymbolType = typeof(MetaCollectionType);
+            this.collectionType_TypeCtr.Scope = false;
             annotList.Add(this.collectionType_TypeCtr);
             this.collectionType_CollectionKind_Property = new PropertyAnnotation();
             this.collectionType_CollectionKind_Property.Name = "Kind";
@@ -268,10 +286,8 @@ namespace MetaDslx.Compiler
             annotList.Add(this.operationDeclaration_NameCtr);
             this.operationDeclaration_TypeCtr = new TypeCtrAnnotation();
             this.operationDeclaration_TypeCtr.SymbolType = typeof(MetaOperation);
-            this.operationDeclaration_TypeCtr.NoScope = true;
+            this.operationDeclaration_TypeCtr.Scope = false;
             annotList.Add(this.operationDeclaration_TypeCtr);
-            this.operationDeclaration_Scope = new ScopeAnnotation();
-            annotList.Add(this.operationDeclaration_Scope);
             this.operationDeclaration_ReturnType_Property = new PropertyAnnotation();
             this.operationDeclaration_ReturnType_Property.Name = "ReturnType";
             this.operationDeclaration_Identifier_Property = new PropertyAnnotation();
@@ -297,6 +313,8 @@ namespace MetaDslx.Compiler
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.IdentifierContext), annotList);
+            this.identifier_Name = new NameAnnotation();
+            annotList.Add(this.identifier_Name);
             this.identifier_Identifier = new IdentifierAnnotation();
             annotList.Add(this.identifier_Identifier);
         }
@@ -342,7 +360,6 @@ namespace MetaDslx.Compiler
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             treeAnnotList.Add(this.namespaceDeclaration_NameCtr);
-            treeAnnotList.Add(this.namespaceDeclaration_Scope);
             List<object> elemAnnotList = null;
             if (context.qualifiedName() != null)
             {
@@ -390,7 +407,6 @@ namespace MetaDslx.Compiler
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             treeAnnotList.Add(this.metamodelDeclaration_TypeCtr);
-            treeAnnotList.Add(this.metamodelDeclaration_Scope);
             List<object> elemAnnotList = null;
             if (context.identifier() != null)
             {
@@ -431,7 +447,6 @@ namespace MetaDslx.Compiler
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             treeAnnotList.Add(this.enumDeclaration_TypeCtr);
-            treeAnnotList.Add(this.enumDeclaration_Scope);
             List<object> elemAnnotList = null;
             if (context.identifier() != null)
             {
@@ -513,7 +528,6 @@ namespace MetaDslx.Compiler
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             treeAnnotList.Add(this.classDeclaration_TypeCtr);
-            treeAnnotList.Add(this.classDeclaration_Scope);
             List<object> elemAnnotList = null;
             if (context.KAbstract() != null)
             {
@@ -730,6 +744,8 @@ namespace MetaDslx.Compiler
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            treeAnnotList.Add(this.objectType_Name);
+            treeAnnotList.Add(this.objectType_TypeUse);
             treeAnnotList.Add(this.objectType_TypeCtr);
             List<object> elemAnnotList = null;
             if (context.KObject() != null)
@@ -761,6 +777,8 @@ namespace MetaDslx.Compiler
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            treeAnnotList.Add(this.primitiveType_Name);
+            treeAnnotList.Add(this.primitiveType_TypeUse);
             treeAnnotList.Add(this.primitiveType_TypeCtr);
             List<object> elemAnnotList = null;
             if (context.KInt() != null)
@@ -828,6 +846,8 @@ namespace MetaDslx.Compiler
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            treeAnnotList.Add(this.voidType_Name);
+            treeAnnotList.Add(this.voidType_TypeUse);
             treeAnnotList.Add(this.voidType_TypeCtr);
             List<object> elemAnnotList = null;
             if (context.KVoid() != null)
@@ -850,6 +870,7 @@ namespace MetaDslx.Compiler
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            treeAnnotList.Add(this.nullableType_TypeUse);
             treeAnnotList.Add(this.nullableType_TypeCtr);
             List<object> elemAnnotList = null;
             if (context.primitiveType() != null)
@@ -872,6 +893,7 @@ namespace MetaDslx.Compiler
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            treeAnnotList.Add(this.collectionType_TypeUse);
             treeAnnotList.Add(this.collectionType_TypeCtr);
             List<object> elemAnnotList = null;
             if (context.collectionKind() != null)
@@ -933,7 +955,6 @@ namespace MetaDslx.Compiler
             }
             treeAnnotList.Add(this.operationDeclaration_NameCtr);
             treeAnnotList.Add(this.operationDeclaration_TypeCtr);
-            treeAnnotList.Add(this.operationDeclaration_Scope);
             List<object> elemAnnotList = null;
             if (context.returnType() != null)
             {
@@ -1038,6 +1059,7 @@ namespace MetaDslx.Compiler
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            treeAnnotList.Add(this.identifier_Name);
             treeAnnotList.Add(this.identifier_Identifier);
             return base.VisitIdentifier(context);
         }

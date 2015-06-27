@@ -76,6 +76,32 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine(msg);
             }
         }
+
+        private static void PrintScope(string indent, Scope scope)
+        {
+            foreach (var entry in scope.Entries)
+            {
+                Console.WriteLine(indent + entry);
+                Scope childScope = entry as Scope;
+                if (childScope != null)
+                {
+                    PrintScope(indent+"  ", childScope);
+                }
+                else
+                {
+                    TypeDef typeDef = entry as TypeDef;
+                    if (typeDef != null && typeDef.Scope != null)
+                    {
+                        PrintScope(indent + "  ", typeDef.Scope);
+                    }
+                    NameDef nameDef = entry as NameDef;
+                    if (nameDef != null && nameDef.Scope != null)
+                    {
+                        PrintScope(indent + "  ", nameDef.Scope);
+                    }
+                }
+            }
+        }
         
         private static void CompileMeta(string fileName, string outputFileName)
         {
@@ -95,11 +121,9 @@ namespace MetaDslx.TempConsole
             {
                 Console.WriteLine(msg);
             }
-            foreach (var entry in compiler.GlobalScope.Children)
-            {
-                Console.WriteLine(entry);
-            }
+            PrintScope("", compiler.GlobalScope);
             Console.WriteLine("=");
+            /*
             foreach (var symbol in compiler.GlobalScope.GetSymbols())
             {
                 ModelObject mo = symbol as ModelObject;
@@ -133,7 +157,7 @@ namespace MetaDslx.TempConsole
                         }
                     }
                 }
-            }
+            }*/
         }
 
         private static void CompileGenerator(string fileName, string outputFileName)

@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,7 @@ namespace MetaDslx.Compiler
             this.Source = source;
             this.FileName = fileName;
             this.GlobalScope = new RootScope();
+            this.Data = new MetaCompilerData(this);
         }
 
         public abstract void Compile();
@@ -71,6 +73,7 @@ namespace MetaDslx.Compiler
             }
         }
 
+        public MetaCompilerData Data { get; protected set; }
         public abstract List<object> LexerAnnotations { get; protected set; }
         public abstract List<object> ParserAnnotations { get; protected set; }
         public abstract Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
@@ -79,4 +82,23 @@ namespace MetaDslx.Compiler
         public abstract Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
 
     }
+
+    public class MetaCompilerData
+    {
+        public MetaCompilerData(MetaCompiler compiler)
+        {
+            this.Compiler = compiler;
+            this.ModelFactory = new ModelFactory();
+            this.NodeToEntry = new Dictionary<IParseTree, List<ScopeEntry>>();
+            this.NodeToSymbol = new Dictionary<IParseTree, List<object>>();
+        }
+
+        public MetaCompiler Compiler { get; private set; }
+        public ModelFactory ModelFactory { get; private set; }
+        public Dictionary<IParseTree, List<ScopeEntry>> NodeToEntry { get; private set; }
+        public Dictionary<IParseTree, List<object>> NodeToSymbol { get; private set; }
+
+    }
+
+
 }

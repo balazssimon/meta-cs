@@ -12,18 +12,15 @@ qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
-@NameCtr(symbolType=MetaNamespace,merge=true)
-@Scope
+@NameCtr(symbolType=MetaNamespace,scope=true,merge=true)
 namespaceDeclaration: KNamespace @Property(Name) @Value @NameDef qualifiedName TEquals @Property(Uri) @Value stringLiteral TOpenBrace @Property(Models) metamodelDeclaration* TCloseBrace;
 
 @TypeCtr(MetaModel)
-@Scope
 metamodelDeclaration: KMetamodel @Property(Name) @Value @TypeDef identifier TOpenBrace @Property(Types) declaration* TCloseBrace;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
 @TypeCtr(MetaEnum)
-@Scope
 enumDeclaration : KEnum @Property(Name) @Value  @TypeDef identifier TOpenBrace @Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
 @NameCtr(MetaEnumLiteral)
@@ -31,7 +28,6 @@ enumValue : @Property(Name) @Value  @NameDef identifier;
 enumMemberDeclaration : @Property(Operations) operationDeclaration;
 
 @TypeCtr(MetaClass)
-@Scope
 classDeclaration : @Property(IsAbstract) @Value(true) KAbstract? KClass @Property(Name) @Value @TypeDef identifier (TColon @Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor : @TypeUse(MetaClass) qualifiedName;
@@ -51,12 +47,16 @@ typeReference : collectionType | simpleType;
 @TypeUse
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
-@TypeCtr(symbolType=MetaPrimitiveType, merge=true)
+@Name
+@TypeUse
+@TypeCtr(symbolType=MetaPrimitiveType,scope=false,merge=true)
 objectType 
 	: @PreDefSymbol(MetaBuiltInType.Object) KObject 
 	| @PreDefSymbol(MetaBuiltInType.String) KString
 	;
-@TypeCtr(symbolType=MetaPrimitiveType, merge=true)
+@Name
+@TypeUse
+@TypeCtr(symbolType=MetaPrimitiveType,scope=false,merge=true)
 primitiveType 
 	: @PreDefSymbol(MetaBuiltInType.Int) KInt 
 	| @PreDefSymbol(MetaBuiltInType.Long) KLong 
@@ -65,19 +65,22 @@ primitiveType
 	| @PreDefSymbol(MetaBuiltInType.Byte) KByte 
 	| @PreDefSymbol(MetaBuiltInType.Bool) KBool
 	;
-@TypeCtr(symbolType=MetaPrimitiveType, merge=true)
+@Name
+@TypeUse
+@TypeCtr(symbolType=MetaPrimitiveType,scope=false,merge=true)
 voidType : @PreDefSymbol(MetaBuiltInType.Void) KVoid;
 
-@TypeCtr(MetaNullableType)
+@TypeUse
+@TypeCtr(symbolType=MetaNullableType,scope=false)
 nullableType : @Property(InnerType) primitiveType TQuestion;
 
-@TypeCtr(MetaCollectionType)
+@TypeUse
+@TypeCtr(symbolType=MetaCollectionType,scope=false)
 collectionType : @Property(Kind) collectionKind TLessThan @Property(InnerType) simpleType TGreaterThan;
 collectionKind : @Value(MetaCollectionKind.Set) KSet | @Value(MetaCollectionKind.List) KList;
 
 @NameCtr(MetaOperation)
-@TypeCtr(symbolType=MetaOperation, noScope=true)
-@Scope
+@TypeCtr(symbolType=MetaOperation,scope=false)
 operationDeclaration : KStatic? @Property(ReturnType) returnType @Property(Name) @Value @TypeDef @NameDef identifier TOpenBracket @Property(Parameters) parameterList? TCloseBracket TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
@@ -186,6 +189,7 @@ associationDeclaration : KAssociation @NameUse(MetaProperty) source=qualifiedNam
 // Additional rules for lexer:
 
 // Identifiers
+@Name
 @Identifier
 identifier : IdentifierNormal /*| IdentifierVerbatim*/;
 //identifier : IdentifierGeneral | IdentifierVerbatim;
