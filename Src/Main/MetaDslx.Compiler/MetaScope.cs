@@ -9,10 +9,31 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler
 {
+    public enum NameAccessOrder
+    {
+        Random,
+        Serial,
+    }
+    
+    [Flags]
+    public enum ResolveFlags
+    {
+        Children = 1,
+        Inherited = 2,
+        Parent = 4,
+        Imported = 8,
+        ImportedScope = 16,
+        Scope = Children | Inherited,
+        All = Children | Inherited | Parent | Imported | ImportedScope
+    }
+
     public class ScopeEntry
     {
-        public ScopeEntry(Scope parent)
+        private static readonly List<IParseTree> EmptyNodeList = new List<IParseTree>();
+
+        public ScopeEntry(string name, Scope parent)
         {
+            this.Name = name;
             if (parent != null)
             {
                 parent.AddEntry(this);
@@ -21,21 +42,23 @@ namespace MetaDslx.Compiler
 
         private List<IParseTree> treeNodes;
 
+        public string Name { get; set; }
+        public object Symbol { get; set; }
+        public int Position { get; set; }
         public Scope Parent { get; internal set; }
+        public NameAccessOrder AccessOrder { get; set; }
         public IEnumerable<IParseTree> TreeNodes
         {
             get
             {
-                if (this.treeNodes == null)
-                {
-                    this.treeNodes = new List<IParseTree>();
-                }
-                return this.treeNodes;
+                if (this.treeNodes == null) return ScopeEntry.EmptyNodeList;
+                else return this.treeNodes;
             }
         }
 
         public void AddTreeNode(IParseTree node)
         {
+            if (node == null) return;
             if (this.treeNodes == null)
             {
                 this.treeNodes = new List<IParseTree>();
@@ -46,45 +69,254 @@ namespace MetaDslx.Compiler
 
     public class Scope : ScopeEntry
     {
+        private static readonly ScopeEntry[] EmptyEntryList = new ScopeEntry[0];
+        private static readonly Scope[] EmptyScopeList = new Scope[0];
+
         public Scope(Scope parent)
-            : base(parent)
+            : base(null, parent)
         {
         }
 
         public ScopeEntry Owner { get; set; }
 
         private List<ScopeEntry> entries;
+        private List<ScopeEntry> inherited;
+        private List<ScopeEntry> imported;
 
         public IEnumerable<ScopeEntry> Entries
         {
             get
             {
-                if (this.entries == null)
-                {
-                    this.entries = new List<ScopeEntry>();
-                }
-                return this.entries;
+                if (this.entries == null) return Scope.EmptyEntryList;
+                else return this.entries;
+            }
+        }
+
+        public IEnumerable<ScopeEntry> InheritedEntries
+        {
+            get
+            {
+                if (this.inherited == null) return Scope.EmptyEntryList;
+                else return this.inherited;
+            }
+        }
+
+        public IEnumerable<ScopeEntry> ImportedEntries
+        {
+            get
+            {
+                if (this.imported == null) return Scope.EmptyEntryList;
+                else return this.imported;
             }
         }
 
         public void AddEntry(ScopeEntry entry)
         {
+            if (entry == null) return;
             if (this.entries == null)
             {
                 this.entries = new List<ScopeEntry>();
             }
             entry.Parent = this;
             this.entries.Add(entry);
+            entry.Position = this.entries.Count;
         }
 
-        public List<TypeDef> GetType(string name, IEnumerable<Type> symbolTypes)
+        public void AddInheritedEntry(ScopeEntry entry)
         {
-            return new List<TypeDef>();
+            if (entry == null) return;
+            if (this.inherited == null)
+            {
+                this.inherited = new List<ScopeEntry>();
+            }
+            if (!this.inherited.Contains(entry))
+            {
+                this.inherited.Add(entry);
+            }
         }
 
-        public List<NameDef> GetName(string name, IEnumerable<Type> symbolTypes)
+        public void AddImportedEntry(ScopeEntry entry)
         {
-            return new List<NameDef>();
+            if (entry == null) return;
+            if (this.imported == null)
+            {
+                this.imported = new List<ScopeEntry>();
+            }
+            if (!this.imported.Contains(entry))
+            {
+                this.imported.Add(entry);
+            }
+        }
+
+        public void Merge(Scope other)
+        {
+            foreach (var entry in other.Entries)
+            {
+                this.AddEntry(entry);
+            }
+            foreach (var entry in other.InheritedEntries)
+            {
+                this.AddInheritedEntry(entry);
+            }
+            foreach (var entry in other.ImportedEntries)
+            {
+                this.AddImportedEntry(entry);
+            }
+        }
+
+        public List<TypeDef> ResolveType(string name, Type symbolType, int position = 0, ResolveFlags flags = ResolveFlags.All)
+        {
+            return this.ResolveEntry<TypeDef>(name, symbolType, position, flags);
+        }
+
+        public List<NameDef> ResolveName(string name, Type symbolType, int position = 0, ResolveFlags flags = ResolveFlags.All)
+        {
+            return this.ResolveEntry<NameDef>(name, symbolType, position, flags);
+        }
+
+        public List<TypeDef> ResolveType(string name, IEnumerable<Type> symbolTypes, int position = 0, ResolveFlags flags = ResolveFlags.All)
+        {
+            return this.ResolveEntry<TypeDef>(name, symbolTypes, position, flags);
+        }
+
+        public List<NameDef> ResolveName(string name, IEnumerable<Type> symbolTypes, int position = 0, ResolveFlags flags = ResolveFlags.All)
+        {
+            return this.ResolveEntry<NameDef>(name, symbolTypes, position, flags);
+        }
+
+        public List<TEntry> ResolveEntry<TEntry>(string name, Type symbolType, int position = 0, ResolveFlags flags = ResolveFlags.All)
+            where TEntry : ScopeEntry
+        {
+            if (symbolType != null)
+            {
+                return this.ResolveEntry<TEntry>(name, new Type[] { symbolType }, position, flags);
+            }
+            else
+            {
+                return this.ResolveEntry<TEntry>(name, (IEnumerable<Type>)null, position, flags);
+            }
+        }
+
+        public List<TEntry> ResolveEntry<TEntry>(string name, IEnumerable<Type> symbolTypes, int position = 0, ResolveFlags flags = ResolveFlags.All)
+            where TEntry : ScopeEntry
+        {
+            List<TEntry> result = new List<TEntry>();
+            if (this.entries != null && flags.HasFlag(ResolveFlags.Children))
+            {
+                int i = 0;
+                foreach (var ent in this.entries)
+                {
+                    ++i;
+                    TEntry entry = ent as TEntry;
+                    if (entry != null && entry.Name == name)
+                    {
+                        NameDef nameDef = entry as NameDef;
+                        TypeDef typeDef = entry as TypeDef;
+                        if (nameDef != null || typeDef != null)
+                        {
+                            bool positionOK = entry.AccessOrder == NameAccessOrder.Random || position <= 0 || i < position;
+                            bool symbolTypeOK = symbolTypes == null || symbolTypes.Any(st => (nameDef != null && st.IsAssignableFrom(nameDef.SymbolType)) || (typeDef != null && st.IsAssignableFrom(typeDef.SymbolType)));
+                            if (positionOK && symbolTypeOK)
+                            {
+                                result.Add(entry);
+                            }
+                        }
+                    }
+                }
+            }
+            if (flags.HasFlag(ResolveFlags.Inherited) && this.inherited != null)
+            {
+                foreach (var entry in this.inherited)
+                {
+                    NameDef nameDef = entry as NameDef;
+                    if (nameDef != null && nameDef.Scope != null)
+                    {
+                        List<TEntry> inheritedResults = nameDef.Scope.ResolveEntry<TEntry>(name, symbolTypes, 0, ResolveFlags.Scope);
+                        result.AddRange(inheritedResults);
+                    }
+                    TypeDef typeDef = entry as TypeDef;
+                    if (typeDef != null && typeDef.Scope != null)
+                    {
+                        List<TEntry> inheritedResults = typeDef.Scope.ResolveEntry<TEntry>(name, symbolTypes, 0, ResolveFlags.Scope);
+                        result.AddRange(inheritedResults);
+                    }
+                }
+            }
+            if (result.Count == 0 && flags.HasFlag(ResolveFlags.Parent))
+            {
+                if (this.Parent != null)
+                {
+                    List<TEntry> parentResults = this.Parent.ResolveEntry<TEntry>(name, symbolTypes, position <= 0 ? 0 : this.Position, ResolveFlags.Scope | ResolveFlags.Parent);
+                    result.AddRange(parentResults);
+                }
+                else if (this.Owner != null && this.Owner.Parent != null)
+                {
+                    List<TEntry> parentResults = this.Owner.Parent.ResolveEntry<TEntry>(name, symbolTypes, position <= 0 ? 0 : this.Position, ResolveFlags.Scope | ResolveFlags.Parent);
+                    result.AddRange(parentResults);
+                }
+            }
+            if (result.Count == 0)
+            {
+                if (flags.HasFlag(ResolveFlags.Imported) && this.imported != null)
+                {
+                    foreach (var ent in this.imported)
+                    {
+                        TEntry entry = ent as TEntry;
+                        if (entry != null && entry.Name == name)
+                        {
+                            NameDef nameDef = entry as NameDef;
+                            TypeDef typeDef = entry as TypeDef;
+                            if (nameDef != null || typeDef != null)
+                            {
+                                bool symbolTypeOK = symbolTypes == null || symbolTypes.Any(st => (nameDef != null && st.IsAssignableFrom(nameDef.SymbolType)) || (typeDef != null && st.IsAssignableFrom(typeDef.SymbolType)));
+                                if (symbolTypeOK)
+                                {
+                                    result.Add(entry);
+                                }
+                            }
+                        }
+                    }
+                }
+                if (flags.HasFlag(ResolveFlags.ImportedScope) && this.imported != null)
+                {
+                    foreach (var entry in this.imported)
+                    {
+                        NameDef nameDef = entry as NameDef;
+                        TypeDef typeDef = entry as TypeDef;
+                        if (nameDef != null && nameDef.Scope != null)
+                        {
+                            List<TEntry> inheritedResults = nameDef.Scope.ResolveEntry<TEntry>(name, symbolTypes, 0, ResolveFlags.Scope);
+                            result.AddRange(inheritedResults);
+                        }
+                        if (typeDef != null && typeDef.Scope != null)
+                        {
+                            List<TEntry> inheritedResults = typeDef.Scope.ResolveEntry<TEntry>(name, symbolTypes, 0, ResolveFlags.Scope);
+                            result.AddRange(inheritedResults);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        public List<TypeDef> GetTypeDef(string name, Type symbolType)
+        {
+            return this.ResolveEntry<TypeDef>(name, symbolType, 0, ResolveFlags.Children);
+        }
+
+        public List<NameDef> GetNameDef(string name, Type symbolType)
+        {
+            return this.ResolveEntry<NameDef>(name, symbolType, 0, ResolveFlags.Children);
+        }
+
+        public List<TypeDef> GetTypeDef(string name, IEnumerable<Type> symbolTypes)
+        {
+            return this.ResolveEntry<TypeDef>(name, symbolTypes, 0, ResolveFlags.Children);
+        }
+
+        public List<NameDef> GetNameDef(string name, IEnumerable<Type> symbolTypes)
+        {
+            return this.ResolveEntry<NameDef>(name, symbolTypes, 0, ResolveFlags.Children);
         }
     }
 
@@ -100,14 +332,12 @@ namespace MetaDslx.Compiler
     public class TypeDef : ScopeEntry
     {
         public TypeDef(string name, Scope parent)
-            : base(parent)
+            : base(name, parent)
         {
-            this.Name = name;
         }
 
-        public string Name { get; set; }
+        public bool CanMerge { get; set; }
         public Scope Scope { get; set; }
-        public object Symbol { get; set; }
         public Type SymbolType
         {
             get
@@ -119,21 +349,19 @@ namespace MetaDslx.Compiler
 
         public override string ToString()
         {
-            return "TypeDef: " + this.Name;
+            return "TypeDef: " + this.Name + " => " + this.Symbol;
         }
     }
 
     public class NameDef : ScopeEntry
     {
         public NameDef(string name, Scope parent)
-            : base(parent)
+            : base(name, parent)
         {
-            this.Name = name;
         }
 
-        public string Name { get; set; }
+        public bool CanMerge { get; set; }
         public Scope Scope { get; set; }
-        public object Symbol { get; set; }
         public Type SymbolType
         {
             get
@@ -145,41 +373,34 @@ namespace MetaDslx.Compiler
 
         public override string ToString()
         {
-            return "NameDef: " + this.Name;
+            return "NameDef: " + this.Name + " => " + this.Symbol;
         }
     }
 
     public class TypeUse : ScopeEntry
     {
         public TypeUse(string name, Scope parent)
-            : base(parent)
+            : base(name, parent)
         {
-            this.Name = name;
         }
-
-        public string Name { get; set; }
-        public object Symbol { get; set; }
 
         public override string ToString()
         {
-            return "TypeUse: " + this.Name;
+            return "TypeUse: " + this.Name + " => " + this.Symbol;
         }
     }
 
     public class NameUse : ScopeEntry
     {
         public NameUse(string name, Scope parent)
-            : base(parent)
+            : base(name, parent)
         {
             this.Name = name;
         }
 
-        public string Name { get; set; }
-        public object Symbol { get; set; }
-
         public override string ToString()
         {
-            return "NameUse: " + this.Name;
+            return "NameUse: " + this.Name + " => " + this.Symbol;
         }
     }
 }

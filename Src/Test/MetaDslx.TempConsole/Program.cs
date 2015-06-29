@@ -111,7 +111,6 @@ namespace MetaDslx.TempConsole
                 source = reader.ReadToEnd();
             }
             MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
-            //compiler.CSharpNamespace = "MetaDslx.Core";
             compiler.Compile();
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
@@ -123,8 +122,8 @@ namespace MetaDslx.TempConsole
             }
             PrintScope("", compiler.GlobalScope);
             Console.WriteLine("=");
-            /*
-            foreach (var symbol in compiler.GlobalScope.GetSymbols())
+            
+            foreach (var symbol in compiler.Data.SymbolToEntry.Keys)
             {
                 ModelObject mo = symbol as ModelObject;
                 if (mo != null)
@@ -157,7 +156,7 @@ namespace MetaDslx.TempConsole
                         }
                     }
                 }
-            }*/
+            }
         }
 
         private static void CompileGenerator(string fileName, string outputFileName)

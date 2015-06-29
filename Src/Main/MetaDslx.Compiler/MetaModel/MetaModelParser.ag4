@@ -12,51 +12,47 @@ qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
-@NameCtr(symbolType=MetaNamespace,scope=true,merge=true)
-namespaceDeclaration: KNamespace @Property(Name) @Value @NameDef qualifiedName TEquals @Property(Uri) @Value stringLiteral TOpenBrace @Property(Models) metamodelDeclaration* TCloseBrace;
+@NameDef(symbolType=MetaNamespace,scope=true,merge=true)
+namespaceDeclaration: KNamespace /*@Property(Name)*/ qualifiedName TEquals @Property(Uri) @Value stringLiteral TOpenBrace @Property(Models) metamodelDeclaration* TCloseBrace;
 
-@TypeCtr(MetaModel)
-metamodelDeclaration: KMetamodel @Property(Name) @Value @TypeDef identifier TOpenBrace @Property(Types) declaration* TCloseBrace;
+@TypeDef(MetaModel)
+metamodelDeclaration: KMetamodel identifier TOpenBrace @Property(Types) declaration* TCloseBrace;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
-@TypeCtr(MetaEnum)
-enumDeclaration : KEnum @Property(Name) @Value  @TypeDef identifier TOpenBrace @Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
+@TypeDef(MetaEnum)
+enumDeclaration : KEnum identifier TOpenBrace @Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
-@NameCtr(MetaEnumLiteral)
-enumValue : @Property(Name) @Value  @NameDef identifier;
+@NameDef(MetaEnumLiteral)
+enumValue : identifier;
 enumMemberDeclaration : @Property(Operations) operationDeclaration;
 
-@TypeCtr(MetaClass)
-classDeclaration : @Property(IsAbstract) @Value(true) KAbstract? KClass @Property(Name) @Value @TypeDef identifier (TColon @Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+@TypeDef(MetaClass)
+classDeclaration : @Property(name=IsAbstract,value=true) KAbstract? KClass identifier (TColon @Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor : @TypeUse(MetaClass) qualifiedName;
 classMemberDeclaration : @Property(Properties) fieldDeclaration | @Property(Operations) operationDeclaration;
 
-@NameCtr(MetaProperty)
-fieldDeclaration : @Property(Kind) fieldModifier? typeReference @Property(Name) @Value @NameDef identifier TSemicolon;
+@NameDef(MetaProperty)
+fieldDeclaration : @Property(Kind) fieldModifier? typeReference identifier TSemicolon;
 fieldModifier : @Value(MetaPropertyKind.Containment) KContainment | @Value(MetaPropertyKind.Readonly) KReadonly | @Value(MetaPropertyKind.Lazy) KLazy | @Value(MetaPropertyKind.Derived) KDerived;
 
-//@NameCtr(MetaConstant)
+//@NameDef(MetaConstant)
 constDeclaration : KConst typeReference /*@NameDef*/ identifier /*(TEquals expression)?*/ TSemicolon;
 
 @TypeUse
 returnType : typeReference | voidType;
 @TypeUse
 typeReference : collectionType | simpleType;
-@TypeUse
+
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
 @Name
-@TypeUse
-@TypeCtr(symbolType=MetaPrimitiveType,scope=false,merge=true)
 objectType 
 	: @PreDefSymbol(MetaBuiltInType.Object) KObject 
 	| @PreDefSymbol(MetaBuiltInType.String) KString
 	;
 @Name
-@TypeUse
-@TypeCtr(symbolType=MetaPrimitiveType,scope=false,merge=true)
 primitiveType 
 	: @PreDefSymbol(MetaBuiltInType.Int) KInt 
 	| @PreDefSymbol(MetaBuiltInType.Long) KLong 
@@ -66,26 +62,22 @@ primitiveType
 	| @PreDefSymbol(MetaBuiltInType.Bool) KBool
 	;
 @Name
-@TypeUse
-@TypeCtr(symbolType=MetaPrimitiveType,scope=false,merge=true)
 voidType : @PreDefSymbol(MetaBuiltInType.Void) KVoid;
 
-@TypeUse
-@TypeCtr(symbolType=MetaNullableType,scope=false)
+@TypeCtr(MetaNullableType)
 nullableType : @Property(InnerType) primitiveType TQuestion;
 
-@TypeUse
-@TypeCtr(symbolType=MetaCollectionType,scope=false)
+@TypeCtr(MetaCollectionType)
 collectionType : @Property(Kind) collectionKind TLessThan @Property(InnerType) simpleType TGreaterThan;
 collectionKind : @Value(MetaCollectionKind.Set) KSet | @Value(MetaCollectionKind.List) KList;
 
-@NameCtr(MetaOperation)
-@TypeCtr(symbolType=MetaOperation,scope=false)
-operationDeclaration : KStatic? @Property(ReturnType) returnType @Property(Name) @Value @TypeDef @NameDef identifier TOpenBracket @Property(Parameters) parameterList? TCloseBracket TSemicolon;
+@NameDef(MetaOperation)
+@Type
+operationDeclaration : KStatic? @Property(ReturnType) returnType identifier TOpenBracket @Property(Parameters) parameterList? TCloseBracket TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
-@NameCtr(MetaParameter)
-parameter : @Property(Type) typeReference @NameDef identifier /*(TEquals expression)? { expression.ExpectedType = typeReference; }*/;
+@NameDef(MetaParameter)
+parameter : typeReference identifier /*(TEquals expression)? { expression.ExpectedType = typeReference; }*/;
 
 /*
 expressionList : expression (',' expression)*; 

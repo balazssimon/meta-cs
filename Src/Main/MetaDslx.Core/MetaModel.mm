@@ -123,3 +123,20 @@
 
 	}
 }
+
+namespace MetaDslx.Core.X = "http://metadslx.core/1.0/X"
+{
+	metamodel MetaX
+	{
+	}
+}
+
+namespace MetaDslx.Core = "http://metadslx.core/1.0/X"
+{
+	metamodel MetaZ
+	{
+		class MetaClass
+		{
+		}
+	}
+}

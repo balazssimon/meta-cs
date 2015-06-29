@@ -13,31 +13,31 @@ identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
 
-namespaceDeclaration: KNamespace    qualifiedName TEquals   stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: KNamespace /*@Property(Name)*/ qualifiedName TEquals   stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
 
 
-metamodelDeclaration: KMetamodel    identifier TOpenBrace  declaration* TCloseBrace;
+metamodelDeclaration: KMetamodel identifier TOpenBrace  declaration* TCloseBrace;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
 
-enumDeclaration : KEnum     identifier TOpenBrace  enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
+enumDeclaration : KEnum identifier TOpenBrace  enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
 
-enumValue :     identifier;
+enumValue : identifier;
 enumMemberDeclaration :  operationDeclaration;
 
 
-classDeclaration :   KAbstract? KClass    identifier (TColon  classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+classDeclaration :  KAbstract? KClass identifier (TColon  classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor :  qualifiedName;
 classMemberDeclaration :  fieldDeclaration |  operationDeclaration;
 
 
-fieldDeclaration :  fieldModifier? typeReference    identifier TSemicolon;
+fieldDeclaration :  fieldModifier? typeReference identifier TSemicolon;
 fieldModifier :  KContainment |  KReadonly |  KLazy |  KDerived;
 
-//@NameCtr(MetaConstant)
+//@NameDef(MetaConstant)
 constDeclaration : KConst typeReference /*@NameDef*/ identifier /*(TEquals expression)?*/ TSemicolon;
 
 
@@ -48,14 +48,10 @@ typeReference : collectionType | simpleType;
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
 
-
-
 objectType 
 	:  KObject 
 	|  KString
 	;
-
-
 
 primitiveType 
 	:  KInt 
@@ -66,14 +62,10 @@ primitiveType
 	|  KBool
 	;
 
-
-
 voidType :  KVoid;
 
 
-
 nullableType :  primitiveType TQuestion;
-
 
 
 collectionType :  collectionKind TLessThan  simpleType TGreaterThan;
@@ -81,11 +73,11 @@ collectionKind :  KSet |  KList;
 
 
 
-operationDeclaration : KStatic?  returnType     identifier TOpenBracket  parameterList? TCloseBracket TSemicolon;
+operationDeclaration : KStatic?  returnType identifier TOpenBracket  parameterList? TCloseBracket TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
 
-parameter :  typeReference  identifier /*(TEquals expression)? { expression.ExpectedType = typeReference; }*/;
+parameter :  typeReference identifier /*(TEquals expression)? { expression.ExpectedType = typeReference; }*/;
 
 /*
 expressionList : expression (',' expression)*; 

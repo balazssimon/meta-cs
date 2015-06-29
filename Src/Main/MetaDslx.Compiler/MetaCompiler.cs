@@ -91,12 +91,82 @@ namespace MetaDslx.Compiler
             this.ModelFactory = new ModelFactory();
             this.NodeToEntry = new Dictionary<IParseTree, List<ScopeEntry>>();
             this.NodeToSymbol = new Dictionary<IParseTree, List<object>>();
+            this.SymbolToEntry = new Dictionary<object, ScopeEntry>();
         }
 
         public MetaCompiler Compiler { get; private set; }
         public ModelFactory ModelFactory { get; private set; }
         public Dictionary<IParseTree, List<ScopeEntry>> NodeToEntry { get; private set; }
         public Dictionary<IParseTree, List<object>> NodeToSymbol { get; private set; }
+        public Dictionary<object, ScopeEntry> SymbolToEntry { get; private set; }
+
+        public void RegisterEntry(IParseTree node, ScopeEntry entry)
+        {
+            List<ScopeEntry> entries = null;
+            if (!this.NodeToEntry.TryGetValue(node, out entries))
+            {
+                entries = new List<ScopeEntry>();
+                this.NodeToEntry.Add(node, entries);
+            }
+            if (!entries.Contains(entry))
+            {
+                entries.Add(entry);
+                entry.AddTreeNode(node);
+            }
+        }
+
+        public void RegisterSymbol(IParseTree node, object symbol, ScopeEntry entry)
+        {
+            if (symbol == null) return;
+            if (node != null)
+            {
+                List<object> symbols = null;
+                if (!this.NodeToSymbol.TryGetValue(node, out symbols))
+                {
+                    symbols = new List<object>();
+                    this.NodeToSymbol.Add(node, symbols);
+                }
+                if (!symbols.Contains(symbol))
+                {
+                    symbols.Add(symbol);
+                }
+            }
+            if (entry != null)
+            {
+                ScopeEntry oldEntry = null;
+                if (this.SymbolToEntry.TryGetValue(symbol, out oldEntry))
+                {
+                    if (entry != oldEntry)
+                    {
+                        throw new MetaCompilerException("Cannot register multiple entries to the same symbol.");
+                    }
+                }
+                else
+                {
+                    this.SymbolToEntry.Add(symbol, entry);
+                }
+            }
+        }
+
+        public List<ScopeEntry> GetEntries(IParseTree node)
+        {
+            List<ScopeEntry> entries = null;
+            if (this.NodeToEntry.TryGetValue(node, out entries))
+            {
+                return entries.ToList();
+            }
+            return new List<ScopeEntry>();
+        }
+
+        public List<object> GetSymbols(IParseTree node)
+        {
+            List<object> symbols = null;
+            if (this.NodeToSymbol.TryGetValue(node, out symbols))
+            {
+                return symbols.ToList();
+            }
+            return new List<object>();
+        }
 
     }
 
