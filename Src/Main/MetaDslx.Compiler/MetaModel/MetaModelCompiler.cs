@@ -23,6 +23,7 @@ namespace MetaDslx.Compiler
 
     public class NameDefAnnotation
     {
+        public string NestingProperty { get; set; }
         public Type SymbolType { get; set; }
         public bool Merge { get; set; }
         public bool Overload { get; set; }
@@ -73,6 +74,11 @@ namespace MetaDslx.Compiler
     }
 
     public class NameAnnotation
+    {
+
+    }
+
+    public class TypeAnnotation
     {
 
     }
@@ -223,11 +229,13 @@ namespace MetaDslx.Compiler
             { 
                 typeof(TypeDefAnnotation),
                 typeof(NameDefAnnotation),
-                typeof(TypeUseAnnotation),
-                typeof(NameUseAnnotation),
+                //typeof(TypeUseAnnotation),
+                //typeof(NameUseAnnotation),
                 typeof(TypeCtrAnnotation),
                 typeof(NameCtrAnnotation),
+                typeof(ScopeAnnotation),
                 typeof(SymbolAnnotation),
+                typeof(PreDefSymbolAnnotation),
             };
 
         public static readonly Type[] NameKindAnnotations =
@@ -636,7 +644,7 @@ namespace MetaDslx.Compiler
                             this.Compiler.Diagnostics.AddError("The current scope should not have a parent scope.", this.Compiler.FileName, new TextSpan(node), true);
                         }
                     }
-                    this.TypeDef(tda, this.CurrentNameKind, node, typeDef, this.ParentScope);
+                    this.TypeDef(tda, this.CurrentNameKind, node, typeDef, this.ParentScope, true);
                 }
                 else
                 {
@@ -675,14 +683,14 @@ namespace MetaDslx.Compiler
                                     nameDef.Scope = innermostScope;
                                     nameDef.Scope.Owner = nameDef;
                                     this.Scope(names[i], nameDef.Scope);
-                                    this.NameDef(nda, this.CurrentNameKind, names[i], nameDef, this.ParentScope);
+                                    this.NameDef(nda, this.CurrentNameKind, names[i], nameDef, this.ParentScope, true);
                                 }
                                 else
                                 {
                                     nameDef.Scope = new Scope(null);
                                     nameDef.Scope.Owner = nameDef;
                                     this.Scope(names[i], nameDef.Scope);
-                                    this.NameDef(nda, this.CurrentNameKind, names[i], nameDef, this.ParentScope);
+                                    this.NameDef(nda, this.CurrentNameKind, names[i], nameDef, this.ParentScope, false);
                                 }
                             }
                             else
@@ -702,7 +710,7 @@ namespace MetaDslx.Compiler
                     if (name != null)
                     {
                         NameDef nameDef = new NameDef(name, null);
-                        this.NameDef(nda, this.CurrentNameKind, node, nameDef, this.CurrentScope);
+                        this.NameDef(nda, this.CurrentNameKind, node, nameDef, this.CurrentScope, true);
                     }
                 }
             }
@@ -729,7 +737,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected virtual void TypeDef(TypeDefAnnotation typeDefAnnotation, IParseTree typeDefNode, IParseTree nameNode, TypeDef typeDef, Scope parentScope)
+        protected virtual void TypeDef(TypeDefAnnotation typeDefAnnotation, IParseTree typeDefNode, IParseTree nameNode, TypeDef typeDef, Scope parentScope, bool registerSymbol)
         {
             TypeDef targetTypeDef = null;
             if (this.MergeTypeDef(typeDefAnnotation, typeDefNode, nameNode, typeDef, parentScope, out targetTypeDef))
@@ -753,11 +761,11 @@ namespace MetaDslx.Compiler
                 typeDef.CanMerge = typeDefAnnotation.Merge;
                 parentScope.AddEntry(typeDef);
                 this.Compiler.Data.RegisterEntry(typeDefNode, typeDef);
-                this.TypeDefSymbol(typeDefAnnotation, typeDefNode, nameNode, typeDef);
+                this.TypeDefSymbol(typeDefAnnotation, typeDefNode, nameNode, typeDef, registerSymbol);
             }
         }
 
-        protected virtual void NameDef(NameDefAnnotation nameDefAnnotation, IParseTree nameDefNode, IParseTree nameNode, NameDef nameDef, Scope parentScope)
+        protected virtual void NameDef(NameDefAnnotation nameDefAnnotation, IParseTree nameDefNode, IParseTree nameNode, NameDef nameDef, Scope parentScope, bool registerSymbol)
         {
             NameDef targetNameDef = null;
             if (this.MergeNameDef(nameDefAnnotation, nameDefNode, nameNode, nameDef, parentScope, out targetNameDef))
@@ -781,7 +789,7 @@ namespace MetaDslx.Compiler
                 nameDef.CanMerge = nameDefAnnotation.Merge;
                 parentScope.AddEntry(nameDef);
                 this.Compiler.Data.RegisterEntry(nameDefNode, nameDef);
-                this.NameDefSymbol(nameDefAnnotation, nameDefNode, nameNode, nameDef);
+                this.NameDefSymbol(nameDefAnnotation, nameDefNode, nameNode, nameDef, registerSymbol);
             }
         }
 
@@ -821,7 +829,7 @@ namespace MetaDslx.Compiler
             return false;
         }
 
-        protected virtual void TypeDefSymbol(TypeDefAnnotation typeDefAnnotation, IParseTree typeDefNode, IParseTree nameNode, TypeDef typeDef)
+        protected virtual void TypeDefSymbol(TypeDefAnnotation typeDefAnnotation, IParseTree typeDefNode, IParseTree nameNode, TypeDef typeDef, bool registerSymbol)
         {
             if (typeDef == null) return;
             if (typeDefAnnotation == null || typeDefAnnotation.SymbolType == null) return;
@@ -829,7 +837,14 @@ namespace MetaDslx.Compiler
             if (symbol != null)
             {
                 typeDef.Symbol = symbol;
-                this.Compiler.Data.RegisterSymbol(typeDefNode, symbol, typeDef);
+                if (registerSymbol)
+                {
+                    this.Compiler.Data.RegisterSymbol(typeDefNode, symbol, typeDef);
+                }
+                else
+                {
+                    this.Compiler.Data.RegisterSymbol(null, symbol, typeDef);
+                }
                 string nameProperty = "Name";
                 IEnumerable<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(nameNode);
                 foreach (var pa in pas)
@@ -851,7 +866,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected virtual void NameDefSymbol(NameDefAnnotation nameDefAnnotation, IParseTree nameDefNode, IParseTree nameNode, NameDef nameDef)
+        protected virtual void NameDefSymbol(NameDefAnnotation nameDefAnnotation, IParseTree nameDefNode, IParseTree nameNode, NameDef nameDef, bool registerSymbol)
         {
             if (nameDef == null) return;
             if (nameDefAnnotation == null || nameDefAnnotation.SymbolType == null) return;
@@ -859,7 +874,14 @@ namespace MetaDslx.Compiler
             if (symbol != null)
             {
                 nameDef.Symbol = symbol;
-                this.Compiler.Data.RegisterSymbol(nameDefNode, symbol, nameDef);
+                if (registerSymbol)
+                {
+                    this.Compiler.Data.RegisterSymbol(nameDefNode, symbol, nameDef);
+                }
+                else
+                {
+                    this.Compiler.Data.RegisterSymbol(null, symbol, nameDef);
+                }
                 string nameProperty = "Name";
                 IEnumerable<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(nameNode);
                 foreach (var pa in pas)
@@ -877,6 +899,18 @@ namespace MetaDslx.Compiler
                 else
                 {
                     this.Compiler.Diagnostics.AddError("Could not set the '" + nameProperty + "' property for the symbol '" + nameDef.SymbolType + "'.", this.Compiler.FileName, new TextSpan(nameNode));
+                }
+                if (nameDefAnnotation.NestingProperty != null && nameDef.Parent != null && nameDef.Parent.Owner != null && nameDef.Parent.Owner.Symbol != null)
+                {
+                    ModelObject mo = nameDef.Parent.Owner.Symbol as ModelObject;
+                    if (mo != null)
+                    {
+                        prop = mo.MFindProperty(nameDefAnnotation.NestingProperty);
+                        if (prop != null)
+                        {
+                            mo.MAdd(prop, symbol);
+                        }
+                    }
                 }
             }
         }
@@ -905,12 +939,16 @@ namespace MetaDslx.Compiler
         public MetaCompilerReferencePhase(MetaCompiler compiler)
             : base(compiler)
         {
+            this.RootSymbols = new List<object>();
             this.SymbolStack = new List<List<object>>();
-            this.PropertyStack = new List<PropertyAnnotation>();
+            this.PropertyStack = new List<List<PropertyAnnotation>>();
+            this.ConstructorSymbolStack = new List<object>();
         }
 
+        public List<object> RootSymbols { get; private set; }
         protected List<List<object>> SymbolStack { get; private set; }
-        protected List<PropertyAnnotation> PropertyStack { get; private set; }
+        protected List<List<PropertyAnnotation>> PropertyStack { get; private set; }
+        protected List<object> ConstructorSymbolStack { get; private set; }
 
         protected List<object> CurrentSymbols
         {
@@ -922,7 +960,67 @@ namespace MetaDslx.Compiler
                 }
                 else
                 {
-                    return new List<object>();
+                    return this.RootSymbols;
+                }
+            }
+        }
+
+        protected List<object> ParentSymbols
+        {
+            get
+            {
+                if (this.SymbolStack.Count >= 2)
+                {
+                    return this.SymbolStack[this.SymbolStack.Count - 2];
+                }
+                else
+                {
+                    return this.RootSymbols;
+                }
+            }
+        }
+
+        protected List<PropertyAnnotation> CurrentProperties
+        {
+            get
+            {
+                if (this.PropertyStack.Count > 0)
+                {
+                    return this.PropertyStack[this.PropertyStack.Count - 1];
+                }
+                else
+                {
+                    return new List<PropertyAnnotation>();
+                }
+            }
+        }
+
+        protected List<PropertyAnnotation> ParentProperties
+        {
+            get
+            {
+                if (this.PropertyStack.Count >= 2)
+                {
+                    return this.PropertyStack[this.PropertyStack.Count - 2];
+                }
+                else
+                {
+                    return new List<PropertyAnnotation>();
+                }
+            }
+        }
+
+        protected object CurrentConstructorSymbol
+        {
+            get
+            {
+                if (this.ConstructorSymbolStack.Count > 0)
+                {
+                    return this.ConstructorSymbolStack[this.ConstructorSymbolStack.Count - 1];
+                }
+                else
+                {
+                    return null;
                 }
             }
         }
@@ -930,6 +1028,7 @@ namespace MetaDslx.Compiler
         public override void VisitNode(IParseTree node)
         {
             int previousPropertyStackCount = this.PropertyStack.Count;
+            int previousConstructorSymbolStackCount = this.ConstructorSymbolStack.Count;
             bool visitBoundary = this.IsVisitBoundary(node);
             bool symbolBoundary = this.IsSymbolBoundary(node);
             if (symbolBoundary)
@@ -937,16 +1036,21 @@ namespace MetaDslx.Compiler
                 this.SymbolStack.Add(new List<object>());
             }
             this.HandleSymbols(node);
+            this.HandleConstructorSymbols(node);
             this.HandleUses(node);
+            this.HandleProperties(node, symbolBoundary);
             if (!visitBoundary)
             {
                 base.VisitNode(node);
             }
+            this.HandleConstructors(node);
+            this.HandlePropertyValues(node, symbolBoundary);
             if (symbolBoundary)
             {
                 this.SymbolStack.RemoveAt(this.SymbolStack.Count - 1);
             }
             this.PropertyStack.RemoveRange(previousPropertyStackCount, this.PropertyStack.Count - previousPropertyStackCount);
+            this.ConstructorSymbolStack.RemoveRange(previousConstructorSymbolStackCount, this.ConstructorSymbolStack.Count - previousConstructorSymbolStackCount);
         }
 
         protected virtual void HandleSymbols(IParseTree node)
@@ -961,18 +1065,145 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected virtual void HandleProperties(IParseTree node)
+        protected virtual void HandleConstructorSymbols(IParseTree node)
         {
-            IEnumerable<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node);
+            TypeCtrAnnotation tca = this.GetAnnotationFor<TypeCtrAnnotation>(node);
+            NameCtrAnnotation nca = this.GetAnnotationFor<NameCtrAnnotation>(node);
+            if (tca != null)
+            {
+                object symbol = this.ModelFactory.Create(tca.SymbolType);
+                if (symbol != null)
+                {
+                    this.CurrentSymbols.Add(symbol);
+                    this.ConstructorSymbolStack.Add(symbol);
+                }
+                else
+                {
+                    this.ConstructorSymbolStack.Add(null);
+                }
+            }
+            if (nca != null)
+            {
+                object symbol = this.ModelFactory.Create(nca.SymbolType);
+                if (symbol != null)
+                {
+                    this.CurrentSymbols.Add(symbol);
+                    this.ConstructorSymbolStack.Add(symbol);
+                }
+                else
+                {
+                    this.ConstructorSymbolStack.Add(null);
+                }
+            }
+        }
+
+        protected virtual void HandleProperties(IParseTree node, bool symbolBoundary)
+        {
+            ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
+            if (va == null)
+            {
+                List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).Where(pa => !pa.HasValue).ToList();
+                if (pas.Count > 0)
+                {
+                    this.PropertyStack.Add(new List<PropertyAnnotation>());
+                }
+                foreach (var pa in pas)
+                {
+                    this.CurrentProperties.Add(pa);
+                }
+                if (pas.Count > 1)
+                {
+                    this.Compiler.Diagnostics.AddError("There are multiple properties defined for the node.", this.Compiler.FileName, new TextSpan(node), true);
+                }
+            }
+            if (symbolBoundary)
+            {
+                this.PropertyStack.Add(new List<PropertyAnnotation>());
+            }
+        }
+
+        protected virtual void HandlePropertyValues(IParseTree node, bool symbolBoundary)
+        {
+            List<object> targetSymbols = null;
+            if (symbolBoundary) targetSymbols = this.ParentSymbols;
+            else targetSymbols = this.CurrentSymbols;
+
+            List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).ToList();
+            ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
             foreach (var pa in pas)
             {
                 if (pa.HasValue)
                 {
-                    // TODO
+                    object value = pa.Value;
+                    IParseTree valueNode = value as IParseTree;
+                    if (valueNode != null)
+                    {
+                        List<object> valueSymbols = this.Compiler.Data.GetSymbols(valueNode);
+                        this.SetProperty(node, targetSymbols, pa, valueSymbols);
+                    }
+                    else
+                    {
+                        object eval = this.Evaluate(value);
+                        this.SetProperty(node, targetSymbols, pa, new object[] { eval });
+                    }
+                }
+                else if (va != null)
+                {
+                    if (va.HasValue)
+                    {
+                        object eval = this.Evaluate(va.Value);
+                        this.SetProperty(node, targetSymbols, pa, new object[] { eval });
+                    }
+                    else
+                    {
+                        object eval = this.Evaluate(node);
+                        this.SetProperty(node, targetSymbols, pa, new object[] { eval });
+                    }
+                }
+                else if (symbolBoundary)
+                {
+                    this.SetProperty(node, targetSymbols, pa, this.CurrentSymbols);
+                }
+            }
+
+            List<PropertyAnnotation> spas = null;
+            if (symbolBoundary) spas = this.ParentProperties;
+            else spas = this.CurrentProperties;
+            if (spas != null && spas.Count > 0)
+            {
+                if (va != null)
+                {
+                    if (va.HasValue)
+                    {
+                        object eval = this.Evaluate(va.Value);
+                        foreach (var spa in spas)
+                        {
+                            this.SetProperty(node, targetSymbols, spa, new object[] { eval });
+                        }
+                    }
+                    else
+                    {
+                        object eval = this.Evaluate(node);
+                        foreach (var spa in spas)
+                        {
+                            this.SetProperty(node, targetSymbols, spa, new object[] { eval });
+                        }
+                    }
+                }
+                else if (symbolBoundary)
+                {
+                    foreach (var spa in spas)
+                    {
+                        this.SetProperty(node, targetSymbols, spa, this.CurrentSymbols);
+                    }
                 }
                 else
                 {
-                    this.PropertyStack.Add(pa);
+                    List<object> valueSymbols = this.Compiler.Data.GetSymbols(node);
+                    foreach (var spa in spas)
+                    {
+                        this.SetProperty(node, targetSymbols, spa, valueSymbols);
+                    }
                 }
             }
         }
@@ -992,6 +1223,7 @@ namespace MetaDslx.Compiler
                     if (pdsa != null)
                     {
                         preDefSymbol = pdsa.Value;
+                        this.Compiler.Data.RegisterSymbol(node, preDefSymbol, null);
                     }
                 }
                 else if (preDefSymbolNodes.Count > 0)
@@ -1013,6 +1245,7 @@ namespace MetaDslx.Compiler
                     {
                         nameUse.Name = this.GetName(names[0]);
                         nameUse.Symbol = preDefSymbol;
+                        this.Compiler.Data.RegisterSymbol(node, nameUse.Symbol, null);
                         return;
                     }
                     for (int i = 0; i < names.Count; ++i)
@@ -1036,6 +1269,7 @@ namespace MetaDslx.Compiler
                                     if (i == names.Count - 1)
                                     {
                                         nameUse.Symbol = boundEntry.Symbol;
+                                        this.Compiler.Data.RegisterSymbol(node, nameUse.Symbol, null);
                                     }
                                     NameDef nameDef = boundEntry as NameDef;
                                     TypeDef typeDef = boundEntry as TypeDef;
@@ -1062,6 +1296,7 @@ namespace MetaDslx.Compiler
                     {
                         typeUse.Name = this.GetName(names[0]);
                         typeUse.Symbol = preDefSymbol;
+                        this.Compiler.Data.RegisterSymbol(node, typeUse.Symbol, null);
                         return;
                     }
                     for (int i = 0; i < names.Count; ++i)
@@ -1085,6 +1320,7 @@ namespace MetaDslx.Compiler
                                     {
                                         this.Compiler.Data.RegisterSymbol(names[i], boundEntry.Symbol, null);
                                         typeUse.Symbol = boundEntry.Symbol;
+                                        this.Compiler.Data.RegisterSymbol(node, typeUse.Symbol, null);
                                     }
                                 }
                             }
@@ -1118,6 +1354,31 @@ namespace MetaDslx.Compiler
                 }
             }
             return;
+        }
+
+        protected virtual void HandleConstructors(IParseTree node)
+        {
+            // TODO: single instances
+            TypeCtrAnnotation tca = this.GetAnnotationFor<TypeCtrAnnotation>(node);
+            NameCtrAnnotation nca = this.GetAnnotationFor<NameCtrAnnotation>(node);
+            if (nca != null)
+            {
+                object symbol = this.CurrentConstructorSymbol;
+                this.ConstructorSymbolStack.RemoveAt(this.ConstructorSymbolStack.Count - 1);
+                if (symbol != null)
+                {
+                    this.Compiler.Data.RegisterSymbol(node, symbol, null);
+                }
+            }
+            if (tca != null)
+            {
+                object symbol = this.CurrentConstructorSymbol;
+                this.ConstructorSymbolStack.RemoveAt(this.ConstructorSymbolStack.Count - 1);
+                if (symbol != null)
+                {
+                    this.Compiler.Data.RegisterSymbol(node, symbol, null);
+                }
+            }
         }
 
         protected virtual ScopeEntry BindNameEntry(IParseTree node, List<ScopeEntry> entries)
@@ -1154,10 +1415,107 @@ namespace MetaDslx.Compiler
             return null;
         }
 
+        protected virtual void SetProperty(IParseTree node, List<object> symbols, PropertyAnnotation propertyAnnotation, IEnumerable<object> values)
+        {
+            if (symbols == null) return;
+            if (values == null) return;
+            foreach (var symbol in symbols)
+            {
+                bool symbolOK = symbol is ModelObject;
+                if (symbolOK)
+                {
+                    symbolOK = false;
+                    if (propertyAnnotation.SymbolTypes == null || propertyAnnotation.SymbolTypes.Count == 0)
+                    {
+                        symbolOK = true;
+                    }
+                    else
+                    {
+                        foreach (var symbolType in propertyAnnotation.SymbolTypes)
+                        {
+                            if (symbolType.IsAssignableFrom(symbol.GetType()))
+                            {
+                                symbolOK = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (symbolOK)
+                {
+                    ModelObject mo = symbol as ModelObject;
+                    ModelProperty prop = mo.MFindProperty(propertyAnnotation.Name);
+                    if (prop != null)
+                    {
+                        foreach (var value in values)
+                        {
+                            if (value != null)
+                            {
+                                if (prop.IsAssignableFrom(value.GetType()))
+                                {
+                                    mo.MAdd(prop, value);
+                                }
+                                else
+                                {
+                                    this.Compiler.Diagnostics.AddError("Value '"+value+"' cannot be assigned to '"+mo+"."+prop.Name+"'.", this.Compiler.FileName, new TextSpan(node), true);
+                                }
+                            }
+                            else if (prop.Type.IsClass)
+                            {
+                                mo.MAdd(prop, value);
+                            }
+                            else
+                            {
+                                this.Compiler.Diagnostics.AddError("Value '" + value + "' cannot be assigned to '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this.Compiler.Diagnostics.AddError("Property '" + propertyAnnotation.Name + "' cannot be found in '" + mo + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                    }
+                }
+                else
+                {
+                    this.Compiler.Diagnostics.AddError("Symbol '" + symbol + "' cannot be assigned to '" + propertyAnnotation.SymbolTypes + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                }
+            }
+        }
+
+        protected virtual object Evaluate(object value)
+        {
+            IParseTree node = value as IParseTree;
+            if (node != null)
+            {
+                return node.GetText();
+            }
+            else
+            {
+                return value;
+            }
+        }
+
         protected virtual string GetName(IParseTree node)
         {
             if (node == null) return null;
             return node.GetText();
+        }
+    }
+
+    public class LazyPropertyGetter
+    {
+        public ModelObject Symbol { get; private set; }
+        public ModelProperty Property { get; private set; }
+
+        public LazyPropertyGetter(ModelObject symbol, ModelProperty property)
+        {
+            this.Symbol = symbol;
+            this.Property = property;
+        }
+
+        public object Execute()
+        {
+            return this.Symbol.MGetValue(this.Property);
         }
     }
 

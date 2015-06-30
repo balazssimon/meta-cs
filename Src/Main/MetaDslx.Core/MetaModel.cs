@@ -26,6 +26,8 @@ namespace MetaDslx.Core
     {
         string Name { get; set; }
         string Uri { get; set; }
+        MetaNamespace Parent { get; }
+        ICollection<MetaNamespace> Namespaces { get; }
         ICollection<MetaModel> Models { get; }
     
     }
@@ -58,7 +60,16 @@ namespace MetaDslx.Core
             get { return (string)this.MGetValue(MetaNamespaceImpl.UriProperty); }
             set { this.MSetValue(MetaNamespaceImpl.UriProperty, value); }
         }
-        
+
+        [OppositeAttribute(typeof(MetaModelImpl), "Namespaces")]
+        internal static readonly ModelProperty ParentProperty =
+            ModelProperty.Register("Parent", typeof(MetaNamespace), typeof(MetaNamespaceImpl));
+        public MetaNamespace Parent
+        {
+            get { return (MetaNamespace)this.MGetValue(MetaNamespaceImpl.ParentProperty); }
+            set { this.MSetValue(MetaNamespaceImpl.ParentProperty, value); }
+        }
+
         [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaModelImpl), "Namespace")]
         internal static readonly ModelProperty ModelsProperty =
@@ -66,6 +77,15 @@ namespace MetaDslx.Core
         public ICollection<MetaModel> Models
         {
             get { return (ICollection<MetaModel>)this.MGetValue(MetaNamespaceImpl.ModelsProperty); }
+        }
+        
+        [ContainmentAttribute]
+        [OppositeAttribute(typeof(MetaModelImpl), "Parent")]
+        internal static readonly ModelProperty NamespacesProperty =
+            ModelProperty.Register("Namespaces", typeof(ICollection<MetaNamespace>), typeof(MetaNamespaceImpl));
+        public ICollection<MetaNamespace> Namespaces
+        {
+            get { return (ICollection<MetaNamespace>)this.MGetValue(MetaNamespaceImpl.NamespacesProperty); }
         }
     }
     

@@ -16,8 +16,12 @@
 		{
 			string Name;
 			string Uri;
+			MetaNamespace Parent;
+			containment set<MetaNamespace> Namespaces;
 			containment set<MetaModel> Models;
 		}
+
+		association MetaNamespace.Namespaces with MetaNamespace.Parent;
 
 		class MetaModel
 		{

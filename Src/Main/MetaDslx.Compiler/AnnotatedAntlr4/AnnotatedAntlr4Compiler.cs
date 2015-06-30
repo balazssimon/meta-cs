@@ -1110,10 +1110,10 @@ namespace MetaDslx.Compiler
                 }
                 else
                 {
-                    if (annot.Type.Name == "Value")
+                    /*if (annot.Type.Name == "Value")
                     {
                         WriteLine("{0}.Value = context.GetText();", variableName);
-                    }
+                    }*/
                 }
             }
             foreach (var prop in annot.Properties)
@@ -1145,6 +1145,10 @@ namespace MetaDslx.Compiler
                         else if (prop.Name == "symbolTypes" && (annot.Type.Name == "TypeUse" || annot.Type.Name == "NameUse"))
                         {
                             WriteLine("{0}.{1}.Add(typeof({2}));", variableName, propName, prop.Value);
+                        }
+                        else if (prop.Name == "nestingProperty" && (annot.Type.Name == "NameDef"))
+                        {
+                            WriteLine("{0}.{1} = \"{2}\";", variableName, propName, prop.Value);
                         }
                         else if (prop.Name == "name" && (annot.Type.Name == "Property"))
                         {

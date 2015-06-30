@@ -21,7 +21,13 @@ namespace MetaDslx.Core
         {
             return this.values.ContainsKey(property) || this.initializers.ContainsKey(property);
         }
-        
+
+        public void MUnSet(ModelProperty property)
+        {
+            this.values.Remove(property);
+            this.initializers.Remove(property);
+        }
+
         public void MInitValue(ModelProperty property, Func<object> value)
         {
             object oldValue;

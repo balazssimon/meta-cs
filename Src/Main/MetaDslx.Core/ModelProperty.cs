@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Collections;
 
 namespace MetaDslx.Core
 {
@@ -21,6 +22,8 @@ namespace MetaDslx.Core
         private List<ModelProperty> oppositeProperties;
         private bool isReadonly = false;
         private bool isContainment = false;
+        private Type itemType = null;
+        private bool isCollection = false;
 
         protected ModelProperty(string name, Type type, Type owningType, string declaredName, Type declaringType)
         {
@@ -69,12 +72,41 @@ namespace MetaDslx.Core
             }
         }
 
+        public bool IsCollection
+        {
+            get
+            {
+                if (!this.initialized) this.Init();
+                return this.isCollection;
+            }
+        }
+
+        public Type ItemType
+        {
+            get
+            {
+                if (!this.initialized) this.Init();
+                return this.itemType;
+            }
+        }
+
         private void Init()
         {
             if (this.initialized) return;
+            this.initialized = true;
             FieldInfo info = this.DeclaringType.GetField(this.DeclaredName + "Property", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (info != null)
             {
+                if (ModelProperty.IsAssignableToGenericType(this.Type,typeof(ICollection<>)))
+                {
+                    Type[] genericArguments = this.Type.GetGenericArguments();
+                    Type lastGenericArgument = genericArguments[genericArguments.Length - 1];
+                    if (genericArguments.Length > 0 && !lastGenericArgument.IsGenericParameter)
+                    {
+                        this.isCollection = true;
+                        this.itemType = lastGenericArgument;
+                    }
+                }
                 foreach (var attribute in info.GetCustomAttributes(typeof(OppositeAttribute), true))
                 {
                     OppositeAttribute oppositeAttribute = attribute as OppositeAttribute;
@@ -85,22 +117,6 @@ namespace MetaDslx.Core
                         {
                             this.oppositeProperties.Add(modelProperty);
                         }
-                        /*if (typeof(ModelObject).IsAssignableFrom(this.Type) || typeof(ModelCollection).IsAssignableFrom(this.Type))
-                        {
-                            ModelProperty modelProperty = ModelProperty.Find(oppositeAttribute.DeclaringType, oppositeAttribute.PropertyName);
-                            if (modelProperty != null)
-                            {
-                                this.oppositeProperties.Add(modelProperty);
-                            }
-                            else
-                            {
-                                throw new ModelException("Error in "+this.GetType().Name+" '" + this.ToString() + "'. Opposite property '" + oppositeAttribute.DeclaringType.FullName + "." + oppositeAttribute.PropertyName + "' could not be found.");
-                            }
-                        }
-                        else
-                        {
-                            throw new ModelException("Error in " + this.GetType().Name + " '" + this.ToString() + "'. A property with an opposite property must have a type that is a descendant of either " + typeof(ModelObject).Name + " or " + typeof(ModelCollection).Name + ".");
-                        }*/
                     }
                 }
                 foreach (var attribute in info.GetCustomAttributes(typeof(ReadonlyAttribute), true))
@@ -119,6 +135,19 @@ namespace MetaDslx.Core
                         this.isContainment = true;
                     }
                 }
+            }
+        }
+
+        public bool IsAssignableFrom(Type type)
+        {
+            if (this.Type == null || type == null) return false;
+            if (this.IsCollection)
+            {
+                return this.ItemType.IsAssignableFrom(type);
+            }
+            else
+            {
+                return this.Type.IsAssignableFrom(type);
             }
         }
 
@@ -225,6 +254,23 @@ namespace MetaDslx.Core
             }
         }
 
-       
+        private static bool IsAssignableToGenericType(Type givenType, Type genericType)
+        {
+            var interfaceTypes = givenType.GetInterfaces();
+
+            foreach (var it in interfaceTypes)
+            {
+                if (it.IsGenericType && it.GetGenericTypeDefinition() == genericType)
+                    return true;
+            }
+
+            if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
+                return true;
+
+            Type baseType = givenType.BaseType;
+            if (baseType == null) return false;
+
+            return IsAssignableToGenericType(baseType, genericType);
+        }
     }
 }

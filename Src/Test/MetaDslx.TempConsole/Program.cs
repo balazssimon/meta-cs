@@ -136,6 +136,11 @@ namespace MetaDslx.TempConsole
                     {
                         Console.WriteLine("  Name=" + mo.MGetValue(mp));
                     }
+                    mp = mo.MFindProperty("Uri");
+                    if (mp != null)
+                    {
+                        Console.WriteLine("  Uri=" + mo.MGetValue(mp));
+                    }
                     mp = mo.MFindProperty("Type");
                     if (mp != null)
                     {

@@ -12,12 +12,14 @@ qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
-@NameDef(symbolType=MetaNamespace,scope=true,merge=true)
+@NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,scope=true,merge=true)
 namespaceDeclaration: KNamespace /*@Property(Name)*/ qualifiedName TEquals @Property(Uri) @Value stringLiteral TOpenBrace @Property(Models) metamodelDeclaration* TCloseBrace;
 
+@Property(Models)
 @TypeDef(MetaModel)
-metamodelDeclaration: KMetamodel identifier TOpenBrace @Property(Types) declaration* TCloseBrace;
+metamodelDeclaration: KMetamodel identifier TOpenBrace declaration* TCloseBrace;
 
+@Property(Types)
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
 @TypeDef(MetaEnum)
@@ -44,7 +46,7 @@ constDeclaration : KConst typeReference /*@NameDef*/ identifier /*(TEquals expre
 returnType : typeReference | voidType;
 @TypeUse
 typeReference : collectionType | simpleType;
-
+@TypeUse
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
 @Name
@@ -172,6 +174,7 @@ assignmentOperator
 	;
 */
 
+@Scope
 associationDeclaration : KAssociation @NameUse(MetaProperty) source=qualifiedName KWith @NameUse(MetaProperty) target=qualifiedName TSemicolon
 {
 	source.Opposites = target;

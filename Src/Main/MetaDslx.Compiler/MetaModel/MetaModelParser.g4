@@ -16,7 +16,9 @@ qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 namespaceDeclaration: KNamespace /*@Property(Name)*/ qualifiedName TEquals   stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
 
 
-metamodelDeclaration: KMetamodel identifier TOpenBrace  declaration* TCloseBrace;
+
+metamodelDeclaration: KMetamodel identifier TOpenBrace declaration* TCloseBrace;
+
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
@@ -77,7 +79,7 @@ operationDeclaration : KStatic?  returnType identifier TOpenBracket  parameterLi
 parameterList : parameter (TComma parameter)*;
 
 
-parameter :  typeReference identifier /*(TEquals expression)? { expression.ExpectedType = typeReference; }*/;
+parameter : typeReference identifier /*(TEquals expression)? { expression.ExpectedType = typeReference; }*/;
 
 /*
 expressionList : expression (',' expression)*; 
@@ -171,6 +173,7 @@ assignmentOperator
 	| @Value(OperatorKind.OrAssign) '|=' 
 	;
 */
+
 
 associationDeclaration : KAssociation  source=qualifiedName KWith  target=qualifiedName TSemicolon
 {
