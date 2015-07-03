@@ -15,26 +15,28 @@ namespace MetaDslx.TempConsole
         {
             try
             {
-                /*CompileAG4(
+                /*
+                CompileAG4(
                     @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4Lexer.ag4",
                     @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4LexerAnnotator.cs",
                     @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4Lexer.g4"
                     );
-                Console.WriteLine("----");*/
-                /*
+                Console.WriteLine("----");
+                //*/
+                //*
                 CompileAG4(
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexerAnnotator.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexerAnnotator0.cs",
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.g4"
                     );
                 Console.WriteLine("----");
                 CompileAG4(
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParserAnnotator.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParserAnnotator0.cs",
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.g4"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
@@ -181,6 +183,11 @@ namespace MetaDslx.TempConsole
             {
                 Console.WriteLine(msg);
             }
+        }
+
+        private static void LazyPropertyTest()
+        {
+
         }
 
     }

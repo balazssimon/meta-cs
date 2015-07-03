@@ -225,6 +225,7 @@ public [cls.Name]Impl()
     if (!this.MIsSet([prop.Class.CSharpImplName()].[prop.Name]Property)) throw new ModelException("Readonly property [prop.Class.CSharpImplName()].[prop.Name]Property was not set in [cls.Name]_[cls.Name]().");
 		[end if]
 	[end loop]
+    this.MMakeDefault();
 }
 end template
 

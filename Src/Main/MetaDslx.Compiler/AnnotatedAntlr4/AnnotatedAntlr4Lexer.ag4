@@ -104,16 +104,16 @@ tokens {
 	}
 }
 
-@Syntax(kind=SyntaxKind.DocComment)
+$Syntax(kind=SyntaxKind.DocComment)
 DOC_COMMENT_START
 	:	'/**' -> more, mode(DOC_COMMENT_MODE), channel(HIDDEN)
 	;
 
-@Syntax(kind=SyntaxKind.Comment)
+$Syntax(kind=SyntaxKind.Comment)
 COMMENT_START : '/*' -> more, mode(BLOCK_COMMENT_MODE), channel(HIDDEN)
 	;
 
-@Syntax(kind=SyntaxKind.Comment)
+$Syntax(kind=SyntaxKind.Comment)
 LINE_COMMENT
 	:	'//' ~[\r\n]*  -> channel(HIDDEN)
 	;
@@ -126,12 +126,12 @@ BEGIN_ARG_ACTION
 // their option block, as this is teh easiest way to parse it separate
 // to an ACTION block, despite it usingthe same {} delimiters.
 //
-@Syntax(kind=Antlr4SyntaxKind.Options)
+$Syntax(kind=Antlr4SyntaxKind.Options)
 OPTIONS      : 'options' [ \t\f\n\r]* '{'  ;
-@Syntax(kind=Antlr4SyntaxKind.Tokens)
+$Syntax(kind=Antlr4SyntaxKind.Tokens)
 TOKENS		 : 'tokens'  [ \t\f\n\r]* '{'  ;
 
-@Syntax(first=IMPORT, last=NULL, kind=SyntaxKind.Keyword)
+$Syntax(first=IMPORT, last=NULL, kind=SyntaxKind.Keyword)
 IMPORT       : 'import'               ;
 FRAGMENT     : 'fragment'             ;
 LEXER        : 'lexer'                ;
@@ -157,6 +157,7 @@ SEMI         : ';'                    ;
 LPAREN       : '('                    ;
 RPAREN       : ')'                    ;
 RARROW       : '->'                   ;
+DRARROW      : '=>'                   ;
 LT           : '<'                    ;
 GT           : '>'                    ;
 ASSIGN       : '='                    ;
@@ -177,7 +178,7 @@ LBRACKET     : '['                    ;
 RBRACKET     : ']'                    ;
 
 /** Allow unicode rule/token names */
-@Syntax(kind=SyntaxKind.Identifier)
+$Syntax(kind=SyntaxKind.Identifier)
 ID	:	NameStartChar NameChar*;
 
 fragment
@@ -207,13 +208,13 @@ NameStartChar
 	|   '\uFDF0'..'\uFFFD'
 	; // ignores | ['\u10000-'\uEFFFF] ;
 
-@Syntax(kind=SyntaxKind.Number)
+$Syntax(kind=SyntaxKind.Number)
 INTEGER_LITERAL : DecimalDigits | Hexadecimal;
 
-@Syntax(kind=SyntaxKind.Number)
+$Syntax(kind=SyntaxKind.Number)
 DECIMAL_LITERAL : DecimalDigit+ '.' DecimalDigit+;
 
-@Syntax(kind=SyntaxKind.Number)
+$Syntax(kind=SyntaxKind.Number)
 SCIENTIFIC_LITERAL : DECIMAL_LITERAL [eE] Sign? DecimalDigit+;
 fragment DecimalDigits : DecimalDigit+;
 fragment DecimalDigit : [0-9];
@@ -225,12 +226,12 @@ fragment HexDigit : [0-9a-fA-F];
 // multi-character string. All literals are single quote delimited and
 // may contain unicode escape sequences of the form \uxxxx, where x
 // is a valid hexadecimal number (as per Java basically).
-@Syntax(kind=SyntaxKind.String)
+$Syntax(kind=SyntaxKind.String)
 STRING_LITERAL
 	:  '\'' (ESC_SEQ | ~['\r\n\\])* '\''
 	;
 
-@Syntax(kind=SyntaxKind.String)
+$Syntax(kind=SyntaxKind.String)
 UNTERMINATED_STRING_LITERAL
 	:  '\'' (ESC_SEQ | ~['\r\n\\])*
 	;
@@ -268,7 +269,7 @@ WS  :	[ \t\r\n\f]+ -> channel(HIDDEN)	;
 // that they are delimited by ' or " and so consume these
 // in their own alts so as not to inadvertantly match {}.
 
-@Syntax(kind=Antlr4SyntaxKind.Action)
+$Syntax(kind=Antlr4SyntaxKind.Action)
 ACTION
 	:	'{'
 		(	ACTION
@@ -312,7 +313,7 @@ ERRCHAR
 	:	.	-> channel(HIDDEN)
 	;
 
-@Syntax(kind=Antlr4SyntaxKind.Action)
+$Syntax(kind=Antlr4SyntaxKind.Action)
 mode ArgAction; // E.g., [int x, List<String> a[]]
 
 	NESTED_ARG_ACTION
@@ -362,22 +363,22 @@ mode LexerCharSet;
 		:	EOF							-> popMode
 		;
 
-@Syntax(kind=SyntaxKind.DocComment)
+$Syntax(kind=SyntaxKind.DocComment)
 mode DOC_COMMENT_MODE;
 
 	DOC_COMMENT_CRLF : '\r'? '\n' -> more, channel(HIDDEN);
 	DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(HIDDEN);
 	DOC_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(HIDDEN);
-	@Syntax(kind=SyntaxKind.Comment)
+	$Syntax(kind=SyntaxKind.Comment)
 	DOC_COMMENT : '*/' -> mode(DEFAULT_MODE), channel(HIDDEN);
 	DOC_COMMENT_STAR : '*' -> more, channel(HIDDEN);
 
-@Syntax(kind=SyntaxKind.Comment)
+$Syntax(kind=SyntaxKind.Comment)
 mode BLOCK_COMMENT_MODE;
 
 	BLOCK_COMMENT_CRLF : '\r'? '\n' -> more, channel(HIDDEN);
 	BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(HIDDEN);
 	BLOCK_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(HIDDEN);
-	@Syntax(kind=SyntaxKind.Comment)
+	$Syntax(kind=SyntaxKind.Comment)
 	BLOCK_COMMENT : '*/' -> mode(DEFAULT_MODE), channel(HIDDEN);
 	BLOCK_COMMENT_STAR : '*' -> more, channel(HIDDEN);

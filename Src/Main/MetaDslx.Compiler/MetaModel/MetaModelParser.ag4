@@ -5,213 +5,223 @@ options
     tokenVocab = MetaModelLexer; 
 }
 
+@header {
+using MetaDslx.Core;
+}
+
 main: namespaceDeclaration*;
 
-@QualifiedName
+$QualifiedName
 qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
-@NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,scope=true,merge=true)
-namespaceDeclaration: KNamespace /*@Property(Name)*/ qualifiedName TEquals @Property(Uri) @Value stringLiteral TOpenBrace @Property(Models) metamodelDeclaration* TCloseBrace;
+$NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,scope=true,merge=true)
+namespaceDeclaration: KNamespace /*$Property(Name)*/ qualifiedName TAssign $Property(Uri) $Value stringLiteral TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;
 
-@Property(Models)
-@TypeDef(MetaModel)
-metamodelDeclaration: KMetamodel identifier TOpenBrace declaration* TCloseBrace;
+$TypeDef(MetaModel)
+metamodelDeclaration: KMetamodel identifier TOpenBrace $Property(Types) declaration* TCloseBrace;
 
-@Property(Types)
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
-@TypeDef(MetaEnum)
-enumDeclaration : KEnum identifier TOpenBrace @Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
+$TypeDef(MetaEnum)
+enumDeclaration : KEnum identifier TOpenBrace $Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
-@NameDef(MetaEnumLiteral)
+$NameDef(MetaEnumLiteral)
 enumValue : identifier;
-enumMemberDeclaration : @Property(Operations) operationDeclaration;
+enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
-@TypeDef(MetaClass)
-classDeclaration : @Property(name=IsAbstract,value=true) KAbstract? KClass identifier (TColon @Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+$TypeDef(MetaClass)
+classDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KClass identifier (TColon $Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor : @TypeUse(MetaClass) qualifiedName;
-classMemberDeclaration : @Property(Properties) fieldDeclaration | @Property(Operations) operationDeclaration;
+classAncestor : $TypeUse(MetaClass) qualifiedName;
+classMemberDeclaration : $Property(Properties) fieldDeclaration | $Property(Operations) operationDeclaration;
 
-@NameDef(MetaProperty)
-fieldDeclaration : @Property(Kind) fieldModifier? typeReference identifier TSemicolon;
-fieldModifier : @Value(MetaPropertyKind.Containment) KContainment | @Value(MetaPropertyKind.Readonly) KReadonly | @Value(MetaPropertyKind.Lazy) KLazy | @Value(MetaPropertyKind.Derived) KDerived;
+$NameDef(MetaProperty)
+fieldDeclaration : $Property(Kind) fieldModifier? typeReference identifier TSemicolon;
+fieldModifier : $Value(MetaPropertyKind.Containment) KContainment | $Value(MetaPropertyKind.Readonly) KReadonly | $Value(MetaPropertyKind.Lazy) KLazy | $Value(MetaPropertyKind.Derived) KDerived;
 
-//@NameDef(MetaConstant)
-constDeclaration : KConst typeReference /*@NameDef*/ identifier /*(TEquals expression)?*/ TSemicolon;
+//$NameDef(MetaConstant)
+constDeclaration : KConst typeReference /*$NameDef*/ identifier /*(TAssign expression)?*/ TSemicolon;
 
-@TypeUse
+$TypeUse
 returnType : typeReference | voidType;
-@TypeUse
+$TypeUse
 typeReference : collectionType | simpleType;
-@TypeUse
+$TypeUse
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
-@Name
+$Name
 objectType 
-	: @PreDefSymbol(MetaBuiltInType.Object) KObject 
-	| @PreDefSymbol(MetaBuiltInType.String) KString
+	: $PreDefSymbol(MetaBuiltInType.Object) KObject 
+	| $PreDefSymbol(MetaBuiltInType.String) KString
 	;
-@Name
+$Name
 primitiveType 
-	: @PreDefSymbol(MetaBuiltInType.Int) KInt 
-	| @PreDefSymbol(MetaBuiltInType.Long) KLong 
-	| @PreDefSymbol(MetaBuiltInType.Float) KFloat 
-	| @PreDefSymbol(MetaBuiltInType.Double) KDouble 
-	| @PreDefSymbol(MetaBuiltInType.Byte) KByte 
-	| @PreDefSymbol(MetaBuiltInType.Bool) KBool
+	: $PreDefSymbol(MetaBuiltInType.Int) KInt 
+	| $PreDefSymbol(MetaBuiltInType.Long) KLong 
+	| $PreDefSymbol(MetaBuiltInType.Float) KFloat 
+	| $PreDefSymbol(MetaBuiltInType.Double) KDouble 
+	| $PreDefSymbol(MetaBuiltInType.Byte) KByte 
+	| $PreDefSymbol(MetaBuiltInType.Bool) KBool
 	;
-@Name
-voidType : @PreDefSymbol(MetaBuiltInType.Void) KVoid;
+$Name
+voidType : $PreDefSymbol(MetaBuiltInType.Void) KVoid;
 
-@TypeCtr(MetaNullableType)
-nullableType : @Property(InnerType) primitiveType TQuestion;
+$TypeCtr(MetaNullableType)
+nullableType : $Property(InnerType) primitiveType TQuestion;
 
-@TypeCtr(MetaCollectionType)
-collectionType : @Property(Kind) collectionKind TLessThan @Property(InnerType) simpleType TGreaterThan;
-collectionKind : @Value(MetaCollectionKind.Set) KSet | @Value(MetaCollectionKind.List) KList;
+$TypeCtr(MetaCollectionType)
+collectionType : $Property(Kind) collectionKind TLessThan $Property(InnerType) simpleType TGreaterThan;
+collectionKind : $Value(MetaCollectionKind.Set) KSet | $Value(MetaCollectionKind.List) KList;
 
-@NameDef(MetaOperation)
-@Type
-operationDeclaration : KStatic? @Property(ReturnType) returnType identifier TOpenBracket @Property(Parameters) parameterList? TCloseBracket TSemicolon;
+$NameDef(MetaOperation)
+$TypeCtr
+operationDeclaration : KStatic? $Property(ReturnType) returnType identifier TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
-@NameDef(MetaParameter)
-parameter : typeReference identifier /*(TEquals expression)? { expression.ExpectedType = typeReference; }*/;
+$NameDef(MetaParameter)
+parameter : typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
 
-/*
-expressionList : expression (',' expression)*; 
 
-@Expression
+$Symbol(ArgumentList)
+argumentList 
+	: $Property(Arguments) expression (',' expression)* 
+		-> 
+		{ 
+		expression[curr].ExpectedType = ExpectedTypes[curr]; 
+		}
+	;
+
+$AutoSymbol
+$Expression
 expression 
-	: '(' typeReference ')' expression #castExpression @Symbol(TypeConversionExpression) { Type = typeReference; }
-    | 'typeof' '(' typeReference ')' #typeofExpression @Symbol(TypeOfExpression) { Type = typeof(MetaType); }
-	| '(' expression ')' #bracketExpression @Symbol(BracketExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
-	| literal #constantExpression @Symbol(ConstantExpression) { literal.ExpectedType = ExpectedType; }
-	| identifier #identifierExpression @Symbol(IdentifierExpression) { identifier.ExpectedType = ExpectedType; Definition = bind; Type = Definition.Type; }
-    | expression '[' expressionList ']' #indexerExpression @Symbol(IndexerExpression) { Definition = bind; Type = Definition.ReturnType; }
-    | expression '(' expressionList? ')' #functionCallExpression @Symbol(FunctionCallExpression) { Definition = bind; Type = Definition.ReturnType; }
-    | expression '.' identifier #memberAccessExpression @Symbol(MemberAccessExpression) { Definition = bind; Type = Definition.Type; }
-    | expression operator=postOperator #postExpression @Symbol(UnaryExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
-    | operator=preOperator expression #preExpression @Symbol(UnaryExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
-    | operator=unaryOperator expression #unaryExpression @Symbol(UnaryExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
-    | expression 'as' typeReference #typeConversionExpression @Symbol(TypeConversionExpression) { Operator = OperatorKind.TypeAs; Type = typeReference; }
-    | expression 'is' typeReference #typeConversionExpression @Symbol(TypeConversionExpression) { Operator = OperatorKind.TypeIs; Type = BuiltInType.Bool; }
-    | left=expression operator=multiplicativeOperator right=expression #multiplicativeExpression @Symbol(BinaryExpression)
-    | left=expression operator=additiveOperator right=expression #additiveExpression @Symbol(BinaryExpression)
-    | left=expression operator=shiftOperator right=expression #shiftExpression @Symbol(BinaryExpression)
-    | left=expression operator=comparisonOperator right=expression #comparisonExpression @Symbol(BinaryExpression)
-    | left=expression operator=equalityOperator right=expression #equalityExpression @Symbol(BinaryExpression)
-    | left=expression '&' right=expression #bitwiseAndExpression @Symbol(BinaryExpression) { Operator = OperatorKind.And; }
-    | left=expression '^' right=expression #bitwiseXorExpression @Symbol(BinaryExpression) { Operator = OperatorKind.ExclusiveOr; }
-    | left=expression '|' right=expression #bitwiseOrExpression @Symbol(BinaryExpression) { Operator = OperatorKind.Or; }
-    | left=expression '&&' right=expression #logicalAndExpression @Symbol(BinaryExpression) { Operator = OperatorKind.AndAlso; }
-    | left=expression '||' right=expression #logicalOrExpression @Symbol(BinaryExpression) { Operator = OperatorKind.OrElse; }
-    | left=expression '??' right=expression #nullCoalescingExpression @Symbol(BinaryExpression) { Operator = OperatorKind.Coalesce; }
-    | expression '?' then=expression ':' else=expression #conditionalExpression @Symbol(ConditionalExpression)
-    | expression operator=assignmentOperator value=expression #assignmentExpression @Symbol(AssignmentExpression) 	
+	: TOpenParen typeReference TCloseParen expression #castExpression $Symbol(TypeConversionExpression) -> { Operator = global::MetaOperatorKind.TypeCast; Type = typeReference; }
+    | KTypeof TOpenParen typeReference TCloseParen #typeofExpression -> { Type = typeof(global::MetaType); }
+	| TOpenParen expression TCloseParen #bracketExpression -> { Type = expression.Type; expression.ExpectedType = ExpectedType; }
+	| literal #constantExpression -> { literal.ExpectedType = ExpectedType; }
+	| identifier #identifierExpression $NameUse -> { identifier.ExpectedType = ExpectedType; Type = identifier.Type; }
+    | expression TOpenBracket argumentList TCloseBracket #indexerExpression -> { Definition = bind(expression,argumentList); Type = Definition.ReturnType; argumentList.ExpectedTypes = Definition.ExpectedTypes; }
+    | expression TOpenParen argumentList? TCloseParen #functionCallExpression -> { Definition = bind(expression,argumentList); Type = Definition.ReturnType; argumentList.ExpectedTypes = Definition.ExpectedTypes; }
+    | expression TDot identifier #memberAccessExpression -> { Definition = bind(expression,identifier); Type = Definition.Type; }
+    | expression operator=postOperator #postExpression $Symbol(UnaryExpression) -> { Type = expression.Type; expression.ExpectedType = ExpectedType; }
+    | operator=preOperator expression #preExpression $Symbol(UnaryExpression) -> { Type = expression.Type; expression.ExpectedType = ExpectedType; }
+    | operator=unaryOperator expression #unaryExpression $Symbol(UnaryExpression) -> { Type = expression.Type; expression.ExpectedType = ExpectedType; }
+    | expression KAs typeReference #typeConversionExpression $Symbol(TypeConversionExpression) -> { Operator = global::MetaOperatorKind.TypeAs; Type = typeReference; }
+    | expression KIs typeReference #typeCheckExpression $Symbol(TypeConversionExpression) -> { Operator = global::MetaOperatorKind.TypeIs; Type = global::MetaBuiltInType.Bool; }
+    | left=expression operator=multiplicativeOperator right=expression #multiplicativeExpression $Symbol(BinaryExpression) -> { BalancedType=balance(left,right); Type=BalancedType; left.ExpectedType = ExpectedType; right.ExpectedType = ExpectedType; }
+    | left=expression operator=additiveOperator right=expression #additiveExpression $Symbol(BinaryExpression) -> { BalancedType=balance(left,right); Type=BalancedType; left.ExpectedType = ExpectedType; right.ExpectedType = ExpectedType; }
+    | left=expression operator=shiftOperator right=expression #shiftExpression $Symbol(BinaryExpression) -> { BalancedType=balance(left,right); Type=BalancedType; left.ExpectedType = ExpectedType; right.ExpectedType = ExpectedType; }
+    | left=expression operator=comparisonOperator right=expression #comparisonExpression $Symbol(BinaryExpression) -> { BalancedType=balance(left,right); Type=global::MetaBuiltInType.Bool; left.ExpectedType=BalancedType; right.ExpectedType=BalancedType; }
+    | left=expression operator=equalityOperator right=expression #equalityExpression $Symbol(BinaryExpression) -> { BalancedType=balance(left,right); Type=global::MetaBuiltInType.Bool; left.ExpectedType=BalancedType; right.ExpectedType=BalancedType; }
+    | left=expression TAmpersand right=expression #bitwiseAndExpression $Symbol(BinaryExpression) -> { Operator = global::MetaOperatorKind.And; BalancedType=balance(left,right); Type=BalancedType; left.ExpectedType = ExpectedType; right.ExpectedType = ExpectedType; }
+    | left=expression THat right=expression #bitwiseXorExpression $Symbol(BinaryExpression) -> { Operator = global::MetaOperatorKind.ExclusiveOr; BalancedType=balance(left,right); Type=BalancedType; left.ExpectedType = ExpectedType; right.ExpectedType = ExpectedType; }
+    | left=expression TBar right=expression #bitwiseOrExpression $Symbol(BinaryExpression) -> { Operator = global::MetaOperatorKind.Or; BalancedType=balance(left,right); Type=BalancedType; left.ExpectedType = ExpectedType; right.ExpectedType = ExpectedType; }
+    | left=expression TAndAlso right=expression #logicalAndExpression $Symbol(BinaryExpression) -> { Operator = global::MetaOperatorKind.AndAlso; Type=global::MetaBuiltInType.Bool; left.ExpectedType=global::MetaBuiltInType.Bool; right.ExpectedType=global::MetaBuiltInType.Bool; }
+    | left=expression TOrElse right=expression #logicalOrExpression $Symbol(BinaryExpression) -> { Operator = global::MetaOperatorKind.OrElse; Type=global::MetaBuiltInType.Bool; left.ExpectedType=global::MetaBuiltInType.Bool; right.ExpectedType=global::MetaBuiltInType.Bool; }
+    //| left=expression '??' right=expression #nullCoalescingExpression $Symbol(BinaryExpression) -> { Operator = global::MetaOperatorKind.Coalesce; }
+    | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression $Symbol(ConditionalExpression) -> { Type = balance(then,else); condition.ExpectedType = global::MetaBuiltInType.Bool; then.ExpectedType = ExpectedType; else.ExpectedType = ExpectedType; }
+    //| expression operator=assignmentOperator value=expression #assignmentExpression $Symbol(AssignmentExpression) 	
 	;
 
 postOperator
-	: @Value(OperatorKind.PostIncrementAssign) '++'
-	| @Value(OperatorKind.PostDecrementAssign) '--'
+	: $Value(MetaOperatorKind.PostIncrementAssign) TPlusPlus
+	| $Value(MetaOperatorKind.PostDecrementAssign) TMinusMinus
 	;
 
 preOperator
-	: @Value(OperatorKind.PreIncrementAssign) '++'
-	| @Value(OperatorKind.PreDecrementAssign) '--'
+	: $Value(MetaOperatorKind.PreIncrementAssign) TPlusPlus
+	| $Value(MetaOperatorKind.PreDecrementAssign) TMinusMinus
 	;
 
 unaryOperator
-	: @Value(OperatorKind.UnaryPlus) '+'
-	| @Value(OperatorKind.Negate) '-'
-	| @Value(OperatorKind.OnesComplement) '~'
-	| @Value(OperatorKind.Not) '!'
+	: $Value(MetaOperatorKind.UnaryPlus) TPlus
+	| $Value(MetaOperatorKind.Negate) TMinus
+	| $Value(MetaOperatorKind.OnesComplement) TTilde
+	| $Value(MetaOperatorKind.Not) TExclamation
 	;
 
 multiplicativeOperator
-	: @Value(OperatorKind.Multiply) '*'
-	| @Value(OperatorKind.Divide) '/'
-	| @Value(OperatorKind.Modulo) '%'
+	: $Value(MetaOperatorKind.Multiply) TAsterisk
+	| $Value(MetaOperatorKind.Divide) TSlash
+	| $Value(MetaOperatorKind.Modulo) TPercent
 	;
 
 additiveOperator
-	: @Value(OperatorKind.Add) '+'
-	| @Value(OperatorKind.Subtract) '-'
+	: $Value(MetaOperatorKind.Add) TPlus
+	| $Value(MetaOperatorKind.Subtract) TMinus
 	;
 
 shiftOperator
-	: @Value(OperatorKind.LeftShift) '<<'
-	| @Value(OperatorKind.RightShift) '>>'
+	: $Value(MetaOperatorKind.LeftShift) TLessThan TLessThan
+	| $Value(MetaOperatorKind.RightShift) TGreaterThan TGreaterThan
 	;
 
 comparisonOperator
-	: @Value(OperatorKind.LessThan) '<'
-	| @Value(OperatorKind.GreaterThan) '>'
-	| @Value(OperatorKind.LessThanOrEqual) '<='
-	| @Value(OperatorKind.GreaterThanOrEqual) '>='
+	: $Value(MetaOperatorKind.LessThan) TLessThan
+	| $Value(MetaOperatorKind.GreaterThan) TGreaterThan
+	| $Value(MetaOperatorKind.LessThanOrEqual) TLessThanOrEqual
+	| $Value(MetaOperatorKind.GreaterThanOrEqual) TGreaterThanOrEqual
 	;
 
 equalityOperator
-	: @Value(OperatorKind.Equal) '=='
-	| @Value(OperatorKind.NotEqual) '!='
+	: $Value(MetaOperatorKind.Equal) TEqual
+	| $Value(MetaOperatorKind.NotEqual) TNotEqual
 	;
 
 assignmentOperator
-	: @Value(OperatorKind.Assign) '='  
-	| @Value(OperatorKind.MultiplyAssign) '*=' 
-	| @Value(OperatorKind.DivideAssign) '/=' 
-	| @Value(OperatorKind.ModuloAssign) '%=' 
-	| @Value(OperatorKind.AddAssign) '+=' 
-	| @Value(OperatorKind.SubtractAssign) '-=' 
-	| @Value(OperatorKind.LeftShiftAssign) '<<='
-	| @Value(OperatorKind.RightShiftAssign) '>>='
-	| @Value(OperatorKind.AndAssign) '&=' 
-	| @Value(OperatorKind.ExclusiveOrAssign) '^=' 
-	| @Value(OperatorKind.OrAssign) '|=' 
+	: $Value(MetaOperatorKind.Assign) TAssign  
+	| $Value(MetaOperatorKind.MultiplyAssign) TAsteriskAssign 
+	| $Value(MetaOperatorKind.DivideAssign) TSlashAssign
+	| $Value(MetaOperatorKind.ModuloAssign) TPercentAssign
+	| $Value(MetaOperatorKind.AddAssign) TPlusAssign
+	| $Value(MetaOperatorKind.SubtractAssign) TMinusAssign
+	| $Value(MetaOperatorKind.LeftShiftAssign) TLeftShiftAssign
+	| $Value(MetaOperatorKind.RightShiftAssign) TRightShiftAssign
+	| $Value(MetaOperatorKind.AndAssign) TAmpersandAssign
+	| $Value(MetaOperatorKind.ExclusiveOrAssign) THatAssign
+	| $Value(MetaOperatorKind.OrAssign) TBarAssign
 	;
-*/
 
-@Scope
-associationDeclaration : KAssociation @NameUse(MetaProperty) source=qualifiedName KWith @NameUse(MetaProperty) target=qualifiedName TSemicolon
-{
-	source.Opposites = target;
-};
+
+
+$Scope
+associationDeclaration : KAssociation $NameUse(MetaProperty) source=qualifiedName KWith $NameUse(MetaProperty) target=qualifiedName TSemicolon 
+	-> { source.Opposites = target; source.X = target.Y; }
+	;
 
 
 // Additional rules for lexer:
 
 // Identifiers
-@Name
-@Identifier
+$Name
+$Identifier
 identifier : IdentifierNormal /*| IdentifierVerbatim*/;
 //identifier : IdentifierGeneral | IdentifierVerbatim;
 
 // Literals
 literal 
-    : nullLiteral { Type = BuiltInType.Null; Value = null; }
-	| booleanLiteral { Type = BuiltInType.Bool; Value = valueof(booleanLiteral); }
-	| integerLiteral { Type = BuiltInType.Int; Value = valueof(integerLiteral); }
-	| decimalLiteral { Type = BuiltInType.Double; Value = valueof(decimalLiteral); }
-	| scientificLiteral { Type = BuiltInType.Double; Value = valueof(scientificLiteral); }
-    | stringLiteral { Type = BuiltInType.String; Value = valueof(stringLiteral); }
+    : nullLiteral
+	| booleanLiteral
+	| integerLiteral
+	| decimalLiteral
+	| scientificLiteral
+    | stringLiteral
 	;
 
 // Null literal
-nullLiteral : KNull;
+nullLiteral : KNull -> { this.Type = global::BuiltInType.Null; this.Value = null; };
 
 // Boolean literals
-booleanLiteral : KTrue | KFalse;
+booleanLiteral : KTrue | KFalse -> { this.Type = global::BuiltInType.Bool; this.Value = valueof(this); };
 
 // Number literals
-integerLiteral : IntegerLiteral;
-decimalLiteral : DecimalLiteral;
-scientificLiteral : ScientificLiteral;
+integerLiteral : IntegerLiteral -> { this.Type = global::BuiltInType.Int; this.Value = valueof(this); };
+decimalLiteral : DecimalLiteral -> { this.Type = global::BuiltInType.Double; this.Value = valueof(this); };
+scientificLiteral : ScientificLiteral -> { this.Type = global::BuiltInType.Double; this.Value = valueof(this); };
 
 // String literals
-stringLiteral : RegularStringLiteral;
+stringLiteral : RegularStringLiteral -> { this.Type = global::BuiltInType.String; this.Value = valueof(this); };
 
 
 /*
@@ -229,14 +239,14 @@ timeLiteral : TimeLiteral;
 // Guid literal
 guidLiteral : GuidLiteral;
 
-@Symbol(MetaClass)
-@TypeDef
-classDeclaration : @Property(IsAbstract) @Value(true) KAbstract? KClass @NameDef identifier @Property(TypeParams) genericTypeParams? (TColon @Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+$Symbol(MetaClass)
+$TypeDef
+classDeclaration : $Property(IsAbstract) $Value(true) KAbstract? KClass $NameDef identifier $Property(TypeParams) genericTypeParams? (TColon $Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 
 genericTypeParams : LT genericTypeParam (COMMA genericTypeParam)* GT;
 
-@Symbol(MetaTypeParam)
-@TypeParam
+$Symbol(MetaTypeParam)
+$TypeParam
 genericTypeParam : identifier;
 
 */

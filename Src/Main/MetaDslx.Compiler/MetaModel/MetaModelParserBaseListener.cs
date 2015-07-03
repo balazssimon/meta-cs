@@ -19,6 +19,9 @@
 
 namespace MetaDslx.Compiler {
 
+using MetaDslx.Core;
+
+
 using Antlr4.Runtime.Misc;
 using IErrorNode = Antlr4.Runtime.Tree.IErrorNode;
 using ITerminalNode = Antlr4.Runtime.Tree.ITerminalNode;
@@ -250,6 +253,18 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitConstDeclaration([NotNull] MetaModelParser.ConstDeclarationContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.returnType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterReturnType([NotNull] MetaModelParser.ReturnTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.returnType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitReturnType([NotNull] MetaModelParser.ReturnTypeContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.typeReference"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -273,18 +288,6 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSimpleType([NotNull] MetaModelParser.SimpleTypeContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNullableType([NotNull] MetaModelParser.NullableTypeContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNullableType([NotNull] MetaModelParser.NullableTypeContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.objectType"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -310,6 +313,30 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitPrimitiveType([NotNull] MetaModelParser.PrimitiveTypeContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.voidType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVoidType([NotNull] MetaModelParser.VoidTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.voidType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVoidType([NotNull] MetaModelParser.VoidTypeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNullableType([NotNull] MetaModelParser.NullableTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNullableType([NotNull] MetaModelParser.NullableTypeContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.collectionType"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -333,30 +360,6 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCollectionKind([NotNull] MetaModelParser.CollectionKindContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.voidType"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterVoidType([NotNull] MetaModelParser.VoidTypeContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.voidType"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitVoidType([NotNull] MetaModelParser.VoidTypeContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.returnType"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterReturnType([NotNull] MetaModelParser.ReturnTypeContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.returnType"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitReturnType([NotNull] MetaModelParser.ReturnTypeContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.operationDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>

@@ -35,7 +35,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Antlr4.Runtime" />
@@ -51,6 +50,12 @@
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserBaseVisitor.cs" />
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserListener.cs" />
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserVisitor.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserBaseListener.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserBaseVisitor.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserListener.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserVisitor.cs" />
     <Compile Include="MetaCompiler.cs" />
     <Compile Include="MetaCompilerDiagnostics.cs" />
     <Compile Include="MetaCompilerException.cs" />
@@ -69,6 +74,7 @@
     <Compile Include="MetaModel\MetaModelParserBaseListener.cs" />
     <Compile Include="MetaModel\MetaModelParserBaseVisitor.cs" />
     <Compile Include="MetaModel\MetaModelParserListener.cs" />
+    <Compile Include="MetaModel\MetaModelParserProperties.cs" />
     <Compile Include="MetaModel\MetaModelParserVisitor.cs" />
     <Compile Include="MetaScope.cs" />
     <Compile Include="MetaSymbol.cs" />
@@ -97,6 +103,14 @@
     <Antlr4 Include="MetaGenerator\MetaGeneratorParser.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>MetaDslx.Compiler.MetaGenerator</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler.AnnotatedAntlr4</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler.AnnotatedAntlr4</CustomToolNamespace>
     </Antlr4>
     <None Include="MetaModel\MetaModelLexer.ag4" />
     <Antlr4 Include="MetaModel\MetaModelLexer.g4">

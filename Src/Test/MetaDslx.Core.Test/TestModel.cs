@@ -37,7 +37,7 @@ namespace MetaDslx.Core.Test
     {
         public ListParent()
         {
-            this.MInitValue(ListParent.ChildrenProperty, () => new ModelList<ListChild>(this, ListParent.ChildrenProperty));
+            this.MSetValue(ListParent.ChildrenProperty, new ModelList<ListChild>(this, ListParent.ChildrenProperty));
         }
 
         [OppositeAttribute(typeof(ListChild), "Parent")]

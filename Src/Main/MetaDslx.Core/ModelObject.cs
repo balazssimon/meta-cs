@@ -7,14 +7,46 @@ namespace MetaDslx.Core
 {
     public abstract class ModelObject
     {
+        private Dictionary<ModelProperty, WeakReference<object>> defaultValues;
         private Dictionary<ModelProperty, object> values;
-        private Dictionary<ModelProperty, Func<object>> initializers;
+        private Dictionary<ModelProperty, Lazy<object>> initializers;
 
         public ModelObject()
         {
             this.MetaID = Guid.NewGuid().ToString();
             this.values = new Dictionary<ModelProperty, object>();
-            this.initializers = new Dictionary<ModelProperty, Func<object>>();
+            this.initializers = new Dictionary<ModelProperty, Lazy<object>>();
+        }
+
+        public void MMakeDefault()
+        {
+            this.defaultValues = new Dictionary<ModelProperty, WeakReference<object>>();
+            foreach (var entry in this.values)
+            {
+                this.defaultValues.Add(entry.Key, new WeakReference<object>(entry.Value));
+            }
+        }
+
+        public bool MIsDefault(ModelProperty property)
+        {
+            object currentValue = null;
+            this.values.TryGetValue(property, out currentValue);
+            object defaultValue = null;
+            bool lostDefaultValue = false;
+            if (this.defaultValues != null)
+            {
+                WeakReference<object> containedValue = null;
+                if (this.defaultValues.TryGetValue(property, out containedValue))
+                {
+                    if (!containedValue.TryGetTarget(out defaultValue))
+                    {
+                        lostDefaultValue = true;
+                    }
+                }
+            }
+            if (!lostDefaultValue && defaultValue == null && currentValue == null) return true;
+            else if (lostDefaultValue || defaultValue == null || currentValue == null) return false;
+            else return object.ReferenceEquals(defaultValue, currentValue);
         }
 
         public bool MIsSet(ModelProperty property)
@@ -28,7 +60,7 @@ namespace MetaDslx.Core
             this.initializers.Remove(property);
         }
 
-        public void MInitValue(ModelProperty property, Func<object> value)
+        public void MInitValue(ModelProperty property, Lazy<object> value)
         {
             object oldValue;
             if (this.values.TryGetValue(property, out oldValue))
@@ -83,10 +115,10 @@ namespace MetaDslx.Core
             }
             else
             {
-                Func<object> initializer;
+                Lazy<object> initializer;
                 if (this.initializers.TryGetValue(property, out initializer))
                 {
-                    value = initializer();
+                    value = initializer.Value;
                     this.values[property] = value;
                     if (!(value is ModelCollection))
                     {

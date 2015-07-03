@@ -18,6 +18,9 @@
 #pragma warning disable 1591
 
 namespace MetaDslx.Compiler {
+
+using MetaDslx.Core;
+
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;
@@ -139,6 +142,12 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitConstDeclaration([NotNull] MetaModelParser.ConstDeclarationContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.returnType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReturnType([NotNull] MetaModelParser.ReturnTypeContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.typeReference"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -150,12 +159,6 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSimpleType([NotNull] MetaModelParser.SimpleTypeContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNullableType([NotNull] MetaModelParser.NullableTypeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.objectType"/>.
 	/// </summary>
@@ -169,6 +172,18 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitPrimitiveType([NotNull] MetaModelParser.PrimitiveTypeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.voidType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVoidType([NotNull] MetaModelParser.VoidTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNullableType([NotNull] MetaModelParser.NullableTypeContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.collectionType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -180,18 +195,6 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitCollectionKind([NotNull] MetaModelParser.CollectionKindContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.voidType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitVoidType([NotNull] MetaModelParser.VoidTypeContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaModelParser.returnType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitReturnType([NotNull] MetaModelParser.ReturnTypeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.operationDeclaration"/>.
 	/// </summary>

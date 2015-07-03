@@ -157,6 +157,7 @@ SEMI         : ';'                    ;
 LPAREN       : '('                    ;
 RPAREN       : ')'                    ;
 RARROW       : '->'                   ;
+DRARROW      : '=>'                   ;
 LT           : '<'                    ;
 GT           : '>'                    ;
 ASSIGN       : '='                    ;

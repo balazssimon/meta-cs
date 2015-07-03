@@ -18,6 +18,9 @@
 #pragma warning disable 1591
 
 namespace MetaDslx.Compiler {
+
+using MetaDslx.Core;
+
 using Antlr4.Runtime.Misc;
 using IParseTreeListener = Antlr4.Runtime.Tree.IParseTreeListener;
 using IToken = Antlr4.Runtime.IToken;
@@ -210,6 +213,16 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitConstDeclaration([NotNull] MetaModelParser.ConstDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.returnType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterReturnType([NotNull] MetaModelParser.ReturnTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.returnType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitReturnType([NotNull] MetaModelParser.ReturnTypeContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.typeReference"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -229,16 +242,6 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitSimpleType([NotNull] MetaModelParser.SimpleTypeContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNullableType([NotNull] MetaModelParser.NullableTypeContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNullableType([NotNull] MetaModelParser.NullableTypeContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.objectType"/>.
 	/// </summary>
@@ -260,6 +263,26 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitPrimitiveType([NotNull] MetaModelParser.PrimitiveTypeContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.voidType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterVoidType([NotNull] MetaModelParser.VoidTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.voidType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitVoidType([NotNull] MetaModelParser.VoidTypeContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNullableType([NotNull] MetaModelParser.NullableTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNullableType([NotNull] MetaModelParser.NullableTypeContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.collectionType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -279,26 +302,6 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitCollectionKind([NotNull] MetaModelParser.CollectionKindContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.voidType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterVoidType([NotNull] MetaModelParser.VoidTypeContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.voidType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitVoidType([NotNull] MetaModelParser.VoidTypeContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaModelParser.returnType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterReturnType([NotNull] MetaModelParser.ReturnTypeContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaModelParser.returnType"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitReturnType([NotNull] MetaModelParser.ReturnTypeContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.operationDeclaration"/>.
 	/// </summary>

@@ -62,6 +62,7 @@ namespace MetaDslx.Core
         {
             base.MetaProperty_MetaProperty(@this);
             @this.Kind = MetaPropertyKind.Normal;
+            ((ModelObject)@this).MMakeDefault();
         }
 
         public override MetaNamespace MetaType_Namespace(MetaType @this)
@@ -88,6 +89,7 @@ namespace MetaDslx.Core
         {
             base.MetaCollectionType_MetaCollectionType(@this);
             @this.Kind = MetaCollectionKind.List;
+            ((ModelObject)@this).MMakeDefault();
         }
     }
 

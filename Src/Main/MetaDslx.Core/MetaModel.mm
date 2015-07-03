@@ -135,7 +135,7 @@ namespace MetaDslx.Core.X = "http://metadslx.core/1.0/X"
 	}
 }
 
-namespace MetaDslx.Core = "http://metadslx.core/1.0/X"
+namespace MetaDslx.Core = "http://metadslx.core/1.0"
 {
 	metamodel MetaZ
 	{

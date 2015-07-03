@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler
 {
+    public class ArgumentList { }
+    public enum MetaOperatorKind
+    {
+
+    }
+
+
     public class TypeDefAnnotation
     {
         public TypeDefAnnotation()
@@ -126,6 +133,11 @@ namespace MetaDslx.Compiler
         public bool NoScope { get; set; }
     }
 
+    public class AutoSymbolAnnotation
+    {
+
+    }
+
     public class PropertyAnnotation
     {
         private object value;
@@ -149,11 +161,6 @@ namespace MetaDslx.Compiler
 
         public override void Compile()
         {
-            /*foreach (var type in MetaBuiltInType.Types)
-            {
-                this.GlobalScope.RegisterTypeDef(type.Name, type);
-            }*/
-
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = new MetaModelLexer(inputStream);
             this.Lexer.AddErrorListener(this);
@@ -173,21 +180,6 @@ namespace MetaDslx.Compiler
             definitionPhase.VisitNode(this.ParseTree);
             MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);
             referencePhase.VisitNode(this.ParseTree);
-            MetaCompilerConstructorPhase constructorPhase = new MetaCompilerConstructorPhase(this);
-            constructorPhase.VisitNode(this.ParseTree);
-            MetaCompilerPropertyPhase propertyPhase = new MetaCompilerPropertyPhase(this);
-            propertyPhase.VisitNode(this.ParseTree);
-            /*MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);
-            referencePhase.VisitNode(this.ParseTree);*/
-            /*MetaVisitorFirstPass firstPass = new MetaVisitorFirstPass(this);
-            firstPass.Visit(this.ParseTree);*/
-            /*MetaVisitorSecondPass secondPass = new MetaVisitorSecondPass(this);
-            secondPass.Visit(this.ParseTree);*/
-
-            /*MetaVisitorThirdPass thirdPass = new MetaVisitorThirdPass(this);
-            thirdPass.Visit(this.ParseTree);
-            MetaVisitorFourthPass fourthPass = new MetaVisitorFourthPass(this);
-            fourthPass.Visit(this.ParseTree);*/
 
             /*var namespaces = this.GlobalScope.GetSymbols().OfType<MetaNamespace>().Distinct().ToList();
             MetaModelGenerator generator = new MetaModelGenerator(namespaces);
@@ -208,10 +200,9 @@ namespace MetaDslx.Compiler
         public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
     }
 
-
     public class MetaCompilerPhase
     {
-        public static readonly Type[] ScopeBoundaryAnnotations = 
+        public static readonly Type[] ScopeBoundaryAnnotations =
             new Type[]
             { 
                 typeof(TypeDefAnnotation),
@@ -229,8 +220,6 @@ namespace MetaDslx.Compiler
             { 
                 typeof(TypeDefAnnotation),
                 typeof(NameDefAnnotation),
-                //typeof(TypeUseAnnotation),
-                //typeof(NameUseAnnotation),
                 typeof(TypeCtrAnnotation),
                 typeof(NameCtrAnnotation),
                 typeof(ScopeAnnotation),
@@ -266,7 +255,14 @@ namespace MetaDslx.Compiler
         }
         public virtual void VisitNode(IParseTree node)
         {
-            this.VisitChildren(node);
+            try
+            {
+                this.VisitChildren(node);
+            }
+            catch(Exception ex)
+            {
+                this.Compiler.Diagnostics.AddError(ex.ToString(), this.Compiler.FileName, new TextSpan(node), true);
+            }
         }
 
         public virtual void VisitChildren(IParseTree node)
@@ -755,6 +751,10 @@ namespace MetaDslx.Compiler
                     targetTypeDef.Scope.Owner = targetTypeDef;
                 }
                 this.Compiler.Data.RegisterEntry(typeDefNode, targetTypeDef);
+                if (registerSymbol)
+                {
+                    this.Compiler.Data.RegisterSymbol(typeDefNode, targetTypeDef.Symbol, targetTypeDef);
+                }
             }
             else
             {
@@ -783,6 +783,10 @@ namespace MetaDslx.Compiler
                     targetNameDef.Scope.Owner = targetNameDef;
                 }
                 this.Compiler.Data.RegisterEntry(nameDefNode, targetNameDef);
+                if (registerSymbol)
+                {
+                    this.Compiler.Data.RegisterSymbol(nameDefNode, targetNameDef.Symbol, targetNameDef);
+                }
             }
             else
             {
@@ -1067,9 +1071,11 @@ namespace MetaDslx.Compiler
 
         protected virtual void HandleConstructorSymbols(IParseTree node)
         {
+            TypeDefAnnotation tda = this.GetAnnotationFor<TypeDefAnnotation>(node);
+            NameDefAnnotation nda = this.GetAnnotationFor<NameDefAnnotation>(node);
             TypeCtrAnnotation tca = this.GetAnnotationFor<TypeCtrAnnotation>(node);
             NameCtrAnnotation nca = this.GetAnnotationFor<NameCtrAnnotation>(node);
-            if (tca != null)
+            if (tca != null && tda == null && nda == null)
             {
                 object symbol = this.ModelFactory.Create(tca.SymbolType);
                 if (symbol != null)
@@ -1082,7 +1088,7 @@ namespace MetaDslx.Compiler
                     this.ConstructorSymbolStack.Add(null);
                 }
             }
-            if (nca != null)
+            if (nca != null && tda == null && nda == null)
             {
                 object symbol = this.ModelFactory.Create(nca.SymbolType);
                 if (symbol != null)
@@ -1162,7 +1168,8 @@ namespace MetaDslx.Compiler
                 }
                 else if (symbolBoundary)
                 {
-                    this.SetProperty(node, targetSymbols, pa, this.CurrentSymbols);
+                    List<object> valueSymbols = this.Compiler.Data.GetSymbols(node);
+                    this.SetProperty(node, targetSymbols, pa, valueSymbols);
                 }
             }
 
@@ -1192,9 +1199,10 @@ namespace MetaDslx.Compiler
                 }
                 else if (symbolBoundary)
                 {
+                    List<object> valueSymbols = this.Compiler.Data.GetSymbols(node);
                     foreach (var spa in spas)
                     {
-                        this.SetProperty(node, targetSymbols, spa, this.CurrentSymbols);
+                        this.SetProperty(node, targetSymbols, spa, valueSymbols);
                     }
                 }
                 else
@@ -1358,10 +1366,11 @@ namespace MetaDslx.Compiler
 
         protected virtual void HandleConstructors(IParseTree node)
         {
-            // TODO: single instances
+            TypeDefAnnotation tda = this.GetAnnotationFor<TypeDefAnnotation>(node);
+            NameDefAnnotation nda = this.GetAnnotationFor<NameDefAnnotation>(node);
             TypeCtrAnnotation tca = this.GetAnnotationFor<TypeCtrAnnotation>(node);
             NameCtrAnnotation nca = this.GetAnnotationFor<NameCtrAnnotation>(node);
-            if (nca != null)
+            if (nca != null && tda == null && nda == null)
             {
                 object symbol = this.CurrentConstructorSymbol;
                 this.ConstructorSymbolStack.RemoveAt(this.ConstructorSymbolStack.Count - 1);
@@ -1370,7 +1379,7 @@ namespace MetaDslx.Compiler
                     this.Compiler.Data.RegisterSymbol(node, symbol, null);
                 }
             }
-            if (tca != null)
+            if (tca != null && tda == null && nda == null)
             {
                 object symbol = this.CurrentConstructorSymbol;
                 this.ConstructorSymbolStack.RemoveAt(this.ConstructorSymbolStack.Count - 1);
@@ -1453,6 +1462,14 @@ namespace MetaDslx.Compiler
                             {
                                 if (prop.IsAssignableFrom(value.GetType()))
                                 {
+                                    if (!mo.MIsDefault(prop))
+                                    {
+                                        object oldValue = mo.MGetValue(prop);
+                                        if (!value.Equals(oldValue))
+                                        {
+                                            this.Compiler.Diagnostics.AddWarning("Reassigning '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                                        }
+                                    }
                                     mo.MAdd(prop, value);
                                 }
                                 else
@@ -1462,6 +1479,10 @@ namespace MetaDslx.Compiler
                             }
                             else if (prop.Type.IsClass)
                             {
+                                if (!mo.MIsDefault(prop) && mo.MGetValue(prop) != null)
+                                {
+                                    this.Compiler.Diagnostics.AddWarning("Reassigning '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                                }
                                 mo.MAdd(prop, value);
                             }
                             else
@@ -1502,52 +1523,82 @@ namespace MetaDslx.Compiler
         }
     }
 
-    public class LazyPropertyGetter
-    {
-        public ModelObject Symbol { get; private set; }
-        public ModelProperty Property { get; private set; }
 
-        public LazyPropertyGetter(ModelObject symbol, ModelProperty property)
+    public class MetaCompilerPropertyEvaluator : AbstractParseTreeVisitor<object>
+    {
+        public MetaCompiler Compiler { get; private set; }
+        protected ModelFactory ModelFactory { get; private set; }
+
+        public MetaCompilerPropertyEvaluator(MetaCompiler compiler)
         {
-            this.Symbol = symbol;
-            this.Property = property;
+            this.Compiler = compiler;
+            this.ModelFactory = new ModelFactory();
         }
 
-        public object Execute()
+        public virtual object Symbol(IParseTree node)
         {
-            return this.Symbol.MGetValue(this.Property);
+            if (node == null) return null;
+            List<object> symbols = this.Symbols(node);
+            if (symbols.Count == 0)
+            {
+                this.Compiler.Diagnostics.AddError("Cannot resolve symbol. No symbols found for the node.", this.Compiler.FileName, new TextSpan(node), true);
+            }
+            else if (symbols.Count == 1)
+            {
+                return symbols[0];
+            }
+            else
+            {
+                this.Compiler.Diagnostics.AddError("Cannot resolve symbol. Multiple symbols found for the node.", this.Compiler.FileName, new TextSpan(node), true);
+            }
+            return null;
+        }
+
+        public virtual List<object> Symbols(IParseTree node)
+        {
+            return this.Compiler.Data.GetSymbols(node);
+        }
+
+        public virtual List<object> Bind(object scope, object info)
+        {
+            if (scope == null) return null;
+            if (info == null) return null;
+            return null;
+        }
+
+        public virtual object GetValue(IParseTree node, string property)
+        {
+            if (node == null) return null;
+            if (property == null) return null;
+            object symbol = this.Symbol(node);
+            ModelObject mo = symbol as ModelObject;
+            if (mo != null)
+            {
+                ModelProperty prop = mo.MFindProperty(property);
+                if (prop != null)
+                {
+                    return mo.MGetValue(prop);
+                }
+            }
+            return null;
+        }
+
+        public virtual void SetValue(IParseTree node, string property, Lazy<object> value)
+        {
+            if (node == null) return;
+            if (property == null) return;
+            if (value == null) return;
+            object symbol = this.Symbol(node);
+            ModelObject mo = symbol as ModelObject;
+            if (mo != null)
+            {
+                ModelProperty prop = mo.MFindProperty(property);
+                if (prop != null)
+                {
+                    mo.MInitValue(prop, value);
+                }
+            }
         }
     }
 
-    public class MetaCompilerConstructorPhase : MetaCompilerPhase
-    {
-        private static List<object> emptySymbolList = new List<object>();
-
-        public MetaCompilerConstructorPhase(MetaCompiler compiler)
-            : base(compiler)
-        {
-        }
-
-        public override void VisitNode(IParseTree node)
-        {
-            base.VisitNode(node);
-        }
-
-    }
-
-    public class MetaCompilerPropertyPhase : MetaCompilerPhase
-    {
-        private static List<object> emptySymbolList = new List<object>();
-
-        public MetaCompilerPropertyPhase(MetaCompiler compiler)
-            : base(compiler)
-        {
-        }
-
-        public override void VisitNode(IParseTree node)
-        {
-            base.VisitNode(node);
-        }
-
-    }
 }

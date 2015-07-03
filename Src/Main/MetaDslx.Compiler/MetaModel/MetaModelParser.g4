@@ -5,6 +5,10 @@ options
     tokenVocab = MetaModelLexer; 
 }
 
+@header {
+using MetaDslx.Core;
+}
+
 main: namespaceDeclaration*;
 
 
@@ -13,12 +17,10 @@ identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
 
-namespaceDeclaration: KNamespace /*@Property(Name)*/ qualifiedName TEquals   stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: KNamespace /*$Property(Name)*/ qualifiedName TAssign   stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
 
 
-
-metamodelDeclaration: KMetamodel identifier TOpenBrace declaration* TCloseBrace;
-
+metamodelDeclaration: KMetamodel identifier TOpenBrace  declaration* TCloseBrace;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
@@ -39,8 +41,8 @@ classMemberDeclaration :  fieldDeclaration |  operationDeclaration;
 fieldDeclaration :  fieldModifier? typeReference identifier TSemicolon;
 fieldModifier :  KContainment |  KReadonly |  KLazy |  KDerived;
 
-//@NameDef(MetaConstant)
-constDeclaration : KConst typeReference /*@NameDef*/ identifier /*(TEquals expression)?*/ TSemicolon;
+//$NameDef(MetaConstant)
+constDeclaration : KConst typeReference /*$NameDef*/ identifier /*(TAssign expression)?*/ TSemicolon;
 
 
 returnType : typeReference | voidType;
@@ -75,110 +77,115 @@ collectionKind :  KSet |  KList;
 
 
 
-operationDeclaration : KStatic?  returnType identifier TOpenBracket  parameterList? TCloseBracket TSemicolon;
+operationDeclaration : KStatic?  returnType identifier TOpenParen  parameterList? TCloseParen TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
 
-parameter : typeReference identifier /*(TEquals expression)? { expression.ExpectedType = typeReference; }*/;
+parameter : typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
 
-/*
-expressionList : expression (',' expression)*; 
 
-@Expression
+
+argumentList 
+	:  expression (',' expression)* 
+		
+	;
+
+
+
 expression 
-	: '(' typeReference ')' expression #castExpression @Symbol(TypeConversionExpression) { Type = typeReference; }
-    | 'typeof' '(' typeReference ')' #typeofExpression @Symbol(TypeOfExpression) { Type = typeof(MetaType); }
-	| '(' expression ')' #bracketExpression @Symbol(BracketExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
-	| literal #constantExpression @Symbol(ConstantExpression) { literal.ExpectedType = ExpectedType; }
-	| identifier #identifierExpression @Symbol(IdentifierExpression) { identifier.ExpectedType = ExpectedType; Definition = bind; Type = Definition.Type; }
-    | expression '[' expressionList ']' #indexerExpression @Symbol(IndexerExpression) { Definition = bind; Type = Definition.ReturnType; }
-    | expression '(' expressionList? ')' #functionCallExpression @Symbol(FunctionCallExpression) { Definition = bind; Type = Definition.ReturnType; }
-    | expression '.' identifier #memberAccessExpression @Symbol(MemberAccessExpression) { Definition = bind; Type = Definition.Type; }
-    | expression operator=postOperator #postExpression @Symbol(UnaryExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
-    | operator=preOperator expression #preExpression @Symbol(UnaryExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
-    | operator=unaryOperator expression #unaryExpression @Symbol(UnaryExpression) { Type = expression.Type; expression.ExpectedType = ExpectedType; }
-    | expression 'as' typeReference #typeConversionExpression @Symbol(TypeConversionExpression) { Operator = OperatorKind.TypeAs; Type = typeReference; }
-    | expression 'is' typeReference #typeConversionExpression @Symbol(TypeConversionExpression) { Operator = OperatorKind.TypeIs; Type = BuiltInType.Bool; }
-    | left=expression operator=multiplicativeOperator right=expression #multiplicativeExpression @Symbol(BinaryExpression)
-    | left=expression operator=additiveOperator right=expression #additiveExpression @Symbol(BinaryExpression)
-    | left=expression operator=shiftOperator right=expression #shiftExpression @Symbol(BinaryExpression)
-    | left=expression operator=comparisonOperator right=expression #comparisonExpression @Symbol(BinaryExpression)
-    | left=expression operator=equalityOperator right=expression #equalityExpression @Symbol(BinaryExpression)
-    | left=expression '&' right=expression #bitwiseAndExpression @Symbol(BinaryExpression) { Operator = OperatorKind.And; }
-    | left=expression '^' right=expression #bitwiseXorExpression @Symbol(BinaryExpression) { Operator = OperatorKind.ExclusiveOr; }
-    | left=expression '|' right=expression #bitwiseOrExpression @Symbol(BinaryExpression) { Operator = OperatorKind.Or; }
-    | left=expression '&&' right=expression #logicalAndExpression @Symbol(BinaryExpression) { Operator = OperatorKind.AndAlso; }
-    | left=expression '||' right=expression #logicalOrExpression @Symbol(BinaryExpression) { Operator = OperatorKind.OrElse; }
-    | left=expression '??' right=expression #nullCoalescingExpression @Symbol(BinaryExpression) { Operator = OperatorKind.Coalesce; }
-    | expression '?' then=expression ':' else=expression #conditionalExpression @Symbol(ConditionalExpression)
-    | expression operator=assignmentOperator value=expression #assignmentExpression @Symbol(AssignmentExpression) 	
+	: TOpenParen typeReference TCloseParen expression #castExpression  
+    | KTypeof TOpenParen typeReference TCloseParen #typeofExpression 
+	| TOpenParen expression TCloseParen #bracketExpression 
+	| literal #constantExpression 
+	| identifier #identifierExpression  
+    | expression TOpenBracket argumentList TCloseBracket #indexerExpression 
+    | expression TOpenParen argumentList? TCloseParen #functionCallExpression 
+    | expression TDot identifier #memberAccessExpression 
+    | expression operator=postOperator #postExpression  
+    | operator=preOperator expression #preExpression  
+    | operator=unaryOperator expression #unaryExpression  
+    | expression KAs typeReference #typeConversionExpression  
+    | expression KIs typeReference #typeCheckExpression  
+    | left=expression operator=multiplicativeOperator right=expression #multiplicativeExpression  
+    | left=expression operator=additiveOperator right=expression #additiveExpression  
+    | left=expression operator=shiftOperator right=expression #shiftExpression  
+    | left=expression operator=comparisonOperator right=expression #comparisonExpression  
+    | left=expression operator=equalityOperator right=expression #equalityExpression  
+    | left=expression TAmpersand right=expression #bitwiseAndExpression  
+    | left=expression THat right=expression #bitwiseXorExpression  
+    | left=expression TBar right=expression #bitwiseOrExpression  
+    | left=expression TAndAlso right=expression #logicalAndExpression  
+    | left=expression TOrElse right=expression #logicalOrExpression  
+    //| left=expression '??' right=expression #nullCoalescingExpression $Symbol(BinaryExpression) -> { Operator = global::MetaOperatorKind.Coalesce; }
+    | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression  
+    //| expression operator=assignmentOperator value=expression #assignmentExpression $Symbol(AssignmentExpression) 	
 	;
 
 postOperator
-	: @Value(OperatorKind.PostIncrementAssign) '++'
-	| @Value(OperatorKind.PostDecrementAssign) '--'
+	:  TPlusPlus
+	|  TMinusMinus
 	;
 
 preOperator
-	: @Value(OperatorKind.PreIncrementAssign) '++'
-	| @Value(OperatorKind.PreDecrementAssign) '--'
+	:  TPlusPlus
+	|  TMinusMinus
 	;
 
 unaryOperator
-	: @Value(OperatorKind.UnaryPlus) '+'
-	| @Value(OperatorKind.Negate) '-'
-	| @Value(OperatorKind.OnesComplement) '~'
-	| @Value(OperatorKind.Not) '!'
+	:  TPlus
+	|  TMinus
+	|  TTilde
+	|  TExclamation
 	;
 
 multiplicativeOperator
-	: @Value(OperatorKind.Multiply) '*'
-	| @Value(OperatorKind.Divide) '/'
-	| @Value(OperatorKind.Modulo) '%'
+	:  TAsterisk
+	|  TSlash
+	|  TPercent
 	;
 
 additiveOperator
-	: @Value(OperatorKind.Add) '+'
-	| @Value(OperatorKind.Subtract) '-'
+	:  TPlus
+	|  TMinus
 	;
 
 shiftOperator
-	: @Value(OperatorKind.LeftShift) '<<'
-	| @Value(OperatorKind.RightShift) '>>'
+	:  TLessThan TLessThan
+	|  TGreaterThan TGreaterThan
 	;
 
 comparisonOperator
-	: @Value(OperatorKind.LessThan) '<'
-	| @Value(OperatorKind.GreaterThan) '>'
-	| @Value(OperatorKind.LessThanOrEqual) '<='
-	| @Value(OperatorKind.GreaterThanOrEqual) '>='
+	:  TLessThan
+	|  TGreaterThan
+	|  TLessThanOrEqual
+	|  TGreaterThanOrEqual
 	;
 
 equalityOperator
-	: @Value(OperatorKind.Equal) '=='
-	| @Value(OperatorKind.NotEqual) '!='
+	:  TEqual
+	|  TNotEqual
 	;
 
 assignmentOperator
-	: @Value(OperatorKind.Assign) '='  
-	| @Value(OperatorKind.MultiplyAssign) '*=' 
-	| @Value(OperatorKind.DivideAssign) '/=' 
-	| @Value(OperatorKind.ModuloAssign) '%=' 
-	| @Value(OperatorKind.AddAssign) '+=' 
-	| @Value(OperatorKind.SubtractAssign) '-=' 
-	| @Value(OperatorKind.LeftShiftAssign) '<<='
-	| @Value(OperatorKind.RightShiftAssign) '>>='
-	| @Value(OperatorKind.AndAssign) '&=' 
-	| @Value(OperatorKind.ExclusiveOrAssign) '^=' 
-	| @Value(OperatorKind.OrAssign) '|=' 
+	:  TAssign  
+	|  TAsteriskAssign 
+	|  TSlashAssign
+	|  TPercentAssign
+	|  TPlusAssign
+	|  TMinusAssign
+	|  TLeftShiftAssign
+	|  TRightShiftAssign
+	|  TAmpersandAssign
+	|  THatAssign
+	|  TBarAssign
 	;
-*/
 
 
-associationDeclaration : KAssociation  source=qualifiedName KWith  target=qualifiedName TSemicolon
-{
-	source.Opposites = target;
-};
+
+
+associationDeclaration : KAssociation  source=qualifiedName KWith  target=qualifiedName TSemicolon 
+	
+	;
 
 
 // Additional rules for lexer:
@@ -191,27 +198,27 @@ identifier : IdentifierNormal /*| IdentifierVerbatim*/;
 
 // Literals
 literal 
-    : nullLiteral { Type = BuiltInType.Null; Value = null; }
-	| booleanLiteral { Type = BuiltInType.Bool; Value = valueof(booleanLiteral); }
-	| integerLiteral { Type = BuiltInType.Int; Value = valueof(integerLiteral); }
-	| decimalLiteral { Type = BuiltInType.Double; Value = valueof(decimalLiteral); }
-	| scientificLiteral { Type = BuiltInType.Double; Value = valueof(scientificLiteral); }
-    | stringLiteral { Type = BuiltInType.String; Value = valueof(stringLiteral); }
+    : nullLiteral
+	| booleanLiteral
+	| integerLiteral
+	| decimalLiteral
+	| scientificLiteral
+    | stringLiteral
 	;
 
 // Null literal
-nullLiteral : KNull;
+nullLiteral : KNull ;
 
 // Boolean literals
-booleanLiteral : KTrue | KFalse;
+booleanLiteral : KTrue | KFalse ;
 
 // Number literals
-integerLiteral : IntegerLiteral;
-decimalLiteral : DecimalLiteral;
-scientificLiteral : ScientificLiteral;
+integerLiteral : IntegerLiteral ;
+decimalLiteral : DecimalLiteral ;
+scientificLiteral : ScientificLiteral ;
 
 // String literals
-stringLiteral : RegularStringLiteral;
+stringLiteral : RegularStringLiteral ;
 
 
 /*
@@ -229,14 +236,14 @@ timeLiteral : TimeLiteral;
 // Guid literal
 guidLiteral : GuidLiteral;
 
-@Symbol(MetaClass)
-@TypeDef
-classDeclaration : @Property(IsAbstract) @Value(true) KAbstract? KClass @NameDef identifier @Property(TypeParams) genericTypeParams? (TColon @Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+$Symbol(MetaClass)
+$TypeDef
+classDeclaration : $Property(IsAbstract) $Value(true) KAbstract? KClass $NameDef identifier $Property(TypeParams) genericTypeParams? (TColon $Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 
 genericTypeParams : LT genericTypeParam (COMMA genericTypeParam)* GT;
 
-@Symbol(MetaTypeParam)
-@TypeParam
+$Symbol(MetaTypeParam)
+$TypeParam
 genericTypeParam : identifier;
 
 */

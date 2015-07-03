@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,27 @@ namespace MetaDslx.Compiler
         public TextSpan(IToken token)
             : this()
         {
+            this.CreateFromToken(token);
+        }
+
+        public TextSpan(Antlr4.Runtime.Tree.IParseTree context)
+            : this()
+        {
+            ITerminalNode terminal = context as ITerminalNode;
+            if (terminal != null)
+            {
+                this.CreateFromToken(terminal.Symbol);
+            }
+            else
+            {
+                ParserRuleContext prc = context as ParserRuleContext;
+                this.CreateFromRule(prc);
+            }
+        }
+
+        private void CreateFromToken(IToken token)
+        {
+            if (token == null) return;
             this.StartLine = token.Line;
             this.StartPosition = token.Column + 1;
             string text = token.Text;
@@ -76,17 +98,13 @@ namespace MetaDslx.Compiler
             }
         }
 
-        public TextSpan(Antlr4.Runtime.Tree.IParseTree context)
-            : this()
+        private void CreateFromRule(ParserRuleContext rule)
         {
-            ParserRuleContext prc = context as ParserRuleContext;
-            if (prc != null)
-            {
-                this.StartLine = prc.Start.Line;
-                this.StartPosition = prc.Start.Column + 1;
-                this.EndLine = prc.Stop.Line;
-                this.EndPosition = prc.Stop.Column + prc.Stop.Text.Length + 1;
-            }
+            if (rule == null) return;
+            this.StartLine = rule.Start.Line;
+            this.StartPosition = rule.Start.Column + 1;
+            this.EndLine = rule.Stop.Line;
+            this.EndPosition = rule.Stop.Column + rule.Stop.Text.Length + 1;
         }
 
         public int StartLine { get; private set; }

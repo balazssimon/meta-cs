@@ -199,50 +199,11 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	Result VisitLabeledAlt([NotNull] AnnotatedAntlr4Parser.LabeledAltContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.attributesBlock"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.propertiesBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAttributesBlock([NotNull] AnnotatedAntlr4Parser.AttributesBlockContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.attributeAssignment"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAttributeAssignment([NotNull] AnnotatedAntlr4Parser.AttributeAssignmentContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionList"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitExpressionList([NotNull] AnnotatedAntlr4Parser.ExpressionListContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>literalExpression</c>
-	/// labeled alternative in <see cref="AnnotatedAntlr4Parser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitLiteralExpression([NotNull] AnnotatedAntlr4Parser.LiteralExpressionContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>functionCallExpression</c>
-	/// labeled alternative in <see cref="AnnotatedAntlr4Parser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFunctionCallExpression([NotNull] AnnotatedAntlr4Parser.FunctionCallExpressionContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>memberAccessExpression</c>
-	/// labeled alternative in <see cref="AnnotatedAntlr4Parser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitMemberAccessExpression([NotNull] AnnotatedAntlr4Parser.MemberAccessExpressionContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.literal"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitLiteral([NotNull] AnnotatedAntlr4Parser.LiteralContext context);
+	Result VisitPropertiesBlock([NotNull] AnnotatedAntlr4Parser.PropertiesBlockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.lexerRule"/>.
 	/// </summary>
@@ -327,12 +288,6 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitAlternative([NotNull] AnnotatedAntlr4Parser.AlternativeContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotatedElement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAnnotatedElement([NotNull] AnnotatedAntlr4Parser.AnnotatedElementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.element"/>.
 	/// </summary>
@@ -460,17 +415,29 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	Result VisitAnnotationAttribute([NotNull] AnnotatedAntlr4Parser.AnnotationAttributeContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionValueList"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.expressionList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpressionValueList([NotNull] AnnotatedAntlr4Parser.ExpressionValueListContext context);
+	Result VisitExpressionList([NotNull] AnnotatedAntlr4Parser.ExpressionListContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.qualifiedName"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitQualifiedName([NotNull] AnnotatedAntlr4Parser.QualifiedNameContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpression([NotNull] AnnotatedAntlr4Parser.ExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.literal"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteral([NotNull] AnnotatedAntlr4Parser.LiteralContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.identifier"/>.
 	/// </summary>

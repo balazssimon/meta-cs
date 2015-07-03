@@ -190,32 +190,10 @@ ruleAltList
 	;
 
 labeledAlt
-	:	alternative (POUND id annotation*)? attributesBlock?
+	:	alternative (POUND id annotation*)? propertiesBlock?
 	;
 
-attributesBlock
-	: LBRACE attributeAssignment* RBRACE
-	;
-
-attributeAssignment
-	: (ruleElement=id DOT)? property=id ASSIGN expression SEMI;
-
-expressionList
-	: expression (COMMA expression)*;
-
-expression
-	: literal #literalExpression
-	| qualifiedName LPAREN expressionList? RPAREN #functionCallExpression
-	| qualifiedName #memberAccessExpression
-	;
-
-literal 
-	: null
-	| boolean
-    | INTEGER_LITERAL
-	| SCIENTIFIC_LITERAL 
-    | STRING_LITERAL
-	;
+propertiesBlock : RARROW ACTION;
 
 
 lexerRule
@@ -284,18 +262,15 @@ altList
 	;
 
 alternative
-	:	elementOptions? annotatedElement*
+	:	elementOptions? element*
 	;
 
-annotatedElement
-    : annotation* element;
-
 element
-	:	labeledElement
+	:	annotation* labeledElement
 		(	ebnfSuffix
 		|
 		)
-	|	atom
+	|	annotation* atom
 		(	ebnfSuffix
 		|
 		)
@@ -395,24 +370,37 @@ id	:	RULE_REF
 	;
 
 annotation
-    : AT qualifiedName annotationBody?;
+    : DOLLAR qualifiedName annotationBody?;
 
 annotationBody
-    : LPAREN (expression | expressionValueList | annotationAttributeList) RPAREN;
+    : LPAREN (expression | expressionList | annotationAttributeList) RPAREN;
 
 annotationAttributeList
     : annotationAttribute (COMMA annotationAttribute)*;
 
 annotationAttribute
-    : identifier ASSIGN (expression|expressionValueList);
+    : identifier ASSIGN (expression|expressionList);
 
-expressionValueList
-    : LBRACE expression (COMMA expression)* RBRACE;
+expressionList
+    : LPAREN expression (COMMA expression)* RPAREN;
 
 qualifiedName
 	: identifier (DOT identifier)*;
 
-identifier : id | ID;
+expression
+	: literal
+	| qualifiedName 
+	;
+
+literal 
+	: null
+	| boolean
+    | INTEGER_LITERAL
+	| SCIENTIFIC_LITERAL 
+    | STRING_LITERAL
+	;
+
+identifier : TOKEN_REF | RULE_REF | ID;
 
 boolean : TRUE | FALSE;
 

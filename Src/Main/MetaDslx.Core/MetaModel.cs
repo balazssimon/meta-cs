@@ -42,6 +42,7 @@ namespace MetaDslx.Core
         public MetaNamespaceImpl()
         {
             this.MSetValue(MetaNamespaceImpl.ModelsProperty, new ModelSet<MetaModel>(this, MetaNamespaceImpl.ModelsProperty));
+            this.MSetValue(MetaNamespaceImpl.NamespacesProperty, new ModelSet<MetaNamespace>(this, MetaNamespaceImpl.NamespacesProperty));
             MetaImplementationProvider.Implementation.MetaNamespace_MetaNamespace(this);
         }
         
@@ -887,6 +888,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaNamespace_MetaNamespace(MetaNamespace @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -894,6 +896,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaModel_MetaModel(MetaModel @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -901,6 +904,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaType_MetaType(MetaType @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -918,6 +922,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaCollectionType_MetaCollectionType(MetaCollectionType @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -927,6 +932,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaNullableType_MetaNullableType(MetaNullableType @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -936,6 +942,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaPrimitiveType_MetaPrimitiveType(MetaPrimitiveType @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -945,6 +952,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaEnum_MetaEnum(MetaEnum @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -952,6 +960,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaEnumLiteral_MetaEnumLiteral(MetaEnumLiteral @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -961,6 +970,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaClass_MetaClass(MetaClass @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -992,6 +1002,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaOperation_MetaOperation(MetaOperation @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -999,6 +1010,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaParameter_MetaParameter(MetaParameter @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
         /// <summary>
@@ -1006,6 +1018,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaProperty_MetaProperty(MetaProperty @this)
         {
+            ((ModelObject)@this).MMakeDefault();
         }
     
     
