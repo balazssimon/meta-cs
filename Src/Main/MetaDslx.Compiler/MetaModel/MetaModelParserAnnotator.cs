@@ -592,6 +592,30 @@ using MetaDslx.Core;
                 __tmp5.Value = MetaPropertyKind.Derived;
                 elemAnnotList.Add(__tmp5);
             }
+            if (context.KSynthetized() != null)
+            {
+                object elem = context.KSynthetized();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                ValueAnnotation __tmp6 = new ValueAnnotation();
+                __tmp6.Value = MetaPropertyKind.Synthetized;
+                elemAnnotList.Add(__tmp6);
+            }
+            if (context.KInherited() != null)
+            {
+                object elem = context.KInherited();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                ValueAnnotation __tmp7 = new ValueAnnotation();
+                __tmp7.Value = MetaPropertyKind.Inherited;
+                elemAnnotList.Add(__tmp7);
+            }
             return base.VisitFieldModifier(context);
         }
         
@@ -896,9 +920,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp6 = new ValueAnnotation();
-                __tmp6.Value = MetaCollectionKind.Set;
-                elemAnnotList.Add(__tmp6);
+                ValueAnnotation __tmp8 = new ValueAnnotation();
+                __tmp8.Value = MetaCollectionKind.Set;
+                elemAnnotList.Add(__tmp8);
             }
             if (context.KList() != null)
             {
@@ -908,9 +932,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp7 = new ValueAnnotation();
-                __tmp7.Value = MetaCollectionKind.List;
-                elemAnnotList.Add(__tmp7);
+                ValueAnnotation __tmp9 = new ValueAnnotation();
+                __tmp9.Value = MetaCollectionKind.List;
+                elemAnnotList.Add(__tmp9);
             }
             return base.VisitCollectionKind(context);
         }

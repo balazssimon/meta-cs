@@ -39,7 +39,14 @@ classMemberDeclaration :  fieldDeclaration |  operationDeclaration;
 
 
 fieldDeclaration :  fieldModifier?  typeReference identifier (redefinitions | subsettings)? TSemicolon;
-fieldModifier :  KContainment |  KReadonly |  KLazy |  KDerived;
+fieldModifier 
+	:  KContainment 
+	|  KReadonly 
+	|  KLazy 
+	|  KDerived
+	|  KSynthetized
+	|  KInherited
+	;
 
 
 redefinitions : KRedefines  nameUseList?;

@@ -25,41 +25,6 @@ namespace MetaDslx.Core
             get { return MetaBuiltInType.types; }
         }
 
-        /*static MetaBuiltInType()
-        {
-            MetaBuiltInType.Object = MetaFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Object.Name = "object";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Object);
-            MetaBuiltInType.String = MetaFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.String.Name = "string";
-            MetaBuiltInType.types.Add(MetaBuiltInType.String);
-            MetaBuiltInType.Int = MetaFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Int.Name = "int";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Int);
-            MetaBuiltInType.Long = MetaFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Long.Name = "long";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Long);
-            MetaBuiltInType.Float = MetaFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Float.Name = "float";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Float);
-            MetaBuiltInType.Double = MetaFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Double.Name = "double";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Double);
-            MetaBuiltInType.Byte = MetaFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Byte.Name = "byte";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Byte);
-            MetaBuiltInType.Bool = MetaFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Bool.Name = "bool";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Bool);
-            MetaBuiltInType.Void = MetaFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Void.Name = "void";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Void);
-            MetaBuiltInType.Any = MetaFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Any.Name = null;
-            MetaBuiltInType.types.Add(MetaBuiltInType.Any);
-        }*/
-
-        
         static MetaBuiltInType()
         {
             MetaBuiltInType.Object = MetaModelFactory.Instance.CreateMetaPrimitiveType();
@@ -89,11 +54,13 @@ namespace MetaDslx.Core
             MetaBuiltInType.Void = MetaModelFactory.Instance.CreateMetaPrimitiveType();
             MetaBuiltInType.Void.Name = "void";
             MetaBuiltInType.types.Add(MetaBuiltInType.Void);
+            MetaBuiltInType.Any = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInType.Any.Name = null;
+            MetaBuiltInType.types.Add(MetaBuiltInType.Any);
         }
          
     }
 
-    //internal class MetaImplementation : MetaImplementationBase
     internal class MetaModelImplementation : MetaModelImplementationBase
     {
         public override void MetaProperty_MetaProperty(MetaProperty @this)
@@ -102,12 +69,6 @@ namespace MetaDslx.Core
             @this.Kind = MetaPropertyKind.Normal;
             ((ModelObject)@this).MMakeDefault();
         }
-
-        /*public override MetaNamespace MetaType_Namespace(MetaType @this)
-        {
-            if (@this.Model == null) return null;
-            return @this.Model.Namespace;
-        }*/
 
         public override MetaNamespace MetaDeclaration_Namespace(MetaDeclaration @this)
         {
@@ -236,7 +197,6 @@ namespace MetaDslx.Core
             {
                 return primitive.Name;
             }
-            //return "Meta" + (@this).Name;
             return "Meta" + ((MetaNamedElement)@this).Name;
         }
 
@@ -266,7 +226,6 @@ namespace MetaDslx.Core
             {
                 return primitive.Name;
             }
-            //return "Meta" + (@this).Name + "Impl";
             return "Meta" + ((MetaNamedElement)@this).Name + "Impl";
         }
 
@@ -296,7 +255,6 @@ namespace MetaDslx.Core
             {
                 return primitive.Name;
             }
-            //return "Meta" + (@this).Name;
             return "Meta" + ((MetaNamedElement)@this).Name;
         }
 

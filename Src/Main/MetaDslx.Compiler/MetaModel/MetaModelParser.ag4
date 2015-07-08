@@ -39,7 +39,14 @@ classMemberDeclaration : $Property(Properties) fieldDeclaration | $Property(Oper
 
 $NameDef(MetaProperty)
 fieldDeclaration : $Property(Kind) fieldModifier? $Property(Type) typeReference identifier (redefinitions | subsettings)? TSemicolon;
-fieldModifier : $Value(MetaPropertyKind.Containment) KContainment | $Value(MetaPropertyKind.Readonly) KReadonly | $Value(MetaPropertyKind.Lazy) KLazy | $Value(MetaPropertyKind.Derived) KDerived;
+fieldModifier 
+	: $Value(MetaPropertyKind.Containment) KContainment 
+	| $Value(MetaPropertyKind.Readonly) KReadonly 
+	| $Value(MetaPropertyKind.Lazy) KLazy 
+	| $Value(MetaPropertyKind.Derived) KDerived
+	| $Value(MetaPropertyKind.Synthetized) KSynthetized
+	| $Value(MetaPropertyKind.Inherited) KInherited
+	;
 
 $Scope
 redefinitions : KRedefines $Property(RedefinedProperties) nameUseList?;

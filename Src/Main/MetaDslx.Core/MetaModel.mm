@@ -246,10 +246,10 @@
 		abstract class Expression
 		{
 			ExpressionKind Kind;// = ExpressionKind.None;
-			/*synthetized*/ lazy Type Type;
-			/*inherited*/ lazy Type ExpectedType;
-			/*synthetized*/ lazy list<ScopeEntry> Definitions;
-			/*synthetized*/ lazy ScopeEntry Definition;
+			synthetized Type Type;
+			inherited Type ExpectedType;
+			synthetized list<ScopeEntry> Definitions;
+			synthetized ScopeEntry Definition;
 			/*init
 			{
 			    Definition = Bind(this, Definitions);

@@ -933,7 +933,7 @@ public partial class MetaModelParser : Parser {
 			State = 184;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KVoid) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KReadonly) | (1L << KLazy) | (1L << KDerived) | (1L << KStatic))) != 0) || _la==IdentifierNormal) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KVoid) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KReadonly) | (1L << KLazy) | (1L << KSynthetized) | (1L << KInherited) | (1L << KDerived) | (1L << KStatic))) != 0) || _la==IdentifierNormal) {
 				{
 				{
 				State = 181; classMemberDeclaration();
@@ -1175,7 +1175,7 @@ public partial class MetaModelParser : Parser {
 			{
 			State = 204;
 			_la = TokenStream.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KReadonly) | (1L << KLazy) | (1L << KDerived))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KReadonly) | (1L << KLazy) | (1L << KSynthetized) | (1L << KInherited) | (1L << KDerived))) != 0)) {
 				{
 				State = 203; fieldModifier();
 				}
@@ -1219,6 +1219,8 @@ public partial class MetaModelParser : Parser {
 		public ITerminalNode KReadonly() { return GetToken(MetaModelParser.KReadonly, 0); }
 		public ITerminalNode KLazy() { return GetToken(MetaModelParser.KLazy, 0); }
 		public ITerminalNode KDerived() { return GetToken(MetaModelParser.KDerived, 0); }
+		public ITerminalNode KSynthetized() { return GetToken(MetaModelParser.KSynthetized, 0); }
+		public ITerminalNode KInherited() { return GetToken(MetaModelParser.KInherited, 0); }
 		public FieldModifierContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -1249,7 +1251,7 @@ public partial class MetaModelParser : Parser {
 			{
 			State = 214;
 			_la = TokenStream.La(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KReadonly) | (1L << KLazy) | (1L << KDerived))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KReadonly) | (1L << KLazy) | (1L << KSynthetized) | (1L << KInherited) | (1L << KDerived))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -2705,7 +2707,7 @@ public partial class MetaModelParser : Parser {
 		"\v!\x3\"\x3\"\x3\"\x3#\x3#\x3#\x3#\x3#\x3#\x3$\x3$\x3%\x3%\x3%\x3%\x3"+
 		"%\x3%\x5%\x133\n%\x3&\x3&\x3\'\x3\'\x3(\x3(\x3)\x3)\x3*\x3*\x3+\x3+\x3"+
 		"+\x2\x2,\x2\x4\x6\b\n\f\xE\x10\x12\x14\x16\x18\x1A\x1C\x1E \"$&(*,.\x30"+
-		"\x32\x34\x36\x38:<>@\x42\x44\x46HJLNPRT\x2\a\x5\x2\t\t!\"%%\x3\x2\xF\x10"+
+		"\x32\x34\x36\x38:<>@\x42\x44\x46HJLNPRT\x2\a\x4\x2\t\t!%\x3\x2\xF\x10"+
 		"\x3\x2\x11\x16\x3\x2\x17\x18\x3\x2\f\r\x13A\x2Y\x3\x2\x2\x2\x4\\\x3\x2"+
 		"\x2\x2\x6\x64\x3\x2\x2\x2\bl\x3\x2\x2\x2\nt\x3\x2\x2\x2\f\x81\x3\x2\x2"+
 		"\x2\xE\x90\x3\x2\x2\x2\x10\x92\x3\x2\x2\x2\x12\xA1\x3\x2\x2\x2\x14\xA9"+
