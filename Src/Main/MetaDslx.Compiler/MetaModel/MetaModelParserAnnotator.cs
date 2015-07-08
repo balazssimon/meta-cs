@@ -27,7 +27,6 @@ using MetaDslx.Core;
         
         private QualifiedNameAnnotation qualifiedName_QualifiedName;
         private NameDefAnnotation namespaceDeclaration_NameDef;
-        private PropertyAnnotation namespaceDeclaration_StringLiteral_Property;
         private PropertyAnnotation namespaceDeclaration_MetamodelDeclaration_Property;
         private TypeDefAnnotation metamodelDeclaration_TypeDef;
         private PropertyAnnotation metamodelDeclaration_Declaration_Property;
@@ -43,6 +42,12 @@ using MetaDslx.Core;
         private PropertyAnnotation classMemberDeclaration_OperationDeclaration_Property;
         private NameDefAnnotation fieldDeclaration_NameDef;
         private PropertyAnnotation fieldDeclaration_FieldModifier_Property;
+        private PropertyAnnotation fieldDeclaration_TypeReference_Property;
+        private ScopeAnnotation redefinitions_Scope;
+        private PropertyAnnotation redefinitions_NameUseList_Property;
+        private ScopeAnnotation subsettings_Scope;
+        private PropertyAnnotation subsettings_NameUseList_Property;
+        private NameUseAnnotation nameUseList_QualifiedName_NameUse;
         private TypeUseAnnotation returnType_TypeUse;
         private TypeUseAnnotation typeReference_TypeUse;
         private TypeUseAnnotation simpleType_TypeUse;
@@ -68,6 +73,7 @@ using MetaDslx.Core;
         private PropertyAnnotation operationDeclaration_ReturnType_Property;
         private PropertyAnnotation operationDeclaration_ParameterList_Property;
         private NameDefAnnotation parameter_NameDef;
+        private PropertyAnnotation parameter_TypeReference_Property;
         private ScopeAnnotation associationDeclaration_Scope;
         private NameUseAnnotation associationDeclaration_Source_NameUse;
         private NameUseAnnotation associationDeclaration_Target_NameUse;
@@ -91,8 +97,6 @@ using MetaDslx.Core;
             this.namespaceDeclaration_NameDef.Scope = true;
             this.namespaceDeclaration_NameDef.Merge = true;
             annotList.Add(this.namespaceDeclaration_NameDef);
-            this.namespaceDeclaration_StringLiteral_Property = new PropertyAnnotation();
-            this.namespaceDeclaration_StringLiteral_Property.Name = "Uri";
             this.namespaceDeclaration_MetamodelDeclaration_Property = new PropertyAnnotation();
             this.namespaceDeclaration_MetamodelDeclaration_Property.Name = "Models";
             
@@ -147,6 +151,25 @@ using MetaDslx.Core;
             annotList.Add(this.fieldDeclaration_NameDef);
             this.fieldDeclaration_FieldModifier_Property = new PropertyAnnotation();
             this.fieldDeclaration_FieldModifier_Property.Name = "Kind";
+            this.fieldDeclaration_TypeReference_Property = new PropertyAnnotation();
+            this.fieldDeclaration_TypeReference_Property.Name = "Type";
+            
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.RedefinitionsContext), annotList);
+            this.redefinitions_Scope = new ScopeAnnotation();
+            annotList.Add(this.redefinitions_Scope);
+            this.redefinitions_NameUseList_Property = new PropertyAnnotation();
+            this.redefinitions_NameUseList_Property.Name = "RedefinedProperties";
+            
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.SubsettingsContext), annotList);
+            this.subsettings_Scope = new ScopeAnnotation();
+            annotList.Add(this.subsettings_Scope);
+            this.subsettings_NameUseList_Property = new PropertyAnnotation();
+            this.subsettings_NameUseList_Property.Name = "SubsettedProperties";
+            
+            this.nameUseList_QualifiedName_NameUse = new NameUseAnnotation();
+            this.nameUseList_QualifiedName_NameUse.SymbolTypes.Add(typeof(MetaProperty));
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ReturnTypeContext), annotList);
@@ -231,6 +254,8 @@ using MetaDslx.Core;
             this.parameter_NameDef = new NameDefAnnotation();
             this.parameter_NameDef.SymbolType = typeof(MetaParameter);
             annotList.Add(this.parameter_NameDef);
+            this.parameter_TypeReference_Property = new PropertyAnnotation();
+            this.parameter_TypeReference_Property.Name = "Type";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.AssociationDeclarationContext), annotList);
@@ -299,7 +324,6 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.namespaceDeclaration_StringLiteral_Property);
                 ValueAnnotation __tmp1 = new ValueAnnotation();
                 elemAnnotList.Add(__tmp1);
             }
@@ -504,6 +528,16 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.fieldDeclaration_FieldModifier_Property);
             }
+            if (context.typeReference() != null)
+            {
+                object elem = context.typeReference();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.fieldDeclaration_TypeReference_Property);
+            }
             return base.VisitFieldDeclaration(context);
         }
         
@@ -559,6 +593,70 @@ using MetaDslx.Core;
                 elemAnnotList.Add(__tmp5);
             }
             return base.VisitFieldModifier(context);
+        }
+        
+        public override object VisitRedefinitions(MetaModelParser.RedefinitionsContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            treeAnnotList.Add(this.redefinitions_Scope);
+            List<object> elemAnnotList = null;
+            if (context.nameUseList() != null)
+            {
+                object elem = context.nameUseList();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.redefinitions_NameUseList_Property);
+            }
+            return base.VisitRedefinitions(context);
+        }
+        
+        public override object VisitSubsettings(MetaModelParser.SubsettingsContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            treeAnnotList.Add(this.subsettings_Scope);
+            List<object> elemAnnotList = null;
+            if (context.nameUseList() != null)
+            {
+                object elem = context.nameUseList();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.subsettings_NameUseList_Property);
+            }
+            return base.VisitSubsettings(context);
+        }
+        
+        public override object VisitNameUseList(MetaModelParser.NameUseListContext context)
+        {
+            List<object> elemAnnotList = null;
+            if (context.qualifiedName() != null)
+            {
+                foreach(object elem in context.qualifiedName())
+                {
+                    if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                    {
+                        elemAnnotList = new List<object>();
+                        this.treeAnnotations.Add(elem, elemAnnotList);
+                    }
+                    elemAnnotList.Add(this.nameUseList_QualifiedName_NameUse);
+                }
+            }
+            return base.VisitNameUseList(context);
         }
         
         public override object VisitConstDeclaration(MetaModelParser.ConstDeclarationContext context)
@@ -865,6 +963,17 @@ using MetaDslx.Core;
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             treeAnnotList.Add(this.parameter_NameDef);
+            List<object> elemAnnotList = null;
+            if (context.typeReference() != null)
+            {
+                object elem = context.typeReference();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.parameter_TypeReference_Property);
+            }
             return base.VisitParameter(context);
         }
         
@@ -959,197 +1068,225 @@ using MetaDslx.Core;
         
         public virtual object VisitMain(MetaModelParser.MainContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitQualifiedName(MetaModelParser.QualifiedNameContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitIdentifierList(MetaModelParser.IdentifierListContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitQualifiedNameList(MetaModelParser.QualifiedNameListContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitNamespaceDeclaration(MetaModelParser.NamespaceDeclarationContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitMetamodelDeclaration(MetaModelParser.MetamodelDeclarationContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitDeclaration(MetaModelParser.DeclarationContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitEnumDeclaration(MetaModelParser.EnumDeclarationContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitEnumValues(MetaModelParser.EnumValuesContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitEnumValue(MetaModelParser.EnumValueContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitEnumMemberDeclaration(MetaModelParser.EnumMemberDeclarationContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitClassDeclaration(MetaModelParser.ClassDeclarationContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitClassAncestors(MetaModelParser.ClassAncestorsContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitClassAncestor(MetaModelParser.ClassAncestorContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitClassMemberDeclaration(MetaModelParser.ClassMemberDeclarationContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitFieldDeclaration(MetaModelParser.FieldDeclarationContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitFieldModifier(MetaModelParser.FieldModifierContext context)
         {
-            return null;
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitRedefinitions(MetaModelParser.RedefinitionsContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitSubsettings(MetaModelParser.SubsettingsContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitNameUseList(MetaModelParser.NameUseListContext context)
+        {
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitConstDeclaration(MetaModelParser.ConstDeclarationContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitReturnType(MetaModelParser.ReturnTypeContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitTypeReference(MetaModelParser.TypeReferenceContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitSimpleType(MetaModelParser.SimpleTypeContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitObjectType(MetaModelParser.ObjectTypeContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitPrimitiveType(MetaModelParser.PrimitiveTypeContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitVoidType(MetaModelParser.VoidTypeContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitNullableType(MetaModelParser.NullableTypeContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitCollectionType(MetaModelParser.CollectionTypeContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitCollectionKind(MetaModelParser.CollectionKindContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitOperationDeclaration(MetaModelParser.OperationDeclarationContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitParameterList(MetaModelParser.ParameterListContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitParameter(MetaModelParser.ParameterContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitAssociationDeclaration(MetaModelParser.AssociationDeclarationContext context)
         {
-            return null;
+            this.SetValue(context.source, "OppositeProperties", new Lazy<object>(() => this.Symbol(context.target)));
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitIdentifier(MetaModelParser.IdentifierContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitLiteral(MetaModelParser.LiteralContext context)
         {
-            return null;
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitNullLiteral(MetaModelParser.NullLiteralContext context)
         {
-return null;
+            this.SetValue(context, "Type", new Lazy<object>(() => MetaBuiltInType.Any));
+            this.SetValue(context, "Value", new Lazy<object>(() => null));
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitBooleanLiteral(MetaModelParser.BooleanLiteralContext context)
         {
-return null;
+            this.SetValue(context, "Type", new Lazy<object>(() => MetaBuiltInType.Bool));
+            this.SetValue(context, "Value", new Lazy<object>(() => this.Valueof(this.Symbol(context))));
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitIntegerLiteral(MetaModelParser.IntegerLiteralContext context)
         {
-return null;
+            this.SetValue(context, "Type", new Lazy<object>(() => MetaBuiltInType.Int));
+            this.SetValue(context, "Value", new Lazy<object>(() => this.Valueof(this.Symbol(context))));
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitDecimalLiteral(MetaModelParser.DecimalLiteralContext context)
         {
-return null;
+            this.SetValue(context, "Type", new Lazy<object>(() => MetaBuiltInType.Double));
+            this.SetValue(context, "Value", new Lazy<object>(() => this.Valueof(this.Symbol(context))));
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitScientificLiteral(MetaModelParser.ScientificLiteralContext context)
         {
-return null;
+            this.SetValue(context, "Type", new Lazy<object>(() => MetaBuiltInType.Double));
+            this.SetValue(context, "Value", new Lazy<object>(() => this.Valueof(this.Symbol(context))));
+            return this.VisitChildren(context);
         }
         
         public virtual object VisitStringLiteral(MetaModelParser.StringLiteralContext context)
         {
-return null;
+            this.SetValue(context, "Type", new Lazy<object>(() => MetaBuiltInType.String));
+            this.SetValue(context, "Value", new Lazy<object>(() => this.Valueof(this.Symbol(context))));
+            return this.VisitChildren(context);
         }
     }
 }

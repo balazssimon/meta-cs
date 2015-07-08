@@ -10,12 +10,14 @@ namespace MetaDslx.Core
         private Dictionary<ModelProperty, WeakReference<object>> defaultValues;
         private Dictionary<ModelProperty, object> values;
         private Dictionary<ModelProperty, Lazy<object>> initializers;
+        private Dictionary<ModelProperty, Dictionary<ModelProperty, Lazy<object>>> childInitializers;
 
         public ModelObject()
         {
             this.MetaID = Guid.NewGuid().ToString();
             this.values = new Dictionary<ModelProperty, object>();
             this.initializers = new Dictionary<ModelProperty, Lazy<object>>();
+            this.childInitializers = new Dictionary<ModelProperty, Dictionary<ModelProperty, Lazy<object>>>();
         }
 
         public void MMakeDefault()
@@ -79,6 +81,29 @@ namespace MetaDslx.Core
                 }
             }
             this.initializers[property] = value;
+        }
+
+        public void MInitChildValue(ModelProperty child, ModelProperty property, Lazy<object> value)
+        {
+            Dictionary<ModelProperty, Lazy<object>> childProperties = null;
+            if (!this.childInitializers.TryGetValue(child, out childProperties))
+            {
+                childProperties = new Dictionary<ModelProperty, Lazy<object>>();
+                this.childInitializers.Add(child, childProperties);
+            }
+            Lazy<object> oldValue;
+            if (childProperties.TryGetValue(property, out oldValue))
+            {
+                if (property.IsReadonly)
+                {
+                    throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a readonly property '" + property.ToString() + "'.");
+                }
+                else
+                {
+                    childProperties.Remove(property);
+                }
+            }
+            childProperties[property] = value;
         }
 
         public void MSetValue(ModelProperty property, object newValue)
@@ -193,7 +218,7 @@ namespace MetaDslx.Core
             this.MOnRemoveValue(property, value, true);
         }
 
-        internal void MOnAddValue(ModelProperty property, object value, bool firstCall)
+        internal void MOnAddValue(ModelProperty property, object value, bool firstCall, AddRemoveDirection addRemoveDir = AddRemoveDirection.None)
         {
             bool added = false;
             object oldValue = this.MGetValue(property);
@@ -235,6 +260,37 @@ namespace MetaDslx.Core
                         mofObjectValue.MParent = this;
                     }
                 }
+                List<ModelProperty> allProperies = this.MGetAllProperties().ToList();
+                List<ModelProperty> cachedSubsettedProperties = property.SubsettedProperties.ToList();
+                foreach (ModelProperty subsettedProperty in cachedSubsettedProperties)
+                {
+                    if (allProperies.Contains(subsettedProperty))
+                    {
+                        this.MOnAddValue(subsettedProperty, value, true);
+                    }
+                }
+                if (addRemoveDir != AddRemoveDirection.Redefined)
+                {
+                    List<ModelProperty> cachedRedefiningProperties = property.RedefiningProperties.ToList();
+                    foreach (ModelProperty redefiningProperty in cachedRedefiningProperties)
+                    {
+                        if (allProperies.Contains(redefiningProperty))
+                        {
+                            this.MOnAddValue(redefiningProperty, value, true, AddRemoveDirection.Redefining);
+                        }
+                    }
+                }
+                if (addRemoveDir != AddRemoveDirection.Redefining)
+                {
+                    List<ModelProperty> cachedRedefinedProperties = property.RedefinedProperties.ToList();
+                    foreach (ModelProperty redefinedProperty in cachedRedefinedProperties)
+                    {
+                        if (allProperies.Contains(redefinedProperty))
+                        {
+                            this.MOnAddValue(redefinedProperty, value, true, AddRemoveDirection.Redefined);
+                        }
+                    }
+                }
                 List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
                 foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
                 {
@@ -251,7 +307,7 @@ namespace MetaDslx.Core
             }
         }
 
-        internal void MOnRemoveValue(ModelProperty property, object value, bool firstCall)
+        internal void MOnRemoveValue(ModelProperty property, object value, bool firstCall, AddRemoveDirection addRemoveDir = AddRemoveDirection.None)
         {
             bool removed = false;
             object oldValue = this.MGetValue(property);
@@ -283,6 +339,27 @@ namespace MetaDslx.Core
                     if (mofObjectValue != null)
                     {
                         mofObjectValue.MParent = null;
+                    }
+                }
+                List<ModelProperty> cachedSubsettingProperties = property.SubsettingProperties.ToList();
+                foreach (ModelProperty subsettingProperty in cachedSubsettingProperties)
+                {
+                    this.MOnRemoveValue(subsettingProperty, value, true);
+                }
+                if (addRemoveDir != AddRemoveDirection.Redefined)
+                {
+                    List<ModelProperty> cachedRedefiningProperties = property.RedefiningProperties.ToList();
+                    foreach (ModelProperty redefiningProperty in cachedRedefiningProperties)
+                    {
+                        this.MOnRemoveValue(redefiningProperty, value, true, AddRemoveDirection.Redefining);
+                    }
+                }
+                if (addRemoveDir != AddRemoveDirection.Redefining)
+                {
+                    List<ModelProperty> cachedRedefinedProperties = property.RedefinedProperties.ToList();
+                    foreach (ModelProperty redefinedProperty in cachedRedefinedProperties)
+                    {
+                        this.MOnRemoveValue(redefinedProperty, value, true, AddRemoveDirection.Redefined);
                     }
                 }
                 List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
@@ -397,6 +474,13 @@ namespace MetaDslx.Core
         public IEnumerable<T> MFindObjects<T>() where T : ModelObject
         {
             return this.FindAllObjects<T>();
+        }
+
+        internal enum AddRemoveDirection
+        {
+            None,
+            Redefining,
+            Redefined
         }
     }
 }

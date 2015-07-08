@@ -241,6 +241,42 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFieldModifier([NotNull] MetaModelParser.FieldModifierContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.redefinitions"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRedefinitions([NotNull] MetaModelParser.RedefinitionsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.redefinitions"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRedefinitions([NotNull] MetaModelParser.RedefinitionsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.subsettings"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSubsettings([NotNull] MetaModelParser.SubsettingsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.subsettings"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSubsettings([NotNull] MetaModelParser.SubsettingsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.nameUseList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNameUseList([NotNull] MetaModelParser.NameUseListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.nameUseList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNameUseList([NotNull] MetaModelParser.NameUseListContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.constDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

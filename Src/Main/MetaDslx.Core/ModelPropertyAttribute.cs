@@ -18,6 +18,32 @@ namespace MetaDslx.Core
         public string PropertyName { get; private set; }
     }
 
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
+    public class SubsetsAttribute : Attribute
+    {
+        public SubsetsAttribute(Type declaringType, string propertyName)
+        {
+            this.DeclaringType = declaringType;
+            this.PropertyName = propertyName;
+        }
+
+        public Type DeclaringType { get; private set; }
+        public string PropertyName { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
+    public class RedefinesAttribute : Attribute
+    {
+        public RedefinesAttribute(Type declaringType, string propertyName)
+        {
+            this.DeclaringType = declaringType;
+            this.PropertyName = propertyName;
+        }
+
+        public Type DeclaringType { get; private set; }
+        public string PropertyName { get; private set; }
+    }
+
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class ReadonlyAttribute : Attribute
     {

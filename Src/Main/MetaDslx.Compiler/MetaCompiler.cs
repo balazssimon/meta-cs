@@ -168,6 +168,10 @@ namespace MetaDslx.Compiler
             return new List<object>();
         }
 
+        public List<object> GetSymbols()
+        {
+            return this.SymbolToEntry.Keys.ToList();
+        }
     }
 
 }

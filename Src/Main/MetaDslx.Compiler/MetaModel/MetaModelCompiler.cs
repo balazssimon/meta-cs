@@ -180,10 +180,12 @@ namespace MetaDslx.Compiler
             definitionPhase.VisitNode(this.ParseTree);
             MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);
             referencePhase.VisitNode(this.ParseTree);
+            MetaModelParserPropertyEvaluator propertyEvaluator = new MetaModelParserPropertyEvaluator(this);
+            propertyEvaluator.Visit(this.ParseTree);
 
-            /*var namespaces = this.GlobalScope.GetSymbols().OfType<MetaNamespace>().Distinct().ToList();
-            MetaModelGenerator generator = new MetaModelGenerator(namespaces);
-            this.GeneratedSource = generator.Generate();*/
+            var metamodels = this.Data.GetSymbols().OfType<MetaModel>().Distinct().ToList();
+            MetaModelGenerator generator = new MetaModelGenerator(metamodels);
+            this.GeneratedSource = generator.Generate();
         }
 
         public MetaModelParser.MainContext ParseTree { get; private set; }
@@ -1131,7 +1133,7 @@ namespace MetaDslx.Compiler
         protected virtual void HandlePropertyValues(IParseTree node, bool symbolBoundary)
         {
             List<object> targetSymbols = null;
-            if (symbolBoundary) targetSymbols = this.ParentSymbols;
+            if (symbolBoundary || this.CurrentSymbols.Count == 0) targetSymbols = this.ParentSymbols;
             else targetSymbols = this.CurrentSymbols;
 
             List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).ToList();
@@ -1595,9 +1597,21 @@ namespace MetaDslx.Compiler
                 ModelProperty prop = mo.MFindProperty(property);
                 if (prop != null)
                 {
-                    mo.MInitValue(prop, value);
+                    if (prop.IsCollection)
+                    {
+                        mo.MAdd(prop, value.Value);
+                    }
+                    else
+                    {
+                        mo.MInitValue(prop, value);
+                    }
                 }
             }
+        }
+
+        public virtual object Valueof(object obj)
+        {
+            return null;
         }
     }
 

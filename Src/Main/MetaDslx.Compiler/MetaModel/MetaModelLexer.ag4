@@ -30,8 +30,12 @@ KAs : 'as';
 KIs : 'is';
 KBase : 'base';
 KConst : 'const';
+KRedefines : 'redefines';
+KSubsets : 'subsets';
 KReadonly : 'readonly';
 KLazy : 'lazy';
+KSynthetized : 'synthetized';
+KInherited : 'inherited';
 KDerived : 'derived';
 KStatic : 'static';
 

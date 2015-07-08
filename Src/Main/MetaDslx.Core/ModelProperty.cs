@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace MetaDslx.Core
 {
@@ -20,6 +21,10 @@ namespace MetaDslx.Core
 
         private bool initialized = false;
         private List<ModelProperty> oppositeProperties;
+        private List<ModelProperty> subsettedProperties;
+        private List<ModelProperty> subsettingProperties;
+        private List<ModelProperty> redefinedProperties;
+        private List<ModelProperty> redefiningProperties;
         private bool isReadonly = false;
         private bool isContainment = false;
         private Type itemType = null;
@@ -33,6 +38,10 @@ namespace MetaDslx.Core
             this.OwningType = owningType;
             this.DeclaringType = declaringType;
             this.oppositeProperties = new List<ModelProperty>();
+            this.subsettedProperties = new List<ModelProperty>();
+            this.subsettingProperties = new List<ModelProperty>();
+            this.redefinedProperties = new List<ModelProperty>();
+            this.redefiningProperties = new List<ModelProperty>();
             if (!typeof(ModelObject).IsAssignableFrom(this.OwningType))
             {
                 throw new ModelException("Error in ModelProperty '" + this.ToString() + "'. The property must have an owning type that is a subclass of ModelObject.");
@@ -53,6 +62,43 @@ namespace MetaDslx.Core
                 return this.oppositeProperties;
             }
         }
+
+        public IEnumerable<ModelProperty> SubsettedProperties
+        {
+            get
+            {
+                if (!this.initialized) this.Init();
+                return this.subsettedProperties;
+            }
+        }
+
+        public IEnumerable<ModelProperty> SubsettingProperties
+        {
+            get
+            {
+                if (!this.initialized) this.Init();
+                return this.subsettingProperties;
+            }
+        }
+        
+        public IEnumerable<ModelProperty> RedefinedProperties
+        {
+            get
+            {
+                if (!this.initialized) this.Init();
+                return this.redefinedProperties;
+            }
+        }
+
+        public IEnumerable<ModelProperty> RedefiningProperties
+        {
+            get
+            {
+                if (!this.initialized) this.Init();
+                return this.redefiningProperties;
+            }
+        }
+
 
         public bool IsReadonly
         {
@@ -112,10 +158,39 @@ namespace MetaDslx.Core
                     OppositeAttribute oppositeAttribute = attribute as OppositeAttribute;
                     if (oppositeAttribute != null)
                     {
+                        RuntimeHelpers.RunClassConstructor(oppositeAttribute.DeclaringType.TypeHandle); 
                         ModelProperty modelProperty = ModelProperty.Find(oppositeAttribute.DeclaringType, oppositeAttribute.PropertyName);
                         if (modelProperty != null)
                         {
                             this.oppositeProperties.Add(modelProperty);
+                        }
+                    }
+                }
+                foreach (var attribute in info.GetCustomAttributes(typeof(SubsetsAttribute), true))
+                {
+                    SubsetsAttribute subsetsAttribute = attribute as SubsetsAttribute;
+                    if (subsetsAttribute != null)
+                    {
+                        RuntimeHelpers.RunClassConstructor(subsetsAttribute.DeclaringType.TypeHandle);
+                        ModelProperty modelProperty = ModelProperty.Find(subsetsAttribute.DeclaringType, subsetsAttribute.PropertyName);
+                        if (modelProperty != null)
+                        {
+                            this.subsettedProperties.Add(modelProperty);
+                            modelProperty.subsettingProperties.Add(this);
+                        }
+                    }
+                }
+                foreach (var attribute in info.GetCustomAttributes(typeof(RedefinesAttribute), true))
+                {
+                    RedefinesAttribute redefinesAttribute = attribute as RedefinesAttribute;
+                    if (redefinesAttribute != null)
+                    {
+                        RuntimeHelpers.RunClassConstructor(redefinesAttribute.DeclaringType.TypeHandle);
+                        ModelProperty modelProperty = ModelProperty.Find(redefinesAttribute.DeclaringType, redefinesAttribute.PropertyName);
+                        if (modelProperty != null)
+                        {
+                            this.redefinedProperties.Add(modelProperty);
+                            modelProperty.redefiningProperties.Add(this);
                         }
                     }
                 }
@@ -154,6 +229,7 @@ namespace MetaDslx.Core
         public static void RegisterAncestor(Type type, Type ancestorType)
         {
             if (type == null || ancestorType == null) return;
+            RuntimeHelpers.RunClassConstructor(ancestorType.TypeHandle);
             HashSet<Type> ancestorsSet = null;
             if (!ModelProperty.ancestors.TryGetValue(type, out ancestorsSet))
             {

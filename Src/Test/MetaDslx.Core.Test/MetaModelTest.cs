@@ -9,7 +9,8 @@ namespace MetaDslx.Core.Test
         [TestMethod]
         public void TestFactory()
         {
-            MetaFactory f = MetaFactory.Instance;
+            //MetaFactory f = MetaFactory.Instance;
+            MetaModelFactory f = MetaModelFactory.Instance;
             MetaNamespace ns = f.CreateMetaNamespace();
             MetaModel mm = f.CreateMetaModel();
             ns.Models.Add(mm);

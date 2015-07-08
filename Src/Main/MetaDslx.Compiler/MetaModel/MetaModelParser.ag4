@@ -17,7 +17,7 @@ identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
 $NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,scope=true,merge=true)
-namespaceDeclaration: KNamespace /*$Property(Name)*/ qualifiedName TAssign $Property(Uri) $Value stringLiteral TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: KNamespace /*$Property(Name)*/ qualifiedName TAssign $Value stringLiteral TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;
 
 $TypeDef(MetaModel)
 metamodelDeclaration: KMetamodel identifier TOpenBrace $Property(Types) declaration* TCloseBrace;
@@ -38,8 +38,15 @@ classAncestor : $TypeUse(MetaClass) qualifiedName;
 classMemberDeclaration : $Property(Properties) fieldDeclaration | $Property(Operations) operationDeclaration;
 
 $NameDef(MetaProperty)
-fieldDeclaration : $Property(Kind) fieldModifier? typeReference identifier TSemicolon;
+fieldDeclaration : $Property(Kind) fieldModifier? $Property(Type) typeReference identifier (redefinitions | subsettings)? TSemicolon;
 fieldModifier : $Value(MetaPropertyKind.Containment) KContainment | $Value(MetaPropertyKind.Readonly) KReadonly | $Value(MetaPropertyKind.Lazy) KLazy | $Value(MetaPropertyKind.Derived) KDerived;
+
+$Scope
+redefinitions : KRedefines $Property(RedefinedProperties) nameUseList?;
+$Scope
+subsettings : KSubsets $Property(SubsettedProperties) nameUseList?;
+
+nameUseList : $NameUse(MetaProperty) qualifiedName (TComma qualifiedName)*;
 
 //$NameDef(MetaConstant)
 constDeclaration : KConst typeReference /*$NameDef*/ identifier /*(TAssign expression)?*/ TSemicolon;
@@ -81,16 +88,12 @@ operationDeclaration : KStatic? $Property(ReturnType) returnType identifier TOpe
 parameterList : parameter (TComma parameter)*;
 
 $NameDef(MetaParameter)
-parameter : typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
+parameter : $Property(Type) typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
 
-
+/*
 $Symbol(ArgumentList)
 argumentList 
-	: $Property(Arguments) expression (',' expression)* 
-		-> 
-		{ 
-		expression[curr].ExpectedType = ExpectedTypes[curr]; 
-		}
+	: $Property(Arguments) expression (',' expression)*
 	;
 
 $AutoSymbol
@@ -121,7 +124,7 @@ expression
     | left=expression TOrElse right=expression #logicalOrExpression $Symbol(BinaryExpression) -> { Operator = global::MetaOperatorKind.OrElse; Type=global::MetaBuiltInType.Bool; left.ExpectedType=global::MetaBuiltInType.Bool; right.ExpectedType=global::MetaBuiltInType.Bool; }
     //| left=expression '??' right=expression #nullCoalescingExpression $Symbol(BinaryExpression) -> { Operator = global::MetaOperatorKind.Coalesce; }
     | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression $Symbol(ConditionalExpression) -> { Type = balance(then,else); condition.ExpectedType = global::MetaBuiltInType.Bool; then.ExpectedType = ExpectedType; else.ExpectedType = ExpectedType; }
-    //| expression operator=assignmentOperator value=expression #assignmentExpression $Symbol(AssignmentExpression) 	
+    //| expression operator=assignmentOperator value=expression #assignmentExpression $Symbol(BinaryExpression) 	
 	;
 
 postOperator
@@ -182,12 +185,12 @@ assignmentOperator
 	| $Value(MetaOperatorKind.ExclusiveOrAssign) THatAssign
 	| $Value(MetaOperatorKind.OrAssign) TBarAssign
 	;
-
+*/
 
 
 $Scope
 associationDeclaration : KAssociation $NameUse(MetaProperty) source=qualifiedName KWith $NameUse(MetaProperty) target=qualifiedName TSemicolon 
-	-> { source.Opposites = target; source.X = target.Y; }
+	-> { source.OppositeProperties = target; }
 	;
 
 
@@ -210,18 +213,18 @@ literal
 	;
 
 // Null literal
-nullLiteral : KNull -> { this.Type = global::BuiltInType.Null; this.Value = null; };
+nullLiteral : KNull -> { this.Type = global::MetaBuiltInType.Any; this.Value = null; };
 
 // Boolean literals
-booleanLiteral : KTrue | KFalse -> { this.Type = global::BuiltInType.Bool; this.Value = valueof(this); };
+booleanLiteral : KTrue | KFalse -> { this.Type = global::MetaBuiltInType.Bool; this.Value = valueof(this); };
 
 // Number literals
-integerLiteral : IntegerLiteral -> { this.Type = global::BuiltInType.Int; this.Value = valueof(this); };
-decimalLiteral : DecimalLiteral -> { this.Type = global::BuiltInType.Double; this.Value = valueof(this); };
-scientificLiteral : ScientificLiteral -> { this.Type = global::BuiltInType.Double; this.Value = valueof(this); };
+integerLiteral : IntegerLiteral -> { this.Type = global::MetaBuiltInType.Int; this.Value = valueof(this); };
+decimalLiteral : DecimalLiteral -> { this.Type = global::MetaBuiltInType.Double; this.Value = valueof(this); };
+scientificLiteral : ScientificLiteral -> { this.Type = global::MetaBuiltInType.Double; this.Value = valueof(this); };
 
 // String literals
-stringLiteral : RegularStringLiteral -> { this.Type = global::BuiltInType.String; this.Value = valueof(this); };
+stringLiteral : RegularStringLiteral -> { this.Type = global::MetaBuiltInType.String; this.Value = valueof(this); };
 
 
 /*

@@ -203,6 +203,36 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFieldModifier([NotNull] MetaModelParser.FieldModifierContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.redefinitions"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRedefinitions([NotNull] MetaModelParser.RedefinitionsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.redefinitions"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRedefinitions([NotNull] MetaModelParser.RedefinitionsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.subsettings"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSubsettings([NotNull] MetaModelParser.SubsettingsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.subsettings"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSubsettings([NotNull] MetaModelParser.SubsettingsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.nameUseList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNameUseList([NotNull] MetaModelParser.NameUseListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.nameUseList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNameUseList([NotNull] MetaModelParser.NameUseListContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.constDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

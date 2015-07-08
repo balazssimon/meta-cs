@@ -23,31 +23,33 @@ namespace MetaDslx.TempConsole
                     );
                 Console.WriteLine("----");
                 //*/
-                //*
+                /*
                 CompileAG4(
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexerAnnotator0.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexerAnnotator.cs",
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.g4"
                     );
                 Console.WriteLine("----");
                 CompileAG4(
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParserAnnotator0.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParserAnnotator.cs",
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.g4"
                     );
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
                 //*/
-                /*Console.WriteLine("----");
+                /*
+                Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.cs"
-                    );*/
+                    );
+                //*/
             }
             catch (Exception ex)
             {
@@ -73,9 +75,13 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(compiler.Antlr4Source);
             }
-            foreach (var msg in compiler.Diagnostics.GetMessages(true))
+            using (StreamWriter writer = new StreamWriter("messages.txt"))
             {
-                Console.WriteLine(msg);
+                foreach (var msg in compiler.Diagnostics.GetMessages(true))
+                {
+                    writer.WriteLine(msg);
+                    Console.WriteLine(msg);
+                }
             }
         }
 
@@ -118,13 +124,17 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(compiler.GeneratedSource);
             }
-            foreach (var msg in compiler.Diagnostics.GetMessages(true))
+            using (StreamWriter writer = new StreamWriter("messages.txt"))
             {
-                Console.WriteLine(msg);
+                foreach (var msg in compiler.Diagnostics.GetMessages(true))
+                {
+                    writer.WriteLine(msg);
+                    Console.WriteLine(msg);
+                }
             }
             PrintScope("", compiler.GlobalScope);
             Console.WriteLine("=");
-            
+            /*
             foreach (var symbol in compiler.Data.SymbolToEntry.Keys)
             {
                 ModelObject mo = symbol as ModelObject;
@@ -163,7 +173,7 @@ namespace MetaDslx.TempConsole
                         }
                     }
                 }
-            }
+            }*/
         }
 
         private static void CompileGenerator(string fileName, string outputFileName)
@@ -179,9 +189,13 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(compiler.GeneratedSource);
             }
-            foreach (var msg in compiler.Diagnostics.GetMessages(true))
+            using (StreamWriter writer = new StreamWriter("messages.txt"))
             {
-                Console.WriteLine(msg);
+                foreach (var msg in compiler.Diagnostics.GetMessages(true))
+                {
+                    writer.WriteLine(msg);
+                    Console.WriteLine(msg);
+                }
             }
         }
 

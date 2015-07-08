@@ -436,6 +436,7 @@ namespace MetaDslx.Compiler
                         if (oldElement != null)
                         {
                             this.currentElement = oldElement;
+                            this.currentElement.IsArray = true;
                         }
                         else
                         {
@@ -448,6 +449,7 @@ namespace MetaDslx.Compiler
                         if (oldElement != null)
                         {
                             this.currentElement = oldElement;
+                            this.currentElement.IsArray = true;
                         }
                         else
                         {
@@ -1358,7 +1360,7 @@ namespace MetaDslx.Compiler
                     this.propertiesBlockExpressionPrinter.Visit(propertiesBlock);
                 }
             }
-            this.WriteLine("return null;", ToPascalCase(rule.Name));
+            this.WriteLine("return this.VisitChildren(context);");
             DecIndent();
             WriteLine("}");
         }
@@ -1754,7 +1756,7 @@ namespace MetaDslx.Compiler
                                 output.WriteLine("{");
                                 output.IncIndent();
                                 output.WriteIndent();
-                                output.Write("this.SetValue(context.{0}[{2}], \"{1}\", () => ", elem.GetAccessorName(), propName, selName);
+                                output.Write("this.SetValue(context.{0}[{2}], \"{1}\", new Lazy<object>(() => ", elem.GetAccessorName(), propName, selName);
                                 closeScopes = 2;
                             }
                             else if (propSels[1].selector != null)
@@ -1769,7 +1771,7 @@ namespace MetaDslx.Compiler
                         else
                         {
                             output.WriteIndent();
-                            output.Write("this.SetValue(context.{0}, \"{1}\", () => ", elem.GetAccessorName(), propName);
+                            output.Write("this.SetValue(context.{0}, \"{1}\", new Lazy<object>(() => ", elem.GetAccessorName(), propName);
                         }
                         started = true;
                         closeFunction = true;
@@ -1783,7 +1785,7 @@ namespace MetaDslx.Compiler
                         else
                         {
                             output.WriteIndent();
-                            output.Write("this.SetValue(context, \"{0}\", () => ", propName);
+                            output.Write("this.SetValue(context, \"{0}\", new Lazy<object>(() => ", propName);
                         }
                         started = true;
                         closeFunction = true;
@@ -1808,12 +1810,12 @@ namespace MetaDslx.Compiler
                         {
                             string selName = propSels[0].selector.GetText();
                             output.WriteIndent();
-                            output.Write("this.SetValue(context, \"{0}\", {1}, () => ", propName, selName);
+                            output.Write("this.SetValue(context, \"{0}\", {1}, new Lazy<object>(() => ", propName, selName);
                         }
                         else
                         {
                             output.WriteIndent();
-                            output.Write("this.SetValue(context, \"{0}\", () => ", propName);
+                            output.Write("this.SetValue(context, \"{0}\", new Lazy<object>(() => ", propName);
                         }
                     }
                     started = true;
@@ -1826,7 +1828,7 @@ namespace MetaDslx.Compiler
                 base.VisitExpression(context.expression());
                 if (closeFunction)
                 {
-                    output.Write(")");
+                    output.Write("))");
                 }
                 if (started)
                 {
