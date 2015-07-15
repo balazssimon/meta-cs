@@ -73,6 +73,16 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitQualifiedNameList([NotNull] MetaModelParser.QualifiedNameListContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.annotation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAnnotation([NotNull] MetaModelParser.AnnotationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.annotation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAnnotation([NotNull] MetaModelParser.AnnotationContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.namespaceDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -362,6 +372,470 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitParameter([NotNull] MetaModelParser.ParameterContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.constructorDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterConstructorDeclaration([NotNull] MetaModelParser.ConstructorDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.constructorDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitConstructorDeclaration([NotNull] MetaModelParser.ConstructorDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.initializerDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInitializerDeclaration([NotNull] MetaModelParser.InitializerDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.initializerDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInitializerDeclaration([NotNull] MetaModelParser.InitializerDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.synthetizedPropertyInitializer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSynthetizedPropertyInitializer([NotNull] MetaModelParser.SynthetizedPropertyInitializerContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.synthetizedPropertyInitializer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSynthetizedPropertyInitializer([NotNull] MetaModelParser.SynthetizedPropertyInitializerContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.inheritedPropertyInitializer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInheritedPropertyInitializer([NotNull] MetaModelParser.InheritedPropertyInitializerContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.inheritedPropertyInitializer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInheritedPropertyInitializer([NotNull] MetaModelParser.InheritedPropertyInitializerContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.argumentList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterArgumentList([NotNull] MetaModelParser.ArgumentListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.argumentList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitArgumentList([NotNull] MetaModelParser.ArgumentListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>indexerExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIndexerExpression([NotNull] MetaModelParser.IndexerExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>indexerExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIndexerExpression([NotNull] MetaModelParser.IndexerExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>additiveExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAdditiveExpression([NotNull] MetaModelParser.AdditiveExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>additiveExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAdditiveExpression([NotNull] MetaModelParser.AdditiveExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>identifierExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIdentifierExpression([NotNull] MetaModelParser.IdentifierExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>identifierExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIdentifierExpression([NotNull] MetaModelParser.IdentifierExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>comparisonExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComparisonExpression([NotNull] MetaModelParser.ComparisonExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>comparisonExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComparisonExpression([NotNull] MetaModelParser.ComparisonExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>postExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPostExpression([NotNull] MetaModelParser.PostExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>postExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPostExpression([NotNull] MetaModelParser.PostExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>bracketExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBracketExpression([NotNull] MetaModelParser.BracketExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>bracketExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBracketExpression([NotNull] MetaModelParser.BracketExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>castExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCastExpression([NotNull] MetaModelParser.CastExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>castExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCastExpression([NotNull] MetaModelParser.CastExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>bitwiseAndExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBitwiseAndExpression([NotNull] MetaModelParser.BitwiseAndExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>bitwiseAndExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBitwiseAndExpression([NotNull] MetaModelParser.BitwiseAndExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>logicalAndExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLogicalAndExpression([NotNull] MetaModelParser.LogicalAndExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>logicalAndExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLogicalAndExpression([NotNull] MetaModelParser.LogicalAndExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>functionCallExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionCallExpression([NotNull] MetaModelParser.FunctionCallExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>functionCallExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionCallExpression([NotNull] MetaModelParser.FunctionCallExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>memberAccessExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMemberAccessExpression([NotNull] MetaModelParser.MemberAccessExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>memberAccessExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMemberAccessExpression([NotNull] MetaModelParser.MemberAccessExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>typeConversionExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTypeConversionExpression([NotNull] MetaModelParser.TypeConversionExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>typeConversionExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTypeConversionExpression([NotNull] MetaModelParser.TypeConversionExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>unaryExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUnaryExpression([NotNull] MetaModelParser.UnaryExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>unaryExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUnaryExpression([NotNull] MetaModelParser.UnaryExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>bitwiseXorExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBitwiseXorExpression([NotNull] MetaModelParser.BitwiseXorExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>bitwiseXorExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBitwiseXorExpression([NotNull] MetaModelParser.BitwiseXorExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>constantExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterConstantExpression([NotNull] MetaModelParser.ConstantExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>constantExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitConstantExpression([NotNull] MetaModelParser.ConstantExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>shiftExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterShiftExpression([NotNull] MetaModelParser.ShiftExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>shiftExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitShiftExpression([NotNull] MetaModelParser.ShiftExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>conditionalExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterConditionalExpression([NotNull] MetaModelParser.ConditionalExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>conditionalExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitConditionalExpression([NotNull] MetaModelParser.ConditionalExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>assignmentExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssignmentExpression([NotNull] MetaModelParser.AssignmentExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>assignmentExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssignmentExpression([NotNull] MetaModelParser.AssignmentExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>multiplicativeExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMultiplicativeExpression([NotNull] MetaModelParser.MultiplicativeExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>multiplicativeExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMultiplicativeExpression([NotNull] MetaModelParser.MultiplicativeExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>logicalOrExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLogicalOrExpression([NotNull] MetaModelParser.LogicalOrExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>logicalOrExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLogicalOrExpression([NotNull] MetaModelParser.LogicalOrExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>preExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPreExpression([NotNull] MetaModelParser.PreExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>preExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPreExpression([NotNull] MetaModelParser.PreExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>bitwiseOrExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBitwiseOrExpression([NotNull] MetaModelParser.BitwiseOrExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>bitwiseOrExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBitwiseOrExpression([NotNull] MetaModelParser.BitwiseOrExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>typeofExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTypeofExpression([NotNull] MetaModelParser.TypeofExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>typeofExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTypeofExpression([NotNull] MetaModelParser.TypeofExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>typeCheckExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTypeCheckExpression([NotNull] MetaModelParser.TypeCheckExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>typeCheckExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTypeCheckExpression([NotNull] MetaModelParser.TypeCheckExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>thisExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterThisExpression([NotNull] MetaModelParser.ThisExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>thisExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitThisExpression([NotNull] MetaModelParser.ThisExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>equalityExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEqualityExpression([NotNull] MetaModelParser.EqualityExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>equalityExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEqualityExpression([NotNull] MetaModelParser.EqualityExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>nullCoalescingExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNullCoalescingExpression([NotNull] MetaModelParser.NullCoalescingExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>nullCoalescingExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNullCoalescingExpression([NotNull] MetaModelParser.NullCoalescingExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.postOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPostOperator([NotNull] MetaModelParser.PostOperatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.postOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPostOperator([NotNull] MetaModelParser.PostOperatorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.preOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPreOperator([NotNull] MetaModelParser.PreOperatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.preOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPreOperator([NotNull] MetaModelParser.PreOperatorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.unaryOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUnaryOperator([NotNull] MetaModelParser.UnaryOperatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.unaryOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUnaryOperator([NotNull] MetaModelParser.UnaryOperatorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.multiplicativeOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMultiplicativeOperator([NotNull] MetaModelParser.MultiplicativeOperatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.multiplicativeOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMultiplicativeOperator([NotNull] MetaModelParser.MultiplicativeOperatorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.additiveOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAdditiveOperator([NotNull] MetaModelParser.AdditiveOperatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.additiveOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAdditiveOperator([NotNull] MetaModelParser.AdditiveOperatorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.shiftOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterShiftOperator([NotNull] MetaModelParser.ShiftOperatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.shiftOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitShiftOperator([NotNull] MetaModelParser.ShiftOperatorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.comparisonOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComparisonOperator([NotNull] MetaModelParser.ComparisonOperatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.comparisonOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComparisonOperator([NotNull] MetaModelParser.ComparisonOperatorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.equalityOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEqualityOperator([NotNull] MetaModelParser.EqualityOperatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.equalityOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEqualityOperator([NotNull] MetaModelParser.EqualityOperatorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.assignmentOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssignmentOperator([NotNull] MetaModelParser.AssignmentOperatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.assignmentOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssignmentOperator([NotNull] MetaModelParser.AssignmentOperatorContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.associationDeclaration"/>.
 	/// </summary>

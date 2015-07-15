@@ -162,6 +162,10 @@ namespace MetaDslx.Core
             {
                 result.Add(prop);
             }
+            foreach (ModelProperty prop in this.initializers.Keys)
+            {
+                result.Add(prop);
+            }
             result.UnionWith(ModelProperty.GetAllPropertiesForType(this.GetType()));
             return result;
         }
@@ -199,7 +203,7 @@ namespace MetaDslx.Core
             List<ModelProperty> results = properties.ToList();
             if (results.Count == 0) return null;
             if (results.Count == 1) return results[0];
-            throw new ModelException("More than one property found.");
+            throw new ModelException("More than one property named '"+results[0].Name+"' found in "+this.ToString());
         }
 
         public string MetaID
@@ -292,16 +296,23 @@ namespace MetaDslx.Core
                     }
                 }
                 List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
-                foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
+                if (cachedOppositeProperties.Count > 0)
                 {
                     ModelObject oppositeObject = value as ModelObject;
                     if (oppositeObject != null)
                     {
-                        oppositeObject.MOnAddValue(oppositeProperty, this, false);
+                        List<ModelProperty> allOppositeProperies = oppositeObject.MGetAllProperties().ToList();
+                        foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
+                        {
+                            if (allOppositeProperies.Contains(oppositeProperty))
+                            {
+                                oppositeObject.MOnAddValue(oppositeProperty, this, false);
+                            }
+                        }
                     }
                     else
                     {
-                        throw new ModelException("Error adding value of " + this.GetType().Name + "." + property.Name + ": the value of the opposite property " + oppositeProperty + " must be a descendant of " + typeof(ModelObject) + ".");
+                        throw new ModelException("Error adding the current object " + this.GetType().Name + "." + property.Name + " to the opposite object. The current object must be a descendant of " + typeof(ModelObject) + ".");
                     }
                 }
             }

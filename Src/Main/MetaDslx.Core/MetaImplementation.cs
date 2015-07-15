@@ -158,17 +158,19 @@ namespace MetaDslx.Core
             }
             return result;
         }
-
+        /*
+        public static string CSharpName(this MetaScopeEntry @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaNamedElement ne = @this as MetaNamedElement;
+            if (ne != null) return "Meta"+ne.Name;
+            else return string.Empty;
+        }*/
+        
         public static string CSharpName(this MetaModel @this)
         {
             if (@this == null) return string.Empty;
             return @this.Name;
-        }
-
-        public static string CSharpName(this MetaScopeEntry @this)
-        {
-            if (@this == null) return string.Empty;
-            return CSharpName(@this as MetaType);
         }
 
         public static string CSharpName(this MetaType @this)

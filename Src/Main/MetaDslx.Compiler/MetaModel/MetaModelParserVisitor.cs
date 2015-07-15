@@ -58,6 +58,12 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitQualifiedNameList([NotNull] MetaModelParser.QualifiedNameListContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.annotation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotation([NotNull] MetaModelParser.AnnotationContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.namespaceDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -231,6 +237,279 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitParameter([NotNull] MetaModelParser.ParameterContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.constructorDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitConstructorDeclaration([NotNull] MetaModelParser.ConstructorDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.initializerDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInitializerDeclaration([NotNull] MetaModelParser.InitializerDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.synthetizedPropertyInitializer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSynthetizedPropertyInitializer([NotNull] MetaModelParser.SynthetizedPropertyInitializerContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.inheritedPropertyInitializer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInheritedPropertyInitializer([NotNull] MetaModelParser.InheritedPropertyInitializerContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.argumentList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArgumentList([NotNull] MetaModelParser.ArgumentListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>indexerExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIndexerExpression([NotNull] MetaModelParser.IndexerExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>additiveExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAdditiveExpression([NotNull] MetaModelParser.AdditiveExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>identifierExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIdentifierExpression([NotNull] MetaModelParser.IdentifierExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>comparisonExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitComparisonExpression([NotNull] MetaModelParser.ComparisonExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>postExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPostExpression([NotNull] MetaModelParser.PostExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>bracketExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBracketExpression([NotNull] MetaModelParser.BracketExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>castExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCastExpression([NotNull] MetaModelParser.CastExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>bitwiseAndExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBitwiseAndExpression([NotNull] MetaModelParser.BitwiseAndExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>logicalAndExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLogicalAndExpression([NotNull] MetaModelParser.LogicalAndExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>functionCallExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionCallExpression([NotNull] MetaModelParser.FunctionCallExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>memberAccessExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMemberAccessExpression([NotNull] MetaModelParser.MemberAccessExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>typeConversionExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTypeConversionExpression([NotNull] MetaModelParser.TypeConversionExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>unaryExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUnaryExpression([NotNull] MetaModelParser.UnaryExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>bitwiseXorExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBitwiseXorExpression([NotNull] MetaModelParser.BitwiseXorExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>constantExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitConstantExpression([NotNull] MetaModelParser.ConstantExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>shiftExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitShiftExpression([NotNull] MetaModelParser.ShiftExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>conditionalExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitConditionalExpression([NotNull] MetaModelParser.ConditionalExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>assignmentExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignmentExpression([NotNull] MetaModelParser.AssignmentExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>multiplicativeExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMultiplicativeExpression([NotNull] MetaModelParser.MultiplicativeExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>logicalOrExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLogicalOrExpression([NotNull] MetaModelParser.LogicalOrExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>preExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPreExpression([NotNull] MetaModelParser.PreExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>bitwiseOrExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBitwiseOrExpression([NotNull] MetaModelParser.BitwiseOrExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>typeofExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTypeofExpression([NotNull] MetaModelParser.TypeofExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>typeCheckExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTypeCheckExpression([NotNull] MetaModelParser.TypeCheckExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>thisExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitThisExpression([NotNull] MetaModelParser.ThisExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>equalityExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqualityExpression([NotNull] MetaModelParser.EqualityExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>nullCoalescingExpression</c>
+	/// labeled alternative in <see cref="MetaModelParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNullCoalescingExpression([NotNull] MetaModelParser.NullCoalescingExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.postOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPostOperator([NotNull] MetaModelParser.PostOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.preOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPreOperator([NotNull] MetaModelParser.PreOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.unaryOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUnaryOperator([NotNull] MetaModelParser.UnaryOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.multiplicativeOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMultiplicativeOperator([NotNull] MetaModelParser.MultiplicativeOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.additiveOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAdditiveOperator([NotNull] MetaModelParser.AdditiveOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.shiftOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitShiftOperator([NotNull] MetaModelParser.ShiftOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.comparisonOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitComparisonOperator([NotNull] MetaModelParser.ComparisonOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.equalityOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqualityOperator([NotNull] MetaModelParser.EqualityOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.assignmentOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignmentOperator([NotNull] MetaModelParser.AssignmentOperatorContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.associationDeclaration"/>.
 	/// </summary>

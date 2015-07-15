@@ -77,7 +77,7 @@
     <Compile Include="MetaModel\MetaModelParserProperties.cs" />
     <Compile Include="MetaModel\MetaModelParserVisitor.cs" />
     <Compile Include="MetaScope.cs" />
-    <Compile Include="MetaSymbol.cs" />
+    <Compile Include="MetaCompilerProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

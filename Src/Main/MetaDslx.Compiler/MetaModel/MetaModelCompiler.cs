@@ -75,6 +75,11 @@ namespace MetaDslx.Compiler
     {
     }
 
+    public class InheritScopeAnnotation
+    {
+
+    }
+
     public class IdentifierAnnotation
     {
 
@@ -513,26 +518,32 @@ namespace MetaDslx.Compiler
             bool scopeBoundary = this.IsScopeBoundary(node);
             bool visitBoundary = this.IsVisitBoundary(node);
             this.NameKindRestoreStack.Add(this.NameKindStack.Count);
-            this.HandleNameKinds(node); 
-            this.HandleNames(node);
-            if (scopeBoundary)
+            try
             {
-                this.ScopeRestoreStack.Add(previousScopeStackCount);
+                this.HandleNameKinds(node);
+                this.HandleNames(node);
+                if (scopeBoundary)
+                {
+                    this.ScopeRestoreStack.Add(previousScopeStackCount);
+                }
+                if (!visitBoundary)
+                {
+                    base.VisitNode(node);
+                }
             }
-            if (!visitBoundary)
+            finally
             {
-                base.VisitNode(node);
+                int restoreCount = 0;
+                if (scopeBoundary)
+                {
+                    restoreCount = this.CurrentScopeRestoreCount;
+                    this.ScopeStack.RemoveRange(restoreCount, this.ScopeStack.Count - restoreCount);
+                    this.ScopeRestoreStack.RemoveAt(this.ScopeRestoreStack.Count - 1);
+                }
+                restoreCount = this.CurrentNameKindRestoreCount;
+                this.NameKindStack.RemoveRange(restoreCount, this.NameKindStack.Count - restoreCount);
+                this.NameKindRestoreStack.RemoveAt(this.NameKindRestoreStack.Count - 1);
             }
-            int restoreCount = 0;
-            if (scopeBoundary)
-            {
-                restoreCount = this.CurrentScopeRestoreCount;
-                this.ScopeStack.RemoveRange(restoreCount, this.ScopeStack.Count - restoreCount);
-                this.ScopeRestoreStack.RemoveAt(this.ScopeRestoreStack.Count - 1);
-            }
-            restoreCount = this.CurrentNameKindRestoreCount;
-            this.NameKindStack.RemoveRange(restoreCount, this.NameKindStack.Count - restoreCount);
-            this.NameKindRestoreStack.RemoveAt(this.NameKindRestoreStack.Count - 1);
         }
 
         protected virtual void HandleNameKinds(IParseTree node)
@@ -1037,26 +1048,32 @@ namespace MetaDslx.Compiler
             int previousConstructorSymbolStackCount = this.ConstructorSymbolStack.Count;
             bool visitBoundary = this.IsVisitBoundary(node);
             bool symbolBoundary = this.IsSymbolBoundary(node);
-            if (symbolBoundary)
+            try
             {
-                this.SymbolStack.Add(new List<object>());
+                if (symbolBoundary)
+                {
+                    this.SymbolStack.Add(new List<object>());
+                }
+                this.HandleSymbols(node);
+                this.HandleConstructorSymbols(node);
+                this.HandleUses(node);
+                this.HandleProperties(node, symbolBoundary);
+                if (!visitBoundary)
+                {
+                    base.VisitNode(node);
+                }
+                this.HandleConstructors(node);
+                this.HandlePropertyValues(node, symbolBoundary);
             }
-            this.HandleSymbols(node);
-            this.HandleConstructorSymbols(node);
-            this.HandleUses(node);
-            this.HandleProperties(node, symbolBoundary);
-            if (!visitBoundary)
+            finally
             {
-                base.VisitNode(node);
+                if (symbolBoundary)
+                {
+                    this.SymbolStack.RemoveAt(this.SymbolStack.Count - 1);
+                }
+                this.PropertyStack.RemoveRange(previousPropertyStackCount, this.PropertyStack.Count - previousPropertyStackCount);
+                this.ConstructorSymbolStack.RemoveRange(previousConstructorSymbolStackCount, this.ConstructorSymbolStack.Count - previousConstructorSymbolStackCount);
             }
-            this.HandleConstructors(node);
-            this.HandlePropertyValues(node, symbolBoundary);
-            if (symbolBoundary)
-            {
-                this.SymbolStack.RemoveAt(this.SymbolStack.Count - 1);
-            }
-            this.PropertyStack.RemoveRange(previousPropertyStackCount, this.PropertyStack.Count - previousPropertyStackCount);
-            this.ConstructorSymbolStack.RemoveRange(previousConstructorSymbolStackCount, this.ConstructorSymbolStack.Count - previousConstructorSymbolStackCount);
         }
 
         protected virtual void HandleSymbols(IParseTree node)

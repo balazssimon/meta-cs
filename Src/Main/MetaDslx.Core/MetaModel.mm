@@ -25,64 +25,47 @@
 		ScopeEntry Bind(object caller, list<ScopeEntry> entries);
 		*/
 
-		abstract class ScopeEntry
-		{
-			Scope Parent;
-		}
-		
-		abstract class NamedElement : ScopeEntry
+		abstract class NamedElement
 		{
 			string Name;
 		}
 
-		abstract class TypedElement : ScopeEntry
+		abstract class TypedElement
 		{
 			Type Type;
 		}
 
-		abstract class Type : ScopeEntry
+		abstract class Type
 		{
 			bool IsAssignableFrom(Type valueType);
 			bool Equals(Type otherType);
 		}
 
-		abstract class Scope : ScopeEntry
+		class Namespace : NamedElement
 		{
-			containment list<ScopeEntry> Entries;
-			list<Scope> ImportedScopes;
-			list<Scope> InheritedScopes;
-			list<ScopeEntry> ImportedEntries;
-			list<ScopeEntry> ResolveEntries(string name);
-			list<ScopeEntry> GetEntries(string name);
-		}
-
-		association ScopeEntry.Parent with Scope.Entries;
-
-		class Namespace : NamedElement, Scope
-		{
-			Namespace Parent redefines ScopeEntry.Parent;
-			list<Namespace> Usings redefines Scope.ImportedScopes;
-			list<Namespace> Namespaces subsets Scope.Entries;
-			list<Model> Models subsets Scope.Entries;
+			Namespace Parent;
+			list<Namespace> Usings;
+			containment list<Namespace> Namespaces;
+			containment list<Model> Models;
 		}
 
 		association Namespace.Namespaces with Namespace.Parent;
 
-		class Model : Type, NamedElement, Scope
+		class Model : NamedElement
 		{
 			string Uri;
 			string Prefix;
-			Namespace Namespace redefines ScopeEntry.Parent;
-			list<Type> Types subsets Scope.Entries;
-			list<Property> Properties subsets Scope.Entries;
-			list<Operation> Operations subsets Scope.Entries;
+			Namespace Namespace;
+			containment list<Type> Types;
+			containment list<Property> Properties;
+			containment list<Operation> Operations;
 		}
 
 		association Namespace.Models with Model.Namespace;
 
-		abstract class Declaration : ScopeEntry
+		abstract class Declaration : NamedElement
 		{
-			Model Model redefines ScopeEntry.Parent;
+			Model Model;
 			derived Namespace Namespace;
 		}
 
@@ -109,26 +92,26 @@
 		{
 		}
 
-		class Enum : Type, NamedElement, Scope, Declaration
+		class Enum : Type, Declaration
 		{
-			list<EnumLiteral> EnumLiterals subsets Scope.Entries;
-			list<Operation> Operations subsets Scope.Entries;
+			containment list<EnumLiteral> EnumLiterals;
+			containment list<Operation> Operations;
 		}
 
 		class EnumLiteral : NamedElement
 		{
-			Enum Enum redefines ScopeEntry.Parent;
+			Enum Enum;
 		}
 
 		association EnumLiteral.Enum with Enum.EnumLiterals;
 
-		class Class : Type, NamedElement, Scope, Declaration
+		class Class : Type, Declaration
 		{
 			bool IsAbstract;
-			list<Class> SuperClasses redefines Scope.InheritedScopes;
-			list<Property> Properties subsets Scope.Entries;
-			list<Operation> Operations subsets Scope.Entries;
-			list<PropertyInitializer> Initializers;
+			list<Class> SuperClasses;
+			containment list<Property> Properties;
+			containment list<Operation> Operations;
+			containment Constructor Constructor;
 			list<Class> GetAllSuperClasses();
 			list<Property> GetAllProperties();
 			list<Operation> GetAllOperations();
@@ -136,9 +119,18 @@
 
 		class Operation : NamedElement
 		{
+			Type Parent;
 			containment list<Parameter> Parameters;
 			Type ReturnType;
 		}
+
+		class Constructor : NamedElement
+		{
+			containment list<PropertyInitializer> Initializers;
+		}
+
+		association Operation.Parent with Class.Operations;
+		association Operation.Parent with Enum.Operations;
 
 		class Parameter : NamedElement, TypedElement
 		{
@@ -160,8 +152,9 @@
 
 		class Property : NamedElement, TypedElement
 		{
+			Type Parent;
 			PropertyKind Kind;
-			Class Class redefines ScopeEntry.Parent;
+			Class Class;
 			list<Property> OppositeProperties;
 			list<Property> SubsettedProperties;
 			list<Property> SubsettingProperties;
@@ -169,10 +162,12 @@
 			list<Property> RedefiningProperties;
 		}
 
+		association Property.Parent with Class.Properties;
+
 		abstract class PropertyInitializer
 		{
 			Property Property;
-			Expression Value;
+			containment Expression Value;
 		}
 
 		class SynthetizedPropertyInitializer : PropertyInitializer
@@ -245,25 +240,38 @@
 
 		abstract class Expression
 		{
+			Expression()
+			{
+				Kind = ExpressionKind.None;
+			    Definition = bind(this, Definitions);
+			}
+
 			ExpressionKind Kind;// = ExpressionKind.None;
 			synthetized Type Type;
 			inherited Type ExpectedType;
-			synthetized list<ScopeEntry> Definitions;
-			synthetized ScopeEntry Definition;
-			/*init
+			synthetized list<object> Definitions;
+			synthetized object Definition;
+		}
+
+		class ThisExpression : Expression
+		{
+			ThisExpression()
 			{
-			    Definition = Bind(this, Definitions);
-			}*/
+				Object = symbol(typeof(Type));
+			}
+
+			object Object;
 		}
 
 		class UnaryExpression : Expression
 		{
-			containment Expression Expression;
-			/*init
+			/*UnaryExpression()
 			{
 				Type = Expression.Type;
 				Expression.ExpectedType = this.ExpectedType;
 			}*/
+
+			containment Expression Expression;
 		}
 
 		abstract class BinaryExpression : Expression
@@ -276,7 +284,7 @@
 		{
 			/*init
 			{
-				Type = Balance(Left.Type, Right.Type);
+				Type = balance(Left.Type, Right.Type);
 				Left.ExpectedType = ExpectedType;
 				Right.ExpectedType = ExpectedType;
 			}*/
@@ -288,7 +296,7 @@
 			/*init
 			{
 				Type = BoolType;
-				BalancedType = Balance(Left.Type, Right.Type);
+				BalancedType = balance(Left.Type, Right.Type);
 				Left.ExpectedType = BalancedType;
 				Right.ExpectedType = BalancedType;
 			}*/
@@ -304,14 +312,23 @@
 			}*/
 		}
 
-		class AssignmentExpression : Expression
+		class NullCoalescingExpression : BinaryExpression
 		{
-			containment Expression Target;
-			containment Expression Value;
+			lazy Type BalancedType;
 			/*init
 			{
-				Type = Target.Type;
-				Value.ExpectedType = Type;
+				Type = balance(Left.Type, Right.Type);
+				Left.ExpectedType = Type;
+				Right.ExpectedType = Type;
+			}*/
+		}
+
+		class AssignmentExpression : BinaryExpression
+		{
+			/*init
+			{
+				Type = Left.Type;
+				Right.ExpectedType = Type;
 			}*/
 		}
 
@@ -351,17 +368,18 @@
 			object Value;
 			/*init
 			{
-				Type = GetType(Value);
+				Type = get_type(Value);
 			}*/
 		}
 
 		class IdentifierExpression : Expression
 		{
 			string Name;
+			object Object;
 			/*init
 			{
-				Definitions = ResolveName(Name);
-				Type = GetType(Definition);
+				Definitions = resolve_name(Name);
+				Type = get_type(Definition);
 				Value.ExpectedType = ExpectedType;
 			}*/
 		}
@@ -372,8 +390,8 @@
 			string Name;
 			/*init
 			{
-				Definitions = ResolveName(Expression.Type, Name);
-				Type = GetType(Definition);
+				Definitions = resolve_name(Expression.Type, Name);
+				Type = get_type(Definition);
 				Value.ExpectedType = ExpectedType;
 			}*/
 		}
@@ -385,7 +403,7 @@
 			/*init
 			{
 				Definitions = Expression.Definitions;
-				Type = GetType(Definition);
+				Type = get_type(Definition);
 				Value.ExpectedType = ExpectedType;
 			}*/
 		}	
@@ -397,7 +415,7 @@
 			/*init
 			{
 				Definitions = Expression.Definitions;
-				Type = GetType(Definition);
+				Type = get_type(Definition);
 				Value.ExpectedType = ExpectedType;
 			}*/
 		}	
@@ -411,7 +429,7 @@
 			/*init
 			{
 				Condition.ExpectedType = BoolType;
-				Type = Balance(Then.Type, Else.Type);
+				Type = balance(Then.Type, Else.Type);
 				Left.ExpectedType = ExpectedType;
 				Right.ExpectedType = ExpectedType;
 			}*/

@@ -3,6 +3,7 @@ lexer grammar MetaModelLexer;
 // Keywords
 
 KNamespace : 'namespace';
+KUsing : 'using';
 KMetamodel : 'metamodel';
 KAbstract : 'abstract';
 KClass : 'class';
@@ -55,6 +56,7 @@ TLessThan : '<';
 TGreaterThan : '>';
 TQuestion : '?';
 
+TQuestionQuestion : '??';
 TAmpersand : '&';
 THat : '^';
 TBar : '|';

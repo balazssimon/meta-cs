@@ -78,31 +78,7 @@ namespace MetaDslx.Core
         OrAssign,
     }
     
-    public interface MetaScopeEntry
-    {
-        MetaScope Parent { get; set; }
-    
-    }
-    
-    internal class MetaScopeEntryImpl : ModelObject, MetaDslx.Core.MetaScopeEntry
-    {
-        public MetaScopeEntryImpl()
-        {
-            MetaModelImplementationProvider.Implementation.MetaScopeEntry_MetaScopeEntry(this);
-            this.MMakeDefault();
-        }
-        
-        [OppositeAttribute(typeof(MetaScopeImpl), "Entries")]
-        internal static readonly ModelProperty ParentProperty =
-            ModelProperty.Register("Parent", typeof(MetaScope), typeof(MetaScopeEntryImpl));
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
-        }
-    }
-    
-    public interface MetaNamedElement : MetaDslx.Core.MetaScopeEntry
+    public interface MetaNamedElement
     {
         string Name { get; set; }
     
@@ -110,21 +86,10 @@ namespace MetaDslx.Core
     
     internal class MetaNamedElementImpl : ModelObject, MetaDslx.Core.MetaNamedElement
     {
-        static MetaNamedElementImpl()
-        {
-    		ModelProperty.RegisterAncestor(typeof(MetaNamedElementImpl), typeof(MetaScopeEntryImpl));
-        }
-    
         public MetaNamedElementImpl()
         {
             MetaModelImplementationProvider.Implementation.MetaNamedElement_MetaNamedElement(this);
             this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
         }
         
         internal static readonly ModelProperty NameProperty =
@@ -136,7 +101,7 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaTypedElement : MetaDslx.Core.MetaScopeEntry
+    public interface MetaTypedElement
     {
         MetaType Type { get; set; }
     
@@ -144,21 +109,10 @@ namespace MetaDslx.Core
     
     internal class MetaTypedElementImpl : ModelObject, MetaDslx.Core.MetaTypedElement
     {
-        static MetaTypedElementImpl()
-        {
-    		ModelProperty.RegisterAncestor(typeof(MetaTypedElementImpl), typeof(MetaScopeEntryImpl));
-        }
-    
         public MetaTypedElementImpl()
         {
             MetaModelImplementationProvider.Implementation.MetaTypedElement_MetaTypedElement(this);
             this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
         }
         
         internal static readonly ModelProperty TypeProperty =
@@ -170,7 +124,7 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaType : MetaDslx.Core.MetaScopeEntry
+    public interface MetaType
     {
     
         bool IsAssignableFrom(MetaType valueType);
@@ -179,21 +133,10 @@ namespace MetaDslx.Core
     
     internal class MetaTypeImpl : ModelObject, MetaDslx.Core.MetaType
     {
-        static MetaTypeImpl()
-        {
-    		ModelProperty.RegisterAncestor(typeof(MetaTypeImpl), typeof(MetaScopeEntryImpl));
-        }
-    
         public MetaTypeImpl()
         {
             MetaModelImplementationProvider.Implementation.MetaType_MetaType(this);
             this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
         }
         
         bool MetaType.IsAssignableFrom(MetaType valueType)
@@ -207,84 +150,9 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaScope : MetaDslx.Core.MetaScopeEntry
+    public interface MetaNamespace : MetaDslx.Core.MetaNamedElement
     {
-        IList<MetaScopeEntry> Entries { get; }
-        IList<MetaScope> ImportedScopes { get; }
-        IList<MetaScope> InheritedScopes { get; }
-        IList<MetaScopeEntry> ImportedEntries { get; }
-    
-        IList<MetaScopeEntry> ResolveEntries(string name);
-        IList<MetaScopeEntry> GetEntries(string name);
-    }
-    
-    internal class MetaScopeImpl : ModelObject, MetaDslx.Core.MetaScope
-    {
-        static MetaScopeImpl()
-        {
-    		ModelProperty.RegisterAncestor(typeof(MetaScopeImpl), typeof(MetaScopeEntryImpl));
-        }
-    
-        public MetaScopeImpl()
-        {
-            this.MSetValue(MetaScopeImpl.EntriesProperty, new ModelList<MetaScopeEntry>(this, MetaScopeImpl.EntriesProperty));
-            this.MSetValue(MetaScopeImpl.ImportedScopesProperty, new ModelList<MetaScope>(this, MetaScopeImpl.ImportedScopesProperty));
-            this.MSetValue(MetaScopeImpl.InheritedScopesProperty, new ModelList<MetaScope>(this, MetaScopeImpl.InheritedScopesProperty));
-            this.MSetValue(MetaScopeImpl.ImportedEntriesProperty, new ModelList<MetaScopeEntry>(this, MetaScopeImpl.ImportedEntriesProperty));
-            MetaModelImplementationProvider.Implementation.MetaScope_MetaScope(this);
-            this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
-        }
-        
-        [ContainmentAttribute]
-        [OppositeAttribute(typeof(MetaScopeEntryImpl), "Parent")]
-        internal static readonly ModelProperty EntriesProperty =
-            ModelProperty.Register("Entries", typeof(IList<MetaScopeEntry>), typeof(MetaScopeImpl));
-        IList<MetaScopeEntry> MetaScope.Entries
-        {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaScopeImpl.EntriesProperty); }
-        }
-        
-        internal static readonly ModelProperty ImportedScopesProperty =
-            ModelProperty.Register("ImportedScopes", typeof(IList<MetaScope>), typeof(MetaScopeImpl));
-        IList<MetaScope> MetaScope.ImportedScopes
-        {
-            get { return (IList<MetaScope>)this.MGetValue(MetaScopeImpl.ImportedScopesProperty); }
-        }
-        
-        internal static readonly ModelProperty InheritedScopesProperty =
-            ModelProperty.Register("InheritedScopes", typeof(IList<MetaScope>), typeof(MetaScopeImpl));
-        IList<MetaScope> MetaScope.InheritedScopes
-        {
-            get { return (IList<MetaScope>)this.MGetValue(MetaScopeImpl.InheritedScopesProperty); }
-        }
-        
-        internal static readonly ModelProperty ImportedEntriesProperty =
-            ModelProperty.Register("ImportedEntries", typeof(IList<MetaScopeEntry>), typeof(MetaScopeImpl));
-        IList<MetaScopeEntry> MetaScope.ImportedEntries
-        {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaScopeImpl.ImportedEntriesProperty); }
-        }
-        
-        IList<MetaScopeEntry> MetaScope.ResolveEntries(string name)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaScope_ResolveEntries(this, name);
-        }
-        
-        IList<MetaScopeEntry> MetaScope.GetEntries(string name)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaScope_GetEntries(this, name);
-        }
-    }
-    
-    public interface MetaNamespace : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaScope
-    {
-        new MetaNamespace Parent { get; set; }
+        MetaNamespace Parent { get; set; }
         IList<MetaNamespace> Usings { get; }
         IList<MetaNamespace> Namespaces { get; }
         IList<MetaModel> Models { get; }
@@ -295,28 +163,16 @@ namespace MetaDslx.Core
     {
         static MetaNamespaceImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaNamespaceImpl), typeof(MetaScopeEntryImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaNamespaceImpl), typeof(MetaNamedElementImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaNamespaceImpl), typeof(MetaScopeImpl));
         }
     
         public MetaNamespaceImpl()
         {
-            this.MSetValue(MetaScopeImpl.EntriesProperty, new ModelList<MetaScopeEntry>(this, MetaScopeImpl.EntriesProperty));
-            this.MSetValue(MetaScopeImpl.ImportedScopesProperty, new ModelList<MetaScope>(this, MetaScopeImpl.ImportedScopesProperty));
-            this.MSetValue(MetaScopeImpl.InheritedScopesProperty, new ModelList<MetaScope>(this, MetaScopeImpl.InheritedScopesProperty));
-            this.MSetValue(MetaScopeImpl.ImportedEntriesProperty, new ModelList<MetaScopeEntry>(this, MetaScopeImpl.ImportedEntriesProperty));
             this.MSetValue(MetaNamespaceImpl.UsingsProperty, new ModelList<MetaNamespace>(this, MetaNamespaceImpl.UsingsProperty));
             this.MSetValue(MetaNamespaceImpl.NamespacesProperty, new ModelList<MetaNamespace>(this, MetaNamespaceImpl.NamespacesProperty));
             this.MSetValue(MetaNamespaceImpl.ModelsProperty, new ModelList<MetaModel>(this, MetaNamespaceImpl.ModelsProperty));
             MetaModelImplementationProvider.Implementation.MetaNamespace_MetaNamespace(this);
             this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
         }
         
         string MetaNamedElement.Name
@@ -325,28 +181,7 @@ namespace MetaDslx.Core
             set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
         }
         
-        IList<MetaScopeEntry> MetaScope.Entries
-        {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaScopeImpl.EntriesProperty); }
-        }
-        
-        IList<MetaScope> MetaScope.ImportedScopes
-        {
-            get { return (IList<MetaScope>)this.MGetValue(MetaScopeImpl.ImportedScopesProperty); }
-        }
-        
-        IList<MetaScope> MetaScope.InheritedScopes
-        {
-            get { return (IList<MetaScope>)this.MGetValue(MetaScopeImpl.InheritedScopesProperty); }
-        }
-        
-        IList<MetaScopeEntry> MetaScope.ImportedEntries
-        {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaScopeImpl.ImportedEntriesProperty); }
-        }
-        
         [OppositeAttribute(typeof(MetaNamespaceImpl), "Namespaces")]
-        [RedefinesAttribute(typeof(MetaScopeEntryImpl), "Parent")]
         internal static readonly ModelProperty ParentProperty =
             ModelProperty.Register("Parent", typeof(MetaNamespace), typeof(MetaNamespaceImpl));
         MetaNamespace MetaNamespace.Parent
@@ -355,7 +190,6 @@ namespace MetaDslx.Core
             set { this.MSetValue(MetaNamespaceImpl.ParentProperty, value); }
         }
         
-        [RedefinesAttribute(typeof(MetaScopeImpl), "ImportedScopes")]
         internal static readonly ModelProperty UsingsProperty =
             ModelProperty.Register("Usings", typeof(IList<MetaNamespace>), typeof(MetaNamespaceImpl));
         IList<MetaNamespace> MetaNamespace.Usings
@@ -363,8 +197,8 @@ namespace MetaDslx.Core
             get { return (IList<MetaNamespace>)this.MGetValue(MetaNamespaceImpl.UsingsProperty); }
         }
         
+        [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaNamespaceImpl), "Parent")]
-        [SubsetsAttribute(typeof(MetaScopeImpl), "Entries")]
         internal static readonly ModelProperty NamespacesProperty =
             ModelProperty.Register("Namespaces", typeof(IList<MetaNamespace>), typeof(MetaNamespaceImpl));
         IList<MetaNamespace> MetaNamespace.Namespaces
@@ -372,27 +206,17 @@ namespace MetaDslx.Core
             get { return (IList<MetaNamespace>)this.MGetValue(MetaNamespaceImpl.NamespacesProperty); }
         }
         
+        [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaModelImpl), "Namespace")]
-        [SubsetsAttribute(typeof(MetaScopeImpl), "Entries")]
         internal static readonly ModelProperty ModelsProperty =
             ModelProperty.Register("Models", typeof(IList<MetaModel>), typeof(MetaNamespaceImpl));
         IList<MetaModel> MetaNamespace.Models
         {
             get { return (IList<MetaModel>)this.MGetValue(MetaNamespaceImpl.ModelsProperty); }
         }
-        
-        IList<MetaScopeEntry> MetaScope.ResolveEntries(string name)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaScope_ResolveEntries(this, name);
-        }
-        
-        IList<MetaScopeEntry> MetaScope.GetEntries(string name)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaScope_GetEntries(this, name);
-        }
     }
     
-    public interface MetaModel : MetaDslx.Core.MetaType, MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaScope
+    public interface MetaModel : MetaDslx.Core.MetaNamedElement
     {
         string Uri { get; set; }
         string Prefix { get; set; }
@@ -407,18 +231,11 @@ namespace MetaDslx.Core
     {
         static MetaModelImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaModelImpl), typeof(MetaScopeEntryImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaModelImpl), typeof(MetaTypeImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaModelImpl), typeof(MetaNamedElementImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaModelImpl), typeof(MetaScopeImpl));
         }
     
         public MetaModelImpl()
         {
-            this.MSetValue(MetaScopeImpl.EntriesProperty, new ModelList<MetaScopeEntry>(this, MetaScopeImpl.EntriesProperty));
-            this.MSetValue(MetaScopeImpl.ImportedScopesProperty, new ModelList<MetaScope>(this, MetaScopeImpl.ImportedScopesProperty));
-            this.MSetValue(MetaScopeImpl.InheritedScopesProperty, new ModelList<MetaScope>(this, MetaScopeImpl.InheritedScopesProperty));
-            this.MSetValue(MetaScopeImpl.ImportedEntriesProperty, new ModelList<MetaScopeEntry>(this, MetaScopeImpl.ImportedEntriesProperty));
             this.MSetValue(MetaModelImpl.TypesProperty, new ModelList<MetaType>(this, MetaModelImpl.TypesProperty));
             this.MSetValue(MetaModelImpl.PropertiesProperty, new ModelList<MetaProperty>(this, MetaModelImpl.PropertiesProperty));
             this.MSetValue(MetaModelImpl.OperationsProperty, new ModelList<MetaOperation>(this, MetaModelImpl.OperationsProperty));
@@ -426,36 +243,10 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
-        }
-        
         string MetaNamedElement.Name
         {
             get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
             set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
-        }
-        
-        IList<MetaScopeEntry> MetaScope.Entries
-        {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaScopeImpl.EntriesProperty); }
-        }
-        
-        IList<MetaScope> MetaScope.ImportedScopes
-        {
-            get { return (IList<MetaScope>)this.MGetValue(MetaScopeImpl.ImportedScopesProperty); }
-        }
-        
-        IList<MetaScope> MetaScope.InheritedScopes
-        {
-            get { return (IList<MetaScope>)this.MGetValue(MetaScopeImpl.InheritedScopesProperty); }
-        }
-        
-        IList<MetaScopeEntry> MetaScope.ImportedEntries
-        {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaScopeImpl.ImportedEntriesProperty); }
         }
         
         internal static readonly ModelProperty UriProperty =
@@ -475,7 +266,6 @@ namespace MetaDslx.Core
         }
         
         [OppositeAttribute(typeof(MetaNamespaceImpl), "Models")]
-        [RedefinesAttribute(typeof(MetaScopeEntryImpl), "Parent")]
         internal static readonly ModelProperty NamespaceProperty =
             ModelProperty.Register("Namespace", typeof(MetaNamespace), typeof(MetaModelImpl));
         MetaNamespace MetaModel.Namespace
@@ -484,8 +274,8 @@ namespace MetaDslx.Core
             set { this.MSetValue(MetaModelImpl.NamespaceProperty, value); }
         }
         
+        [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaDeclarationImpl), "Model")]
-        [SubsetsAttribute(typeof(MetaScopeImpl), "Entries")]
         internal static readonly ModelProperty TypesProperty =
             ModelProperty.Register("Types", typeof(IList<MetaType>), typeof(MetaModelImpl));
         IList<MetaType> MetaModel.Types
@@ -493,7 +283,7 @@ namespace MetaDslx.Core
             get { return (IList<MetaType>)this.MGetValue(MetaModelImpl.TypesProperty); }
         }
         
-        [SubsetsAttribute(typeof(MetaScopeImpl), "Entries")]
+        [ContainmentAttribute]
         internal static readonly ModelProperty PropertiesProperty =
             ModelProperty.Register("Properties", typeof(IList<MetaProperty>), typeof(MetaModelImpl));
         IList<MetaProperty> MetaModel.Properties
@@ -501,36 +291,16 @@ namespace MetaDslx.Core
             get { return (IList<MetaProperty>)this.MGetValue(MetaModelImpl.PropertiesProperty); }
         }
         
-        [SubsetsAttribute(typeof(MetaScopeImpl), "Entries")]
+        [ContainmentAttribute]
         internal static readonly ModelProperty OperationsProperty =
             ModelProperty.Register("Operations", typeof(IList<MetaOperation>), typeof(MetaModelImpl));
         IList<MetaOperation> MetaModel.Operations
         {
             get { return (IList<MetaOperation>)this.MGetValue(MetaModelImpl.OperationsProperty); }
         }
-        
-        bool MetaType.IsAssignableFrom(MetaType valueType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_IsAssignableFrom(this, valueType);
-        }
-        
-        bool MetaType.Equals(MetaType otherType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
-        }
-        
-        IList<MetaScopeEntry> MetaScope.ResolveEntries(string name)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaScope_ResolveEntries(this, name);
-        }
-        
-        IList<MetaScopeEntry> MetaScope.GetEntries(string name)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaScope_GetEntries(this, name);
-        }
     }
     
-    public interface MetaDeclaration : MetaDslx.Core.MetaScopeEntry
+    public interface MetaDeclaration : MetaDslx.Core.MetaNamedElement
     {
         MetaModel Model { get; set; }
         MetaNamespace Namespace { get; }
@@ -541,7 +311,7 @@ namespace MetaDslx.Core
     {
         static MetaDeclarationImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaDeclarationImpl), typeof(MetaScopeEntryImpl));
+    		ModelProperty.RegisterAncestor(typeof(MetaDeclarationImpl), typeof(MetaNamedElementImpl));
         }
     
         public MetaDeclarationImpl()
@@ -550,14 +320,13 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
-        MetaScope MetaScopeEntry.Parent
+        string MetaNamedElement.Name
         {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
+            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
+            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
         }
         
         [OppositeAttribute(typeof(MetaModelImpl), "Types")]
-        [RedefinesAttribute(typeof(MetaScopeEntryImpl), "Parent")]
         internal static readonly ModelProperty ModelProperty =
             ModelProperty.Register("Model", typeof(MetaModel), typeof(MetaDeclarationImpl));
         MetaModel MetaDeclaration.Model
@@ -586,7 +355,6 @@ namespace MetaDslx.Core
     {
         static MetaCollectionTypeImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaCollectionTypeImpl), typeof(MetaScopeEntryImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaCollectionTypeImpl), typeof(MetaTypeImpl));
         }
     
@@ -594,12 +362,6 @@ namespace MetaDslx.Core
         {
             MetaModelImplementationProvider.Implementation.MetaCollectionType_MetaCollectionType(this);
             this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
         }
         
         internal static readonly ModelProperty KindProperty =
@@ -639,7 +401,6 @@ namespace MetaDslx.Core
     {
         static MetaNullableTypeImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaNullableTypeImpl), typeof(MetaScopeEntryImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaNullableTypeImpl), typeof(MetaTypeImpl));
         }
     
@@ -647,12 +408,6 @@ namespace MetaDslx.Core
         {
             MetaModelImplementationProvider.Implementation.MetaNullableType_MetaNullableType(this);
             this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
         }
         
         internal static readonly ModelProperty InnerTypeProperty =
@@ -683,7 +438,6 @@ namespace MetaDslx.Core
     {
         static MetaPrimitiveTypeImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaPrimitiveTypeImpl), typeof(MetaScopeEntryImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaPrimitiveTypeImpl), typeof(MetaTypeImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaPrimitiveTypeImpl), typeof(MetaNamedElementImpl));
         }
@@ -692,12 +446,6 @@ namespace MetaDslx.Core
         {
             MetaModelImplementationProvider.Implementation.MetaPrimitiveType_MetaPrimitiveType(this);
             this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
         }
         
         string MetaNamedElement.Name
@@ -717,7 +465,7 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaEnum : MetaDslx.Core.MetaType, MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaScope, MetaDslx.Core.MetaDeclaration
+    public interface MetaEnum : MetaDslx.Core.MetaType, MetaDslx.Core.MetaDeclaration
     {
         IList<MetaEnumLiteral> EnumLiterals { get; }
         IList<MetaOperation> Operations { get; }
@@ -728,55 +476,23 @@ namespace MetaDslx.Core
     {
         static MetaEnumImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaScopeEntryImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaTypeImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaNamedElementImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaScopeImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaDeclarationImpl));
         }
     
         public MetaEnumImpl()
         {
-            this.MSetValue(MetaScopeImpl.EntriesProperty, new ModelList<MetaScopeEntry>(this, MetaScopeImpl.EntriesProperty));
-            this.MSetValue(MetaScopeImpl.ImportedScopesProperty, new ModelList<MetaScope>(this, MetaScopeImpl.ImportedScopesProperty));
-            this.MSetValue(MetaScopeImpl.InheritedScopesProperty, new ModelList<MetaScope>(this, MetaScopeImpl.InheritedScopesProperty));
-            this.MSetValue(MetaScopeImpl.ImportedEntriesProperty, new ModelList<MetaScopeEntry>(this, MetaScopeImpl.ImportedEntriesProperty));
             this.MSetValue(MetaEnumImpl.EnumLiteralsProperty, new ModelList<MetaEnumLiteral>(this, MetaEnumImpl.EnumLiteralsProperty));
             this.MSetValue(MetaEnumImpl.OperationsProperty, new ModelList<MetaOperation>(this, MetaEnumImpl.OperationsProperty));
             MetaModelImplementationProvider.Implementation.MetaEnum_MetaEnum(this);
             this.MMakeDefault();
         }
         
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
-        }
-        
         string MetaNamedElement.Name
         {
             get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
             set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
-        }
-        
-        IList<MetaScopeEntry> MetaScope.Entries
-        {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaScopeImpl.EntriesProperty); }
-        }
-        
-        IList<MetaScope> MetaScope.ImportedScopes
-        {
-            get { return (IList<MetaScope>)this.MGetValue(MetaScopeImpl.ImportedScopesProperty); }
-        }
-        
-        IList<MetaScope> MetaScope.InheritedScopes
-        {
-            get { return (IList<MetaScope>)this.MGetValue(MetaScopeImpl.InheritedScopesProperty); }
-        }
-        
-        IList<MetaScopeEntry> MetaScope.ImportedEntries
-        {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaScopeImpl.ImportedEntriesProperty); }
         }
         
         MetaModel MetaDeclaration.Model
@@ -790,8 +506,8 @@ namespace MetaDslx.Core
             get { return MetaModelImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
         }
         
+        [ContainmentAttribute]
         [OppositeAttribute(typeof(MetaEnumLiteralImpl), "Enum")]
-        [SubsetsAttribute(typeof(MetaScopeImpl), "Entries")]
         internal static readonly ModelProperty EnumLiteralsProperty =
             ModelProperty.Register("EnumLiterals", typeof(IList<MetaEnumLiteral>), typeof(MetaEnumImpl));
         IList<MetaEnumLiteral> MetaEnum.EnumLiterals
@@ -799,7 +515,8 @@ namespace MetaDslx.Core
             get { return (IList<MetaEnumLiteral>)this.MGetValue(MetaEnumImpl.EnumLiteralsProperty); }
         }
         
-        [SubsetsAttribute(typeof(MetaScopeImpl), "Entries")]
+        [ContainmentAttribute]
+        [OppositeAttribute(typeof(MetaOperationImpl), "Parent")]
         internal static readonly ModelProperty OperationsProperty =
             ModelProperty.Register("Operations", typeof(IList<MetaOperation>), typeof(MetaEnumImpl));
         IList<MetaOperation> MetaEnum.Operations
@@ -816,16 +533,6 @@ namespace MetaDslx.Core
         {
             return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
         }
-        
-        IList<MetaScopeEntry> MetaScope.ResolveEntries(string name)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaScope_ResolveEntries(this, name);
-        }
-        
-        IList<MetaScopeEntry> MetaScope.GetEntries(string name)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaScope_GetEntries(this, name);
-        }
     }
     
     public interface MetaEnumLiteral : MetaDslx.Core.MetaNamedElement
@@ -838,7 +545,6 @@ namespace MetaDslx.Core
     {
         static MetaEnumLiteralImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaEnumLiteralImpl), typeof(MetaScopeEntryImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaEnumLiteralImpl), typeof(MetaNamedElementImpl));
         }
     
@@ -848,12 +554,6 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
-        }
-        
         string MetaNamedElement.Name
         {
             get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
@@ -861,7 +561,6 @@ namespace MetaDslx.Core
         }
         
         [OppositeAttribute(typeof(MetaEnumImpl), "EnumLiterals")]
-        [RedefinesAttribute(typeof(MetaScopeEntryImpl), "Parent")]
         internal static readonly ModelProperty EnumProperty =
             ModelProperty.Register("Enum", typeof(MetaEnum), typeof(MetaEnumLiteralImpl));
         MetaEnum MetaEnumLiteral.Enum
@@ -871,13 +570,13 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaClass : MetaDslx.Core.MetaType, MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaScope, MetaDslx.Core.MetaDeclaration
+    public interface MetaClass : MetaDslx.Core.MetaType, MetaDslx.Core.MetaDeclaration
     {
         bool IsAbstract { get; set; }
         IList<MetaClass> SuperClasses { get; }
         IList<MetaProperty> Properties { get; }
         IList<MetaOperation> Operations { get; }
-        IList<MetaPropertyInitializer> Initializers { get; }
+        MetaConstructor Constructor { get; set; }
     
         IList<MetaClass> GetAllSuperClasses();
         IList<MetaProperty> GetAllProperties();
@@ -888,57 +587,24 @@ namespace MetaDslx.Core
     {
         static MetaClassImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaScopeEntryImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaTypeImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaNamedElementImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaScopeImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaDeclarationImpl));
         }
     
         public MetaClassImpl()
         {
-            this.MSetValue(MetaScopeImpl.EntriesProperty, new ModelList<MetaScopeEntry>(this, MetaScopeImpl.EntriesProperty));
-            this.MSetValue(MetaScopeImpl.ImportedScopesProperty, new ModelList<MetaScope>(this, MetaScopeImpl.ImportedScopesProperty));
-            this.MSetValue(MetaScopeImpl.InheritedScopesProperty, new ModelList<MetaScope>(this, MetaScopeImpl.InheritedScopesProperty));
-            this.MSetValue(MetaScopeImpl.ImportedEntriesProperty, new ModelList<MetaScopeEntry>(this, MetaScopeImpl.ImportedEntriesProperty));
             this.MSetValue(MetaClassImpl.SuperClassesProperty, new ModelList<MetaClass>(this, MetaClassImpl.SuperClassesProperty));
             this.MSetValue(MetaClassImpl.PropertiesProperty, new ModelList<MetaProperty>(this, MetaClassImpl.PropertiesProperty));
             this.MSetValue(MetaClassImpl.OperationsProperty, new ModelList<MetaOperation>(this, MetaClassImpl.OperationsProperty));
-            this.MSetValue(MetaClassImpl.InitializersProperty, new ModelList<MetaPropertyInitializer>(this, MetaClassImpl.InitializersProperty));
             MetaModelImplementationProvider.Implementation.MetaClass_MetaClass(this);
             this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
         }
         
         string MetaNamedElement.Name
         {
             get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
             set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
-        }
-        
-        IList<MetaScopeEntry> MetaScope.Entries
-        {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaScopeImpl.EntriesProperty); }
-        }
-        
-        IList<MetaScope> MetaScope.ImportedScopes
-        {
-            get { return (IList<MetaScope>)this.MGetValue(MetaScopeImpl.ImportedScopesProperty); }
-        }
-        
-        IList<MetaScope> MetaScope.InheritedScopes
-        {
-            get { return (IList<MetaScope>)this.MGetValue(MetaScopeImpl.InheritedScopesProperty); }
-        }
-        
-        IList<MetaScopeEntry> MetaScope.ImportedEntries
-        {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaScopeImpl.ImportedEntriesProperty); }
         }
         
         MetaModel MetaDeclaration.Model
@@ -960,7 +626,6 @@ namespace MetaDslx.Core
             set { this.MSetValue(MetaClassImpl.IsAbstractProperty, value); }
         }
         
-        [RedefinesAttribute(typeof(MetaScopeImpl), "InheritedScopes")]
         internal static readonly ModelProperty SuperClassesProperty =
             ModelProperty.Register("SuperClasses", typeof(IList<MetaClass>), typeof(MetaClassImpl));
         IList<MetaClass> MetaClass.SuperClasses
@@ -968,8 +633,9 @@ namespace MetaDslx.Core
             get { return (IList<MetaClass>)this.MGetValue(MetaClassImpl.SuperClassesProperty); }
         }
         
+        [ContainmentAttribute]
+        [OppositeAttribute(typeof(MetaPropertyImpl), "Parent")]
         [OppositeAttribute(typeof(MetaPropertyImpl), "Class")]
-        [SubsetsAttribute(typeof(MetaScopeImpl), "Entries")]
         internal static readonly ModelProperty PropertiesProperty =
             ModelProperty.Register("Properties", typeof(IList<MetaProperty>), typeof(MetaClassImpl));
         IList<MetaProperty> MetaClass.Properties
@@ -977,7 +643,8 @@ namespace MetaDslx.Core
             get { return (IList<MetaProperty>)this.MGetValue(MetaClassImpl.PropertiesProperty); }
         }
         
-        [SubsetsAttribute(typeof(MetaScopeImpl), "Entries")]
+        [ContainmentAttribute]
+        [OppositeAttribute(typeof(MetaOperationImpl), "Parent")]
         internal static readonly ModelProperty OperationsProperty =
             ModelProperty.Register("Operations", typeof(IList<MetaOperation>), typeof(MetaClassImpl));
         IList<MetaOperation> MetaClass.Operations
@@ -985,11 +652,13 @@ namespace MetaDslx.Core
             get { return (IList<MetaOperation>)this.MGetValue(MetaClassImpl.OperationsProperty); }
         }
         
-        internal static readonly ModelProperty InitializersProperty =
-            ModelProperty.Register("Initializers", typeof(IList<MetaPropertyInitializer>), typeof(MetaClassImpl));
-        IList<MetaPropertyInitializer> MetaClass.Initializers
+        [ContainmentAttribute]
+        internal static readonly ModelProperty ConstructorProperty =
+            ModelProperty.Register("Constructor", typeof(MetaConstructor), typeof(MetaClassImpl));
+        MetaConstructor MetaClass.Constructor
         {
-            get { return (IList<MetaPropertyInitializer>)this.MGetValue(MetaClassImpl.InitializersProperty); }
+            get { return (MetaConstructor)this.MGetValue(MetaClassImpl.ConstructorProperty); }
+            set { this.MSetValue(MetaClassImpl.ConstructorProperty, value); }
         }
         
         bool MetaType.IsAssignableFrom(MetaType valueType)
@@ -1000,16 +669,6 @@ namespace MetaDslx.Core
         bool MetaType.Equals(MetaType otherType)
         {
             return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
-        }
-        
-        IList<MetaScopeEntry> MetaScope.ResolveEntries(string name)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaScope_ResolveEntries(this, name);
-        }
-        
-        IList<MetaScopeEntry> MetaScope.GetEntries(string name)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaScope_GetEntries(this, name);
         }
         
         IList<MetaClass> MetaClass.GetAllSuperClasses()
@@ -1028,8 +687,9 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaOperation : MetaDslx.Core.MetaNamedElement
+    public interface MetaOperation : MetaDslx.Core.MetaType, MetaDslx.Core.MetaNamedElement
     {
+        MetaType Parent { get; set; }
         IList<MetaParameter> Parameters { get; }
         MetaType ReturnType { get; set; }
     
@@ -1039,7 +699,7 @@ namespace MetaDslx.Core
     {
         static MetaOperationImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaOperationImpl), typeof(MetaScopeEntryImpl));
+    		ModelProperty.RegisterAncestor(typeof(MetaOperationImpl), typeof(MetaTypeImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaOperationImpl), typeof(MetaNamedElementImpl));
         }
     
@@ -1050,16 +710,20 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
-        }
-        
         string MetaNamedElement.Name
         {
             get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
             set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+        }
+        
+        [OppositeAttribute(typeof(MetaClassImpl), "Operations")]
+        [OppositeAttribute(typeof(MetaEnumImpl), "Operations")]
+        internal static readonly ModelProperty ParentProperty =
+            ModelProperty.Register("Parent", typeof(MetaType), typeof(MetaOperationImpl));
+        MetaType MetaOperation.Parent
+        {
+            get { return (MetaType)this.MGetValue(MetaOperationImpl.ParentProperty); }
+            set { this.MSetValue(MetaOperationImpl.ParentProperty, value); }
         }
         
         [ContainmentAttribute]
@@ -1078,6 +742,51 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaOperationImpl.ReturnTypeProperty); }
             set { this.MSetValue(MetaOperationImpl.ReturnTypeProperty, value); }
         }
+        
+        bool MetaType.IsAssignableFrom(MetaType valueType)
+        {
+            return MetaModelImplementationProvider.Implementation.MetaType_IsAssignableFrom(this, valueType);
+        }
+        
+        bool MetaType.Equals(MetaType otherType)
+        {
+            return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
+        }
+    }
+    
+    public interface MetaConstructor : MetaDslx.Core.MetaNamedElement
+    {
+        IList<MetaPropertyInitializer> Initializers { get; }
+    
+    }
+    
+    internal class MetaConstructorImpl : ModelObject, MetaDslx.Core.MetaConstructor
+    {
+        static MetaConstructorImpl()
+        {
+    		ModelProperty.RegisterAncestor(typeof(MetaConstructorImpl), typeof(MetaNamedElementImpl));
+        }
+    
+        public MetaConstructorImpl()
+        {
+            this.MSetValue(MetaConstructorImpl.InitializersProperty, new ModelList<MetaPropertyInitializer>(this, MetaConstructorImpl.InitializersProperty));
+            MetaModelImplementationProvider.Implementation.MetaConstructor_MetaConstructor(this);
+            this.MMakeDefault();
+        }
+        
+        string MetaNamedElement.Name
+        {
+            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
+            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+        }
+        
+        [ContainmentAttribute]
+        internal static readonly ModelProperty InitializersProperty =
+            ModelProperty.Register("Initializers", typeof(IList<MetaPropertyInitializer>), typeof(MetaConstructorImpl));
+        IList<MetaPropertyInitializer> MetaConstructor.Initializers
+        {
+            get { return (IList<MetaPropertyInitializer>)this.MGetValue(MetaConstructorImpl.InitializersProperty); }
+        }
     }
     
     public interface MetaParameter : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaTypedElement
@@ -1090,7 +799,6 @@ namespace MetaDslx.Core
     {
         static MetaParameterImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaParameterImpl), typeof(MetaScopeEntryImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaParameterImpl), typeof(MetaNamedElementImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaParameterImpl), typeof(MetaTypedElementImpl));
         }
@@ -1099,12 +807,6 @@ namespace MetaDslx.Core
         {
             MetaModelImplementationProvider.Implementation.MetaParameter_MetaParameter(this);
             this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
         }
         
         string MetaNamedElement.Name
@@ -1131,6 +833,7 @@ namespace MetaDslx.Core
     
     public interface MetaProperty : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaTypedElement
     {
+        MetaType Parent { get; set; }
         MetaPropertyKind Kind { get; set; }
         MetaClass Class { get; set; }
         IList<MetaProperty> OppositeProperties { get; }
@@ -1145,7 +848,6 @@ namespace MetaDslx.Core
     {
         static MetaPropertyImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaPropertyImpl), typeof(MetaScopeEntryImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaPropertyImpl), typeof(MetaNamedElementImpl));
     		ModelProperty.RegisterAncestor(typeof(MetaPropertyImpl), typeof(MetaTypedElementImpl));
         }
@@ -1161,12 +863,6 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
-        MetaScope MetaScopeEntry.Parent
-        {
-            get { return (MetaScope)this.MGetValue(MetaScopeEntryImpl.ParentProperty); }
-            set { this.MSetValue(MetaScopeEntryImpl.ParentProperty, value); }
-        }
-        
         string MetaNamedElement.Name
         {
             get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
@@ -1179,6 +875,15 @@ namespace MetaDslx.Core
             set { this.MSetValue(MetaTypedElementImpl.TypeProperty, value); }
         }
         
+        [OppositeAttribute(typeof(MetaClassImpl), "Properties")]
+        internal static readonly ModelProperty ParentProperty =
+            ModelProperty.Register("Parent", typeof(MetaType), typeof(MetaPropertyImpl));
+        MetaType MetaProperty.Parent
+        {
+            get { return (MetaType)this.MGetValue(MetaPropertyImpl.ParentProperty); }
+            set { this.MSetValue(MetaPropertyImpl.ParentProperty, value); }
+        }
+        
         internal static readonly ModelProperty KindProperty =
             ModelProperty.Register("Kind", typeof(MetaPropertyKind), typeof(MetaPropertyImpl));
         MetaPropertyKind MetaProperty.Kind
@@ -1188,7 +893,6 @@ namespace MetaDslx.Core
         }
         
         [OppositeAttribute(typeof(MetaClassImpl), "Properties")]
-        [RedefinesAttribute(typeof(MetaScopeEntryImpl), "Parent")]
         internal static readonly ModelProperty ClassProperty =
             ModelProperty.Register("Class", typeof(MetaClass), typeof(MetaPropertyImpl));
         MetaClass MetaProperty.Class
@@ -1261,6 +965,7 @@ namespace MetaDslx.Core
             set { this.MSetValue(MetaPropertyInitializerImpl.PropertyProperty, value); }
         }
         
+        [ContainmentAttribute]
         internal static readonly ModelProperty ValueProperty =
             ModelProperty.Register("Value", typeof(MetaExpression), typeof(MetaPropertyInitializerImpl));
         MetaExpression MetaPropertyInitializer.Value
@@ -1346,8 +1051,8 @@ namespace MetaDslx.Core
         MetaExpressionKind Kind { get; set; }
         MetaType Type { get; }
         MetaType ExpectedType { get; }
-        IList<MetaScopeEntry> Definitions { get; }
-        MetaScopeEntry Definition { get; }
+        IList<object> Definitions { get; }
+        object Definition { get; }
     
     }
     
@@ -1355,10 +1060,6 @@ namespace MetaDslx.Core
     {
         public MetaExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaExpression_MetaExpression(this);
             this.MMakeDefault();
         }
@@ -1388,18 +1089,72 @@ namespace MetaDslx.Core
         }
         
         internal static readonly ModelProperty DefinitionsProperty =
-            ModelProperty.Register("Definitions", typeof(IList<MetaScopeEntry>), typeof(MetaExpressionImpl));
-        IList<MetaScopeEntry> MetaExpression.Definitions
+            ModelProperty.Register("Definitions", typeof(IList<object>), typeof(MetaExpressionImpl));
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
         [ReadonlyAttribute]
         internal static readonly ModelProperty DefinitionProperty =
-            ModelProperty.Register("Definition", typeof(MetaScopeEntry), typeof(MetaExpressionImpl));
-        MetaScopeEntry MetaExpression.Definition
+            ModelProperty.Register("Definition", typeof(object), typeof(MetaExpressionImpl));
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+        }
+    }
+    
+    public interface MetaThisExpression : MetaDslx.Core.MetaExpression
+    {
+        object Object { get; set; }
+    
+    }
+    
+    internal class MetaThisExpressionImpl : ModelObject, MetaDslx.Core.MetaThisExpression
+    {
+        static MetaThisExpressionImpl()
+        {
+    		ModelProperty.RegisterAncestor(typeof(MetaThisExpressionImpl), typeof(MetaExpressionImpl));
+        }
+    
+        public MetaThisExpressionImpl()
+        {
+            MetaModelImplementationProvider.Implementation.MetaThisExpression_MetaThisExpression(this);
+            this.MMakeDefault();
+        }
+        
+        MetaExpressionKind MetaExpression.Kind
+        {
+            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
+            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+        }
+        
+        MetaType MetaExpression.Type
+        {
+            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+        }
+        
+        MetaType MetaExpression.ExpectedType
+        {
+            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+        }
+        
+        IList<object> MetaExpression.Definitions
+        {
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+        }
+        
+        object MetaExpression.Definition
+        {
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+        }
+        
+        internal static readonly ModelProperty ObjectProperty =
+            ModelProperty.Register("Object", typeof(object), typeof(MetaThisExpressionImpl));
+        object MetaThisExpression.Object
+        {
+            get { return (object)this.MGetValue(MetaThisExpressionImpl.ObjectProperty); }
+            set { this.MSetValue(MetaThisExpressionImpl.ObjectProperty, value); }
         }
     }
     
@@ -1418,10 +1173,6 @@ namespace MetaDslx.Core
     
         public MetaUnaryExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaUnaryExpression_MetaUnaryExpression(this);
             this.MMakeDefault();
         }
@@ -1442,14 +1193,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         [ContainmentAttribute]
@@ -1478,10 +1229,6 @@ namespace MetaDslx.Core
     
         public MetaBinaryExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaBinaryExpression_MetaBinaryExpression(this);
             this.MMakeDefault();
         }
@@ -1502,14 +1249,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         [ContainmentAttribute]
@@ -1546,10 +1293,6 @@ namespace MetaDslx.Core
     
         public MetaBinaryArithmeticExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression(this);
             this.MMakeDefault();
         }
@@ -1570,14 +1313,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -1609,10 +1352,6 @@ namespace MetaDslx.Core
     
         public MetaBinaryComparisonExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             this.MInitValue(MetaBinaryComparisonExpressionImpl.BalancedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaBinaryComparisonExpression_BalancedType(this)));
             MetaModelImplementationProvider.Implementation.MetaBinaryComparisonExpression_MetaBinaryComparisonExpression(this);
             this.MMakeDefault();
@@ -1634,14 +1373,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -1680,10 +1419,6 @@ namespace MetaDslx.Core
     
         public MetaBinaryLogicalExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaBinaryLogicalExpression_MetaBinaryLogicalExpression(this);
             this.MMakeDefault();
         }
@@ -1704,14 +1439,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -1727,10 +1462,76 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaAssignmentExpression : MetaDslx.Core.MetaExpression
+    public interface MetaNullCoalescingExpression : MetaDslx.Core.MetaBinaryExpression
     {
-        MetaExpression Target { get; set; }
-        MetaExpression Value { get; set; }
+        MetaType BalancedType { get; }
+    
+    }
+    
+    internal class MetaNullCoalescingExpressionImpl : ModelObject, MetaDslx.Core.MetaNullCoalescingExpression
+    {
+        static MetaNullCoalescingExpressionImpl()
+        {
+    		ModelProperty.RegisterAncestor(typeof(MetaNullCoalescingExpressionImpl), typeof(MetaExpressionImpl));
+    		ModelProperty.RegisterAncestor(typeof(MetaNullCoalescingExpressionImpl), typeof(MetaBinaryExpressionImpl));
+        }
+    
+        public MetaNullCoalescingExpressionImpl()
+        {
+            this.MInitValue(MetaNullCoalescingExpressionImpl.BalancedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaNullCoalescingExpression_BalancedType(this)));
+            MetaModelImplementationProvider.Implementation.MetaNullCoalescingExpression_MetaNullCoalescingExpression(this);
+            this.MMakeDefault();
+        }
+        
+        MetaExpressionKind MetaExpression.Kind
+        {
+            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
+            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+        }
+        
+        MetaType MetaExpression.Type
+        {
+            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+        }
+        
+        MetaType MetaExpression.ExpectedType
+        {
+            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+        }
+        
+        IList<object> MetaExpression.Definitions
+        {
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+        }
+        
+        object MetaExpression.Definition
+        {
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+        }
+        
+        MetaExpression MetaBinaryExpression.Left
+        {
+            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.LeftProperty); }
+            set { this.MSetValue(MetaBinaryExpressionImpl.LeftProperty, value); }
+        }
+        
+        MetaExpression MetaBinaryExpression.Right
+        {
+            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.RightProperty); }
+            set { this.MSetValue(MetaBinaryExpressionImpl.RightProperty, value); }
+        }
+        
+        [ReadonlyAttribute]
+        internal static readonly ModelProperty BalancedTypeProperty =
+            ModelProperty.Register("BalancedType", typeof(MetaType), typeof(MetaNullCoalescingExpressionImpl));
+        MetaType MetaNullCoalescingExpression.BalancedType
+        {
+            get { return (MetaType)this.MGetValue(MetaNullCoalescingExpressionImpl.BalancedTypeProperty); }
+        }
+    }
+    
+    public interface MetaAssignmentExpression : MetaDslx.Core.MetaBinaryExpression
+    {
     
     }
     
@@ -1739,14 +1540,11 @@ namespace MetaDslx.Core
         static MetaAssignmentExpressionImpl()
         {
     		ModelProperty.RegisterAncestor(typeof(MetaAssignmentExpressionImpl), typeof(MetaExpressionImpl));
+    		ModelProperty.RegisterAncestor(typeof(MetaAssignmentExpressionImpl), typeof(MetaBinaryExpressionImpl));
         }
     
         public MetaAssignmentExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaAssignmentExpression_MetaAssignmentExpression(this);
             this.MMakeDefault();
         }
@@ -1767,32 +1565,26 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty TargetProperty =
-            ModelProperty.Register("Target", typeof(MetaExpression), typeof(MetaAssignmentExpressionImpl));
-        MetaExpression MetaAssignmentExpression.Target
+        MetaExpression MetaBinaryExpression.Left
         {
-            get { return (MetaExpression)this.MGetValue(MetaAssignmentExpressionImpl.TargetProperty); }
-            set { this.MSetValue(MetaAssignmentExpressionImpl.TargetProperty, value); }
+            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.LeftProperty); }
+            set { this.MSetValue(MetaBinaryExpressionImpl.LeftProperty, value); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ValueProperty =
-            ModelProperty.Register("Value", typeof(MetaExpression), typeof(MetaAssignmentExpressionImpl));
-        MetaExpression MetaAssignmentExpression.Value
+        MetaExpression MetaBinaryExpression.Right
         {
-            get { return (MetaExpression)this.MGetValue(MetaAssignmentExpressionImpl.ValueProperty); }
-            set { this.MSetValue(MetaAssignmentExpressionImpl.ValueProperty, value); }
+            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.RightProperty); }
+            set { this.MSetValue(MetaBinaryExpressionImpl.RightProperty, value); }
         }
     }
     
@@ -1812,10 +1604,6 @@ namespace MetaDslx.Core
     
         public MetaTypeConversionExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaTypeConversionExpression_MetaTypeConversionExpression(this);
             this.MMakeDefault();
         }
@@ -1836,14 +1624,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         internal static readonly ModelProperty TypeReferenceProperty =
@@ -1880,10 +1668,6 @@ namespace MetaDslx.Core
     
         public MetaTypeCheckExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaTypeCheckExpression_MetaTypeCheckExpression(this);
             this.MMakeDefault();
         }
@@ -1904,14 +1688,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         internal static readonly ModelProperty TypeReferenceProperty =
@@ -1947,10 +1731,6 @@ namespace MetaDslx.Core
     
         public MetaTypeOfExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaTypeOfExpression_MetaTypeOfExpression(this);
             this.MMakeDefault();
         }
@@ -1971,14 +1751,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         internal static readonly ModelProperty TypeReferenceProperty =
@@ -2005,10 +1785,6 @@ namespace MetaDslx.Core
     
         public MetaConstantExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaConstantExpression_MetaConstantExpression(this);
             this.MMakeDefault();
         }
@@ -2029,14 +1805,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         internal static readonly ModelProperty ValueProperty =
@@ -2051,6 +1827,7 @@ namespace MetaDslx.Core
     public interface MetaIdentifierExpression : MetaDslx.Core.MetaExpression
     {
         string Name { get; set; }
+        object Object { get; set; }
     
     }
     
@@ -2063,10 +1840,6 @@ namespace MetaDslx.Core
     
         public MetaIdentifierExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaIdentifierExpression_MetaIdentifierExpression(this);
             this.MMakeDefault();
         }
@@ -2087,14 +1860,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         internal static readonly ModelProperty NameProperty =
@@ -2103,6 +1876,14 @@ namespace MetaDslx.Core
         {
             get { return (string)this.MGetValue(MetaIdentifierExpressionImpl.NameProperty); }
             set { this.MSetValue(MetaIdentifierExpressionImpl.NameProperty, value); }
+        }
+        
+        internal static readonly ModelProperty ObjectProperty =
+            ModelProperty.Register("Object", typeof(object), typeof(MetaIdentifierExpressionImpl));
+        object MetaIdentifierExpression.Object
+        {
+            get { return (object)this.MGetValue(MetaIdentifierExpressionImpl.ObjectProperty); }
+            set { this.MSetValue(MetaIdentifierExpressionImpl.ObjectProperty, value); }
         }
     }
     
@@ -2122,10 +1903,6 @@ namespace MetaDslx.Core
     
         public MetaMemberAccessExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaMemberAccessExpression_MetaMemberAccessExpression(this);
             this.MMakeDefault();
         }
@@ -2146,14 +1923,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         [ContainmentAttribute]
@@ -2190,10 +1967,6 @@ namespace MetaDslx.Core
     
         public MetaFunctionCallExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             this.MSetValue(MetaFunctionCallExpressionImpl.ArgumentsProperty, new ModelList<MetaExpression>(this, MetaFunctionCallExpressionImpl.ArgumentsProperty));
             MetaModelImplementationProvider.Implementation.MetaFunctionCallExpression_MetaFunctionCallExpression(this);
             this.MMakeDefault();
@@ -2215,14 +1988,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         [ContainmentAttribute]
@@ -2259,10 +2032,6 @@ namespace MetaDslx.Core
     
         public MetaIndexerExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             this.MSetValue(MetaIndexerExpressionImpl.ArgumentsProperty, new ModelList<MetaExpression>(this, MetaIndexerExpressionImpl.ArgumentsProperty));
             MetaModelImplementationProvider.Implementation.MetaIndexerExpression_MetaIndexerExpression(this);
             this.MMakeDefault();
@@ -2284,14 +2053,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         [ContainmentAttribute]
@@ -2330,10 +2099,6 @@ namespace MetaDslx.Core
     
         public MetaConditionalExpressionImpl()
         {
-            this.MInitValue(MetaExpressionImpl.TypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Type(this)));
-            this.MInitValue(MetaExpressionImpl.ExpectedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_ExpectedType(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionsProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definitions(this)));
-            this.MInitValue(MetaExpressionImpl.DefinitionProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaExpression_Definition(this)));
             MetaModelImplementationProvider.Implementation.MetaConditionalExpression_MetaConditionalExpression(this);
             this.MMakeDefault();
         }
@@ -2354,14 +2119,14 @@ namespace MetaDslx.Core
             get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
         }
         
-        IList<MetaScopeEntry> MetaExpression.Definitions
+        IList<object> MetaExpression.Definitions
         {
-            get { return (IList<MetaScopeEntry>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
         }
         
-        MetaScopeEntry MetaExpression.Definition
+        object MetaExpression.Definition
         {
-            get { return (MetaScopeEntry)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
         }
         
         [ContainmentAttribute]
@@ -2420,16 +2185,6 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
-        /// Creates a new instance of MetaScopeEntry.
-        /// </summary>
-        public MetaScopeEntry CreateMetaScopeEntry()
-    	{
-    		MetaScopeEntry result = new MetaScopeEntryImpl();
-    		return result;
-    	}
-    
-    
-        /// <summary>
         /// Creates a new instance of MetaNamedElement.
         /// </summary>
         public MetaNamedElement CreateMetaNamedElement()
@@ -2455,16 +2210,6 @@ namespace MetaDslx.Core
         public MetaType CreateMetaType()
     	{
     		MetaType result = new MetaTypeImpl();
-    		return result;
-    	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaScope.
-        /// </summary>
-        public MetaScope CreateMetaScope()
-    	{
-    		MetaScope result = new MetaScopeImpl();
     		return result;
     	}
     
@@ -2570,6 +2315,16 @@ namespace MetaDslx.Core
     
     
         /// <summary>
+        /// Creates a new instance of MetaConstructor.
+        /// </summary>
+        public MetaConstructor CreateMetaConstructor()
+    	{
+    		MetaConstructor result = new MetaConstructorImpl();
+    		return result;
+    	}
+    
+    
+        /// <summary>
         /// Creates a new instance of MetaParameter.
         /// </summary>
         public MetaParameter CreateMetaParameter()
@@ -2630,6 +2385,16 @@ namespace MetaDslx.Core
     
     
         /// <summary>
+        /// Creates a new instance of MetaThisExpression.
+        /// </summary>
+        public MetaThisExpression CreateMetaThisExpression()
+    	{
+    		MetaThisExpression result = new MetaThisExpressionImpl();
+    		return result;
+    	}
+    
+    
+        /// <summary>
         /// Creates a new instance of MetaUnaryExpression.
         /// </summary>
         public MetaUnaryExpression CreateMetaUnaryExpression()
@@ -2675,6 +2440,16 @@ namespace MetaDslx.Core
         public MetaBinaryLogicalExpression CreateMetaBinaryLogicalExpression()
     	{
     		MetaBinaryLogicalExpression result = new MetaBinaryLogicalExpressionImpl();
+    		return result;
+    	}
+    
+    
+        /// <summary>
+        /// Creates a new instance of MetaNullCoalescingExpression.
+        /// </summary>
+        public MetaNullCoalescingExpression CreateMetaNullCoalescingExpression()
+    	{
+    		MetaNullCoalescingExpression result = new MetaNullCoalescingExpressionImpl();
     		return result;
     	}
     
@@ -2812,16 +2587,7 @@ namespace MetaDslx.Core
     internal abstract class MetaModelImplementationBase
     {
         /// <summary>
-    	/// Implements the constructor: MetaScopeEntry()
-        /// </summary>
-        public virtual void MetaScopeEntry_MetaScopeEntry(MetaScopeEntry @this)
-        {
-        }
-    
-        /// <summary>
     	/// Implements the constructor: MetaNamedElement()
-    	/// Direct superclasses: MetaScopeEntry
-    	/// All superclasses: MetaScopeEntry
         /// </summary>
         public virtual void MetaNamedElement_MetaNamedElement(MetaNamedElement @this)
         {
@@ -2829,8 +2595,6 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaTypedElement()
-    	/// Direct superclasses: MetaScopeEntry
-    	/// All superclasses: MetaScopeEntry
         /// </summary>
         public virtual void MetaTypedElement_MetaTypedElement(MetaTypedElement @this)
         {
@@ -2838,8 +2602,6 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaType()
-    	/// Direct superclasses: MetaScopeEntry
-    	/// All superclasses: MetaScopeEntry
         /// </summary>
         public virtual void MetaType_MetaType(MetaType @this)
         {
@@ -2862,34 +2624,9 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
-    	/// Implements the constructor: MetaScope()
-    	/// Direct superclasses: MetaScopeEntry
-    	/// All superclasses: MetaScopeEntry
-        /// </summary>
-        public virtual void MetaScope_MetaScope(MetaScope @this)
-        {
-        }
-    
-        /// <summary>
-        /// Implements the operation: MetaScope.ResolveEntries()
-        /// </summary>
-        public virtual IList<MetaScopeEntry> MetaScope_ResolveEntries(MetaScope @this, string name)
-        {
-            throw new NotImplementedException();
-        }
-    
-        /// <summary>
-        /// Implements the operation: MetaScope.GetEntries()
-        /// </summary>
-        public virtual IList<MetaScopeEntry> MetaScope_GetEntries(MetaScope @this, string name)
-        {
-            throw new NotImplementedException();
-        }
-    
-        /// <summary>
     	/// Implements the constructor: MetaNamespace()
-    	/// Direct superclasses: MetaNamedElement, MetaScope
-    	/// All superclasses: MetaScopeEntry, MetaNamedElement, MetaScope
+    	/// Direct superclasses: MetaNamedElement
+    	/// All superclasses: MetaNamedElement
         /// </summary>
         public virtual void MetaNamespace_MetaNamespace(MetaNamespace @this)
         {
@@ -2897,8 +2634,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaModel()
-    	/// Direct superclasses: MetaType, MetaNamedElement, MetaScope
-    	/// All superclasses: MetaScopeEntry, MetaType, MetaNamedElement, MetaScope
+    	/// Direct superclasses: MetaNamedElement
+    	/// All superclasses: MetaNamedElement
         /// </summary>
         public virtual void MetaModel_MetaModel(MetaModel @this)
         {
@@ -2906,8 +2643,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaDeclaration()
-    	/// Direct superclasses: MetaScopeEntry
-    	/// All superclasses: MetaScopeEntry
+    	/// Direct superclasses: MetaNamedElement
+    	/// All superclasses: MetaNamedElement
         /// </summary>
         public virtual void MetaDeclaration_MetaDeclaration(MetaDeclaration @this)
         {
@@ -2924,7 +2661,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaCollectionType()
     	/// Direct superclasses: MetaType
-    	/// All superclasses: MetaScopeEntry, MetaType
+    	/// All superclasses: MetaType
         /// </summary>
         public virtual void MetaCollectionType_MetaCollectionType(MetaCollectionType @this)
         {
@@ -2933,7 +2670,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaNullableType()
     	/// Direct superclasses: MetaType
-    	/// All superclasses: MetaScopeEntry, MetaType
+    	/// All superclasses: MetaType
         /// </summary>
         public virtual void MetaNullableType_MetaNullableType(MetaNullableType @this)
         {
@@ -2942,7 +2679,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaPrimitiveType()
     	/// Direct superclasses: MetaType, MetaNamedElement
-    	/// All superclasses: MetaScopeEntry, MetaType, MetaNamedElement
+    	/// All superclasses: MetaType, MetaNamedElement
         /// </summary>
         public virtual void MetaPrimitiveType_MetaPrimitiveType(MetaPrimitiveType @this)
         {
@@ -2950,8 +2687,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaEnum()
-    	/// Direct superclasses: MetaType, MetaNamedElement, MetaScope, MetaDeclaration
-    	/// All superclasses: MetaScopeEntry, MetaType, MetaNamedElement, MetaScope, MetaDeclaration
+    	/// Direct superclasses: MetaType, MetaDeclaration
+    	/// All superclasses: MetaType, MetaNamedElement, MetaDeclaration
         /// </summary>
         public virtual void MetaEnum_MetaEnum(MetaEnum @this)
         {
@@ -2960,7 +2697,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaEnumLiteral()
     	/// Direct superclasses: MetaNamedElement
-    	/// All superclasses: MetaScopeEntry, MetaNamedElement
+    	/// All superclasses: MetaNamedElement
         /// </summary>
         public virtual void MetaEnumLiteral_MetaEnumLiteral(MetaEnumLiteral @this)
         {
@@ -2968,8 +2705,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaClass()
-    	/// Direct superclasses: MetaType, MetaNamedElement, MetaScope, MetaDeclaration
-    	/// All superclasses: MetaScopeEntry, MetaType, MetaNamedElement, MetaScope, MetaDeclaration
+    	/// Direct superclasses: MetaType, MetaDeclaration
+    	/// All superclasses: MetaType, MetaNamedElement, MetaDeclaration
         /// </summary>
         public virtual void MetaClass_MetaClass(MetaClass @this)
         {
@@ -3001,17 +2738,26 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaOperation()
-    	/// Direct superclasses: MetaNamedElement
-    	/// All superclasses: MetaScopeEntry, MetaNamedElement
+    	/// Direct superclasses: MetaType, MetaNamedElement
+    	/// All superclasses: MetaType, MetaNamedElement
         /// </summary>
         public virtual void MetaOperation_MetaOperation(MetaOperation @this)
         {
         }
     
         /// <summary>
+    	/// Implements the constructor: MetaConstructor()
+    	/// Direct superclasses: MetaNamedElement
+    	/// All superclasses: MetaNamedElement
+        /// </summary>
+        public virtual void MetaConstructor_MetaConstructor(MetaConstructor @this)
+        {
+        }
+    
+        /// <summary>
     	/// Implements the constructor: MetaParameter()
     	/// Direct superclasses: MetaNamedElement, MetaTypedElement
-    	/// All superclasses: MetaScopeEntry, MetaNamedElement, MetaTypedElement
+    	/// All superclasses: MetaNamedElement, MetaTypedElement
         /// </summary>
         public virtual void MetaParameter_MetaParameter(MetaParameter @this)
         {
@@ -3020,7 +2766,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaProperty()
     	/// Direct superclasses: MetaNamedElement, MetaTypedElement
-    	/// All superclasses: MetaScopeEntry, MetaNamedElement, MetaTypedElement
+    	/// All superclasses: MetaNamedElement, MetaTypedElement
         /// </summary>
         public virtual void MetaProperty_MetaProperty(MetaProperty @this)
         {
@@ -3059,35 +2805,12 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
-        /// Returns the value of the lazy property: MetaExpression.Type
+    	/// Implements the constructor: MetaThisExpression()
+    	/// Direct superclasses: MetaExpression
+    	/// All superclasses: MetaExpression
         /// </summary>
-        public virtual MetaType MetaExpression_Type(MetaExpression @this)
+        public virtual void MetaThisExpression_MetaThisExpression(MetaThisExpression @this)
         {
-            throw new NotImplementedException();
-        }
-    
-        /// <summary>
-        /// Returns the value of the lazy property: MetaExpression.ExpectedType
-        /// </summary>
-        public virtual MetaType MetaExpression_ExpectedType(MetaExpression @this)
-        {
-            throw new NotImplementedException();
-        }
-    
-        /// <summary>
-        /// Returns the value of the lazy property: MetaExpression.Definitions
-        /// </summary>
-        public virtual IList<MetaScopeEntry> MetaExpression_Definitions(MetaExpression @this)
-        {
-            throw new NotImplementedException();
-        }
-    
-        /// <summary>
-        /// Returns the value of the lazy property: MetaExpression.Definition
-        /// </summary>
-        public virtual MetaScopeEntry MetaExpression_Definition(MetaExpression @this)
-        {
-            throw new NotImplementedException();
         }
     
         /// <summary>
@@ -3144,9 +2867,26 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
+    	/// Implements the constructor: MetaNullCoalescingExpression()
+    	/// Direct superclasses: MetaBinaryExpression
+    	/// All superclasses: MetaExpression, MetaBinaryExpression
+        /// </summary>
+        public virtual void MetaNullCoalescingExpression_MetaNullCoalescingExpression(MetaNullCoalescingExpression @this)
+        {
+        }
+    
+        /// <summary>
+        /// Returns the value of the lazy property: MetaNullCoalescingExpression.BalancedType
+        /// </summary>
+        public virtual MetaType MetaNullCoalescingExpression_BalancedType(MetaNullCoalescingExpression @this)
+        {
+            throw new NotImplementedException();
+        }
+    
+        /// <summary>
     	/// Implements the constructor: MetaAssignmentExpression()
-    	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// Direct superclasses: MetaBinaryExpression
+    	/// All superclasses: MetaExpression, MetaBinaryExpression
         /// </summary>
         public virtual void MetaAssignmentExpression_MetaAssignmentExpression(MetaAssignmentExpression @this)
         {

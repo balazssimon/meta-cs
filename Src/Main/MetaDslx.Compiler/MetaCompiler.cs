@@ -36,6 +36,9 @@ namespace MetaDslx.Compiler
             get;
             private set;
         }
+        public INameProvider NameProvider { get; set; }
+        public IResolutionProvider ResolutionProvider { get; set; }
+        public IBindingProvider BindingProvider { get; set; }
 
         public MetaCompiler(string source, string fileName = null)
         {
@@ -44,6 +47,9 @@ namespace MetaDslx.Compiler
             this.FileName = fileName;
             this.GlobalScope = new RootScope();
             this.Data = new MetaCompilerData(this);
+            this.NameProvider = new DefaultNameProvider(this);
+            this.ResolutionProvider = new DefaultResolutionProvider(this);
+            this.BindingProvider = new DefaultBindingProvider(this);
         }
 
         public abstract void Compile();

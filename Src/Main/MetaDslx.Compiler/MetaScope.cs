@@ -15,18 +15,6 @@ namespace MetaDslx.Compiler
         Serial,
     }
     
-    [Flags]
-    public enum ResolveFlags
-    {
-        Children = 1,
-        Inherited = 2,
-        Parent = 4,
-        Imported = 8,
-        ImportedScope = 16,
-        Scope = Children | Inherited,
-        All = Children | Inherited | Parent | Imported | ImportedScope
-    }
-
     public class ScopeEntry
     {
         private static readonly List<IParseTree> EmptyNodeList = new List<IParseTree>();
