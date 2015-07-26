@@ -9,6 +9,33 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.TempConsole
 {
+    public class A
+    {
+        public class B
+        {
+
+        }
+    }
+
+    public class C : A { }
+
+    public class D
+    {
+        C X;
+        A U;
+        A.B Z;
+        C.B E;
+    }
+
+    public class E : A.B
+    {
+
+    }
+
+    public class F : C.B
+    {
+
+    }
     class Program
     {
         static void Main(string[] args)
@@ -23,7 +50,7 @@ namespace MetaDslx.TempConsole
                     );
                 Console.WriteLine("----");
                 //*/
-                //*
+                /*
                 CompileAG4(
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.ag4",
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexerAnnotator.cs",
@@ -36,7 +63,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.g4"
                     );
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",

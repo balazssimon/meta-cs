@@ -9,11 +9,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler
 {
-    public enum NameAccessOrder
-    {
-        Random,
-        Serial,
-    }
+
     
     public class ScopeEntry
     {
@@ -151,7 +147,7 @@ namespace MetaDslx.Compiler
                 this.AddImportedEntry(entry);
             }
         }
-
+/*
         public List<TypeDef> ResolveType(string name, Type symbolType, int position = 0, ResolveFlags flags = ResolveFlags.All)
         {
             return this.ResolveEntry<TypeDef>(name, symbolType, position, flags);
@@ -305,7 +301,7 @@ namespace MetaDslx.Compiler
         public List<NameDef> GetNameDef(string name, IEnumerable<Type> symbolTypes)
         {
             return this.ResolveEntry<NameDef>(name, symbolTypes, 0, ResolveFlags.Children);
-        }
+        }*/
     }
 
     public class RootScope : Scope

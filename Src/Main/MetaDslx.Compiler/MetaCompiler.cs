@@ -164,6 +164,16 @@ namespace MetaDslx.Compiler
             return new List<ScopeEntry>();
         }
 
+        public ScopeEntry GetEntry(object symbol)
+        {
+            ScopeEntry entry = null;
+            if (this.SymbolToEntry.TryGetValue(symbol, out entry))
+            {
+                return entry;
+            }
+            return null;
+        }
+
         public List<object> GetSymbols(IParseTree node)
         {
             List<object> symbols = null;

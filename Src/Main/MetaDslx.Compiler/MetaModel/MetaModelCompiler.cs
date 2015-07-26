@@ -825,11 +825,11 @@ namespace MetaDslx.Compiler
         protected virtual bool MergeTypeDef(TypeDefAnnotation typeDefAnnotation, IParseTree typeDefNode, IParseTree nameNode, TypeDef typeDef, Scope parentScope, out TypeDef targetTypeDef)
         {
             targetTypeDef = null;
-            List<TypeDef> result = parentScope.GetTypeDef(typeDef.Name, typeDef.SymbolType);
-            if (typeDefAnnotation.Merge && !typeDefAnnotation.Overload && result.Count == 1 && result[0].CanMerge)
+            List<object> result = this.Compiler.ResolutionProvider.Resolve(new object[] { parentScope }, ResolveKind.Type, typeDef.Name, new ScopeResolutionInfo() { SymbolTypes = new Type[] { typeDef.SymbolType } }, ResolveFlags.Children).ToList();
+            if (typeDefAnnotation.Merge && !typeDefAnnotation.Overload && result.Count == 1)
             {
-                targetTypeDef = result[0];
-                return true;
+                targetTypeDef = result[0] as TypeDef;
+                return targetTypeDef != null && targetTypeDef.CanMerge;
             }
             return false;
         }
@@ -837,11 +837,11 @@ namespace MetaDslx.Compiler
         protected virtual bool MergeNameDef(NameDefAnnotation nameDefAnnotation, IParseTree nameDefNode, IParseTree nameNode, NameDef nameDef, Scope parentScope, out NameDef targetNameDef)
         {
             targetNameDef = null;
-            List<NameDef> result = parentScope.GetNameDef(nameDef.Name, nameDef.SymbolType);
-            if (nameDefAnnotation.Merge && !nameDefAnnotation.Overload && result.Count == 1 && result[0].CanMerge)
+            List<object> result = this.Compiler.ResolutionProvider.Resolve(new object[] { parentScope }, ResolveKind.Name, nameDef.Name, new ScopeResolutionInfo() { SymbolTypes = new Type[] { nameDef.SymbolType } }, ResolveFlags.Children).ToList();
+            if (nameDefAnnotation.Merge && !nameDefAnnotation.Overload && result.Count == 1)
             {
-                targetNameDef = result[0];
-                return true;
+                targetNameDef = result[0] as NameDef;
+                return targetNameDef != null && targetNameDef.CanMerge;
             }
             return false;
         }
@@ -942,8 +942,7 @@ namespace MetaDslx.Compiler
 
         protected virtual string GetName(IParseTree node)
         {
-            if (node == null) return null;
-            return node.GetText();
+            return this.Compiler.NameProvider.GetName(node);
         }
     }
 
@@ -1284,20 +1283,21 @@ namespace MetaDslx.Compiler
                         }
                         if (currentEntry != null && currentScope != null)
                         {
-                            List<ScopeEntry> nameDefs = currentScope.ResolveEntry<ScopeEntry>(currentName, (Type)null, currentEntry.Position, i == 0 ? ResolveFlags.All : ResolveFlags.Scope);
+                            List<object> nameDefs = this.Compiler.ResolutionProvider.Resolve(new object[] { currentScope }, ResolveKind.NameOrType, currentName, new ScopeResolutionInfo() { Position = currentEntry.Position }, i == 0 ? ResolveFlags.All : ResolveFlags.Scope).ToList();
                             currentScope = null;
                             currentEntry = null;
                             if (nameDefs != null)
                             {
-                                ScopeEntry boundEntry = this.BindNameEntry(names[i], nameDefs);
-                                if (boundEntry != null)
+                                object boundSymbol = this.Compiler.BindingProvider.Bind(null, nameDefs, null);
+                                if (boundSymbol != null)
                                 {
-                                    this.Compiler.Data.RegisterSymbol(names[i], boundEntry.Symbol, null);
+                                    this.Compiler.Data.RegisterSymbol(names[i], boundSymbol, null);
                                     if (i == names.Count - 1)
                                     {
-                                        nameUse.Symbol = boundEntry.Symbol;
+                                        nameUse.Symbol = boundSymbol;
                                         this.Compiler.Data.RegisterSymbol(node, nameUse.Symbol, null);
                                     }
+                                    ScopeEntry boundEntry = this.Compiler.Data.GetEntry(boundSymbol);
                                     NameDef nameDef = boundEntry as NameDef;
                                     TypeDef typeDef = boundEntry as TypeDef;
                                     if (nameDef != null)
@@ -1337,31 +1337,32 @@ namespace MetaDslx.Compiler
                         {
                             if (i == names.Count - 1)
                             {
-                                List<TypeDef> typeDefs = currentScope.ResolveEntry<TypeDef>(currentName, (Type)null, currentEntry.Position, i == 0 ? ResolveFlags.All : ResolveFlags.Scope);
+                                List<object> typeDefs = this.Compiler.ResolutionProvider.Resolve(new object[] { currentScope }, ResolveKind.Type, currentName, new ScopeResolutionInfo() { Position = currentEntry.Position }, i == 0 ? ResolveFlags.All : ResolveFlags.Scope).ToList();
                                 currentScope = null;
                                 currentEntry = null;
                                 if (typeDefs != null)
                                 {
-                                    TypeDef boundEntry = this.BindTypeEntry(names[i], typeDefs);
-                                    if (boundEntry != null)
+                                    object boundSymbol = this.Compiler.BindingProvider.Bind(null, typeDefs, null);
+                                    if (boundSymbol != null)
                                     {
-                                        this.Compiler.Data.RegisterSymbol(names[i], boundEntry.Symbol, null);
-                                        typeUse.Symbol = boundEntry.Symbol;
+                                        this.Compiler.Data.RegisterSymbol(names[i], boundSymbol, null);
+                                        typeUse.Symbol = boundSymbol;
                                         this.Compiler.Data.RegisterSymbol(node, typeUse.Symbol, null);
                                     }
                                 }
                             }
                             else
                             {
-                                List<ScopeEntry> nameDefs = currentScope.ResolveEntry<ScopeEntry>(currentName, (Type)null, currentEntry.Position, i == 0 ? ResolveFlags.All : ResolveFlags.Scope);
+                                List<object> nameDefs = this.Compiler.ResolutionProvider.Resolve(new object[] { currentScope }, ResolveKind.NameOrType, currentName, new ScopeResolutionInfo() { Position = currentEntry.Position }, i == 0 ? ResolveFlags.All : ResolveFlags.Scope).ToList();
                                 currentScope = null;
                                 currentEntry = null;
                                 if (nameDefs != null)
                                 {
-                                    ScopeEntry boundEntry = this.BindNameEntry(names[i], nameDefs);
-                                    if (boundEntry != null)
+                                    object boundSymbol = this.Compiler.BindingProvider.Bind(null, nameDefs, null);
+                                    if (boundSymbol != null)
                                     {
-                                        this.Compiler.Data.RegisterSymbol(names[i], boundEntry.Symbol, null);
+                                        this.Compiler.Data.RegisterSymbol(names[i], boundSymbol, null);
+                                        ScopeEntry boundEntry = this.Compiler.Data.GetEntry(boundSymbol);
                                         NameDef nameDef = boundEntry as NameDef;
                                         TypeDef typeDef = boundEntry as TypeDef;
                                         if (nameDef != null)
@@ -1407,40 +1408,6 @@ namespace MetaDslx.Compiler
                     this.Compiler.Data.RegisterSymbol(node, symbol, null);
                 }
             }
-        }
-
-        protected virtual ScopeEntry BindNameEntry(IParseTree node, List<ScopeEntry> entries)
-        {
-            if (entries.Count == 1)
-            {
-                return entries[0];
-            }
-            else if (entries.Count == 0)
-            {
-                this.Compiler.Diagnostics.AddError("Could not resolve name.", this.Compiler.FileName, new TextSpan(node));
-            }
-            else
-            {
-                this.Compiler.Diagnostics.AddError("Multiple resolutions for the name.", this.Compiler.FileName, new TextSpan(node));
-            }
-            return null;
-        }
-
-        protected virtual TypeDef BindTypeEntry(IParseTree node, List<TypeDef> entries)
-        {
-            if (entries.Count == 1)
-            {
-                return entries[0];
-            }
-            else if (entries.Count == 0)
-            {
-                this.Compiler.Diagnostics.AddError("Could not resolve type.", this.Compiler.FileName, new TextSpan(node));
-            }
-            else
-            {
-                this.Compiler.Diagnostics.AddError("Multiple resolutions for the type.", this.Compiler.FileName, new TextSpan(node));
-            }
-            return null;
         }
 
         protected virtual void SetProperty(IParseTree node, List<object> symbols, PropertyAnnotation propertyAnnotation, IEnumerable<object> values)
@@ -1537,8 +1504,7 @@ namespace MetaDslx.Compiler
 
         protected virtual string GetName(IParseTree node)
         {
-            if (node == null) return null;
-            return node.GetText();
+            return this.Compiler.NameProvider.GetName(node);
         }
     }
 
