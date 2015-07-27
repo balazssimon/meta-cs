@@ -138,7 +138,7 @@ internal class [cls.CSharpImplName()] : ModelObject, [cls.Namespace.CSharpName()
 {
     static [cls.CSharpImplName()]()
     {
-        [model.CSharpFullName()].[cls.CSharpName()].StaticInit();
+        [model.CSharpFullName()].StaticInit();
     }
 ^
     [GenerateConstructorImpl(model, cls)]
@@ -178,7 +178,7 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 	[end if]
 [end if]
 public static readonly ModelProperty [prop.Name]Property =
-    ModelProperty.Register("[prop.Name]", typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Class.CSharpFullImplName()]), typeof([prop.Class.Model.CSharpFullName()].[prop.Class.CSharpName()]));
+    ModelProperty.Register("[prop.Name]", typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Class.CSharpFullName()]), typeof([prop.Class.Model.CSharpFullName()].[prop.Class.CSharpName()]));
 [end if]
 ^
 end template
@@ -284,6 +284,10 @@ public static class [model.CSharpName()]
     [end loop]
     }
 ^
+    internal static void StaticInit()
+    {
+    }
+^
     [loop(model->Types->cls:typeof(MetaClass))]
     [GenerateMetaModelClass(cls)]
     [end loop]
@@ -295,13 +299,6 @@ template GenerateMetaModelClass(MetaClass cls)
 ^
 public static class [cls.CSharpName()]
 {
-    static [cls.CSharpName()]()
-    {
-        [loop(cls->sup:GetAllSuperClasses(false))]
-        ModelProperty.RegisterAncestor(typeof([cls.CSharpFullImplName()]), typeof([sup.CSharpFullImplName()]));
-        [end loop]
-    }
-^
     internal static void StaticInit()
     {
     }

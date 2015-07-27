@@ -179,7 +179,8 @@ namespace MetaDslx.Core
             {
                 result.Add(prop);
             }
-            result.UnionWith(ModelProperty.GetAllPropertiesForType(this.GetType()));
+            Type type = this.GetType();
+            result.UnionWith(ModelProperty.GetAllPropertiesForType(type));
             return result;
         }
 

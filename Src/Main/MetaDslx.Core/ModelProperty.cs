@@ -12,13 +12,11 @@ namespace MetaDslx.Core
     {
         internal static Dictionary<Type, Dictionary<string, ModelProperty>> declaredProperties;
         internal static Dictionary<Type, Dictionary<string, ModelProperty>> properties;
-        internal static Dictionary<Type, HashSet<Type>> ancestors;
 
         static ModelProperty()
         {
             ModelProperty.declaredProperties = new Dictionary<Type, Dictionary<string, ModelProperty>>();
             ModelProperty.properties = new Dictionary<Type, Dictionary<string, ModelProperty>>();
-            ModelProperty.ancestors = new Dictionary<Type, HashSet<Type>>();
         }
 
         private bool initialized = false;
@@ -44,10 +42,6 @@ namespace MetaDslx.Core
             this.subsettingProperties = new List<ModelProperty>();
             this.redefinedProperties = new List<ModelProperty>();
             this.redefiningProperties = new List<ModelProperty>();
-            if (!typeof(ModelObject).IsAssignableFrom(this.OwningType))
-            {
-                throw new ModelException("Error in ModelProperty '" + this.ToString() + "'. The property must have an owning type that is a subclass of ModelObject.");
-            }
         }
 
         public string Name { get; private set; }
@@ -228,19 +222,6 @@ namespace MetaDslx.Core
             }
         }
 
-        public static void RegisterAncestor(Type type, Type ancestorType)
-        {
-            if (type == null || ancestorType == null) return;
-            RuntimeHelpers.RunClassConstructor(ancestorType.TypeHandle);
-            HashSet<Type> ancestorsSet = null;
-            if (!ModelProperty.ancestors.TryGetValue(type, out ancestorsSet))
-            {
-                ancestorsSet = new HashSet<Type>();
-                ModelProperty.ancestors.Add(type, ancestorsSet);
-            }
-            ancestorsSet.Add(ancestorType);
-        }
-
         public static ModelProperty Register(string name, Type type, Type owningType)
         {
             return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", owningType));
@@ -314,20 +295,16 @@ namespace MetaDslx.Core
 
         public static IEnumerable<ModelProperty> GetAllPropertiesForType(Type owningType)
         {
-            List<ModelProperty> result = new List<ModelProperty>();
+            HashSet<ModelProperty> result = new HashSet<ModelProperty>();
             Dictionary<string, ModelProperty> propertyList;
             RuntimeHelpers.RunClassConstructor(owningType.TypeHandle);
             if (ModelProperty.properties.TryGetValue(owningType, out propertyList))
             {
-                result.AddRange(propertyList.Values);
+                result.UnionWith(propertyList.Values);
             }
-            HashSet<Type> ancestorSet;
-            if (ModelProperty.ancestors.TryGetValue(owningType, out ancestorSet))
+            foreach (var super in owningType.GetInterfaces())
             {
-                foreach (var ancestor in ancestorSet)
-                {
-                    result.AddRange(ModelProperty.GetAllPropertiesForType(ancestor));
-                }
+                result.UnionWith(ModelProperty.GetAllPropertiesForType(super));
             }
             return result;
         }
