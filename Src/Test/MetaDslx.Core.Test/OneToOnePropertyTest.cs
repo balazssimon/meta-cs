@@ -55,10 +55,10 @@ namespace MetaDslx.Core.Test
         {
             Husband h1 = new Husband();
             Wife w1 = new Wife();
-            h1.MSetValue(Husband.WifeProperty, w1);
+            h1.MSet(Husband.WifeProperty, w1);
             Assert.AreEqual(h1.Wife, w1);
             Assert.AreEqual(w1.Husband, h1);
-            h1.MSetValue(Husband.WifeProperty, null);
+            h1.MSet(Husband.WifeProperty, null);
             Assert.AreEqual(h1.Wife, null);
             Assert.AreEqual(w1.Husband, null);
         }
@@ -112,10 +112,10 @@ namespace MetaDslx.Core.Test
         {
             Husband h1 = new Husband();
             Wife w1 = new Wife();
-            w1.MSetValue(Wife.HusbandProperty, h1);
+            w1.MSet(Wife.HusbandProperty, h1);
             Assert.AreEqual(h1.Wife, w1);
             Assert.AreEqual(w1.Husband, h1);
-            w1.MSetValue(Wife.HusbandProperty, null);
+            w1.MSet(Wife.HusbandProperty, null);
             Assert.AreEqual(h1.Wife, null);
             Assert.AreEqual(w1.Husband, null);
         }

@@ -14,8 +14,8 @@ namespace MetaDslx.Core.Test
 
         public Wife Wife
         {
-            get { return (Wife)this.MGetValue(Husband.WifeProperty); }
-            set { this.MSetValue(Husband.WifeProperty, value); }
+            get { return (Wife)this.MGet(Husband.WifeProperty); }
+            set { this.MSet(Husband.WifeProperty, value); }
         }
     }
 
@@ -27,8 +27,8 @@ namespace MetaDslx.Core.Test
 
         public Husband Husband
         {
-            get { return (Husband)this.MGetValue(Wife.HusbandProperty); }
-            set { this.MSetValue(Wife.HusbandProperty, value); }
+            get { return (Husband)this.MGet(Wife.HusbandProperty); }
+            set { this.MSet(Wife.HusbandProperty, value); }
         }
     }
 
@@ -37,7 +37,7 @@ namespace MetaDslx.Core.Test
     {
         public ListParent()
         {
-            this.MSetValue(ListParent.ChildrenProperty, new ModelList<ListChild>(this, ListParent.ChildrenProperty));
+            this.MSet(ListParent.ChildrenProperty, new ModelList<ListChild>(this, ListParent.ChildrenProperty));
         }
 
         [OppositeAttribute(typeof(ListChild), "Parent")]
@@ -46,7 +46,7 @@ namespace MetaDslx.Core.Test
 
         public IList<ListChild> Children
         {
-            get { return (IList<ListChild>)this.MGetValue(ListParent.ChildrenProperty); }
+            get { return (IList<ListChild>)this.MGet(ListParent.ChildrenProperty); }
         }
     }
 
@@ -58,8 +58,8 @@ namespace MetaDslx.Core.Test
 
         public ListParent Parent
         {
-            get { return (ListParent)this.MGetValue(ListChild.ParentProperty); }
-            set { this.MSetValue(ListChild.ParentProperty, value); }
+            get { return (ListParent)this.MGet(ListChild.ParentProperty); }
+            set { this.MSet(ListChild.ParentProperty, value); }
         }
     }
 
@@ -67,7 +67,7 @@ namespace MetaDslx.Core.Test
     {
         public SetParent()
         {
-            this.MSetValue(SetParent.ChildrenProperty, new ModelSet<SetChild>(this, SetParent.ChildrenProperty));
+            this.MSet(SetParent.ChildrenProperty, new ModelSet<SetChild>(this, SetParent.ChildrenProperty));
         }
 
         [OppositeAttribute(typeof(SetChild), "Parent")]
@@ -76,7 +76,7 @@ namespace MetaDslx.Core.Test
 
         public ICollection<SetChild> Children
         {
-            get { return (ICollection<SetChild>)this.MGetValue(SetParent.ChildrenProperty); }
+            get { return (ICollection<SetChild>)this.MGet(SetParent.ChildrenProperty); }
         }
     }
 
@@ -88,8 +88,8 @@ namespace MetaDslx.Core.Test
 
         public SetParent Parent
         {
-            get { return (SetParent)this.MGetValue(SetChild.ParentProperty); }
-            set { this.MSetValue(SetChild.ParentProperty, value); }
+            get { return (SetParent)this.MGet(SetChild.ParentProperty); }
+            set { this.MSet(SetChild.ParentProperty, value); }
         }
     }
 
@@ -97,7 +97,7 @@ namespace MetaDslx.Core.Test
     {
         public User()
         {
-            this.MSetValue(User.RolesProperty, new ModelList<Role>(this, User.RolesProperty));
+            this.MSet(User.RolesProperty, new ModelList<Role>(this, User.RolesProperty));
         }
 
         [OppositeAttribute(typeof(Role), "Users")]
@@ -106,7 +106,7 @@ namespace MetaDslx.Core.Test
 
         public IList<Role> Roles
         {
-            get { return (IList<Role>)this.MGetValue(User.RolesProperty); }
+            get { return (IList<Role>)this.MGet(User.RolesProperty); }
         }
     }
 
@@ -114,7 +114,7 @@ namespace MetaDslx.Core.Test
     {
         public Role()
         {
-            this.MSetValue(Role.UsersProperty, new ModelSet<User>(this, Role.UsersProperty));
+            this.MSet(Role.UsersProperty, new ModelSet<User>(this, Role.UsersProperty));
         }
 
         [OppositeAttribute(typeof(User), "Roles")]
@@ -123,7 +123,7 @@ namespace MetaDslx.Core.Test
 
         public ICollection<User> Users
         {
-            get { return (ICollection<User>)this.MGetValue(Role.UsersProperty); }
+            get { return (ICollection<User>)this.MGet(Role.UsersProperty); }
         }
     }
 
@@ -131,7 +131,7 @@ namespace MetaDslx.Core.Test
     {
         public Person()
         {
-            this.MSetValue(Person.PetsProperty, new ModelSet<Pet>(this, Person.PetsProperty));
+            this.MSet(Person.PetsProperty, new ModelSet<Pet>(this, Person.PetsProperty));
         }
 
         [OppositeAttribute(typeof(Pet), "Owner")]
@@ -140,7 +140,7 @@ namespace MetaDslx.Core.Test
 
         public ICollection<Pet> Pets
         {
-            get { return (ICollection<Pet>)this.MGetValue(Person.PetsProperty); }
+            get { return (ICollection<Pet>)this.MGet(Person.PetsProperty); }
         }
     }
 
@@ -148,7 +148,7 @@ namespace MetaDslx.Core.Test
     {
         public Student()
         {
-            this.MSetValue(Student.DogsProperty, new ModelSet<Dog>(this, Student.DogsProperty));
+            this.MSet(Student.DogsProperty, new ModelSet<Dog>(this, Student.DogsProperty));
         }
 
         [OppositeAttribute(typeof(Dog), "Friend")]
@@ -157,7 +157,7 @@ namespace MetaDslx.Core.Test
 
         public ICollection<Dog> Dogs
         {
-            get { return (ICollection<Dog>)this.MGetValue(Student.DogsProperty); }
+            get { return (ICollection<Dog>)this.MGet(Student.DogsProperty); }
         }
     }
 
@@ -173,8 +173,8 @@ namespace MetaDslx.Core.Test
 
         public Person Owner
         {
-            get { return (Person)this.MGetValue(Pet.OwnerProperty); }
-            set { this.MSetValue(Pet.OwnerProperty, value); }
+            get { return (Person)this.MGet(Pet.OwnerProperty); }
+            set { this.MSet(Pet.OwnerProperty, value); }
         }
     }
 
@@ -190,8 +190,8 @@ namespace MetaDslx.Core.Test
 
         public Student Friend
         {
-            get { return (Student)this.MGetValue(Dog.FriendProperty); }
-            set { this.MSetValue(Dog.FriendProperty, value); }
+            get { return (Student)this.MGet(Dog.FriendProperty); }
+            set { this.MSet(Dog.FriendProperty, value); }
         }
     }
 
@@ -219,7 +219,7 @@ namespace MetaDslx.Core.Test
     {
         public PersonX()
         {
-            this.MSetValue(PersonX.PetsProperty, new ModelSet<IPetX>(this, PersonX.PetsProperty));
+            this.MSet(PersonX.PetsProperty, new ModelSet<IPetX>(this, PersonX.PetsProperty));
         }
 
         [OppositeAttribute(typeof(PetX), "Owner")]
@@ -228,7 +228,7 @@ namespace MetaDslx.Core.Test
 
         public ICollection<IPetX> Pets
         {
-            get { return (ICollection<IPetX>)this.MGetValue(PersonX.PetsProperty); }
+            get { return (ICollection<IPetX>)this.MGet(PersonX.PetsProperty); }
         }
     }
 
@@ -236,8 +236,8 @@ namespace MetaDslx.Core.Test
     {
         public StudentX()
         {
-            this.MSetValue(StudentX.DogsProperty, new ModelSet<IDogX>(this, StudentX.DogsProperty));
-            this.MSetValue(PersonX.PetsProperty, new ModelSet<IPetX>(this, PersonX.PetsProperty));
+            this.MSet(StudentX.DogsProperty, new ModelSet<IDogX>(this, StudentX.DogsProperty));
+            this.MSet(PersonX.PetsProperty, new ModelSet<IPetX>(this, PersonX.PetsProperty));
         }
 
         [OppositeAttribute(typeof(DogX), "Friend")]
@@ -246,12 +246,12 @@ namespace MetaDslx.Core.Test
 
         public ICollection<IDogX> Dogs
         {
-            get { return (ICollection<IDogX>)this.MGetValue(StudentX.DogsProperty); }
+            get { return (ICollection<IDogX>)this.MGet(StudentX.DogsProperty); }
         }
 
         public ICollection<IPetX> Pets
         {
-            get { return (ICollection<IPetX>)this.MGetValue(PersonX.PetsProperty); }
+            get { return (ICollection<IPetX>)this.MGet(PersonX.PetsProperty); }
         }
     }
 
@@ -267,8 +267,8 @@ namespace MetaDslx.Core.Test
 
         public IPersonX Owner
         {
-            get { return (IPersonX)this.MGetValue(PetX.OwnerProperty); }
-            set { this.MSetValue(PetX.OwnerProperty, value); }
+            get { return (IPersonX)this.MGet(PetX.OwnerProperty); }
+            set { this.MSet(PetX.OwnerProperty, value); }
         }
     }
 
@@ -284,14 +284,14 @@ namespace MetaDslx.Core.Test
 
         public IStudentX Friend
         {
-            get { return (IStudentX)this.MGetValue(DogX.FriendProperty); }
-            set { this.MSetValue(DogX.FriendProperty, value); }
+            get { return (IStudentX)this.MGet(DogX.FriendProperty); }
+            set { this.MSet(DogX.FriendProperty, value); }
         }
 
         public IPersonX Owner
         {
-            get { return (IPersonX)this.MGetValue(PetX.OwnerProperty); }
-            set { this.MSetValue(PetX.OwnerProperty, value); }
+            get { return (IPersonX)this.MGet(PetX.OwnerProperty); }
+            set { this.MSet(PetX.OwnerProperty, value); }
         }
     }
 

@@ -25,6 +25,21 @@
 		ScopeEntry Bind(object caller, list<ScopeEntry> entries);
 		*/
 
+		abstract class ScopeEntry
+		{
+			Scope Parent;
+		}
+
+		class Scope : ScopeEntry
+		{
+			list<ScopeEntry> Entries;
+			list<ScopeEntry> ImportedEntries;
+			list<Scope> ImportedScopes;
+			list<Scope> InheritedScopes;
+		}
+
+		association ScopeEntry.Parent with Scope.Entries;
+
 		abstract class NamedElement
 		{
 			string Name;
@@ -37,8 +52,6 @@
 
 		abstract class Type
 		{
-			bool IsAssignableFrom(Type valueType);
-			bool Equals(Type otherType);
 		}
 
 		class Namespace : NamedElement

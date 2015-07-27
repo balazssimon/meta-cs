@@ -1450,7 +1450,7 @@ namespace MetaDslx.Compiler
                                 {
                                     if (!mo.MIsDefault(prop))
                                     {
-                                        object oldValue = mo.MGetValue(prop);
+                                        object oldValue = mo.MGet(prop);
                                         if (!value.Equals(oldValue))
                                         {
                                             this.Compiler.Diagnostics.AddWarning("Reassigning '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, new TextSpan(node), true);
@@ -1465,7 +1465,7 @@ namespace MetaDslx.Compiler
                             }
                             else if (prop.Type.IsClass)
                             {
-                                if (!mo.MIsDefault(prop) && mo.MGetValue(prop) != null)
+                                if (!mo.MIsDefault(prop) && mo.MGet(prop) != null)
                                 {
                                     this.Compiler.Diagnostics.AddWarning("Reassigning '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, new TextSpan(node), true);
                                 }
@@ -1562,7 +1562,7 @@ namespace MetaDslx.Compiler
                 ModelProperty prop = mo.MFindProperty(property);
                 if (prop != null)
                 {
-                    return mo.MGetValue(prop);
+                    return mo.MGet(prop);
                 }
             }
             return null;
@@ -1586,7 +1586,7 @@ namespace MetaDslx.Compiler
                     }
                     else
                     {
-                        mo.MInitValue(prop, value);
+                        mo.MLazySet(prop, value);
                     }
                 }
             }

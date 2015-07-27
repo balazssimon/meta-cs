@@ -61,7 +61,8 @@ namespace MetaDslx.Core
          
     }
 
-    internal class MetaModelImplementation : MetaModelImplementationBase
+    //internal class MetaModelImplementation : MetaModelImplementationBase
+    internal class MetaImplementation : MetaImplementationBase
     {
         public override void MetaProperty_MetaProperty(MetaProperty @this)
         {
@@ -166,11 +167,36 @@ namespace MetaDslx.Core
             if (ne != null) return "Meta"+ne.Name;
             else return string.Empty;
         }*/
-        
+
+        public static string CSharpFullName(this MetaModel @this)
+        {
+            if (@this == null) return string.Empty;
+            string nsName = @this.Namespace.CSharpName();
+            if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + ".Meta";
+            else return "Meta";
+        }
+
+        public static string CSharpFullName(this MetaType @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaDeclaration decl = @this as MetaDeclaration;
+            string nsName = string.Empty;
+            if (decl != null)
+            {
+                nsName = decl.Namespace.CSharpName();
+                if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + "." + @this.CSharpName();
+                else return @this.CSharpName();
+            }
+            else
+            {
+                return @this.CSharpName();
+            }
+        }
+
         public static string CSharpName(this MetaModel @this)
         {
             if (@this == null) return string.Empty;
-            return @this.Name;
+            return "Meta";
         }
 
         public static string CSharpName(this MetaType @this)
@@ -231,6 +257,35 @@ namespace MetaDslx.Core
             return "Meta" + ((MetaNamedElement)@this).Name + "Impl";
         }
 
+        public static string CSharpFullImplName(this MetaType @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaCollectionType collection = @this as MetaCollectionType;
+            if (collection != null)
+            {
+                switch (collection.Kind)
+                {
+                    case MetaCollectionKind.Set:
+                        return "ICollection<" + collection.InnerType.CSharpFullImplName() + ">";
+                    case MetaCollectionKind.List:
+                        return "IList<" + collection.InnerType.CSharpFullImplName() + ">";
+                    default:
+                        return null;
+                }
+            }
+            MetaNullableType nullable = @this as MetaNullableType;
+            if (nullable != null)
+            {
+                return nullable.InnerType.CSharpFullImplName() + "?";
+            }
+            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.Name;
+            }
+            return @this.CSharpFullName() + "Impl";
+        }
+
         public static string CSharpPublicName(this MetaType @this)
         {
             if (@this == null) return string.Empty;
@@ -260,6 +315,35 @@ namespace MetaDslx.Core
             return "Meta" + ((MetaNamedElement)@this).Name;
         }
 
+        public static string CSharpFullPublicName(this MetaType @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaCollectionType collection = @this as MetaCollectionType;
+            if (collection != null)
+            {
+                switch (collection.Kind)
+                {
+                    case MetaCollectionKind.Set:
+                        return "ICollection<" + collection.InnerType.CSharpFullPublicName() + ">";
+                    case MetaCollectionKind.List:
+                        return "IList<" + collection.InnerType.CSharpFullPublicName() + ">";
+                    default:
+                        return null;
+                }
+            }
+            MetaNullableType nullable = @this as MetaNullableType;
+            if (nullable != null)
+            {
+                return nullable.InnerType.CSharpFullPublicName() + "?";
+            }
+            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.Name;
+            }
+            return @this.CSharpFullName();
+        }
+
         public static List<string> GetAllSuperPropertyNames(this MetaClass @this)
         {
             return GetAllSuperProperties(@this).Select(p => p.Name).ToList();
@@ -280,6 +364,7 @@ namespace MetaDslx.Core
 
         public static List<MetaClass> GetAllSuperClasses(this MetaClass @this, bool includeSelf)
         {
+            if (@this == null) return new List<MetaClass>();
             List<MetaClass> result = new List<MetaClass>(@this.GetAllSuperClasses());
             if (includeSelf)
             {

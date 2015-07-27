@@ -8,15 +8,47 @@ namespace MetaDslx.Core
 {
     public abstract class ModelCollection 
     {
+        private List<Lazy<object>> lazyItems;
+
         public ModelObject Owner { get; private set; }
         public ModelProperty OwnerProperty { get; private set; }
 
         public ModelCollection(ModelObject owner, ModelProperty ownerProperty)
         {
+            this.lazyItems = null;
             this.Owner = owner;
             this.OwnerProperty = ownerProperty;
         }
 
+        protected void FlushLazyItems()
+        {
+            if (this.lazyItems == null) return;
+            List<Lazy<object>> lazyCopy = this.lazyItems;
+            this.lazyItems = null;
+            foreach (var item in lazyCopy)
+            {
+                this.MAdd(item.Value);
+            }
+        }
+
+        protected void ClearLazyItems()
+        {
+            if (this.lazyItems == null) return;
+            this.lazyItems = null;
+        }
+
+        public bool MLazyAdd(Lazy<object> value)
+        {
+            if (value == null) return false;
+            if (this.lazyItems == null)
+            {
+                this.lazyItems = new List<Lazy<object>>();
+            }
+            this.lazyItems.Add(value);
+            return true;
+        }
+
+        public abstract void Clear();
         public abstract bool MAdd(object value);
         public abstract bool MRemove(object value);
     }

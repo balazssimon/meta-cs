@@ -10,11 +10,13 @@ namespace MetaDslx.Core
 {
     public class ModelProperty
     {
+        internal static Dictionary<Type, Dictionary<string, ModelProperty>> declaredProperties;
         internal static Dictionary<Type, Dictionary<string, ModelProperty>> properties;
         internal static Dictionary<Type, HashSet<Type>> ancestors;
 
         static ModelProperty()
         {
+            ModelProperty.declaredProperties = new Dictionary<Type, Dictionary<string, ModelProperty>>();
             ModelProperty.properties = new Dictionary<Type, Dictionary<string, ModelProperty>>();
             ModelProperty.ancestors = new Dictionary<Type, HashSet<Type>>();
         }
@@ -140,7 +142,7 @@ namespace MetaDslx.Core
         {
             if (this.initialized) return;
             this.initialized = true;
-            FieldInfo info = this.DeclaringType.GetField(this.DeclaredName + "Property", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            FieldInfo info = this.DeclaringType.GetField(this.DeclaredName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (info != null)
             {
                 if (ModelProperty.IsAssignableToGenericType(this.Type,typeof(ICollection<>)))
@@ -241,28 +243,28 @@ namespace MetaDslx.Core
 
         public static ModelProperty Register(string name, Type type, Type owningType)
         {
-            return ModelProperty.RegisterProperty(owningType, name, new ModelProperty(name, type, owningType, name, owningType));
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", owningType));
         }
 
         public static ModelProperty Register(string name, Type type, Type owningType, string declaredName)
         {
-            return ModelProperty.RegisterProperty(owningType, name, new ModelProperty(name, type, owningType, declaredName, owningType));
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, owningType));
         }
 
         public static ModelProperty Register(string name, Type type, Type owningType, Type declaringType)
         {
-            return ModelProperty.RegisterProperty(owningType, name, new ModelProperty(name, type, owningType, name, declaringType));
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", declaringType));
         }
 
         public static ModelProperty Register(string name, Type type, Type owningType, string declaredName, Type declaringType)
         {
-            return ModelProperty.RegisterProperty(owningType, name, new ModelProperty(name, type, owningType, declaredName, declaringType));
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, declaringType));
         }
 
-        public static ModelProperty Find(Type declaringType, string name)
+        protected static ModelProperty Find(Type declaringType, string name)
         {
             Dictionary<string, ModelProperty> propertyList;
-            if (ModelProperty.properties.TryGetValue(declaringType, out propertyList))
+            if (ModelProperty.declaredProperties.TryGetValue(declaringType, out propertyList))
             {
                 ModelProperty result;
                 if (propertyList.TryGetValue(name, out result))
@@ -273,42 +275,54 @@ namespace MetaDslx.Core
             return null;
         }
 
-        protected static ModelProperty RegisterProperty(Type declaringType, string name, ModelProperty property)
+        protected static ModelProperty RegisterProperty(ModelProperty property)
         {
             Dictionary<string, ModelProperty> propertyList;
-            if (!ModelProperty.properties.TryGetValue(declaringType, out propertyList))
+            if (!ModelProperty.properties.TryGetValue(property.OwningType, out propertyList))
             {
                 propertyList = new Dictionary<string, ModelProperty>();
-                ModelProperty.properties.Add(declaringType, propertyList);
+                ModelProperty.properties.Add(property.OwningType, propertyList);
             }
-            if (propertyList.ContainsKey(name))
+            if (propertyList.ContainsKey(property.Name))
             {
-                throw new ModelException("Property '" + property + "' is already registered as '" + propertyList[name] + "'.");
+                throw new ModelException("Property '" + property + "' is already registered as '" + propertyList[property.Name] + "'.");
             }
-            propertyList.Add(name, property);
+            propertyList.Add(property.Name, property);
+            if (!ModelProperty.declaredProperties.TryGetValue(property.DeclaringType, out propertyList))
+            {
+                propertyList = new Dictionary<string, ModelProperty>();
+                ModelProperty.declaredProperties.Add(property.DeclaringType, propertyList);
+            }
+            if (propertyList.ContainsKey(property.Name))
+            {
+                throw new ModelException("Property '" + property + "' is already declared as '" + propertyList[property.Name] + "'.");
+            }
+            propertyList.Add(property.Name, property);
             return property;
         }
 
-        public static IEnumerable<ModelProperty> GetPropertiesForType(Type declaringType)
+        public static IEnumerable<ModelProperty> GetPropertiesForType(Type owningType)
         {
             Dictionary<string, ModelProperty> propertyList;
-            if (ModelProperty.properties.TryGetValue(declaringType, out propertyList))
+            RuntimeHelpers.RunClassConstructor(owningType.TypeHandle);
+            if (ModelProperty.properties.TryGetValue(owningType, out propertyList))
             {
                 return propertyList.Values;
             }
             return new ModelProperty[0];
         }
 
-        public static IEnumerable<ModelProperty> GetAllPropertiesForType(Type declaringType)
+        public static IEnumerable<ModelProperty> GetAllPropertiesForType(Type owningType)
         {
             List<ModelProperty> result = new List<ModelProperty>();
             Dictionary<string, ModelProperty> propertyList;
-            if (ModelProperty.properties.TryGetValue(declaringType, out propertyList))
+            RuntimeHelpers.RunClassConstructor(owningType.TypeHandle);
+            if (ModelProperty.properties.TryGetValue(owningType, out propertyList))
             {
                 result.AddRange(propertyList.Values);
             }
             HashSet<Type> ancestorSet;
-            if (ModelProperty.ancestors.TryGetValue(declaringType, out ancestorSet))
+            if (ModelProperty.ancestors.TryGetValue(owningType, out ancestorSet))
             {
                 foreach (var ancestor in ancestorSet)
                 {

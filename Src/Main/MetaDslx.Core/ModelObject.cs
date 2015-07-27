@@ -58,11 +58,23 @@ namespace MetaDslx.Core
 
         public void MUnSet(ModelProperty property)
         {
+            object oldValue;
+            if (this.values.TryGetValue(property, out oldValue))
+            {
+                if (oldValue is ModelCollection)
+                {
+                    ((ModelCollection)oldValue).Clear();
+                }
+                else
+                {
+                    this.MRemove(property, oldValue);
+                }
+            }
             this.values.Remove(property);
             this.initializers.Remove(property);
         }
 
-        public void MInitValue(ModelProperty property, Lazy<object> value)
+        public void MLazySet(ModelProperty property, Lazy<object> value)
         {
             object oldValue;
             if (this.values.TryGetValue(property, out oldValue))
@@ -77,13 +89,14 @@ namespace MetaDslx.Core
                 }
                 else
                 {
-                    this.values.Remove(property);
+                    this.MRemove(property, oldValue);
                 }
             }
+            this.values.Remove(property);
             this.initializers[property] = value;
         }
 
-        public void MInitChildValue(ModelProperty child, ModelProperty property, Lazy<object> value)
+        public void MLazySetChild(ModelProperty child, ModelProperty property, Lazy<object> value)
         {
             Dictionary<ModelProperty, Lazy<object>> childProperties = null;
             if (!this.childInitializers.TryGetValue(child, out childProperties))
@@ -106,7 +119,7 @@ namespace MetaDslx.Core
             childProperties[property] = value;
         }
 
-        public void MSetValue(ModelProperty property, object newValue)
+        public void MSet(ModelProperty property, object newValue)
         {
             object oldValue;
             if (this.values.TryGetValue(property, out oldValue))
@@ -127,11 +140,11 @@ namespace MetaDslx.Core
             }
             else
             {
-                this.MOnAddValue(property, newValue, true);
+                this.MAdd(property, newValue);
             }
         }
 
-        public object MGetValue(ModelProperty property)
+        public object MGet(ModelProperty property)
         {
             object value;
             if (this.values.TryGetValue(property, out value))
@@ -147,7 +160,7 @@ namespace MetaDslx.Core
                     this.values[property] = value;
                     if (!(value is ModelCollection))
                     {
-                        this.MOnAddValue(property, value, true);
+                        this.MAdd(property, value);
                     }
                     return value;
                 }
@@ -184,20 +197,6 @@ namespace MetaDslx.Core
             return results.ToList();
         }
 
-        public ModelProperty MFindProperty(string name, Type declaringType)
-        {
-            return this.SelectSingleProperty(this.MFindProperties(name, declaringType));
-        }
-
-        public IEnumerable<ModelProperty> MFindProperties(string name, Type declaringType)
-        {
-            var results =
-                from p in this.MGetAllProperties()
-                where p.Name == name && declaringType.IsAssignableFrom(p.OwningType)
-                select p;
-            return results.ToList();
-        }
-
         private ModelProperty SelectSingleProperty(IEnumerable<ModelProperty> properties)
         {
             List<ModelProperty> results = properties.ToList();
@@ -210,6 +209,34 @@ namespace MetaDslx.Core
         {
             get;
             set;
+        }
+
+        public void MLazyAdd(ModelProperty property, Lazy<object> value)
+        {
+            object oldValue;
+            if (property.IsCollection && !this.values.ContainsKey(property))
+            {
+                // Initializing lazy collection:
+                this.MGet(property);
+            }
+            if (this.values.TryGetValue(property, out oldValue))
+            {
+                if (oldValue is ModelCollection)
+                {
+                    ((ModelCollection)oldValue).MLazyAdd(value);
+                    return;
+                }
+                else if (property.IsReadonly)
+                {
+                    throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a readonly property '" + property.ToString() + "'.");
+                }
+                else
+                {
+                    this.MRemove(property, oldValue);
+                    this.values.Remove(property);
+                }
+            }
+            this.initializers[property] = value;
         }
 
         public void MAdd(ModelProperty property, object value)
@@ -225,7 +252,7 @@ namespace MetaDslx.Core
         internal void MOnAddValue(ModelProperty property, object value, bool firstCall, AddRemoveDirection addRemoveDir = AddRemoveDirection.None)
         {
             bool added = false;
-            object oldValue = this.MGetValue(property);
+            object oldValue = this.MGet(property);
             ModelCollection collection = oldValue as ModelCollection;
             if (collection != null)
             {
@@ -256,14 +283,23 @@ namespace MetaDslx.Core
             }
             if (added)
             {
-                if (property.IsContainment)
+                ModelObject modelObjectValue = value as ModelObject;
+                if (modelObjectValue != null)
                 {
-                    ModelObject mofObjectValue = value as ModelObject;
-                    if (mofObjectValue != null)
+                    if (property.IsContainment)
                     {
-                        mofObjectValue.MParent = this;
+                        modelObjectValue.MParent = this;
+                    }
+                    Dictionary<ModelProperty, Lazy<object>> childProperties = null;
+                    if (this.childInitializers.TryGetValue(property, out childProperties))
+                    {
+                        foreach (var childProp in childProperties)
+                        {
+                            modelObjectValue.MLazyAdd(childProp.Key, childProp.Value);
+                        }
                     }
                 }
+
                 List<ModelProperty> allProperies = this.MGetAllProperties().ToList();
                 List<ModelProperty> cachedSubsettedProperties = property.SubsettedProperties.ToList();
                 foreach (ModelProperty subsettedProperty in cachedSubsettedProperties)
@@ -321,7 +357,7 @@ namespace MetaDslx.Core
         internal void MOnRemoveValue(ModelProperty property, object value, bool firstCall, AddRemoveDirection addRemoveDir = AddRemoveDirection.None)
         {
             bool removed = false;
-            object oldValue = this.MGetValue(property);
+            object oldValue = this.MGet(property);
             ModelCollection collection = oldValue as ModelCollection;
             if (collection != null)
             {
