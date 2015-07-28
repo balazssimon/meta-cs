@@ -7,6 +7,651 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core
 {
+    public static class Meta
+    {
+        static Meta()
+        {
+            MetaScopeEntry.StaticInit();
+            MetaScope.StaticInit();
+            MetaNamedElement.StaticInit();
+            MetaTypedElement.StaticInit();
+            MetaType.StaticInit();
+            MetaNamespace.StaticInit();
+            MetaModel.StaticInit();
+            MetaDeclaration.StaticInit();
+            MetaCollectionType.StaticInit();
+            MetaNullableType.StaticInit();
+            MetaPrimitiveType.StaticInit();
+            MetaEnum.StaticInit();
+            MetaEnumLiteral.StaticInit();
+            MetaClass.StaticInit();
+            MetaOperation.StaticInit();
+            MetaConstructor.StaticInit();
+            MetaParameter.StaticInit();
+            MetaProperty.StaticInit();
+            MetaPropertyInitializer.StaticInit();
+            MetaSynthetizedPropertyInitializer.StaticInit();
+            MetaInheritedPropertyInitializer.StaticInit();
+            MetaExpression.StaticInit();
+            MetaThisExpression.StaticInit();
+            MetaUnaryExpression.StaticInit();
+            MetaBinaryExpression.StaticInit();
+            MetaBinaryArithmeticExpression.StaticInit();
+            MetaBinaryComparisonExpression.StaticInit();
+            MetaBinaryLogicalExpression.StaticInit();
+            MetaNullCoalescingExpression.StaticInit();
+            MetaAssignmentExpression.StaticInit();
+            MetaTypeConversionExpression.StaticInit();
+            MetaTypeCheckExpression.StaticInit();
+            MetaTypeOfExpression.StaticInit();
+            MetaConstantExpression.StaticInit();
+            MetaIdentifierExpression.StaticInit();
+            MetaMemberAccessExpression.StaticInit();
+            MetaFunctionCallExpression.StaticInit();
+            MetaIndexerExpression.StaticInit();
+            MetaConditionalExpression.StaticInit();
+        }
+    
+        internal static void StaticInit()
+        {
+        }
+    
+        
+        public static class MetaScopeEntry
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaScope), "Entries")]
+            public static readonly ModelProperty ParentProperty =
+                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaScope), typeof(global::MetaDslx.Core.MetaScopeEntry), typeof(global::MetaDslx.Core.Meta.MetaScopeEntry));
+            
+        }
+        
+        public static class MetaScope
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaScopeEntry), "Parent")]
+            public static readonly ModelProperty EntriesProperty =
+                ModelProperty.Register("Entries", typeof(IList<global::MetaDslx.Core.MetaScopeEntry>), typeof(global::MetaDslx.Core.MetaScope), typeof(global::MetaDslx.Core.Meta.MetaScope));
+            
+            public static readonly ModelProperty ImportedEntriesProperty =
+                ModelProperty.Register("ImportedEntries", typeof(IList<global::MetaDslx.Core.MetaScopeEntry>), typeof(global::MetaDslx.Core.MetaScope), typeof(global::MetaDslx.Core.Meta.MetaScope));
+            
+            public static readonly ModelProperty ImportedScopesProperty =
+                ModelProperty.Register("ImportedScopes", typeof(IList<global::MetaDslx.Core.MetaScope>), typeof(global::MetaDslx.Core.MetaScope), typeof(global::MetaDslx.Core.Meta.MetaScope));
+            
+            public static readonly ModelProperty InheritedScopesProperty =
+                ModelProperty.Register("InheritedScopes", typeof(IList<global::MetaDslx.Core.MetaScope>), typeof(global::MetaDslx.Core.MetaScope), typeof(global::MetaDslx.Core.Meta.MetaScope));
+            
+        }
+        
+        public static class MetaNamedElement
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty NameProperty =
+                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaNamedElement), typeof(global::MetaDslx.Core.Meta.MetaNamedElement));
+            
+        }
+        
+        public static class MetaTypedElement
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty TypeProperty =
+                ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypedElement), typeof(global::MetaDslx.Core.Meta.MetaTypedElement));
+            
+        }
+        
+        public static class MetaType
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+        }
+        
+        public static class MetaNamespace
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaNamespace), "Namespaces")]
+            public static readonly ModelProperty ParentProperty =
+                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.Meta.MetaNamespace));
+            
+            public static readonly ModelProperty UsingsProperty =
+                ModelProperty.Register("Usings", typeof(IList<global::MetaDslx.Core.MetaNamespace>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.Meta.MetaNamespace));
+            
+            [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaNamespace), "Parent")]
+            public static readonly ModelProperty NamespacesProperty =
+                ModelProperty.Register("Namespaces", typeof(IList<global::MetaDslx.Core.MetaNamespace>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.Meta.MetaNamespace));
+            
+            [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaModel), "Namespace")]
+            public static readonly ModelProperty ModelsProperty =
+                ModelProperty.Register("Models", typeof(IList<global::MetaDslx.Core.MetaModel>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.Meta.MetaNamespace));
+            
+        }
+        
+        public static class MetaModel
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty UriProperty =
+                ModelProperty.Register("Uri", typeof(string), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
+            
+            public static readonly ModelProperty PrefixProperty =
+                ModelProperty.Register("Prefix", typeof(string), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
+            
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaNamespace), "Models")]
+            public static readonly ModelProperty NamespaceProperty =
+                ModelProperty.Register("Namespace", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
+            
+            [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaDeclaration), "Model")]
+            public static readonly ModelProperty TypesProperty =
+                ModelProperty.Register("Types", typeof(IList<global::MetaDslx.Core.MetaType>), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty PropertiesProperty =
+                ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty OperationsProperty =
+                ModelProperty.Register("Operations", typeof(IList<global::MetaDslx.Core.MetaOperation>), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
+            
+        }
+        
+        public static class MetaDeclaration
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaModel), "Types")]
+            public static readonly ModelProperty ModelProperty =
+                ModelProperty.Register("Model", typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaDeclaration), typeof(global::MetaDslx.Core.Meta.MetaDeclaration));
+            
+            [ReadonlyAttribute]
+            public static readonly ModelProperty NamespaceProperty =
+                ModelProperty.Register("Namespace", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDeclaration), typeof(global::MetaDslx.Core.Meta.MetaDeclaration));
+            
+        }
+        
+        public static class MetaCollectionType
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty KindProperty =
+                ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaCollectionKind), typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.Meta.MetaCollectionType));
+            
+            public static readonly ModelProperty InnerTypeProperty =
+                ModelProperty.Register("InnerType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.Meta.MetaCollectionType));
+            
+        }
+        
+        public static class MetaNullableType
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty InnerTypeProperty =
+                ModelProperty.Register("InnerType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaNullableType), typeof(global::MetaDslx.Core.Meta.MetaNullableType));
+            
+        }
+        
+        public static class MetaPrimitiveType
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+        }
+        
+        public static class MetaEnum
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaEnumLiteral), "Enum")]
+            public static readonly ModelProperty EnumLiteralsProperty =
+                ModelProperty.Register("EnumLiterals", typeof(IList<global::MetaDslx.Core.MetaEnumLiteral>), typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.Meta.MetaEnum));
+            
+            [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaOperation), "Parent")]
+            public static readonly ModelProperty OperationsProperty =
+                ModelProperty.Register("Operations", typeof(IList<global::MetaDslx.Core.MetaOperation>), typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.Meta.MetaEnum));
+            
+        }
+        
+        public static class MetaEnumLiteral
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaEnum), "EnumLiterals")]
+            public static readonly ModelProperty EnumProperty =
+                ModelProperty.Register("Enum", typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.MetaEnumLiteral), typeof(global::MetaDslx.Core.Meta.MetaEnumLiteral));
+            
+        }
+        
+        public static class MetaClass
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty IsAbstractProperty =
+                ModelProperty.Register("IsAbstract", typeof(bool), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
+            
+            public static readonly ModelProperty SuperClassesProperty =
+                ModelProperty.Register("SuperClasses", typeof(IList<global::MetaDslx.Core.MetaClass>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
+            
+            [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "Parent")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "Class")]
+            public static readonly ModelProperty PropertiesProperty =
+                ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
+            
+            [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaOperation), "Parent")]
+            public static readonly ModelProperty OperationsProperty =
+                ModelProperty.Register("Operations", typeof(IList<global::MetaDslx.Core.MetaOperation>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty ConstructorProperty =
+                ModelProperty.Register("Constructor", typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
+            
+        }
+        
+        public static class MetaOperation
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaClass), "Operations")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaEnum), "Operations")]
+            public static readonly ModelProperty ParentProperty =
+                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.Meta.MetaOperation));
+            
+            [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaParameter), "Operation")]
+            public static readonly ModelProperty ParametersProperty =
+                ModelProperty.Register("Parameters", typeof(IList<global::MetaDslx.Core.MetaParameter>), typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.Meta.MetaOperation));
+            
+            public static readonly ModelProperty ReturnTypeProperty =
+                ModelProperty.Register("ReturnType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.Meta.MetaOperation));
+            
+        }
+        
+        public static class MetaConstructor
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [ContainmentAttribute]
+            public static readonly ModelProperty InitializersProperty =
+                ModelProperty.Register("Initializers", typeof(IList<global::MetaDslx.Core.MetaPropertyInitializer>), typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.Meta.MetaConstructor));
+            
+        }
+        
+        public static class MetaParameter
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaOperation), "Parameters")]
+            public static readonly ModelProperty OperationProperty =
+                ModelProperty.Register("Operation", typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.MetaParameter), typeof(global::MetaDslx.Core.Meta.MetaParameter));
+            
+        }
+        
+        public static class MetaProperty
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaClass), "Properties")]
+            public static readonly ModelProperty ParentProperty =
+                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
+            public static readonly ModelProperty KindProperty =
+                ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaPropertyKind), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaClass), "Properties")]
+            public static readonly ModelProperty ClassProperty =
+                ModelProperty.Register("Class", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "OppositeProperties")]
+            public static readonly ModelProperty OppositePropertiesProperty =
+                ModelProperty.Register("OppositeProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "SubsettingProperties")]
+            public static readonly ModelProperty SubsettedPropertiesProperty =
+                ModelProperty.Register("SubsettedProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "SubsettedProperties")]
+            public static readonly ModelProperty SubsettingPropertiesProperty =
+                ModelProperty.Register("SubsettingProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "RedefiningProperties")]
+            public static readonly ModelProperty RedefinedPropertiesProperty =
+                ModelProperty.Register("RedefinedProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "RedefinedProperties")]
+            public static readonly ModelProperty RedefiningPropertiesProperty =
+                ModelProperty.Register("RedefiningProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
+        }
+        
+        public static class MetaPropertyInitializer
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty PropertyProperty =
+                ModelProperty.Register("Property", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.Meta.MetaPropertyInitializer));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty ValueProperty =
+                ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.Meta.MetaPropertyInitializer));
+            
+        }
+        
+        public static class MetaSynthetizedPropertyInitializer
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+        }
+        
+        public static class MetaInheritedPropertyInitializer
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty ObjectProperty =
+                ModelProperty.Register("Object", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaInheritedPropertyInitializer), typeof(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer));
+            
+        }
+        
+        public static class MetaExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty KindProperty =
+                ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaExpressionKind), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
+            
+            [ReadonlyAttribute]
+            public static readonly ModelProperty TypeProperty =
+                ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
+            
+            [ReadonlyAttribute]
+            public static readonly ModelProperty ExpectedTypeProperty =
+                ModelProperty.Register("ExpectedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
+            
+            public static readonly ModelProperty DefinitionsProperty =
+                ModelProperty.Register("Definitions", typeof(IList<object>), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
+            
+            [ReadonlyAttribute]
+            public static readonly ModelProperty DefinitionProperty =
+                ModelProperty.Register("Definition", typeof(object), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
+            
+        }
+        
+        public static class MetaThisExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty ObjectProperty =
+                ModelProperty.Register("Object", typeof(object), typeof(global::MetaDslx.Core.MetaThisExpression), typeof(global::MetaDslx.Core.Meta.MetaThisExpression));
+            
+        }
+        
+        public static class MetaUnaryExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [ContainmentAttribute]
+            public static readonly ModelProperty ExpressionProperty =
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaUnaryExpression), typeof(global::MetaDslx.Core.Meta.MetaUnaryExpression));
+            
+        }
+        
+        public static class MetaBinaryExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [ContainmentAttribute]
+            public static readonly ModelProperty LeftProperty =
+                ModelProperty.Register("Left", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaBinaryExpression), typeof(global::MetaDslx.Core.Meta.MetaBinaryExpression));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty RightProperty =
+                ModelProperty.Register("Right", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaBinaryExpression), typeof(global::MetaDslx.Core.Meta.MetaBinaryExpression));
+            
+        }
+        
+        public static class MetaBinaryArithmeticExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+        }
+        
+        public static class MetaBinaryComparisonExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [ReadonlyAttribute]
+            public static readonly ModelProperty BalancedTypeProperty =
+                ModelProperty.Register("BalancedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaBinaryComparisonExpression), typeof(global::MetaDslx.Core.Meta.MetaBinaryComparisonExpression));
+            
+        }
+        
+        public static class MetaBinaryLogicalExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+        }
+        
+        public static class MetaNullCoalescingExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [ReadonlyAttribute]
+            public static readonly ModelProperty BalancedTypeProperty =
+                ModelProperty.Register("BalancedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaNullCoalescingExpression), typeof(global::MetaDslx.Core.Meta.MetaNullCoalescingExpression));
+            
+        }
+        
+        public static class MetaAssignmentExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+        }
+        
+        public static class MetaTypeConversionExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty TypeReferenceProperty =
+                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeConversionExpression), typeof(global::MetaDslx.Core.Meta.MetaTypeConversionExpression));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty ExpressionProperty =
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaTypeConversionExpression), typeof(global::MetaDslx.Core.Meta.MetaTypeConversionExpression));
+            
+        }
+        
+        public static class MetaTypeCheckExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty TypeReferenceProperty =
+                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeCheckExpression), typeof(global::MetaDslx.Core.Meta.MetaTypeCheckExpression));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty ExpressionProperty =
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaTypeCheckExpression), typeof(global::MetaDslx.Core.Meta.MetaTypeCheckExpression));
+            
+        }
+        
+        public static class MetaTypeOfExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty TypeReferenceProperty =
+                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeOfExpression), typeof(global::MetaDslx.Core.Meta.MetaTypeOfExpression));
+            
+        }
+        
+        public static class MetaConstantExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty ValueProperty =
+                ModelProperty.Register("Value", typeof(object), typeof(global::MetaDslx.Core.MetaConstantExpression), typeof(global::MetaDslx.Core.Meta.MetaConstantExpression));
+            
+        }
+        
+        public static class MetaIdentifierExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            public static readonly ModelProperty NameProperty =
+                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaIdentifierExpression), typeof(global::MetaDslx.Core.Meta.MetaIdentifierExpression));
+            
+            public static readonly ModelProperty ObjectProperty =
+                ModelProperty.Register("Object", typeof(object), typeof(global::MetaDslx.Core.MetaIdentifierExpression), typeof(global::MetaDslx.Core.Meta.MetaIdentifierExpression));
+            
+        }
+        
+        public static class MetaMemberAccessExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [ContainmentAttribute]
+            public static readonly ModelProperty ExpressionProperty =
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaMemberAccessExpression), typeof(global::MetaDslx.Core.Meta.MetaMemberAccessExpression));
+            
+            public static readonly ModelProperty NameProperty =
+                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaMemberAccessExpression), typeof(global::MetaDslx.Core.Meta.MetaMemberAccessExpression));
+            
+        }
+        
+        public static class MetaFunctionCallExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [ContainmentAttribute]
+            public static readonly ModelProperty ExpressionProperty =
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaFunctionCallExpression), typeof(global::MetaDslx.Core.Meta.MetaFunctionCallExpression));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty ArgumentsProperty =
+                ModelProperty.Register("Arguments", typeof(IList<global::MetaDslx.Core.MetaExpression>), typeof(global::MetaDslx.Core.MetaFunctionCallExpression), typeof(global::MetaDslx.Core.Meta.MetaFunctionCallExpression));
+            
+        }
+        
+        public static class MetaIndexerExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [ContainmentAttribute]
+            public static readonly ModelProperty ExpressionProperty =
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaIndexerExpression), typeof(global::MetaDslx.Core.Meta.MetaIndexerExpression));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty ArgumentsProperty =
+                ModelProperty.Register("Arguments", typeof(IList<global::MetaDslx.Core.MetaExpression>), typeof(global::MetaDslx.Core.MetaIndexerExpression), typeof(global::MetaDslx.Core.Meta.MetaIndexerExpression));
+            
+        }
+        
+        public static class MetaConditionalExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            [ContainmentAttribute]
+            public static readonly ModelProperty ConditionProperty =
+                ModelProperty.Register("Condition", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.Meta.MetaConditionalExpression));
+            
+            public static readonly ModelProperty BalancedTypeProperty =
+                ModelProperty.Register("BalancedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.Meta.MetaConditionalExpression));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty ThenProperty =
+                ModelProperty.Register("Then", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.Meta.MetaConditionalExpression));
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty ElseProperty =
+                ModelProperty.Register("Else", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.Meta.MetaConditionalExpression));
+            
+        }
+    }
+    
     public enum MetaCollectionKind
     {
         Set,
@@ -78,6 +723,115 @@ namespace MetaDslx.Core
         OrAssign,
     }
     
+    public interface MetaScopeEntry
+    {
+        MetaScope Parent { get; set; }
+    
+    }
+    
+    internal class MetaScopeEntryImpl : ModelObject, MetaDslx.Core.MetaScopeEntry
+    {
+        static MetaScopeEntryImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
+        public MetaScopeEntryImpl()
+        {
+            MetaImplementationProvider.Implementation.MetaScopeEntry_MetaScopeEntry(this);
+            this.MMakeDefault();
+        }
+        
+        MetaScope MetaScopeEntry.Parent
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScopeEntry.ParentProperty); 
+                if (result != null) return (MetaScope)result;
+                else return default(MetaScope);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaScopeEntry.ParentProperty, value); }
+        }
+    }
+    
+    public interface MetaScope : MetaDslx.Core.MetaScopeEntry
+    {
+        IList<MetaScopeEntry> Entries { get; }
+        IList<MetaScopeEntry> ImportedEntries { get; }
+        IList<MetaScope> ImportedScopes { get; }
+        IList<MetaScope> InheritedScopes { get; }
+    
+    }
+    
+    internal class MetaScopeImpl : ModelObject, MetaDslx.Core.MetaScope
+    {
+        static MetaScopeImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
+        public MetaScopeImpl()
+        {
+            this.MSet(global::MetaDslx.Core.Meta.MetaScope.EntriesProperty, new ModelList<MetaScopeEntry>(this, global::MetaDslx.Core.Meta.MetaScope.EntriesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaScope.ImportedEntriesProperty, new ModelList<MetaScopeEntry>(this, global::MetaDslx.Core.Meta.MetaScope.ImportedEntriesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaScope.ImportedScopesProperty, new ModelList<MetaScope>(this, global::MetaDslx.Core.Meta.MetaScope.ImportedScopesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaScope.InheritedScopesProperty, new ModelList<MetaScope>(this, global::MetaDslx.Core.Meta.MetaScope.InheritedScopesProperty));
+            MetaImplementationProvider.Implementation.MetaScope_MetaScope(this);
+            this.MMakeDefault();
+        }
+        
+        MetaScope MetaScopeEntry.Parent
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScopeEntry.ParentProperty); 
+                if (result != null) return (MetaScope)result;
+                else return default(MetaScope);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaScopeEntry.ParentProperty, value); }
+        }
+        
+        IList<MetaScopeEntry> MetaScope.Entries
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScope.EntriesProperty); 
+                if (result != null) return (IList<MetaScopeEntry>)result;
+                else return default(IList<MetaScopeEntry>);
+            }
+        }
+        
+        IList<MetaScopeEntry> MetaScope.ImportedEntries
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScope.ImportedEntriesProperty); 
+                if (result != null) return (IList<MetaScopeEntry>)result;
+                else return default(IList<MetaScopeEntry>);
+            }
+        }
+        
+        IList<MetaScope> MetaScope.ImportedScopes
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScope.ImportedScopesProperty); 
+                if (result != null) return (IList<MetaScope>)result;
+                else return default(IList<MetaScope>);
+            }
+        }
+        
+        IList<MetaScope> MetaScope.InheritedScopes
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScope.InheritedScopesProperty); 
+                if (result != null) return (IList<MetaScope>)result;
+                else return default(IList<MetaScope>);
+            }
+        }
+    }
+    
     public interface MetaNamedElement
     {
         string Name { get; set; }
@@ -86,18 +840,26 @@ namespace MetaDslx.Core
     
     internal class MetaNamedElementImpl : ModelObject, MetaDslx.Core.MetaNamedElement
     {
+        static MetaNamedElementImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
         public MetaNamedElementImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaNamedElement_MetaNamedElement(this);
+            MetaImplementationProvider.Implementation.MetaNamedElement_MetaNamedElement(this);
             this.MMakeDefault();
         }
         
-        internal static readonly ModelProperty NameProperty =
-            ModelProperty.Register("Name", typeof(string), typeof(MetaNamedElementImpl));
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
     }
     
@@ -109,44 +871,45 @@ namespace MetaDslx.Core
     
     internal class MetaTypedElementImpl : ModelObject, MetaDslx.Core.MetaTypedElement
     {
+        static MetaTypedElementImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
         public MetaTypedElementImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaTypedElement_MetaTypedElement(this);
+            MetaImplementationProvider.Implementation.MetaTypedElement_MetaTypedElement(this);
             this.MMakeDefault();
         }
         
-        internal static readonly ModelProperty TypeProperty =
-            ModelProperty.Register("Type", typeof(MetaType), typeof(MetaTypedElementImpl));
         MetaType MetaTypedElement.Type
         {
-            get { return (MetaType)this.MGetValue(MetaTypedElementImpl.TypeProperty); }
-            set { this.MSetValue(MetaTypedElementImpl.TypeProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
     }
     
     public interface MetaType
     {
     
-        bool IsAssignableFrom(MetaType valueType);
-        bool Equals(MetaType otherType);
     }
     
     internal class MetaTypeImpl : ModelObject, MetaDslx.Core.MetaType
     {
+        static MetaTypeImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
         public MetaTypeImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaType_MetaType(this);
+            MetaImplementationProvider.Implementation.MetaType_MetaType(this);
             this.MMakeDefault();
-        }
-        
-        bool MetaType.IsAssignableFrom(MetaType valueType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_IsAssignableFrom(this, valueType);
-        }
-        
-        bool MetaType.Equals(MetaType otherType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
         }
     }
     
@@ -163,56 +926,68 @@ namespace MetaDslx.Core
     {
         static MetaNamespaceImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaNamespaceImpl), typeof(MetaNamedElementImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaNamespaceImpl()
         {
-            this.MSetValue(MetaNamespaceImpl.UsingsProperty, new ModelList<MetaNamespace>(this, MetaNamespaceImpl.UsingsProperty));
-            this.MSetValue(MetaNamespaceImpl.NamespacesProperty, new ModelList<MetaNamespace>(this, MetaNamespaceImpl.NamespacesProperty));
-            this.MSetValue(MetaNamespaceImpl.ModelsProperty, new ModelList<MetaModel>(this, MetaNamespaceImpl.ModelsProperty));
-            MetaModelImplementationProvider.Implementation.MetaNamespace_MetaNamespace(this);
+            this.MSet(global::MetaDslx.Core.Meta.MetaNamespace.UsingsProperty, new ModelList<MetaNamespace>(this, global::MetaDslx.Core.Meta.MetaNamespace.UsingsProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaNamespace.NamespacesProperty, new ModelList<MetaNamespace>(this, global::MetaDslx.Core.Meta.MetaNamespace.NamespacesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaNamespace.ModelsProperty, new ModelList<MetaModel>(this, global::MetaDslx.Core.Meta.MetaNamespace.ModelsProperty));
+            MetaImplementationProvider.Implementation.MetaNamespace_MetaNamespace(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
-        [OppositeAttribute(typeof(MetaNamespaceImpl), "Namespaces")]
-        internal static readonly ModelProperty ParentProperty =
-            ModelProperty.Register("Parent", typeof(MetaNamespace), typeof(MetaNamespaceImpl));
         MetaNamespace MetaNamespace.Parent
         {
-            get { return (MetaNamespace)this.MGetValue(MetaNamespaceImpl.ParentProperty); }
-            set { this.MSetValue(MetaNamespaceImpl.ParentProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamespace.ParentProperty); 
+                if (result != null) return (MetaNamespace)result;
+                else return default(MetaNamespace);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamespace.ParentProperty, value); }
         }
         
-        internal static readonly ModelProperty UsingsProperty =
-            ModelProperty.Register("Usings", typeof(IList<MetaNamespace>), typeof(MetaNamespaceImpl));
         IList<MetaNamespace> MetaNamespace.Usings
         {
-            get { return (IList<MetaNamespace>)this.MGetValue(MetaNamespaceImpl.UsingsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamespace.UsingsProperty); 
+                if (result != null) return (IList<MetaNamespace>)result;
+                else return default(IList<MetaNamespace>);
+            }
         }
         
-        [ContainmentAttribute]
-        [OppositeAttribute(typeof(MetaNamespaceImpl), "Parent")]
-        internal static readonly ModelProperty NamespacesProperty =
-            ModelProperty.Register("Namespaces", typeof(IList<MetaNamespace>), typeof(MetaNamespaceImpl));
         IList<MetaNamespace> MetaNamespace.Namespaces
         {
-            get { return (IList<MetaNamespace>)this.MGetValue(MetaNamespaceImpl.NamespacesProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamespace.NamespacesProperty); 
+                if (result != null) return (IList<MetaNamespace>)result;
+                else return default(IList<MetaNamespace>);
+            }
         }
         
-        [ContainmentAttribute]
-        [OppositeAttribute(typeof(MetaModelImpl), "Namespace")]
-        internal static readonly ModelProperty ModelsProperty =
-            ModelProperty.Register("Models", typeof(IList<MetaModel>), typeof(MetaNamespaceImpl));
         IList<MetaModel> MetaNamespace.Models
         {
-            get { return (IList<MetaModel>)this.MGetValue(MetaNamespaceImpl.ModelsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamespace.ModelsProperty); 
+                if (result != null) return (IList<MetaModel>)result;
+                else return default(IList<MetaModel>);
+            }
         }
     }
     
@@ -231,72 +1006,90 @@ namespace MetaDslx.Core
     {
         static MetaModelImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaModelImpl), typeof(MetaNamedElementImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaModelImpl()
         {
-            this.MSetValue(MetaModelImpl.TypesProperty, new ModelList<MetaType>(this, MetaModelImpl.TypesProperty));
-            this.MSetValue(MetaModelImpl.PropertiesProperty, new ModelList<MetaProperty>(this, MetaModelImpl.PropertiesProperty));
-            this.MSetValue(MetaModelImpl.OperationsProperty, new ModelList<MetaOperation>(this, MetaModelImpl.OperationsProperty));
-            MetaModelImplementationProvider.Implementation.MetaModel_MetaModel(this);
+            this.MSet(global::MetaDslx.Core.Meta.MetaModel.TypesProperty, new ModelList<MetaType>(this, global::MetaDslx.Core.Meta.MetaModel.TypesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaModel.PropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaModel.PropertiesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaModel.OperationsProperty, new ModelList<MetaOperation>(this, global::MetaDslx.Core.Meta.MetaModel.OperationsProperty));
+            MetaImplementationProvider.Implementation.MetaModel_MetaModel(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
-        internal static readonly ModelProperty UriProperty =
-            ModelProperty.Register("Uri", typeof(string), typeof(MetaModelImpl));
         string MetaModel.Uri
         {
-            get { return (string)this.MGetValue(MetaModelImpl.UriProperty); }
-            set { this.MSetValue(MetaModelImpl.UriProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaModel.UriProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaModel.UriProperty, value); }
         }
         
-        internal static readonly ModelProperty PrefixProperty =
-            ModelProperty.Register("Prefix", typeof(string), typeof(MetaModelImpl));
         string MetaModel.Prefix
         {
-            get { return (string)this.MGetValue(MetaModelImpl.PrefixProperty); }
-            set { this.MSetValue(MetaModelImpl.PrefixProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaModel.PrefixProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaModel.PrefixProperty, value); }
         }
         
-        [OppositeAttribute(typeof(MetaNamespaceImpl), "Models")]
-        internal static readonly ModelProperty NamespaceProperty =
-            ModelProperty.Register("Namespace", typeof(MetaNamespace), typeof(MetaModelImpl));
         MetaNamespace MetaModel.Namespace
         {
-            get { return (MetaNamespace)this.MGetValue(MetaModelImpl.NamespaceProperty); }
-            set { this.MSetValue(MetaModelImpl.NamespaceProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaModel.NamespaceProperty); 
+                if (result != null) return (MetaNamespace)result;
+                else return default(MetaNamespace);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaModel.NamespaceProperty, value); }
         }
         
-        [ContainmentAttribute]
-        [OppositeAttribute(typeof(MetaDeclarationImpl), "Model")]
-        internal static readonly ModelProperty TypesProperty =
-            ModelProperty.Register("Types", typeof(IList<MetaType>), typeof(MetaModelImpl));
         IList<MetaType> MetaModel.Types
         {
-            get { return (IList<MetaType>)this.MGetValue(MetaModelImpl.TypesProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaModel.TypesProperty); 
+                if (result != null) return (IList<MetaType>)result;
+                else return default(IList<MetaType>);
+            }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty PropertiesProperty =
-            ModelProperty.Register("Properties", typeof(IList<MetaProperty>), typeof(MetaModelImpl));
         IList<MetaProperty> MetaModel.Properties
         {
-            get { return (IList<MetaProperty>)this.MGetValue(MetaModelImpl.PropertiesProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaModel.PropertiesProperty); 
+                if (result != null) return (IList<MetaProperty>)result;
+                else return default(IList<MetaProperty>);
+            }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty OperationsProperty =
-            ModelProperty.Register("Operations", typeof(IList<MetaOperation>), typeof(MetaModelImpl));
         IList<MetaOperation> MetaModel.Operations
         {
-            get { return (IList<MetaOperation>)this.MGetValue(MetaModelImpl.OperationsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaModel.OperationsProperty); 
+                if (result != null) return (IList<MetaOperation>)result;
+                else return default(IList<MetaOperation>);
+            }
         }
     }
     
@@ -311,36 +1104,40 @@ namespace MetaDslx.Core
     {
         static MetaDeclarationImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaDeclarationImpl), typeof(MetaNamedElementImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaDeclarationImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaDeclaration_MetaDeclaration(this);
+            MetaImplementationProvider.Implementation.MetaDeclaration_MetaDeclaration(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
-        [OppositeAttribute(typeof(MetaModelImpl), "Types")]
-        internal static readonly ModelProperty ModelProperty =
-            ModelProperty.Register("Model", typeof(MetaModel), typeof(MetaDeclarationImpl));
         MetaModel MetaDeclaration.Model
         {
-            get { return (MetaModel)this.MGetValue(MetaDeclarationImpl.ModelProperty); }
-            set { this.MSetValue(MetaDeclarationImpl.ModelProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaDeclaration.ModelProperty); 
+                if (result != null) return (MetaModel)result;
+                else return default(MetaModel);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaDeclaration.ModelProperty, value); }
         }
         
-        [ReadonlyAttribute]
-        internal static readonly ModelProperty NamespaceProperty =
-            ModelProperty.Register("Namespace", typeof(MetaNamespace), typeof(MetaDeclarationImpl));
         MetaNamespace MetaDeclaration.Namespace
         {
-            get { return MetaModelImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
+            get { return MetaImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
         }
     }
     
@@ -355,39 +1152,35 @@ namespace MetaDslx.Core
     {
         static MetaCollectionTypeImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaCollectionTypeImpl), typeof(MetaTypeImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaCollectionTypeImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaCollectionType_MetaCollectionType(this);
+            MetaImplementationProvider.Implementation.MetaCollectionType_MetaCollectionType(this);
             this.MMakeDefault();
         }
         
-        internal static readonly ModelProperty KindProperty =
-            ModelProperty.Register("Kind", typeof(MetaCollectionKind), typeof(MetaCollectionTypeImpl));
         MetaCollectionKind MetaCollectionType.Kind
         {
-            get { return (MetaCollectionKind)this.MGetValue(MetaCollectionTypeImpl.KindProperty); }
-            set { this.MSetValue(MetaCollectionTypeImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaCollectionType.KindProperty); 
+                if (result != null) return (MetaCollectionKind)result;
+                else return default(MetaCollectionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaCollectionType.KindProperty, value); }
         }
         
-        internal static readonly ModelProperty InnerTypeProperty =
-            ModelProperty.Register("InnerType", typeof(MetaType), typeof(MetaCollectionTypeImpl));
         MetaType MetaCollectionType.InnerType
         {
-            get { return (MetaType)this.MGetValue(MetaCollectionTypeImpl.InnerTypeProperty); }
-            set { this.MSetValue(MetaCollectionTypeImpl.InnerTypeProperty, value); }
-        }
-        
-        bool MetaType.IsAssignableFrom(MetaType valueType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_IsAssignableFrom(this, valueType);
-        }
-        
-        bool MetaType.Equals(MetaType otherType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaCollectionType.InnerTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaCollectionType.InnerTypeProperty, value); }
         }
     }
     
@@ -401,31 +1194,24 @@ namespace MetaDslx.Core
     {
         static MetaNullableTypeImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaNullableTypeImpl), typeof(MetaTypeImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaNullableTypeImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaNullableType_MetaNullableType(this);
+            MetaImplementationProvider.Implementation.MetaNullableType_MetaNullableType(this);
             this.MMakeDefault();
         }
         
-        internal static readonly ModelProperty InnerTypeProperty =
-            ModelProperty.Register("InnerType", typeof(MetaType), typeof(MetaNullableTypeImpl));
         MetaType MetaNullableType.InnerType
         {
-            get { return (MetaType)this.MGetValue(MetaNullableTypeImpl.InnerTypeProperty); }
-            set { this.MSetValue(MetaNullableTypeImpl.InnerTypeProperty, value); }
-        }
-        
-        bool MetaType.IsAssignableFrom(MetaType valueType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_IsAssignableFrom(this, valueType);
-        }
-        
-        bool MetaType.Equals(MetaType otherType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNullableType.InnerTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNullableType.InnerTypeProperty, value); }
         }
     }
     
@@ -438,30 +1224,24 @@ namespace MetaDslx.Core
     {
         static MetaPrimitiveTypeImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaPrimitiveTypeImpl), typeof(MetaTypeImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaPrimitiveTypeImpl), typeof(MetaNamedElementImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaPrimitiveTypeImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaPrimitiveType_MetaPrimitiveType(this);
+            MetaImplementationProvider.Implementation.MetaPrimitiveType_MetaPrimitiveType(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
-        }
-        
-        bool MetaType.IsAssignableFrom(MetaType valueType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_IsAssignableFrom(this, valueType);
-        }
-        
-        bool MetaType.Equals(MetaType otherType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
     }
     
@@ -476,62 +1256,62 @@ namespace MetaDslx.Core
     {
         static MetaEnumImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaTypeImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaNamedElementImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaEnumImpl), typeof(MetaDeclarationImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaEnumImpl()
         {
-            this.MSetValue(MetaEnumImpl.EnumLiteralsProperty, new ModelList<MetaEnumLiteral>(this, MetaEnumImpl.EnumLiteralsProperty));
-            this.MSetValue(MetaEnumImpl.OperationsProperty, new ModelList<MetaOperation>(this, MetaEnumImpl.OperationsProperty));
-            MetaModelImplementationProvider.Implementation.MetaEnum_MetaEnum(this);
+            this.MSet(global::MetaDslx.Core.Meta.MetaEnum.EnumLiteralsProperty, new ModelList<MetaEnumLiteral>(this, global::MetaDslx.Core.Meta.MetaEnum.EnumLiteralsProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaEnum.OperationsProperty, new ModelList<MetaOperation>(this, global::MetaDslx.Core.Meta.MetaEnum.OperationsProperty));
+            MetaImplementationProvider.Implementation.MetaEnum_MetaEnum(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
         MetaModel MetaDeclaration.Model
         {
-            get { return (MetaModel)this.MGetValue(MetaDeclarationImpl.ModelProperty); }
-            set { this.MSetValue(MetaDeclarationImpl.ModelProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaDeclaration.ModelProperty); 
+                if (result != null) return (MetaModel)result;
+                else return default(MetaModel);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaDeclaration.ModelProperty, value); }
         }
         
         MetaNamespace MetaDeclaration.Namespace
         {
-            get { return MetaModelImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
+            get { return MetaImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
         }
         
-        [ContainmentAttribute]
-        [OppositeAttribute(typeof(MetaEnumLiteralImpl), "Enum")]
-        internal static readonly ModelProperty EnumLiteralsProperty =
-            ModelProperty.Register("EnumLiterals", typeof(IList<MetaEnumLiteral>), typeof(MetaEnumImpl));
         IList<MetaEnumLiteral> MetaEnum.EnumLiterals
         {
-            get { return (IList<MetaEnumLiteral>)this.MGetValue(MetaEnumImpl.EnumLiteralsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaEnum.EnumLiteralsProperty); 
+                if (result != null) return (IList<MetaEnumLiteral>)result;
+                else return default(IList<MetaEnumLiteral>);
+            }
         }
         
-        [ContainmentAttribute]
-        [OppositeAttribute(typeof(MetaOperationImpl), "Parent")]
-        internal static readonly ModelProperty OperationsProperty =
-            ModelProperty.Register("Operations", typeof(IList<MetaOperation>), typeof(MetaEnumImpl));
         IList<MetaOperation> MetaEnum.Operations
         {
-            get { return (IList<MetaOperation>)this.MGetValue(MetaEnumImpl.OperationsProperty); }
-        }
-        
-        bool MetaType.IsAssignableFrom(MetaType valueType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_IsAssignableFrom(this, valueType);
-        }
-        
-        bool MetaType.Equals(MetaType otherType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaEnum.OperationsProperty); 
+                if (result != null) return (IList<MetaOperation>)result;
+                else return default(IList<MetaOperation>);
+            }
         }
     }
     
@@ -545,28 +1325,35 @@ namespace MetaDslx.Core
     {
         static MetaEnumLiteralImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaEnumLiteralImpl), typeof(MetaNamedElementImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaEnumLiteralImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaEnumLiteral_MetaEnumLiteral(this);
+            MetaImplementationProvider.Implementation.MetaEnumLiteral_MetaEnumLiteral(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
-        [OppositeAttribute(typeof(MetaEnumImpl), "EnumLiterals")]
-        internal static readonly ModelProperty EnumProperty =
-            ModelProperty.Register("Enum", typeof(MetaEnum), typeof(MetaEnumLiteralImpl));
         MetaEnum MetaEnumLiteral.Enum
         {
-            get { return (MetaEnum)this.MGetValue(MetaEnumLiteralImpl.EnumProperty); }
-            set { this.MSetValue(MetaEnumLiteralImpl.EnumProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaEnumLiteral.EnumProperty); 
+                if (result != null) return (MetaEnum)result;
+                else return default(MetaEnum);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaEnumLiteral.EnumProperty, value); }
         }
     }
     
@@ -587,107 +1374,114 @@ namespace MetaDslx.Core
     {
         static MetaClassImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaTypeImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaNamedElementImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaClassImpl), typeof(MetaDeclarationImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaClassImpl()
         {
-            this.MSetValue(MetaClassImpl.SuperClassesProperty, new ModelList<MetaClass>(this, MetaClassImpl.SuperClassesProperty));
-            this.MSetValue(MetaClassImpl.PropertiesProperty, new ModelList<MetaProperty>(this, MetaClassImpl.PropertiesProperty));
-            this.MSetValue(MetaClassImpl.OperationsProperty, new ModelList<MetaOperation>(this, MetaClassImpl.OperationsProperty));
-            MetaModelImplementationProvider.Implementation.MetaClass_MetaClass(this);
+            this.MSet(global::MetaDslx.Core.Meta.MetaClass.SuperClassesProperty, new ModelList<MetaClass>(this, global::MetaDslx.Core.Meta.MetaClass.SuperClassesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaClass.PropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaClass.PropertiesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaClass.OperationsProperty, new ModelList<MetaOperation>(this, global::MetaDslx.Core.Meta.MetaClass.OperationsProperty));
+            MetaImplementationProvider.Implementation.MetaClass_MetaClass(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
         MetaModel MetaDeclaration.Model
         {
-            get { return (MetaModel)this.MGetValue(MetaDeclarationImpl.ModelProperty); }
-            set { this.MSetValue(MetaDeclarationImpl.ModelProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaDeclaration.ModelProperty); 
+                if (result != null) return (MetaModel)result;
+                else return default(MetaModel);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaDeclaration.ModelProperty, value); }
         }
         
         MetaNamespace MetaDeclaration.Namespace
         {
-            get { return MetaModelImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
+            get { return MetaImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
         }
         
-        internal static readonly ModelProperty IsAbstractProperty =
-            ModelProperty.Register("IsAbstract", typeof(bool), typeof(MetaClassImpl));
         bool MetaClass.IsAbstract
         {
-            get { return (bool)this.MGetValue(MetaClassImpl.IsAbstractProperty); }
-            set { this.MSetValue(MetaClassImpl.IsAbstractProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaClass.IsAbstractProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaClass.IsAbstractProperty, value); }
         }
         
-        internal static readonly ModelProperty SuperClassesProperty =
-            ModelProperty.Register("SuperClasses", typeof(IList<MetaClass>), typeof(MetaClassImpl));
         IList<MetaClass> MetaClass.SuperClasses
         {
-            get { return (IList<MetaClass>)this.MGetValue(MetaClassImpl.SuperClassesProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaClass.SuperClassesProperty); 
+                if (result != null) return (IList<MetaClass>)result;
+                else return default(IList<MetaClass>);
+            }
         }
         
-        [ContainmentAttribute]
-        [OppositeAttribute(typeof(MetaPropertyImpl), "Parent")]
-        [OppositeAttribute(typeof(MetaPropertyImpl), "Class")]
-        internal static readonly ModelProperty PropertiesProperty =
-            ModelProperty.Register("Properties", typeof(IList<MetaProperty>), typeof(MetaClassImpl));
         IList<MetaProperty> MetaClass.Properties
         {
-            get { return (IList<MetaProperty>)this.MGetValue(MetaClassImpl.PropertiesProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaClass.PropertiesProperty); 
+                if (result != null) return (IList<MetaProperty>)result;
+                else return default(IList<MetaProperty>);
+            }
         }
         
-        [ContainmentAttribute]
-        [OppositeAttribute(typeof(MetaOperationImpl), "Parent")]
-        internal static readonly ModelProperty OperationsProperty =
-            ModelProperty.Register("Operations", typeof(IList<MetaOperation>), typeof(MetaClassImpl));
         IList<MetaOperation> MetaClass.Operations
         {
-            get { return (IList<MetaOperation>)this.MGetValue(MetaClassImpl.OperationsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaClass.OperationsProperty); 
+                if (result != null) return (IList<MetaOperation>)result;
+                else return default(IList<MetaOperation>);
+            }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ConstructorProperty =
-            ModelProperty.Register("Constructor", typeof(MetaConstructor), typeof(MetaClassImpl));
         MetaConstructor MetaClass.Constructor
         {
-            get { return (MetaConstructor)this.MGetValue(MetaClassImpl.ConstructorProperty); }
-            set { this.MSetValue(MetaClassImpl.ConstructorProperty, value); }
-        }
-        
-        bool MetaType.IsAssignableFrom(MetaType valueType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_IsAssignableFrom(this, valueType);
-        }
-        
-        bool MetaType.Equals(MetaType otherType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaClass.ConstructorProperty); 
+                if (result != null) return (MetaConstructor)result;
+                else return default(MetaConstructor);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaClass.ConstructorProperty, value); }
         }
         
         IList<MetaClass> MetaClass.GetAllSuperClasses()
         {
-            return MetaModelImplementationProvider.Implementation.MetaClass_GetAllSuperClasses(this);
+            return MetaImplementationProvider.Implementation.MetaClass_GetAllSuperClasses(this);
         }
         
         IList<MetaProperty> MetaClass.GetAllProperties()
         {
-            return MetaModelImplementationProvider.Implementation.MetaClass_GetAllProperties(this);
+            return MetaImplementationProvider.Implementation.MetaClass_GetAllProperties(this);
         }
         
         IList<MetaOperation> MetaClass.GetAllOperations()
         {
-            return MetaModelImplementationProvider.Implementation.MetaClass_GetAllOperations(this);
+            return MetaImplementationProvider.Implementation.MetaClass_GetAllOperations(this);
         }
     }
     
-    public interface MetaOperation : MetaDslx.Core.MetaType, MetaDslx.Core.MetaNamedElement
+    public interface MetaOperation : MetaDslx.Core.MetaNamedElement
     {
         MetaType Parent { get; set; }
         IList<MetaParameter> Parameters { get; }
@@ -699,58 +1493,57 @@ namespace MetaDslx.Core
     {
         static MetaOperationImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaOperationImpl), typeof(MetaTypeImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaOperationImpl), typeof(MetaNamedElementImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaOperationImpl()
         {
-            this.MSetValue(MetaOperationImpl.ParametersProperty, new ModelList<MetaParameter>(this, MetaOperationImpl.ParametersProperty));
-            MetaModelImplementationProvider.Implementation.MetaOperation_MetaOperation(this);
+            this.MSet(global::MetaDslx.Core.Meta.MetaOperation.ParametersProperty, new ModelList<MetaParameter>(this, global::MetaDslx.Core.Meta.MetaOperation.ParametersProperty));
+            MetaImplementationProvider.Implementation.MetaOperation_MetaOperation(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
-        [OppositeAttribute(typeof(MetaClassImpl), "Operations")]
-        [OppositeAttribute(typeof(MetaEnumImpl), "Operations")]
-        internal static readonly ModelProperty ParentProperty =
-            ModelProperty.Register("Parent", typeof(MetaType), typeof(MetaOperationImpl));
         MetaType MetaOperation.Parent
         {
-            get { return (MetaType)this.MGetValue(MetaOperationImpl.ParentProperty); }
-            set { this.MSetValue(MetaOperationImpl.ParentProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaOperation.ParentProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperation.ParentProperty, value); }
         }
         
-        [ContainmentAttribute]
-        [OppositeAttribute(typeof(MetaParameterImpl), "Operation")]
-        internal static readonly ModelProperty ParametersProperty =
-            ModelProperty.Register("Parameters", typeof(IList<MetaParameter>), typeof(MetaOperationImpl));
         IList<MetaParameter> MetaOperation.Parameters
         {
-            get { return (IList<MetaParameter>)this.MGetValue(MetaOperationImpl.ParametersProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaOperation.ParametersProperty); 
+                if (result != null) return (IList<MetaParameter>)result;
+                else return default(IList<MetaParameter>);
+            }
         }
         
-        internal static readonly ModelProperty ReturnTypeProperty =
-            ModelProperty.Register("ReturnType", typeof(MetaType), typeof(MetaOperationImpl));
         MetaType MetaOperation.ReturnType
         {
-            get { return (MetaType)this.MGetValue(MetaOperationImpl.ReturnTypeProperty); }
-            set { this.MSetValue(MetaOperationImpl.ReturnTypeProperty, value); }
-        }
-        
-        bool MetaType.IsAssignableFrom(MetaType valueType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_IsAssignableFrom(this, valueType);
-        }
-        
-        bool MetaType.Equals(MetaType otherType)
-        {
-            return MetaModelImplementationProvider.Implementation.MetaType_Equals(this, otherType);
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaOperation.ReturnTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperation.ReturnTypeProperty, value); }
         }
     }
     
@@ -764,28 +1557,35 @@ namespace MetaDslx.Core
     {
         static MetaConstructorImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaConstructorImpl), typeof(MetaNamedElementImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaConstructorImpl()
         {
-            this.MSetValue(MetaConstructorImpl.InitializersProperty, new ModelList<MetaPropertyInitializer>(this, MetaConstructorImpl.InitializersProperty));
-            MetaModelImplementationProvider.Implementation.MetaConstructor_MetaConstructor(this);
+            this.MSet(global::MetaDslx.Core.Meta.MetaConstructor.InitializersProperty, new ModelList<MetaPropertyInitializer>(this, global::MetaDslx.Core.Meta.MetaConstructor.InitializersProperty));
+            MetaImplementationProvider.Implementation.MetaConstructor_MetaConstructor(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty InitializersProperty =
-            ModelProperty.Register("Initializers", typeof(IList<MetaPropertyInitializer>), typeof(MetaConstructorImpl));
         IList<MetaPropertyInitializer> MetaConstructor.Initializers
         {
-            get { return (IList<MetaPropertyInitializer>)this.MGetValue(MetaConstructorImpl.InitializersProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaConstructor.InitializersProperty); 
+                if (result != null) return (IList<MetaPropertyInitializer>)result;
+                else return default(IList<MetaPropertyInitializer>);
+            }
         }
     }
     
@@ -799,35 +1599,46 @@ namespace MetaDslx.Core
     {
         static MetaParameterImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaParameterImpl), typeof(MetaNamedElementImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaParameterImpl), typeof(MetaTypedElementImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaParameterImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaParameter_MetaParameter(this);
+            MetaImplementationProvider.Implementation.MetaParameter_MetaParameter(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
         MetaType MetaTypedElement.Type
         {
-            get { return (MetaType)this.MGetValue(MetaTypedElementImpl.TypeProperty); }
-            set { this.MSetValue(MetaTypedElementImpl.TypeProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
         
-        [OppositeAttribute(typeof(MetaOperationImpl), "Parameters")]
-        internal static readonly ModelProperty OperationProperty =
-            ModelProperty.Register("Operation", typeof(MetaOperation), typeof(MetaParameterImpl));
         MetaOperation MetaParameter.Operation
         {
-            get { return (MetaOperation)this.MGetValue(MetaParameterImpl.OperationProperty); }
-            set { this.MSetValue(MetaParameterImpl.OperationProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaParameter.OperationProperty); 
+                if (result != null) return (MetaOperation)result;
+                else return default(MetaOperation);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaParameter.OperationProperty, value); }
         }
     }
     
@@ -848,97 +1659,123 @@ namespace MetaDslx.Core
     {
         static MetaPropertyImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaPropertyImpl), typeof(MetaNamedElementImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaPropertyImpl), typeof(MetaTypedElementImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaPropertyImpl()
         {
-            this.MSetValue(MetaPropertyImpl.OppositePropertiesProperty, new ModelList<MetaProperty>(this, MetaPropertyImpl.OppositePropertiesProperty));
-            this.MSetValue(MetaPropertyImpl.SubsettedPropertiesProperty, new ModelList<MetaProperty>(this, MetaPropertyImpl.SubsettedPropertiesProperty));
-            this.MSetValue(MetaPropertyImpl.SubsettingPropertiesProperty, new ModelList<MetaProperty>(this, MetaPropertyImpl.SubsettingPropertiesProperty));
-            this.MSetValue(MetaPropertyImpl.RedefinedPropertiesProperty, new ModelList<MetaProperty>(this, MetaPropertyImpl.RedefinedPropertiesProperty));
-            this.MSetValue(MetaPropertyImpl.RedefiningPropertiesProperty, new ModelList<MetaProperty>(this, MetaPropertyImpl.RedefiningPropertiesProperty));
-            MetaModelImplementationProvider.Implementation.MetaProperty_MetaProperty(this);
+            this.MSet(global::MetaDslx.Core.Meta.MetaProperty.OppositePropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaProperty.OppositePropertiesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaProperty.SubsettedPropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaProperty.SubsettedPropertiesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaProperty.SubsettingPropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaProperty.SubsettingPropertiesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaProperty.RedefinedPropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaProperty.RedefinedPropertiesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaProperty.RedefiningPropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaProperty.RedefiningPropertiesProperty));
+            MetaImplementationProvider.Implementation.MetaProperty_MetaProperty(this);
             this.MMakeDefault();
         }
         
         string MetaNamedElement.Name
         {
-            get { return (string)this.MGetValue(MetaNamedElementImpl.NameProperty); }
-            set { this.MSetValue(MetaNamedElementImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
         MetaType MetaTypedElement.Type
         {
-            get { return (MetaType)this.MGetValue(MetaTypedElementImpl.TypeProperty); }
-            set { this.MSetValue(MetaTypedElementImpl.TypeProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
         
-        [OppositeAttribute(typeof(MetaClassImpl), "Properties")]
-        internal static readonly ModelProperty ParentProperty =
-            ModelProperty.Register("Parent", typeof(MetaType), typeof(MetaPropertyImpl));
         MetaType MetaProperty.Parent
         {
-            get { return (MetaType)this.MGetValue(MetaPropertyImpl.ParentProperty); }
-            set { this.MSetValue(MetaPropertyImpl.ParentProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaProperty.ParentProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaProperty.ParentProperty, value); }
         }
         
-        internal static readonly ModelProperty KindProperty =
-            ModelProperty.Register("Kind", typeof(MetaPropertyKind), typeof(MetaPropertyImpl));
         MetaPropertyKind MetaProperty.Kind
         {
-            get { return (MetaPropertyKind)this.MGetValue(MetaPropertyImpl.KindProperty); }
-            set { this.MSetValue(MetaPropertyImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaProperty.KindProperty); 
+                if (result != null) return (MetaPropertyKind)result;
+                else return default(MetaPropertyKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaProperty.KindProperty, value); }
         }
         
-        [OppositeAttribute(typeof(MetaClassImpl), "Properties")]
-        internal static readonly ModelProperty ClassProperty =
-            ModelProperty.Register("Class", typeof(MetaClass), typeof(MetaPropertyImpl));
         MetaClass MetaProperty.Class
         {
-            get { return (MetaClass)this.MGetValue(MetaPropertyImpl.ClassProperty); }
-            set { this.MSetValue(MetaPropertyImpl.ClassProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaProperty.ClassProperty); 
+                if (result != null) return (MetaClass)result;
+                else return default(MetaClass);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaProperty.ClassProperty, value); }
         }
         
-        [OppositeAttribute(typeof(MetaPropertyImpl), "OppositeProperties")]
-        internal static readonly ModelProperty OppositePropertiesProperty =
-            ModelProperty.Register("OppositeProperties", typeof(IList<MetaProperty>), typeof(MetaPropertyImpl));
         IList<MetaProperty> MetaProperty.OppositeProperties
         {
-            get { return (IList<MetaProperty>)this.MGetValue(MetaPropertyImpl.OppositePropertiesProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaProperty.OppositePropertiesProperty); 
+                if (result != null) return (IList<MetaProperty>)result;
+                else return default(IList<MetaProperty>);
+            }
         }
         
-        [OppositeAttribute(typeof(MetaPropertyImpl), "SubsettingProperties")]
-        internal static readonly ModelProperty SubsettedPropertiesProperty =
-            ModelProperty.Register("SubsettedProperties", typeof(IList<MetaProperty>), typeof(MetaPropertyImpl));
         IList<MetaProperty> MetaProperty.SubsettedProperties
         {
-            get { return (IList<MetaProperty>)this.MGetValue(MetaPropertyImpl.SubsettedPropertiesProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaProperty.SubsettedPropertiesProperty); 
+                if (result != null) return (IList<MetaProperty>)result;
+                else return default(IList<MetaProperty>);
+            }
         }
         
-        [OppositeAttribute(typeof(MetaPropertyImpl), "SubsettedProperties")]
-        internal static readonly ModelProperty SubsettingPropertiesProperty =
-            ModelProperty.Register("SubsettingProperties", typeof(IList<MetaProperty>), typeof(MetaPropertyImpl));
         IList<MetaProperty> MetaProperty.SubsettingProperties
         {
-            get { return (IList<MetaProperty>)this.MGetValue(MetaPropertyImpl.SubsettingPropertiesProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaProperty.SubsettingPropertiesProperty); 
+                if (result != null) return (IList<MetaProperty>)result;
+                else return default(IList<MetaProperty>);
+            }
         }
         
-        [OppositeAttribute(typeof(MetaPropertyImpl), "RedefiningProperties")]
-        internal static readonly ModelProperty RedefinedPropertiesProperty =
-            ModelProperty.Register("RedefinedProperties", typeof(IList<MetaProperty>), typeof(MetaPropertyImpl));
         IList<MetaProperty> MetaProperty.RedefinedProperties
         {
-            get { return (IList<MetaProperty>)this.MGetValue(MetaPropertyImpl.RedefinedPropertiesProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaProperty.RedefinedPropertiesProperty); 
+                if (result != null) return (IList<MetaProperty>)result;
+                else return default(IList<MetaProperty>);
+            }
         }
         
-        [OppositeAttribute(typeof(MetaPropertyImpl), "RedefinedProperties")]
-        internal static readonly ModelProperty RedefiningPropertiesProperty =
-            ModelProperty.Register("RedefiningProperties", typeof(IList<MetaProperty>), typeof(MetaPropertyImpl));
         IList<MetaProperty> MetaProperty.RedefiningProperties
         {
-            get { return (IList<MetaProperty>)this.MGetValue(MetaPropertyImpl.RedefiningPropertiesProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaProperty.RedefiningPropertiesProperty); 
+                if (result != null) return (IList<MetaProperty>)result;
+                else return default(IList<MetaProperty>);
+            }
         }
     }
     
@@ -951,27 +1788,37 @@ namespace MetaDslx.Core
     
     internal class MetaPropertyInitializerImpl : ModelObject, MetaDslx.Core.MetaPropertyInitializer
     {
+        static MetaPropertyInitializerImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
         public MetaPropertyInitializerImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaPropertyInitializer_MetaPropertyInitializer(this);
+            MetaImplementationProvider.Implementation.MetaPropertyInitializer_MetaPropertyInitializer(this);
             this.MMakeDefault();
         }
         
-        internal static readonly ModelProperty PropertyProperty =
-            ModelProperty.Register("Property", typeof(MetaProperty), typeof(MetaPropertyInitializerImpl));
         MetaProperty MetaPropertyInitializer.Property
         {
-            get { return (MetaProperty)this.MGetValue(MetaPropertyInitializerImpl.PropertyProperty); }
-            set { this.MSetValue(MetaPropertyInitializerImpl.PropertyProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty); 
+                if (result != null) return (MetaProperty)result;
+                else return default(MetaProperty);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty, value); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ValueProperty =
-            ModelProperty.Register("Value", typeof(MetaExpression), typeof(MetaPropertyInitializerImpl));
         MetaExpression MetaPropertyInitializer.Value
         {
-            get { return (MetaExpression)this.MGetValue(MetaPropertyInitializerImpl.ValueProperty); }
-            set { this.MSetValue(MetaPropertyInitializerImpl.ValueProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, value); }
         }
     }
     
@@ -984,25 +1831,35 @@ namespace MetaDslx.Core
     {
         static MetaSynthetizedPropertyInitializerImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaSynthetizedPropertyInitializerImpl), typeof(MetaPropertyInitializerImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaSynthetizedPropertyInitializerImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaSynthetizedPropertyInitializer_MetaSynthetizedPropertyInitializer(this);
+            MetaImplementationProvider.Implementation.MetaSynthetizedPropertyInitializer_MetaSynthetizedPropertyInitializer(this);
             this.MMakeDefault();
         }
         
         MetaProperty MetaPropertyInitializer.Property
         {
-            get { return (MetaProperty)this.MGetValue(MetaPropertyInitializerImpl.PropertyProperty); }
-            set { this.MSetValue(MetaPropertyInitializerImpl.PropertyProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty); 
+                if (result != null) return (MetaProperty)result;
+                else return default(MetaProperty);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty, value); }
         }
         
         MetaExpression MetaPropertyInitializer.Value
         {
-            get { return (MetaExpression)this.MGetValue(MetaPropertyInitializerImpl.ValueProperty); }
-            set { this.MSetValue(MetaPropertyInitializerImpl.ValueProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, value); }
         }
     }
     
@@ -1016,33 +1873,46 @@ namespace MetaDslx.Core
     {
         static MetaInheritedPropertyInitializerImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaInheritedPropertyInitializerImpl), typeof(MetaPropertyInitializerImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaInheritedPropertyInitializerImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaInheritedPropertyInitializer_MetaInheritedPropertyInitializer(this);
+            MetaImplementationProvider.Implementation.MetaInheritedPropertyInitializer_MetaInheritedPropertyInitializer(this);
             this.MMakeDefault();
         }
         
         MetaProperty MetaPropertyInitializer.Property
         {
-            get { return (MetaProperty)this.MGetValue(MetaPropertyInitializerImpl.PropertyProperty); }
-            set { this.MSetValue(MetaPropertyInitializerImpl.PropertyProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty); 
+                if (result != null) return (MetaProperty)result;
+                else return default(MetaProperty);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty, value); }
         }
         
         MetaExpression MetaPropertyInitializer.Value
         {
-            get { return (MetaExpression)this.MGetValue(MetaPropertyInitializerImpl.ValueProperty); }
-            set { this.MSetValue(MetaPropertyInitializerImpl.ValueProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, value); }
         }
         
-        internal static readonly ModelProperty ObjectProperty =
-            ModelProperty.Register("Object", typeof(MetaProperty), typeof(MetaInheritedPropertyInitializerImpl));
         MetaProperty MetaInheritedPropertyInitializer.Object
         {
-            get { return (MetaProperty)this.MGetValue(MetaInheritedPropertyInitializerImpl.ObjectProperty); }
-            set { this.MSetValue(MetaInheritedPropertyInitializerImpl.ObjectProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer.ObjectProperty); 
+                if (result != null) return (MetaProperty)result;
+                else return default(MetaProperty);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer.ObjectProperty, value); }
         }
     }
     
@@ -1058,49 +1928,66 @@ namespace MetaDslx.Core
     
     internal class MetaExpressionImpl : ModelObject, MetaDslx.Core.MetaExpression
     {
+        static MetaExpressionImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
         public MetaExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaExpression_MetaExpression(this);
+            MetaImplementationProvider.Implementation.MetaExpression_MetaExpression(this);
             this.MMakeDefault();
         }
         
-        internal static readonly ModelProperty KindProperty =
-            ModelProperty.Register("Kind", typeof(MetaExpressionKind), typeof(MetaExpressionImpl));
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        [ReadonlyAttribute]
-        internal static readonly ModelProperty TypeProperty =
-            ModelProperty.Register("Type", typeof(MetaType), typeof(MetaExpressionImpl));
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
-        [ReadonlyAttribute]
-        internal static readonly ModelProperty ExpectedTypeProperty =
-            ModelProperty.Register("ExpectedType", typeof(MetaType), typeof(MetaExpressionImpl));
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
-        internal static readonly ModelProperty DefinitionsProperty =
-            ModelProperty.Register("Definitions", typeof(IList<object>), typeof(MetaExpressionImpl));
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
-        [ReadonlyAttribute]
-        internal static readonly ModelProperty DefinitionProperty =
-            ModelProperty.Register("Definition", typeof(object), typeof(MetaExpressionImpl));
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
     }
     
@@ -1114,47 +2001,75 @@ namespace MetaDslx.Core
     {
         static MetaThisExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaThisExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaThisExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaThisExpression_MetaThisExpression(this);
+            MetaImplementationProvider.Implementation.MetaThisExpression_MetaThisExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        internal static readonly ModelProperty ObjectProperty =
-            ModelProperty.Register("Object", typeof(object), typeof(MetaThisExpressionImpl));
         object MetaThisExpression.Object
         {
-            get { return (object)this.MGetValue(MetaThisExpressionImpl.ObjectProperty); }
-            set { this.MSetValue(MetaThisExpressionImpl.ObjectProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaThisExpression.ObjectProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaThisExpression.ObjectProperty, value); }
         }
     }
     
@@ -1168,48 +2083,75 @@ namespace MetaDslx.Core
     {
         static MetaUnaryExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaUnaryExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaUnaryExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaUnaryExpression_MetaUnaryExpression(this);
+            MetaImplementationProvider.Implementation.MetaUnaryExpression_MetaUnaryExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ExpressionProperty =
-            ModelProperty.Register("Expression", typeof(MetaExpression), typeof(MetaUnaryExpressionImpl));
         MetaExpression MetaUnaryExpression.Expression
         {
-            get { return (MetaExpression)this.MGetValue(MetaUnaryExpressionImpl.ExpressionProperty); }
-            set { this.MSetValue(MetaUnaryExpressionImpl.ExpressionProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaUnaryExpression.ExpressionProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaUnaryExpression.ExpressionProperty, value); }
         }
     }
     
@@ -1224,57 +2166,86 @@ namespace MetaDslx.Core
     {
         static MetaBinaryExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaBinaryExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaBinaryExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaBinaryExpression_MetaBinaryExpression(this);
+            MetaImplementationProvider.Implementation.MetaBinaryExpression_MetaBinaryExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty LeftProperty =
-            ModelProperty.Register("Left", typeof(MetaExpression), typeof(MetaBinaryExpressionImpl));
         MetaExpression MetaBinaryExpression.Left
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.LeftProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.LeftProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, value); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty RightProperty =
-            ModelProperty.Register("Right", typeof(MetaExpression), typeof(MetaBinaryExpressionImpl));
         MetaExpression MetaBinaryExpression.Right
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.RightProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.RightProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, value); }
         }
     }
     
@@ -1287,52 +2258,86 @@ namespace MetaDslx.Core
     {
         static MetaBinaryArithmeticExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaBinaryArithmeticExpressionImpl), typeof(MetaExpressionImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaBinaryArithmeticExpressionImpl), typeof(MetaBinaryExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaBinaryArithmeticExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression(this);
+            MetaImplementationProvider.Implementation.MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
         MetaExpression MetaBinaryExpression.Left
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.LeftProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.LeftProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Right
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.RightProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.RightProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, value); }
         }
     }
     
@@ -1346,61 +2351,97 @@ namespace MetaDslx.Core
     {
         static MetaBinaryComparisonExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaBinaryComparisonExpressionImpl), typeof(MetaExpressionImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaBinaryComparisonExpressionImpl), typeof(MetaBinaryExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaBinaryComparisonExpressionImpl()
         {
-            this.MInitValue(MetaBinaryComparisonExpressionImpl.BalancedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaBinaryComparisonExpression_BalancedType(this)));
-            MetaModelImplementationProvider.Implementation.MetaBinaryComparisonExpression_MetaBinaryComparisonExpression(this);
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBinaryComparisonExpression.BalancedTypeProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaBinaryComparisonExpression_BalancedType(this)));
+            MetaImplementationProvider.Implementation.MetaBinaryComparisonExpression_MetaBinaryComparisonExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
         MetaExpression MetaBinaryExpression.Left
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.LeftProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.LeftProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Right
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.RightProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.RightProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, value); }
         }
         
-        [ReadonlyAttribute]
-        internal static readonly ModelProperty BalancedTypeProperty =
-            ModelProperty.Register("BalancedType", typeof(MetaType), typeof(MetaBinaryComparisonExpressionImpl));
         MetaType MetaBinaryComparisonExpression.BalancedType
         {
-            get { return (MetaType)this.MGetValue(MetaBinaryComparisonExpressionImpl.BalancedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryComparisonExpression.BalancedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
     }
     
@@ -1413,52 +2454,86 @@ namespace MetaDslx.Core
     {
         static MetaBinaryLogicalExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaBinaryLogicalExpressionImpl), typeof(MetaExpressionImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaBinaryLogicalExpressionImpl), typeof(MetaBinaryExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaBinaryLogicalExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaBinaryLogicalExpression_MetaBinaryLogicalExpression(this);
+            MetaImplementationProvider.Implementation.MetaBinaryLogicalExpression_MetaBinaryLogicalExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
         MetaExpression MetaBinaryExpression.Left
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.LeftProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.LeftProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Right
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.RightProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.RightProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, value); }
         }
     }
     
@@ -1472,61 +2547,97 @@ namespace MetaDslx.Core
     {
         static MetaNullCoalescingExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaNullCoalescingExpressionImpl), typeof(MetaExpressionImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaNullCoalescingExpressionImpl), typeof(MetaBinaryExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaNullCoalescingExpressionImpl()
         {
-            this.MInitValue(MetaNullCoalescingExpressionImpl.BalancedTypeProperty, new Lazy<object>(() => MetaModelImplementationProvider.Implementation.MetaNullCoalescingExpression_BalancedType(this)));
-            MetaModelImplementationProvider.Implementation.MetaNullCoalescingExpression_MetaNullCoalescingExpression(this);
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaNullCoalescingExpression.BalancedTypeProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaNullCoalescingExpression_BalancedType(this)));
+            MetaImplementationProvider.Implementation.MetaNullCoalescingExpression_MetaNullCoalescingExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
         MetaExpression MetaBinaryExpression.Left
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.LeftProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.LeftProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Right
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.RightProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.RightProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, value); }
         }
         
-        [ReadonlyAttribute]
-        internal static readonly ModelProperty BalancedTypeProperty =
-            ModelProperty.Register("BalancedType", typeof(MetaType), typeof(MetaNullCoalescingExpressionImpl));
         MetaType MetaNullCoalescingExpression.BalancedType
         {
-            get { return (MetaType)this.MGetValue(MetaNullCoalescingExpressionImpl.BalancedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNullCoalescingExpression.BalancedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
     }
     
@@ -1539,52 +2650,86 @@ namespace MetaDslx.Core
     {
         static MetaAssignmentExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaAssignmentExpressionImpl), typeof(MetaExpressionImpl));
-    		ModelProperty.RegisterAncestor(typeof(MetaAssignmentExpressionImpl), typeof(MetaBinaryExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaAssignmentExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaAssignmentExpression_MetaAssignmentExpression(this);
+            MetaImplementationProvider.Implementation.MetaAssignmentExpression_MetaAssignmentExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
         MetaExpression MetaBinaryExpression.Left
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.LeftProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.LeftProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Right
         {
-            get { return (MetaExpression)this.MGetValue(MetaBinaryExpressionImpl.RightProperty); }
-            set { this.MSetValue(MetaBinaryExpressionImpl.RightProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, value); }
         }
     }
     
@@ -1599,56 +2744,86 @@ namespace MetaDslx.Core
     {
         static MetaTypeConversionExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaTypeConversionExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaTypeConversionExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaTypeConversionExpression_MetaTypeConversionExpression(this);
+            MetaImplementationProvider.Implementation.MetaTypeConversionExpression_MetaTypeConversionExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        internal static readonly ModelProperty TypeReferenceProperty =
-            ModelProperty.Register("TypeReference", typeof(MetaType), typeof(MetaTypeConversionExpressionImpl));
         MetaType MetaTypeConversionExpression.TypeReference
         {
-            get { return (MetaType)this.MGetValue(MetaTypeConversionExpressionImpl.TypeReferenceProperty); }
-            set { this.MSetValue(MetaTypeConversionExpressionImpl.TypeReferenceProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypeConversionExpression.TypeReferenceProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypeConversionExpression.TypeReferenceProperty, value); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ExpressionProperty =
-            ModelProperty.Register("Expression", typeof(MetaExpression), typeof(MetaTypeConversionExpressionImpl));
         MetaExpression MetaTypeConversionExpression.Expression
         {
-            get { return (MetaExpression)this.MGetValue(MetaTypeConversionExpressionImpl.ExpressionProperty); }
-            set { this.MSetValue(MetaTypeConversionExpressionImpl.ExpressionProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypeConversionExpression.ExpressionProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypeConversionExpression.ExpressionProperty, value); }
         }
     }
     
@@ -1663,56 +2838,86 @@ namespace MetaDslx.Core
     {
         static MetaTypeCheckExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaTypeCheckExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaTypeCheckExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaTypeCheckExpression_MetaTypeCheckExpression(this);
+            MetaImplementationProvider.Implementation.MetaTypeCheckExpression_MetaTypeCheckExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        internal static readonly ModelProperty TypeReferenceProperty =
-            ModelProperty.Register("TypeReference", typeof(MetaType), typeof(MetaTypeCheckExpressionImpl));
         MetaType MetaTypeCheckExpression.TypeReference
         {
-            get { return (MetaType)this.MGetValue(MetaTypeCheckExpressionImpl.TypeReferenceProperty); }
-            set { this.MSetValue(MetaTypeCheckExpressionImpl.TypeReferenceProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypeCheckExpression.TypeReferenceProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypeCheckExpression.TypeReferenceProperty, value); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ExpressionProperty =
-            ModelProperty.Register("Expression", typeof(MetaExpression), typeof(MetaTypeCheckExpressionImpl));
         MetaExpression MetaTypeCheckExpression.Expression
         {
-            get { return (MetaExpression)this.MGetValue(MetaTypeCheckExpressionImpl.ExpressionProperty); }
-            set { this.MSetValue(MetaTypeCheckExpressionImpl.ExpressionProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypeCheckExpression.ExpressionProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypeCheckExpression.ExpressionProperty, value); }
         }
     }
     
@@ -1726,47 +2931,75 @@ namespace MetaDslx.Core
     {
         static MetaTypeOfExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaTypeOfExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaTypeOfExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaTypeOfExpression_MetaTypeOfExpression(this);
+            MetaImplementationProvider.Implementation.MetaTypeOfExpression_MetaTypeOfExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        internal static readonly ModelProperty TypeReferenceProperty =
-            ModelProperty.Register("TypeReference", typeof(MetaType), typeof(MetaTypeOfExpressionImpl));
         MetaType MetaTypeOfExpression.TypeReference
         {
-            get { return (MetaType)this.MGetValue(MetaTypeOfExpressionImpl.TypeReferenceProperty); }
-            set { this.MSetValue(MetaTypeOfExpressionImpl.TypeReferenceProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypeOfExpression.TypeReferenceProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypeOfExpression.TypeReferenceProperty, value); }
         }
     }
     
@@ -1780,47 +3013,75 @@ namespace MetaDslx.Core
     {
         static MetaConstantExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaConstantExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaConstantExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaConstantExpression_MetaConstantExpression(this);
+            MetaImplementationProvider.Implementation.MetaConstantExpression_MetaConstantExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        internal static readonly ModelProperty ValueProperty =
-            ModelProperty.Register("Value", typeof(object), typeof(MetaConstantExpressionImpl));
         object MetaConstantExpression.Value
         {
-            get { return (object)this.MGetValue(MetaConstantExpressionImpl.ValueProperty); }
-            set { this.MSetValue(MetaConstantExpressionImpl.ValueProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaConstantExpression.ValueProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaConstantExpression.ValueProperty, value); }
         }
     }
     
@@ -1835,55 +3096,86 @@ namespace MetaDslx.Core
     {
         static MetaIdentifierExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaIdentifierExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaIdentifierExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaIdentifierExpression_MetaIdentifierExpression(this);
+            MetaImplementationProvider.Implementation.MetaIdentifierExpression_MetaIdentifierExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        internal static readonly ModelProperty NameProperty =
-            ModelProperty.Register("Name", typeof(string), typeof(MetaIdentifierExpressionImpl));
         string MetaIdentifierExpression.Name
         {
-            get { return (string)this.MGetValue(MetaIdentifierExpressionImpl.NameProperty); }
-            set { this.MSetValue(MetaIdentifierExpressionImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaIdentifierExpression.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaIdentifierExpression.NameProperty, value); }
         }
         
-        internal static readonly ModelProperty ObjectProperty =
-            ModelProperty.Register("Object", typeof(object), typeof(MetaIdentifierExpressionImpl));
         object MetaIdentifierExpression.Object
         {
-            get { return (object)this.MGetValue(MetaIdentifierExpressionImpl.ObjectProperty); }
-            set { this.MSetValue(MetaIdentifierExpressionImpl.ObjectProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaIdentifierExpression.ObjectProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaIdentifierExpression.ObjectProperty, value); }
         }
     }
     
@@ -1898,56 +3190,86 @@ namespace MetaDslx.Core
     {
         static MetaMemberAccessExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaMemberAccessExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaMemberAccessExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaMemberAccessExpression_MetaMemberAccessExpression(this);
+            MetaImplementationProvider.Implementation.MetaMemberAccessExpression_MetaMemberAccessExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ExpressionProperty =
-            ModelProperty.Register("Expression", typeof(MetaExpression), typeof(MetaMemberAccessExpressionImpl));
         MetaExpression MetaMemberAccessExpression.Expression
         {
-            get { return (MetaExpression)this.MGetValue(MetaMemberAccessExpressionImpl.ExpressionProperty); }
-            set { this.MSetValue(MetaMemberAccessExpressionImpl.ExpressionProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaMemberAccessExpression.ExpressionProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaMemberAccessExpression.ExpressionProperty, value); }
         }
         
-        internal static readonly ModelProperty NameProperty =
-            ModelProperty.Register("Name", typeof(string), typeof(MetaMemberAccessExpressionImpl));
         string MetaMemberAccessExpression.Name
         {
-            get { return (string)this.MGetValue(MetaMemberAccessExpressionImpl.NameProperty); }
-            set { this.MSetValue(MetaMemberAccessExpressionImpl.NameProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaMemberAccessExpression.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaMemberAccessExpression.NameProperty, value); }
         }
     }
     
@@ -1962,57 +3284,86 @@ namespace MetaDslx.Core
     {
         static MetaFunctionCallExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaFunctionCallExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaFunctionCallExpressionImpl()
         {
-            this.MSetValue(MetaFunctionCallExpressionImpl.ArgumentsProperty, new ModelList<MetaExpression>(this, MetaFunctionCallExpressionImpl.ArgumentsProperty));
-            MetaModelImplementationProvider.Implementation.MetaFunctionCallExpression_MetaFunctionCallExpression(this);
+            this.MSet(global::MetaDslx.Core.Meta.MetaFunctionCallExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaFunctionCallExpression.ArgumentsProperty));
+            MetaImplementationProvider.Implementation.MetaFunctionCallExpression_MetaFunctionCallExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ExpressionProperty =
-            ModelProperty.Register("Expression", typeof(MetaExpression), typeof(MetaFunctionCallExpressionImpl));
         MetaExpression MetaFunctionCallExpression.Expression
         {
-            get { return (MetaExpression)this.MGetValue(MetaFunctionCallExpressionImpl.ExpressionProperty); }
-            set { this.MSetValue(MetaFunctionCallExpressionImpl.ExpressionProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaFunctionCallExpression.ExpressionProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaFunctionCallExpression.ExpressionProperty, value); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ArgumentsProperty =
-            ModelProperty.Register("Arguments", typeof(IList<MetaExpression>), typeof(MetaFunctionCallExpressionImpl));
         IList<MetaExpression> MetaFunctionCallExpression.Arguments
         {
-            get { return (IList<MetaExpression>)this.MGetValue(MetaFunctionCallExpressionImpl.ArgumentsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaFunctionCallExpression.ArgumentsProperty); 
+                if (result != null) return (IList<MetaExpression>)result;
+                else return default(IList<MetaExpression>);
+            }
         }
     }
     
@@ -2027,57 +3378,86 @@ namespace MetaDslx.Core
     {
         static MetaIndexerExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaIndexerExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaIndexerExpressionImpl()
         {
-            this.MSetValue(MetaIndexerExpressionImpl.ArgumentsProperty, new ModelList<MetaExpression>(this, MetaIndexerExpressionImpl.ArgumentsProperty));
-            MetaModelImplementationProvider.Implementation.MetaIndexerExpression_MetaIndexerExpression(this);
+            this.MSet(global::MetaDslx.Core.Meta.MetaIndexerExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaIndexerExpression.ArgumentsProperty));
+            MetaImplementationProvider.Implementation.MetaIndexerExpression_MetaIndexerExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ExpressionProperty =
-            ModelProperty.Register("Expression", typeof(MetaExpression), typeof(MetaIndexerExpressionImpl));
         MetaExpression MetaIndexerExpression.Expression
         {
-            get { return (MetaExpression)this.MGetValue(MetaIndexerExpressionImpl.ExpressionProperty); }
-            set { this.MSetValue(MetaIndexerExpressionImpl.ExpressionProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaIndexerExpression.ExpressionProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaIndexerExpression.ExpressionProperty, value); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ArgumentsProperty =
-            ModelProperty.Register("Arguments", typeof(IList<MetaExpression>), typeof(MetaIndexerExpressionImpl));
         IList<MetaExpression> MetaIndexerExpression.Arguments
         {
-            get { return (IList<MetaExpression>)this.MGetValue(MetaIndexerExpressionImpl.ArgumentsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaIndexerExpression.ArgumentsProperty); 
+                if (result != null) return (IList<MetaExpression>)result;
+                else return default(IList<MetaExpression>);
+            }
         }
     }
     
@@ -2094,74 +3474,108 @@ namespace MetaDslx.Core
     {
         static MetaConditionalExpressionImpl()
         {
-    		ModelProperty.RegisterAncestor(typeof(MetaConditionalExpressionImpl), typeof(MetaExpressionImpl));
+            global::MetaDslx.Core.Meta.StaticInit();
         }
     
         public MetaConditionalExpressionImpl()
         {
-            MetaModelImplementationProvider.Implementation.MetaConditionalExpression_MetaConditionalExpression(this);
+            MetaImplementationProvider.Implementation.MetaConditionalExpression_MetaConditionalExpression(this);
             this.MMakeDefault();
         }
         
         MetaExpressionKind MetaExpression.Kind
         {
-            get { return (MetaExpressionKind)this.MGetValue(MetaExpressionImpl.KindProperty); }
-            set { this.MSetValue(MetaExpressionImpl.KindProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.Type
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.TypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
         {
-            get { return (MetaType)this.MGetValue(MetaExpressionImpl.ExpectedTypeProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
         }
         
         IList<object> MetaExpression.Definitions
         {
-            get { return (IList<object>)this.MGetValue(MetaExpressionImpl.DefinitionsProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                if (result != null) return (IList<object>)result;
+                else return default(IList<object>);
+            }
         }
         
         object MetaExpression.Definition
         {
-            get { return (object)this.MGetValue(MetaExpressionImpl.DefinitionProperty); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                if (result != null) return (object)result;
+                else return default(object);
+            }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ConditionProperty =
-            ModelProperty.Register("Condition", typeof(MetaExpression), typeof(MetaConditionalExpressionImpl));
         MetaExpression MetaConditionalExpression.Condition
         {
-            get { return (MetaExpression)this.MGetValue(MetaConditionalExpressionImpl.ConditionProperty); }
-            set { this.MSetValue(MetaConditionalExpressionImpl.ConditionProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaConditionalExpression.ConditionProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaConditionalExpression.ConditionProperty, value); }
         }
         
-        internal static readonly ModelProperty BalancedTypeProperty =
-            ModelProperty.Register("BalancedType", typeof(MetaType), typeof(MetaConditionalExpressionImpl));
         MetaType MetaConditionalExpression.BalancedType
         {
-            get { return (MetaType)this.MGetValue(MetaConditionalExpressionImpl.BalancedTypeProperty); }
-            set { this.MSetValue(MetaConditionalExpressionImpl.BalancedTypeProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaConditionalExpression.BalancedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaConditionalExpression.BalancedTypeProperty, value); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ThenProperty =
-            ModelProperty.Register("Then", typeof(MetaExpression), typeof(MetaConditionalExpressionImpl));
         MetaExpression MetaConditionalExpression.Then
         {
-            get { return (MetaExpression)this.MGetValue(MetaConditionalExpressionImpl.ThenProperty); }
-            set { this.MSetValue(MetaConditionalExpressionImpl.ThenProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaConditionalExpression.ThenProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaConditionalExpression.ThenProperty, value); }
         }
         
-        [ContainmentAttribute]
-        internal static readonly ModelProperty ElseProperty =
-            ModelProperty.Register("Else", typeof(MetaExpression), typeof(MetaConditionalExpressionImpl));
         MetaExpression MetaConditionalExpression.Else
         {
-            get { return (MetaExpression)this.MGetValue(MetaConditionalExpressionImpl.ElseProperty); }
-            set { this.MSetValue(MetaConditionalExpressionImpl.ElseProperty, value); }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaConditionalExpression.ElseProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaConditionalExpression.ElseProperty, value); }
         }
     }
     
@@ -2183,6 +3597,26 @@ namespace MetaDslx.Core
         {
             get { return MetaModelFactory.instance; }
         }
+    
+        /// <summary>
+        /// Creates a new instance of MetaScopeEntry.
+        /// </summary>
+        public MetaScopeEntry CreateMetaScopeEntry()
+    	{
+    		MetaScopeEntry result = new MetaScopeEntryImpl();
+    		return result;
+    	}
+    
+    
+        /// <summary>
+        /// Creates a new instance of MetaScope.
+        /// </summary>
+        public MetaScope CreateMetaScope()
+    	{
+    		MetaScope result = new MetaScopeImpl();
+    		return result;
+    	}
+    
     
         /// <summary>
         /// Creates a new instance of MetaNamedElement.
@@ -2555,37 +3989,53 @@ namespace MetaDslx.Core
     
     }
     
-    internal static class MetaModelImplementationProvider
+    internal static class MetaImplementationProvider
     {
-        // If there is a compile error at this line, create a new class called MetaModelImplementation
-    	// which is a subclass of MetaModelImplementationBase:
-        private static MetaModelImplementation implementation = new MetaModelImplementation();
+        // If there is a compile error at this line, create a new class called MetaImplementation
+    	// which is a subclass of MetaImplementationBase:
+        private static MetaImplementation implementation = new MetaImplementation();
     
-        public static MetaModelImplementation Implementation
+        public static MetaImplementation Implementation
         {
-            get { return MetaModelImplementationProvider.implementation; }
+            get { return MetaImplementationProvider.implementation; }
         }
     }
     
-    public static class MetaModelCollectionKindExtensions
+    public static class MetaCollectionKindExtensions
     {
     }
     
-    public static class MetaModelPropertyKindExtensions
+    public static class MetaPropertyKindExtensions
     {
     }
     
-    public static class MetaModelExpressionKindExtensions
+    public static class MetaExpressionKindExtensions
     {
     }
     
     /// <summary>
     /// Base class for implementing the behavior of the model elements.
-    /// This class has to be be overriden in MetaModelImplementation to provide custom
+    /// This class has to be be overriden in MetaImplementation to provide custom
     /// implementation for the constructors, operations and property values.
     /// </summary>
-    internal abstract class MetaModelImplementationBase
+    internal abstract class MetaImplementationBase
     {
+        /// <summary>
+    	/// Implements the constructor: MetaScopeEntry()
+        /// </summary>
+        public virtual void MetaScopeEntry_MetaScopeEntry(MetaScopeEntry @this)
+        {
+        }
+    
+        /// <summary>
+    	/// Implements the constructor: MetaScope()
+    	/// Direct superclasses: MetaScopeEntry
+    	/// All superclasses: MetaScopeEntry
+        /// </summary>
+        public virtual void MetaScope_MetaScope(MetaScope @this)
+        {
+        }
+    
         /// <summary>
     	/// Implements the constructor: MetaNamedElement()
         /// </summary>
@@ -2605,22 +4055,6 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaType_MetaType(MetaType @this)
         {
-        }
-    
-        /// <summary>
-        /// Implements the operation: MetaType.IsAssignableFrom()
-        /// </summary>
-        public virtual bool MetaType_IsAssignableFrom(MetaType @this, MetaType valueType)
-        {
-            throw new NotImplementedException();
-        }
-    
-        /// <summary>
-        /// Implements the operation: MetaType.Equals()
-        /// </summary>
-        public virtual bool MetaType_Equals(MetaType @this, MetaType otherType)
-        {
-            throw new NotImplementedException();
         }
     
         /// <summary>
@@ -2738,8 +4172,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaOperation()
-    	/// Direct superclasses: MetaType, MetaNamedElement
-    	/// All superclasses: MetaType, MetaNamedElement
+    	/// Direct superclasses: MetaNamedElement
+    	/// All superclasses: MetaNamedElement
         /// </summary>
         public virtual void MetaOperation_MetaOperation(MetaOperation @this)
         {
