@@ -16,7 +16,8 @@ qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
-annotation : TOpenBracket identifier TCloseBracket;
+
+annotation : TOpenBracket  identifier TCloseBracket;
 
 /*
 annotation : TOpenBracket identifier annotationParams? TCloseBracket;
@@ -26,22 +27,24 @@ annotationParam : name=identifier TAssign value=expression;
 */
 
 
-namespaceDeclaration: KNamespace /*$Property(Name)*/ qualifiedName TAssign  stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName TAssign  stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
 
 
-metamodelDeclaration: KMetamodel identifier TOpenBrace  declaration* TCloseBrace;
+metamodelDeclaration: annotation* KMetamodel identifier TOpenBrace declaration* TCloseBrace;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
+ 
 
-enumDeclaration : KEnum identifier TOpenBrace  enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
+enumDeclaration : annotation* KEnum identifier TOpenBrace  enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
 
-enumValue : identifier;
+enumValue : annotation* identifier;
 enumMemberDeclaration :  operationDeclaration;
 
+ 
 
-classDeclaration :  KAbstract? KClass identifier (TColon   classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+classDeclaration : annotation*  KAbstract? KClass identifier (TColon   classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor :  qualifiedName;
 classMemberDeclaration 
@@ -51,7 +54,7 @@ classMemberDeclaration
 	;
 
 
-fieldDeclaration :  fieldModifier?  typeReference identifier (redefinitions | subsettings)? TSemicolon;
+fieldDeclaration : annotation*  fieldModifier?  typeReference identifier (redefinitions | subsettings)? TSemicolon;
 fieldModifier 
 	:  KContainment 
 	|  KReadonly 
@@ -78,12 +81,10 @@ typeReference : collectionType | simpleType;
 
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
-
 objectType 
 	:  KObject 
 	|  KString
 	;
-
 primitiveType 
 	:  KInt 
 	|  KLong 
@@ -92,7 +93,6 @@ primitiveType
 	|  KByte 
 	|  KBool
 	;
-
 voidType :  KVoid;
 
 
@@ -103,14 +103,14 @@ collectionType :  collectionKind TLessThan  simpleType TGreaterThan;
 collectionKind :  KSet |  KList;
 
 
-operationDeclaration : KStatic?  returnType identifier TOpenParen  parameterList? TCloseParen TSemicolon;
+operationDeclaration : annotation* KStatic?  returnType identifier TOpenParen  parameterList? TCloseParen TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
 
-parameter :  typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
+parameter : annotation*  typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
 
 
-constructorDeclaration : identifier TOpenParen TCloseParen TOpenBrace  initializerDeclaration* TCloseBrace;
+constructorDeclaration : annotation* identifier TOpenParen TCloseParen TOpenBrace  initializerDeclaration* TCloseBrace;
 
 initializerDeclaration 
 	: synthetizedPropertyInitializer
@@ -222,7 +222,7 @@ assignmentOperator
 
 
 
-associationDeclaration : KAssociation  source=qualifiedName KWith  target=qualifiedName TSemicolon 
+associationDeclaration : annotation* KAssociation  source=qualifiedName KWith  target=qualifiedName TSemicolon 
 	
 	;
 

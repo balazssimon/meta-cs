@@ -5,6 +5,82 @@ using System.Text;
 
 namespace MetaDslx.Core
 {
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class NameAttribute : Attribute
+    {
+
+    }
+
+    [System.AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class TypeAttribute : Attribute
+    {
+
+    }
+
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class ScopeEntryAttribute : Attribute
+    {
+    }
+
+    [System.AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+    public sealed class ScopeAttribute : Attribute
+    {
+    }
+
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class ImportedScopeAttribute : Attribute
+    {
+    }
+
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class ImportedEntryAttribute : Attribute
+    {
+    }
+
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class InheritedScopeAttribute : Attribute
+    {
+    }
+
+    public static class MetaExtensions
+    {
+        public static bool IsMetaScope(this ModelObject symbol)
+        {
+            if (symbol == null) return false;
+            if (symbol.GetType().IsMetaScope()) return true;
+            foreach (var intf in symbol.GetType().GetInterfaces())
+            {
+                if (intf.IsMetaScope()) return true;
+            }
+            return false;
+        }
+
+        public static bool IsMetaScope(this Type symbolType)
+        {
+            if (symbolType == null) return false;
+            var attributes = symbolType.GetCustomAttributes(typeof(ScopeAttribute), true);
+            return attributes.Length > 0;
+        }
+
+        public static bool IsMetaType(this ModelObject symbol)
+        {
+            if (symbol == null) return false;
+            if (symbol.GetType().IsMetaType()) return true;
+            foreach (var intf in symbol.GetType().GetInterfaces())
+            {
+                if (intf.IsMetaType()) return true;
+            }
+            return false;
+        }
+
+        public static bool IsMetaType(this Type symbolType)
+        {
+            if (symbolType == null) return false;
+            var attributes = symbolType.GetCustomAttributes(typeof(TypeAttribute), true);
+            return attributes.Length > 0;
+        }
+    }
+
     public class MetaBuiltInType
     {
         private static List<MetaType> types = new List<MetaType>();
@@ -59,6 +135,61 @@ namespace MetaDslx.Core
             MetaBuiltInType.types.Add(MetaBuiltInType.Any);
         }
          
+    }
+
+    public enum MetaScopeEntryKind
+    {
+        None,
+        Name,
+        Type
+    }
+
+    public static class MetaScopeEntryProperties
+    {
+        public static readonly ModelProperty KindProperty =
+            ModelProperty.Register("Kind", typeof(MetaScopeEntryKind), typeof(MetaScopeEntryProperties));
+
+        public static readonly ModelProperty NameProperty =
+            ModelProperty.Register("Name", typeof(object), typeof(MetaScopeEntryProperties));
+
+        public static readonly ModelProperty CanMergeProperty =
+            ModelProperty.Register("CanMerge", typeof(bool), typeof(MetaScopeEntryProperties));
+
+        public static readonly ModelProperty EntriesProperty =
+             ModelProperty.Register("Entries", typeof(IList<object>), typeof(MetaScopeEntryProperties));
+
+        public static readonly ModelProperty ImportedEntriesProperty =
+            ModelProperty.Register("ImportedEntries", typeof(IList<object>), typeof(MetaScopeEntryProperties));
+
+        public static readonly ModelProperty ImportedScopesProperty =
+            ModelProperty.Register("ImportedScopes", typeof(IList<object>), typeof(MetaScopeEntryProperties));
+
+        public static readonly ModelProperty InheritedScopesProperty =
+            ModelProperty.Register("InheritedScopes", typeof(IList<object>), typeof(MetaScopeEntryProperties));
+
+    }
+
+    [Scope]
+    public class RootScope : ModelObject
+    {
+        public RootScope()
+        {
+            this.MSet(RootScope.EntriesProperty, new ModelList<ModelObject>(this, RootScope.EntriesProperty));
+        }
+
+        [Containment]
+        [ScopeEntry]
+        public static readonly ModelProperty EntriesProperty =
+             ModelProperty.Register("Entries", typeof(IList<ModelObject>), typeof(RootScope));
+
+        public IList<ModelObject> Entries
+        {
+            get
+            {
+                return (IList<ModelObject>)this.MGet(RootScope.EntriesProperty);
+            }
+        }
+
     }
 
     //internal class MetaModelImplementation : MetaModelImplementationBase

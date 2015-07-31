@@ -11,13 +11,15 @@ namespace MetaDslx.TempConsole
 {
     public class A
     {
-        public class B
+        public partial class B
         {
 
         }
     }
 
-    public class C : A { }
+    public class C : A
+    {
+    }
 
     public class D
     {
@@ -70,7 +72,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
@@ -112,28 +114,14 @@ namespace MetaDslx.TempConsole
             }
         }
 
-        private static void PrintScope(string indent, Scope scope)
+        private static void PrintScope(string indent, ModelObject scope)
         {
-            foreach (var entry in scope.Entries)
+            foreach (var entry in scope.MChildren)
             {
                 Console.WriteLine(indent + entry);
-                Scope childScope = entry as Scope;
-                if (childScope != null)
+                if (entry.IsMetaScope())
                 {
-                    PrintScope(indent+"  ", childScope);
-                }
-                else
-                {
-                    TypeDef typeDef = entry as TypeDef;
-                    if (typeDef != null && typeDef.Scope != null)
-                    {
-                        PrintScope(indent + "  ", typeDef.Scope);
-                    }
-                    NameDef nameDef = entry as NameDef;
-                    if (nameDef != null && nameDef.Scope != null)
-                    {
-                        PrintScope(indent + "  ", nameDef.Scope);
-                    }
+                    PrintScope(indent + "  ", entry);
                 }
             }
         }
@@ -151,18 +139,9 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(compiler.GeneratedSource);
             }
-            using (StreamWriter writer = new StreamWriter("messages.txt"))
-            {
-                foreach (var msg in compiler.Diagnostics.GetMessages(true))
-                {
-                    writer.WriteLine(msg);
-                    Console.WriteLine(msg);
-                }
-            }
-            PrintScope("", compiler.GlobalScope);
+            //PrintScope("", compiler.GlobalScope);
             Console.WriteLine("=");
-            /*
-            foreach (var symbol in compiler.Data.SymbolToEntry.Keys)
+            foreach (var symbol in compiler.Data.GetSymbols())
             {
                 ModelObject mo = symbol as ModelObject;
                 if (mo != null)
@@ -173,34 +152,42 @@ namespace MetaDslx.TempConsole
                     mp = mo.MFindProperty("Name");
                     if (mp != null)
                     {
-                        Console.WriteLine("  Name=" + mo.MGetValue(mp));
+                        Console.WriteLine("  Name=" + mo.MGet(mp));
                     }
                     mp = mo.MFindProperty("Uri");
                     if (mp != null)
                     {
-                        Console.WriteLine("  Uri=" + mo.MGetValue(mp));
+                        Console.WriteLine("  Uri=" + mo.MGet(mp));
                     }
                     mp = mo.MFindProperty("Type");
                     if (mp != null)
                     {
-                        Console.WriteLine("  Type=" + mo.MGetValue(mp));
+                        Console.WriteLine("  Type=" + mo.MGet(mp));
                     }
                     mp = mo.MFindProperty("ReturnType");
                     if (mp != null)
                     {
-                        Console.WriteLine("  ReturnType=" + mo.MGetValue(mp));
+                        Console.WriteLine("  ReturnType=" + mo.MGet(mp));
                     }
                     mp = mo.MFindProperty("EnumLiterals");
                     if (mp != null)
                     {
                         Console.WriteLine("  EnumLiterals:");
-                        foreach (var el in (IList<MetaEnumLiteral>)mo.MGetValue(mp))
+                        foreach (var el in (IList<MetaEnumLiteral>)mo.MGet(mp))
                         {
                             Console.WriteLine("    " + el);
                         }
                     }
                 }
-            }*/
+            }
+            using (StreamWriter writer = new StreamWriter("messages.txt"))
+            {
+                foreach (var msg in compiler.Diagnostics.GetMessages(true))
+                {
+                    writer.WriteLine(msg);
+                    Console.WriteLine(msg);
+                }
+            }
         }
 
         private static void CompileGenerator(string fileName, string outputFileName)

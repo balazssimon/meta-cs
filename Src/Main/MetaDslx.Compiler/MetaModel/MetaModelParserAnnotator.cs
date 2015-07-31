@@ -26,14 +26,17 @@ using MetaDslx.Core;
         public Dictionary<object, List<object>> TreeAnnotations { get { return this.treeAnnotations; } }
         
         private QualifiedNameAnnotation qualifiedName_QualifiedName;
+        private SymbolAnnotation annotation_Symbol;
+        private PropertyAnnotation annotation_Identifier_Property;
         private NameDefAnnotation namespaceDeclaration_NameDef;
         private PropertyAnnotation namespaceDeclaration_MetamodelDeclaration_Property;
         private NameDefAnnotation metamodelDeclaration_NameDef;
-        private PropertyAnnotation metamodelDeclaration_Declaration_Property;
+        private PropertyAnnotation enumDeclaration_Property;
         private TypeDefAnnotation enumDeclaration_TypeDef;
         private PropertyAnnotation enumDeclaration_EnumValues_Property;
         private NameDefAnnotation enumValue_NameDef;
         private PropertyAnnotation enumMemberDeclaration_OperationDeclaration_Property;
+        private PropertyAnnotation classDeclaration_Property;
         private TypeDefAnnotation classDeclaration_TypeDef;
         private PropertyAnnotation classDeclaration_KAbstract_Property;
         private PropertyAnnotation classDeclaration_ClassAncestors_Property;
@@ -53,17 +56,14 @@ using MetaDslx.Core;
         private TypeUseAnnotation returnType_TypeUse;
         private TypeUseAnnotation typeReference_TypeUse;
         private TypeUseAnnotation simpleType_TypeUse;
-        private NameAnnotation objectType_Name;
         private PreDefSymbolAnnotation objectType_KObject_PreDefSymbol;
         private PreDefSymbolAnnotation objectType_KString_PreDefSymbol;
-        private NameAnnotation primitiveType_Name;
         private PreDefSymbolAnnotation primitiveType_KInt_PreDefSymbol;
         private PreDefSymbolAnnotation primitiveType_KLong_PreDefSymbol;
         private PreDefSymbolAnnotation primitiveType_KFloat_PreDefSymbol;
         private PreDefSymbolAnnotation primitiveType_KDouble_PreDefSymbol;
         private PreDefSymbolAnnotation primitiveType_KByte_PreDefSymbol;
         private PreDefSymbolAnnotation primitiveType_KBool_PreDefSymbol;
-        private NameAnnotation voidType_Name;
         private PreDefSymbolAnnotation voidType_KVoid_PreDefSymbol;
         private TypeCtrAnnotation nullableType_TypeCtr;
         private PropertyAnnotation nullableType_PrimitiveType_Property;
@@ -184,11 +184,18 @@ using MetaDslx.Core;
             annotList.Add(this.qualifiedName_QualifiedName);
             
             annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.AnnotationContext), annotList);
+            this.annotation_Symbol = new SymbolAnnotation();
+            this.annotation_Symbol.SymbolType = typeof(MetaAnnotation);
+            annotList.Add(this.annotation_Symbol);
+            this.annotation_Identifier_Property = new PropertyAnnotation();
+            this.annotation_Identifier_Property.Name = "Name";
+            
+            annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.NamespaceDeclarationContext), annotList);
             this.namespaceDeclaration_NameDef = new NameDefAnnotation();
             this.namespaceDeclaration_NameDef.SymbolType = typeof(MetaNamespace);
             this.namespaceDeclaration_NameDef.NestingProperty = "Namespaces";
-            this.namespaceDeclaration_NameDef.Scope = true;
             this.namespaceDeclaration_NameDef.Merge = true;
             annotList.Add(this.namespaceDeclaration_NameDef);
             this.namespaceDeclaration_MetamodelDeclaration_Property = new PropertyAnnotation();
@@ -199,11 +206,12 @@ using MetaDslx.Core;
             this.metamodelDeclaration_NameDef = new NameDefAnnotation();
             this.metamodelDeclaration_NameDef.SymbolType = typeof(MetaModel);
             annotList.Add(this.metamodelDeclaration_NameDef);
-            this.metamodelDeclaration_Declaration_Property = new PropertyAnnotation();
-            this.metamodelDeclaration_Declaration_Property.Name = "Types";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.EnumDeclarationContext), annotList);
+            this.enumDeclaration_Property = new PropertyAnnotation();
+            this.enumDeclaration_Property.Name = "Types";
+            annotList.Add(this.enumDeclaration_Property);
             this.enumDeclaration_TypeDef = new TypeDefAnnotation();
             this.enumDeclaration_TypeDef.SymbolType = typeof(MetaEnum);
             annotList.Add(this.enumDeclaration_TypeDef);
@@ -221,6 +229,9 @@ using MetaDslx.Core;
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ClassDeclarationContext), annotList);
+            this.classDeclaration_Property = new PropertyAnnotation();
+            this.classDeclaration_Property.Name = "Types";
+            annotList.Add(this.classDeclaration_Property);
             this.classDeclaration_TypeDef = new TypeDefAnnotation();
             this.classDeclaration_TypeDef.SymbolType = typeof(MetaClass);
             annotList.Add(this.classDeclaration_TypeDef);
@@ -283,19 +294,11 @@ using MetaDslx.Core;
             this.simpleType_TypeUse = new TypeUseAnnotation();
             annotList.Add(this.simpleType_TypeUse);
             
-            annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaModelParser.ObjectTypeContext), annotList);
-            this.objectType_Name = new NameAnnotation();
-            annotList.Add(this.objectType_Name);
             this.objectType_KObject_PreDefSymbol = new PreDefSymbolAnnotation();
             this.objectType_KObject_PreDefSymbol.Value = MetaBuiltInType.Object;
             this.objectType_KString_PreDefSymbol = new PreDefSymbolAnnotation();
             this.objectType_KString_PreDefSymbol.Value = MetaBuiltInType.String;
             
-            annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaModelParser.PrimitiveTypeContext), annotList);
-            this.primitiveType_Name = new NameAnnotation();
-            annotList.Add(this.primitiveType_Name);
             this.primitiveType_KInt_PreDefSymbol = new PreDefSymbolAnnotation();
             this.primitiveType_KInt_PreDefSymbol.Value = MetaBuiltInType.Int;
             this.primitiveType_KLong_PreDefSymbol = new PreDefSymbolAnnotation();
@@ -309,10 +312,6 @@ using MetaDslx.Core;
             this.primitiveType_KBool_PreDefSymbol = new PreDefSymbolAnnotation();
             this.primitiveType_KBool_PreDefSymbol.Value = MetaBuiltInType.Bool;
             
-            annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaModelParser.VoidTypeContext), annotList);
-            this.voidType_Name = new NameAnnotation();
-            annotList.Add(this.voidType_Name);
             this.voidType_KVoid_PreDefSymbol = new PreDefSymbolAnnotation();
             this.voidType_KVoid_PreDefSymbol.Value = MetaBuiltInType.Void;
             
@@ -739,6 +738,24 @@ using MetaDslx.Core;
         
         public override object VisitAnnotation(MetaModelParser.AnnotationContext context)
         {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            treeAnnotList.Add(this.annotation_Symbol);
+            List<object> elemAnnotList = null;
+            if (context.identifier() != null)
+            {
+                object elem = context.identifier();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.annotation_Identifier_Property);
+            }
             return base.VisitAnnotation(context);
         }
         
@@ -787,19 +804,6 @@ using MetaDslx.Core;
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             treeAnnotList.Add(this.metamodelDeclaration_NameDef);
-            List<object> elemAnnotList = null;
-            if (context.declaration() != null)
-            {
-                foreach(object elem in context.declaration())
-                {
-                    if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                    {
-                        elemAnnotList = new List<object>();
-                        this.treeAnnotations.Add(elem, elemAnnotList);
-                    }
-                    elemAnnotList.Add(this.metamodelDeclaration_Declaration_Property);
-                }
-            }
             return base.VisitMetamodelDeclaration(context);
         }
         
@@ -816,6 +820,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            treeAnnotList.Add(this.enumDeclaration_Property);
             treeAnnotList.Add(this.enumDeclaration_TypeDef);
             List<object> elemAnnotList = null;
             if (context.enumValues() != null)
@@ -872,6 +877,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            treeAnnotList.Add(this.classDeclaration_Property);
             treeAnnotList.Add(this.classDeclaration_TypeDef);
             List<object> elemAnnotList = null;
             if (context.KAbstract() != null)
@@ -1173,13 +1179,6 @@ using MetaDslx.Core;
         
         public override object VisitObjectType(MetaModelParser.ObjectTypeContext context)
         {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            treeAnnotList.Add(this.objectType_Name);
             List<object> elemAnnotList = null;
             if (context.KObject() != null)
             {
@@ -1206,13 +1205,6 @@ using MetaDslx.Core;
         
         public override object VisitPrimitiveType(MetaModelParser.PrimitiveTypeContext context)
         {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            treeAnnotList.Add(this.primitiveType_Name);
             List<object> elemAnnotList = null;
             if (context.KInt() != null)
             {
@@ -1279,13 +1271,6 @@ using MetaDslx.Core;
         
         public override object VisitVoidType(MetaModelParser.VoidTypeContext context)
         {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            treeAnnotList.Add(this.voidType_Name);
             List<object> elemAnnotList = null;
             if (context.KVoid() != null)
             {
@@ -3397,7 +3382,7 @@ using MetaDslx.Core;
         
         public virtual object VisitAssociationDeclaration(MetaModelParser.AssociationDeclarationContext context)
         {
-            this.SetValue(context.source, "OppositeProperties", new Lazy<object>(() => this.Symbol(context.target)));
+            this.SetValue(context.source, "OppositeProperties", new Lazy<object>(() => this.Symbol(context.target), false));
             return this.VisitChildren(context);
         }
         
@@ -3413,15 +3398,15 @@ using MetaDslx.Core;
         
         public virtual object VisitNullLiteral(MetaModelParser.NullLiteralContext context)
         {
-            this.SetValue(context, "Type", new Lazy<object>(() => MetaBuiltInType.Any));
-            this.SetValue(context, "Value", new Lazy<object>(() => null));
+            this.SetValue(context, "Type", new Lazy<object>(() => MetaBuiltInType.Any, false));
+            this.SetValue(context, "Value", new Lazy<object>(() => null, false));
             return this.VisitChildren(context);
         }
         
         public virtual object VisitBooleanLiteral(MetaModelParser.BooleanLiteralContext context)
         {
-            this.SetValue(context, "Type", new Lazy<object>(() => MetaBuiltInType.Bool));
-            this.SetValue(context, "Value", new Lazy<object>(() => this.Valueof(this.Symbol(context))));
+            this.SetValue(context, "Type", new Lazy<object>(() => MetaBuiltInType.Bool, false));
+            this.SetValue(context, "Value", new Lazy<object>(() => this.Valueof(this.Symbol(context)), false));
             return this.VisitChildren(context);
         }
         

@@ -117,6 +117,15 @@ namespace MetaDslx.Core
                 }
             }
             childProperties[property] = value;
+            object childObject;
+            if (this.values.TryGetValue(child, out childObject))
+            {
+                ModelObject childModelObject = childObject as ModelObject;
+                if (childModelObject != null)
+                {
+                    childModelObject.MLazyAdd(property, value);
+                }
+            }
         }
 
         public void MSet(ModelProperty property, object newValue)
@@ -222,9 +231,10 @@ namespace MetaDslx.Core
             }
             if (this.values.TryGetValue(property, out oldValue))
             {
-                if (oldValue is ModelCollection)
+                ModelCollection collection = oldValue as ModelCollection;
+                if (collection != null)
                 {
-                    ((ModelCollection)oldValue).MLazyAdd(value);
+                    collection.MLazyAdd(value);
                     return;
                 }
                 else if (property.IsReadonly)
@@ -523,6 +533,11 @@ namespace MetaDslx.Core
         {
             return this.FindAllObjects<T>();
         }
+
+        public IEnumerable<object> Annotations
+        {
+            get { return this.GetType().GetCustomAttributes(true); }
+        }        
 
         internal enum AddRemoveDirection
         {

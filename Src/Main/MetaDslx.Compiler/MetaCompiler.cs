@@ -91,102 +91,77 @@ namespace MetaDslx.Compiler
 
     public class MetaCompilerData
     {
+        private HashSet<ModelObject> symbols;
+
         public MetaCompilerData(MetaCompiler compiler)
         {
             this.Compiler = compiler;
             this.ModelFactory = new ModelFactory();
-            this.NodeToEntry = new Dictionary<IParseTree, List<ScopeEntry>>();
-            this.NodeToSymbol = new Dictionary<IParseTree, List<object>>();
-            this.SymbolToEntry = new Dictionary<object, ScopeEntry>();
+            this.symbols = new HashSet<ModelObject>();
+            this.NodeToSymbol = new Dictionary<IParseTree, ModelObject>();
+            this.LazyNodeToSymbol = new Dictionary<IParseTree, Lazy<object>>();
         }
 
         public MetaCompiler Compiler { get; private set; }
         public ModelFactory ModelFactory { get; private set; }
-        public Dictionary<IParseTree, List<ScopeEntry>> NodeToEntry { get; private set; }
-        public Dictionary<IParseTree, List<object>> NodeToSymbol { get; private set; }
-        public Dictionary<object, ScopeEntry> SymbolToEntry { get; private set; }
+        public Dictionary<IParseTree, ModelObject> NodeToSymbol { get; private set; }
+        public Dictionary<IParseTree, Lazy<object>> LazyNodeToSymbol { get; private set; }
 
-        public void RegisterEntry(IParseTree node, ScopeEntry entry)
-        {
-            List<ScopeEntry> entries = null;
-            if (!this.NodeToEntry.TryGetValue(node, out entries))
-            {
-                entries = new List<ScopeEntry>();
-                this.NodeToEntry.Add(node, entries);
-            }
-            if (!entries.Contains(entry))
-            {
-                entries.Add(entry);
-                entry.AddTreeNode(node);
-            }
-        }
-
-        public void RegisterSymbol(IParseTree node, object symbol, ScopeEntry entry)
+        public void RegisterSymbol(IParseTree node, ModelObject symbol)
         {
             if (symbol == null) return;
             if (node != null)
             {
-                List<object> symbols = null;
-                if (!this.NodeToSymbol.TryGetValue(node, out symbols))
-                {
-                    symbols = new List<object>();
-                    this.NodeToSymbol.Add(node, symbols);
-                }
-                if (!symbols.Contains(symbol))
-                {
-                    symbols.Add(symbol);
-                }
+                this.NodeToSymbol[node] = symbol;
             }
-            if (entry != null)
+            this.symbols.Add(symbol);
+        }
+
+        public void RegisterLazySymbol(IParseTree node, Lazy<object> symbol)
+        {
+            if (symbol == null) return;
+            if (node != null)
             {
-                ScopeEntry oldEntry = null;
-                if (this.SymbolToEntry.TryGetValue(symbol, out oldEntry))
-                {
-                    if (entry != oldEntry)
-                    {
-                        throw new MetaCompilerException("Cannot register multiple entries to the same symbol.");
-                    }
-                }
-                else
-                {
-                    this.SymbolToEntry.Add(symbol, entry);
-                }
+                this.LazyNodeToSymbol[node] = symbol;
             }
         }
 
-        public List<ScopeEntry> GetEntries(IParseTree node)
+        public void ReplaceSymbol(IParseTree node, ModelObject oldSymbol, ModelObject newSymbol)
         {
-            List<ScopeEntry> entries = null;
-            if (this.NodeToEntry.TryGetValue(node, out entries))
+            if (oldSymbol == null) return;
+            if (newSymbol == null) return;
+            if (object.ReferenceEquals(oldSymbol, newSymbol)) return;
+            if (node != null)
             {
-                return entries.ToList();
+                this.NodeToSymbol[node] = newSymbol;
             }
-            return new List<ScopeEntry>();
+            this.symbols.Remove(oldSymbol);
+            this.symbols.Add(newSymbol);
         }
 
-        public ScopeEntry GetEntry(object symbol)
+        public ModelObject GetSymbol(IParseTree node)
         {
-            ScopeEntry entry = null;
-            if (this.SymbolToEntry.TryGetValue(symbol, out entry))
+            ModelObject symbol = null;
+            if (this.NodeToSymbol.TryGetValue(node, out symbol))
             {
-                return entry;
+                return symbol;
+            }
+            Lazy<object> lazySymbol = null;
+            if (this.LazyNodeToSymbol.TryGetValue(node, out lazySymbol))
+            {
+                symbol = lazySymbol.Value as ModelObject;
+                if (symbol != null)
+                {
+                    this.NodeToSymbol[node] = symbol;
+                }
+                return symbol;
             }
             return null;
         }
 
-        public List<object> GetSymbols(IParseTree node)
+        public IEnumerable<ModelObject> GetSymbols()
         {
-            List<object> symbols = null;
-            if (this.NodeToSymbol.TryGetValue(node, out symbols))
-            {
-                return symbols.ToList();
-            }
-            return new List<object>();
-        }
-
-        public List<object> GetSymbols()
-        {
-            return this.SymbolToEntry.Keys.ToList();
+            return this.symbols;
         }
     }
 

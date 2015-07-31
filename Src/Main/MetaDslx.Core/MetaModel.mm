@@ -25,38 +25,32 @@
 		ScopeEntry Bind(object caller, list<ScopeEntry> entries);
 		*/
 
-		abstract class ScopeEntry
-		{
-			Scope Parent;
-		}
-
-		class Scope : ScopeEntry
-		{
-			list<ScopeEntry> Entries;
-			list<ScopeEntry> ImportedEntries;
-			list<Scope> ImportedScopes;
-			list<Scope> InheritedScopes;
-		}
-
-		association ScopeEntry.Parent with Scope.Entries;
-
 		abstract class NamedElement
 		{
+			//[Name]
 			string Name;
 		}
 
 		abstract class TypedElement
 		{
+			//[Type]
 			Type Type;
 		}
 
+		//[Type]
 		abstract class Type
 		{
 		}
 
+		class Annotation : NamedElement
+		{
+		}
+
+		//[Scope]
 		class Namespace : NamedElement
 		{
 			Namespace Parent;
+			//[ImportedScope]
 			list<Namespace> Usings;
 			containment list<Namespace> Namespaces;
 			containment list<Model> Models;
@@ -64,6 +58,7 @@
 
 		association Namespace.Namespaces with Namespace.Parent;
 
+		//[Scope]
 		class Model : NamedElement
 		{
 			string Uri;
@@ -105,6 +100,7 @@
 		{
 		}
 
+		//[Scope]
 		class Enum : Type, Declaration
 		{
 			containment list<EnumLiteral> EnumLiterals;
@@ -118,9 +114,11 @@
 
 		association EnumLiteral.Enum with Enum.EnumLiterals;
 
+		//[Scope]
 		class Class : Type, Declaration
 		{
 			bool IsAbstract;
+			//[InheritedScope]
 			list<Class> SuperClasses;
 			containment list<Property> Properties;
 			containment list<Operation> Operations;
@@ -466,4 +464,5 @@ namespace MetaDslx.Core = "http://metadslx.core/1.0"
 		}
 	}
 }
+
 */

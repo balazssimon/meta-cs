@@ -11,11 +11,10 @@ namespace MetaDslx.Core
     {
         static Meta()
         {
-            MetaScopeEntry.StaticInit();
-            MetaScope.StaticInit();
             MetaNamedElement.StaticInit();
             MetaTypedElement.StaticInit();
             MetaType.StaticInit();
+            MetaAnnotation.StaticInit();
             MetaNamespace.StaticInit();
             MetaModel.StaticInit();
             MetaDeclaration.StaticInit();
@@ -57,45 +56,13 @@ namespace MetaDslx.Core
         }
     
         
-        public static class MetaScopeEntry
-        {
-            internal static void StaticInit()
-            {
-            }
-        
-            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaScope), "Entries")]
-            public static readonly ModelProperty ParentProperty =
-                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaScope), typeof(global::MetaDslx.Core.MetaScopeEntry), typeof(global::MetaDslx.Core.Meta.MetaScopeEntry));
-            
-        }
-        
-        public static class MetaScope
-        {
-            internal static void StaticInit()
-            {
-            }
-        
-            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaScopeEntry), "Parent")]
-            public static readonly ModelProperty EntriesProperty =
-                ModelProperty.Register("Entries", typeof(IList<global::MetaDslx.Core.MetaScopeEntry>), typeof(global::MetaDslx.Core.MetaScope), typeof(global::MetaDslx.Core.Meta.MetaScope));
-            
-            public static readonly ModelProperty ImportedEntriesProperty =
-                ModelProperty.Register("ImportedEntries", typeof(IList<global::MetaDslx.Core.MetaScopeEntry>), typeof(global::MetaDslx.Core.MetaScope), typeof(global::MetaDslx.Core.Meta.MetaScope));
-            
-            public static readonly ModelProperty ImportedScopesProperty =
-                ModelProperty.Register("ImportedScopes", typeof(IList<global::MetaDslx.Core.MetaScope>), typeof(global::MetaDslx.Core.MetaScope), typeof(global::MetaDslx.Core.Meta.MetaScope));
-            
-            public static readonly ModelProperty InheritedScopesProperty =
-                ModelProperty.Register("InheritedScopes", typeof(IList<global::MetaDslx.Core.MetaScope>), typeof(global::MetaDslx.Core.MetaScope), typeof(global::MetaDslx.Core.Meta.MetaScope));
-            
-        }
-        
         public static class MetaNamedElement
         {
             internal static void StaticInit()
             {
             }
         
+            [Name]
             public static readonly ModelProperty NameProperty =
                 ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaNamedElement), typeof(global::MetaDslx.Core.Meta.MetaNamedElement));
             
@@ -107,6 +74,7 @@ namespace MetaDslx.Core
             {
             }
         
+            [Type]
             public static readonly ModelProperty TypeProperty =
                 ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypedElement), typeof(global::MetaDslx.Core.Meta.MetaTypedElement));
             
@@ -120,16 +88,26 @@ namespace MetaDslx.Core
         
         }
         
-        public static class MetaNamespace
+        public static class MetaAnnotation
         {
             internal static void StaticInit()
             {
             }
         
+        }
+        
+        public static class MetaNamespace
+        {
+            internal static void StaticInit()
+            {
+            }
+
+            [ScopeEntry]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaNamespace), "Namespaces")]
             public static readonly ModelProperty ParentProperty =
                 ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.Meta.MetaNamespace));
             
+            [ImportedScope]
             public static readonly ModelProperty UsingsProperty =
                 ModelProperty.Register("Usings", typeof(IList<global::MetaDslx.Core.MetaNamespace>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.Meta.MetaNamespace));
             
@@ -137,7 +115,8 @@ namespace MetaDslx.Core
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaNamespace), "Parent")]
             public static readonly ModelProperty NamespacesProperty =
                 ModelProperty.Register("Namespaces", typeof(IList<global::MetaDslx.Core.MetaNamespace>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.Meta.MetaNamespace));
-            
+
+            [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaModel), "Namespace")]
             public static readonly ModelProperty ModelsProperty =
@@ -160,16 +139,19 @@ namespace MetaDslx.Core
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaNamespace), "Models")]
             public static readonly ModelProperty NamespaceProperty =
                 ModelProperty.Register("Namespace", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
-            
+
+            [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaDeclaration), "Model")]
             public static readonly ModelProperty TypesProperty =
                 ModelProperty.Register("Types", typeof(IList<global::MetaDslx.Core.MetaType>), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
-            
+
+            [ScopeEntry]
             [ContainmentAttribute]
             public static readonly ModelProperty PropertiesProperty =
                 ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
-            
+
+            [ScopeEntry]
             [ContainmentAttribute]
             public static readonly ModelProperty OperationsProperty =
                 ModelProperty.Register("Operations", typeof(IList<global::MetaDslx.Core.MetaOperation>), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
@@ -230,12 +212,14 @@ namespace MetaDslx.Core
             internal static void StaticInit()
             {
             }
-        
+
+            [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaEnumLiteral), "Enum")]
             public static readonly ModelProperty EnumLiteralsProperty =
                 ModelProperty.Register("EnumLiterals", typeof(IList<global::MetaDslx.Core.MetaEnumLiteral>), typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.Meta.MetaEnum));
-            
+
+            [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaOperation), "Parent")]
             public static readonly ModelProperty OperationsProperty =
@@ -264,15 +248,18 @@ namespace MetaDslx.Core
             public static readonly ModelProperty IsAbstractProperty =
                 ModelProperty.Register("IsAbstract", typeof(bool), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
             
+            [InheritedScope]
             public static readonly ModelProperty SuperClassesProperty =
                 ModelProperty.Register("SuperClasses", typeof(IList<global::MetaDslx.Core.MetaClass>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
-            
+
+            [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "Parent")]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "Class")]
             public static readonly ModelProperty PropertiesProperty =
                 ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
-            
+
+            [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaOperation), "Parent")]
             public static readonly ModelProperty OperationsProperty =
@@ -723,115 +710,6 @@ namespace MetaDslx.Core
         OrAssign,
     }
     
-    public interface MetaScopeEntry
-    {
-        MetaScope Parent { get; set; }
-    
-    }
-    
-    internal class MetaScopeEntryImpl : ModelObject, MetaDslx.Core.MetaScopeEntry
-    {
-        static MetaScopeEntryImpl()
-        {
-            global::MetaDslx.Core.Meta.StaticInit();
-        }
-    
-        public MetaScopeEntryImpl()
-        {
-            MetaImplementationProvider.Implementation.MetaScopeEntry_MetaScopeEntry(this);
-            this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScopeEntry.ParentProperty); 
-                if (result != null) return (MetaScope)result;
-                else return default(MetaScope);
-            }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaScopeEntry.ParentProperty, value); }
-        }
-    }
-    
-    public interface MetaScope : MetaDslx.Core.MetaScopeEntry
-    {
-        IList<MetaScopeEntry> Entries { get; }
-        IList<MetaScopeEntry> ImportedEntries { get; }
-        IList<MetaScope> ImportedScopes { get; }
-        IList<MetaScope> InheritedScopes { get; }
-    
-    }
-    
-    internal class MetaScopeImpl : ModelObject, MetaDslx.Core.MetaScope
-    {
-        static MetaScopeImpl()
-        {
-            global::MetaDslx.Core.Meta.StaticInit();
-        }
-    
-        public MetaScopeImpl()
-        {
-            this.MSet(global::MetaDslx.Core.Meta.MetaScope.EntriesProperty, new ModelList<MetaScopeEntry>(this, global::MetaDslx.Core.Meta.MetaScope.EntriesProperty));
-            this.MSet(global::MetaDslx.Core.Meta.MetaScope.ImportedEntriesProperty, new ModelList<MetaScopeEntry>(this, global::MetaDslx.Core.Meta.MetaScope.ImportedEntriesProperty));
-            this.MSet(global::MetaDslx.Core.Meta.MetaScope.ImportedScopesProperty, new ModelList<MetaScope>(this, global::MetaDslx.Core.Meta.MetaScope.ImportedScopesProperty));
-            this.MSet(global::MetaDslx.Core.Meta.MetaScope.InheritedScopesProperty, new ModelList<MetaScope>(this, global::MetaDslx.Core.Meta.MetaScope.InheritedScopesProperty));
-            MetaImplementationProvider.Implementation.MetaScope_MetaScope(this);
-            this.MMakeDefault();
-        }
-        
-        MetaScope MetaScopeEntry.Parent
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScopeEntry.ParentProperty); 
-                if (result != null) return (MetaScope)result;
-                else return default(MetaScope);
-            }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaScopeEntry.ParentProperty, value); }
-        }
-        
-        IList<MetaScopeEntry> MetaScope.Entries
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScope.EntriesProperty); 
-                if (result != null) return (IList<MetaScopeEntry>)result;
-                else return default(IList<MetaScopeEntry>);
-            }
-        }
-        
-        IList<MetaScopeEntry> MetaScope.ImportedEntries
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScope.ImportedEntriesProperty); 
-                if (result != null) return (IList<MetaScopeEntry>)result;
-                else return default(IList<MetaScopeEntry>);
-            }
-        }
-        
-        IList<MetaScope> MetaScope.ImportedScopes
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScope.ImportedScopesProperty); 
-                if (result != null) return (IList<MetaScope>)result;
-                else return default(IList<MetaScope>);
-            }
-        }
-        
-        IList<MetaScope> MetaScope.InheritedScopes
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaScope.InheritedScopesProperty); 
-                if (result != null) return (IList<MetaScope>)result;
-                else return default(IList<MetaScope>);
-            }
-        }
-    }
-    
     public interface MetaNamedElement
     {
         string Name { get; set; }
@@ -893,7 +771,8 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
     }
-    
+
+    [Type]
     public interface MetaType
     {
     
@@ -913,6 +792,37 @@ namespace MetaDslx.Core
         }
     }
     
+    public interface MetaAnnotation : MetaDslx.Core.MetaNamedElement
+    {
+    
+    }
+    
+    internal class MetaAnnotationImpl : ModelObject, MetaDslx.Core.MetaAnnotation
+    {
+        static MetaAnnotationImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
+        public MetaAnnotationImpl()
+        {
+            MetaImplementationProvider.Implementation.MetaAnnotation_MetaAnnotation(this);
+            this.MMakeDefault();
+        }
+        
+        string MetaNamedElement.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
+        }
+    }
+
+    [Scope]
     public interface MetaNamespace : MetaDslx.Core.MetaNamedElement
     {
         MetaNamespace Parent { get; set; }
@@ -990,7 +900,8 @@ namespace MetaDslx.Core
             }
         }
     }
-    
+
+    [Scope]
     public interface MetaModel : MetaDslx.Core.MetaNamedElement
     {
         string Uri { get; set; }
@@ -1244,7 +1155,8 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
     }
-    
+
+    [Scope]
     public interface MetaEnum : MetaDslx.Core.MetaType, MetaDslx.Core.MetaDeclaration
     {
         IList<MetaEnumLiteral> EnumLiterals { get; }
@@ -1356,7 +1268,8 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaEnumLiteral.EnumProperty, value); }
         }
     }
-    
+
+    [Scope]
     public interface MetaClass : MetaDslx.Core.MetaType, MetaDslx.Core.MetaDeclaration
     {
         bool IsAbstract { get; set; }
@@ -3599,26 +3512,6 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
-        /// Creates a new instance of MetaScopeEntry.
-        /// </summary>
-        public MetaScopeEntry CreateMetaScopeEntry()
-    	{
-    		MetaScopeEntry result = new MetaScopeEntryImpl();
-    		return result;
-    	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaScope.
-        /// </summary>
-        public MetaScope CreateMetaScope()
-    	{
-    		MetaScope result = new MetaScopeImpl();
-    		return result;
-    	}
-    
-    
-        /// <summary>
         /// Creates a new instance of MetaNamedElement.
         /// </summary>
         public MetaNamedElement CreateMetaNamedElement()
@@ -3644,6 +3537,16 @@ namespace MetaDslx.Core
         public MetaType CreateMetaType()
     	{
     		MetaType result = new MetaTypeImpl();
+    		return result;
+    	}
+    
+    
+        /// <summary>
+        /// Creates a new instance of MetaAnnotation.
+        /// </summary>
+        public MetaAnnotation CreateMetaAnnotation()
+    	{
+    		MetaAnnotation result = new MetaAnnotationImpl();
     		return result;
     	}
     
@@ -4021,22 +3924,6 @@ namespace MetaDslx.Core
     internal abstract class MetaImplementationBase
     {
         /// <summary>
-    	/// Implements the constructor: MetaScopeEntry()
-        /// </summary>
-        public virtual void MetaScopeEntry_MetaScopeEntry(MetaScopeEntry @this)
-        {
-        }
-    
-        /// <summary>
-    	/// Implements the constructor: MetaScope()
-    	/// Direct superclasses: MetaScopeEntry
-    	/// All superclasses: MetaScopeEntry
-        /// </summary>
-        public virtual void MetaScope_MetaScope(MetaScope @this)
-        {
-        }
-    
-        /// <summary>
     	/// Implements the constructor: MetaNamedElement()
         /// </summary>
         public virtual void MetaNamedElement_MetaNamedElement(MetaNamedElement @this)
@@ -4054,6 +3941,15 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaType()
         /// </summary>
         public virtual void MetaType_MetaType(MetaType @this)
+        {
+        }
+    
+        /// <summary>
+    	/// Implements the constructor: MetaAnnotation()
+    	/// Direct superclasses: MetaNamedElement
+    	/// All superclasses: MetaNamedElement
+        /// </summary>
+        public virtual void MetaAnnotation_MetaAnnotation(MetaAnnotation @this)
         {
         }
     

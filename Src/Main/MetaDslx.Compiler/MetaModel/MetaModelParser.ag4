@@ -16,7 +16,8 @@ qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
-annotation : TOpenBracket identifier TCloseBracket;
+$Symbol(MetaAnnotation)
+annotation : TOpenBracket $Property(Name) identifier TCloseBracket;
 
 /*
 annotation : TOpenBracket identifier annotationParams? TCloseBracket;
@@ -25,23 +26,25 @@ annotationParamList : annotationParam (TComma annotationParam)*;
 annotationParam : name=identifier TAssign value=expression;
 */
 
-$NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,scope=true,merge=true)
-namespaceDeclaration: KNamespace /*$Property(Name)*/ qualifiedName TAssign $Value stringLiteral TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;
+$NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,merge=true)
+namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName TAssign $Value stringLiteral TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;
 
 $NameDef(MetaModel)
-metamodelDeclaration: KMetamodel identifier TOpenBrace $Property(Types) declaration* TCloseBrace;
+metamodelDeclaration: annotation* KMetamodel identifier TOpenBrace declaration* TCloseBrace;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
+$Property(Types) 
 $TypeDef(MetaEnum)
-enumDeclaration : KEnum identifier TOpenBrace $Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
+enumDeclaration : annotation* KEnum identifier TOpenBrace $Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
 $NameDef(MetaEnumLiteral)
-enumValue : identifier;
+enumValue : annotation* identifier;
 enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
+$Property(Types) 
 $TypeDef(MetaClass)
-classDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KClass identifier (TColon $Property(SuperClasses) $InheritScope classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+classDeclaration : annotation* $Property(name=IsAbstract,value=true) KAbstract? KClass identifier (TColon $Property(SuperClasses) $InheritScope classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor : $TypeUse(MetaClass) qualifiedName;
 classMemberDeclaration 
@@ -51,7 +54,7 @@ classMemberDeclaration
 	;
 
 $NameDef(MetaProperty)
-fieldDeclaration : $Property(Kind) fieldModifier? $Property(Type) typeReference identifier (redefinitions | subsettings)? TSemicolon;
+fieldDeclaration : annotation* $Property(Kind) fieldModifier? $Property(Type) typeReference identifier (redefinitions | subsettings)? TSemicolon;
 fieldModifier 
 	: $Value(MetaPropertyKind.Containment) KContainment 
 	| $Value(MetaPropertyKind.Readonly) KReadonly 
@@ -78,12 +81,10 @@ typeReference : collectionType | simpleType;
 $TypeUse
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
-$Name
 objectType 
 	: $PreDefSymbol(MetaBuiltInType.Object) KObject 
 	| $PreDefSymbol(MetaBuiltInType.String) KString
 	;
-$Name
 primitiveType 
 	: $PreDefSymbol(MetaBuiltInType.Int) KInt 
 	| $PreDefSymbol(MetaBuiltInType.Long) KLong 
@@ -92,7 +93,6 @@ primitiveType
 	| $PreDefSymbol(MetaBuiltInType.Byte) KByte 
 	| $PreDefSymbol(MetaBuiltInType.Bool) KBool
 	;
-$Name
 voidType : $PreDefSymbol(MetaBuiltInType.Void) KVoid;
 
 $TypeCtr(MetaNullableType)
@@ -103,14 +103,14 @@ collectionType : $Property(Kind) collectionKind TLessThan $Property(InnerType) s
 collectionKind : $Value(MetaCollectionKind.Set) KSet | $Value(MetaCollectionKind.List) KList;
 
 $NameDef(MetaOperation)
-operationDeclaration : KStatic? $Property(ReturnType) returnType identifier TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
+operationDeclaration : annotation* KStatic? $Property(ReturnType) returnType identifier TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
 $NameDef(MetaParameter)
-parameter : $Property(Type) typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
+parameter : annotation* $Property(Type) typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
 
 $NameDef(MetaConstructor)
-constructorDeclaration : identifier TOpenParen TCloseParen TOpenBrace $Property(Initializers) initializerDeclaration* TCloseBrace;
+constructorDeclaration : annotation* identifier TOpenParen TCloseParen TOpenBrace $Property(Initializers) initializerDeclaration* TCloseBrace;
 
 initializerDeclaration 
 	: synthetizedPropertyInitializer
@@ -222,7 +222,7 @@ assignmentOperator
 
 
 $Scope
-associationDeclaration : KAssociation $NameUse(MetaProperty) source=qualifiedName KWith $NameUse(MetaProperty) target=qualifiedName TSemicolon 
+associationDeclaration : annotation* KAssociation $NameUse(MetaProperty) source=qualifiedName KWith $NameUse(MetaProperty) target=qualifiedName TSemicolon 
 	-> { source.OppositeProperties = target; }
 	;
 

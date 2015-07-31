@@ -35,25 +35,38 @@ namespace MetaDslx.Compiler
         Serial,
     }
 
-    public class ScopeResolutionInfo
+    public class ResolutionInfo
     {
+        public ResolutionInfo()
+        {
+            this.Position = -1;
+        }
+
+        public IParseTree Node { get; set; }
         public int Position { get; set; }
         public IEnumerable<Type> SymbolTypes { get; set; }
+    }
+
+    public class BindingInfo
+    {
+        public IParseTree Node { get; set; }
     }
 
     public interface INameProvider
     {
         string GetName(IParseTree node);
+        object GetValue(IParseTree node);
     }
 
     public interface IResolutionProvider
     {
-        IEnumerable<object> Resolve(IEnumerable<object> scopes, ResolveKind kind, string name, object info, ResolveFlags flags);
+        IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, List<string> qualifiedName, ResolutionInfo info, ResolveFlags flags);
+        IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, string name, ResolutionInfo info, ResolveFlags flags);
     }
 
     public interface IBindingProvider
     {
-        object Bind(object context, IEnumerable<object> alternatives, object info);
+        ModelObject Bind(ModelObject context, IEnumerable<ModelObject> alternatives, BindingInfo info);
     }
 
     public abstract class NameProviderBase : INameProvider
@@ -66,6 +79,7 @@ namespace MetaDslx.Compiler
         }
 
         public abstract string GetName(IParseTree node);
+        public abstract object GetValue(IParseTree node);
     }
 
     public class DefaultNameProvider : NameProviderBase
@@ -76,6 +90,12 @@ namespace MetaDslx.Compiler
         }
 
         public override string GetName(IParseTree node)
+        {
+            if (node == null) return null;
+            return node.GetText();
+        }
+
+        public override object GetValue(IParseTree node)
         {
             if (node == null) return null;
             return node.GetText();
@@ -91,7 +111,8 @@ namespace MetaDslx.Compiler
             this.Compiler = compiler;
         }
 
-        public abstract IEnumerable<object> Resolve(IEnumerable<object> scopes, ResolveKind kind, string name, object info, ResolveFlags flags);
+        public abstract IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, List<string> qualifiedName, ResolutionInfo info, ResolveFlags flags);
+        public abstract IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, string name, ResolutionInfo info, ResolveFlags flags);
     }
 
     public class DefaultResolutionProvider : ResolutionProviderBase
@@ -101,171 +122,199 @@ namespace MetaDslx.Compiler
         {
         }
 
-        public override IEnumerable<object> Resolve(IEnumerable<object> scopes, ResolveKind kind, string name, object info, ResolveFlags flags)
+        public override IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, List<string> qualifiedName, ResolutionInfo info, ResolveFlags flags)
         {
-            List<object> result = new List<object>();
-            ScopeResolutionInfo sri = info as ScopeResolutionInfo;
-            foreach (var scopeObj in scopes)
+            if (qualifiedName.Count == 0)
             {
-                Scope scope = scopeObj as Scope;
-                if (scope != null)
+                return new ModelObject[0];
+            }
+            if (qualifiedName.Count == 1)
+            {
+                return this.Resolve(scopes, kind, qualifiedName[0], info, flags);
+            }
+            List<ModelObject> result = new List<ModelObject>();
+            ResolutionInfo firstInfo =
+                new ResolutionInfo()
                 {
-                    if (scope.Entries != null && flags.HasFlag(ResolveFlags.Children))
+                    Node = info.Node,
+                    Position = info.Position,
+                    SymbolTypes = null
+                };
+            ResolutionInfo middleInfo =
+                new ResolutionInfo()
+                {
+                    Node = info.Node,
+                    Position = -1,
+                    SymbolTypes = null
+                };
+            ResolutionInfo lastInfo =
+                new ResolutionInfo()
+                {
+                    Node = info.Node,
+                    Position = -1,
+                    SymbolTypes = info.SymbolTypes
+                };
+            IEnumerable<ModelObject> currentResult = scopes;
+            for (int i = 0; i < qualifiedName.Count; i++)
+            {
+                string name = qualifiedName[i];
+                bool first = i == 0;
+                bool last = i == qualifiedName.Count - 1;
+                currentResult = this.Resolve(currentResult, last ? kind : ResolveKind.NameOrType, name, last ? lastInfo : (first ? firstInfo : middleInfo), first ? flags : ResolveFlags.Scope);
+            }
+            result.AddRange(currentResult);
+            return result;
+        }
+
+        public override IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, string name, ResolutionInfo info, ResolveFlags flags)
+        {
+            List<ModelObject> result = new List<ModelObject>();
+            foreach (var scope in scopes)
+            {
+                if (flags.HasFlag(ResolveFlags.Children))
+                {
+                    result.AddRange(this.ResolveEntries(this.GetEntries<ScopeEntryAttribute>(scope), kind, name, info));
+                }
+                if (flags.HasFlag(ResolveFlags.Inherited))
+                {
+                    result.AddRange(this.Resolve(this.GetScopes<InheritedScopeAttribute>(scope), kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, ResolveFlags.Scope));
+                }
+                if (flags.HasFlag(ResolveFlags.Imported))
+                {
+                    result.AddRange(this.Resolve(this.GetScopes<ImportedScopeAttribute>(scope), kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, ResolveFlags.Scope));
+                }
+                if (flags.HasFlag(ResolveFlags.ImportedScope))
+                {
+                    result.AddRange(this.ResolveEntries(this.GetEntries<ImportedEntryAttribute>(scope), kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }));
+                }
+            }
+            if (flags.HasFlag(ResolveFlags.Parent) && result.Count == 0)
+            {
+                List<ModelObject> parentScopes = new List<ModelObject>();
+                foreach (var scope in scopes)
+                {
+                    ModelObject parentScope = this.GetParentScope(scope);
+                    if (parentScope != null)
                     {
-                        int i = 0;
-                        foreach (var ent in scope.Entries)
+                        parentScopes.Add(parentScope);
+                    }
+                }
+                if (parentScopes.Count > 0)
+                {
+                    result.AddRange(this.Resolve(parentScopes, kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, flags));
+                }
+            }
+            return result;
+        }
+
+        private object GetName(ModelObject entry)
+        {
+            if (entry != null)
+            {
+                foreach (var prop in entry.MGetAllProperties())
+                {
+                    if (prop.Annotations.Any(a => a is NameAttribute))
+                    {
+                        return entry.MGet(prop);
+                    }
+                }
+            }
+            return null;
+        }
+
+        private ModelObject GetParentScope(ModelObject scope)
+        {
+            if (scope == null) return null;
+            ModelObject parent = scope.MParent;
+            while (parent != null && !parent.IsMetaScope())
+            {
+                parent = parent.MParent;
+            }
+            return parent;
+        }
+
+        private IEnumerable<ModelObject> GetScopes<T>(ModelObject scope)
+            where T : Attribute
+        {
+            List<ModelObject> result = new List<ModelObject>();
+            foreach (var prop in scope.MGetAllProperties())
+            {
+                if (prop.Annotations.Any(a => a is T))
+                {
+                    object entry = scope.MGet(prop);
+                    ModelCollection scopeEntries = entry as ModelCollection;
+                    if (scopeEntries != null)
+                    {
+                        IEnumerable<object> scopeEntryList = scopeEntries as IEnumerable<object>;
+                        foreach (var scopeEntry in scopeEntryList)
                         {
-                            ++i;
-                            ScopeEntry entry = ent as ScopeEntry;
-                            if (entry != null && entry.Name == name)
+                            ModelObject scopeEntryObject = scopeEntry as ModelObject;
+                            if (scopeEntryObject != null)
                             {
-                                NameDef nameDef = null;
-                                if (kind.HasFlag(ResolveKind.Name))
-                                {
-                                    nameDef = entry as NameDef;
-                                }
-                                TypeDef typeDef = null;
-                                if (kind.HasFlag(ResolveKind.Type))
-                                {
-                                    typeDef = entry as TypeDef;
-                                }
-                                if (nameDef != null || typeDef != null)
-                                {
-                                    bool positionOK = entry.AccessOrder == NameAccessOrder.Random || sri == null || sri.Position <= 0 || i < sri.Position;
-                                    bool symbolTypeOK = sri == null || sri.SymbolTypes == null || sri.SymbolTypes.Any(st => (typeDef != null && st.IsAssignableFrom(typeDef.SymbolType)) || (nameDef != null && st.IsAssignableFrom(nameDef.SymbolType)));
-                                    if (positionOK && symbolTypeOK)
-                                    {
-                                        result.Add(entry);
-                                    }
-                                }
+                                result.Add(scopeEntryObject);
                             }
                         }
                     }
-                    if (flags.HasFlag(ResolveFlags.Inherited) && scope.InheritedEntries != null)
+                    else
                     {
-                        foreach (var entry in scope.InheritedEntries)
+                        ModelObject entryObject = entry as ModelObject;
+                        if (entryObject != null)
                         {
-                            Scope inheritedScope = null;
-                            if (kind.HasFlag(ResolveKind.Name))
+                            result.Add(entryObject);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        private IEnumerable<ModelObject> GetEntries<T>(ModelObject scope)
+            where T : Attribute
+        {
+            List<ModelObject> result = new List<ModelObject>();
+            foreach (var prop in scope.MGetAllProperties())
+            {
+                if (prop.Annotations.Any(a => a is T))
+                {
+                    object entry = scope.MGet(prop);
+                    ModelCollection scopeEntries = entry as ModelCollection;
+                    if (scopeEntries != null)
+                    {
+                        IEnumerable<object> scopeEntryList = scopeEntries as IEnumerable<object>;
+                        foreach (var scopeEntry in scopeEntryList)
+                        {
+                            ModelObject scopeEntryObject = scopeEntry as ModelObject;
+                            if (scopeEntryObject != null)
                             {
-                                NameDef nameDef = entry as NameDef;
-                                if (nameDef != null && nameDef.Scope != null)
-                                {
-                                    inheritedScope = nameDef.Scope;
-                                }
-                            }
-                            if (kind.HasFlag(ResolveKind.Type))
-                            {
-                                TypeDef typeDef = entry as TypeDef;
-                                if (typeDef != null && typeDef.Scope != null)
-                                {
-                                    inheritedScope = typeDef.Scope;
-                                }
-                            }
-                            if (inheritedScope != null)
-                            {
-                                ScopeResolutionInfo inheritedInfo = null;
-                                if (sri != null)
-                                {
-                                    inheritedInfo = new ScopeResolutionInfo()
-                                    {
-                                        Position = 0,
-                                        SymbolTypes = sri.SymbolTypes
-                                    };
-                                }
-                                IEnumerable<object> inheritedResults = this.Resolve(new object[] { inheritedScope }, kind, name, inheritedInfo, ResolveFlags.Scope);
-                                result.AddRange(inheritedResults);
+                                result.Add(scopeEntryObject);
                             }
                         }
                     }
-                    if (result.Count == 0 && flags.HasFlag(ResolveFlags.Parent))
+                    else
                     {
-                        Scope parentScope = null;
-                        if (scope.Parent != null)
+                        ModelObject entryObject = entry as ModelObject;
+                        if (entryObject != null)
                         {
-                            parentScope = scope.Parent;
-                        }
-                        else if (scope.Owner != null && scope.Owner.Parent != null)
-                        {
-                            parentScope = scope.Owner.Parent;
-                        }
-                        ScopeResolutionInfo parentInfo = null;
-                        if (sri != null)
-                        {
-                            parentInfo = new ScopeResolutionInfo()
-                            {
-                                Position = sri.Position <= 0 ? 0 : scope.Position,
-                                SymbolTypes = sri.SymbolTypes
-                            };
-                        }
-                        IEnumerable<object> parentResults = this.Resolve(new object[] { parentScope }, kind, name, parentInfo, ResolveFlags.Scope | ResolveFlags.Parent);
-                        result.AddRange(parentResults);
-                    }
-                    if (flags.HasFlag(ResolveFlags.Imported) && scope.ImportedEntries != null)
-                    {
-                        foreach (var entry in scope.ImportedEntries)
-                        {
-                            if (entry.Name == name)
-                            {
-                                NameDef nameDef = null;
-                                if (kind.HasFlag(ResolveKind.Name))
-                                {
-                                    nameDef = entry as NameDef;
-                                }
-                                TypeDef typeDef = null;
-                                if (kind.HasFlag(ResolveKind.Name))
-                                {
-                                    typeDef = entry as TypeDef;
-                                }
-                                if (nameDef != null || typeDef != null)
-                                {
-                                    bool symbolTypeOK = sri == null || sri.SymbolTypes == null || sri.SymbolTypes.Any(st => (nameDef != null && st.IsAssignableFrom(nameDef.SymbolType)) || (typeDef != null && st.IsAssignableFrom(typeDef.SymbolType)));
-                                    if (symbolTypeOK)
-                                    {
-                                        result.Add(entry);
-                                    }
-                                }
-                            }
+                            result.Add(entryObject);
                         }
                     }
-                    if (flags.HasFlag(ResolveFlags.ImportedScope) && scope.ImportedEntries != null)
+                }
+            }
+            return result;
+        }
+
+        private IEnumerable<ModelObject> ResolveEntries(IEnumerable<ModelObject> entries, ResolveKind kind, string name, ResolutionInfo info)
+        {
+            List<ModelObject> result = new List<ModelObject>();
+            foreach (var entry in entries)
+            {
+                ModelObject entryObject = entry as ModelObject;
+                if (entryObject != null && name.Equals(this.GetName(entryObject)))
+                {
+                    if ((kind.HasFlag(ResolveKind.Type) && entryObject.IsMetaType())
+                        || (kind.HasFlag(ResolveKind.Name) && !entryObject.IsMetaType()))
                     {
-                        foreach (var entry in scope.ImportedEntries)
-                        {
-                            Scope importedScope = null;
-                            NameDef nameDef = null;
-                            if (kind.HasFlag(ResolveKind.Name))
-                            {
-                                nameDef = entry as NameDef;
-                            }
-                            TypeDef typeDef = null;
-                            if (kind.HasFlag(ResolveKind.Name))
-                            {
-                                typeDef = entry as TypeDef;
-                            }
-                            if (nameDef != null)
-                            {
-                                importedScope = nameDef.Scope;
-                            }
-                            if (typeDef != null)
-                            {
-                                importedScope = typeDef.Scope;
-                            }
-                            if (importedScope != null)
-                            {
-                                ScopeResolutionInfo importedInfo = null;
-                                if (sri != null)
-                                {
-                                    importedInfo = new ScopeResolutionInfo()
-                                    {
-                                        Position = 0,
-                                        SymbolTypes = sri.SymbolTypes
-                                    };
-                                }
-                                IEnumerable<object> importedResults = this.Resolve(new object[] { importedScope }, kind, name, importedInfo, ResolveFlags.Scope);
-                                result.AddRange(importedResults);
-                            }
-                        }
+                        result.Add(entryObject);
                     }
                 }
             }
@@ -282,7 +331,7 @@ namespace MetaDslx.Compiler
             this.Compiler = compiler;
         }
 
-        public abstract object Bind(object context, IEnumerable<object> alternatives, object info);
+        public abstract ModelObject Bind(ModelObject context, IEnumerable<ModelObject> alternatives, BindingInfo info);
     }
 
     public class DefaultBindingProvider : BindingProviderBase
@@ -292,33 +341,23 @@ namespace MetaDslx.Compiler
         {
         }
 
-        public override object Bind(object context, IEnumerable<object> alternatives, object info)
+        public override ModelObject Bind(ModelObject context, IEnumerable<ModelObject> alternatives, BindingInfo info)
         {
-            List<object> alternativeList = alternatives.ToList();
+            List<ModelObject> alternativeList = alternatives.ToList();
             if (alternativeList.Count == 0)
             {
-                //this.Compiler.Diagnostics.AddError("Could not resolve name or type.", this.Compiler.FileName, new TextSpan());
-                // TODO
+                this.Compiler.Diagnostics.AddError("Cannot resolve name or type.", this.Compiler.FileName, new TextSpan(info.Node));
                 return null;
             }
             else if (alternativeList.Count > 1)
             {
-                // TODO
+                this.Compiler.Diagnostics.AddError("Ambiguous name or type.", this.Compiler.FileName, new TextSpan(info.Node));
                 return null;
             }
             else
             {
-                object symbol = alternativeList[0];
-                TypeDef typeDef = symbol as TypeDef;
-                if (typeDef != null)
-                {
-                    return typeDef.Symbol;
-                }
-                NameDef nameDef = symbol as NameDef;
-                if (nameDef != null)
-                {
-                    return nameDef.Symbol;
-                }
+                ModelObject symbol = alternativeList[0];
+                // TODO
                 return symbol;
             }
         }

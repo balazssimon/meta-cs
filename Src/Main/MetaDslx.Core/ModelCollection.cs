@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace MetaDslx.Core
 {
-    public abstract class ModelCollection 
+    public abstract class ModelCollection
     {
         private List<Lazy<object>> lazyItems;
 

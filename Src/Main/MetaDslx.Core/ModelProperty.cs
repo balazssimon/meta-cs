@@ -20,6 +20,7 @@ namespace MetaDslx.Core
         }
 
         private bool initialized = false;
+        private List<object> annotations;
         private List<ModelProperty> oppositeProperties;
         private List<ModelProperty> subsettedProperties;
         private List<ModelProperty> subsettingProperties;
@@ -37,6 +38,7 @@ namespace MetaDslx.Core
             this.Type = type;
             this.OwningType = owningType;
             this.DeclaringType = declaringType;
+            this.annotations = new List<object>();
             this.oppositeProperties = new List<ModelProperty>();
             this.subsettedProperties = new List<ModelProperty>();
             this.subsettingProperties = new List<ModelProperty>();
@@ -49,6 +51,15 @@ namespace MetaDslx.Core
         public Type Type { get; private set; }
         public Type OwningType { get; private set; }
         public Type DeclaringType { get; private set; }
+
+        public IEnumerable<object> Annotations
+        {
+            get
+            {
+                if (!this.initialized) this.Init();
+                return this.annotations;
+            }
+        }
 
         public IEnumerable<ModelProperty> OppositeProperties
         {
@@ -139,6 +150,7 @@ namespace MetaDslx.Core
             FieldInfo info = this.DeclaringType.GetField(this.DeclaredName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (info != null)
             {
+                this.annotations.AddRange(info.GetCustomAttributes());
                 if (ModelProperty.IsAssignableToGenericType(this.Type,typeof(ICollection<>)))
                 {
                     Type[] genericArguments = this.Type.GetGenericArguments();
