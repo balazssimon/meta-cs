@@ -51,7 +51,7 @@ namespace MetaDslx.Core
             MetaConditionalExpression.StaticInit();
         }
     
-        internal static void StaticInit()
+        public static void StaticInit()
         {
         }
     
@@ -73,11 +73,15 @@ namespace MetaDslx.Core
             internal static void StaticInit()
             {
             }
-        
+
+            static MetaTypedElement()
+            {
+            }
+
             [Type]
             public static readonly ModelProperty TypeProperty =
                 ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypedElement), typeof(global::MetaDslx.Core.Meta.MetaTypedElement));
-            
+
         }
         
         public static class MetaType

@@ -128,6 +128,9 @@ namespace MetaDslx.TempConsole
         
         private static void CompileMeta(string fileName, string outputFileName)
         {
+            //Meta.MetaTypedElement.StaticInit();
+            //Console.WriteLine(Meta.MetaTypedElement.TypeProperty);
+            //Meta.StaticInit();
             string source;
             using (StreamReader reader = new StreamReader(fileName))
             {
@@ -141,6 +144,7 @@ namespace MetaDslx.TempConsole
             }
             //PrintScope("", compiler.GlobalScope);
             Console.WriteLine("=");
+            /*
             foreach (var symbol in compiler.Data.GetSymbols())
             {
                 ModelObject mo = symbol as ModelObject;
@@ -180,6 +184,7 @@ namespace MetaDslx.TempConsole
                     }
                 }
             }
+            */
             using (StreamWriter writer = new StreamWriter("messages.txt"))
             {
                 foreach (var msg in compiler.Diagnostics.GetMessages(true))

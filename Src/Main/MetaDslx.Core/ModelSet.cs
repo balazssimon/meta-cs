@@ -21,7 +21,7 @@ namespace MetaDslx.Core
 
         public void Add(T item)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             if (this.items.Add(item))
             {
                 this.Owner.MOnAddValue(this.OwnerProperty, item, true);
@@ -41,13 +41,13 @@ namespace MetaDslx.Core
 
         public bool Contains(T item)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             return this.items.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             this.items.CopyTo(array, arrayIndex);
         }
 
@@ -55,7 +55,7 @@ namespace MetaDslx.Core
         {
             get
             {
-                this.FlushLazyItems();
+                this.MFlushLazyItems();
                 return this.items.Count;
             }
         }
@@ -67,7 +67,7 @@ namespace MetaDslx.Core
 
         public bool Remove(T item)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             if (this.items.Remove(item))
             {
                 this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
@@ -82,7 +82,7 @@ namespace MetaDslx.Core
 
         public IEnumerator<T> GetEnumerator()
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             return this.items.GetEnumerator();
         }
 

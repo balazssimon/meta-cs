@@ -191,6 +191,18 @@ namespace MetaDslx.Compiler
             MetaModelParserPropertyEvaluator propertyEvaluator = new MetaModelParserPropertyEvaluator(this);
             propertyEvaluator.Visit(this.ParseTree);
 
+            foreach (var symbol in this.Data.GetSymbols())
+            {
+                symbol.MEvalLazyValues();
+            }
+            foreach (var symbol in this.Data.GetSymbols())
+            {
+                if (symbol.MHasUninitializedValue())
+                {
+                    this.Diagnostics.AddError("The symbol '"+symbol+"' has uninitialized lazy values.", this.FileName, new TextSpan(), true);
+                }
+            }
+
             var metamodels = this.Data.GetSymbols().OfType<MetaModel>().Distinct().ToList();
             MetaModelGenerator generator = new MetaModelGenerator(metamodels);
             this.GeneratedSource = generator.Generate();
@@ -1334,10 +1346,7 @@ namespace MetaDslx.Compiler
                     ModelObject symbol = this.CurrentSymbol;
                     if (symbol != null)
                     {
-                        if (!this.SetProperty(node, this.ParentSymbol, pa, symbol))
-                        {
-                            //Console.WriteLine("*** " + this.ParentSymbol + "->" + pa.Name + " = " + symbol);
-                        }
+                        this.SetProperty(node, this.ParentSymbol, pa, symbol);
                     }
                 }
             }

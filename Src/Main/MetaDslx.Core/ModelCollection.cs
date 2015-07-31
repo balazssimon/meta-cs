@@ -20,7 +20,12 @@ namespace MetaDslx.Core
             this.OwnerProperty = ownerProperty;
         }
 
-        protected void FlushLazyItems()
+        public bool MHasLazyItems()
+        {
+            return this.lazyItems != null && this.lazyItems.Count > 0;
+        }
+
+        public void MFlushLazyItems()
         {
             if (this.lazyItems == null) return;
             List<Lazy<object>> lazyCopy = this.lazyItems;

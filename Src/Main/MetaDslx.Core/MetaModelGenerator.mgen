@@ -303,6 +303,10 @@ public static class [cls.CSharpName()]
     {
     }
 ^
+    static [cls.CSharpName()]()
+    {
+    }
+^
     [loop(cls->prop:Properties)]
     [GeneratePropertyDeclaration(cls.Model, cls, prop)]
     [end loop]

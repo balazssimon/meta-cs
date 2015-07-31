@@ -20,6 +20,43 @@ namespace MetaDslx.Core
             this.childInitializers = new Dictionary<ModelProperty, Dictionary<ModelProperty, Lazy<object>>>();
         }
 
+        public void MEvalLazyValues()
+        {
+            List<ModelProperty> properties = this.initializers.Keys.ToList();
+            foreach (var property in properties)
+            {
+                this.MGet(property);
+            }
+            properties = this.values.Keys.ToList();
+            foreach (var property in properties)
+            {
+                object value = this.MGet(property);
+                ModelCollection collection = value as ModelCollection;
+                if (collection != null)
+                {
+                    collection.MFlushLazyItems();
+                }
+            }
+        }
+
+        public bool MHasUninitializedValue()
+        {
+            HashSet<ModelProperty> lazyProperties = new HashSet<ModelProperty>(this.initializers.Keys);
+            HashSet<ModelProperty> valueProperties = new HashSet<ModelProperty>(this.values.Keys);
+            List<ModelProperty> diff = lazyProperties.Except(valueProperties).ToList();
+            if (diff.Count > 0) return true;
+            foreach (var property in valueProperties)
+            {
+                object value = this.MGet(property);
+                ModelCollection collection = value as ModelCollection;
+                if (collection != null)
+                {
+                    if (collection.MHasLazyItems()) return true;
+                }
+            }
+            return false;
+        }
+
         public void MMakeDefault()
         {
             this.defaultValues = new Dictionary<ModelProperty, WeakReference<object>>();

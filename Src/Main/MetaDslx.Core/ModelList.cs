@@ -22,20 +22,20 @@ namespace MetaDslx.Core
 
         public int IndexOf(T item)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             return this.items.IndexOf(item);
         }
 
         public void Insert(int index, T item)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             this.items.Insert(index, item);
             this.Owner.MOnAddValue(this.OwnerProperty, item, true);
         }
 
         public void RemoveAt(int index)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             object item = this.items[index];
             this.items.RemoveAt(index);
             this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
@@ -45,12 +45,12 @@ namespace MetaDslx.Core
         {
             get
             {
-                this.FlushLazyItems();
+                this.MFlushLazyItems();
                 return this.items[index];
             }
             set
             {
-                this.FlushLazyItems();
+                this.MFlushLazyItems();
                 object item = this.items[index];
                 this.items[index] = null;
                 this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
@@ -66,7 +66,7 @@ namespace MetaDslx.Core
 
         public void Add(T item)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             if (!this.items.Contains(item))
             {
                 this.items.Add(item);
@@ -87,13 +87,13 @@ namespace MetaDslx.Core
 
         public bool Contains(T item)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             return this.items.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             this.items.CopyTo(array, arrayIndex);
         }
 
@@ -101,7 +101,7 @@ namespace MetaDslx.Core
         {
             get
             {
-                this.FlushLazyItems();
+                this.MFlushLazyItems();
                 return this.items.Count;
             }
         }
@@ -113,7 +113,7 @@ namespace MetaDslx.Core
 
         public bool Remove(T item)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             if (this.items.Remove(item))
             {
                 this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
@@ -124,7 +124,7 @@ namespace MetaDslx.Core
 
         public void RemoveAll(T item)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             bool removed = false;
             while (this.items.Remove(item))
             {
@@ -142,7 +142,7 @@ namespace MetaDslx.Core
 
         public IEnumerator<T> GetEnumerator()
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             return this.items.GetEnumerator();
         }
 
@@ -159,7 +159,7 @@ namespace MetaDslx.Core
 
         public void AddRange(IEnumerable<T> collection)
         {
-            this.FlushLazyItems();
+            this.MFlushLazyItems();
             foreach (T item in collection)
             {
                 this.Add(item);
