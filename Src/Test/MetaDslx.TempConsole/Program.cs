@@ -144,7 +144,7 @@ namespace MetaDslx.TempConsole
             }
             //PrintScope("", compiler.GlobalScope);
             Console.WriteLine("=");
-            /*
+            
             foreach (var symbol in compiler.Data.GetSymbols())
             {
                 ModelObject mo = symbol as ModelObject;
@@ -184,7 +184,7 @@ namespace MetaDslx.TempConsole
                     }
                 }
             }
-            */
+            
             using (StreamWriter writer = new StreamWriter("messages.txt"))
             {
                 foreach (var msg in compiler.Diagnostics.GetMessages(true))

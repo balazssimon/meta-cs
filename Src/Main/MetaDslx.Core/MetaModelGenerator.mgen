@@ -30,7 +30,14 @@ namespace [model.Namespace.CSharpName()]
 }
 end template
 
+template GenerateAnnotations(MetaAnnotatedElement elem)
+[loop(elem->annot:Annotations)]
+["["][annot.Name]["]"]
+[end loop]
+end template
+
 template GenerateEnum(MetaEnum enm)
+[GenerateAnnotations(enm)]
 public enum [enm.CSharpName()]
 {
     [loop(enm->value:EnumLiterals)]
@@ -49,6 +56,7 @@ function string GetAncestors(MetaClass cls)
 end function
 
 template GenerateInterface(MetaClass cls)
+[GenerateAnnotations(cls)]
 public interface [cls.CSharpName()][GetAncestors(cls)]
 {
     [loop(cls->prop:Properties)]
@@ -154,6 +162,7 @@ end template
 
 template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaProperty prop)
 [if(prop.Class == cls)]
+[GenerateAnnotations(prop)]
 [if(prop.Kind == MetaPropertyKind.Containment)]
 ["[ContainmentAttribute]"]
 [end if]

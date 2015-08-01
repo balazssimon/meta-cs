@@ -17,7 +17,8 @@ identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
 
-annotation : TOpenBracket  identifier TCloseBracket;
+
+annotation : TOpenBracket   identifier TCloseBracket;
 
 /*
 annotation : TOpenBracket identifier annotationParams? TCloseBracket;

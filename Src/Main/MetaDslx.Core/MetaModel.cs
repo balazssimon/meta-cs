@@ -11,6 +11,7 @@ namespace MetaDslx.Core
     {
         static Meta()
         {
+            MetaAnnotatedElement.StaticInit();
             MetaNamedElement.StaticInit();
             MetaTypedElement.StaticInit();
             MetaType.StaticInit();
@@ -51,14 +52,35 @@ namespace MetaDslx.Core
             MetaConditionalExpression.StaticInit();
         }
     
-        public static void StaticInit()
+        internal static void StaticInit()
         {
         }
     
         
+        public static class MetaAnnotatedElement
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            static MetaAnnotatedElement()
+            {
+            }
+        
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty AnnotationsProperty =
+                ModelProperty.Register("Annotations", typeof(IList<global::MetaDslx.Core.MetaAnnotation>), typeof(global::MetaDslx.Core.MetaAnnotatedElement), typeof(global::MetaDslx.Core.Meta.MetaAnnotatedElement));
+            
+        }
+        
         public static class MetaNamedElement
         {
             internal static void StaticInit()
+            {
+            }
+        
+            static MetaNamedElement()
             {
             }
         
@@ -73,20 +95,24 @@ namespace MetaDslx.Core
             internal static void StaticInit()
             {
             }
-
+        
             static MetaTypedElement()
             {
             }
-
+        
             [Type]
             public static readonly ModelProperty TypeProperty =
                 ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypedElement), typeof(global::MetaDslx.Core.Meta.MetaTypedElement));
-
+            
         }
         
         public static class MetaType
         {
             internal static void StaticInit()
+            {
+            }
+        
+            static MetaType()
             {
             }
         
@@ -98,6 +124,10 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaAnnotation()
+            {
+            }
+        
         }
         
         public static class MetaNamespace
@@ -105,8 +135,12 @@ namespace MetaDslx.Core
             internal static void StaticInit()
             {
             }
-
-            [ScopeEntry]
+        
+            static MetaNamespace()
+            {
+            }
+        
+            
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaNamespace), "Namespaces")]
             public static readonly ModelProperty ParentProperty =
                 ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.Meta.MetaNamespace));
@@ -115,11 +149,12 @@ namespace MetaDslx.Core
             public static readonly ModelProperty UsingsProperty =
                 ModelProperty.Register("Usings", typeof(IList<global::MetaDslx.Core.MetaNamespace>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.Meta.MetaNamespace));
             
+            [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaNamespace), "Parent")]
             public static readonly ModelProperty NamespacesProperty =
                 ModelProperty.Register("Namespaces", typeof(IList<global::MetaDslx.Core.MetaNamespace>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.Meta.MetaNamespace));
-
+            
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaModel), "Namespace")]
@@ -134,27 +169,34 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaModel()
+            {
+            }
+        
+            
             public static readonly ModelProperty UriProperty =
                 ModelProperty.Register("Uri", typeof(string), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
+            
             
             public static readonly ModelProperty PrefixProperty =
                 ModelProperty.Register("Prefix", typeof(string), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
             
+            
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaNamespace), "Models")]
             public static readonly ModelProperty NamespaceProperty =
                 ModelProperty.Register("Namespace", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
-
+            
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaDeclaration), "Model")]
             public static readonly ModelProperty TypesProperty =
                 ModelProperty.Register("Types", typeof(IList<global::MetaDslx.Core.MetaType>), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
-
+            
             [ScopeEntry]
             [ContainmentAttribute]
             public static readonly ModelProperty PropertiesProperty =
                 ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.Meta.MetaModel));
-
+            
             [ScopeEntry]
             [ContainmentAttribute]
             public static readonly ModelProperty OperationsProperty =
@@ -168,9 +210,15 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaDeclaration()
+            {
+            }
+        
+            
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaModel), "Types")]
             public static readonly ModelProperty ModelProperty =
                 ModelProperty.Register("Model", typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaDeclaration), typeof(global::MetaDslx.Core.Meta.MetaDeclaration));
+            
             
             [ReadonlyAttribute]
             public static readonly ModelProperty NamespaceProperty =
@@ -184,8 +232,14 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaCollectionType()
+            {
+            }
+        
+            
             public static readonly ModelProperty KindProperty =
                 ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaCollectionKind), typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.Meta.MetaCollectionType));
+            
             
             public static readonly ModelProperty InnerTypeProperty =
                 ModelProperty.Register("InnerType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.Meta.MetaCollectionType));
@@ -198,6 +252,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaNullableType()
+            {
+            }
+        
+            
             public static readonly ModelProperty InnerTypeProperty =
                 ModelProperty.Register("InnerType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaNullableType), typeof(global::MetaDslx.Core.Meta.MetaNullableType));
             
@@ -209,6 +268,10 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaPrimitiveType()
+            {
+            }
+        
         }
         
         public static class MetaEnum
@@ -216,13 +279,17 @@ namespace MetaDslx.Core
             internal static void StaticInit()
             {
             }
-
+        
+            static MetaEnum()
+            {
+            }
+        
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaEnumLiteral), "Enum")]
             public static readonly ModelProperty EnumLiteralsProperty =
                 ModelProperty.Register("EnumLiterals", typeof(IList<global::MetaDslx.Core.MetaEnumLiteral>), typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.Meta.MetaEnum));
-
+            
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaOperation), "Parent")]
@@ -237,6 +304,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaEnumLiteral()
+            {
+            }
+        
+            
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaEnum), "EnumLiterals")]
             public static readonly ModelProperty EnumProperty =
                 ModelProperty.Register("Enum", typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.MetaEnumLiteral), typeof(global::MetaDslx.Core.Meta.MetaEnumLiteral));
@@ -249,25 +321,31 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaClass()
+            {
+            }
+        
+            
             public static readonly ModelProperty IsAbstractProperty =
                 ModelProperty.Register("IsAbstract", typeof(bool), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
             
             [InheritedScope]
             public static readonly ModelProperty SuperClassesProperty =
                 ModelProperty.Register("SuperClasses", typeof(IList<global::MetaDslx.Core.MetaClass>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
-
+            
             [ScopeEntry]
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "Parent")]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "Class")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "Parent")]
             public static readonly ModelProperty PropertiesProperty =
                 ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
-
+            
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaOperation), "Parent")]
             public static readonly ModelProperty OperationsProperty =
                 ModelProperty.Register("Operations", typeof(IList<global::MetaDslx.Core.MetaOperation>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
+            
             
             [ContainmentAttribute]
             public static readonly ModelProperty ConstructorProperty =
@@ -281,15 +359,22 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaOperation()
+            {
+            }
+        
+            
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaClass), "Operations")]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaEnum), "Operations")]
             public static readonly ModelProperty ParentProperty =
                 ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.Meta.MetaOperation));
             
+            
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaParameter), "Operation")]
             public static readonly ModelProperty ParametersProperty =
                 ModelProperty.Register("Parameters", typeof(IList<global::MetaDslx.Core.MetaParameter>), typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.Meta.MetaOperation));
+            
             
             public static readonly ModelProperty ReturnTypeProperty =
                 ModelProperty.Register("ReturnType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.Meta.MetaOperation));
@@ -302,6 +387,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaConstructor()
+            {
+            }
+        
+            
             [ContainmentAttribute]
             public static readonly ModelProperty InitializersProperty =
                 ModelProperty.Register("Initializers", typeof(IList<global::MetaDslx.Core.MetaPropertyInitializer>), typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.Meta.MetaConstructor));
@@ -314,6 +404,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaParameter()
+            {
+            }
+        
+            
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaOperation), "Parameters")]
             public static readonly ModelProperty OperationProperty =
                 ModelProperty.Register("Operation", typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.MetaParameter), typeof(global::MetaDslx.Core.Meta.MetaParameter));
@@ -326,32 +421,44 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaProperty()
+            {
+            }
+        
+            
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaClass), "Properties")]
             public static readonly ModelProperty ParentProperty =
                 ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
             
+            
             public static readonly ModelProperty KindProperty =
                 ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaPropertyKind), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaClass), "Properties")]
             public static readonly ModelProperty ClassProperty =
                 ModelProperty.Register("Class", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
             
+            
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "OppositeProperties")]
             public static readonly ModelProperty OppositePropertiesProperty =
                 ModelProperty.Register("OppositeProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "SubsettingProperties")]
             public static readonly ModelProperty SubsettedPropertiesProperty =
                 ModelProperty.Register("SubsettedProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
             
+            
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "SubsettedProperties")]
             public static readonly ModelProperty SubsettingPropertiesProperty =
                 ModelProperty.Register("SubsettingProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
             
+            
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "RedefiningProperties")]
             public static readonly ModelProperty RedefinedPropertiesProperty =
                 ModelProperty.Register("RedefinedProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
+            
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "RedefinedProperties")]
             public static readonly ModelProperty RedefiningPropertiesProperty =
@@ -365,8 +472,14 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaPropertyInitializer()
+            {
+            }
+        
+            
             public static readonly ModelProperty PropertyProperty =
                 ModelProperty.Register("Property", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.Meta.MetaPropertyInitializer));
+            
             
             [ContainmentAttribute]
             public static readonly ModelProperty ValueProperty =
@@ -380,6 +493,10 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaSynthetizedPropertyInitializer()
+            {
+            }
+        
         }
         
         public static class MetaInheritedPropertyInitializer
@@ -388,6 +505,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaInheritedPropertyInitializer()
+            {
+            }
+        
+            
             public static readonly ModelProperty ObjectProperty =
                 ModelProperty.Register("Object", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaInheritedPropertyInitializer), typeof(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer));
             
@@ -399,19 +521,28 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaExpression()
+            {
+            }
+        
+            
             public static readonly ModelProperty KindProperty =
                 ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaExpressionKind), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
+            
             
             [ReadonlyAttribute]
             public static readonly ModelProperty TypeProperty =
                 ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
             
+            
             [ReadonlyAttribute]
             public static readonly ModelProperty ExpectedTypeProperty =
                 ModelProperty.Register("ExpectedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
             
+            
             public static readonly ModelProperty DefinitionsProperty =
                 ModelProperty.Register("Definitions", typeof(IList<object>), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
+            
             
             [ReadonlyAttribute]
             public static readonly ModelProperty DefinitionProperty =
@@ -425,6 +556,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaThisExpression()
+            {
+            }
+        
+            
             public static readonly ModelProperty ObjectProperty =
                 ModelProperty.Register("Object", typeof(object), typeof(global::MetaDslx.Core.MetaThisExpression), typeof(global::MetaDslx.Core.Meta.MetaThisExpression));
             
@@ -436,6 +572,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaUnaryExpression()
+            {
+            }
+        
+            
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
                 ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaUnaryExpression), typeof(global::MetaDslx.Core.Meta.MetaUnaryExpression));
@@ -448,9 +589,15 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaBinaryExpression()
+            {
+            }
+        
+            
             [ContainmentAttribute]
             public static readonly ModelProperty LeftProperty =
                 ModelProperty.Register("Left", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaBinaryExpression), typeof(global::MetaDslx.Core.Meta.MetaBinaryExpression));
+            
             
             [ContainmentAttribute]
             public static readonly ModelProperty RightProperty =
@@ -464,6 +611,10 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaBinaryArithmeticExpression()
+            {
+            }
+        
         }
         
         public static class MetaBinaryComparisonExpression
@@ -472,6 +623,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaBinaryComparisonExpression()
+            {
+            }
+        
+            
             [ReadonlyAttribute]
             public static readonly ModelProperty BalancedTypeProperty =
                 ModelProperty.Register("BalancedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaBinaryComparisonExpression), typeof(global::MetaDslx.Core.Meta.MetaBinaryComparisonExpression));
@@ -484,6 +640,10 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaBinaryLogicalExpression()
+            {
+            }
+        
         }
         
         public static class MetaNullCoalescingExpression
@@ -492,6 +652,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaNullCoalescingExpression()
+            {
+            }
+        
+            
             [ReadonlyAttribute]
             public static readonly ModelProperty BalancedTypeProperty =
                 ModelProperty.Register("BalancedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaNullCoalescingExpression), typeof(global::MetaDslx.Core.Meta.MetaNullCoalescingExpression));
@@ -504,6 +669,10 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaAssignmentExpression()
+            {
+            }
+        
         }
         
         public static class MetaTypeConversionExpression
@@ -512,8 +681,14 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaTypeConversionExpression()
+            {
+            }
+        
+            
             public static readonly ModelProperty TypeReferenceProperty =
                 ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeConversionExpression), typeof(global::MetaDslx.Core.Meta.MetaTypeConversionExpression));
+            
             
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
@@ -527,8 +702,14 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaTypeCheckExpression()
+            {
+            }
+        
+            
             public static readonly ModelProperty TypeReferenceProperty =
                 ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeCheckExpression), typeof(global::MetaDslx.Core.Meta.MetaTypeCheckExpression));
+            
             
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
@@ -542,6 +723,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaTypeOfExpression()
+            {
+            }
+        
+            
             public static readonly ModelProperty TypeReferenceProperty =
                 ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeOfExpression), typeof(global::MetaDslx.Core.Meta.MetaTypeOfExpression));
             
@@ -553,6 +739,11 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaConstantExpression()
+            {
+            }
+        
+            
             public static readonly ModelProperty ValueProperty =
                 ModelProperty.Register("Value", typeof(object), typeof(global::MetaDslx.Core.MetaConstantExpression), typeof(global::MetaDslx.Core.Meta.MetaConstantExpression));
             
@@ -564,8 +755,14 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaIdentifierExpression()
+            {
+            }
+        
+            
             public static readonly ModelProperty NameProperty =
                 ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaIdentifierExpression), typeof(global::MetaDslx.Core.Meta.MetaIdentifierExpression));
+            
             
             public static readonly ModelProperty ObjectProperty =
                 ModelProperty.Register("Object", typeof(object), typeof(global::MetaDslx.Core.MetaIdentifierExpression), typeof(global::MetaDslx.Core.Meta.MetaIdentifierExpression));
@@ -578,9 +775,15 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaMemberAccessExpression()
+            {
+            }
+        
+            
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
                 ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaMemberAccessExpression), typeof(global::MetaDslx.Core.Meta.MetaMemberAccessExpression));
+            
             
             public static readonly ModelProperty NameProperty =
                 ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaMemberAccessExpression), typeof(global::MetaDslx.Core.Meta.MetaMemberAccessExpression));
@@ -593,9 +796,15 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaFunctionCallExpression()
+            {
+            }
+        
+            
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
                 ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaFunctionCallExpression), typeof(global::MetaDslx.Core.Meta.MetaFunctionCallExpression));
+            
             
             [ContainmentAttribute]
             public static readonly ModelProperty ArgumentsProperty =
@@ -609,9 +818,15 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaIndexerExpression()
+            {
+            }
+        
+            
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
                 ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaIndexerExpression), typeof(global::MetaDslx.Core.Meta.MetaIndexerExpression));
+            
             
             [ContainmentAttribute]
             public static readonly ModelProperty ArgumentsProperty =
@@ -625,16 +840,24 @@ namespace MetaDslx.Core
             {
             }
         
+            static MetaConditionalExpression()
+            {
+            }
+        
+            
             [ContainmentAttribute]
             public static readonly ModelProperty ConditionProperty =
                 ModelProperty.Register("Condition", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.Meta.MetaConditionalExpression));
             
+            
             public static readonly ModelProperty BalancedTypeProperty =
                 ModelProperty.Register("BalancedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.Meta.MetaConditionalExpression));
+            
             
             [ContainmentAttribute]
             public static readonly ModelProperty ThenProperty =
                 ModelProperty.Register("Then", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.Meta.MetaConditionalExpression));
+            
             
             [ContainmentAttribute]
             public static readonly ModelProperty ElseProperty =
@@ -643,11 +866,13 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public enum MetaCollectionKind
     {
         Set,
         List,
     }
+    
     
     public enum MetaPropertyKind
     {
@@ -659,6 +884,7 @@ namespace MetaDslx.Core
         Synthetized,
         Inherited,
     }
+    
     
     public enum MetaExpressionKind
     {
@@ -714,6 +940,39 @@ namespace MetaDslx.Core
         OrAssign,
     }
     
+    
+    public interface MetaAnnotatedElement
+    {
+        IList<MetaAnnotation> Annotations { get; }
+    
+    }
+    
+    internal class MetaAnnotatedElementImpl : ModelObject, MetaDslx.Core.MetaAnnotatedElement
+    {
+        static MetaAnnotatedElementImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
+        public MetaAnnotatedElementImpl()
+        {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
+            MetaImplementationProvider.Implementation.MetaAnnotatedElement_MetaAnnotatedElement(this);
+            this.MMakeDefault();
+        }
+        
+        IList<MetaAnnotation> MetaAnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (IList<MetaAnnotation>)result;
+                else return default(IList<MetaAnnotation>);
+            }
+        }
+    }
+    
+    
     public interface MetaNamedElement
     {
         string Name { get; set; }
@@ -745,6 +1004,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaTypedElement
     {
         MetaType Type { get; set; }
@@ -775,7 +1035,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
     }
-
+    
     [Type]
     public interface MetaType
     {
@@ -795,6 +1055,7 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
     }
+    
     
     public interface MetaAnnotation : MetaDslx.Core.MetaNamedElement
     {
@@ -825,9 +1086,9 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
     }
-
+    
     [Scope]
-    public interface MetaNamespace : MetaDslx.Core.MetaNamedElement
+    public interface MetaNamespace : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaAnnotatedElement
     {
         MetaNamespace Parent { get; set; }
         IList<MetaNamespace> Usings { get; }
@@ -845,6 +1106,7 @@ namespace MetaDslx.Core
     
         public MetaNamespaceImpl()
         {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaNamespace.UsingsProperty, new ModelList<MetaNamespace>(this, global::MetaDslx.Core.Meta.MetaNamespace.UsingsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaNamespace.NamespacesProperty, new ModelList<MetaNamespace>(this, global::MetaDslx.Core.Meta.MetaNamespace.NamespacesProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaNamespace.ModelsProperty, new ModelList<MetaModel>(this, global::MetaDslx.Core.Meta.MetaNamespace.ModelsProperty));
@@ -861,6 +1123,16 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
+        }
+        
+        IList<MetaAnnotation> MetaAnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (IList<MetaAnnotation>)result;
+                else return default(IList<MetaAnnotation>);
+            }
         }
         
         MetaNamespace MetaNamespace.Parent
@@ -904,9 +1176,9 @@ namespace MetaDslx.Core
             }
         }
     }
-
+    
     [Scope]
-    public interface MetaModel : MetaDslx.Core.MetaNamedElement
+    public interface MetaModel : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaAnnotatedElement
     {
         string Uri { get; set; }
         string Prefix { get; set; }
@@ -926,6 +1198,7 @@ namespace MetaDslx.Core
     
         public MetaModelImpl()
         {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaModel.TypesProperty, new ModelList<MetaType>(this, global::MetaDslx.Core.Meta.MetaModel.TypesProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaModel.PropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaModel.PropertiesProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaModel.OperationsProperty, new ModelList<MetaOperation>(this, global::MetaDslx.Core.Meta.MetaModel.OperationsProperty));
@@ -942,6 +1215,16 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
+        }
+        
+        IList<MetaAnnotation> MetaAnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (IList<MetaAnnotation>)result;
+                else return default(IList<MetaAnnotation>);
+            }
         }
         
         string MetaModel.Uri
@@ -1008,7 +1291,8 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaDeclaration : MetaDslx.Core.MetaNamedElement
+    
+    public interface MetaDeclaration : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaAnnotatedElement
     {
         MetaModel Model { get; set; }
         MetaNamespace Namespace { get; }
@@ -1024,6 +1308,7 @@ namespace MetaDslx.Core
     
         public MetaDeclarationImpl()
         {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             MetaImplementationProvider.Implementation.MetaDeclaration_MetaDeclaration(this);
             this.MMakeDefault();
         }
@@ -1037,6 +1322,16 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
+        }
+        
+        IList<MetaAnnotation> MetaAnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (IList<MetaAnnotation>)result;
+                else return default(IList<MetaAnnotation>);
+            }
         }
         
         MetaModel MetaDeclaration.Model
@@ -1055,6 +1350,7 @@ namespace MetaDslx.Core
             get { return MetaImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
         }
     }
+    
     
     public interface MetaCollectionType : MetaDslx.Core.MetaType
     {
@@ -1099,6 +1395,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaNullableType : MetaDslx.Core.MetaType
     {
         MetaType InnerType { get; set; }
@@ -1130,6 +1427,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaPrimitiveType : MetaDslx.Core.MetaType, MetaDslx.Core.MetaNamedElement
     {
     
@@ -1159,7 +1457,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
     }
-
+    
     [Scope]
     public interface MetaEnum : MetaDslx.Core.MetaType, MetaDslx.Core.MetaDeclaration
     {
@@ -1177,6 +1475,7 @@ namespace MetaDslx.Core
     
         public MetaEnumImpl()
         {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaEnum.EnumLiteralsProperty, new ModelList<MetaEnumLiteral>(this, global::MetaDslx.Core.Meta.MetaEnum.EnumLiteralsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaEnum.OperationsProperty, new ModelList<MetaOperation>(this, global::MetaDslx.Core.Meta.MetaEnum.OperationsProperty));
             MetaImplementationProvider.Implementation.MetaEnum_MetaEnum(this);
@@ -1192,6 +1491,16 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
+        }
+        
+        IList<MetaAnnotation> MetaAnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (IList<MetaAnnotation>)result;
+                else return default(IList<MetaAnnotation>);
+            }
         }
         
         MetaModel MetaDeclaration.Model
@@ -1230,6 +1539,7 @@ namespace MetaDslx.Core
             }
         }
     }
+    
     
     public interface MetaEnumLiteral : MetaDslx.Core.MetaNamedElement
     {
@@ -1272,7 +1582,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaEnumLiteral.EnumProperty, value); }
         }
     }
-
+    
     [Scope]
     public interface MetaClass : MetaDslx.Core.MetaType, MetaDslx.Core.MetaDeclaration
     {
@@ -1296,6 +1606,7 @@ namespace MetaDslx.Core
     
         public MetaClassImpl()
         {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaClass.SuperClassesProperty, new ModelList<MetaClass>(this, global::MetaDslx.Core.Meta.MetaClass.SuperClassesProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaClass.PropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaClass.PropertiesProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaClass.OperationsProperty, new ModelList<MetaOperation>(this, global::MetaDslx.Core.Meta.MetaClass.OperationsProperty));
@@ -1312,6 +1623,16 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
+        }
+        
+        IList<MetaAnnotation> MetaAnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (IList<MetaAnnotation>)result;
+                else return default(IList<MetaAnnotation>);
+            }
         }
         
         MetaModel MetaDeclaration.Model
@@ -1398,7 +1719,8 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaOperation : MetaDslx.Core.MetaNamedElement
+    
+    public interface MetaOperation : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaAnnotatedElement
     {
         MetaType Parent { get; set; }
         IList<MetaParameter> Parameters { get; }
@@ -1415,6 +1737,7 @@ namespace MetaDslx.Core
     
         public MetaOperationImpl()
         {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaOperation.ParametersProperty, new ModelList<MetaParameter>(this, global::MetaDslx.Core.Meta.MetaOperation.ParametersProperty));
             MetaImplementationProvider.Implementation.MetaOperation_MetaOperation(this);
             this.MMakeDefault();
@@ -1429,6 +1752,16 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
+        }
+        
+        IList<MetaAnnotation> MetaAnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (IList<MetaAnnotation>)result;
+                else return default(IList<MetaAnnotation>);
+            }
         }
         
         MetaType MetaOperation.Parent
@@ -1464,7 +1797,8 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaConstructor : MetaDslx.Core.MetaNamedElement
+    
+    public interface MetaConstructor : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaAnnotatedElement
     {
         IList<MetaPropertyInitializer> Initializers { get; }
     
@@ -1479,6 +1813,7 @@ namespace MetaDslx.Core
     
         public MetaConstructorImpl()
         {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaConstructor.InitializersProperty, new ModelList<MetaPropertyInitializer>(this, global::MetaDslx.Core.Meta.MetaConstructor.InitializersProperty));
             MetaImplementationProvider.Implementation.MetaConstructor_MetaConstructor(this);
             this.MMakeDefault();
@@ -1495,6 +1830,16 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
         }
         
+        IList<MetaAnnotation> MetaAnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (IList<MetaAnnotation>)result;
+                else return default(IList<MetaAnnotation>);
+            }
+        }
+        
         IList<MetaPropertyInitializer> MetaConstructor.Initializers
         {
             get 
@@ -1506,7 +1851,8 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaParameter : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaTypedElement
+    
+    public interface MetaParameter : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaTypedElement, MetaDslx.Core.MetaAnnotatedElement
     {
         MetaOperation Operation { get; set; }
     
@@ -1521,6 +1867,7 @@ namespace MetaDslx.Core
     
         public MetaParameterImpl()
         {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             MetaImplementationProvider.Implementation.MetaParameter_MetaParameter(this);
             this.MMakeDefault();
         }
@@ -1547,6 +1894,16 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
         
+        IList<MetaAnnotation> MetaAnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (IList<MetaAnnotation>)result;
+                else return default(IList<MetaAnnotation>);
+            }
+        }
+        
         MetaOperation MetaParameter.Operation
         {
             get 
@@ -1559,7 +1916,8 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaProperty : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaTypedElement
+    
+    public interface MetaProperty : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaTypedElement, MetaDslx.Core.MetaAnnotatedElement
     {
         MetaType Parent { get; set; }
         MetaPropertyKind Kind { get; set; }
@@ -1581,6 +1939,7 @@ namespace MetaDslx.Core
     
         public MetaPropertyImpl()
         {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaProperty.OppositePropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaProperty.OppositePropertiesProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaProperty.SubsettedPropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaProperty.SubsettedPropertiesProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaProperty.SubsettingPropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaProperty.SubsettingPropertiesProperty));
@@ -1610,6 +1969,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        IList<MetaAnnotation> MetaAnnotatedElement.Annotations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty); 
+                if (result != null) return (IList<MetaAnnotation>)result;
+                else return default(IList<MetaAnnotation>);
+            }
         }
         
         MetaType MetaProperty.Parent
@@ -1696,6 +2065,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaPropertyInitializer
     {
         MetaProperty Property { get; set; }
@@ -1739,6 +2109,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaSynthetizedPropertyInitializer : MetaDslx.Core.MetaPropertyInitializer
     {
     
@@ -1779,6 +2150,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, value); }
         }
     }
+    
     
     public interface MetaInheritedPropertyInitializer : MetaDslx.Core.MetaPropertyInitializer
     {
@@ -1832,6 +2204,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer.ObjectProperty, value); }
         }
     }
+    
     
     public interface MetaExpression
     {
@@ -1907,6 +2280,7 @@ namespace MetaDslx.Core
             }
         }
     }
+    
     
     public interface MetaThisExpression : MetaDslx.Core.MetaExpression
     {
@@ -1990,6 +2364,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaUnaryExpression : MetaDslx.Core.MetaExpression
     {
         MetaExpression Expression { get; set; }
@@ -2071,6 +2446,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaUnaryExpression.ExpressionProperty, value); }
         }
     }
+    
     
     public interface MetaBinaryExpression : MetaDslx.Core.MetaExpression
     {
@@ -2166,6 +2542,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaBinaryArithmeticExpression : MetaDslx.Core.MetaBinaryExpression
     {
     
@@ -2257,6 +2634,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, value); }
         }
     }
+    
     
     public interface MetaBinaryComparisonExpression : MetaDslx.Core.MetaBinaryExpression
     {
@@ -2362,6 +2740,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaBinaryLogicalExpression : MetaDslx.Core.MetaBinaryExpression
     {
     
@@ -2453,6 +2832,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, value); }
         }
     }
+    
     
     public interface MetaNullCoalescingExpression : MetaDslx.Core.MetaBinaryExpression
     {
@@ -2558,6 +2938,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaAssignmentExpression : MetaDslx.Core.MetaBinaryExpression
     {
     
@@ -2649,6 +3030,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, value); }
         }
     }
+    
     
     public interface MetaTypeConversionExpression : MetaDslx.Core.MetaExpression
     {
@@ -2744,6 +3126,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaTypeCheckExpression : MetaDslx.Core.MetaExpression
     {
         MetaType TypeReference { get; set; }
@@ -2838,6 +3221,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaTypeOfExpression : MetaDslx.Core.MetaExpression
     {
         MetaType TypeReference { get; set; }
@@ -2920,6 +3304,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaConstantExpression : MetaDslx.Core.MetaExpression
     {
         object Value { get; set; }
@@ -3001,6 +3386,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaConstantExpression.ValueProperty, value); }
         }
     }
+    
     
     public interface MetaIdentifierExpression : MetaDslx.Core.MetaExpression
     {
@@ -3096,6 +3482,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaMemberAccessExpression : MetaDslx.Core.MetaExpression
     {
         MetaExpression Expression { get; set; }
@@ -3189,6 +3576,7 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaMemberAccessExpression.NameProperty, value); }
         }
     }
+    
     
     public interface MetaFunctionCallExpression : MetaDslx.Core.MetaExpression
     {
@@ -3284,6 +3672,7 @@ namespace MetaDslx.Core
         }
     }
     
+    
     public interface MetaIndexerExpression : MetaDslx.Core.MetaExpression
     {
         MetaExpression Expression { get; set; }
@@ -3377,6 +3766,7 @@ namespace MetaDslx.Core
             }
         }
     }
+    
     
     public interface MetaConditionalExpression : MetaDslx.Core.MetaExpression
     {
@@ -3514,6 +3904,16 @@ namespace MetaDslx.Core
         {
             get { return MetaModelFactory.instance; }
         }
+    
+        /// <summary>
+        /// Creates a new instance of MetaAnnotatedElement.
+        /// </summary>
+        public MetaAnnotatedElement CreateMetaAnnotatedElement()
+    	{
+    		MetaAnnotatedElement result = new MetaAnnotatedElementImpl();
+    		return result;
+    	}
+    
     
         /// <summary>
         /// Creates a new instance of MetaNamedElement.
@@ -3928,6 +4328,13 @@ namespace MetaDslx.Core
     internal abstract class MetaImplementationBase
     {
         /// <summary>
+    	/// Implements the constructor: MetaAnnotatedElement()
+        /// </summary>
+        public virtual void MetaAnnotatedElement_MetaAnnotatedElement(MetaAnnotatedElement @this)
+        {
+        }
+    
+        /// <summary>
     	/// Implements the constructor: MetaNamedElement()
         /// </summary>
         public virtual void MetaNamedElement_MetaNamedElement(MetaNamedElement @this)
@@ -3959,8 +4366,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaNamespace()
-    	/// Direct superclasses: MetaNamedElement
-    	/// All superclasses: MetaNamedElement
+    	/// Direct superclasses: MetaNamedElement, MetaAnnotatedElement
+    	/// All superclasses: MetaNamedElement, MetaAnnotatedElement
         /// </summary>
         public virtual void MetaNamespace_MetaNamespace(MetaNamespace @this)
         {
@@ -3968,8 +4375,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaModel()
-    	/// Direct superclasses: MetaNamedElement
-    	/// All superclasses: MetaNamedElement
+    	/// Direct superclasses: MetaNamedElement, MetaAnnotatedElement
+    	/// All superclasses: MetaNamedElement, MetaAnnotatedElement
         /// </summary>
         public virtual void MetaModel_MetaModel(MetaModel @this)
         {
@@ -3977,8 +4384,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaDeclaration()
-    	/// Direct superclasses: MetaNamedElement
-    	/// All superclasses: MetaNamedElement
+    	/// Direct superclasses: MetaNamedElement, MetaAnnotatedElement
+    	/// All superclasses: MetaNamedElement, MetaAnnotatedElement
         /// </summary>
         public virtual void MetaDeclaration_MetaDeclaration(MetaDeclaration @this)
         {
@@ -4022,7 +4429,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaEnum()
     	/// Direct superclasses: MetaType, MetaDeclaration
-    	/// All superclasses: MetaType, MetaNamedElement, MetaDeclaration
+    	/// All superclasses: MetaType, MetaNamedElement, MetaAnnotatedElement, MetaDeclaration
         /// </summary>
         public virtual void MetaEnum_MetaEnum(MetaEnum @this)
         {
@@ -4040,7 +4447,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaClass()
     	/// Direct superclasses: MetaType, MetaDeclaration
-    	/// All superclasses: MetaType, MetaNamedElement, MetaDeclaration
+    	/// All superclasses: MetaType, MetaNamedElement, MetaAnnotatedElement, MetaDeclaration
         /// </summary>
         public virtual void MetaClass_MetaClass(MetaClass @this)
         {
@@ -4072,8 +4479,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaOperation()
-    	/// Direct superclasses: MetaNamedElement
-    	/// All superclasses: MetaNamedElement
+    	/// Direct superclasses: MetaNamedElement, MetaAnnotatedElement
+    	/// All superclasses: MetaNamedElement, MetaAnnotatedElement
         /// </summary>
         public virtual void MetaOperation_MetaOperation(MetaOperation @this)
         {
@@ -4081,8 +4488,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaConstructor()
-    	/// Direct superclasses: MetaNamedElement
-    	/// All superclasses: MetaNamedElement
+    	/// Direct superclasses: MetaNamedElement, MetaAnnotatedElement
+    	/// All superclasses: MetaNamedElement, MetaAnnotatedElement
         /// </summary>
         public virtual void MetaConstructor_MetaConstructor(MetaConstructor @this)
         {
@@ -4090,8 +4497,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaParameter()
-    	/// Direct superclasses: MetaNamedElement, MetaTypedElement
-    	/// All superclasses: MetaNamedElement, MetaTypedElement
+    	/// Direct superclasses: MetaNamedElement, MetaTypedElement, MetaAnnotatedElement
+    	/// All superclasses: MetaNamedElement, MetaTypedElement, MetaAnnotatedElement
         /// </summary>
         public virtual void MetaParameter_MetaParameter(MetaParameter @this)
         {
@@ -4099,8 +4506,8 @@ namespace MetaDslx.Core
     
         /// <summary>
     	/// Implements the constructor: MetaProperty()
-    	/// Direct superclasses: MetaNamedElement, MetaTypedElement
-    	/// All superclasses: MetaNamedElement, MetaTypedElement
+    	/// Direct superclasses: MetaNamedElement, MetaTypedElement, MetaAnnotatedElement
+    	/// All superclasses: MetaNamedElement, MetaTypedElement, MetaAnnotatedElement
         /// </summary>
         public virtual void MetaProperty_MetaProperty(MetaProperty @this)
         {

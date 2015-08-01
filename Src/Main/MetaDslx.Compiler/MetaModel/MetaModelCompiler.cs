@@ -233,6 +233,8 @@ namespace MetaDslx.Compiler
                 typeof(NameCtrAnnotation),
                 typeof(TypeUseAnnotation),
                 typeof(NameUseAnnotation),
+                typeof(SymbolAnnotation),
+                typeof(PreDefSymbolAnnotation),
                 typeof(ScopeAnnotation),
                 typeof(ExpressionAnnotation),
             };
@@ -544,8 +546,8 @@ namespace MetaDslx.Compiler
 
         protected virtual void HandleProperties(IParseTree node)
         {
-            ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
-            if (va == null)
+            //ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
+            //if (va == null)
             {
                 List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).Where(pa => !pa.HasValue).ToList();
                 foreach (var pa in pas)
@@ -1319,14 +1321,26 @@ namespace MetaDslx.Compiler
             NameDefAnnotation nda = this.GetAnnotationFor<NameDefAnnotation>(node);
             NameAnnotation na = this.GetAnnotationFor<NameAnnotation>(node);
             QualifiedNameAnnotation qna = this.GetAnnotationFor<QualifiedNameAnnotation>(node);
-            if (na != null || qna != null || tda != null || nda != null || tua != null || nua != null) return;
-            PropertyAnnotation pa = this.ActiveProperty;
-            if (pa == null) return;
-            if (pa.HasValue)
+            if (tda != null || nda != null || tua != null || nua != null) return;
+            if ((na != null || qna != null) && this.CurrentSymbol != null) return;
+            PropertyAnnotation pa = this.CurrentProperty;
+            if (pa != null)
             {
-                this.SetProperty(node, this.ActiveSymbol, pa, pa.Value);
+                if (pa.HasValue)
+                {
+                    this.SetProperty(node, this.ActiveSymbol, pa, pa.Value);
+                    pa = null;
+                }
             }
             else
+            {
+                pa = this.ActiveProperty;
+                if (pa != null && pa.HasValue)
+                {
+                    pa = null;
+                }
+            }
+            if (pa != null)
             {
                 ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
                 if (va != null)

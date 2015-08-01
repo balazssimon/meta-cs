@@ -16,8 +16,9 @@ qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
+$Property(Annotations)
 $Symbol(MetaAnnotation)
-annotation : TOpenBracket $Property(Name) identifier TCloseBracket;
+annotation : TOpenBracket $Property(Name) $Value identifier TCloseBracket;
 
 /*
 annotation : TOpenBracket identifier annotationParams? TCloseBracket;

@@ -25,19 +25,24 @@
 		ScopeEntry Bind(object caller, list<ScopeEntry> entries);
 		*/
 
+		abstract class AnnotatedElement
+		{
+			containment list<Annotation> Annotations;
+		}
+
 		abstract class NamedElement
 		{
-			//[Name]
+			[Name]
 			string Name;
 		}
 
 		abstract class TypedElement
 		{
-			//[Type]
+			[Type]
 			Type Type;
 		}
 
-		//[Type]
+		[Type]
 		abstract class Type
 		{
 		}
@@ -46,32 +51,37 @@
 		{
 		}
 
-		//[Scope]
-		class Namespace : NamedElement
+		[Scope]
+		class Namespace : NamedElement, AnnotatedElement
 		{
 			Namespace Parent;
-			//[ImportedScope]
+			[ImportedScope]
 			list<Namespace> Usings;
+			[ScopeEntry]
 			containment list<Namespace> Namespaces;
+			[ScopeEntry]
 			containment list<Model> Models;
 		}
 
 		association Namespace.Namespaces with Namespace.Parent;
 
-		//[Scope]
-		class Model : NamedElement
+		[Scope]
+		class Model : NamedElement, AnnotatedElement
 		{
 			string Uri;
 			string Prefix;
 			Namespace Namespace;
+			[ScopeEntry]
 			containment list<Type> Types;
+			[ScopeEntry]
 			containment list<Property> Properties;
+			[ScopeEntry]
 			containment list<Operation> Operations;
 		}
 
 		association Namespace.Models with Model.Namespace;
 
-		abstract class Declaration : NamedElement
+		abstract class Declaration : NamedElement, AnnotatedElement
 		{
 			Model Model;
 			derived Namespace Namespace;
@@ -100,10 +110,12 @@
 		{
 		}
 
-		//[Scope]
+		[Scope]
 		class Enum : Type, Declaration
 		{
+			[ScopeEntry]
 			containment list<EnumLiteral> EnumLiterals;
+			[ScopeEntry]
 			containment list<Operation> Operations;
 		}
 
@@ -114,13 +126,15 @@
 
 		association EnumLiteral.Enum with Enum.EnumLiterals;
 
-		//[Scope]
+		[Scope]
 		class Class : Type, Declaration
 		{
 			bool IsAbstract;
-			//[InheritedScope]
+			[InheritedScope]
 			list<Class> SuperClasses;
+			[ScopeEntry]
 			containment list<Property> Properties;
+			[ScopeEntry]
 			containment list<Operation> Operations;
 			containment Constructor Constructor;
 			list<Class> GetAllSuperClasses();
@@ -128,14 +142,14 @@
 			list<Operation> GetAllOperations();
 		}
 
-		class Operation : NamedElement
+		class Operation : NamedElement, AnnotatedElement
 		{
 			Type Parent;
 			containment list<Parameter> Parameters;
 			Type ReturnType;
 		}
 
-		class Constructor : NamedElement
+		class Constructor : NamedElement, AnnotatedElement
 		{
 			containment list<PropertyInitializer> Initializers;
 		}
@@ -143,7 +157,7 @@
 		association Operation.Parent with Class.Operations;
 		association Operation.Parent with Enum.Operations;
 
-		class Parameter : NamedElement, TypedElement
+		class Parameter : NamedElement, TypedElement, AnnotatedElement
 		{
 			Operation Operation;
 		}
@@ -161,7 +175,7 @@
 			Inherited
 		}
 
-		class Property : NamedElement, TypedElement
+		class Property : NamedElement, TypedElement, AnnotatedElement
 		{
 			Type Parent;
 			PropertyKind Kind;
