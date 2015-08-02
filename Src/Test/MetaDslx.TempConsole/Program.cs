@@ -131,66 +131,74 @@ namespace MetaDslx.TempConsole
             //Meta.MetaTypedElement.StaticInit();
             //Console.WriteLine(Meta.MetaTypedElement.TypeProperty);
             //Meta.StaticInit();
-            string source;
-            using (StreamReader reader = new StreamReader(fileName))
+            using (new ModelContextScope())
             {
-                source = reader.ReadToEnd();
-            }
-            MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
-            compiler.Compile();
-            using (StreamWriter writer = new StreamWriter(outputFileName))
-            {
-                writer.WriteLine(compiler.GeneratedSource);
-            }
-            //PrintScope("", compiler.GlobalScope);
-            Console.WriteLine("=");
-            
-            foreach (var symbol in compiler.Data.GetSymbols())
-            {
-                ModelObject mo = symbol as ModelObject;
-                if (mo != null)
+                string source;
+                using (StreamReader reader = new StreamReader(fileName))
                 {
-                    Console.WriteLine(mo);
-                    Console.WriteLine("  Parent=" + mo.MParent);
-                    ModelProperty mp;
-                    mp = mo.MFindProperty("Name");
-                    if (mp != null)
+                    source = reader.ReadToEnd();
+                }
+                MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
+                compiler.Compile();
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(compiler.GeneratedSource);
+                }
+                //PrintScope("", compiler.GlobalScope);
+                Console.WriteLine("=");
+
+                foreach (var symbol in ModelContext.Current.Instances)
+                {
+                    ModelObject mo = symbol as ModelObject;
+                    if (mo != null)
                     {
-                        Console.WriteLine("  Name=" + mo.MGet(mp));
-                    }
-                    mp = mo.MFindProperty("Uri");
-                    if (mp != null)
-                    {
-                        Console.WriteLine("  Uri=" + mo.MGet(mp));
-                    }
-                    mp = mo.MFindProperty("Type");
-                    if (mp != null)
-                    {
-                        Console.WriteLine("  Type=" + mo.MGet(mp));
-                    }
-                    mp = mo.MFindProperty("ReturnType");
-                    if (mp != null)
-                    {
-                        Console.WriteLine("  ReturnType=" + mo.MGet(mp));
-                    }
-                    mp = mo.MFindProperty("EnumLiterals");
-                    if (mp != null)
-                    {
-                        Console.WriteLine("  EnumLiterals:");
-                        foreach (var el in (IList<MetaEnumLiteral>)mo.MGet(mp))
+                        Console.WriteLine(mo);
+                        Console.WriteLine("  Parent=" + mo.MParent);
+                        ModelProperty mp;
+                        mp = mo.MFindProperty("Name");
+                        if (mp != null)
                         {
-                            Console.WriteLine("    " + el);
+                            Console.WriteLine("  Name=" + mo.MGet(mp));
+                        }
+                        mp = mo.MFindProperty("Uri");
+                        if (mp != null)
+                        {
+                            Console.WriteLine("  Uri=" + mo.MGet(mp));
+                        }
+                        mp = mo.MFindProperty("Type");
+                        if (mp != null)
+                        {
+                            Console.WriteLine("  Type=" + mo.MGet(mp));
+                        }
+                        mp = mo.MFindProperty("ReturnType");
+                        if (mp != null)
+                        {
+                            Console.WriteLine("  ReturnType=" + mo.MGet(mp));
+                        }
+                        mp = mo.MFindProperty("Definition");
+                        if (mp != null)
+                        {
+                            Console.WriteLine("  Definition=" + mo.MGet(mp));
+                        }
+                        mp = mo.MFindProperty("EnumLiterals");
+                        if (mp != null)
+                        {
+                            Console.WriteLine("  EnumLiterals:");
+                            foreach (var el in (IList<MetaEnumLiteral>)mo.MGet(mp))
+                            {
+                                Console.WriteLine("    " + el);
+                            }
                         }
                     }
                 }
-            }
-            
-            using (StreamWriter writer = new StreamWriter("messages.txt"))
-            {
-                foreach (var msg in compiler.Diagnostics.GetMessages(true))
+
+                using (StreamWriter writer = new StreamWriter("messages.txt"))
                 {
-                    writer.WriteLine(msg);
-                    Console.WriteLine(msg);
+                    foreach (var msg in compiler.Diagnostics.GetMessages(true))
+                    {
+                        writer.WriteLine(msg);
+                        Console.WriteLine(msg);
+                    }
                 }
             }
         }

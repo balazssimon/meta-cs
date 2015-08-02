@@ -14,6 +14,11 @@ namespace MetaDslx.Core
 
         public ModelObject()
         {
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                ctx.AddInstance(this);
+            }
             this.MetaID = Guid.NewGuid().ToString();
             this.values = new Dictionary<ModelProperty, object>();
             this.initializers = new Dictionary<ModelProperty, Lazy<object>>();

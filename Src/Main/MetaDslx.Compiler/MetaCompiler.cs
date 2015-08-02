@@ -52,7 +52,15 @@ namespace MetaDslx.Compiler
             this.BindingProvider = new DefaultBindingProvider(this);
         }
 
-        public abstract void Compile();
+        public void Compile()
+        {
+            using (new MetaCompilerContextScope(this))
+            {
+                this.DoCompile();
+            }
+        }
+
+        protected abstract void DoCompile();
 
         void IAntlrErrorListener<int>.SyntaxError(IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {

@@ -165,7 +165,7 @@ namespace MetaDslx.Compiler
         {
         }
 
-        public override void Compile()
+        protected override void DoCompile()
         {
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = new MetaModelLexer(inputStream);
@@ -1128,6 +1128,12 @@ namespace MetaDslx.Compiler
                     this.SymbolStack[i] = newSymbol;
                 }
             }
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                ctx.RemoveInstance(oldSymbol);
+                ctx.AddInstance(newSymbol);
+            }
         }
 
         protected override void HandleNode(IParseTree node)
@@ -1390,8 +1396,6 @@ namespace MetaDslx.Compiler
 
         public virtual List<object> Bind(object scope, object info)
         {
-            if (scope == null) return null;
-            if (info == null) return null;
             return null;
         }
 

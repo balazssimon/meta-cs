@@ -46,7 +46,7 @@ namespace MetaDslx.Compiler
 
         }
 
-        public override void Compile()
+        protected override void DoCompile()
         {
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = new AnnotatedAntlr4Lexer(inputStream);

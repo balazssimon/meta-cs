@@ -57,6 +57,7 @@
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserListener.cs" />
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserVisitor.cs" />
     <Compile Include="MetaCompiler.cs" />
+    <Compile Include="MetaCompilerContext.cs" />
     <Compile Include="MetaCompilerDiagnostics.cs" />
     <Compile Include="MetaCompilerException.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorCompiler.cs" />

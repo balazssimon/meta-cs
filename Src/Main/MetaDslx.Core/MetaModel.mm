@@ -290,11 +290,11 @@
 
 		class UnaryExpression : Expression
 		{
-			/*UnaryExpression()
+			UnaryExpression()
 			{
 				Type = Expression.Type;
 				Expression.ExpectedType = this.ExpectedType;
-			}*/
+			}
 
 			containment Expression Expression;
 		}
