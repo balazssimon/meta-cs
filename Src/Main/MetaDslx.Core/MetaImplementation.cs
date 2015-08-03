@@ -81,7 +81,7 @@ namespace MetaDslx.Core
         }
     }
 
-    public class MetaBuiltInType
+    public class MetaBuiltInTypes
     {
         private static List<MetaType> types = new List<MetaType>();
 
@@ -98,43 +98,63 @@ namespace MetaDslx.Core
 
         public static IEnumerable<MetaType> Types
         {
-            get { return MetaBuiltInType.types; }
+            get { return MetaBuiltInTypes.types; }
         }
 
-        static MetaBuiltInType()
+        static MetaBuiltInTypes()
         {
-            MetaBuiltInType.Object = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Object.Name = "object";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Object);
-            MetaBuiltInType.String = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.String.Name = "string";
-            MetaBuiltInType.types.Add(MetaBuiltInType.String);
-            MetaBuiltInType.Int = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Int.Name = "int";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Int);
-            MetaBuiltInType.Long = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Long.Name = "long";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Long);
-            MetaBuiltInType.Float = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Float.Name = "float";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Float);
-            MetaBuiltInType.Double = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Double.Name = "double";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Double);
-            MetaBuiltInType.Byte = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Byte.Name = "byte";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Byte);
-            MetaBuiltInType.Bool = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Bool.Name = "bool";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Bool);
-            MetaBuiltInType.Void = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Void.Name = "void";
-            MetaBuiltInType.types.Add(MetaBuiltInType.Void);
-            MetaBuiltInType.Any = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInType.Any.Name = null;
-            MetaBuiltInType.types.Add(MetaBuiltInType.Any);
+            MetaBuiltInTypes.Object = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.Object.Name = "object";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Object);
+            MetaBuiltInTypes.String = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.String.Name = "string";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.String);
+            MetaBuiltInTypes.Int = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.Int.Name = "int";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Int);
+            MetaBuiltInTypes.Long = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.Long.Name = "long";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Long);
+            MetaBuiltInTypes.Float = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.Float.Name = "float";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Float);
+            MetaBuiltInTypes.Double = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.Double.Name = "double";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Double);
+            MetaBuiltInTypes.Byte = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.Byte.Name = "byte";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Byte);
+            MetaBuiltInTypes.Bool = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.Bool.Name = "bool";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Bool);
+            MetaBuiltInTypes.Void = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.Void.Name = "void";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Void);
+            MetaBuiltInTypes.Any = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.Any.Name = "*any*";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Any);
         }
          
+    }
+
+    public class MetaBuiltInFunctions
+    {
+        private static List<MetaOperation> functions = new List<MetaOperation>();
+
+        public static IEnumerable<MetaOperation> Functions
+        {
+            get { return MetaBuiltInFunctions.functions; }
+        }
+
+        public static readonly MetaOperation Bind;
+
+        static MetaBuiltInFunctions()
+        {
+            MetaBuiltInFunctions.Bind = MetaModelFactory.Instance.CreateMetaOperation();
+            MetaBuiltInFunctions.Bind.Name = "bind";
+            MetaBuiltInFunctions.Bind.ReturnType = MetaBuiltInTypes.Object;
+            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Bind);
+        }
     }
 
     public enum MetaScopeEntryKind
@@ -174,13 +194,34 @@ namespace MetaDslx.Core
     {
         public RootScope()
         {
+            this.MSet(RootScope.BuiltInEntriesProperty, new ModelList<ModelObject>(this, RootScope.BuiltInEntriesProperty));
             this.MSet(RootScope.EntriesProperty, new ModelList<ModelObject>(this, RootScope.EntriesProperty));
+            foreach (var type in MetaBuiltInTypes.Types)
+            {
+                this.BuiltInEntries.Add((ModelObject)type);
+            }
+            foreach (var func in MetaBuiltInFunctions.Functions)
+            {
+                this.BuiltInEntries.Add((ModelObject)func);
+            }
         }
+
+        [ScopeEntry]
+        public static readonly ModelProperty BuiltInEntriesProperty =
+             ModelProperty.Register("BuiltInEntries", typeof(IList<ModelObject>), typeof(RootScope));
 
         [Containment]
         [ScopeEntry]
         public static readonly ModelProperty EntriesProperty =
              ModelProperty.Register("Entries", typeof(IList<ModelObject>), typeof(RootScope));
+
+        public IList<ModelObject> BuiltInEntries
+        {
+            get
+            {
+                return (IList<ModelObject>)this.MGet(RootScope.BuiltInEntriesProperty);
+            }
+        }
 
         public IList<ModelObject> Entries
         {
@@ -195,6 +236,107 @@ namespace MetaDslx.Core
     //internal class MetaModelImplementation : MetaModelImplementationBase
     internal class MetaImplementation : MetaImplementationBase
     {
+        public override void MetaExpression_MetaExpression(MetaExpression @this)
+        {
+            base.MetaExpression_MetaExpression(@this);
+        }
+
+        public override void MetaBoundExpression_MetaBoundExpression(MetaBoundExpression @this)
+        {
+            base.MetaBoundExpression_MetaBoundExpression(@this);
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                IModelCompiler compiler = ctx.Compiler;
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => compiler.BindingProvider.Bind(null, @this.Definitions != null ? @this.Definitions.OfType<ModelObject>() : new ModelObject[0], new BindingInfo())));
+                ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => this.GetType((ModelObject)@this.Definition)));
+            }
+        }
+
+        public override void MetaIdentifierExpression_MetaIdentifierExpression(MetaIdentifierExpression @this)
+        {
+            base.MetaIdentifierExpression_MetaIdentifierExpression(@this);
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                IModelCompiler compiler = ctx.Compiler;
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this) }, ResolveKind.NameOrType, @this.Name, new ResolutionInfo(), ResolveFlags.All).OfType<object>().ToList()));
+            }
+        }
+
+        public override void MetaFunctionCallExpression_MetaFunctionCallExpression(MetaFunctionCallExpression @this)
+        {
+            base.MetaFunctionCallExpression_MetaFunctionCallExpression(@this);
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                IModelCompiler compiler = ctx.Compiler;
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ((MetaBoundExpression)@this.Expression).Definitions.OfType<MetaOperation>().OfType<object>().ToList()));
+                ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => this.GetReturnType((ModelObject)@this.Definition)));
+            }
+        }
+
+        private MetaType GetType(ModelObject obj)
+        {
+            MetaTypedElement mte = obj as MetaTypedElement;
+            if (mte != null) return mte.Type;
+            MetaType mt = obj as MetaType;
+            if (mt != null) return mt;
+            return null;
+        }
+
+        private MetaType GetReturnType(ModelObject obj)
+        {
+            MetaOperation mo = obj as MetaOperation;
+            if (mo != null) return mo.ReturnType;
+            return null;
+        }
+
+        public override void MetaThisExpression_MetaThisExpression(MetaThisExpression @this)
+        {
+            base.MetaThisExpression_MetaThisExpression(@this);
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                IModelCompiler compiler = ctx.Compiler;
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this)));
+            }
+        }
+
+        public override void MetaMemberAccessExpression_MetaMemberAccessExpression(MetaMemberAccessExpression @this)
+        {
+            base.MetaMemberAccessExpression_MetaMemberAccessExpression(@this);
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                IModelCompiler compiler = ctx.Compiler;
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)this.GetType((ModelObject)@this.Expression) }, ResolveKind.Name, @this.Name, new ResolutionInfo(), ResolveFlags.Scope).OfType<object>().ToList()));
+            }
+        }
+
+        public override void MetaInheritedPropertyInitializer_MetaInheritedPropertyInitializer(MetaInheritedPropertyInitializer @this)
+        {
+            base.MetaInheritedPropertyInitializer_MetaInheritedPropertyInitializer(@this);
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                IModelCompiler compiler = ctx.Compiler;
+                ((ModelObject)@this).MLazySet(Meta.MetaPropertyInitializer.PropertyProperty, 
+                    new Lazy<object>(() =>
+                    compiler.BindingProvider.Bind(
+                        null,
+                        compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)this.GetType((ModelObject)@this.Object) }, ResolveKind.Name, @this.PropertyName, new ResolutionInfo(), ResolveFlags.Scope),
+                        new BindingInfo()
+                        )));
+            }
+        }
+
+        public override void MetaEnumLiteral_MetaEnumLiteral(MetaEnumLiteral @this)
+        {
+            base.MetaEnumLiteral_MetaEnumLiteral(@this);
+            ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => @this.Enum));
+        }
+
         public override void MetaProperty_MetaProperty(MetaProperty @this)
         {
             base.MetaProperty_MetaProperty(@this);

@@ -26,9 +26,9 @@ namespace MetaDslx.Compiler
         public const int DocComment = 6;
     }
 
-    public abstract class MetaCompiler : IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
+    public abstract class MetaCompiler : IModelCompiler, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
     {
-        public MetaCompilerDiagnostics Diagnostics { get; private set; }
+        public ModelCompilerDiagnostics Diagnostics { get; private set; }
         public string FileName { get; private set; }
         public string Source { get; private set; }
         public RootScope GlobalScope
@@ -42,19 +42,19 @@ namespace MetaDslx.Compiler
 
         public MetaCompiler(string source, string fileName = null)
         {
-            this.Diagnostics = new MetaCompilerDiagnostics();
+            this.Diagnostics = new ModelCompilerDiagnostics();
             this.Source = source;
             this.FileName = fileName;
             this.GlobalScope = new RootScope();
             this.Data = new MetaCompilerData(this);
-            this.NameProvider = new DefaultNameProvider(this);
-            this.ResolutionProvider = new DefaultResolutionProvider(this);
-            this.BindingProvider = new DefaultBindingProvider(this);
+            this.NameProvider = new Antlr4DefaultNameProvider();
+            this.ResolutionProvider = new DefaultResolutionProvider();
+            this.BindingProvider = new DefaultBindingProvider();
         }
 
         public void Compile()
         {
-            using (new MetaCompilerContextScope(this))
+            using (new ModelContextScope(this))
             {
                 this.DoCompile();
             }
@@ -67,11 +67,11 @@ namespace MetaDslx.Compiler
             IToken token = e.OffendingToken;
             if (token != null)
             {
-                this.Diagnostics.AddError(msg, this.FileName, new TextSpan(token));
+                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(token));
             }
             else
             {
-                this.Diagnostics.AddError(msg, this.FileName, new TextSpan(line, charPositionInLine+1, line, charPositionInLine+1));
+                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(line, charPositionInLine+1, line, charPositionInLine+1));
             }
         }
 
@@ -79,11 +79,11 @@ namespace MetaDslx.Compiler
         {
             if (offendingSymbol != null)
             {
-                this.Diagnostics.AddError(msg, this.FileName, new TextSpan(offendingSymbol));
+                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(offendingSymbol));
             }
             else
             {
-                this.Diagnostics.AddError(msg, this.FileName, new TextSpan(line, charPositionInLine+1, line, charPositionInLine+1));
+                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(line, charPositionInLine+1, line, charPositionInLine+1));
             }
         }
 

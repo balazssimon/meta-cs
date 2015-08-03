@@ -124,7 +124,7 @@ synthetizedPropertyInitializer
 
 
 inheritedPropertyInitializer
-	:   object=identifier TDot /*$Property(Property)*/ property=identifier TAssign  expression TSemicolon;
+	:   object=identifier TDot   property=identifier TAssign  expression TSemicolon;
 
 argumentList 
 	: expression (',' expression)*

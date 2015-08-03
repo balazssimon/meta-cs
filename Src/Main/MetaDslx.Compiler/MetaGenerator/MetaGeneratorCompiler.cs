@@ -336,7 +336,8 @@ namespace MetaDslx.Compiler
             WriteLine("internal static IEnumerator<T> GetEnumerator<T>(this T item)");
             WriteLine("{");
             IncIndent();
-            WriteLine("return new List<T> { item }.GetEnumerator();");
+            WriteLine("if (item == null) return new List<T>().GetEnumerator();");
+            WriteLine("else return new List<T> { item }.GetEnumerator();");
             DecIndent();
             WriteLine("}");
             DecIndent();

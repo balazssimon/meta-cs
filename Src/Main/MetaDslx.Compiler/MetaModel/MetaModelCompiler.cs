@@ -9,13 +9,6 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler
 {
-    public class ArgumentList { }
-    public enum MetaOperatorKind
-    {
-
-    }
-
-
     public class TypeDefAnnotation
     {
         public TypeDefAnnotation()
@@ -472,7 +465,7 @@ namespace MetaDslx.Compiler
                 }
                 else
                 {
-                    this.Compiler.Diagnostics.AddError("There are multiple symbols defined for this node.", this.Compiler.FileName, new TextSpan(node), true);
+                    this.Compiler.Diagnostics.AddError("There are multiple symbols defined for this node.", this.Compiler.FileName, node, true);
                 }
             }
         }
@@ -488,7 +481,7 @@ namespace MetaDslx.Compiler
                 }
                 else
                 {
-                    this.Compiler.Diagnostics.AddError("There are multiple properties defined for this node.", this.Compiler.FileName, new TextSpan(node), true);
+                    this.Compiler.Diagnostics.AddError("There are multiple properties defined for this node.", this.Compiler.FileName, node, true);
                 }
             }
         }
@@ -524,7 +517,7 @@ namespace MetaDslx.Compiler
             }
             catch (Exception ex)
             {
-                this.Compiler.Diagnostics.AddError(ex.ToString(), this.Compiler.FileName, new TextSpan(node), true);
+                this.Compiler.Diagnostics.AddError(ex.ToString(), this.Compiler.FileName, node, true);
             }
         }
 
@@ -759,7 +752,7 @@ namespace MetaDslx.Compiler
                                 object oldValue = mo.MGet(prop);
                                 if (!value.Equals(oldValue))
                                 {
-                                    this.Compiler.Diagnostics.AddWarning("Reassigning '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                                    this.Compiler.Diagnostics.AddWarning("Reassigning '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, node, true);
                                 }
                             }
                             mo.MAdd(prop, value);
@@ -767,31 +760,31 @@ namespace MetaDslx.Compiler
                         }
                         else
                         {
-                            this.Compiler.Diagnostics.AddError("Value '" + value + "' cannot be assigned to '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                            this.Compiler.Diagnostics.AddError("Value '" + value + "' cannot be assigned to '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, node, true);
                         }
                     }
                     else if (prop.Type.IsClass)
                     {
                         if (!mo.MIsDefault(prop) && mo.MGet(prop) != null)
                         {
-                            this.Compiler.Diagnostics.AddWarning("Reassigning '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                            this.Compiler.Diagnostics.AddWarning("Reassigning '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, node, true);
                         }
                         mo.MAdd(prop, value);
                         return true;
                     }
                     else
                     {
-                        this.Compiler.Diagnostics.AddError("Value '" + value + "' cannot be assigned to '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                        this.Compiler.Diagnostics.AddError("Value '" + value + "' cannot be assigned to '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, node, true);
                     }
                 }
                 else
                 {
-                    this.Compiler.Diagnostics.AddError("Property '" + propertyAnnotation.Name + "' cannot be found in '" + mo + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                    this.Compiler.Diagnostics.AddError("Property '" + propertyAnnotation.Name + "' cannot be found in '" + mo + "'.", this.Compiler.FileName, node, true);
                 }
             }
             else
             {
-                this.Compiler.Diagnostics.AddError("Symbol '" + symbol + "' cannot be assigned to '" + propertyAnnotation.SymbolTypes + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                this.Compiler.Diagnostics.AddError("Symbol '" + symbol + "' cannot be assigned to '" + propertyAnnotation.SymbolTypes + "'.", this.Compiler.FileName, node, true);
             }
             return false;
         }
@@ -844,7 +837,7 @@ namespace MetaDslx.Compiler
             }
             if (!success)
             {
-                this.Compiler.Diagnostics.AddError("Could not find property with [Name] annotation in '" + symbol + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                this.Compiler.Diagnostics.AddError("Could not find property with [Name] annotation in '" + symbol + "'.", this.Compiler.FileName, node, true);
             }
             return success;
         }
@@ -868,11 +861,11 @@ namespace MetaDslx.Compiler
             }
             if (counter == 0)
             {
-                this.Compiler.Diagnostics.AddError("Could not find property with [Name] annotation in '" + symbol + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                this.Compiler.Diagnostics.AddError("Could not find property with [Name] annotation in '" + symbol + "'.", this.Compiler.FileName, node, true);
             }
             else if (counter > 1)
             {
-                this.Compiler.Diagnostics.AddError("There are multiple properties with [Name] annotation having different values in '" + symbol + "'.", this.Compiler.FileName, new TextSpan(node), true);
+                this.Compiler.Diagnostics.AddError("There are multiple properties with [Name] annotation having different values in '" + symbol + "'.", this.Compiler.FileName, node, true);
             }
             return result;
         }
@@ -913,7 +906,7 @@ namespace MetaDslx.Compiler
             if (counter == 0) return;
             if (counter > 1)
             {
-                this.Compiler.Diagnostics.AddError("A node can have at most one of the following annotations: @TypeDef, @NameDef, @TypeCtr, @NameCtr, @Scope, @Symbol, @PreDefSymbol.", this.Compiler.FileName, new TextSpan(node), true);
+                this.Compiler.Diagnostics.AddError("A node can have at most one of the following annotations: @TypeDef, @NameDef, @TypeCtr, @NameCtr, @Scope, @Symbol, @PreDefSymbol.", this.Compiler.FileName, node, true);
             }
             TypeCtrAnnotation tca = this.GetAnnotationFor<TypeCtrAnnotation>(node);
             if (tca != null)
@@ -945,7 +938,7 @@ namespace MetaDslx.Compiler
                 }
                 else
                 {
-                    this.Compiler.Diagnostics.AddError("The predefined symbol must be a ModelObject.", this.Compiler.FileName, new TextSpan(node), true);
+                    this.Compiler.Diagnostics.AddError("The predefined symbol must be a ModelObject.", this.Compiler.FileName, node, true);
                 }
             }
         }
@@ -964,7 +957,7 @@ namespace MetaDslx.Compiler
             if (counter == 0) return;
             if (counter > 1)
             {
-                this.Compiler.Diagnostics.AddError("A node can have at most one of the following annotations: @TypeDef, @NameDef, @TypeUse, @NameUse, @Scope, @Expression.", this.Compiler.FileName, new TextSpan(node), true);
+                this.Compiler.Diagnostics.AddError("A node can have at most one of the following annotations: @TypeDef, @NameDef, @TypeUse, @NameUse, @Scope, @Expression.", this.Compiler.FileName, node, true);
             }
             TypeDefAnnotation tda = this.GetAnnotationFor<TypeDefAnnotation>(node);
             NameDefAnnotation nda = this.GetAnnotationFor<NameDefAnnotation>(node);
@@ -972,14 +965,14 @@ namespace MetaDslx.Compiler
             {
                 if (tda.SymbolType == null)
                 {
-                    this.Compiler.Diagnostics.AddError("The symbol type cannot be determined for the type definition.", this.Compiler.FileName, new TextSpan(node), true);
+                    this.Compiler.Diagnostics.AddError("The symbol type cannot be determined for the type definition.", this.Compiler.FileName, node, true);
                 }
             }
             if (nda != null)
             {
                 if (nda.SymbolType == null)
                 {
-                    this.Compiler.Diagnostics.AddError("The symbol type cannot be determined for the name definition.", this.Compiler.FileName, new TextSpan(node), true);
+                    this.Compiler.Diagnostics.AddError("The symbol type cannot be determined for the name definition.", this.Compiler.FileName, node, true);
                 }
             }
             this.NameKindStack.Add(node);
@@ -999,7 +992,7 @@ namespace MetaDslx.Compiler
             {
                 if (qna != null)
                 {
-                    this.Compiler.Diagnostics.AddError("The type name cannot be a @QualifiedName.", this.Compiler.FileName, new TextSpan(node), true);
+                    this.Compiler.Diagnostics.AddError("The type name cannot be a @QualifiedName.", this.Compiler.FileName, node, true);
                 }
                 string name = this.GetName(node);
                 if (name != null)
@@ -1015,7 +1008,7 @@ namespace MetaDslx.Compiler
                 }
                 else
                 {
-                    this.Compiler.Diagnostics.AddError("Could not get a name from the node.", this.Compiler.FileName, new TextSpan(node), true);
+                    this.Compiler.Diagnostics.AddError("Could not get a name from the node.", this.Compiler.FileName, node, true);
                 }
             }
             if (nda != null)
@@ -1039,7 +1032,7 @@ namespace MetaDslx.Compiler
                         }
                         else
                         {
-                            this.Compiler.Diagnostics.AddError("Could not get a name from the node.", this.Compiler.FileName, new TextSpan(node), true);
+                            this.Compiler.Diagnostics.AddError("Could not get a name from the node.", this.Compiler.FileName, node, true);
                             break;
                         }
                     }
@@ -1048,7 +1041,7 @@ namespace MetaDslx.Compiler
                 {
                     if (qna != null)
                     {
-                        this.Compiler.Diagnostics.AddError("A qualified name must define a scope.", this.Compiler.FileName, new TextSpan(node), true);
+                        this.Compiler.Diagnostics.AddError("A qualified name must define a scope.", this.Compiler.FileName, node, true);
                     }
                     string name = this.GetName(node);
                     if (name != null)
@@ -1099,7 +1092,7 @@ namespace MetaDslx.Compiler
             }
             else
             {
-                this.Compiler.Diagnostics.AddError("Could not create symbol: " + symbolType, this.Compiler.FileName, new TextSpan(node), true);
+                this.Compiler.Diagnostics.AddError("Could not create symbol: " + symbolType, this.Compiler.FileName, node, true);
             }
             return null;
         }
@@ -1131,8 +1124,8 @@ namespace MetaDslx.Compiler
             ModelContext ctx = ModelContext.Current;
             if (ctx != null)
             {
-                ctx.RemoveInstance(oldSymbol);
-                ctx.AddInstance(newSymbol);
+                ctx.Model.RemoveInstance(oldSymbol);
+                ctx.Model.AddInstance(newSymbol);
             }
         }
 
@@ -1241,7 +1234,7 @@ namespace MetaDslx.Compiler
                         }
                         else
                         {
-                            this.Compiler.Diagnostics.AddError("Cannot replace existing value of the property '"+prop+"' in '"+existingEntry+"'.", this.Compiler.FileName, new TextSpan(nameNode), true);
+                            this.Compiler.Diagnostics.AddError("Cannot replace existing value of the property '"+prop+"' in '"+existingEntry+"'.", this.Compiler.FileName, nameNode, true);
                             return symbol;
                         }
                     }
@@ -1329,6 +1322,24 @@ namespace MetaDslx.Compiler
             QualifiedNameAnnotation qna = this.GetAnnotationFor<QualifiedNameAnnotation>(node);
             if (tda != null || nda != null || tua != null || nua != null) return;
             if ((na != null || qna != null) && this.CurrentSymbol != null) return;
+            TypeCtrAnnotation tca = this.GetAnnotationFor<TypeCtrAnnotation>(node);
+            NameCtrAnnotation nca = this.GetAnnotationFor<NameCtrAnnotation>(node);
+            if (tca != null || nca != null)
+            {
+                ModelObject symbol = this.CurrentSymbol;
+                if (symbol != null)
+                {
+                    ModelObject parent = this.ParentSymbol;
+                    if (parent != null)
+                    {
+                        symbol.MParent = parent;
+                    }
+                    else
+                    {
+                        symbol.MParent = this.Compiler.GlobalScope;
+                    }
+                }
+            }
             PropertyAnnotation pa = this.CurrentProperty;
             if (pa != null)
             {
@@ -1389,7 +1400,7 @@ namespace MetaDslx.Compiler
             ModelObject symbol = this.Compiler.Data.GetSymbol(node);
             if (symbol == null)
             {
-                this.Compiler.Diagnostics.AddError("Cannot resolve symbol. No symbols found for the node.", this.Compiler.FileName, new TextSpan(node), true);
+                this.Compiler.Diagnostics.AddError("Cannot resolve symbol. No symbols found for the node.", this.Compiler.FileName, node, true);
             }
             return symbol;
         }

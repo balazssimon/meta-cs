@@ -119,8 +119,13 @@
 			containment list<Operation> Operations;
 		}
 
-		class EnumLiteral : NamedElement
+		class EnumLiteral : NamedElement, TypedElement
 		{
+			EnumLiteral()
+			{
+				Type = Enum;
+			}
+
 			Enum Enum;
 		}
 
@@ -201,6 +206,7 @@
 
 		class InheritedPropertyInitializer : PropertyInitializer
 		{
+			string PropertyName;
 			Property Object;
 		}
 
@@ -263,29 +269,35 @@
 			OrAssign
 		}
 
-		abstract class Expression
+		abstract class Expression : TypedElement
 		{
 			Expression()
 			{
 				Kind = ExpressionKind.None;
-			    Definition = bind(this, Definitions);
 			}
 
 			ExpressionKind Kind;// = ExpressionKind.None;
-			synthetized Type Type;
 			inherited Type ExpectedType;
+		}
+
+		abstract class BoundExpression : Expression
+		{
+			BoundExpression()
+			{
+			    Definition = bind(this, Definitions);
+				Type = get_type(Definition);
+			}
+
 			synthetized list<object> Definitions;
 			synthetized object Definition;
 		}
 
-		class ThisExpression : Expression
+		class ThisExpression : BoundExpression
 		{
 			ThisExpression()
 			{
-				Object = symbol(typeof(Type));
+				Definitions = current_type(this);
 			}
-
-			object Object;
 		}
 
 		class UnaryExpression : Expression
@@ -307,12 +319,12 @@
 
 		class BinaryArithmeticExpression : BinaryExpression
 		{
-			/*init
+			BinaryArithmeticExpression()
 			{
 				Type = balance(Left.Type, Right.Type);
 				Left.ExpectedType = ExpectedType;
 				Right.ExpectedType = ExpectedType;
-			}*/
+			}
 		}
 
 		class BinaryComparisonExpression : BinaryExpression
@@ -397,50 +409,45 @@
 			}*/
 		}
 
-		class IdentifierExpression : Expression
+		class IdentifierExpression : BoundExpression
 		{
 			string Name;
-			object Object;
 			/*init
 			{
 				Definitions = resolve_name(Name);
-				Type = get_type(Definition);
 				Value.ExpectedType = ExpectedType;
 			}*/
 		}
 
-		class MemberAccessExpression : Expression
+		class MemberAccessExpression : BoundExpression
 		{
 			containment Expression Expression;
 			string Name;
 			/*init
 			{
 				Definitions = resolve_name(Expression.Type, Name);
-				Type = get_type(Definition);
 				Value.ExpectedType = ExpectedType;
 			}*/
 		}
 
-		class FunctionCallExpression : Expression
+		class FunctionCallExpression : BoundExpression
 		{
 			containment Expression Expression;
 			containment list<Expression> Arguments;
-			/*init
+			FunctionCallExpression()
 			{
-				Definitions = Expression.Definitions;
-				Type = get_type(Definition);
+				Definitions = select_of_type(Expression.Definitions, typeof(Operation));
 				Value.ExpectedType = ExpectedType;
-			}*/
+			}
 		}	
 
-		class IndexerExpression : Expression
+		class IndexerExpression : BoundExpression
 		{
 			containment Expression Expression;
 			containment list<Expression> Arguments;
 			/*init
 			{
 				Definitions = Expression.Definitions;
-				Type = get_type(Definition);
 				Value.ExpectedType = ExpectedType;
 			}*/
 		}	

@@ -72,7 +72,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
@@ -131,7 +131,8 @@ namespace MetaDslx.TempConsole
             //Meta.MetaTypedElement.StaticInit();
             //Console.WriteLine(Meta.MetaTypedElement.TypeProperty);
             //Meta.StaticInit();
-            using (new ModelContextScope())
+            Model model = new Model();
+            using (new ModelContextScope(model))
             {
                 string source;
                 using (StreamReader reader = new StreamReader(fileName))
@@ -147,7 +148,7 @@ namespace MetaDslx.TempConsole
                 //PrintScope("", compiler.GlobalScope);
                 Console.WriteLine("=");
 
-                foreach (var symbol in ModelContext.Current.Instances)
+                foreach (var symbol in ModelContext.Current.Model.Instances)
                 {
                     ModelObject mo = symbol as ModelObject;
                     if (mo != null)
@@ -174,6 +175,21 @@ namespace MetaDslx.TempConsole
                         if (mp != null)
                         {
                             Console.WriteLine("  ReturnType=" + mo.MGet(mp));
+                        }
+                        mp = mo.MFindProperty("Object");
+                        if (mp != null)
+                        {
+                            Console.WriteLine("  Object=" + mo.MGet(mp));
+                        }
+                        mp = mo.MFindProperty("Property");
+                        if (mp != null)
+                        {
+                            Console.WriteLine("  Property=" + mo.MGet(mp));
+                        }
+                        mp = mo.MFindProperty("Value");
+                        if (mp != null)
+                        {
+                            Console.WriteLine("  Value=" + mo.MGet(mp));
                         }
                         mp = mo.MFindProperty("Definition");
                         if (mp != null)

@@ -42,6 +42,7 @@
     <Compile Include="MetaModel.cs" />
     <Compile Include="MetaModelGenerator.cs" />
     <Compile Include="ModelCollection.cs" />
+    <Compile Include="ModelCompiler.cs" />
     <Compile Include="ModelContext.cs" />
     <Compile Include="ModelException.cs" />
     <Compile Include="ModelFactory.cs" />

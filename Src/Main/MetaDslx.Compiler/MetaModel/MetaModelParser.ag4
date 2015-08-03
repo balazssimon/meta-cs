@@ -83,18 +83,18 @@ $TypeUse
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
 objectType 
-	: $PreDefSymbol(MetaBuiltInType.Object) KObject 
-	| $PreDefSymbol(MetaBuiltInType.String) KString
+	: $PreDefSymbol(MetaBuiltInTypes.Object) KObject 
+	| $PreDefSymbol(MetaBuiltInTypes.String) KString
 	;
 primitiveType 
-	: $PreDefSymbol(MetaBuiltInType.Int) KInt 
-	| $PreDefSymbol(MetaBuiltInType.Long) KLong 
-	| $PreDefSymbol(MetaBuiltInType.Float) KFloat 
-	| $PreDefSymbol(MetaBuiltInType.Double) KDouble 
-	| $PreDefSymbol(MetaBuiltInType.Byte) KByte 
-	| $PreDefSymbol(MetaBuiltInType.Bool) KBool
+	: $PreDefSymbol(MetaBuiltInTypes.Int) KInt 
+	| $PreDefSymbol(MetaBuiltInTypes.Long) KLong 
+	| $PreDefSymbol(MetaBuiltInTypes.Float) KFloat 
+	| $PreDefSymbol(MetaBuiltInTypes.Double) KDouble 
+	| $PreDefSymbol(MetaBuiltInTypes.Byte) KByte 
+	| $PreDefSymbol(MetaBuiltInTypes.Bool) KBool
 	;
-voidType : $PreDefSymbol(MetaBuiltInType.Void) KVoid;
+voidType : $PreDefSymbol(MetaBuiltInTypes.Void) KVoid;
 
 $TypeCtr(MetaNullableType)
 nullableType : $Property(InnerType) primitiveType TQuestion;
@@ -124,7 +124,7 @@ synthetizedPropertyInitializer
 
 $Symbol(MetaInheritedPropertyInitializer)
 inheritedPropertyInitializer
-	: $Property(Object) $NameUse(MetaProperty) object=identifier TDot /*$Property(Property)*/ property=identifier TAssign $Property(Value) expression TSemicolon;
+	: $Property(Object) $NameUse(MetaProperty) object=identifier TDot $Property(PropertyName) $Value property=identifier TAssign $Property(Value) expression TSemicolon;
 
 argumentList 
 	: expression (',' expression)*
@@ -247,18 +247,18 @@ literal
 	;
 
 // Null literal
-nullLiteral : KNull -> { this.Type = global::MetaBuiltInType.Any; this.Value = null; };
+nullLiteral : KNull -> { this.Type = global::MetaBuiltInTypes.Any; this.Value = null; };
 
 // Boolean literals
-booleanLiteral : KTrue | KFalse -> { this.Type = global::MetaBuiltInType.Bool; this.Value = valueof(this); };
+booleanLiteral : KTrue | KFalse -> { this.Type = global::MetaBuiltInTypes.Bool; this.Value = valueof(this); };
 
 // Number literals
-integerLiteral : IntegerLiteral -> { this.Type = global::MetaBuiltInType.Int; this.Value = valueof(this); };
-decimalLiteral : DecimalLiteral -> { this.Type = global::MetaBuiltInType.Double; this.Value = valueof(this); };
-scientificLiteral : ScientificLiteral -> { this.Type = global::MetaBuiltInType.Double; this.Value = valueof(this); };
+integerLiteral : IntegerLiteral -> { this.Type = global::MetaBuiltInTypes.Int; this.Value = valueof(this); };
+decimalLiteral : DecimalLiteral -> { this.Type = global::MetaBuiltInTypes.Double; this.Value = valueof(this); };
+scientificLiteral : ScientificLiteral -> { this.Type = global::MetaBuiltInTypes.Double; this.Value = valueof(this); };
 
 // String literals
-stringLiteral : RegularStringLiteral -> { this.Type = global::MetaBuiltInType.String; this.Value = valueof(this); };
+stringLiteral : RegularStringLiteral -> { this.Type = global::MetaBuiltInTypes.String; this.Value = valueof(this); };
 
 
 /*

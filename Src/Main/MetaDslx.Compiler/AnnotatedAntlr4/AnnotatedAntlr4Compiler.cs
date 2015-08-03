@@ -72,7 +72,7 @@ namespace MetaDslx.Compiler
     {
         private TokenStreamRewriter rewriter;
 
-        private List<TextSpan> removedText = new List<TextSpan>();
+        private List<Antlr4TextSpan> removedText = new List<Antlr4TextSpan>();
 
         public Antlr4AnnotationRemover(ITokenStream tokens)
         {
@@ -86,7 +86,7 @@ namespace MetaDslx.Compiler
 
         public override object VisitAnnotation(AnnotatedAntlr4Parser.AnnotationContext context)
         {
-            removedText.Add(new TextSpan(context));
+            removedText.Add(new Antlr4TextSpan(context));
             rewriter.Delete(context.Start, context.Stop);
             return null;
             //return base.VisitAnnotation(context);
@@ -94,7 +94,7 @@ namespace MetaDslx.Compiler
 
         public override object VisitPropertiesBlock(AnnotatedAntlr4Parser.PropertiesBlockContext context)
         {
-            removedText.Add(new TextSpan(context));
+            removedText.Add(new Antlr4TextSpan(context));
             rewriter.Delete(context.Start, context.Stop);
             return null;
         }
@@ -331,7 +331,7 @@ namespace MetaDslx.Compiler
                 {
                     if (this.currentParserRule.PropertiesBlock != null)
                     {
-                        this.compiler.Diagnostics.AddError("There are multiple property blocks for the rule.", this.compiler.FileName, new TextSpan(context.Parent));
+                        this.compiler.Diagnostics.AddError("There are multiple property blocks for the rule.", this.compiler.FileName, new Antlr4TextSpan(context.Parent));
                     }
                     this.currentParserRule.PropertiesBlock = context.propertiesBlock();
                 }
@@ -517,7 +517,7 @@ namespace MetaDslx.Compiler
                 }
                 else
                 {
-                    this.compiler.Diagnostics.AddWarning("No parent for annotation: " + annotation.Type.Name, null, new TextSpan(annot));
+                    this.compiler.Diagnostics.AddWarning("No parent for annotation: " + annotation.Type.Name, null, new Antlr4TextSpan(annot));
                 }
                 if (annot.annotationBody() != null)
                 {
@@ -1347,15 +1347,15 @@ namespace MetaDslx.Compiler
             IncIndent();
             if (rule.PropertiesBlock != null)
             {
-                TextSpan textSpan = new TextSpan(rule.PropertiesBlock.ACTION());
-                this.propertiesBlockCompiler.StartLine = textSpan.StartLine;
-                this.propertiesBlockCompiler.StartPos = textSpan.StartPosition;
+                Antlr4TextSpan Antlr4TextSpan = new Antlr4TextSpan(rule.PropertiesBlock.ACTION());
+                this.propertiesBlockCompiler.StartLine = Antlr4TextSpan.StartLine;
+                this.propertiesBlockCompiler.StartPos = Antlr4TextSpan.StartPosition;
                 string text = rule.PropertiesBlock.ACTION().GetText();
                 AnnotatedAntlr4PropertiesParser.PropertiesBlockContext propertiesBlock = this.propertiesBlockCompiler.Compile(text);
                 if (!this.propertiesBlockCompiler.HasErrors && propertiesBlock != null)
                 {
-                    this.propertiesBlockExpressionPrinter.StartLine = textSpan.StartLine;
-                    this.propertiesBlockExpressionPrinter.StartPos = textSpan.StartPosition;
+                    this.propertiesBlockExpressionPrinter.StartLine = Antlr4TextSpan.StartLine;
+                    this.propertiesBlockExpressionPrinter.StartPos = Antlr4TextSpan.StartPosition;
                     this.propertiesBlockExpressionPrinter.ParserRule = rule;
                     this.propertiesBlockExpressionPrinter.Visit(propertiesBlock);
                 }
@@ -1599,7 +1599,7 @@ namespace MetaDslx.Compiler
                 catch (Exception ex)
                 {
                     this.HasErrors = true;
-                    this.Compiler.Diagnostics.AddError(ex.ToString(), this.Compiler.FileName, new TextSpan(this.StartLine, this.StartPos, this.StartLine, this.StartPos), true);
+                    this.Compiler.Diagnostics.AddError(ex.ToString(), this.Compiler.FileName, new Antlr4TextSpan(this.StartLine, this.StartPos, this.StartLine, this.StartPos), true);
                 }
                 return null;
             }
@@ -1607,20 +1607,20 @@ namespace MetaDslx.Compiler
             void IAntlrErrorListener<int>.SyntaxError(IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
             {
                 IToken token = e.OffendingToken;
-                TextSpan textSpan;
+                Antlr4TextSpan Antlr4TextSpan;
                 if (token != null)
                 {
-                    textSpan = new TextSpan(token);
-                    textSpan = new TextSpan(
-                        this.StartLine + textSpan.StartLine - 1,
-                        textSpan.StartLine == 1 ? this.StartPos + textSpan.StartPosition - 1 : textSpan.StartPosition,
-                        this.StartLine + textSpan.EndLine - 1,
-                        textSpan.EndLine == 1 ? this.StartPos + textSpan.EndPosition - 1 : textSpan.EndPosition
+                    Antlr4TextSpan = new Antlr4TextSpan(token);
+                    Antlr4TextSpan = new Antlr4TextSpan(
+                        this.StartLine + Antlr4TextSpan.StartLine - 1,
+                        Antlr4TextSpan.StartLine == 1 ? this.StartPos + Antlr4TextSpan.StartPosition - 1 : Antlr4TextSpan.StartPosition,
+                        this.StartLine + Antlr4TextSpan.EndLine - 1,
+                        Antlr4TextSpan.EndLine == 1 ? this.StartPos + Antlr4TextSpan.EndPosition - 1 : Antlr4TextSpan.EndPosition
                         );
                 }
                 else
                 {
-                    textSpan = new TextSpan(
+                    Antlr4TextSpan = new Antlr4TextSpan(
                         this.StartLine + line,
                         line == 1 ? this.StartPos + charPositionInLine : charPositionInLine + 1,
                         this.StartLine + line,
@@ -1628,26 +1628,26 @@ namespace MetaDslx.Compiler
                         );
                 }
                 this.HasErrors = true;
-                this.Compiler.Diagnostics.AddError(msg, this.Compiler.FileName, textSpan);
+                this.Compiler.Diagnostics.AddError(msg, this.Compiler.FileName, Antlr4TextSpan);
             }
 
             void IAntlrErrorListener<IToken>.SyntaxError(IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
             {
                 IToken token = offendingSymbol;
-                TextSpan textSpan;
+                Antlr4TextSpan Antlr4TextSpan;
                 if (offendingSymbol != null)
                 {
-                    textSpan = new TextSpan(token);
-                    textSpan = new TextSpan(
-                        this.StartLine + textSpan.StartLine - 1,
-                        textSpan.StartLine == 1 ? this.StartPos + textSpan.StartPosition - 1 : textSpan.StartPosition,
-                        this.StartLine + textSpan.EndLine - 1,
-                        textSpan.EndLine == 1 ? this.StartPos + textSpan.EndPosition - 1 : textSpan.EndPosition
+                    Antlr4TextSpan = new Antlr4TextSpan(token);
+                    Antlr4TextSpan = new Antlr4TextSpan(
+                        this.StartLine + Antlr4TextSpan.StartLine - 1,
+                        Antlr4TextSpan.StartLine == 1 ? this.StartPos + Antlr4TextSpan.StartPosition - 1 : Antlr4TextSpan.StartPosition,
+                        this.StartLine + Antlr4TextSpan.EndLine - 1,
+                        Antlr4TextSpan.EndLine == 1 ? this.StartPos + Antlr4TextSpan.EndPosition - 1 : Antlr4TextSpan.EndPosition
                         );
                 }
                 else
                 {
-                    textSpan = new TextSpan(
+                    Antlr4TextSpan = new Antlr4TextSpan(
                         this.StartLine + line,
                         line == 1 ? this.StartPos + charPositionInLine : charPositionInLine + 1,
                         this.StartLine + line,
@@ -1655,7 +1655,7 @@ namespace MetaDslx.Compiler
                         );
                 }
                 this.HasErrors = true;
-                this.Compiler.Diagnostics.AddError(msg, this.Compiler.FileName, textSpan);
+                this.Compiler.Diagnostics.AddError(msg, this.Compiler.FileName, Antlr4TextSpan);
             }
 
         }
@@ -1672,16 +1672,16 @@ namespace MetaDslx.Compiler
                 this.output = output;
             }
 
-            private TextSpan GetTextSpan(IParseTree node)
+            private Antlr4TextSpan GetAntlr4TextSpan(IParseTree node)
             {
-                TextSpan textSpan = new TextSpan(node);
-                textSpan = new TextSpan(
-                    this.StartLine + textSpan.StartLine - 1,
-                    textSpan.StartLine == 1 ? this.StartPos + textSpan.StartPosition - 1 : textSpan.StartPosition,
-                    this.StartLine + textSpan.EndLine - 1,
-                    textSpan.EndLine == 1 ? this.StartPos + textSpan.EndPosition - 1 : textSpan.EndPosition
+                Antlr4TextSpan Antlr4TextSpan = new Antlr4TextSpan(node);
+                Antlr4TextSpan = new Antlr4TextSpan(
+                    this.StartLine + Antlr4TextSpan.StartLine - 1,
+                    Antlr4TextSpan.StartLine == 1 ? this.StartPos + Antlr4TextSpan.StartPosition - 1 : Antlr4TextSpan.StartPosition,
+                    this.StartLine + Antlr4TextSpan.EndLine - 1,
+                    Antlr4TextSpan.EndLine == 1 ? this.StartPos + Antlr4TextSpan.EndPosition - 1 : Antlr4TextSpan.EndPosition
                     );
-                return textSpan;
+                return Antlr4TextSpan;
             }
 
             private List<string> GetSelectors(AnnotatedAntlr4PropertiesParser.QualifiedPropertyContext qprop)
@@ -1712,7 +1712,7 @@ namespace MetaDslx.Compiler
                 }
                 if (selectorCount > 1)
                 {
-                    output.compiler.Diagnostics.AddError("The property reference cannot have multiple indexers.", output.compiler.FileName, this.GetTextSpan(qprop), false);
+                    output.compiler.Diagnostics.AddError("The property reference cannot have multiple indexers.", output.compiler.FileName, this.GetAntlr4TextSpan(qprop), false);
                     return null;
                 }
                 bool started = false;
@@ -1730,7 +1730,7 @@ namespace MetaDslx.Compiler
                     }
                     else
                     {
-                        output.compiler.Diagnostics.AddError("Unknown scope.", output.compiler.FileName, this.GetTextSpan(propSels[0].name), false);
+                        output.compiler.Diagnostics.AddError("Unknown scope.", output.compiler.FileName, this.GetAntlr4TextSpan(propSels[0].name), false);
                     }
                 }
                 else if (propSels.Length == 2)
@@ -1761,11 +1761,11 @@ namespace MetaDslx.Compiler
                             }
                             else if (propSels[1].selector != null)
                             {
-                                output.compiler.Diagnostics.AddError("Invalid selector.", output.compiler.FileName, this.GetTextSpan(propSels[1].selector), true);
+                                output.compiler.Diagnostics.AddError("Invalid selector.", output.compiler.FileName, this.GetAntlr4TextSpan(propSels[1].selector), true);
                             }
                             else
                             {
-                                output.compiler.Diagnostics.AddError("Invalid selector.", output.compiler.FileName, this.GetTextSpan(qprop), true);
+                                output.compiler.Diagnostics.AddError("Invalid selector.", output.compiler.FileName, this.GetAntlr4TextSpan(qprop), true);
                             }
                         }
                         else
@@ -1780,7 +1780,7 @@ namespace MetaDslx.Compiler
                     {
                         if (propSels[1].selector != null)
                         {
-                            output.compiler.Diagnostics.AddError("Invalid selector.", output.compiler.FileName, this.GetTextSpan(propSels[1].selector), true);
+                            output.compiler.Diagnostics.AddError("Invalid selector.", output.compiler.FileName, this.GetAntlr4TextSpan(propSels[1].selector), true);
                         }
                         else
                         {
@@ -1792,7 +1792,7 @@ namespace MetaDslx.Compiler
                     }
                     else
                     {
-                        output.compiler.Diagnostics.AddError("Unknown property context.", output.compiler.FileName, this.GetTextSpan(propSels[0].name), false);
+                        output.compiler.Diagnostics.AddError("Unknown property context.", output.compiler.FileName, this.GetAntlr4TextSpan(propSels[0].name), false);
                     }
                 }
                 else if (propSels.Length == 1)
@@ -1801,7 +1801,7 @@ namespace MetaDslx.Compiler
                     ParserRuleElement elem = this.GetElement(elemName);
                     if (elem != null)
                     {
-                        output.compiler.Diagnostics.AddError("Cannot assign a value to an element.", output.compiler.FileName, this.GetTextSpan(propSels[0].name), false);
+                        output.compiler.Diagnostics.AddError("Cannot assign a value to an element.", output.compiler.FileName, this.GetAntlr4TextSpan(propSels[0].name), false);
                     }
                     else
                     {
@@ -1823,7 +1823,7 @@ namespace MetaDslx.Compiler
                 }
                 else
                 {
-                    output.compiler.Diagnostics.AddError("Cannot assign a property indirectly.", output.compiler.FileName, this.GetTextSpan(qprop), false);
+                    output.compiler.Diagnostics.AddError("Cannot assign a property indirectly.", output.compiler.FileName, this.GetAntlr4TextSpan(qprop), false);
                 }
                 base.VisitExpression(context.expression());
                 if (closeFunction)
@@ -1882,7 +1882,7 @@ namespace MetaDslx.Compiler
                 }
                 if (selectorCount > 1)
                 {
-                    output.compiler.Diagnostics.AddError("The property reference cannot have multiple indexers.", output.compiler.FileName, this.GetTextSpan(qprop), false);
+                    output.compiler.Diagnostics.AddError("The property reference cannot have multiple indexers.", output.compiler.FileName, this.GetAntlr4TextSpan(qprop), false);
                     return null;
                 }
                 if (qprop.scope != null)
@@ -1895,7 +1895,7 @@ namespace MetaDslx.Compiler
                     }
                     else
                     {
-                        output.compiler.Diagnostics.AddError("Unknown scope.", output.compiler.FileName, this.GetTextSpan(propSels[0].name), false);
+                        output.compiler.Diagnostics.AddError("Unknown scope.", output.compiler.FileName, this.GetAntlr4TextSpan(propSels[0].name), false);
                     }
                 }
                 else if (propSels.Length > 0)
@@ -1961,7 +1961,7 @@ namespace MetaDslx.Compiler
                 }
                 else
                 {
-                    output.compiler.Diagnostics.AddError("Unknown property context.", output.compiler.FileName, this.GetTextSpan(qprop), false);
+                    output.compiler.Diagnostics.AddError("Unknown property context.", output.compiler.FileName, this.GetAntlr4TextSpan(qprop), false);
                 }
                 return null;
             }

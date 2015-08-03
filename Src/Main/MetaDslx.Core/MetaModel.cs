@@ -33,6 +33,7 @@ namespace MetaDslx.Core
             MetaSynthetizedPropertyInitializer.StaticInit();
             MetaInheritedPropertyInitializer.StaticInit();
             MetaExpression.StaticInit();
+            MetaBoundExpression.StaticInit();
             MetaThisExpression.StaticInit();
             MetaUnaryExpression.StaticInit();
             MetaBinaryExpression.StaticInit();
@@ -510,6 +511,10 @@ namespace MetaDslx.Core
             }
         
             
+            public static readonly ModelProperty PropertyNameProperty =
+                ModelProperty.Register("PropertyName", typeof(string), typeof(global::MetaDslx.Core.MetaInheritedPropertyInitializer), typeof(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer));
+            
+            
             public static readonly ModelProperty ObjectProperty =
                 ModelProperty.Register("Object", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaInheritedPropertyInitializer), typeof(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer));
             
@@ -531,22 +536,29 @@ namespace MetaDslx.Core
             
             
             [ReadonlyAttribute]
-            public static readonly ModelProperty TypeProperty =
-                ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
-            
-            
-            [ReadonlyAttribute]
             public static readonly ModelProperty ExpectedTypeProperty =
                 ModelProperty.Register("ExpectedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
             
+        }
+        
+        public static class MetaBoundExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            static MetaBoundExpression()
+            {
+            }
+        
             
             public static readonly ModelProperty DefinitionsProperty =
-                ModelProperty.Register("Definitions", typeof(IList<object>), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
+                ModelProperty.Register("Definitions", typeof(IList<object>), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.Meta.MetaBoundExpression));
             
             
             [ReadonlyAttribute]
             public static readonly ModelProperty DefinitionProperty =
-                ModelProperty.Register("Definition", typeof(object), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
+                ModelProperty.Register("Definition", typeof(object), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.Meta.MetaBoundExpression));
             
         }
         
@@ -560,10 +572,6 @@ namespace MetaDslx.Core
             {
             }
         
-            
-            public static readonly ModelProperty ObjectProperty =
-                ModelProperty.Register("Object", typeof(object), typeof(global::MetaDslx.Core.MetaThisExpression), typeof(global::MetaDslx.Core.Meta.MetaThisExpression));
-            
         }
         
         public static class MetaUnaryExpression
@@ -762,10 +770,6 @@ namespace MetaDslx.Core
             
             public static readonly ModelProperty NameProperty =
                 ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaIdentifierExpression), typeof(global::MetaDslx.Core.Meta.MetaIdentifierExpression));
-            
-            
-            public static readonly ModelProperty ObjectProperty =
-                ModelProperty.Register("Object", typeof(object), typeof(global::MetaDslx.Core.MetaIdentifierExpression), typeof(global::MetaDslx.Core.Meta.MetaIdentifierExpression));
             
         }
         
@@ -1541,7 +1545,7 @@ namespace MetaDslx.Core
     }
     
     
-    public interface MetaEnumLiteral : MetaDslx.Core.MetaNamedElement
+    public interface MetaEnumLiteral : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaTypedElement
     {
         MetaEnum Enum { get; set; }
     
@@ -1556,6 +1560,7 @@ namespace MetaDslx.Core
     
         public MetaEnumLiteralImpl()
         {
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaEnumLiteral_MetaEnumLiteral(this);
             this.MMakeDefault();
         }
@@ -1569,6 +1574,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
+        }
+        
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
         
         MetaEnum MetaEnumLiteral.Enum
@@ -2154,6 +2170,7 @@ namespace MetaDslx.Core
     
     public interface MetaInheritedPropertyInitializer : MetaDslx.Core.MetaPropertyInitializer
     {
+        string PropertyName { get; set; }
         MetaProperty Object { get; set; }
     
     }
@@ -2193,6 +2210,17 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, value); }
         }
         
+        string MetaInheritedPropertyInitializer.PropertyName
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer.PropertyNameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer.PropertyNameProperty, value); }
+        }
+        
         MetaProperty MetaInheritedPropertyInitializer.Object
         {
             get 
@@ -2206,13 +2234,10 @@ namespace MetaDslx.Core
     }
     
     
-    public interface MetaExpression
+    public interface MetaExpression : MetaDslx.Core.MetaTypedElement
     {
         MetaExpressionKind Kind { get; set; }
-        MetaType Type { get; }
         MetaType ExpectedType { get; }
-        IList<object> Definitions { get; }
-        object Definition { get; }
     
     }
     
@@ -2225,8 +2250,20 @@ namespace MetaDslx.Core
     
         public MetaExpressionImpl()
         {
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaExpression_MetaExpression(this);
             this.MMakeDefault();
+        }
+        
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
         
         MetaExpressionKind MetaExpression.Kind
@@ -2240,14 +2277,60 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
+        MetaType MetaExpression.ExpectedType
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
             }
+        }
+    }
+    
+    
+    public interface MetaBoundExpression : MetaDslx.Core.MetaExpression
+    {
+        IList<object> Definitions { get; }
+        object Definition { get; }
+    
+    }
+    
+    internal class MetaBoundExpressionImpl : ModelObject, MetaDslx.Core.MetaBoundExpression
+    {
+        static MetaBoundExpressionImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
+        public MetaBoundExpressionImpl()
+        {
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ));
+            MetaImplementationProvider.Implementation.MetaBoundExpression_MetaBoundExpression(this);
+            this.MMakeDefault();
+        }
+        
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        MetaExpressionKind MetaExpression.Kind
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty); 
+                if (result != null) return (MetaExpressionKind)result;
+                else return default(MetaExpressionKind);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -2260,21 +2343,21 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaExpression.Definitions
+        IList<object> MetaBoundExpression.Definitions
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
                 if (result != null) return (IList<object>)result;
                 else return default(IList<object>);
             }
         }
         
-        object MetaExpression.Definition
+        object MetaBoundExpression.Definition
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
                 if (result != null) return (object)result;
                 else return default(object);
             }
@@ -2282,9 +2365,8 @@ namespace MetaDslx.Core
     }
     
     
-    public interface MetaThisExpression : MetaDslx.Core.MetaExpression
+    public interface MetaThisExpression : MetaDslx.Core.MetaBoundExpression
     {
-        object Object { get; set; }
     
     }
     
@@ -2297,8 +2379,20 @@ namespace MetaDslx.Core
     
         public MetaThisExpressionImpl()
         {
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaThisExpression_MetaThisExpression(this);
             this.MMakeDefault();
+        }
+        
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
         
         MetaExpressionKind MetaExpression.Kind
@@ -2312,16 +2406,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -2332,35 +2416,24 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaExpression.Definitions
+        IList<object> MetaBoundExpression.Definitions
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
                 if (result != null) return (IList<object>)result;
                 else return default(IList<object>);
             }
         }
         
-        object MetaExpression.Definition
+        object MetaBoundExpression.Definition
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
                 if (result != null) return (object)result;
                 else return default(object);
             }
-        }
-        
-        object MetaThisExpression.Object
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaThisExpression.ObjectProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
-            }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaThisExpression.ObjectProperty, value); }
         }
     }
     
@@ -2380,8 +2453,21 @@ namespace MetaDslx.Core
     
         public MetaUnaryExpressionImpl()
         {
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaUnaryExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaUnaryExpression_MetaUnaryExpression(this);
             this.MMakeDefault();
+        }
+        
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
         
         MetaExpressionKind MetaExpression.Kind
@@ -2395,16 +2481,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -2412,26 +2488,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -2468,6 +2524,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -2479,16 +2546,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -2496,26 +2553,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -2557,8 +2594,22 @@ namespace MetaDslx.Core
     
         public MetaBinaryArithmeticExpressionImpl()
         {
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
+            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression(this);
             this.MMakeDefault();
+        }
+        
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
         }
         
         MetaExpressionKind MetaExpression.Kind
@@ -2572,16 +2623,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -2589,26 +2630,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -2656,6 +2677,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -2667,16 +2699,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -2684,26 +2706,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -2759,6 +2761,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -2770,16 +2783,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -2787,26 +2790,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -2854,6 +2837,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -2865,16 +2859,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -2882,26 +2866,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -2957,6 +2921,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -2968,16 +2943,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -2985,26 +2950,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -3052,6 +2997,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -3063,16 +3019,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -3080,26 +3026,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -3147,6 +3073,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -3158,16 +3095,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -3175,26 +3102,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -3241,6 +3148,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -3252,16 +3170,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -3269,26 +3177,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -3324,6 +3212,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -3335,16 +3234,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -3352,26 +3241,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -3388,10 +3257,9 @@ namespace MetaDslx.Core
     }
     
     
-    public interface MetaIdentifierExpression : MetaDslx.Core.MetaExpression
+    public interface MetaIdentifierExpression : MetaDslx.Core.MetaBoundExpression
     {
         string Name { get; set; }
-        object Object { get; set; }
     
     }
     
@@ -3408,6 +3276,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -3417,16 +3296,6 @@ namespace MetaDslx.Core
                 else return default(MetaExpressionKind);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
-        }
-        
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3439,21 +3308,21 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaExpression.Definitions
+        IList<object> MetaBoundExpression.Definitions
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
                 if (result != null) return (IList<object>)result;
                 else return default(IList<object>);
             }
         }
         
-        object MetaExpression.Definition
+        object MetaBoundExpression.Definition
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
                 if (result != null) return (object)result;
                 else return default(object);
             }
@@ -3469,21 +3338,10 @@ namespace MetaDslx.Core
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaIdentifierExpression.NameProperty, value); }
         }
-        
-        object MetaIdentifierExpression.Object
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaIdentifierExpression.ObjectProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
-            }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaIdentifierExpression.ObjectProperty, value); }
-        }
     }
     
     
-    public interface MetaMemberAccessExpression : MetaDslx.Core.MetaExpression
+    public interface MetaMemberAccessExpression : MetaDslx.Core.MetaBoundExpression
     {
         MetaExpression Expression { get; set; }
         string Name { get; set; }
@@ -3503,6 +3361,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -3512,16 +3381,6 @@ namespace MetaDslx.Core
                 else return default(MetaExpressionKind);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
-        }
-        
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3534,21 +3393,21 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaExpression.Definitions
+        IList<object> MetaBoundExpression.Definitions
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
                 if (result != null) return (IList<object>)result;
                 else return default(IList<object>);
             }
         }
         
-        object MetaExpression.Definition
+        object MetaBoundExpression.Definition
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
                 if (result != null) return (object)result;
                 else return default(object);
             }
@@ -3578,7 +3437,7 @@ namespace MetaDslx.Core
     }
     
     
-    public interface MetaFunctionCallExpression : MetaDslx.Core.MetaExpression
+    public interface MetaFunctionCallExpression : MetaDslx.Core.MetaBoundExpression
     {
         MetaExpression Expression { get; set; }
         IList<MetaExpression> Arguments { get; }
@@ -3599,6 +3458,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -3608,16 +3478,6 @@ namespace MetaDslx.Core
                 else return default(MetaExpressionKind);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
-        }
-        
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3630,21 +3490,21 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaExpression.Definitions
+        IList<object> MetaBoundExpression.Definitions
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
                 if (result != null) return (IList<object>)result;
                 else return default(IList<object>);
             }
         }
         
-        object MetaExpression.Definition
+        object MetaBoundExpression.Definition
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
                 if (result != null) return (object)result;
                 else return default(object);
             }
@@ -3673,7 +3533,7 @@ namespace MetaDslx.Core
     }
     
     
-    public interface MetaIndexerExpression : MetaDslx.Core.MetaExpression
+    public interface MetaIndexerExpression : MetaDslx.Core.MetaBoundExpression
     {
         MetaExpression Expression { get; set; }
         IList<MetaExpression> Arguments { get; }
@@ -3694,6 +3554,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -3703,16 +3574,6 @@ namespace MetaDslx.Core
                 else return default(MetaExpressionKind);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
-        }
-        
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3725,21 +3586,21 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaExpression.Definitions
+        IList<object> MetaBoundExpression.Definitions
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
                 if (result != null) return (IList<object>)result;
                 else return default(IList<object>);
             }
         }
         
-        object MetaExpression.Definition
+        object MetaBoundExpression.Definition
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
                 if (result != null) return (object)result;
                 else return default(object);
             }
@@ -3790,6 +3651,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
         MetaExpressionKind MetaExpression.Kind
         {
             get 
@@ -3801,16 +3673,6 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.Meta.MetaExpression.KindProperty, value); }
         }
         
-        MetaType MetaExpression.Type
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.TypeProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-        }
-        
         MetaType MetaExpression.ExpectedType
         {
             get 
@@ -3818,26 +3680,6 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
                 if (result != null) return (MetaType)result;
                 else return default(MetaType);
-            }
-        }
-        
-        IList<object> MetaExpression.Definitions
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
-            }
-        }
-        
-        object MetaExpression.Definition
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
             }
         }
         
@@ -4126,6 +3968,16 @@ namespace MetaDslx.Core
     
     
         /// <summary>
+        /// Creates a new instance of MetaBoundExpression.
+        /// </summary>
+        public MetaBoundExpression CreateMetaBoundExpression()
+    	{
+    		MetaBoundExpression result = new MetaBoundExpressionImpl();
+    		return result;
+    	}
+    
+    
+        /// <summary>
         /// Creates a new instance of MetaThisExpression.
         /// </summary>
         public MetaThisExpression CreateMetaThisExpression()
@@ -4362,6 +4214,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaAnnotation_MetaAnnotation(MetaAnnotation @this)
         {
+            this.MetaNamedElement_MetaNamedElement(@this);
         }
     
         /// <summary>
@@ -4371,6 +4224,8 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaNamespace_MetaNamespace(MetaNamespace @this)
         {
+            this.MetaNamedElement_MetaNamedElement(@this);
+            this.MetaAnnotatedElement_MetaAnnotatedElement(@this);
         }
     
         /// <summary>
@@ -4380,6 +4235,8 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaModel_MetaModel(MetaModel @this)
         {
+            this.MetaNamedElement_MetaNamedElement(@this);
+            this.MetaAnnotatedElement_MetaAnnotatedElement(@this);
         }
     
         /// <summary>
@@ -4389,6 +4246,8 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaDeclaration_MetaDeclaration(MetaDeclaration @this)
         {
+            this.MetaNamedElement_MetaNamedElement(@this);
+            this.MetaAnnotatedElement_MetaAnnotatedElement(@this);
         }
     
         /// <summary>
@@ -4406,6 +4265,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaCollectionType_MetaCollectionType(MetaCollectionType @this)
         {
+            this.MetaType_MetaType(@this);
         }
     
         /// <summary>
@@ -4415,6 +4275,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaNullableType_MetaNullableType(MetaNullableType @this)
         {
+            this.MetaType_MetaType(@this);
         }
     
         /// <summary>
@@ -4424,6 +4285,8 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaPrimitiveType_MetaPrimitiveType(MetaPrimitiveType @this)
         {
+            this.MetaType_MetaType(@this);
+            this.MetaNamedElement_MetaNamedElement(@this);
         }
     
         /// <summary>
@@ -4433,15 +4296,19 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaEnum_MetaEnum(MetaEnum @this)
         {
+            this.MetaType_MetaType(@this);
+            this.MetaDeclaration_MetaDeclaration(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaEnumLiteral()
-    	/// Direct superclasses: MetaNamedElement
-    	/// All superclasses: MetaNamedElement
+    	/// Direct superclasses: MetaNamedElement, MetaTypedElement
+    	/// All superclasses: MetaNamedElement, MetaTypedElement
         /// </summary>
         public virtual void MetaEnumLiteral_MetaEnumLiteral(MetaEnumLiteral @this)
         {
+            this.MetaNamedElement_MetaNamedElement(@this);
+            this.MetaTypedElement_MetaTypedElement(@this);
         }
     
         /// <summary>
@@ -4451,6 +4318,8 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaClass_MetaClass(MetaClass @this)
         {
+            this.MetaType_MetaType(@this);
+            this.MetaDeclaration_MetaDeclaration(@this);
         }
     
         /// <summary>
@@ -4484,6 +4353,8 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaOperation_MetaOperation(MetaOperation @this)
         {
+            this.MetaNamedElement_MetaNamedElement(@this);
+            this.MetaAnnotatedElement_MetaAnnotatedElement(@this);
         }
     
         /// <summary>
@@ -4493,6 +4364,8 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaConstructor_MetaConstructor(MetaConstructor @this)
         {
+            this.MetaNamedElement_MetaNamedElement(@this);
+            this.MetaAnnotatedElement_MetaAnnotatedElement(@this);
         }
     
         /// <summary>
@@ -4502,6 +4375,9 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaParameter_MetaParameter(MetaParameter @this)
         {
+            this.MetaNamedElement_MetaNamedElement(@this);
+            this.MetaTypedElement_MetaTypedElement(@this);
+            this.MetaAnnotatedElement_MetaAnnotatedElement(@this);
         }
     
         /// <summary>
@@ -4511,6 +4387,9 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaProperty_MetaProperty(MetaProperty @this)
         {
+            this.MetaNamedElement_MetaNamedElement(@this);
+            this.MetaTypedElement_MetaTypedElement(@this);
+            this.MetaAnnotatedElement_MetaAnnotatedElement(@this);
         }
     
         /// <summary>
@@ -4527,6 +4406,7 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaSynthetizedPropertyInitializer_MetaSynthetizedPropertyInitializer(MetaSynthetizedPropertyInitializer @this)
         {
+            this.MetaPropertyInitializer_MetaPropertyInitializer(@this);
         }
     
         /// <summary>
@@ -4536,58 +4416,77 @@ namespace MetaDslx.Core
         /// </summary>
         public virtual void MetaInheritedPropertyInitializer_MetaInheritedPropertyInitializer(MetaInheritedPropertyInitializer @this)
         {
+            this.MetaPropertyInitializer_MetaPropertyInitializer(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaExpression()
+    	/// Direct superclasses: MetaTypedElement
+    	/// All superclasses: MetaTypedElement
         /// </summary>
         public virtual void MetaExpression_MetaExpression(MetaExpression @this)
         {
+            this.MetaTypedElement_MetaTypedElement(@this);
+        }
+    
+        /// <summary>
+    	/// Implements the constructor: MetaBoundExpression()
+    	/// Direct superclasses: MetaExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression
+        /// </summary>
+        public virtual void MetaBoundExpression_MetaBoundExpression(MetaBoundExpression @this)
+        {
+            this.MetaExpression_MetaExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaThisExpression()
-    	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// Direct superclasses: MetaBoundExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
         /// </summary>
         public virtual void MetaThisExpression_MetaThisExpression(MetaThisExpression @this)
         {
+            this.MetaBoundExpression_MetaBoundExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaUnaryExpression()
     	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression
         /// </summary>
         public virtual void MetaUnaryExpression_MetaUnaryExpression(MetaUnaryExpression @this)
         {
+            this.MetaExpression_MetaExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaBinaryExpression()
     	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression
         /// </summary>
         public virtual void MetaBinaryExpression_MetaBinaryExpression(MetaBinaryExpression @this)
         {
+            this.MetaExpression_MetaExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaBinaryArithmeticExpression()
     	/// Direct superclasses: MetaBinaryExpression
-    	/// All superclasses: MetaExpression, MetaBinaryExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression, MetaBinaryExpression
         /// </summary>
         public virtual void MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression(MetaBinaryArithmeticExpression @this)
         {
+            this.MetaBinaryExpression_MetaBinaryExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaBinaryComparisonExpression()
     	/// Direct superclasses: MetaBinaryExpression
-    	/// All superclasses: MetaExpression, MetaBinaryExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression, MetaBinaryExpression
         /// </summary>
         public virtual void MetaBinaryComparisonExpression_MetaBinaryComparisonExpression(MetaBinaryComparisonExpression @this)
         {
+            this.MetaBinaryExpression_MetaBinaryExpression(@this);
         }
     
         /// <summary>
@@ -4601,19 +4500,21 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaBinaryLogicalExpression()
     	/// Direct superclasses: MetaBinaryExpression
-    	/// All superclasses: MetaExpression, MetaBinaryExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression, MetaBinaryExpression
         /// </summary>
         public virtual void MetaBinaryLogicalExpression_MetaBinaryLogicalExpression(MetaBinaryLogicalExpression @this)
         {
+            this.MetaBinaryExpression_MetaBinaryExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaNullCoalescingExpression()
     	/// Direct superclasses: MetaBinaryExpression
-    	/// All superclasses: MetaExpression, MetaBinaryExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression, MetaBinaryExpression
         /// </summary>
         public virtual void MetaNullCoalescingExpression_MetaNullCoalescingExpression(MetaNullCoalescingExpression @this)
         {
+            this.MetaBinaryExpression_MetaBinaryExpression(@this);
         }
     
         /// <summary>
@@ -4627,91 +4528,101 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaAssignmentExpression()
     	/// Direct superclasses: MetaBinaryExpression
-    	/// All superclasses: MetaExpression, MetaBinaryExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression, MetaBinaryExpression
         /// </summary>
         public virtual void MetaAssignmentExpression_MetaAssignmentExpression(MetaAssignmentExpression @this)
         {
+            this.MetaBinaryExpression_MetaBinaryExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaTypeConversionExpression()
     	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression
         /// </summary>
         public virtual void MetaTypeConversionExpression_MetaTypeConversionExpression(MetaTypeConversionExpression @this)
         {
+            this.MetaExpression_MetaExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaTypeCheckExpression()
     	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression
         /// </summary>
         public virtual void MetaTypeCheckExpression_MetaTypeCheckExpression(MetaTypeCheckExpression @this)
         {
+            this.MetaExpression_MetaExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaTypeOfExpression()
     	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression
         /// </summary>
         public virtual void MetaTypeOfExpression_MetaTypeOfExpression(MetaTypeOfExpression @this)
         {
+            this.MetaExpression_MetaExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaConstantExpression()
     	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression
         /// </summary>
         public virtual void MetaConstantExpression_MetaConstantExpression(MetaConstantExpression @this)
         {
+            this.MetaExpression_MetaExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaIdentifierExpression()
-    	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// Direct superclasses: MetaBoundExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
         /// </summary>
         public virtual void MetaIdentifierExpression_MetaIdentifierExpression(MetaIdentifierExpression @this)
         {
+            this.MetaBoundExpression_MetaBoundExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaMemberAccessExpression()
-    	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// Direct superclasses: MetaBoundExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
         /// </summary>
         public virtual void MetaMemberAccessExpression_MetaMemberAccessExpression(MetaMemberAccessExpression @this)
         {
+            this.MetaBoundExpression_MetaBoundExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaFunctionCallExpression()
-    	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// Direct superclasses: MetaBoundExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
         /// </summary>
         public virtual void MetaFunctionCallExpression_MetaFunctionCallExpression(MetaFunctionCallExpression @this)
         {
+            this.MetaBoundExpression_MetaBoundExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaIndexerExpression()
-    	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// Direct superclasses: MetaBoundExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
         /// </summary>
         public virtual void MetaIndexerExpression_MetaIndexerExpression(MetaIndexerExpression @this)
         {
+            this.MetaBoundExpression_MetaBoundExpression(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaConditionalExpression()
     	/// Direct superclasses: MetaExpression
-    	/// All superclasses: MetaExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression
         /// </summary>
         public virtual void MetaConditionalExpression_MetaConditionalExpression(MetaConditionalExpression @this)
         {
+            this.MetaExpression_MetaExpression(@this);
         }
     
     

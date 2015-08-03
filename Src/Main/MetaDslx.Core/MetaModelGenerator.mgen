@@ -221,24 +221,46 @@ function string GetCollectionConstructorParams(MetaProperty prop)
 	end if
 end function
 
+template GenerateExpression(MetaExpression expr)
+end template
+
+function MetaSynthetizedPropertyInitializer GetSynthetizedInitializerFor(MetaClass cls, MetaProperty prop)
+	loop(cls->Constructor->Initializers->init:typeof(MetaSynthetizedPropertyInitializer))
+		if (init.Property == prop)
+			return init;
+		end if
+	end loop
+	return null;
+end function
+
 template GenerateConstructorImpl(MetaModel model, MetaClass cls)
 public [cls.CSharpImplName()]()
 {
 	[loop(cls->prop:GetAllProperties())]
-		[if(prop.Type is MetaCollectionType)]
-			[if (prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment)]
+		[MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop)]
+		[if (synInit != null)]
+    //this.MLazySet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
+		[else]
+			[if(prop.Type is MetaCollectionType)]
+				[if (prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment)]
     this.MSet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property, new [prop.Type.CSharpName()]([GetCollectionConstructorParams(prop)]));
-			[else if (prop.Kind == MetaPropertyKind.Lazy)]
+				[else if (prop.Kind == MetaPropertyKind.Lazy)]
     this.MLazySet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [model.CSharpName()]ImplementationProvider.Implementation.[prop.Class.CSharpName()]_[prop.Name](this)));
-			[else if (prop.Kind == MetaPropertyKind.Readonly)]
+				[else if (prop.Kind == MetaPropertyKind.Readonly)]
     // Init [model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property in [model.CSharpName()]Implementation.[cls.CSharpName()]_[cls.CSharpName()]
-			[end if]
-	    [else]
-			[if(prop.Kind == MetaPropertyKind.Lazy)]
+				[end if]
+			[else]
+				[if(prop.Kind == MetaPropertyKind.Lazy)]
     this.MLazySet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [model.CSharpName()]ImplementationProvider.Implementation.[prop.Class.CSharpName()]_[prop.Name](this)));
-			[else if (prop.Kind == MetaPropertyKind.Readonly)]
+				[else if (prop.Kind == MetaPropertyKind.Readonly)]
     // Init [model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property in [model.CSharpName()]Implementation.[cls.CSharpName()]_[cls.CSharpName()]
+				[end if]
 			[end if]
+		[end if]
+	[end loop]
+	[loop(cls->Constructor->Initializers->init:typeof(MetaInheritedPropertyInitializer))]
+		[if (init.Object != null && init.Property != null)]
+    //this.MLazySetChild([init.Object.Class.Model.CSharpFullName()].[init.Object.Class.CSharpName()].[init.Object.Name]Property, [init.Property.Class.Model.CSharpFullName()].[init.Property.Class.CSharpName()].[init.Property.Name]Property, new Lazy<object>(() => [GenerateExpression(init.Value)]));
 		[end if]
 	[end loop]
     [cls.Model.CSharpName()]ImplementationProvider.Implementation.[cls.CSharpName()]_[cls.CSharpName()](this);
@@ -373,6 +395,9 @@ internal abstract class [model.CSharpName()]ImplementationBase
     /// </summary>
     public virtual void [cls.CSharpName()]_[cls.CSharpName()]([cls.CSharpName()] @this)
     {
+		[loop(cls->sup:SuperClasses)]
+        this.[sup.CSharpName()]_[sup.CSharpName()](@this);
+		[end loop]
     }
     [loop(cls->prop:Properties)]
 	[if (prop.Kind == MetaPropertyKind.Derived)]

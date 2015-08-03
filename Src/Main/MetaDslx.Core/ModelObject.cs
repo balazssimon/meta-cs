@@ -17,7 +17,7 @@ namespace MetaDslx.Core
             ModelContext ctx = ModelContext.Current;
             if (ctx != null)
             {
-                ctx.AddInstance(this);
+                ctx.Model.AddInstance(this);
             }
             this.MetaID = Guid.NewGuid().ToString();
             this.values = new Dictionary<ModelProperty, object>();
@@ -489,7 +489,7 @@ namespace MetaDslx.Core
         public ModelObject MParent
         {
             get { return this.parent; }
-            private set
+            set
             {
                 if (this.parent != value)
                 {
