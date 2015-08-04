@@ -7,6 +7,8 @@ namespace MetaDslx.Core
 {
     public abstract class ModelObject
     {
+        private ModelProperty nameProperty = null;
+
         private Dictionary<ModelProperty, WeakReference<object>> defaultValues;
         private Dictionary<ModelProperty, object> values;
         private Dictionary<ModelProperty, Lazy<object>> initializers;
@@ -304,6 +306,10 @@ namespace MetaDslx.Core
 
         internal void MOnAddValue(ModelProperty property, object value, bool firstCall, AddRemoveDirection addRemoveDir = AddRemoveDirection.None)
         {
+            if (this.nameProperty == null && property.IsMetaName())
+            {
+                this.nameProperty = property;
+            }
             bool added = false;
             object oldValue = this.MGet(property);
             ModelCollection collection = oldValue as ModelCollection;
@@ -480,7 +486,19 @@ namespace MetaDslx.Core
 
         public override string ToString()
         {
-            return this.GetType() + "[" + this.MetaID + "]";
+            string typeName = this.GetType().Name;
+            if (typeName.EndsWith("Impl")) typeName = typeName.Substring(0, typeName.Length - 4);
+            string name = this.MetaID;
+            if (this.nameProperty != null)
+            {
+                object nameValue = this.MGet(this.nameProperty);
+                if (nameValue != null)
+                {
+                    name = nameValue.ToString();
+                    return typeName + "(" + name + ")"; 
+                }
+            }
+            return typeName + "[" + name + "]";
         }
 
         private ModelObject parent;

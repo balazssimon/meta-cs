@@ -53,7 +53,17 @@ namespace MetaDslx.Core
     {
         string GetName(object node);
         object GetValue(object node);
-        TextSpan GetTextSpan(object node);
+        IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject node);
+        TextSpan GetTreeNodeTextSpan(object node);
+    }
+
+    public interface ITypeProvider
+    {
+        ModelObject Balance(ModelObject left, ModelObject right);
+        bool IsAssignableFrom(ModelObject left, ModelObject right);
+        bool Equals(ModelObject left, ModelObject right);
+        MetaType GetTypeOf(ModelObject symbol);
+        MetaType GetReturnTypeOf(ModelObject symbol);
     }
 
     public interface IResolutionProvider
@@ -76,6 +86,7 @@ namespace MetaDslx.Core
         string Source { get; }
         RootScope GlobalScope { get; }
         INameProvider NameProvider { get; }
+        ITypeProvider TypeProvider { get; }
         IResolutionProvider ResolutionProvider { get; }
         IBindingProvider BindingProvider { get; }
     }
@@ -89,7 +100,7 @@ namespace MetaDslx.Core
         All = Error | Warning | Info
     }
 
-    public class DiagnosticMessage : IComparable<DiagnosticMessage>
+    public class DiagnosticMessage : IComparable<DiagnosticMessage>, IEquatable<DiagnosticMessage>
     {
         public string FileName { get; set; }
         public TextSpan TextSpan { get; set; }
@@ -110,12 +121,36 @@ namespace MetaDslx.Core
                 if (cmp != 0) return cmp;
             }
             cmp = this.TextSpan.CompareTo(other.TextSpan);
+            if (cmp != 0) return cmp;
+            cmp = this.Severity.CompareTo(other.Severity);
+            if (cmp != 0) return cmp;
+            cmp = this.Message.CompareTo(other.Message);
+            if (cmp != 0) return cmp;
             return cmp;
         }
 
         public override string ToString()
         {
-            return string.Format("{0} in '{1}' ({2},{3}): {4}", this.Severity, this.FileName, this.TextSpan.StartLine, this.TextSpan.StartPosition, this.Message);
+            return string.Format("{0} in '{1}' ({2},{3})-({4},{5}): {6}", this.Severity, this.FileName, this.TextSpan.StartLine, this.TextSpan.StartPosition, this.TextSpan.EndLine, this.TextSpan.EndPosition, this.Message);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as DiagnosticMessage);
+        }
+
+        public bool Equals(DiagnosticMessage other)
+        {
+            return this.CompareTo(other) == 0;
+        }
+
+        public override int GetHashCode()
+        {
+            int fileNameHash = this.FileName == null ? 0 : this.FileName.GetHashCode();
+            int textSpanHash = this.TextSpan.GetHashCode();
+            int messageHash = this.Message.GetHashCode();
+            int severityHash = this.Severity.GetHashCode();
+            return fileNameHash ^ textSpanHash ^ messageHash ^ severityHash;
         }
     }
 
@@ -156,7 +191,12 @@ namespace MetaDslx.Core
 
         public override string ToString()
         {
-            return string.Format("({0},{1})", this.StartLine, this.StartPosition);
+            return string.Format("({0},{1})-({2},{3})", this.StartLine, this.StartPosition, this.EndLine, this.EndPosition);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.StartLine.GetHashCode() ^ this.StartPosition.GetHashCode() ^ this.EndLine.GetHashCode() ^ this.EndPosition.GetHashCode();
         }
     }
 
@@ -186,6 +226,7 @@ namespace MetaDslx.Core
             {
                 this.sortedMessages =
                     this.messages.Where(m => !m.IsLog || includeLog).OrderBy(m => m.FileName).ThenBy(m => m.TextSpan).ToList();
+                this.sortedMessages = this.sortedMessages.Distinct().ToList();
                 this.logsIncluded = includeLog;
                 this.sorted = true;
             }
@@ -203,36 +244,35 @@ namespace MetaDslx.Core
             this.messages = new List<DiagnosticMessage>();
         }
 
+        public void AddMessage(Severity severity, string message, string fileName, ModelObject symbol, bool isLog = false)
+        {
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                foreach (var textSpan in ctx.Compiler.NameProvider.GetSymbolTextSpans(symbol))
+                {
+                    this.AddMessage(severity, message, fileName, textSpan, isLog);
+                }
+            }
+            else
+            {
+                this.AddMessage(severity, message, fileName, new TextSpan(), isLog);
+            }
+        }
+
         public void AddMessage(Severity severity, string message, string fileName, object node, bool isLog = false)
         {
-            if (severity == Severity.Error)
-            {
-                this.hasErrors = true;
-            }
-            if (severity == Severity.Warning)
-            {
-                this.hasWarnings = true;
-            }
             TextSpan textSpan = null;
             ModelContext ctx = ModelContext.Current;
             if (ctx != null)
             {
-                textSpan = ctx.Compiler.NameProvider.GetTextSpan(node);
+                textSpan = ctx.Compiler.NameProvider.GetTreeNodeTextSpan(node);
             }
             else
             {
                 textSpan = new TextSpan();
             }
-            this.messages.Add(
-                new DiagnosticMessage()
-                {
-                    Message = message,
-                    FileName = fileName,
-                    TextSpan = textSpan,
-                    Severity = severity,
-                    IsLog = isLog
-                });
-            this.sorted = false;
+            this.AddMessage(severity, message, fileName, textSpan, isLog);
         }
 
         public void AddMessage(Severity severity, string message, string fileName, TextSpan textSpan, bool isLog = false)
@@ -255,6 +295,21 @@ namespace MetaDslx.Core
                     IsLog = isLog
                 });
             this.sorted = false;
+        }
+
+        public void AddError(string message, string fileName, ModelObject symbol, bool isLog = false)
+        {
+            this.AddMessage(Severity.Error, message, fileName, symbol, isLog);
+        }
+
+        public void AddWarning(string message, string fileName, ModelObject symbol, bool isLog = false)
+        {
+            this.AddMessage(Severity.Warning, message, fileName, symbol, isLog);
+        }
+
+        public void AddInfo(string message, string fileName, ModelObject symbol, bool isLog = false)
+        {
+            this.AddMessage(Severity.Info, message, fileName, symbol, isLog);
         }
 
         public void AddError(string message, string fileName, object node, bool isLog = false)
@@ -302,9 +357,248 @@ namespace MetaDslx.Core
             return node.ToString();
         }
 
-        public virtual TextSpan GetTextSpan(object node)
+        public virtual IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject symbol)
+        {
+            List<TextSpan> result = new List<TextSpan>();
+            object nameTreeNodes = symbol.MGet(MetaScopeEntryProperties.NameTreeNodesProperty);
+            IList<object> nameTreeNodeList = nameTreeNodes as IList<object>;
+            if (nameTreeNodeList != null && nameTreeNodeList.Count > 0)
+            {
+                foreach (var nameTreeNode in nameTreeNodeList)
+                {
+                    result.Add(this.GetTreeNodeTextSpan(nameTreeNode));
+                }
+            }
+            else
+            {
+                object symbolTreeNodes = symbol.MGet(MetaScopeEntryProperties.SymbolTreeNodesProperty);
+                IList<object> symbolTreeNodeList = symbolTreeNodes as IList<object>;
+                foreach (var symbolTreeNode in symbolTreeNodeList)
+                {
+                    result.Add(this.GetTreeNodeTextSpan(symbolTreeNode));
+                }
+            }
+            return result;
+        }
+
+        public virtual TextSpan GetTreeNodeTextSpan(object node)
         {
             return new TextSpan();
+        }
+    }
+
+    public class DefaultTypeProvider : ITypeProvider
+    {
+        public ModelObject Balance(ModelObject left, ModelObject right)
+        {
+            if (left == right) return left;
+            if (left == MetaBuiltInTypes.Error) return (ModelObject)MetaBuiltInTypes.Error;
+            if (right == MetaBuiltInTypes.Error) return (ModelObject)MetaBuiltInTypes.Error;
+            if (left == MetaBuiltInTypes.Object) return (ModelObject)MetaBuiltInTypes.Object;
+            if (right == MetaBuiltInTypes.Object) return (ModelObject)MetaBuiltInTypes.Object;
+            if (left == MetaBuiltInTypes.Any) return right;
+            if (right == MetaBuiltInTypes.Any) return left;
+            MetaPrimitiveType primLeft = left as MetaPrimitiveType;
+            MetaPrimitiveType primRight = right as MetaPrimitiveType;
+            if (primLeft != null && primRight != null)
+            {
+                if (primLeft == MetaBuiltInTypes.Byte && primRight == MetaBuiltInTypes.Int) return (ModelObject)MetaBuiltInTypes.Int;
+                if (primLeft == MetaBuiltInTypes.Byte && primRight == MetaBuiltInTypes.Long) return (ModelObject)MetaBuiltInTypes.Long;
+                if (primLeft == MetaBuiltInTypes.Int && primRight == MetaBuiltInTypes.Byte) return (ModelObject)MetaBuiltInTypes.Int;
+                if (primLeft == MetaBuiltInTypes.Int && primRight == MetaBuiltInTypes.Long) return (ModelObject)MetaBuiltInTypes.Long;
+                if (primLeft == MetaBuiltInTypes.Long && primRight == MetaBuiltInTypes.Byte) return (ModelObject)MetaBuiltInTypes.Long;
+                if (primLeft == MetaBuiltInTypes.Long && primRight == MetaBuiltInTypes.Int) return (ModelObject)MetaBuiltInTypes.Long;
+                if (primLeft == MetaBuiltInTypes.Byte && primRight == MetaBuiltInTypes.Float) return (ModelObject)MetaBuiltInTypes.Float;
+                if (primLeft == MetaBuiltInTypes.Byte && primRight == MetaBuiltInTypes.Double) return (ModelObject)MetaBuiltInTypes.Double;
+                if (primLeft == MetaBuiltInTypes.Int && primRight == MetaBuiltInTypes.Float) return (ModelObject)MetaBuiltInTypes.Float;
+                if (primLeft == MetaBuiltInTypes.Int && primRight == MetaBuiltInTypes.Double) return (ModelObject)MetaBuiltInTypes.Double;
+                if (primLeft == MetaBuiltInTypes.Long && primRight == MetaBuiltInTypes.Float) return (ModelObject)MetaBuiltInTypes.Float;
+                if (primLeft == MetaBuiltInTypes.Long && primRight == MetaBuiltInTypes.Double) return (ModelObject)MetaBuiltInTypes.Double;
+                if (primLeft == MetaBuiltInTypes.Float && primRight == MetaBuiltInTypes.Byte) return (ModelObject)MetaBuiltInTypes.Float;
+                if (primLeft == MetaBuiltInTypes.Double && primRight == MetaBuiltInTypes.Byte) return (ModelObject)MetaBuiltInTypes.Double;
+                if (primLeft == MetaBuiltInTypes.Float && primRight == MetaBuiltInTypes.Int) return (ModelObject)MetaBuiltInTypes.Float;
+                if (primLeft == MetaBuiltInTypes.Double && primRight == MetaBuiltInTypes.Int) return (ModelObject)MetaBuiltInTypes.Double;
+                if (primLeft == MetaBuiltInTypes.Float && primRight == MetaBuiltInTypes.Long) return (ModelObject)MetaBuiltInTypes.Float;
+                if (primLeft == MetaBuiltInTypes.Double && primRight == MetaBuiltInTypes.Long) return (ModelObject)MetaBuiltInTypes.Double;
+                if (primLeft == MetaBuiltInTypes.Float && primRight == MetaBuiltInTypes.Double) return (ModelObject)MetaBuiltInTypes.Double;
+                if (primLeft == MetaBuiltInTypes.Double && primRight == MetaBuiltInTypes.Float) return (ModelObject)MetaBuiltInTypes.Double;
+                return (ModelObject)MetaBuiltInTypes.Error;
+            }
+            MetaModelFactory factory = MetaModelFactory.Instance;
+            MetaNullableType nullLeft = left as MetaNullableType;
+            MetaNullableType nullRight = right as MetaNullableType;
+            if (nullLeft != null && nullRight != null)
+            {
+                ModelObject balancedInnerTypeObject = this.Balance((ModelObject)nullLeft.InnerType, (ModelObject)nullRight.InnerType);
+                MetaType balancedInnerType = balancedInnerTypeObject as MetaType;
+                if (balancedInnerType != null && balancedInnerType != MetaBuiltInTypes.Error)
+                {
+                    MetaNullableType nullResult = factory.CreateMetaNullableType();
+                    nullResult.InnerType = balancedInnerType as MetaType;
+                    return (ModelObject)nullResult;
+                }
+                else
+                {
+                    balancedInnerTypeObject = this.Balance((ModelObject)nullLeft.InnerType, right);
+                    balancedInnerType = balancedInnerTypeObject as MetaType;
+                    if (balancedInnerType != null && balancedInnerType != MetaBuiltInTypes.Error)
+                    {
+                        MetaNullableType nullResult = factory.CreateMetaNullableType();
+                        nullResult.InnerType = balancedInnerType as MetaType;
+                        return (ModelObject)nullResult;
+                    }
+                    else
+                    {
+                        balancedInnerTypeObject = this.Balance(left, (ModelObject)nullRight.InnerType);
+                        balancedInnerType = balancedInnerTypeObject as MetaType;
+                        if (balancedInnerType != null && balancedInnerType != MetaBuiltInTypes.Error)
+                        {
+                            MetaNullableType nullResult = factory.CreateMetaNullableType();
+                            nullResult.InnerType = balancedInnerType as MetaType;
+                            return (ModelObject)nullResult;
+                        }
+                        else
+                        {
+                            return (ModelObject)MetaBuiltInTypes.Error;
+                        }
+                    }
+                }
+            }
+            MetaCollectionType collLeft = left as MetaCollectionType;
+            MetaCollectionType collRight = right as MetaCollectionType;
+            if (collLeft != null && collRight != null)
+            {
+                if (collLeft.Kind == collRight.Kind && this.Equals((ModelObject)collLeft.InnerType, (ModelObject)collRight.InnerType))
+                {
+                    ModelObject balancedInnerTypeObject = this.Balance((ModelObject)collLeft.InnerType, (ModelObject)collLeft.InnerType);
+                    MetaType balancedInnerType = balancedInnerTypeObject as MetaType;
+                    if (balancedInnerType != null && balancedInnerType != MetaBuiltInTypes.Error)
+                    {
+                        MetaCollectionType collResult = factory.CreateMetaCollectionType();
+                        collResult.Kind = collLeft.Kind;
+                        collResult.InnerType = balancedInnerType as MetaType;
+                        return (ModelObject)collResult;
+                    }
+                    else
+                    {
+                        return (ModelObject)MetaBuiltInTypes.Error;
+                    }
+                }
+                else
+                {
+                    return (ModelObject)MetaBuiltInTypes.Error;
+                }
+            }
+            MetaClass clsLeft = left as MetaClass;
+            MetaClass clsRight = right as MetaClass;
+            if (clsLeft != null && clsRight != null)
+            {
+                if (clsRight.GetAllSuperClasses(false).Contains(clsLeft))
+                {
+                    return left;
+                }
+                if (clsLeft.GetAllSuperClasses(false).Contains(clsRight))
+                {
+                    return right;
+                }
+                return (ModelObject)MetaBuiltInTypes.Error;
+            }
+            return (ModelObject)MetaBuiltInTypes.Error;
+        }
+
+        public bool IsAssignableFrom(ModelObject left, ModelObject right)
+        {
+            if (left == right) return true;
+            if (left == MetaBuiltInTypes.Error) return false;
+            if (right == MetaBuiltInTypes.Error) return false;
+            if (left == MetaBuiltInTypes.Any) return true;
+            if (left == MetaBuiltInTypes.Object) return true;
+            if (right == MetaBuiltInTypes.Any) return true;
+            if (right == MetaBuiltInTypes.Object) return false;
+            MetaPrimitiveType primLeft = left as MetaPrimitiveType;
+            MetaPrimitiveType primRight = right as MetaPrimitiveType;
+            if (primLeft != null && primRight != null)
+            {
+                if (primLeft == MetaBuiltInTypes.Int && primRight == MetaBuiltInTypes.Byte) return true;
+                if (primLeft == MetaBuiltInTypes.Long && primRight == MetaBuiltInTypes.Byte) return true;
+                if (primLeft == MetaBuiltInTypes.Long && primRight == MetaBuiltInTypes.Int) return true;
+                if (primLeft == MetaBuiltInTypes.Float && primRight == MetaBuiltInTypes.Byte) return true;
+                if (primLeft == MetaBuiltInTypes.Double && primRight == MetaBuiltInTypes.Byte) return true;
+                if (primLeft == MetaBuiltInTypes.Float && primRight == MetaBuiltInTypes.Int) return true;
+                if (primLeft == MetaBuiltInTypes.Double && primRight == MetaBuiltInTypes.Int) return true;
+                if (primLeft == MetaBuiltInTypes.Float && primRight == MetaBuiltInTypes.Long) return true;
+                if (primLeft == MetaBuiltInTypes.Double && primRight == MetaBuiltInTypes.Long) return true;
+                if (primLeft == MetaBuiltInTypes.Double && primRight == MetaBuiltInTypes.Float) return true;
+                return false;
+            }
+            MetaModelFactory factory = MetaModelFactory.Instance;
+            MetaNullableType nullLeft = left as MetaNullableType;
+            MetaNullableType nullRight = right as MetaNullableType;
+            if (nullLeft != null && nullRight != null)
+            {
+                return this.IsAssignableFrom((ModelObject)nullLeft.InnerType, (ModelObject)nullRight.InnerType)
+                    || this.IsAssignableFrom((ModelObject)nullLeft.InnerType, right);
+            }
+            MetaCollectionType collLeft = left as MetaCollectionType;
+            MetaCollectionType collRight = right as MetaCollectionType;
+            if (collLeft != null && collRight != null)
+            {
+                return collLeft.Kind == collRight.Kind && this.Equals((ModelObject)collLeft.InnerType, (ModelObject)collRight.InnerType);
+            }
+            MetaClass clsLeft = left as MetaClass;
+            MetaClass clsRight = right as MetaClass;
+            if (clsLeft != null && clsRight != null)
+            {
+                return clsRight.GetAllSuperClasses(false).Contains(clsLeft);
+            }
+            return false;
+        }
+
+        public bool Equals(ModelObject left, ModelObject right)
+        {
+            if (left == right) return true;
+            if (left == MetaBuiltInTypes.Error) return false;
+            if (right == MetaBuiltInTypes.Error) return false;
+            if (left == MetaBuiltInTypes.Any) return true;
+            if (right == MetaBuiltInTypes.Any) return true;
+            if (left == MetaBuiltInTypes.Object) return false;
+            if (right == MetaBuiltInTypes.Object) return false;
+            MetaPrimitiveType primLeft = left as MetaPrimitiveType;
+            MetaPrimitiveType primRight = right as MetaPrimitiveType;
+            if (primLeft != null && primRight != null)
+            {
+                return false;
+            }
+            MetaModelFactory factory = MetaModelFactory.Instance;
+            MetaNullableType nullLeft = left as MetaNullableType;
+            MetaNullableType nullRight = right as MetaNullableType;
+            if (nullLeft != null && nullRight != null)
+            {
+                return this.Equals((ModelObject)nullLeft.InnerType, (ModelObject)nullRight.InnerType);
+            }
+            MetaCollectionType collLeft = left as MetaCollectionType;
+            MetaCollectionType collRight = right as MetaCollectionType;
+            if (collLeft != null && collRight != null)
+            {
+                return collLeft.Kind == collRight.Kind && this.Equals((ModelObject)collLeft.InnerType, (ModelObject)collRight.InnerType);
+            }
+            return false;
+        }
+
+        public MetaType GetTypeOf(ModelObject symbol)
+        {
+            MetaTypedElement mte = symbol as MetaTypedElement;
+            if (mte != null) return mte.Type;
+            MetaType mt = symbol as MetaType;
+            if (mt != null) return mt;
+            return null;
+        }
+
+        public MetaType GetReturnTypeOf(ModelObject symbol)
+        {
+            MetaOperation mo = symbol as MetaOperation;
+            if (mo != null) return mo.ReturnType;
+            return null;
         }
     }
 
@@ -564,7 +858,14 @@ namespace MetaDslx.Core
             {
                 if (ctx != null)
                 {
-                    ctx.Compiler.Diagnostics.AddError("Cannot resolve name or type.", ctx.Compiler.FileName, info.Node);
+                    if (info.Node != null)
+                    {
+                        ctx.Compiler.Diagnostics.AddError("Cannot resolve name or type.", ctx.Compiler.FileName, info.Node);
+                    }
+                    else
+                    {
+                        ctx.Compiler.Diagnostics.AddError("Cannot resolve name or type.", ctx.Compiler.FileName, context);
+                    }
                 }
                 return null;
             }
@@ -572,7 +873,14 @@ namespace MetaDslx.Core
             {
                 if (ctx != null)
                 {
-                    ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, info.Node);
+                    if (info.Node != null)
+                    {
+                        ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, info.Node);
+                    }
+                    else
+                    {
+                        ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, context);
+                    }
                 }
                 return null;
             }
@@ -592,6 +900,7 @@ namespace MetaDslx.Core
             this.Diagnostics = new ModelCompilerDiagnostics();
             this.GlobalScope = new RootScope();
             this.NameProvider = new DefaultNameProvider();
+            this.TypeProvider = new DefaultTypeProvider();
             this.ResolutionProvider = new DefaultResolutionProvider();
             this.BindingProvider = new DefaultBindingProvider();
         }
@@ -601,6 +910,7 @@ namespace MetaDslx.Core
         public virtual string Source { get; protected set; }
         public virtual RootScope GlobalScope { get; protected set; }
         public virtual INameProvider NameProvider { get; protected set; }
+        public virtual ITypeProvider TypeProvider { get; protected set; }
         public virtual IResolutionProvider ResolutionProvider { get; protected set; }
         public virtual IBindingProvider BindingProvider { get; protected set; }
     }

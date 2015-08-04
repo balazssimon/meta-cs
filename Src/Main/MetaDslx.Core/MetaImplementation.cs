@@ -79,6 +79,12 @@ namespace MetaDslx.Core
             var attributes = symbolType.GetCustomAttributes(typeof(TypeAttribute), true);
             return attributes.Length > 0;
         }
+
+        public static bool IsMetaName(this ModelProperty property)
+        {
+            if (property == null) return false;
+            return property.Annotations.Any(a => a is NameAttribute);
+        }
     }
 
     public class MetaBuiltInTypes
@@ -95,6 +101,7 @@ namespace MetaDslx.Core
         public static readonly MetaPrimitiveType Bool;
         public static readonly MetaPrimitiveType Void;
         public static readonly MetaPrimitiveType Any;
+        public static readonly MetaPrimitiveType Error;
 
         public static IEnumerable<MetaType> Types
         {
@@ -132,9 +139,10 @@ namespace MetaDslx.Core
             MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Void);
             MetaBuiltInTypes.Any = MetaModelFactory.Instance.CreateMetaPrimitiveType();
             MetaBuiltInTypes.Any.Name = "*any*";
-            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Any);
+            MetaBuiltInTypes.Error = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.Error.Name = "*error*";
         }
-         
+
     }
 
     public class MetaBuiltInFunctions
@@ -166,26 +174,14 @@ namespace MetaDslx.Core
 
     public static class MetaScopeEntryProperties
     {
-        public static readonly ModelProperty KindProperty =
-            ModelProperty.Register("Kind", typeof(MetaScopeEntryKind), typeof(MetaScopeEntryProperties));
+        public static readonly ModelProperty SymbolTreeNodesProperty =
+            ModelProperty.Register("SymbolTreeNodes", typeof(IList<object>), typeof(MetaScopeEntryProperties));
 
-        public static readonly ModelProperty NameProperty =
-            ModelProperty.Register("Name", typeof(object), typeof(MetaScopeEntryProperties));
+        public static readonly ModelProperty NameTreeNodesProperty =
+            ModelProperty.Register("NameTreeNodes", typeof(IList<object>), typeof(MetaScopeEntryProperties));
 
         public static readonly ModelProperty CanMergeProperty =
             ModelProperty.Register("CanMerge", typeof(bool), typeof(MetaScopeEntryProperties));
-
-        public static readonly ModelProperty EntriesProperty =
-             ModelProperty.Register("Entries", typeof(IList<object>), typeof(MetaScopeEntryProperties));
-
-        public static readonly ModelProperty ImportedEntriesProperty =
-            ModelProperty.Register("ImportedEntries", typeof(IList<object>), typeof(MetaScopeEntryProperties));
-
-        public static readonly ModelProperty ImportedScopesProperty =
-            ModelProperty.Register("ImportedScopes", typeof(IList<object>), typeof(MetaScopeEntryProperties));
-
-        public static readonly ModelProperty InheritedScopesProperty =
-            ModelProperty.Register("InheritedScopes", typeof(IList<object>), typeof(MetaScopeEntryProperties));
 
     }
 
@@ -248,7 +244,7 @@ namespace MetaDslx.Core
             if (ctx != null)
             {
                 IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => compiler.BindingProvider.Bind(null, @this.Definitions != null ? @this.Definitions.OfType<ModelObject>() : new ModelObject[0], new BindingInfo())));
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => compiler.BindingProvider.Bind((ModelObject)@this, @this.Definitions != null ? @this.Definitions.OfType<ModelObject>() : new ModelObject[0], new BindingInfo())));
                 ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => this.GetType((ModelObject)@this.Definition)));
             }
         }
@@ -276,20 +272,30 @@ namespace MetaDslx.Core
             }
         }
 
-        private MetaType GetType(ModelObject obj)
+        private MetaType GetType(ModelObject symbol)
         {
-            MetaTypedElement mte = obj as MetaTypedElement;
-            if (mte != null) return mte.Type;
-            MetaType mt = obj as MetaType;
-            if (mt != null) return mt;
-            return null;
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                return ctx.Compiler.TypeProvider.GetTypeOf(symbol);
+            }
+            else
+            {
+                return MetaBuiltInTypes.Error;
+            }
         }
 
-        private MetaType GetReturnType(ModelObject obj)
+        private MetaType GetReturnType(ModelObject symbol)
         {
-            MetaOperation mo = obj as MetaOperation;
-            if (mo != null) return mo.ReturnType;
-            return null;
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                return ctx.Compiler.TypeProvider.GetReturnTypeOf(symbol);
+            }
+            else
+            {
+                return MetaBuiltInTypes.Error;
+            }
         }
 
         public override void MetaThisExpression_MetaThisExpression(MetaThisExpression @this)
@@ -324,7 +330,7 @@ namespace MetaDslx.Core
                 ((ModelObject)@this).MLazySet(Meta.MetaPropertyInitializer.PropertyProperty, 
                     new Lazy<object>(() =>
                     compiler.BindingProvider.Bind(
-                        null,
+                        (ModelObject)@this,
                         compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)this.GetType((ModelObject)@this.Object) }, ResolveKind.Name, @this.PropertyName, new ResolutionInfo(), ResolveFlags.Scope),
                         new BindingInfo()
                         )));

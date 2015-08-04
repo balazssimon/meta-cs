@@ -37,6 +37,7 @@ namespace MetaDslx.Compiler
             private set;
         }
         public INameProvider NameProvider { get; set; }
+        public ITypeProvider TypeProvider { get; set; }
         public IResolutionProvider ResolutionProvider { get; set; }
         public IBindingProvider BindingProvider { get; set; }
 
@@ -48,6 +49,7 @@ namespace MetaDslx.Compiler
             this.GlobalScope = new RootScope();
             this.Data = new MetaCompilerData(this);
             this.NameProvider = new Antlr4DefaultNameProvider();
+            this.TypeProvider = new DefaultTypeProvider();
             this.ResolutionProvider = new DefaultResolutionProvider();
             this.BindingProvider = new DefaultBindingProvider();
         }

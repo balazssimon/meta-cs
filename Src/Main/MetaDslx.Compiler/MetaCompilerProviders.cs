@@ -24,7 +24,7 @@ namespace MetaDslx.Compiler
             return parseTree.GetText();
         }
 
-        public override TextSpan GetTextSpan(object node)
+        public override TextSpan GetTreeNodeTextSpan(object node)
         {
             return new Antlr4TextSpan(node);
         }

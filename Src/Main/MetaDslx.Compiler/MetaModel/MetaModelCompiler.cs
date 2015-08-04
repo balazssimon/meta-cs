@@ -1087,6 +1087,8 @@ namespace MetaDslx.Compiler
             ModelObject symbol = this.ModelFactory.Create(symbolType);
             if (symbol != null)
             {
+                symbol.MSet(MetaScopeEntryProperties.NameTreeNodesProperty, new ModelList<object>(symbol, MetaScopeEntryProperties.NameTreeNodesProperty));
+                symbol.MSet(MetaScopeEntryProperties.SymbolTreeNodesProperty, new ModelList<object>(symbol, MetaScopeEntryProperties.SymbolTreeNodesProperty));
                 this.RegisterSymbol(node, symbol);
                 return symbol;
             }
@@ -1101,6 +1103,16 @@ namespace MetaDslx.Compiler
         {
             if (symbol == null) return;
             this.Compiler.Data.RegisterSymbol(node, symbol);
+            NameAnnotation na = this.GetAnnotationFor<NameAnnotation>(node);
+            QualifiedNameAnnotation qna = this.GetAnnotationFor<QualifiedNameAnnotation>(node);
+            if (na == null && qna == null)
+            {
+                symbol.MAdd(MetaScopeEntryProperties.SymbolTreeNodesProperty, node);
+            }
+            else
+            {
+                symbol.MAdd(MetaScopeEntryProperties.NameTreeNodesProperty, node);
+            }
         }
     }
 
