@@ -32,7 +32,10 @@ namespace MetaDslx.Core
             this.lazyItems = null;
             foreach (var item in lazyCopy)
             {
-                this.MAdd(item.Value);
+                if (item.Value != null)
+                {
+                    this.MAdd(item.Value, true);
+                }
             }
         }
 
@@ -54,7 +57,7 @@ namespace MetaDslx.Core
         }
 
         public abstract void Clear();
-        public abstract bool MAdd(object value);
-        public abstract bool MRemove(object value);
+        public abstract bool MAdd(object value, bool firstCall);
+        public abstract bool MRemove(object value, bool firstCall);
     }
 }

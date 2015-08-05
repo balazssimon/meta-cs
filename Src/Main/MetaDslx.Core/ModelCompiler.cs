@@ -396,6 +396,8 @@ namespace MetaDslx.Core
             if (left == right) return left;
             if (left == MetaBuiltInTypes.Error) return (ModelObject)MetaBuiltInTypes.Error;
             if (right == MetaBuiltInTypes.Error) return (ModelObject)MetaBuiltInTypes.Error;
+            if (left == MetaBuiltInTypes.None) return (ModelObject)MetaBuiltInTypes.None;
+            if (right == MetaBuiltInTypes.None) return (ModelObject)MetaBuiltInTypes.None;
             if (left == MetaBuiltInTypes.Object) return (ModelObject)MetaBuiltInTypes.Object;
             if (right == MetaBuiltInTypes.Object) return (ModelObject)MetaBuiltInTypes.Object;
             if (left == MetaBuiltInTypes.Any) return right;
@@ -513,6 +515,8 @@ namespace MetaDslx.Core
             if (this.Equals(left, right)) return true;
             if (left == MetaBuiltInTypes.Error) return false;
             if (right == MetaBuiltInTypes.Error) return false;
+            if (left == MetaBuiltInTypes.None) return false;
+            if (right == MetaBuiltInTypes.None) return false;
             if (left == MetaBuiltInTypes.Any) return true;
             if (left == MetaBuiltInTypes.Object) return true;
             if (right == MetaBuiltInTypes.Any) return true;
@@ -565,6 +569,8 @@ namespace MetaDslx.Core
             if (left == right) return true;
             if (left == MetaBuiltInTypes.Error) return false;
             if (right == MetaBuiltInTypes.Error) return false;
+            if (left == MetaBuiltInTypes.None) return false;
+            if (right == MetaBuiltInTypes.None) return false;
             if (left == MetaBuiltInTypes.Any) return true;
             if (right == MetaBuiltInTypes.Any) return true;
             if (left == MetaBuiltInTypes.Object) return right == MetaBuiltInTypes.Object;
@@ -623,12 +629,12 @@ namespace MetaDslx.Core
 
         public MetaType GetTypeOf(ModelObject symbol)
         {
-            if (symbol == null) return null;
+            if (symbol == null) return MetaBuiltInTypes.None;
             MetaTypedElement mte = symbol as MetaTypedElement;
             if (mte != null) return mte.Type;
             MetaType mt = symbol as MetaType;
             if (mt != null) return mt;
-            return null;
+            return MetaBuiltInTypes.None;
         }
 
         public MetaType GetTypeOf(object value)
@@ -636,15 +642,21 @@ namespace MetaDslx.Core
             ModelObject symbol = value as ModelObject;
             if (symbol != null) return this.GetTypeOf(symbol);
             if (value is string) return MetaBuiltInTypes.String;
-            return null;
+            if (value is bool) return MetaBuiltInTypes.Bool;
+            if (value is byte) return MetaBuiltInTypes.Byte;
+            if (value is int) return MetaBuiltInTypes.Int;
+            if (value is long) return MetaBuiltInTypes.Long;
+            if (value is float) return MetaBuiltInTypes.Float;
+            if (value is double) return MetaBuiltInTypes.Double;
+            return MetaBuiltInTypes.None;
         }
 
         public MetaType GetReturnTypeOf(ModelObject symbol)
         {
-            if (symbol == null) return null;
+            if (symbol == null) return MetaBuiltInTypes.None;
             MetaFunction mf = symbol as MetaFunction;
             if (mf != null) return mf.ReturnType;
-            return null;
+            return MetaBuiltInTypes.None;
         }
 
         public bool TypeCheck(ModelObject symbol)
@@ -657,13 +669,17 @@ namespace MetaDslx.Core
                 ModelContext ctx = ModelContext.Current;
                 if (ctx != null)
                 {
-                    if (expr.ExpectedType == null)
+                    if (expr.ExpectedType == MetaBuiltInTypes.None)
+                    {
+                        return true;
+                    }
+                    else  if (expr.ExpectedType == null)
                     {
                         // TODO
-                        if (symbol.MParent is MetaFunctionCallExpression) return true;
+                        /*if (symbol.MParent is MetaFunctionCallExpression) return true;
                         if (symbol.MParent is MetaIndexerExpression) return true;
                         if (symbol.MParent is MetaOperatorExpression) return true;
-                        if (symbol.MParent is MetaMemberAccessExpression) return true;
+                        if (symbol.MParent is MetaMemberAccessExpression) return true;*/
                         ctx.Compiler.Diagnostics.AddError("The expression has no expected type.", ctx.Compiler.FileName, symbol);
                     }
                     else if (expr.Type == null)
@@ -1035,18 +1051,30 @@ namespace MetaDslx.Core
             else if (alternativeList.Count > 1)
             {
                 // TODO
-                if (context.MParent is MetaFunctionCallExpression) return null;
+                /*if (context.MParent is MetaFunctionCallExpression) return null;
                 if (context.MParent is MetaIndexerExpression) return null;
-                if (context.MParent is MetaOperatorExpression) return null;
-                if (ctx != null)
+                if (context.MParent is MetaOperatorExpression) return null;*/
+                bool mustHaveUniqueDefinition = true;
+                if (context != null)
                 {
-                    if (info.Node != null)
+                    object mustHaveUniqueDefinitionObject = context.MGet(Meta.MetaBoundExpression.UniqueDefinitionProperty);
+                    if (mustHaveUniqueDefinitionObject != null)
                     {
-                        ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, info.Node);
+                        mustHaveUniqueDefinition = (bool)mustHaveUniqueDefinitionObject;
                     }
-                    else
+                }
+                if (mustHaveUniqueDefinition)
+                {
+                    if (ctx != null)
                     {
-                        ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, context);
+                        if (info.Node != null)
+                        {
+                            ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, info.Node);
+                        }
+                        else
+                        {
+                            ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, context);
+                        }
                     }
                 }
                 return null;

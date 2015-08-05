@@ -1329,6 +1329,30 @@ using MetaDslx.Core;
                 __tmp25.Value = MetaCollectionKind.List;
                 elemAnnotList.Add(__tmp25);
             }
+            if (context.KMultiSet() != null)
+            {
+                object elem = context.KMultiSet();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                ValueAnnotation __tmp26 = new ValueAnnotation();
+                __tmp26.Value = MetaCollectionKind.MultiSet;
+                elemAnnotList.Add(__tmp26);
+            }
+            if (context.KMultiList() != null)
+            {
+                object elem = context.KMultiList();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                ValueAnnotation __tmp27 = new ValueAnnotation();
+                __tmp27.Value = MetaCollectionKind.MultiList;
+                elemAnnotList.Add(__tmp27);
+            }
             this.HandleSymbolType(context);
             return base.VisitCollectionKind(context);
         }
@@ -1341,9 +1365,9 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp26 = new NameDefAnnotation();
-            __tmp26.SymbolType = typeof(MetaOperation);
-            treeAnnotList.Add(__tmp26);
+            NameDefAnnotation __tmp28 = new NameDefAnnotation();
+            __tmp28.SymbolType = typeof(MetaOperation);
+            treeAnnotList.Add(__tmp28);
             List<object> elemAnnotList = null;
             if (context.returnType() != null)
             {
@@ -1383,9 +1407,9 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp27 = new NameDefAnnotation();
-            __tmp27.SymbolType = typeof(MetaParameter);
-            treeAnnotList.Add(__tmp27);
+            NameDefAnnotation __tmp29 = new NameDefAnnotation();
+            __tmp29.SymbolType = typeof(MetaParameter);
+            treeAnnotList.Add(__tmp29);
             List<object> elemAnnotList = null;
             if (context.typeReference() != null)
             {
@@ -1409,9 +1433,9 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp28 = new NameDefAnnotation();
-            __tmp28.SymbolType = typeof(MetaConstructor);
-            treeAnnotList.Add(__tmp28);
+            NameDefAnnotation __tmp30 = new NameDefAnnotation();
+            __tmp30.SymbolType = typeof(MetaConstructor);
+            treeAnnotList.Add(__tmp30);
             List<object> elemAnnotList = null;
             if (context.initializerDeclaration() != null)
             {
@@ -1443,9 +1467,9 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp29 = new SymbolAnnotation();
-            __tmp29.SymbolType = typeof(MetaSynthetizedPropertyInitializer);
-            treeAnnotList.Add(__tmp29);
+            SymbolAnnotation __tmp31 = new SymbolAnnotation();
+            __tmp31.SymbolType = typeof(MetaSynthetizedPropertyInitializer);
+            treeAnnotList.Add(__tmp31);
             List<object> elemAnnotList = null;
             if (context.property != null)
             {
@@ -1456,8 +1480,8 @@ using MetaDslx.Core;
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
                 elemAnnotList.Add(this.synthetizedPropertyInitializer_Property_Property);
-                ValueAnnotation __tmp30 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp30);
+                ValueAnnotation __tmp32 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp32);
             }
             if (context.expression() != null)
             {
@@ -1481,9 +1505,9 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp31 = new SymbolAnnotation();
-            __tmp31.SymbolType = typeof(MetaInheritedPropertyInitializer);
-            treeAnnotList.Add(__tmp31);
+            SymbolAnnotation __tmp33 = new SymbolAnnotation();
+            __tmp33.SymbolType = typeof(MetaInheritedPropertyInitializer);
+            treeAnnotList.Add(__tmp33);
             List<object> elemAnnotList = null;
             if (context.@object != null)
             {
@@ -1494,8 +1518,8 @@ using MetaDslx.Core;
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
                 elemAnnotList.Add(this.inheritedPropertyInitializer_Object_Property);
-                ValueAnnotation __tmp32 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp32);
+                ValueAnnotation __tmp34 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp34);
             }
             if (context.property != null)
             {
@@ -1506,8 +1530,8 @@ using MetaDslx.Core;
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
                 elemAnnotList.Add(this.inheritedPropertyInitializer_Property_Property);
-                ValueAnnotation __tmp33 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp33);
+                ValueAnnotation __tmp35 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp35);
             }
             if (context.expression() != null)
             {
@@ -1537,8 +1561,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp34 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp34);
+            SymbolAnnotation __tmp36 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp36);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.castExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -1574,8 +1598,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp35 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp35);
+            SymbolAnnotation __tmp37 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp37);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.typeofExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -1601,8 +1625,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp36 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp36);
+            SymbolAnnotation __tmp38 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp38);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.bracketExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -1628,8 +1652,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp37 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp37);
+            SymbolAnnotation __tmp39 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp39);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.thisExpression_SymbolType);
             this.HandleSymbolType(context);
@@ -1644,8 +1668,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp38 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp38);
+            SymbolAnnotation __tmp40 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp40);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.constantExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -1671,8 +1695,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp39 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp39);
+            SymbolAnnotation __tmp41 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp41);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.identifierExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -1684,8 +1708,8 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp40 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp40);
+                ValueAnnotation __tmp42 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp42);
                 elemAnnotList.Add(this.identifierExpression_Name_Property);
             }
             this.HandleSymbolType(context);
@@ -1700,8 +1724,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp41 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp41);
+            SymbolAnnotation __tmp43 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp43);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.indexerExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -1737,8 +1761,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp42 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp42);
+            SymbolAnnotation __tmp44 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp44);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.functionCallExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -1774,8 +1798,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp43 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp43);
+            SymbolAnnotation __tmp45 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp45);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.memberAccessExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -1797,8 +1821,8 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp44 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp44);
+                ValueAnnotation __tmp46 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp46);
                 elemAnnotList.Add(this.memberAccessExpression_Name_Property);
             }
             this.HandleSymbolType(context);
@@ -1813,8 +1837,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp45 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp45);
+            SymbolAnnotation __tmp47 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp47);
             treeAnnotList.Add(this.expression_Expression);
             List<object> elemAnnotList = null;
             if (context.expression() != null)
@@ -1849,8 +1873,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp46 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp46);
+            SymbolAnnotation __tmp48 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp48);
             treeAnnotList.Add(this.expression_Expression);
             List<object> elemAnnotList = null;
             if (context.kind != null)
@@ -1885,8 +1909,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp47 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp47);
+            SymbolAnnotation __tmp49 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp49);
             treeAnnotList.Add(this.expression_Expression);
             List<object> elemAnnotList = null;
             if (context.kind != null)
@@ -1921,8 +1945,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp48 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp48);
+            SymbolAnnotation __tmp50 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp50);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.typeConversionExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -1958,8 +1982,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp49 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp49);
+            SymbolAnnotation __tmp51 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp51);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.typeCheckExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -1995,8 +2019,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp50 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp50);
+            SymbolAnnotation __tmp52 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp52);
             treeAnnotList.Add(this.expression_Expression);
             List<object> elemAnnotList = null;
             if (context.left != null)
@@ -2041,8 +2065,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp51 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp51);
+            SymbolAnnotation __tmp53 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp53);
             treeAnnotList.Add(this.expression_Expression);
             List<object> elemAnnotList = null;
             if (context.left != null)
@@ -2087,8 +2111,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp52 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp52);
+            SymbolAnnotation __tmp54 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp54);
             treeAnnotList.Add(this.expression_Expression);
             List<object> elemAnnotList = null;
             if (context.left != null)
@@ -2133,8 +2157,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp53 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp53);
+            SymbolAnnotation __tmp55 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp55);
             treeAnnotList.Add(this.expression_Expression);
             List<object> elemAnnotList = null;
             if (context.left != null)
@@ -2179,8 +2203,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp54 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp54);
+            SymbolAnnotation __tmp56 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp56);
             treeAnnotList.Add(this.expression_Expression);
             List<object> elemAnnotList = null;
             if (context.left != null)
@@ -2225,8 +2249,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp55 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp55);
+            SymbolAnnotation __tmp57 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp57);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.bitwiseAndExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -2262,8 +2286,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp56 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp56);
+            SymbolAnnotation __tmp58 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp58);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.bitwiseXorExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -2299,8 +2323,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp57 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp57);
+            SymbolAnnotation __tmp59 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp59);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.bitwiseOrExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -2336,8 +2360,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp58 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp58);
+            SymbolAnnotation __tmp60 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp60);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.logicalAndExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -2373,8 +2397,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp59 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp59);
+            SymbolAnnotation __tmp61 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp61);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.logicalOrExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -2410,8 +2434,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp60 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp60);
+            SymbolAnnotation __tmp62 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp62);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.nullCoalescingExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -2447,8 +2471,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp61 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp61);
+            SymbolAnnotation __tmp63 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp63);
             treeAnnotList.Add(this.expression_Expression);
             treeAnnotList.Add(this.conditionalExpression_SymbolType);
             List<object> elemAnnotList = null;
@@ -2494,8 +2518,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp62 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp62);
+            SymbolAnnotation __tmp64 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp64);
             treeAnnotList.Add(this.expression_Expression);
             List<object> elemAnnotList = null;
             if (context.left != null)
@@ -2927,8 +2951,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            ScopeAnnotation __tmp63 = new ScopeAnnotation();
-            treeAnnotList.Add(__tmp63);
+            ScopeAnnotation __tmp65 = new ScopeAnnotation();
+            treeAnnotList.Add(__tmp65);
             List<object> elemAnnotList = null;
             if (context.source != null)
             {
@@ -2938,9 +2962,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                NameUseAnnotation __tmp64 = new NameUseAnnotation();
-                __tmp64.SymbolTypes.Add(typeof(MetaProperty));
-                elemAnnotList.Add(__tmp64);
+                NameUseAnnotation __tmp66 = new NameUseAnnotation();
+                __tmp66.SymbolTypes.Add(typeof(MetaProperty));
+                elemAnnotList.Add(__tmp66);
             }
             if (context.target != null)
             {
@@ -2950,9 +2974,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                NameUseAnnotation __tmp65 = new NameUseAnnotation();
-                __tmp65.SymbolTypes.Add(typeof(MetaProperty));
-                elemAnnotList.Add(__tmp65);
+                NameUseAnnotation __tmp67 = new NameUseAnnotation();
+                __tmp67.SymbolTypes.Add(typeof(MetaProperty));
+                elemAnnotList.Add(__tmp67);
             }
             this.HandleSymbolType(context);
             return base.VisitAssociationDeclaration(context);
@@ -2983,9 +3007,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                SymbolAnnotation __tmp66 = new SymbolAnnotation();
-                __tmp66.SymbolType = typeof(MetaNullExpression);
-                elemAnnotList.Add(__tmp66);
+                SymbolAnnotation __tmp68 = new SymbolAnnotation();
+                __tmp68.SymbolType = typeof(MetaNullExpression);
+                elemAnnotList.Add(__tmp68);
             }
             if (context.booleanLiteral() != null)
             {
@@ -2995,8 +3019,8 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp67 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp67);
+                ValueAnnotation __tmp69 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp69);
             }
             if (context.integerLiteral() != null)
             {
@@ -3006,8 +3030,8 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp68 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp68);
+                ValueAnnotation __tmp70 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp70);
             }
             if (context.decimalLiteral() != null)
             {
@@ -3017,8 +3041,8 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp69 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp69);
+                ValueAnnotation __tmp71 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp71);
             }
             if (context.scientificLiteral() != null)
             {
@@ -3028,8 +3052,8 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp70 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp70);
+                ValueAnnotation __tmp72 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp72);
             }
             if (context.stringLiteral() != null)
             {
@@ -3039,8 +3063,8 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp71 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp71);
+                ValueAnnotation __tmp73 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp73);
             }
             this.HandleSymbolType(context);
             return base.VisitLiteral(context);

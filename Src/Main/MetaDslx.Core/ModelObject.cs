@@ -315,7 +315,7 @@ namespace MetaDslx.Core
             ModelCollection collection = oldValue as ModelCollection;
             if (collection != null)
             {
-                if (value != null && collection.MAdd(value))
+                if (value != null && collection.MAdd(value, false))
                 {
                     added = true;
                 }
@@ -420,7 +420,7 @@ namespace MetaDslx.Core
             ModelCollection collection = oldValue as ModelCollection;
             if (collection != null)
             {
-                if (value != null && collection.MRemove(value))
+                if (value != null && collection.MRemove(value, false))
                 {
                     removed = true;
                 }

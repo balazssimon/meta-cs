@@ -106,7 +106,12 @@ nullableType : $Property(InnerType) primitiveType TQuestion;
 
 $TypeCtr(MetaCollectionType)
 collectionType : $Property(Kind) collectionKind TLessThan $Property(InnerType) simpleType TGreaterThan;
-collectionKind : $Value(MetaCollectionKind.Set) KSet | $Value(MetaCollectionKind.List) KList;
+collectionKind 
+	: $Value(MetaCollectionKind.Set) KSet 
+	| $Value(MetaCollectionKind.List) KList
+	| $Value(MetaCollectionKind.MultiSet) KMultiSet 
+	| $Value(MetaCollectionKind.MultiList) KMultiList
+	;
 
 $NameDef(MetaOperation)
 operationDeclaration : annotation* KStatic? $Property(ReturnType) returnType identifier TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;

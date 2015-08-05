@@ -84,7 +84,9 @@
 		enum CollectionKind
 		{
 			Set,
-			List
+			List,
+			MultiSet,
+			MultiList
 		}
 
 		class CollectionType : Type
@@ -141,7 +143,7 @@
 
 		class FunctionType : Type
 		{
-			list<Type> ParameterTypes;
+			multi_list<Type> ParameterTypes;
 			Type ReturnType;
 		}
 
@@ -265,10 +267,12 @@
 		{
 			BoundExpression()
 			{
+				UniqueDefinition = true;
 			    Definition = bind(this);
 				Type = get_type(Definition);
 			}
 
+			inherited bool UniqueDefinition;
 			containment list<Expression> Arguments;
 			synthetized list<ModelObject> Definitions;
 			synthetized ModelObject Definition;
@@ -376,6 +380,8 @@
 
 			MemberAccessExpression()
 			{
+				// Expression.UniqueDefinition = false;
+				// Expression.ExpectedType = any;
 				Definitions = resolve_name(Expression.Type, Name);
 			}
 		}
@@ -386,6 +392,8 @@
 
 			FunctionCallExpression()
 			{
+				// Expression.UniqueDefinition = false;
+				// Expression.ExpectedType = any;
 				Definitions = select_of_type(Expression, typeof(FunctionType));
 				Type = get_return_type(Definition);
 			}
@@ -397,6 +405,8 @@
 
 			IndexerExpression()
 			{
+				// Expression.UniqueDefinition = false;
+				// Expression.ExpectedType = any;
 				Definitions = select_of_name(select_of_type(Expression, typeof(FunctionType)), "operator[]");
 			}
 		}	

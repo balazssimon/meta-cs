@@ -106,7 +106,12 @@ nullableType :  primitiveType TQuestion;
 
 
 collectionType :  collectionKind TLessThan  simpleType TGreaterThan;
-collectionKind :  KSet |  KList;
+collectionKind 
+	:  KSet 
+	|  KList
+	|  KMultiSet 
+	|  KMultiList
+	;
 
 
 operationDeclaration : annotation* KStatic?  returnType identifier TOpenParen  parameterList? TCloseParen TSemicolon;

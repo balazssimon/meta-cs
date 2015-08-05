@@ -659,18 +659,23 @@ namespace MetaDslx.Core
             }
         
             
+            [ReadonlyAttribute]
+            public static readonly ModelProperty UniqueDefinitionProperty =
+                ModelProperty.Register("UniqueDefinition", typeof(bool), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.Meta.MetaBoundExpression));
+            
+            
             [ContainmentAttribute]
             public static readonly ModelProperty ArgumentsProperty =
                 ModelProperty.Register("Arguments", typeof(IList<global::MetaDslx.Core.MetaExpression>), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.Meta.MetaBoundExpression));
             
             
             public static readonly ModelProperty DefinitionsProperty =
-                ModelProperty.Register("Definitions", typeof(IList<object>), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.Meta.MetaBoundExpression));
+                ModelProperty.Register("Definitions", typeof(IList<ModelObject>), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.Meta.MetaBoundExpression));
             
             
             [ReadonlyAttribute]
             public static readonly ModelProperty DefinitionProperty =
-                ModelProperty.Register("Definition", typeof(object), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.Meta.MetaBoundExpression));
+                ModelProperty.Register("Definition", typeof(ModelObject), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.Meta.MetaBoundExpression));
             
         }
         
@@ -1500,6 +1505,8 @@ namespace MetaDslx.Core
     {
         Set,
         List,
+        MultiSet,
+        MultiList,
     }
     
     
@@ -2322,7 +2329,7 @@ namespace MetaDslx.Core
     
         public MetaFunctionTypeImpl()
         {
-            this.MSet(global::MetaDslx.Core.Meta.MetaFunctionType.ParameterTypesProperty, new ModelList<MetaType>(this, global::MetaDslx.Core.Meta.MetaFunctionType.ParameterTypesProperty));
+            this.MSet(global::MetaDslx.Core.Meta.MetaFunctionType.ParameterTypesProperty, new ModelMultiList<MetaType>(this, global::MetaDslx.Core.Meta.MetaFunctionType.ParameterTypesProperty));
             MetaImplementationProvider.Implementation.MetaFunctionType_MetaFunctionType(this);
             this.MMakeDefault();
         }
@@ -3119,9 +3126,10 @@ namespace MetaDslx.Core
     
     public interface MetaBoundExpression : MetaDslx.Core.MetaExpression
     {
+        bool UniqueDefinition { get; }
         IList<MetaExpression> Arguments { get; }
-        IList<object> Definitions { get; }
-        object Definition { get; }
+        IList<ModelObject> Definitions { get; }
+        ModelObject Definition { get; }
     
     }
     
@@ -3136,6 +3144,7 @@ namespace MetaDslx.Core
         {
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => ));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaBoundExpression_MetaBoundExpression(this);
@@ -3173,6 +3182,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -3183,23 +3202,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
     }
@@ -3257,6 +3276,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -3267,23 +3296,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
     }
@@ -3932,6 +3961,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -3942,23 +3981,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -4029,6 +4068,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -4039,23 +4088,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -4137,6 +4186,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -4147,23 +4206,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -4233,6 +4292,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -4243,23 +4312,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -4331,6 +4400,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -4341,23 +4420,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -4389,7 +4468,7 @@ namespace MetaDslx.Core
         public MetaUnaryExpressionImpl()
         {
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => ));
+            this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaUnaryExpression_MetaUnaryExpression
             MetaImplementationProvider.Implementation.MetaUnaryExpression_MetaUnaryExpression(this);
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaUnaryExpression_MetaUnaryExpression().");
@@ -4427,6 +4506,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -4437,23 +4526,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -4533,6 +4622,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -4543,23 +4642,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -4639,6 +4738,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -4649,23 +4758,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -4745,6 +4854,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -4755,23 +4874,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -4851,6 +4970,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -4861,23 +4990,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -4957,6 +5086,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -4967,23 +5106,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -5063,6 +5202,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -5073,23 +5222,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -5169,6 +5318,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -5179,23 +5338,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -5275,6 +5434,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -5285,23 +5454,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -5381,6 +5550,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -5391,23 +5570,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -5451,7 +5630,7 @@ namespace MetaDslx.Core
         public MetaBinaryExpressionImpl()
         {
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => ));
+            this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaBinaryExpression_MetaBinaryExpression
             MetaImplementationProvider.Implementation.MetaBinaryExpression_MetaBinaryExpression(this);
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaBinaryExpression_MetaBinaryExpression().");
@@ -5489,6 +5668,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -5499,23 +5688,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -5606,6 +5795,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -5616,23 +5815,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -5723,6 +5922,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -5733,23 +5942,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -5840,6 +6049,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -5850,23 +6069,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -5957,6 +6176,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -5967,23 +6196,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -6074,6 +6303,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -6084,23 +6323,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -6191,6 +6430,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -6201,23 +6450,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -6308,6 +6557,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -6318,23 +6577,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -6425,6 +6684,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -6435,23 +6704,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -6542,6 +6811,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -6552,23 +6831,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -6659,6 +6938,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -6669,23 +6958,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -6776,6 +7065,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -6786,23 +7085,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -6893,6 +7192,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -6903,23 +7212,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -7010,6 +7319,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -7020,23 +7339,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -7127,6 +7446,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -7137,23 +7466,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -7244,6 +7573,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -7254,23 +7593,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -7361,6 +7700,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -7371,23 +7720,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -7478,6 +7827,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -7488,23 +7847,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -7595,6 +7954,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -7605,23 +7974,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -7712,6 +8081,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -7722,23 +8101,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -7829,6 +8208,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -7839,23 +8228,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -7946,6 +8335,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -7956,23 +8355,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -8063,6 +8462,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -8073,23 +8482,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -8183,6 +8592,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -8193,23 +8612,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -8300,6 +8719,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -8310,23 +8739,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -8417,6 +8846,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -8427,23 +8866,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -8534,6 +8973,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -8544,23 +8993,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -8651,6 +9100,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -8661,23 +9120,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -8768,6 +9227,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -8778,23 +9247,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -8885,6 +9354,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -8895,23 +9374,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -9002,6 +9481,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -9012,23 +9501,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -9119,6 +9608,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -9129,23 +9628,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -9236,6 +9735,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -9246,23 +9755,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -9353,6 +9862,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -9363,23 +9882,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -9470,6 +9989,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -9480,23 +10009,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -9587,6 +10116,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -9597,23 +10136,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         
@@ -9704,6 +10243,16 @@ namespace MetaDslx.Core
             }
         }
         
+        bool MetaBoundExpression.UniqueDefinition
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
         IList<MetaExpression> MetaBoundExpression.Arguments
         {
             get 
@@ -9714,23 +10263,23 @@ namespace MetaDslx.Core
             }
         }
         
-        IList<object> MetaBoundExpression.Definitions
+        IList<ModelObject> MetaBoundExpression.Definitions
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty); 
-                if (result != null) return (IList<object>)result;
-                else return default(IList<object>);
+                if (result != null) return (IList<ModelObject>)result;
+                else return default(IList<ModelObject>);
             }
         }
         
-        object MetaBoundExpression.Definition
+        ModelObject MetaBoundExpression.Definition
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
-                if (result != null) return (object)result;
-                else return default(object);
+                if (result != null) return (ModelObject)result;
+                else return default(ModelObject);
             }
         }
         

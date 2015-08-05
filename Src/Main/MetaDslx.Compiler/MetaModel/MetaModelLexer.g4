@@ -25,6 +25,8 @@ KByte : 'byte';
 KBool : 'bool';
 KList : 'list';
 KSet : 'set';
+KMultiList : 'multi_list';
+KMultiSet : 'multi_set';
 KThis : 'this';
 KTypeof : 'typeof';
 KAs : 'as';

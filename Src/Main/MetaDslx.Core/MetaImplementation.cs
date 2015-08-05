@@ -91,6 +91,8 @@ namespace MetaDslx.Core
     {
         private static List<MetaType> types = new List<MetaType>();
 
+        public static readonly MetaPrimitiveType None;
+
         public static readonly MetaPrimitiveType Object;
         public static readonly MetaPrimitiveType String;
         public static readonly MetaPrimitiveType Int;
@@ -148,6 +150,8 @@ namespace MetaDslx.Core
             MetaBuiltInTypes.ModelObject.Name = "ModelObject";
             MetaBuiltInTypes.types.Add(MetaBuiltInTypes.ModelObject);
 
+            MetaBuiltInTypes.None = MetaModelFactory.Instance.CreateMetaPrimitiveType();
+            MetaBuiltInTypes.None.Name = "*none*";
             MetaBuiltInTypes.Any = MetaModelFactory.Instance.CreateMetaPrimitiveType();
             MetaBuiltInTypes.Any.Name = "*any*";
             MetaBuiltInTypes.Error = MetaModelFactory.Instance.CreateMetaPrimitiveType();
@@ -430,6 +434,11 @@ namespace MetaDslx.Core
     //internal class MetaModelImplementation : MetaModelImplementationBase
     internal class MetaImplementation : MetaImplementationBase
     {
+        public override void MetaAnnotation_MetaAnnotation(MetaAnnotation @this)
+        {
+            base.MetaAnnotation_MetaAnnotation(@this);
+        }
+
         public override void MetaEnumLiteral_MetaEnumLiteral(MetaEnumLiteral @this)
         {
             base.MetaEnumLiteral_MetaEnumLiteral(@this);
@@ -441,7 +450,7 @@ namespace MetaDslx.Core
             base.MetaFunction_MetaFunction(@this);
             MetaFunctionType type = MetaModelFactory.Instance.CreateMetaFunctionType();
             ((ModelObject)type).MUnSet(Meta.MetaFunctionType.ParameterTypesProperty);
-            ((ModelObject)type).MLazySet(Meta.MetaFunctionType.ParameterTypesProperty, new Lazy<object>(() => new ModelList<MetaType>((ModelObject)type, Meta.MetaFunctionType.ParameterTypesProperty, @this.Parameters.Select(p => new Lazy<object>(() => p.Type))), false));
+            ((ModelObject)type).MLazySet(Meta.MetaFunctionType.ParameterTypesProperty, new Lazy<object>(() => new ModelMultiList<MetaType>((ModelObject)type, Meta.MetaFunctionType.ParameterTypesProperty, @this.Parameters.Select(p => new Lazy<object>(() => p.Type))), false));
             ((ModelObject)type).MLazySet(Meta.MetaFunctionType.ReturnTypeProperty, new Lazy<object>(() => @this.ReturnType));
             ((ModelObject)@this).MSet(Meta.MetaFunction.TypeProperty, type);
         }
@@ -482,7 +491,7 @@ namespace MetaDslx.Core
                     new Lazy<object>(() =>
                     compiler.BindingProvider.Bind(
                         (ModelObject)@this,
-                        compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)@this.Object.Type }, ResolveKind.Name, @this.PropertyName, new ResolutionInfo(), ResolveFlags.Scope),
+                        compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)this.GetType((ModelObject)@this.Object) }, ResolveKind.Name, @this.PropertyName, new ResolutionInfo(), ResolveFlags.Scope),
                         new BindingInfo()
                         )));
             }
@@ -513,6 +522,7 @@ namespace MetaDslx.Core
             if (ctx != null)
             {
                 IModelCompiler compiler = ctx.Compiler;
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
                 ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => compiler.BindingProvider.Bind((ModelObject)@this, @this.Definitions != null ? @this.Definitions.OfType<ModelObject>() : new ModelObject[0], new BindingInfo())));
                 ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => this.GetType((ModelObject)@this.Definition)));
             }
@@ -597,7 +607,7 @@ namespace MetaDslx.Core
             if (ctx != null)
             {
                 IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this) }, ResolveKind.NameOrType, @this.Name, new ResolutionInfo(), ResolveFlags.All).OfType<object>().ToList()));
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this) }, ResolveKind.NameOrType, @this.Name, new ResolutionInfo(), ResolveFlags.All).ToList()));
             }
         }
 
@@ -608,7 +618,9 @@ namespace MetaDslx.Core
             if (ctx != null)
             {
                 IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)this.GetType((ModelObject)@this.Expression) }, ResolveKind.Name, @this.Name, new ResolutionInfo(), ResolveFlags.Scope).OfType<object>().ToList()));
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)this.GetType((ModelObject)@this.Expression) }, ResolveKind.Name, @this.Name, new ResolutionInfo(), ResolveFlags.Scope).ToList()));
+                ((ModelObject)@this).MLazySetChild(Meta.MetaMemberAccessExpression.ExpressionProperty, Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false));
+                ((ModelObject)@this).MLazySetChild(Meta.MetaMemberAccessExpression.ExpressionProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.None));
             }
         }
 
@@ -619,8 +631,10 @@ namespace MetaDslx.Core
             if (ctx != null)
             {
                 IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ((MetaBoundExpression)@this.Expression).Definitions.OfType<MetaFunction>().OfType<object>().ToList()));
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ((MetaBoundExpression)@this.Expression).Definitions.OfType<MetaFunction>().OfType<ModelObject>().ToList()));
                 ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => this.GetReturnType((ModelObject)@this.Definition)));
+                ((ModelObject)@this).MLazySetChild(Meta.MetaFunctionCallExpression.ExpressionProperty, Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false));
+                ((ModelObject)@this).MLazySetChild(Meta.MetaFunctionCallExpression.ExpressionProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.None));
             }
         }
 
@@ -631,7 +645,9 @@ namespace MetaDslx.Core
             if (ctx != null)
             {
                 IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ((MetaBoundExpression)@this.Expression).Definitions.OfType<MetaFunction>().Where(e => e.Name == "operator[]").OfType<object>().ToList()));
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ((MetaBoundExpression)@this.Expression).Definitions.OfType<MetaFunction>().Where(e => e.Name == "operator[]").ToList()));
+                ((ModelObject)@this).MLazySetChild(Meta.MetaIndexerExpression.ExpressionProperty, Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false));
+                ((ModelObject)@this).MLazySetChild(Meta.MetaIndexerExpression.ExpressionProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.None));
             }
         }
 
@@ -642,7 +658,7 @@ namespace MetaDslx.Core
             if (ctx != null)
             {
                 IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this) }, ResolveKind.Name, @this.Name, new ResolutionInfo(), ResolveFlags.All).OfType<object>().ToList()));
+                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this) }, ResolveKind.Name, @this.Name, new ResolutionInfo(), ResolveFlags.All).ToList()));
             }
         }
 
@@ -1074,6 +1090,10 @@ namespace MetaDslx.Core
                         return "ModelSet<" + collection.InnerType.CSharpName() + ">";
                     case MetaCollectionKind.List:
                         return "ModelList<" + collection.InnerType.CSharpName() + ">";
+                    case MetaCollectionKind.MultiSet:
+                        return "ModelMultiSet<" + collection.InnerType.CSharpName() + ">";
+                    case MetaCollectionKind.MultiList:
+                        return "ModelMultiList<" + collection.InnerType.CSharpName() + ">";
                     default:
                         return null;
                 }
@@ -1100,8 +1120,10 @@ namespace MetaDslx.Core
                 switch (collection.Kind)
                 {
                     case MetaCollectionKind.Set:
+                    case MetaCollectionKind.MultiSet:
                         return "ICollection<" + collection.InnerType.CSharpImplName() + ">";
                     case MetaCollectionKind.List:
+                    case MetaCollectionKind.MultiList:
                         return "IList<" + collection.InnerType.CSharpImplName() + ">";
                     default:
                         return null;
@@ -1129,8 +1151,10 @@ namespace MetaDslx.Core
                 switch (collection.Kind)
                 {
                     case MetaCollectionKind.Set:
+                    case MetaCollectionKind.MultiSet:
                         return "ICollection<" + collection.InnerType.CSharpFullImplName() + ">";
                     case MetaCollectionKind.List:
+                    case MetaCollectionKind.MultiList:
                         return "IList<" + collection.InnerType.CSharpFullImplName() + ">";
                     default:
                         return null;
@@ -1158,8 +1182,10 @@ namespace MetaDslx.Core
                 switch (collection.Kind)
                 {
                     case MetaCollectionKind.Set:
+                    case MetaCollectionKind.MultiSet:
                         return "ICollection<" + collection.InnerType.CSharpPublicName() + ">";
                     case MetaCollectionKind.List:
+                    case MetaCollectionKind.MultiList:
                         return "IList<" + collection.InnerType.CSharpPublicName() + ">";
                     default:
                         return null;
@@ -1187,8 +1213,10 @@ namespace MetaDslx.Core
                 switch (collection.Kind)
                 {
                     case MetaCollectionKind.Set:
+                    case MetaCollectionKind.MultiSet:
                         return "ICollection<" + collection.InnerType.CSharpFullPublicName() + ">";
                     case MetaCollectionKind.List:
+                    case MetaCollectionKind.MultiList:
                         return "IList<" + collection.InnerType.CSharpFullPublicName() + ">";
                     default:
                         return null;
