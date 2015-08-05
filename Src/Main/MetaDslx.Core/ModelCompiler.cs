@@ -896,6 +896,7 @@ namespace MetaDslx.Core
 
     public class DefaultBindingProvider : IBindingProvider
     {
+        // TODO
         protected virtual void SelectBestAlternative(List<ModelObject> alternativeList, MetaFunctionCallExpression call)
         {
             if (alternativeList.Count <= 1) return;
@@ -907,15 +908,47 @@ namespace MetaDslx.Core
                 if (mte != null && mte.Type is MetaFunctionType)
                 {
                     MetaFunctionType ft = mte.Type as MetaFunctionType;
-                    // TODO
-                    bool goodAlternative = true;
-                    for (int j = 0; j < call.Arguments.Count; j++)
+                    bool goodAlternative = false;
+                    if (ft.ParameterTypes.Count == call.Arguments.Count)
                     {
-                        MetaType paramType = ft.ParameterTypes[j];
-                        MetaType argType = call.Arguments[j].Type;
-                        if (!ctx.Compiler.TypeProvider.Equals((ModelObject)paramType, (ModelObject)argType))
+                        goodAlternative = true;
+                        for (int j = 0; j < call.Arguments.Count; j++)
                         {
-                            goodAlternative = false;
+                            MetaType paramType = ft.ParameterTypes[j];
+                            MetaType argType = call.Arguments[j].Type;
+                            if (!ctx.Compiler.TypeProvider.IsAssignableFrom((ModelObject)paramType, (ModelObject)argType))
+                            {
+                                goodAlternative = false;
+                            }
+                        }
+                    }
+                    if (!goodAlternative && alternativeList.Count > 1)
+                    {
+                        alternativeList.RemoveAt(i);
+                        --i;
+                    }
+                }
+            }
+            if (alternativeList.Count <= 1) return;
+            for (int i = 0; i < alternativeList.Count; i++)
+            {
+                ModelObject alternative = alternativeList[i];
+                MetaTypedElement mte = alternative as MetaTypedElement;
+                if (mte != null && mte.Type is MetaFunctionType)
+                {
+                    MetaFunctionType ft = mte.Type as MetaFunctionType;
+                    bool goodAlternative = false;
+                    if (ft.ParameterTypes.Count == call.Arguments.Count)
+                    {
+                        goodAlternative = true;
+                        for (int j = 0; j < call.Arguments.Count; j++)
+                        {
+                            MetaType paramType = ft.ParameterTypes[j];
+                            MetaType argType = call.Arguments[j].Type;
+                            if (!ctx.Compiler.TypeProvider.Equals((ModelObject)paramType, (ModelObject)argType))
+                            {
+                                goodAlternative = false;
+                            }
                         }
                     }
                     if (!goodAlternative && alternativeList.Count > 1)
@@ -941,20 +974,7 @@ namespace MetaDslx.Core
                     MetaTypedElement mte = alternative as MetaTypedElement;
                     if (mte != null && mte.Type is MetaFunctionType)
                     {
-                        MetaFunctionType ft = mte.Type as MetaFunctionType;
-                        if (ft.ParameterTypes.Count == fce.Arguments.Count)
-                        {
-                            goodAlternative = true;
-                            for (int j = 0; j < fce.Arguments.Count; j++)
-                            {
-                                MetaType paramType = ft.ParameterTypes[j];
-                                MetaType argType = fce.Arguments[j].Type;
-                                if (!ctx.Compiler.TypeProvider.IsAssignableFrom((ModelObject)paramType, (ModelObject)argType))
-                                {
-                                    goodAlternative = false;
-                                }
-                            }
-                        }
+                        goodAlternative = true;
                     }
                     if (!goodAlternative)
                     {

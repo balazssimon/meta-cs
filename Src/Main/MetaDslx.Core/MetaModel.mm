@@ -751,11 +751,9 @@
 		{
 			OrAssignExpression()
 			{
-				//Type = X *= Y++;
 				Name = "operator()|=()";
 			}
 		}
-
 
 	}
 }
