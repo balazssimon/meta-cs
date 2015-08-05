@@ -2974,14 +2974,74 @@ using MetaDslx.Core;
         
         public override object VisitLiteral(MetaModelParser.LiteralContext context)
         {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            List<object> elemAnnotList = null;
+            if (context.nullLiteral() != null)
             {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
+                object elem = context.nullLiteral();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                SymbolAnnotation __tmp66 = new SymbolAnnotation();
+                __tmp66.SymbolType = typeof(MetaNullExpression);
+                elemAnnotList.Add(__tmp66);
             }
-            ValueAnnotation __tmp66 = new ValueAnnotation();
-            treeAnnotList.Add(__tmp66);
+            if (context.booleanLiteral() != null)
+            {
+                object elem = context.booleanLiteral();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                ValueAnnotation __tmp67 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp67);
+            }
+            if (context.integerLiteral() != null)
+            {
+                object elem = context.integerLiteral();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                ValueAnnotation __tmp68 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp68);
+            }
+            if (context.decimalLiteral() != null)
+            {
+                object elem = context.decimalLiteral();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                ValueAnnotation __tmp69 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp69);
+            }
+            if (context.scientificLiteral() != null)
+            {
+                object elem = context.scientificLiteral();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                ValueAnnotation __tmp70 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp70);
+            }
+            if (context.stringLiteral() != null)
+            {
+                object elem = context.stringLiteral();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                ValueAnnotation __tmp71 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp71);
+            }
             this.HandleSymbolType(context);
             return base.VisitLiteral(context);
         }

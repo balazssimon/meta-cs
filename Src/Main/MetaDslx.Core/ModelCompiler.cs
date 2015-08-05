@@ -659,6 +659,11 @@ namespace MetaDslx.Core
                 {
                     if (expr.ExpectedType == null)
                     {
+                        // TODO
+                        if (symbol.MParent is MetaFunctionCallExpression) return true;
+                        if (symbol.MParent is MetaIndexerExpression) return true;
+                        if (symbol.MParent is MetaOperatorExpression) return true;
+                        if (symbol.MParent is MetaMemberAccessExpression) return true;
                         ctx.Compiler.Diagnostics.AddError("The expression has no expected type.", ctx.Compiler.FileName, symbol);
                     }
                     else if (expr.Type == null)
@@ -1029,6 +1034,7 @@ namespace MetaDslx.Core
             }
             else if (alternativeList.Count > 1)
             {
+                // TODO
                 if (context.MParent is MetaFunctionCallExpression) return null;
                 if (context.MParent is MetaIndexerExpression) return null;
                 if (context.MParent is MetaOperatorExpression) return null;

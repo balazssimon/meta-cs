@@ -21,6 +21,10 @@ namespace MetaDslx.Compiler
         {
             IParseTree parseTree = node as IParseTree;
             if (parseTree == null) return null;
+            string text = parseTree.GetText();
+            if (text == "null") return null;
+            if (text == "true") return true;
+            if (text == "false") return true;
             return parseTree.GetText();
         }
 

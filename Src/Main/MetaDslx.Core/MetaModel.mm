@@ -147,6 +147,11 @@
 
 		class Function : NamedElement, TypedElement, AnnotatedElement
 		{
+			Function()
+			{
+				// Type = new FunctionType();
+			}
+
 			[Type]
 			readonly FunctionType Type redefines TypedElement.Type;
 			containment list<Parameter> Parameters;
@@ -206,7 +211,8 @@
 
 			PropertyInitializer()
 			{
-				Property = resolve_name(PropertyName);
+				Property = bind(resolve_name(PropertyName));
+				Value.ExpectedType = get_type(Property);
 			}
 		}
 
@@ -221,8 +227,8 @@
 
 			PropertyInitializer()
 			{
-				Object = resolve_name(ObjectName);
-				Property = resolve_name(Object.Type, PropertyName);
+				Object = bind(resolve_name(ObjectName));
+				Property = bind(resolve_name(Object.Type, PropertyName));
 			}
 		}
 
@@ -264,8 +270,8 @@
 			}
 
 			containment list<Expression> Arguments;
-			synthetized list<object> Definitions;
-			synthetized object Definition;
+			synthetized list<ModelObject> Definitions;
+			synthetized ModelObject Definition;
 		}
 
 		class ThisExpression : BoundExpression
@@ -276,10 +282,19 @@
 			}
 		}
 
+		class NullExpression : Expression
+		{
+			NullExpression()
+			{
+				//Type = any;
+			}
+		}
+
 		abstract class TypeConversionExpression : Expression
 		{
 			Type TypeReference;
 			containment Expression Expression;
+
 			TypeConversionExpression()
 			{
 				Type = TypeReference;
@@ -372,6 +387,7 @@
 			FunctionCallExpression()
 			{
 				Definitions = select_of_type(Expression, typeof(FunctionType));
+				Type = get_return_type(Definition);
 			}
 		}	
 
@@ -387,7 +403,7 @@
 
 		abstract class OperatorExpression : BoundExpression
 		{
-			string Name;
+			readonly string Name;
 
 			OperatorExpression()
 			{
@@ -399,7 +415,7 @@
 		{
 			UnaryExpression()
 			{
-				Arguments = Expression;
+				//Arguments += Expression;
 			}
 
 			containment Expression Expression;
@@ -479,8 +495,8 @@
 		{
 			BinaryExpression()
 			{
-				Arguments = Left;
-				Arguments = Right;
+				//Arguments += Left;
+				//Arguments += Right;
 			}
 
 			containment Expression Left;
@@ -658,7 +674,8 @@
 		{
 			AssignmentExpression()
 			{
-				Type = Left.Type;
+				Type = get_type(Left);
+				Left.ExpectedType = ExpectedType;
 				Right.ExpectedType = Type;
 			}
 		}

@@ -243,14 +243,13 @@ identifier : IdentifierNormal /*| IdentifierVerbatim*/;
 //identifier : IdentifierGeneral | IdentifierVerbatim;
 
 // Literals
-
 literal 
-    : nullLiteral
-	| booleanLiteral
-	| integerLiteral
-	| decimalLiteral
-	| scientificLiteral
-    | stringLiteral
+    :  nullLiteral
+	|  booleanLiteral
+	|  integerLiteral
+	|  decimalLiteral
+	|  scientificLiteral
+    |  stringLiteral
 	;
 
 // Null literal

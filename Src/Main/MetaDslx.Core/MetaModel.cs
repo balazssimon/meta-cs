@@ -38,6 +38,7 @@ namespace MetaDslx.Core
             MetaBracketExpression.StaticInit();
             MetaBoundExpression.StaticInit();
             MetaThisExpression.StaticInit();
+            MetaNullExpression.StaticInit();
             MetaTypeConversionExpression.StaticInit();
             MetaTypeAsExpression.StaticInit();
             MetaTypeCastExpression.StaticInit();
@@ -685,6 +686,18 @@ namespace MetaDslx.Core
         
         }
         
+        public static class MetaNullExpression
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            static MetaNullExpression()
+            {
+            }
+        
+        }
+        
         public static class MetaTypeConversionExpression
         {
             internal static void StaticInit()
@@ -896,6 +909,7 @@ namespace MetaDslx.Core
             }
         
             
+            [ReadonlyAttribute]
             public static readonly ModelProperty NameProperty =
                 ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaOperatorExpression), typeof(global::MetaDslx.Core.Meta.MetaOperatorExpression));
             
@@ -2811,6 +2825,7 @@ namespace MetaDslx.Core
         public MetaPropertyInitializerImpl()
         {
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty, new Lazy<object>(() => ));
+            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaPropertyInitializer_MetaPropertyInitializer(this);
             this.MMakeDefault();
         }
@@ -3269,6 +3284,58 @@ namespace MetaDslx.Core
                 object result = this.MGet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty); 
                 if (result != null) return (object)result;
                 else return default(object);
+            }
+        }
+    }
+    
+    
+    public interface MetaNullExpression : MetaDslx.Core.MetaExpression
+    {
+    
+    }
+    
+    internal class MetaNullExpressionImpl : ModelObject, MetaDslx.Core.MetaNullExpression
+    {
+        static MetaNullExpressionImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
+        public MetaNullExpressionImpl()
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+            MetaImplementationProvider.Implementation.MetaNullExpression_MetaNullExpression(this);
+            this.MMakeDefault();
+        }
+        
+        MetaType MetaTypedElement.Type
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
+        }
+        
+        MetaType MetaExpression.ExpectedType
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty); 
+                if (result != null) return (MetaType)result;
+                else return default(MetaType);
             }
         }
     }
@@ -4031,6 +4098,7 @@ namespace MetaDslx.Core
     
         public MetaFunctionCallExpressionImpl()
         {
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
@@ -4210,7 +4278,7 @@ namespace MetaDslx.Core
     
     public interface MetaOperatorExpression : MetaDslx.Core.MetaBoundExpression
     {
-        string Name { get; set; }
+        string Name { get; }
     
     }
     
@@ -4226,7 +4294,9 @@ namespace MetaDslx.Core
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
+            // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaOperatorExpression_MetaOperatorExpression
             MetaImplementationProvider.Implementation.MetaOperatorExpression_MetaOperatorExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaOperatorExpression_MetaOperatorExpression().");
             this.MMakeDefault();
         }
         
@@ -4299,7 +4369,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
     }
     
@@ -4321,7 +4390,9 @@ namespace MetaDslx.Core
         {
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => ));
+            // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaUnaryExpression_MetaUnaryExpression
             MetaImplementationProvider.Implementation.MetaUnaryExpression_MetaUnaryExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaUnaryExpression_MetaUnaryExpression().");
             this.MMakeDefault();
         }
         
@@ -4394,7 +4465,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaUnaryExpression.Expression
@@ -4428,6 +4498,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaUnaryPlusExpression_MetaUnaryPlusExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaUnaryPlusExpression_MetaUnaryPlusExpression().");
             this.MMakeDefault();
         }
         
@@ -4500,7 +4571,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaUnaryExpression.Expression
@@ -4534,6 +4604,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaNegateExpression_MetaNegateExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaNegateExpression_MetaNegateExpression().");
             this.MMakeDefault();
         }
         
@@ -4606,7 +4677,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaUnaryExpression.Expression
@@ -4640,6 +4710,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaOnesComplementExpression_MetaOnesComplementExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaOnesComplementExpression_MetaOnesComplementExpression().");
             this.MMakeDefault();
         }
         
@@ -4712,7 +4783,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaUnaryExpression.Expression
@@ -4746,6 +4816,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaNotExpression_MetaNotExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaNotExpression_MetaNotExpression().");
             this.MMakeDefault();
         }
         
@@ -4818,7 +4889,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaUnaryExpression.Expression
@@ -4850,7 +4920,9 @@ namespace MetaDslx.Core
         {
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaUnaryAssignExpression_MetaUnaryAssignExpression
             MetaImplementationProvider.Implementation.MetaUnaryAssignExpression_MetaUnaryAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaUnaryAssignExpression_MetaUnaryAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -4923,7 +4995,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaUnaryExpression.Expression
@@ -4957,6 +5028,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaPostIncrementAssignExpression_MetaPostIncrementAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaPostIncrementAssignExpression_MetaPostIncrementAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -5029,7 +5101,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaUnaryExpression.Expression
@@ -5063,6 +5134,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaPostDecrementAssignExpression_MetaPostDecrementAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaPostDecrementAssignExpression_MetaPostDecrementAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -5135,7 +5207,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaUnaryExpression.Expression
@@ -5169,6 +5240,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaPreIncrementAssignExpression_MetaPreIncrementAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaPreIncrementAssignExpression_MetaPreIncrementAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -5241,7 +5313,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaUnaryExpression.Expression
@@ -5275,6 +5346,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaPreDecrementAssignExpression_MetaPreDecrementAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaPreDecrementAssignExpression_MetaPreDecrementAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -5347,7 +5419,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaUnaryExpression.Expression
@@ -5381,7 +5452,9 @@ namespace MetaDslx.Core
         {
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => ));
+            // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaBinaryExpression_MetaBinaryExpression
             MetaImplementationProvider.Implementation.MetaBinaryExpression_MetaBinaryExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaBinaryExpression_MetaBinaryExpression().");
             this.MMakeDefault();
         }
         
@@ -5454,7 +5527,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -5497,7 +5569,9 @@ namespace MetaDslx.Core
         {
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression
             MetaImplementationProvider.Implementation.MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression().");
             this.MMakeDefault();
         }
         
@@ -5570,7 +5644,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -5615,6 +5688,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaMultiplyExpression_MetaMultiplyExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaMultiplyExpression_MetaMultiplyExpression().");
             this.MMakeDefault();
         }
         
@@ -5687,7 +5761,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -5732,6 +5805,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaDivideExpression_MetaDivideExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaDivideExpression_MetaDivideExpression().");
             this.MMakeDefault();
         }
         
@@ -5804,7 +5878,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -5849,6 +5922,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaModuloExpression_MetaModuloExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaModuloExpression_MetaModuloExpression().");
             this.MMakeDefault();
         }
         
@@ -5921,7 +5995,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -5966,6 +6039,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAddExpression_MetaAddExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAddExpression_MetaAddExpression().");
             this.MMakeDefault();
         }
         
@@ -6038,7 +6112,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -6083,6 +6156,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaSubtractExpression_MetaSubtractExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaSubtractExpression_MetaSubtractExpression().");
             this.MMakeDefault();
         }
         
@@ -6155,7 +6229,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -6200,6 +6273,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaLeftShiftExpression_MetaLeftShiftExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaLeftShiftExpression_MetaLeftShiftExpression().");
             this.MMakeDefault();
         }
         
@@ -6272,7 +6346,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -6317,6 +6390,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaRightShiftExpression_MetaRightShiftExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaRightShiftExpression_MetaRightShiftExpression().");
             this.MMakeDefault();
         }
         
@@ -6389,7 +6463,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -6432,7 +6505,9 @@ namespace MetaDslx.Core
         {
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaBinaryComparisonExpression_MetaBinaryComparisonExpression
             MetaImplementationProvider.Implementation.MetaBinaryComparisonExpression_MetaBinaryComparisonExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaBinaryComparisonExpression_MetaBinaryComparisonExpression().");
             this.MMakeDefault();
         }
         
@@ -6505,7 +6580,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -6550,6 +6624,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaLessThanExpression_MetaLessThanExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaLessThanExpression_MetaLessThanExpression().");
             this.MMakeDefault();
         }
         
@@ -6622,7 +6697,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -6667,6 +6741,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaLessThanOrEqualExpression_MetaLessThanOrEqualExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaLessThanOrEqualExpression_MetaLessThanOrEqualExpression().");
             this.MMakeDefault();
         }
         
@@ -6739,7 +6814,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -6784,6 +6858,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaGreaterThanExpression_MetaGreaterThanExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaGreaterThanExpression_MetaGreaterThanExpression().");
             this.MMakeDefault();
         }
         
@@ -6856,7 +6931,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -6901,6 +6975,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaGreaterThanOrEqualExpression_MetaGreaterThanOrEqualExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaGreaterThanOrEqualExpression_MetaGreaterThanOrEqualExpression().");
             this.MMakeDefault();
         }
         
@@ -6973,7 +7048,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -7018,6 +7092,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaEqualExpression_MetaEqualExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaEqualExpression_MetaEqualExpression().");
             this.MMakeDefault();
         }
         
@@ -7090,7 +7165,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -7135,6 +7209,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaNotEqualExpression_MetaNotEqualExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaNotEqualExpression_MetaNotEqualExpression().");
             this.MMakeDefault();
         }
         
@@ -7207,7 +7282,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -7250,7 +7324,9 @@ namespace MetaDslx.Core
         {
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaBinaryLogicalExpression_MetaBinaryLogicalExpression
             MetaImplementationProvider.Implementation.MetaBinaryLogicalExpression_MetaBinaryLogicalExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaBinaryLogicalExpression_MetaBinaryLogicalExpression().");
             this.MMakeDefault();
         }
         
@@ -7323,7 +7399,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -7368,6 +7443,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAndExpression_MetaAndExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAndExpression_MetaAndExpression().");
             this.MMakeDefault();
         }
         
@@ -7440,7 +7516,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -7485,6 +7560,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaOrExpression_MetaOrExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaOrExpression_MetaOrExpression().");
             this.MMakeDefault();
         }
         
@@ -7557,7 +7633,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -7602,6 +7677,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaExclusiveOrExpression_MetaExclusiveOrExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaExclusiveOrExpression_MetaExclusiveOrExpression().");
             this.MMakeDefault();
         }
         
@@ -7674,7 +7750,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -7719,6 +7794,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAndAlsoExpression_MetaAndAlsoExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAndAlsoExpression_MetaAndAlsoExpression().");
             this.MMakeDefault();
         }
         
@@ -7791,7 +7867,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -7836,6 +7911,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaOrElseExpression_MetaOrElseExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaOrElseExpression_MetaOrElseExpression().");
             this.MMakeDefault();
         }
         
@@ -7908,7 +7984,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -7953,6 +8028,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaNullCoalescingExpression_MetaNullCoalescingExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaNullCoalescingExpression_MetaNullCoalescingExpression().");
             this.MMakeDefault();
         }
         
@@ -8025,7 +8101,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -8069,8 +8144,11 @@ namespace MetaDslx.Core
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaAssignmentExpression_MetaAssignmentExpression
+            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAssignmentExpression_MetaAssignmentExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAssignmentExpression_MetaAssignmentExpression().");
             this.MMakeDefault();
         }
         
@@ -8143,7 +8221,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -8188,6 +8265,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAssignExpression_MetaAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAssignExpression_MetaAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -8260,7 +8338,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -8303,7 +8380,9 @@ namespace MetaDslx.Core
         {
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaArithmeticAssignmentExpression_MetaArithmeticAssignmentExpression
             MetaImplementationProvider.Implementation.MetaArithmeticAssignmentExpression_MetaArithmeticAssignmentExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaArithmeticAssignmentExpression_MetaArithmeticAssignmentExpression().");
             this.MMakeDefault();
         }
         
@@ -8376,7 +8455,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -8421,6 +8499,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaMultiplyAssignExpression_MetaMultiplyAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaMultiplyAssignExpression_MetaMultiplyAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -8493,7 +8572,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -8538,6 +8616,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaDivideAssignExpression_MetaDivideAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaDivideAssignExpression_MetaDivideAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -8610,7 +8689,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -8655,6 +8733,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaModuloAssignExpression_MetaModuloAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaModuloAssignExpression_MetaModuloAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -8727,7 +8806,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -8772,6 +8850,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAddAssignExpression_MetaAddAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAddAssignExpression_MetaAddAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -8844,7 +8923,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -8889,6 +8967,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaSubtractAssignExpression_MetaSubtractAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaSubtractAssignExpression_MetaSubtractAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -8961,7 +9040,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -9006,6 +9084,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaLeftShiftAssignExpression_MetaLeftShiftAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaLeftShiftAssignExpression_MetaLeftShiftAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -9078,7 +9157,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -9123,6 +9201,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaRightShiftAssignExpression_MetaRightShiftAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaRightShiftAssignExpression_MetaRightShiftAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -9195,7 +9274,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -9238,7 +9316,9 @@ namespace MetaDslx.Core
         {
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaLogicalAssignmentExpression_MetaLogicalAssignmentExpression
             MetaImplementationProvider.Implementation.MetaLogicalAssignmentExpression_MetaLogicalAssignmentExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaLogicalAssignmentExpression_MetaLogicalAssignmentExpression().");
             this.MMakeDefault();
         }
         
@@ -9311,7 +9391,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -9356,6 +9435,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAndAssignExpression_MetaAndAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAndAssignExpression_MetaAndAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -9428,7 +9508,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -9473,6 +9552,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaExclusiveOrAssignExpression_MetaExclusiveOrAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaExclusiveOrAssignExpression_MetaExclusiveOrAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -9545,7 +9625,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -9590,6 +9669,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaOrAssignExpression_MetaOrAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaOrAssignExpression_MetaOrAssignExpression().");
             this.MMakeDefault();
         }
         
@@ -9662,7 +9742,6 @@ namespace MetaDslx.Core
                 if (result != null) return (string)result;
                 else return default(string);
             }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, value); }
         }
         
         MetaExpression MetaBinaryExpression.Left
@@ -9973,6 +10052,16 @@ namespace MetaDslx.Core
         public MetaThisExpression CreateMetaThisExpression()
     	{
     		MetaThisExpression result = new MetaThisExpressionImpl();
+    		return result;
+    	}
+    
+    
+        /// <summary>
+        /// Creates a new instance of MetaNullExpression.
+        /// </summary>
+        public MetaNullExpression CreateMetaNullExpression()
+    	{
+    		MetaNullExpression result = new MetaNullExpressionImpl();
     		return result;
     	}
     
@@ -10909,6 +10998,16 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
+    	/// Implements the constructor: MetaNullExpression()
+    	/// Direct superclasses: MetaExpression
+    	/// All superclasses: MetaTypedElement, MetaExpression
+        /// </summary>
+        public virtual void MetaNullExpression_MetaNullExpression(MetaNullExpression @this)
+        {
+            this.MetaExpression_MetaExpression(@this);
+        }
+    
+        /// <summary>
     	/// Implements the constructor: MetaTypeConversionExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
@@ -11022,6 +11121,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOperatorExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaOperatorExpression_MetaOperatorExpression(MetaOperatorExpression @this)
         {
@@ -11032,6 +11133,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaUnaryExpression()
     	/// Direct superclasses: MetaOperatorExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaUnaryExpression_MetaUnaryExpression(MetaUnaryExpression @this)
         {
@@ -11042,6 +11145,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaUnaryPlusExpression()
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaUnaryPlusExpression_MetaUnaryPlusExpression(MetaUnaryPlusExpression @this)
         {
@@ -11052,6 +11157,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNegateExpression()
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaNegateExpression_MetaNegateExpression(MetaNegateExpression @this)
         {
@@ -11062,6 +11169,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOnesComplementExpression()
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaOnesComplementExpression_MetaOnesComplementExpression(MetaOnesComplementExpression @this)
         {
@@ -11072,6 +11181,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNotExpression()
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaNotExpression_MetaNotExpression(MetaNotExpression @this)
         {
@@ -11082,6 +11193,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaUnaryAssignExpression()
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaUnaryAssignExpression_MetaUnaryAssignExpression(MetaUnaryAssignExpression @this)
         {
@@ -11092,6 +11205,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaPostIncrementAssignExpression()
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaPostIncrementAssignExpression_MetaPostIncrementAssignExpression(MetaPostIncrementAssignExpression @this)
         {
@@ -11102,6 +11217,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaPostDecrementAssignExpression()
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaPostDecrementAssignExpression_MetaPostDecrementAssignExpression(MetaPostDecrementAssignExpression @this)
         {
@@ -11112,6 +11229,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaPreIncrementAssignExpression()
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaPreIncrementAssignExpression_MetaPreIncrementAssignExpression(MetaPreIncrementAssignExpression @this)
         {
@@ -11122,6 +11241,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaPreDecrementAssignExpression()
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaPreDecrementAssignExpression_MetaPreDecrementAssignExpression(MetaPreDecrementAssignExpression @this)
         {
@@ -11132,6 +11253,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBinaryExpression()
     	/// Direct superclasses: MetaOperatorExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaBinaryExpression_MetaBinaryExpression(MetaBinaryExpression @this)
         {
@@ -11142,6 +11265,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBinaryArithmeticExpression()
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression(MetaBinaryArithmeticExpression @this)
         {
@@ -11152,6 +11277,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaMultiplyExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaMultiplyExpression_MetaMultiplyExpression(MetaMultiplyExpression @this)
         {
@@ -11162,6 +11289,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaDivideExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaDivideExpression_MetaDivideExpression(MetaDivideExpression @this)
         {
@@ -11172,6 +11301,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaModuloExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaModuloExpression_MetaModuloExpression(MetaModuloExpression @this)
         {
@@ -11182,6 +11313,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAddExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAddExpression_MetaAddExpression(MetaAddExpression @this)
         {
@@ -11192,6 +11325,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaSubtractExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaSubtractExpression_MetaSubtractExpression(MetaSubtractExpression @this)
         {
@@ -11202,6 +11337,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaLeftShiftExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaLeftShiftExpression_MetaLeftShiftExpression(MetaLeftShiftExpression @this)
         {
@@ -11212,6 +11349,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaRightShiftExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaRightShiftExpression_MetaRightShiftExpression(MetaRightShiftExpression @this)
         {
@@ -11222,6 +11361,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBinaryComparisonExpression()
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaBinaryComparisonExpression_MetaBinaryComparisonExpression(MetaBinaryComparisonExpression @this)
         {
@@ -11232,6 +11373,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaLessThanExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaLessThanExpression_MetaLessThanExpression(MetaLessThanExpression @this)
         {
@@ -11242,6 +11385,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaLessThanOrEqualExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaLessThanOrEqualExpression_MetaLessThanOrEqualExpression(MetaLessThanOrEqualExpression @this)
         {
@@ -11252,6 +11397,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaGreaterThanExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaGreaterThanExpression_MetaGreaterThanExpression(MetaGreaterThanExpression @this)
         {
@@ -11262,6 +11409,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaGreaterThanOrEqualExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaGreaterThanOrEqualExpression_MetaGreaterThanOrEqualExpression(MetaGreaterThanOrEqualExpression @this)
         {
@@ -11272,6 +11421,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaEqualExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaEqualExpression_MetaEqualExpression(MetaEqualExpression @this)
         {
@@ -11282,6 +11433,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNotEqualExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaNotEqualExpression_MetaNotEqualExpression(MetaNotEqualExpression @this)
         {
@@ -11292,6 +11445,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBinaryLogicalExpression()
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaBinaryLogicalExpression_MetaBinaryLogicalExpression(MetaBinaryLogicalExpression @this)
         {
@@ -11302,6 +11457,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAndExpression()
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAndExpression_MetaAndExpression(MetaAndExpression @this)
         {
@@ -11312,6 +11469,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOrExpression()
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaOrExpression_MetaOrExpression(MetaOrExpression @this)
         {
@@ -11322,6 +11481,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaExclusiveOrExpression()
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaExclusiveOrExpression_MetaExclusiveOrExpression(MetaExclusiveOrExpression @this)
         {
@@ -11332,6 +11493,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAndAlsoExpression()
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAndAlsoExpression_MetaAndAlsoExpression(MetaAndAlsoExpression @this)
         {
@@ -11342,6 +11505,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOrElseExpression()
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaOrElseExpression_MetaOrElseExpression(MetaOrElseExpression @this)
         {
@@ -11352,6 +11517,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNullCoalescingExpression()
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaNullCoalescingExpression_MetaNullCoalescingExpression(MetaNullCoalescingExpression @this)
         {
@@ -11362,6 +11529,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAssignmentExpression()
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAssignmentExpression_MetaAssignmentExpression(MetaAssignmentExpression @this)
         {
@@ -11372,6 +11541,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAssignExpression()
     	/// Direct superclasses: MetaAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAssignExpression_MetaAssignExpression(MetaAssignExpression @this)
         {
@@ -11382,6 +11553,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaArithmeticAssignmentExpression()
     	/// Direct superclasses: MetaAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaArithmeticAssignmentExpression_MetaArithmeticAssignmentExpression(MetaArithmeticAssignmentExpression @this)
         {
@@ -11392,6 +11565,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaMultiplyAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaMultiplyAssignExpression_MetaMultiplyAssignExpression(MetaMultiplyAssignExpression @this)
         {
@@ -11402,6 +11577,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaDivideAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaDivideAssignExpression_MetaDivideAssignExpression(MetaDivideAssignExpression @this)
         {
@@ -11412,6 +11589,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaModuloAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaModuloAssignExpression_MetaModuloAssignExpression(MetaModuloAssignExpression @this)
         {
@@ -11422,6 +11601,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAddAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAddAssignExpression_MetaAddAssignExpression(MetaAddAssignExpression @this)
         {
@@ -11432,6 +11613,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaSubtractAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaSubtractAssignExpression_MetaSubtractAssignExpression(MetaSubtractAssignExpression @this)
         {
@@ -11442,6 +11625,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaLeftShiftAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaLeftShiftAssignExpression_MetaLeftShiftAssignExpression(MetaLeftShiftAssignExpression @this)
         {
@@ -11452,6 +11637,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaRightShiftAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaRightShiftAssignExpression_MetaRightShiftAssignExpression(MetaRightShiftAssignExpression @this)
         {
@@ -11462,6 +11649,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaLogicalAssignmentExpression()
     	/// Direct superclasses: MetaAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaLogicalAssignmentExpression_MetaLogicalAssignmentExpression(MetaLogicalAssignmentExpression @this)
         {
@@ -11472,6 +11661,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAndAssignExpression()
     	/// Direct superclasses: MetaLogicalAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaLogicalAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAndAssignExpression_MetaAndAssignExpression(MetaAndAssignExpression @this)
         {
@@ -11482,6 +11673,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaExclusiveOrAssignExpression()
     	/// Direct superclasses: MetaLogicalAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaLogicalAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaExclusiveOrAssignExpression_MetaExclusiveOrAssignExpression(MetaExclusiveOrAssignExpression @this)
         {
@@ -11492,6 +11685,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOrAssignExpression()
     	/// Direct superclasses: MetaLogicalAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaLogicalAssignmentExpression
+        // Initializes the following readonly properties:
+        ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaOrAssignExpression_MetaOrAssignExpression(MetaOrAssignExpression @this)
         {

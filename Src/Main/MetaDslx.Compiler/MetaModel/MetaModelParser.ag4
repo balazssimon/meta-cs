@@ -243,14 +243,13 @@ identifier : IdentifierNormal /*| IdentifierVerbatim*/;
 //identifier : IdentifierGeneral | IdentifierVerbatim;
 
 // Literals
-$Value
 literal 
-    : nullLiteral
-	| booleanLiteral
-	| integerLiteral
-	| decimalLiteral
-	| scientificLiteral
-    | stringLiteral
+    : $Symbol(MetaNullExpression) nullLiteral
+	| $Value booleanLiteral
+	| $Value integerLiteral
+	| $Value decimalLiteral
+	| $Value scientificLiteral
+    | $Value stringLiteral
 	;
 
 // Null literal
