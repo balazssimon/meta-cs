@@ -396,6 +396,7 @@ namespace MetaDslx.Core
             
             
             [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaConstructor), "Parent")]
             public static readonly ModelProperty ConstructorProperty =
                 ModelProperty.Register("Constructor", typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
             
@@ -478,7 +479,13 @@ namespace MetaDslx.Core
             }
         
             
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaClass), "Constructor")]
+            public static readonly ModelProperty ParentProperty =
+                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.Meta.MetaConstructor));
+            
+            
             [ContainmentAttribute]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaPropertyInitializer), "Constructor")]
             public static readonly ModelProperty InitializersProperty =
                 ModelProperty.Register("Initializers", typeof(IList<global::MetaDslx.Core.MetaPropertyInitializer>), typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.Meta.MetaConstructor));
             
@@ -563,8 +570,17 @@ namespace MetaDslx.Core
             }
         
             
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaConstructor), "Initializers")]
+            public static readonly ModelProperty ConstructorProperty =
+                ModelProperty.Register("Constructor", typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.Meta.MetaPropertyInitializer));
+            
+            
             public static readonly ModelProperty PropertyNameProperty =
                 ModelProperty.Register("PropertyName", typeof(string), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.Meta.MetaPropertyInitializer));
+            
+            
+            public static readonly ModelProperty PropertyContextProperty =
+                ModelProperty.Register("PropertyContext", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.Meta.MetaPropertyInitializer));
             
             
             public static readonly ModelProperty PropertyProperty =
@@ -2548,6 +2564,7 @@ namespace MetaDslx.Core
     
     public interface MetaConstructor : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaAnnotatedElement
     {
+        MetaClass Parent { get; set; }
         IList<MetaPropertyInitializer> Initializers { get; }
     
     }
@@ -2586,6 +2603,17 @@ namespace MetaDslx.Core
                 if (result != null) return (IList<MetaAnnotation>)result;
                 else return default(IList<MetaAnnotation>);
             }
+        }
+        
+        MetaClass MetaConstructor.Parent
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaConstructor.ParentProperty); 
+                if (result != null) return (MetaClass)result;
+                else return default(MetaClass);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaConstructor.ParentProperty, value); }
         }
         
         IList<MetaPropertyInitializer> MetaConstructor.Initializers
@@ -2816,7 +2844,9 @@ namespace MetaDslx.Core
     
     public interface MetaPropertyInitializer
     {
+        MetaConstructor Constructor { get; set; }
         string PropertyName { get; set; }
+        MetaClass PropertyContext { get; set; }
         MetaProperty Property { get; set; }
         MetaExpression Value { get; set; }
     
@@ -2831,10 +2861,22 @@ namespace MetaDslx.Core
     
         public MetaPropertyInitializerImpl()
         {
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty, new Lazy<object>(() => ));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty, new Lazy<object>(() => ));
             //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaPropertyInitializer_MetaPropertyInitializer(this);
             this.MMakeDefault();
+        }
+        
+        MetaConstructor MetaPropertyInitializer.Constructor
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ConstructorProperty); 
+                if (result != null) return (MetaConstructor)result;
+                else return default(MetaConstructor);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ConstructorProperty, value); }
         }
         
         string MetaPropertyInitializer.PropertyName
@@ -2846,6 +2888,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyNameProperty, value); }
+        }
+        
+        MetaClass MetaPropertyInitializer.PropertyContext
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty); 
+                if (result != null) return (MetaClass)result;
+                else return default(MetaClass);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty, value); }
         }
         
         MetaProperty MetaPropertyInitializer.Property
@@ -2890,6 +2943,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaConstructor MetaPropertyInitializer.Constructor
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ConstructorProperty); 
+                if (result != null) return (MetaConstructor)result;
+                else return default(MetaConstructor);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ConstructorProperty, value); }
+        }
+        
         string MetaPropertyInitializer.PropertyName
         {
             get 
@@ -2899,6 +2963,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyNameProperty, value); }
+        }
+        
+        MetaClass MetaPropertyInitializer.PropertyContext
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty); 
+                if (result != null) return (MetaClass)result;
+                else return default(MetaClass);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty, value); }
         }
         
         MetaProperty MetaPropertyInitializer.Property
@@ -2947,6 +3022,17 @@ namespace MetaDslx.Core
             this.MMakeDefault();
         }
         
+        MetaConstructor MetaPropertyInitializer.Constructor
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ConstructorProperty); 
+                if (result != null) return (MetaConstructor)result;
+                else return default(MetaConstructor);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ConstructorProperty, value); }
+        }
+        
         string MetaPropertyInitializer.PropertyName
         {
             get 
@@ -2956,6 +3042,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyNameProperty, value); }
+        }
+        
+        MetaClass MetaPropertyInitializer.PropertyContext
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty); 
+                if (result != null) return (MetaClass)result;
+                else return default(MetaClass);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty, value); }
         }
         
         MetaProperty MetaPropertyInitializer.Property
@@ -3332,6 +3429,7 @@ namespace MetaDslx.Core
     
         public MetaNullExpressionImpl()
         {
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             MetaImplementationProvider.Implementation.MetaNullExpression_MetaNullExpression(this);
             this.MMakeDefault();
@@ -4033,6 +4131,7 @@ namespace MetaDslx.Core
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
+            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaMemberAccessExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaMemberAccessExpression_MetaMemberAccessExpression(this);
             this.MMakeDefault();
         }
@@ -4151,6 +4250,7 @@ namespace MetaDslx.Core
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
+            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaFunctionCallExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaFunctionCallExpression_MetaFunctionCallExpression(this);
             this.MMakeDefault();
         }
@@ -4257,6 +4357,7 @@ namespace MetaDslx.Core
             this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
+            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaIndexerExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaIndexerExpression_MetaIndexerExpression(this);
             this.MMakeDefault();
         }

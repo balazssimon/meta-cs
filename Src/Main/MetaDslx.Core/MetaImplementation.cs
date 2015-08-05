@@ -151,9 +151,11 @@ namespace MetaDslx.Core
             MetaBuiltInTypes.types.Add(MetaBuiltInTypes.ModelObject);
 
             MetaBuiltInTypes.None = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInTypes.None.Name = "*none*";
+            MetaBuiltInTypes.None.Name = "none";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.None);
             MetaBuiltInTypes.Any = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInTypes.Any.Name = "*any*";
+            MetaBuiltInTypes.Any.Name = "any";
+            MetaBuiltInTypes.types.Add(MetaBuiltInTypes.Any);
             MetaBuiltInTypes.Error = MetaModelFactory.Instance.CreateMetaPrimitiveType();
             MetaBuiltInTypes.Error.Name = "*error*";
 
@@ -190,6 +192,8 @@ namespace MetaDslx.Core
         public static readonly MetaFunction ResolveType2;
         public static readonly MetaFunction Bind1;
         public static readonly MetaFunction Bind2;
+        public static readonly MetaFunction Bind3;
+        public static readonly MetaFunction Bind4;
         public static readonly MetaFunction SelectOfType1;
         public static readonly MetaFunction SelectOfType2;
         public static readonly MetaFunction SelectOfName1;
@@ -320,6 +324,28 @@ namespace MetaDslx.Core
             bind2Param.Type = MetaBuiltInTypes.ModelObject;
             MetaBuiltInFunctions.Bind2.Parameters.Add(bind2Param);
             MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Bind2);
+
+            MetaBuiltInFunctions.Bind3 = MetaModelFactory.Instance.CreateMetaFunction();
+            MetaBuiltInFunctions.Bind3.Name = "bind";
+            MetaBuiltInFunctions.Bind3.ReturnType = MetaBuiltInTypes.ModelObject;
+            var bind3ContextParam = MetaModelFactory.Instance.CreateMetaParameter();
+            bind3ContextParam.Type = MetaBuiltInTypes.ModelObject;
+            MetaBuiltInFunctions.Bind3.Parameters.Add(bind3ContextParam);
+            var bind3Param = MetaModelFactory.Instance.CreateMetaParameter();
+            bind3Param.Type = MetaBuiltInTypes.ModelObjectList;
+            MetaBuiltInFunctions.Bind3.Parameters.Add(bind3Param);
+            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Bind3);
+
+            MetaBuiltInFunctions.Bind4 = MetaModelFactory.Instance.CreateMetaFunction();
+            MetaBuiltInFunctions.Bind4.Name = "bind";
+            MetaBuiltInFunctions.Bind4.ReturnType = MetaBuiltInTypes.ModelObject;
+            var bind4ContextParam = MetaModelFactory.Instance.CreateMetaParameter();
+            bind4ContextParam.Type = MetaBuiltInTypes.ModelObject;
+            MetaBuiltInFunctions.Bind4.Parameters.Add(bind4ContextParam);
+            var bind4Param = MetaModelFactory.Instance.CreateMetaParameter();
+            bind4Param.Type = MetaBuiltInTypes.ModelObject;
+            MetaBuiltInFunctions.Bind4.Parameters.Add(bind4Param);
+            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Bind4);
 
             MetaBuiltInFunctions.SelectOfType1 = MetaModelFactory.Instance.CreateMetaFunction();
             MetaBuiltInFunctions.SelectOfType1.Name = "select_of_type";
@@ -462,11 +488,13 @@ namespace MetaDslx.Core
             if (ctx != null)
             {
                 IModelCompiler compiler = ctx.Compiler;
+                ((ModelObject)@this).MLazySet(Meta.MetaPropertyInitializer.PropertyContextProperty,
+                    new Lazy<object>(() => compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this)));
                 ((ModelObject)@this).MLazySet(Meta.MetaPropertyInitializer.PropertyProperty,
                     new Lazy<object>(() =>
                     compiler.BindingProvider.Bind(
                         (ModelObject)@this,
-                        compiler.ResolutionProvider.Resolve(new ModelObject[] { compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this) }, ResolveKind.Name, @this.PropertyName, new ResolutionInfo(), ResolveFlags.Scope),
+                        compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)@this.PropertyContext }, ResolveKind.Name, @this.PropertyName, new ResolutionInfo(), ResolveFlags.Scope),
                         new BindingInfo()
                         )));
                 ((ModelObject)@this).MLazySetChild(Meta.MetaPropertyInitializer.ValueProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => compiler.TypeProvider.GetTypeOf((ModelObject)@this.Property)));
@@ -480,6 +508,8 @@ namespace MetaDslx.Core
             if (ctx != null)
             {
                 IModelCompiler compiler = ctx.Compiler;
+                ((ModelObject)@this).MLazySet(Meta.MetaPropertyInitializer.PropertyContextProperty,
+                    new Lazy<object>(() => compiler.TypeProvider.GetTypeOf(@this.Object)));
                 ((ModelObject)@this).MLazySet(Meta.MetaInheritedPropertyInitializer.ObjectProperty,
                     new Lazy<object>(() =>
                     compiler.BindingProvider.Bind(
@@ -491,7 +521,7 @@ namespace MetaDslx.Core
                     new Lazy<object>(() =>
                     compiler.BindingProvider.Bind(
                         (ModelObject)@this,
-                        compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)this.GetType((ModelObject)@this.Object) }, ResolveKind.Name, @this.PropertyName, new ResolutionInfo(), ResolveFlags.Scope),
+                        compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)@this.PropertyContext }, ResolveKind.Name, @this.PropertyName, new ResolutionInfo(), ResolveFlags.Scope),
                         new BindingInfo()
                         )));
             }

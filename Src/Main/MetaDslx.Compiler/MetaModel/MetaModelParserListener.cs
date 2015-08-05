@@ -263,6 +263,16 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitReturnType([NotNull] MetaModelParser.ReturnTypeContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.typeOfReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTypeOfReference([NotNull] MetaModelParser.TypeOfReferenceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.typeOfReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTypeOfReference([NotNull] MetaModelParser.TypeOfReferenceContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.typeReference"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -312,6 +322,16 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitVoidType([NotNull] MetaModelParser.VoidTypeContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.invisibleType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInvisibleType([NotNull] MetaModelParser.InvisibleTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.invisibleType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInvisibleType([NotNull] MetaModelParser.InvisibleTypeContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
 	/// </summary>

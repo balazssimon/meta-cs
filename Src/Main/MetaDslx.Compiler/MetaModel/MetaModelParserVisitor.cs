@@ -172,6 +172,12 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitReturnType([NotNull] MetaModelParser.ReturnTypeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.typeOfReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTypeOfReference([NotNull] MetaModelParser.TypeOfReferenceContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.typeReference"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -201,6 +207,12 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitVoidType([NotNull] MetaModelParser.VoidTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.invisibleType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInvisibleType([NotNull] MetaModelParser.InvisibleTypeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
 	/// </summary>

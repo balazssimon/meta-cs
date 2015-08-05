@@ -167,9 +167,11 @@
 
 		class Constructor : NamedElement, AnnotatedElement
 		{
+			Class Parent;
 			containment list<PropertyInitializer> Initializers;
 		}
 
+		association Constructor.Parent with Class.Constructor;
 		association Operation.Parent with Class.Operations;
 		association Operation.Parent with Enum.Operations;
 
@@ -193,9 +195,8 @@
 
 		class Property : NamedElement, TypedElement, AnnotatedElement
 		{
-			Type Parent;
 			PropertyKind Kind;
-			Class Class;
+			Class Parent;
 			list<Property> OppositeProperties;
 			list<Property> SubsettedProperties;
 			list<Property> SubsettingProperties;
@@ -204,19 +205,28 @@
 		}
 
 		association Property.Parent with Class.Properties;
+		association Property.OppositeProperties with Property.OppositeProperties;
+		association Property.SubsettedProperties with Property.SubsettingProperties;
+		association Property.RedefinedProperties with Property.RedefiningProperties;
+
 
 		abstract class PropertyInitializer
 		{
+			Constructor Constructor;
 			string PropertyName;
+			Class PropertyContext;
 			Property Property;
 			containment Expression Value;
 
 			PropertyInitializer()
 			{
-				Property = bind(resolve_name(PropertyName));
+			    PropertyContext = current_type(this);
+				Property = bind(resolve_name(this.PropertyContext, PropertyName));
 				Value.ExpectedType = get_type(Property);
 			}
 		}
+
+		association PropertyInitializer.Constructor with Constructor.Initializers;
 
 		class SynthetizedPropertyInitializer : PropertyInitializer
 		{
@@ -230,14 +240,10 @@
 			PropertyInitializer()
 			{
 				Object = bind(resolve_name(ObjectName));
-				Property = bind(resolve_name(Object.Type, PropertyName));
+				PropertyContext = get_type(Object);
+				Property = bind(resolve_name(PropertyContext, PropertyName));
 			}
 		}
-
-		association Class.Properties with Property.Class;
-		association Property.OppositeProperties with Property.OppositeProperties;
-		association Property.SubsettedProperties with Property.SubsettingProperties;
-		association Property.RedefinedProperties with Property.RedefiningProperties;
 
 
 		abstract class Expression : TypedElement
@@ -290,7 +296,7 @@
 		{
 			NullExpression()
 			{
-				//Type = any;
+				Type = typeof(any);
 			}
 		}
 
@@ -302,7 +308,7 @@
 			TypeConversionExpression()
 			{
 				Type = TypeReference;
-				Expression.ExpectedType = null;
+				Expression.ExpectedType = typeof(any);
 			}
 		}
 
@@ -323,7 +329,7 @@
 			TypeCheckExpression()
 			{
 				Type = typeof(bool);
-				Expression.ExpectedType = null;
+				Expression.ExpectedType = typeof(any);
 			}
 		}
 
@@ -380,8 +386,8 @@
 
 			MemberAccessExpression()
 			{
-				// Expression.UniqueDefinition = false;
-				// Expression.ExpectedType = any;
+				Expression.[BoundExpression]UniqueDefinition = false;
+				Expression.ExpectedType = typeof(none);
 				Definitions = resolve_name(Expression.Type, Name);
 			}
 		}
@@ -392,8 +398,8 @@
 
 			FunctionCallExpression()
 			{
-				// Expression.UniqueDefinition = false;
-				// Expression.ExpectedType = any;
+				Expression.[BoundExpression]UniqueDefinition = false;
+				Expression.ExpectedType = typeof(none);
 				Definitions = select_of_type(Expression, typeof(FunctionType));
 				Type = get_return_type(Definition);
 			}
@@ -405,8 +411,8 @@
 
 			IndexerExpression()
 			{
-				// Expression.UniqueDefinition = false;
-				// Expression.ExpectedType = any;
+				Expression.[BoundExpression]UniqueDefinition = false;
+				Expression.ExpectedType = typeof(none);
 				Definitions = select_of_name(select_of_type(Expression, typeof(FunctionType)), "operator[]");
 			}
 		}	

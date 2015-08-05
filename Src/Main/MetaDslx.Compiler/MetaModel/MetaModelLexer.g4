@@ -24,6 +24,8 @@ KDouble : 'double';
 KByte : 'byte';
 KBool : 'bool';
 KList : 'list';
+KAny : 'any';
+KNone : 'none';
 KSet : 'set';
 KMultiList : 'multi_list';
 KMultiSet : 'multi_set';

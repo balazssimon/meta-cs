@@ -313,6 +313,18 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitReturnType([NotNull] MetaModelParser.ReturnTypeContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.typeOfReference"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTypeOfReference([NotNull] MetaModelParser.TypeOfReferenceContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.typeOfReference"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTypeOfReference([NotNull] MetaModelParser.TypeOfReferenceContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.typeReference"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -372,6 +384,18 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitVoidType([NotNull] MetaModelParser.VoidTypeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.invisibleType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterInvisibleType([NotNull] MetaModelParser.InvisibleTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.invisibleType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitInvisibleType([NotNull] MetaModelParser.InvisibleTypeContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.nullableType"/>.
 	/// <para>The default implementation does nothing.</para>

@@ -24,7 +24,7 @@ namespace MetaDslx.Compiler
             string text = parseTree.GetText();
             if (text == "null") return null;
             if (text == "true") return true;
-            if (text == "false") return true;
+            if (text == "false") return false;
             return parseTree.GetText();
         }
 

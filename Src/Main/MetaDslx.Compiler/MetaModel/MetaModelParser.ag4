@@ -78,6 +78,8 @@ constDeclaration : KConst typeReference /*$NameDef*/ identifier /*(TAssign expre
 $TypeUse
 returnType : typeReference | voidType;
 $TypeUse
+typeOfReference : invisibleType | typeReference;
+$TypeUse
 typeReference : collectionType | simpleType;
 $TypeUse
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
@@ -99,6 +101,11 @@ primitiveType
 $Name
 voidType 
 	: KVoid
+	;
+$Name
+invisibleType
+	: KAny
+	| KNone
 	;
 
 $TypeCtr(MetaNullableType)
@@ -130,11 +137,11 @@ initializerDeclaration
 
 $Symbol(MetaSynthetizedPropertyInitializer)
 synthetizedPropertyInitializer
-	: (KThis TDot)? $Property(PropertyName) $Value property=identifier TAssign $Property(Value) expression TSemicolon;
+	: (KThis TDot)? (TOpenBracket $Property(PropertyContext) $TypeUse(MetaClass) qualifiedName TCloseBracket)? $Property(PropertyName) $Value property=identifier TAssign $Property(Value) expression TSemicolon;
 
 $Symbol(MetaInheritedPropertyInitializer)
 inheritedPropertyInitializer
-	: $Property(ObjectName) $Value object=identifier TDot $Property(PropertyName) $Value property=identifier TAssign $Property(Value) expression TSemicolon;
+	: (KThis TDot)? $Property(ObjectName) $Value object=identifier TDot (TOpenBracket $Property(PropertyContext) $TypeUse(MetaClass) qualifiedName TCloseBracket)? $Property(PropertyName) $Value property=identifier TAssign $Property(Value) expression TSemicolon;
 
 argumentList 
 	: expression (',' expression)*
@@ -145,7 +152,7 @@ $AutoProperty
 $Expression
 expression 
 	: TOpenParen typeReference TCloseParen expression #castExpression $SymbolType(MetaTypeCastExpression)
-    | KTypeof TOpenParen typeReference TCloseParen #typeofExpression $SymbolType(MetaTypeOfExpression)
+    | KTypeof TOpenParen $Property(TypeReference) typeOfReference TCloseParen #typeofExpression $SymbolType(MetaTypeOfExpression)
 	| TOpenParen expression TCloseParen #bracketExpression $SymbolType(MetaBracketExpression)
 	| KThis #thisExpression $SymbolType(MetaThisExpression)
 	| value=literal #constantExpression $SymbolType(MetaConstantExpression)

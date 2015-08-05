@@ -78,6 +78,8 @@ constDeclaration : KConst typeReference /*$NameDef*/ identifier /*(TAssign expre
 
 returnType : typeReference | voidType;
 
+typeOfReference : invisibleType | typeReference;
+
 typeReference : collectionType | simpleType;
 
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
@@ -99,6 +101,11 @@ primitiveType
 
 voidType 
 	: KVoid
+	;
+
+invisibleType
+	: KAny
+	| KNone
 	;
 
 
@@ -130,11 +137,11 @@ initializerDeclaration
 
 
 synthetizedPropertyInitializer
-	: (KThis TDot)?   property=identifier TAssign  expression TSemicolon;
+	: (KThis TDot)? (TOpenBracket   qualifiedName TCloseBracket)?   property=identifier TAssign  expression TSemicolon;
 
 
 inheritedPropertyInitializer
-	:   object=identifier TDot   property=identifier TAssign  expression TSemicolon;
+	: (KThis TDot)?   object=identifier TDot (TOpenBracket   qualifiedName TCloseBracket)?   property=identifier TAssign  expression TSemicolon;
 
 argumentList 
 	: expression (',' expression)*
@@ -145,7 +152,7 @@ argumentList
 
 expression 
 	: TOpenParen typeReference TCloseParen expression #castExpression 
-    | KTypeof TOpenParen typeReference TCloseParen #typeofExpression 
+    | KTypeof TOpenParen  typeOfReference TCloseParen #typeofExpression 
 	| TOpenParen expression TCloseParen #bracketExpression 
 	| KThis #thisExpression 
 	| value=literal #constantExpression 
