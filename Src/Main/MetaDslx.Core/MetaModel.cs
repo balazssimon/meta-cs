@@ -620,6 +620,11 @@ namespace MetaDslx.Core
         
             
             [ReadonlyAttribute]
+            public static readonly ModelProperty NoTypeErrorProperty =
+                ModelProperty.Register("NoTypeError", typeof(bool), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
+            
+            
+            [ReadonlyAttribute]
             public static readonly ModelProperty ExpectedTypeProperty =
                 ModelProperty.Register("ExpectedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.Meta.MetaExpression));
             
@@ -2979,6 +2984,7 @@ namespace MetaDslx.Core
     
     public interface MetaExpression : MetaDslx.Core.MetaTypedElement
     {
+        bool NoTypeError { get; }
         MetaType ExpectedType { get; }
     
     }
@@ -2992,6 +2998,7 @@ namespace MetaDslx.Core
     
         public MetaExpressionImpl()
         {
+            //this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaExpression_MetaExpression(this);
             this.MMakeDefault();
         }
@@ -3005,6 +3012,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3035,6 +3052,7 @@ namespace MetaDslx.Core
         public MetaBracketExpressionImpl()
         {
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBracketExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaBracketExpression_MetaBracketExpression(this);
             this.MMakeDefault();
@@ -3049,6 +3067,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3092,6 +3120,7 @@ namespace MetaDslx.Core
         public MetaBoundExpressionImpl()
         {
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaBoundExpression_MetaBoundExpression(this);
@@ -3107,6 +3136,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3165,6 +3204,7 @@ namespace MetaDslx.Core
     
         public MetaThisExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaThisExpression_MetaThisExpression(this);
@@ -3180,6 +3220,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3241,6 +3291,7 @@ namespace MetaDslx.Core
         public MetaTypeConversionExpressionImpl()
         {
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaTypeConversionExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaTypeConversionExpression_MetaTypeConversionExpression(this);
             this.MMakeDefault();
@@ -3255,6 +3306,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3305,6 +3366,7 @@ namespace MetaDslx.Core
     
         public MetaTypeAsExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             MetaImplementationProvider.Implementation.MetaTypeAsExpression_MetaTypeAsExpression(this);
             this.MMakeDefault();
         }
@@ -3318,6 +3380,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3368,6 +3440,7 @@ namespace MetaDslx.Core
     
         public MetaTypeCastExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             MetaImplementationProvider.Implementation.MetaTypeCastExpression_MetaTypeCastExpression(this);
             this.MMakeDefault();
         }
@@ -3381,6 +3454,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3434,6 +3517,7 @@ namespace MetaDslx.Core
         public MetaTypeCheckExpressionImpl()
         {
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaTypeCheckExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaTypeCheckExpression_MetaTypeCheckExpression(this);
             this.MMakeDefault();
@@ -3448,6 +3532,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3500,6 +3594,7 @@ namespace MetaDslx.Core
         public MetaTypeOfExpressionImpl()
         {
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             MetaImplementationProvider.Implementation.MetaTypeOfExpression_MetaTypeOfExpression(this);
             this.MMakeDefault();
         }
@@ -3513,6 +3608,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3557,6 +3662,7 @@ namespace MetaDslx.Core
         public MetaConditionalExpressionImpl()
         {
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaConditionalExpression.ConditionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaConditionalExpression.ThenProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaConditionalExpression.ElseProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
@@ -3573,6 +3679,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3647,6 +3763,7 @@ namespace MetaDslx.Core
         public MetaConstantExpressionImpl()
         {
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             MetaImplementationProvider.Implementation.MetaConstantExpression_MetaConstantExpression(this);
             this.MMakeDefault();
         }
@@ -3660,6 +3777,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3700,6 +3827,7 @@ namespace MetaDslx.Core
     
         public MetaIdentifierExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaIdentifierExpression_MetaIdentifierExpression(this);
@@ -3715,6 +3843,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3786,6 +3924,7 @@ namespace MetaDslx.Core
     
         public MetaMemberAccessExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaMemberAccessExpression_MetaMemberAccessExpression(this);
@@ -3801,6 +3940,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3882,6 +4031,7 @@ namespace MetaDslx.Core
     
         public MetaFunctionCallExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaFunctionCallExpression_MetaFunctionCallExpression(this);
@@ -3897,6 +4047,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -3967,6 +4127,7 @@ namespace MetaDslx.Core
     
         public MetaIndexerExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaIndexerExpression_MetaIndexerExpression(this);
@@ -3982,6 +4143,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4052,6 +4223,7 @@ namespace MetaDslx.Core
     
         public MetaOperatorExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaOperatorExpression_MetaOperatorExpression(this);
@@ -4067,6 +4239,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4137,6 +4319,7 @@ namespace MetaDslx.Core
     
         public MetaUnaryExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaUnaryExpression_MetaUnaryExpression(this);
             this.MMakeDefault();
@@ -4151,6 +4334,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4231,6 +4424,7 @@ namespace MetaDslx.Core
     
         public MetaUnaryPlusExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaUnaryPlusExpression_MetaUnaryPlusExpression(this);
@@ -4246,6 +4440,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4326,6 +4530,7 @@ namespace MetaDslx.Core
     
         public MetaNegateExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaNegateExpression_MetaNegateExpression(this);
@@ -4341,6 +4546,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4421,6 +4636,7 @@ namespace MetaDslx.Core
     
         public MetaOnesComplementExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaOnesComplementExpression_MetaOnesComplementExpression(this);
@@ -4436,6 +4652,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4516,6 +4742,7 @@ namespace MetaDslx.Core
     
         public MetaNotExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaNotExpression_MetaNotExpression(this);
@@ -4531,6 +4758,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4611,6 +4848,7 @@ namespace MetaDslx.Core
     
         public MetaUnaryAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             MetaImplementationProvider.Implementation.MetaUnaryAssignExpression_MetaUnaryAssignExpression(this);
             this.MMakeDefault();
@@ -4625,6 +4863,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4705,6 +4953,7 @@ namespace MetaDslx.Core
     
         public MetaPostIncrementAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaPostIncrementAssignExpression_MetaPostIncrementAssignExpression(this);
@@ -4720,6 +4969,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4800,6 +5059,7 @@ namespace MetaDslx.Core
     
         public MetaPostDecrementAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaPostDecrementAssignExpression_MetaPostDecrementAssignExpression(this);
@@ -4815,6 +5075,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4895,6 +5165,7 @@ namespace MetaDslx.Core
     
         public MetaPreIncrementAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaPreIncrementAssignExpression_MetaPreIncrementAssignExpression(this);
@@ -4910,6 +5181,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -4990,6 +5271,7 @@ namespace MetaDslx.Core
     
         public MetaPreDecrementAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaPreDecrementAssignExpression_MetaPreDecrementAssignExpression(this);
@@ -5005,6 +5287,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -5087,6 +5379,7 @@ namespace MetaDslx.Core
     
         public MetaBinaryExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaBinaryExpression_MetaBinaryExpression(this);
             this.MMakeDefault();
@@ -5101,6 +5394,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -5192,6 +5495,7 @@ namespace MetaDslx.Core
     
         public MetaBinaryArithmeticExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             MetaImplementationProvider.Implementation.MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression(this);
             this.MMakeDefault();
@@ -5206,6 +5510,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -5297,6 +5611,7 @@ namespace MetaDslx.Core
     
         public MetaMultiplyExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaMultiplyExpression_MetaMultiplyExpression(this);
@@ -5312,6 +5627,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -5403,6 +5728,7 @@ namespace MetaDslx.Core
     
         public MetaDivideExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaDivideExpression_MetaDivideExpression(this);
@@ -5418,6 +5744,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -5509,6 +5845,7 @@ namespace MetaDslx.Core
     
         public MetaModuloExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaModuloExpression_MetaModuloExpression(this);
@@ -5524,6 +5861,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -5615,6 +5962,7 @@ namespace MetaDslx.Core
     
         public MetaAddExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAddExpression_MetaAddExpression(this);
@@ -5630,6 +5978,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -5721,6 +6079,7 @@ namespace MetaDslx.Core
     
         public MetaSubtractExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaSubtractExpression_MetaSubtractExpression(this);
@@ -5736,6 +6095,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -5827,6 +6196,7 @@ namespace MetaDslx.Core
     
         public MetaLeftShiftExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaLeftShiftExpression_MetaLeftShiftExpression(this);
@@ -5842,6 +6212,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -5933,6 +6313,7 @@ namespace MetaDslx.Core
     
         public MetaRightShiftExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaRightShiftExpression_MetaRightShiftExpression(this);
@@ -5948,6 +6329,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -6039,6 +6430,7 @@ namespace MetaDslx.Core
     
         public MetaBinaryComparisonExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             MetaImplementationProvider.Implementation.MetaBinaryComparisonExpression_MetaBinaryComparisonExpression(this);
             this.MMakeDefault();
@@ -6053,6 +6445,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -6144,6 +6546,7 @@ namespace MetaDslx.Core
     
         public MetaLessThanExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaLessThanExpression_MetaLessThanExpression(this);
@@ -6159,6 +6562,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -6250,6 +6663,7 @@ namespace MetaDslx.Core
     
         public MetaLessThanOrEqualExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaLessThanOrEqualExpression_MetaLessThanOrEqualExpression(this);
@@ -6265,6 +6679,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -6356,6 +6780,7 @@ namespace MetaDslx.Core
     
         public MetaGreaterThanExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaGreaterThanExpression_MetaGreaterThanExpression(this);
@@ -6371,6 +6796,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -6462,6 +6897,7 @@ namespace MetaDslx.Core
     
         public MetaGreaterThanOrEqualExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaGreaterThanOrEqualExpression_MetaGreaterThanOrEqualExpression(this);
@@ -6477,6 +6913,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -6568,6 +7014,7 @@ namespace MetaDslx.Core
     
         public MetaEqualExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaEqualExpression_MetaEqualExpression(this);
@@ -6583,6 +7030,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -6674,6 +7131,7 @@ namespace MetaDslx.Core
     
         public MetaNotEqualExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaNotEqualExpression_MetaNotEqualExpression(this);
@@ -6689,6 +7147,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -6780,6 +7248,7 @@ namespace MetaDslx.Core
     
         public MetaBinaryLogicalExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             MetaImplementationProvider.Implementation.MetaBinaryLogicalExpression_MetaBinaryLogicalExpression(this);
             this.MMakeDefault();
@@ -6794,6 +7263,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -6885,6 +7364,7 @@ namespace MetaDslx.Core
     
         public MetaAndExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAndExpression_MetaAndExpression(this);
@@ -6900,6 +7380,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -6991,6 +7481,7 @@ namespace MetaDslx.Core
     
         public MetaOrExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaOrExpression_MetaOrExpression(this);
@@ -7006,6 +7497,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -7097,6 +7598,7 @@ namespace MetaDslx.Core
     
         public MetaExclusiveOrExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaExclusiveOrExpression_MetaExclusiveOrExpression(this);
@@ -7112,6 +7614,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -7203,6 +7715,7 @@ namespace MetaDslx.Core
     
         public MetaAndAlsoExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAndAlsoExpression_MetaAndAlsoExpression(this);
@@ -7218,6 +7731,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -7309,6 +7832,7 @@ namespace MetaDslx.Core
     
         public MetaOrElseExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaOrElseExpression_MetaOrElseExpression(this);
@@ -7324,6 +7848,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -7415,6 +7949,7 @@ namespace MetaDslx.Core
     
         public MetaNullCoalescingExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaNullCoalescingExpression_MetaNullCoalescingExpression(this);
@@ -7430,6 +7965,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -7522,6 +8067,7 @@ namespace MetaDslx.Core
         public MetaAssignmentExpressionImpl()
         {
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAssignmentExpression_MetaAssignmentExpression(this);
@@ -7537,6 +8083,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -7628,6 +8184,7 @@ namespace MetaDslx.Core
     
         public MetaAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAssignExpression_MetaAssignExpression(this);
@@ -7643,6 +8200,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -7734,6 +8301,7 @@ namespace MetaDslx.Core
     
         public MetaArithmeticAssignmentExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             MetaImplementationProvider.Implementation.MetaArithmeticAssignmentExpression_MetaArithmeticAssignmentExpression(this);
             this.MMakeDefault();
@@ -7748,6 +8316,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -7839,6 +8417,7 @@ namespace MetaDslx.Core
     
         public MetaMultiplyAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaMultiplyAssignExpression_MetaMultiplyAssignExpression(this);
@@ -7854,6 +8433,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -7945,6 +8534,7 @@ namespace MetaDslx.Core
     
         public MetaDivideAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaDivideAssignExpression_MetaDivideAssignExpression(this);
@@ -7960,6 +8550,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -8051,6 +8651,7 @@ namespace MetaDslx.Core
     
         public MetaModuloAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaModuloAssignExpression_MetaModuloAssignExpression(this);
@@ -8066,6 +8667,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -8157,6 +8768,7 @@ namespace MetaDslx.Core
     
         public MetaAddAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAddAssignExpression_MetaAddAssignExpression(this);
@@ -8172,6 +8784,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -8263,6 +8885,7 @@ namespace MetaDslx.Core
     
         public MetaSubtractAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaSubtractAssignExpression_MetaSubtractAssignExpression(this);
@@ -8278,6 +8901,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -8369,6 +9002,7 @@ namespace MetaDslx.Core
     
         public MetaLeftShiftAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaLeftShiftAssignExpression_MetaLeftShiftAssignExpression(this);
@@ -8384,6 +9018,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -8475,6 +9119,7 @@ namespace MetaDslx.Core
     
         public MetaRightShiftAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaRightShiftAssignExpression_MetaRightShiftAssignExpression(this);
@@ -8490,6 +9135,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -8581,6 +9236,7 @@ namespace MetaDslx.Core
     
         public MetaLogicalAssignmentExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             MetaImplementationProvider.Implementation.MetaLogicalAssignmentExpression_MetaLogicalAssignmentExpression(this);
             this.MMakeDefault();
@@ -8595,6 +9251,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -8686,6 +9352,7 @@ namespace MetaDslx.Core
     
         public MetaAndAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaAndAssignExpression_MetaAndAssignExpression(this);
@@ -8701,6 +9368,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -8792,6 +9469,7 @@ namespace MetaDslx.Core
     
         public MetaExclusiveOrAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaExclusiveOrAssignExpression_MetaExclusiveOrAssignExpression(this);
@@ -8807,6 +9485,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -8898,6 +9586,7 @@ namespace MetaDslx.Core
     
         public MetaOrAssignExpressionImpl()
         {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
             //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
             MetaImplementationProvider.Implementation.MetaOrAssignExpression_MetaOrAssignExpression(this);
@@ -8913,6 +9602,16 @@ namespace MetaDslx.Core
                 else return default(MetaType);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        bool MetaExpression.NoTypeError
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty); 
+                if (result != null) return (bool)result;
+                else return default(bool);
+            }
         }
         
         MetaType MetaExpression.ExpectedType
@@ -10169,6 +10868,14 @@ namespace MetaDslx.Core
         public virtual void MetaExpression_MetaExpression(MetaExpression @this)
         {
             this.MetaTypedElement_MetaTypedElement(@this);
+        }
+    
+        /// <summary>
+        /// Returns the value of the lazy property: MetaExpression.NoTypeError
+        /// </summary>
+        public virtual bool MetaExpression_NoTypeError(MetaExpression @this)
+        {
+            throw new NotImplementedException();
         }
     
         /// <summary>

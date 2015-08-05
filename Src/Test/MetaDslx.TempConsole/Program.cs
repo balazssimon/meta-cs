@@ -172,6 +172,12 @@ namespace MetaDslx.TempConsole
                                 writer.WriteLine("  Uri=" + mo.MGet(mp));
                                 Console.WriteLine("  Uri=" + mo.MGet(mp));
                             }
+                            mp = mo.MFindProperty("NoTypeError");
+                            if (mp != null)
+                            {
+                                writer.WriteLine("  NoTypeError=" + mo.MGet(mp));
+                                Console.WriteLine("  NoTypeError=" + mo.MGet(mp));
+                            }
                             mp = mo.MFindProperties("ExpectedType").FirstOrDefault();
                             if (mp != null)
                             {

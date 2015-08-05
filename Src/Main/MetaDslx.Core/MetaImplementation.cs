@@ -175,6 +175,7 @@ namespace MetaDslx.Core
         public static readonly MetaFunction TypeOf;
         public static readonly MetaFunction GetValueType;
         public static readonly MetaFunction CurrentType;
+        public static readonly MetaFunction TypeCheck;
         public static readonly MetaFunction Balance;
         public static readonly MetaFunction Resolve1;
         public static readonly MetaFunction ResolveName1;
@@ -214,6 +215,14 @@ namespace MetaDslx.Core
             currentTypeParam.Type = MetaBuiltInTypes.ModelObject;
             MetaBuiltInFunctions.CurrentType.Parameters.Add(currentTypeParam);
             MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.CurrentType);
+
+            MetaBuiltInFunctions.TypeCheck = MetaModelFactory.Instance.CreateMetaFunction();
+            MetaBuiltInFunctions.TypeCheck.Name = "type_check";
+            MetaBuiltInFunctions.TypeCheck.ReturnType = MetaBuiltInTypes.Bool;
+            var typeCheckParam = MetaModelFactory.Instance.CreateMetaParameter();
+            typeCheckParam.Type = MetaBuiltInTypes.ModelObject;
+            MetaBuiltInFunctions.TypeCheck.Parameters.Add(typeCheckParam);
+            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.TypeCheck);
 
             MetaBuiltInFunctions.Balance = MetaModelFactory.Instance.CreateMetaFunction();
             MetaBuiltInFunctions.Balance.Name = "balance";
@@ -415,6 +424,12 @@ namespace MetaDslx.Core
         public override void MetaExpression_MetaExpression(MetaExpression @this)
         {
             base.MetaExpression_MetaExpression(@this);
+            ModelContext ctx = ModelContext.Current;
+            if (ctx != null)
+            {
+                IModelCompiler compiler = ctx.Compiler;
+                ((ModelObject)@this).MLazySet(Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => compiler.TypeProvider.TypeCheck((ModelObject)@this)));
+            }
         }
 
         public override void MetaBoundExpression_MetaBoundExpression(MetaBoundExpression @this)

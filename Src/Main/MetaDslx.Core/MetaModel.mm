@@ -234,6 +234,12 @@
 
 		abstract class Expression : TypedElement
 		{
+			Expression()
+			{
+				NoTypeError = type_check(this);
+			}
+
+			lazy bool NoTypeError;
 			inherited Type ExpectedType;
 		}
 

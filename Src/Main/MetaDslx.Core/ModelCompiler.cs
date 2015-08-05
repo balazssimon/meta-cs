@@ -62,6 +62,7 @@ namespace MetaDslx.Core
         ModelObject Balance(ModelObject left, ModelObject right);
         bool IsAssignableFrom(ModelObject left, ModelObject right);
         bool Equals(ModelObject left, ModelObject right);
+        bool TypeCheck(ModelObject symbol);
         MetaType GetTypeOf(ModelObject symbol);
         MetaType GetTypeOf(object value);
         MetaType GetReturnTypeOf(ModelObject symbol);
@@ -644,6 +645,33 @@ namespace MetaDslx.Core
             MetaFunction mf = symbol as MetaFunction;
             if (mf != null) return mf.ReturnType;
             return null;
+        }
+
+        public bool TypeCheck(ModelObject symbol)
+        {
+            MetaExpression expr = symbol as MetaExpression;
+            if (expr == null) return true;
+            bool result = this.IsAssignableFrom((ModelObject)expr.ExpectedType, (ModelObject)expr.Type);
+            if (!result)
+            {
+                ModelContext ctx = ModelContext.Current;
+                if (ctx != null)
+                {
+                    if (expr.ExpectedType == null)
+                    {
+                        ctx.Compiler.Diagnostics.AddError("The expression has no expected type.", ctx.Compiler.FileName, symbol);
+                    }
+                    else if (expr.Type == null)
+                    {
+                        ctx.Compiler.Diagnostics.AddError("The expression has no type.", ctx.Compiler.FileName, symbol);
+                    }
+                    else
+                    {
+                        ctx.Compiler.Diagnostics.AddError("'" + expr.ExpectedType + "' type expected, but expression has type '" + expr.Type + "'.", ctx.Compiler.FileName, symbol);
+                    }
+                }
+            }
+            return result;
         }
     }
 
