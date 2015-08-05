@@ -28,7 +28,7 @@ annotationParam : name=identifier TAssign value=expression;
 */
 
 $NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,merge=true)
-namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName TAssign $Value stringLiteral TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName TAssign stringLiteral TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;
 
 $NameDef(MetaModel)
 metamodelDeclaration: annotation* KMetamodel identifier TOpenBrace declaration* TCloseBrace;
@@ -82,19 +82,24 @@ typeReference : collectionType | simpleType;
 $TypeUse
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
+$Name
 objectType 
-	: $PreDefSymbol(MetaBuiltInTypes.Object) KObject 
-	| $PreDefSymbol(MetaBuiltInTypes.String) KString
+	: KObject 
+	| KString
 	;
+$Name
 primitiveType 
-	: $PreDefSymbol(MetaBuiltInTypes.Int) KInt 
-	| $PreDefSymbol(MetaBuiltInTypes.Long) KLong 
-	| $PreDefSymbol(MetaBuiltInTypes.Float) KFloat 
-	| $PreDefSymbol(MetaBuiltInTypes.Double) KDouble 
-	| $PreDefSymbol(MetaBuiltInTypes.Byte) KByte 
-	| $PreDefSymbol(MetaBuiltInTypes.Bool) KBool
+	: KInt 
+	| KLong 
+	| KFloat 
+	| KDouble 
+	| KByte 
+	| KBool
 	;
-voidType : $PreDefSymbol(MetaBuiltInTypes.Void) KVoid;
+$Name
+voidType 
+	: KVoid
+	;
 
 $TypeCtr(MetaNullableType)
 nullableType : $Property(InnerType) primitiveType TQuestion;
@@ -120,105 +125,106 @@ initializerDeclaration
 
 $Symbol(MetaSynthetizedPropertyInitializer)
 synthetizedPropertyInitializer
-	: (KThis TDot)? $Property(Property) $NameUse(MetaProperty) property=identifier TAssign $Property(Value) expression TSemicolon;
+	: (KThis TDot)? $Property(PropertyName) $Value property=identifier TAssign $Property(Value) expression TSemicolon;
 
 $Symbol(MetaInheritedPropertyInitializer)
 inheritedPropertyInitializer
-	: $Property(Object) $NameUse(MetaProperty) object=identifier TDot $Property(PropertyName) $Value property=identifier TAssign $Property(Value) expression TSemicolon;
+	: $Property(ObjectName) $Value object=identifier TDot $Property(PropertyName) $Value property=identifier TAssign $Property(Value) expression TSemicolon;
 
 argumentList 
 	: expression (',' expression)*
 	;
 
-$AutoSymbol
+$Symbol
+$AutoProperty
 $Expression
 expression 
-	: TOpenParen typeReference TCloseParen expression #castExpression $Symbol(MetaTypeConversionExpression) -> { Kind = global::MetaExpressionKind.TypeCast; }
-    | KTypeof TOpenParen typeReference TCloseParen #typeofExpression $Symbol(MetaTypeOfExpression)
-	| TOpenParen expression TCloseParen #bracketExpression $Symbol(MetaUnaryExpression) -> { Kind = global::MetaExpressionKind.Bracket; }
-	| KThis #thisExpression $Symbol(MetaThisExpression)
-	| value=literal #constantExpression $Symbol(MetaConstantExpression)
-	| $Value name=identifier #identifierExpression $Symbol(MetaIdentifierExpression)
-    | expression TOpenBracket $Property(Arguments) argumentList TCloseBracket #indexerExpression $Symbol(MetaIndexerExpression)
-    | expression TOpenParen $Property(Arguments) argumentList? TCloseParen #functionCallExpression $Symbol(MetaFunctionCallExpression)
-    | expression TDot $Value name=identifier #memberAccessExpression $Symbol(MetaMemberAccessExpression)
-    | expression kind=postOperator #postExpression $Symbol(MetaUnaryExpression)
-    | kind=preOperator expression #preExpression $Symbol(MetaUnaryExpression)
-    | kind=unaryOperator expression #unaryExpression $Symbol(MetaUnaryExpression)
-    | expression KAs typeReference #typeConversionExpression $Symbol(MetaTypeConversionExpression) -> { Kind = global::MetaExpressionKind.TypeAs; }
-    | expression KIs typeReference #typeCheckExpression $Symbol(MetaTypeCheckExpression)
-    | left=expression kind=multiplicativeOperator right=expression #multiplicativeExpression $Symbol(MetaBinaryArithmeticExpression)
-    | left=expression kind=additiveOperator right=expression #additiveExpression $Symbol(MetaBinaryArithmeticExpression)
-    | left=expression kind=shiftOperator right=expression #shiftExpression $Symbol(MetaBinaryArithmeticExpression)
-    | left=expression kind=comparisonOperator right=expression #comparisonExpression $Symbol(MetaBinaryComparisonExpression)
-    | left=expression kind=equalityOperator right=expression #equalityExpression $Symbol(MetaBinaryComparisonExpression)
-    | left=expression TAmpersand right=expression #bitwiseAndExpression $Symbol(MetaBinaryArithmeticExpression) -> { Kind = global::MetaExpressionKind.And; }
-    | left=expression THat right=expression #bitwiseXorExpression $Symbol(MetaBinaryArithmeticExpression) -> { Kind = global::MetaExpressionKind.ExclusiveOr; }
-    | left=expression TBar right=expression #bitwiseOrExpression $Symbol(MetaBinaryArithmeticExpression) -> { Kind = global::MetaExpressionKind.Or; }
-    | left=expression TAndAlso right=expression #logicalAndExpression $Symbol(MetaBinaryLogicalExpression) -> { Kind = global::MetaExpressionKind.AndAlso; }
-    | left=expression TOrElse right=expression #logicalOrExpression $Symbol(MetaBinaryLogicalExpression) -> { Kind = global::MetaExpressionKind.OrElse; }
-    | left=expression TQuestionQuestion right=expression #nullCoalescingExpression $Symbol(MetaNullCoalescingExpression)
-    | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression $Symbol(MetaConditionalExpression)
-    | left=expression operator=assignmentOperator right=expression #assignmentExpression $Symbol(MetaAssignmentExpression)
+	: TOpenParen typeReference TCloseParen expression #castExpression $SymbolType(MetaTypeCastExpression)
+    | KTypeof TOpenParen typeReference TCloseParen #typeofExpression $SymbolType(MetaTypeOfExpression)
+	| TOpenParen expression TCloseParen #bracketExpression $SymbolType(MetaBracketExpression)
+	| KThis #thisExpression $SymbolType(MetaThisExpression)
+	| value=literal #constantExpression $SymbolType(MetaConstantExpression)
+	| $Value name=identifier #identifierExpression $SymbolType(MetaIdentifierExpression)
+    | expression TOpenBracket $Property(Arguments) argumentList TCloseBracket #indexerExpression $SymbolType(MetaIndexerExpression)
+    | expression TOpenParen $Property(Arguments) argumentList? TCloseParen #functionCallExpression $SymbolType(MetaFunctionCallExpression)
+    | expression TDot $Value name=identifier #memberAccessExpression $SymbolType(MetaMemberAccessExpression)
+    | expression kind=postOperator #postExpression 
+    | kind=preOperator expression #preExpression 
+    | kind=unaryOperator expression #unaryExpression 
+    | expression KAs typeReference #typeConversionExpression $SymbolType(MetaTypeAsExpression)
+    | expression KIs typeReference #typeCheckExpression $SymbolType(MetaTypeCheckExpression)
+    | left=expression kind=multiplicativeOperator right=expression #multiplicativeExpression
+    | left=expression kind=additiveOperator right=expression #additiveExpression
+    | left=expression kind=shiftOperator right=expression #shiftExpression
+    | left=expression kind=comparisonOperator right=expression #comparisonExpression
+    | left=expression kind=equalityOperator right=expression #equalityExpression
+    | left=expression TAmpersand right=expression #bitwiseAndExpression $SymbolType(MetaAndExpression)
+    | left=expression THat right=expression #bitwiseXorExpression $SymbolType(MetaExclusiveOrExpression)
+    | left=expression TBar right=expression #bitwiseOrExpression $SymbolType(MetaOrExpression)
+    | left=expression TAndAlso right=expression #logicalAndExpression $SymbolType(MetaAndAlsoExpression)
+    | left=expression TOrElse right=expression #logicalOrExpression $SymbolType(MetaOrElseExpression)
+    | left=expression TQuestionQuestion right=expression #nullCoalescingExpression $SymbolType(MetaNullCoalescingExpression)
+    | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression $SymbolType(MetaConditionalExpression)
+    | left=expression operator=assignmentOperator right=expression #assignmentExpression 
 	;
 
 postOperator
-	: $Value(MetaExpressionKind.PostIncrementAssign) TPlusPlus
-	| $Value(MetaExpressionKind.PostDecrementAssign) TMinusMinus
+	: $SymbolType(MetaPostIncrementAssignExpression) TPlusPlus
+	| $SymbolType(MetaPostDecrementAssignExpression) TMinusMinus
 	;
 
 preOperator
-	: $Value(MetaExpressionKind.PreIncrementAssign) TPlusPlus
-	| $Value(MetaExpressionKind.PreDecrementAssign) TMinusMinus
+	: $SymbolType(MetaPreIncrementAssignExpression) TPlusPlus
+	| $SymbolType(MetaPreDecrementAssignExpression) TMinusMinus
 	;
 
 unaryOperator
-	: $Value(MetaExpressionKind.UnaryPlus) TPlus
-	| $Value(MetaExpressionKind.Negate) TMinus
-	| $Value(MetaExpressionKind.OnesComplement) TTilde
-	| $Value(MetaExpressionKind.Not) TExclamation
+	: $SymbolType(MetaUnaryPlusExpression) TPlus
+	| $SymbolType(MetaNegateExpression) TMinus
+	| $SymbolType(MetaOnesComplementExpression) TTilde
+	| $SymbolType(MetaNotExpression) TExclamation
 	;
 
 multiplicativeOperator
-	: $Value(MetaExpressionKind.Multiply) TAsterisk
-	| $Value(MetaExpressionKind.Divide) TSlash
-	| $Value(MetaExpressionKind.Modulo) TPercent
+	: $SymbolType(MetaMultiplyExpression) TAsterisk
+	| $SymbolType(MetaDivideExpression) TSlash
+	| $SymbolType(MetaModuloExpression) TPercent
 	;
 
 additiveOperator
-	: $Value(MetaExpressionKind.Add) TPlus
-	| $Value(MetaExpressionKind.Subtract) TMinus
+	: $SymbolType(MetaAddExpression) TPlus
+	| $SymbolType(MetaSubtractExpression) TMinus
 	;
 
 shiftOperator
-	: $Value(MetaExpressionKind.LeftShift) TLessThan TLessThan
-	| $Value(MetaExpressionKind.RightShift) TGreaterThan TGreaterThan
+	: $SymbolType(MetaLeftShiftExpression) TLessThan TLessThan
+	| $SymbolType(MetaRightShiftExpression) TGreaterThan TGreaterThan
 	;
 
 comparisonOperator
-	: $Value(MetaExpressionKind.LessThan) TLessThan
-	| $Value(MetaExpressionKind.GreaterThan) TGreaterThan
-	| $Value(MetaExpressionKind.LessThanOrEqual) TLessThanOrEqual
-	| $Value(MetaExpressionKind.GreaterThanOrEqual) TGreaterThanOrEqual
+	: $SymbolType(MetaLessThanExpression) TLessThan
+	| $SymbolType(MetaGreaterThanExpression) TGreaterThan
+	| $SymbolType(MetaLessThanOrEqualExpression) TLessThanOrEqual
+	| $SymbolType(MetaGreaterThanOrEqualExpression) TGreaterThanOrEqual
 	;
 
 equalityOperator
-	: $Value(MetaExpressionKind.Equal) TEqual
-	| $Value(MetaExpressionKind.NotEqual) TNotEqual
+	: $SymbolType(MetaEqualExpression) TEqual
+	| $SymbolType(MetaNotEqualExpression) TNotEqual
 	;
 
 assignmentOperator
-	: $Value(MetaExpressionKind.Assign) TAssign  
-	| $Value(MetaExpressionKind.MultiplyAssign) TAsteriskAssign 
-	| $Value(MetaExpressionKind.DivideAssign) TSlashAssign
-	| $Value(MetaExpressionKind.ModuloAssign) TPercentAssign
-	| $Value(MetaExpressionKind.AddAssign) TPlusAssign
-	| $Value(MetaExpressionKind.SubtractAssign) TMinusAssign
-	| $Value(MetaExpressionKind.LeftShiftAssign) TLeftShiftAssign
-	| $Value(MetaExpressionKind.RightShiftAssign) TRightShiftAssign
-	| $Value(MetaExpressionKind.AndAssign) TAmpersandAssign
-	| $Value(MetaExpressionKind.ExclusiveOrAssign) THatAssign
-	| $Value(MetaExpressionKind.OrAssign) TBarAssign
+	: $SymbolType(MetaAssignExpression) TAssign  
+	| $SymbolType(MetaMultiplyAssignExpression) TAsteriskAssign 
+	| $SymbolType(MetaDivideAssignExpression) TSlashAssign
+	| $SymbolType(MetaModuloAssignExpression) TPercentAssign
+	| $SymbolType(MetaAddAssignExpression) TPlusAssign
+	| $SymbolType(MetaSubtractAssignExpression) TMinusAssign
+	| $SymbolType(MetaLeftShiftAssignExpression) TLeftShiftAssign
+	| $SymbolType(MetaRightShiftAssignExpression) TRightShiftAssign
+	| $SymbolType(MetaAndAssignExpression) TAmpersandAssign
+	| $SymbolType(MetaExclusiveOrAssignExpression) THatAssign
+	| $SymbolType(MetaOrAssignExpression) TBarAssign
 	;
 
 
@@ -237,6 +243,7 @@ identifier : IdentifierNormal /*| IdentifierVerbatim*/;
 //identifier : IdentifierGeneral | IdentifierVerbatim;
 
 // Literals
+$Value
 literal 
     : nullLiteral
 	| booleanLiteral
@@ -247,18 +254,18 @@ literal
 	;
 
 // Null literal
-nullLiteral : KNull -> { this.Type = global::MetaBuiltInTypes.Any; this.Value = null; };
+nullLiteral : KNull;
 
 // Boolean literals
-booleanLiteral : KTrue | KFalse -> { this.Type = global::MetaBuiltInTypes.Bool; this.Value = valueof(this); };
+booleanLiteral : KTrue | KFalse;
 
 // Number literals
-integerLiteral : IntegerLiteral -> { this.Type = global::MetaBuiltInTypes.Int; this.Value = valueof(this); };
-decimalLiteral : DecimalLiteral -> { this.Type = global::MetaBuiltInTypes.Double; this.Value = valueof(this); };
-scientificLiteral : ScientificLiteral -> { this.Type = global::MetaBuiltInTypes.Double; this.Value = valueof(this); };
+integerLiteral : IntegerLiteral;
+decimalLiteral : DecimalLiteral;
+scientificLiteral : ScientificLiteral;
 
 // String literals
-stringLiteral : RegularStringLiteral -> { this.Type = global::MetaBuiltInTypes.String; this.Value = valueof(this); };
+stringLiteral : RegularStringLiteral;
 
 
 /*

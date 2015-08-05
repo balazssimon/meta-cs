@@ -2,28 +2,20 @@
 {
 	metamodel MetaModel//(Uri="http://metadslx.core/1.0", Prefix="Meta")
 	{
-		/*
-		const PrimitiveType ObjectType(Name="object");
-		const PrimitiveType BoolType(Name="bool");
-		const PrimitiveType StringType(Name="string");
-		const PrimitiveType ByteType(Name="byte");
-		const PrimitiveType IntType(Name="int");
-		const PrimitiveType LongType(Name="long");
-		const PrimitiveType FloatType(Name="float");
-		const PrimitiveType DoubleType(Name="double");
-		const PrimitiveType VoidType(Name="void");
-		const PrimitiveType AnyType;
-		const PrimitiveType UnknownType;
-		const PrimitiveType ErrorType;
-
-		Type Balance(Type leftType, Type rightType);
-		Type GetType(object value);
-		list<NamedElement> ResolveName(Scope scope, string name);
-		list<NamedElement> ResolveName(string name);
-		list<Type> ResolveType(Scope scope, string name);
-		list<Type> ResolveType(string name);
-		ScopeEntry Bind(object caller, list<ScopeEntry> entries);
+		/* 
+		Function Bind = 
+			new Function()
+			{
+				Name = "bind",
+				Parameters = 
+					new ModelList<Parameter>()
+					{
+						new Parameter() { Name = "symbols", Type = typeof(list<object>) }
+					},
+				ReturnType = typeof(object)
+			};
 		*/
+
 
 		abstract class AnnotatedElement
 		{
@@ -147,11 +139,23 @@
 			list<Operation> GetAllOperations();
 		}
 
-		class Operation : NamedElement, AnnotatedElement
+		class FunctionType : Type
 		{
-			Type Parent;
+			list<Type> ParameterTypes;
+			Type ReturnType;
+		}
+
+		class Function : NamedElement, TypedElement, AnnotatedElement
+		{
+			[Type]
+			readonly FunctionType Type redefines TypedElement.Type;
 			containment list<Parameter> Parameters;
 			Type ReturnType;
+		}
+
+		class Operation : Function
+		{
+			Type Parent;
 		}
 
 		class Constructor : NamedElement, AnnotatedElement
@@ -196,8 +200,14 @@
 
 		abstract class PropertyInitializer
 		{
+			string PropertyName;
 			Property Property;
 			containment Expression Value;
+
+			PropertyInitializer()
+			{
+				Property = resolve_name(PropertyName);
+			}
 		}
 
 		class SynthetizedPropertyInitializer : PropertyInitializer
@@ -206,8 +216,14 @@
 
 		class InheritedPropertyInitializer : PropertyInitializer
 		{
-			string PropertyName;
+			string ObjectName;
 			Property Object;
+
+			PropertyInitializer()
+			{
+				Object = resolve_name(ObjectName);
+				Property = resolve_name(Object.Type, PropertyName);
+			}
 		}
 
 		association Class.Properties with Property.Class;
@@ -215,79 +231,33 @@
 		association Property.SubsettedProperties with Property.SubsettingProperties;
 		association Property.RedefinedProperties with Property.RedefiningProperties;
 
-		enum ExpressionKind
-		{
-			None,
-			Identifier,
-			Literal,
-			Bracket,
-			TypeOf,
-			TypeCast,
-			MemberAccess,
-			FunctionCall,
-			Indexer,
-			TypeIs,
-			TypeAs,
-			And,
-			Or,
-			ExclusiveOr,
-			AndAlso,
-			OrElse,
-			Coalesce,
-			Conditional,
-			PostIncrementAssign,
-			PostDecrementAssign,
-			PreIncrementAssign,
-			PreDecrementAssign,
-			UnaryPlus,
-			Negate,
-			OnesComplement,
-			Not,
-			Multiply,
-			Divide,
-			Modulo,
-			Add,
-			Subtract,
-			LeftShift,
-			RightShift,
-			LessThan,
-			GreaterThan,
-			LessThanOrEqual,
-			GreaterThanOrEqual,
-			Equal,
-			NotEqual,
-			Assign,
-			MultiplyAssign,
-			DivideAssign,
-			ModuloAssign,
-			AddAssign,
-			SubtractAssign,
-			LeftShiftAssign,
-			RightShiftAssign,
-			AndAssign,
-			ExclusiveOrAssign,
-			OrAssign
-		}
 
 		abstract class Expression : TypedElement
 		{
-			Expression()
-			{
-				Kind = ExpressionKind.None;
-			}
-
-			ExpressionKind Kind;// = ExpressionKind.None;
 			inherited Type ExpectedType;
 		}
+
+		class BracketExpression : Expression
+		{
+			BracketExpression()
+			{
+				Type = Expression.Type;
+				Expression.ExpectedType = ExpectedType;
+			}
+
+			containment Expression Expression;
+		}
+
 
 		abstract class BoundExpression : Expression
 		{
 			BoundExpression()
 			{
-			    Definition = bind(this, Definitions);
+			    Definition = bind(this);
 				Type = get_type(Definition);
 			}
 
+			containment list<Expression> Arguments;
 			synthetized list<object> Definitions;
 			synthetized object Definition;
 		}
@@ -300,157 +270,47 @@
 			}
 		}
 
-		class UnaryExpression : Expression
-		{
-			UnaryExpression()
-			{
-				Type = Expression.Type;
-				Expression.ExpectedType = this.ExpectedType;
-			}
-
-			containment Expression Expression;
-		}
-
-		abstract class BinaryExpression : Expression
-		{
-			containment Expression Left;
-			containment Expression Right;
-		}
-
-		class BinaryArithmeticExpression : BinaryExpression
-		{
-			BinaryArithmeticExpression()
-			{
-				Type = balance(Left.Type, Right.Type);
-				Left.ExpectedType = ExpectedType;
-				Right.ExpectedType = ExpectedType;
-			}
-		}
-
-		class BinaryComparisonExpression : BinaryExpression
-		{
-			lazy Type BalancedType;
-			/*init
-			{
-				Type = BoolType;
-				BalancedType = balance(Left.Type, Right.Type);
-				Left.ExpectedType = BalancedType;
-				Right.ExpectedType = BalancedType;
-			}*/
-		}
-
-		class BinaryLogicalExpression : BinaryExpression
-		{
-			/*init
-			{
-				Type = BoolType;
-				Left.ExpectedType = BoolType;
-				Right.ExpectedType = BoolType;
-			}*/
-		}
-
-		class NullCoalescingExpression : BinaryExpression
-		{
-			lazy Type BalancedType;
-			/*init
-			{
-				Type = balance(Left.Type, Right.Type);
-				Left.ExpectedType = Type;
-				Right.ExpectedType = Type;
-			}*/
-		}
-
-		class AssignmentExpression : BinaryExpression
-		{
-			/*init
-			{
-				Type = Left.Type;
-				Right.ExpectedType = Type;
-			}*/
-		}
-
-		class TypeConversionExpression : Expression
+		abstract class TypeConversionExpression : Expression
 		{
 			Type TypeReference;
 			containment Expression Expression;
-			/*init
+			TypeConversionExpression()
 			{
 				Type = TypeReference;
-				Expression.ExpectedType = AnyType;
-			}*/
+				Expression.ExpectedType = null;
+			}
 		}
+
+		class TypeAsExpression : TypeConversionExpression
+		{
+		}
+
+		class TypeCastExpression : TypeConversionExpression
+		{
+		}
+
 
 		class TypeCheckExpression : Expression
 		{
 			Type TypeReference;
 			containment Expression Expression;
-			/*init
+
+			TypeCheckExpression()
 			{
-				Type = BoolType;
-				Expression.ExpectedType = AnyType;
-			}*/
+				Type = typeof(bool);
+				Expression.ExpectedType = null;
+			}
 		}
 
 		class TypeOfExpression : Expression
 		{
 			Type TypeReference;
-			/*init
-			{
-				Type = TypeReference;
-			}*/
-		}
 
-		class ConstantExpression : Expression
-		{
-			object Value;
-			/*init
+			TypeOfExpression()
 			{
-				Type = get_type(Value);
-			}*/
-		}
-
-		class IdentifierExpression : BoundExpression
-		{
-			string Name;
-			/*init
-			{
-				Definitions = resolve_name(Name);
-				Value.ExpectedType = ExpectedType;
-			}*/
-		}
-
-		class MemberAccessExpression : BoundExpression
-		{
-			containment Expression Expression;
-			string Name;
-			/*init
-			{
-				Definitions = resolve_name(Expression.Type, Name);
-				Value.ExpectedType = ExpectedType;
-			}*/
-		}
-
-		class FunctionCallExpression : BoundExpression
-		{
-			containment Expression Expression;
-			containment list<Expression> Arguments;
-			FunctionCallExpression()
-			{
-				Definitions = select_of_type(Expression.Definitions, typeof(Operation));
-				Value.ExpectedType = ExpectedType;
+				Type = typeof(Type);
 			}
-		}	
-
-		class IndexerExpression : BoundExpression
-		{
-			containment Expression Expression;
-			containment list<Expression> Arguments;
-			/*init
-			{
-				Definitions = Expression.Definitions;
-				Value.ExpectedType = ExpectedType;
-			}*/
-		}	
+		}
 
 		class ConditionalExpression : Expression
 		{
@@ -458,32 +318,444 @@
 			Type BalancedType;
 			containment Expression Then;
 			containment Expression Else;
-			/*init
-			{
-				Condition.ExpectedType = BoolType;
-				Type = balance(Then.Type, Else.Type);
-				Left.ExpectedType = ExpectedType;
-				Right.ExpectedType = ExpectedType;
-			}*/
-		}
-	}
-}
-/*
-namespace MetaDslx.Core.X = "http://metadslx.core/1.0/X"
-{
-	metamodel X
-	{
-	}
-}
 
-namespace MetaDslx.Core = "http://metadslx.core/1.0"
-{
-	metamodel Z
-	{
-		class MetaClass
+			ConditionalExpression()
+			{
+				Condition.ExpectedType = typeof(bool);
+				Type = balance(Then.Type, Else.Type);
+				Then.ExpectedType = ExpectedType;
+				Else.ExpectedType = ExpectedType;
+			}
+		}
+
+		class ConstantExpression : Expression
+		{
+			object Value;
+
+			ConstantExpression()
+			{
+				Type = get_type(Value);
+			}
+		}
+
+		class IdentifierExpression : BoundExpression
+		{
+			string Name;
+
+			IdentifierExpression()
+			{
+				Definitions = resolve_name(Name);
+			}
+		}
+
+		class MemberAccessExpression : BoundExpression
+		{
+			containment Expression Expression;
+			string Name;
+
+			MemberAccessExpression()
+			{
+				Definitions = resolve_name(Expression.Type, Name);
+			}
+		}
+
+		class FunctionCallExpression : BoundExpression
+		{
+			containment Expression Expression;
+
+			FunctionCallExpression()
+			{
+				Definitions = select_of_type(Expression, typeof(FunctionType));
+			}
+		}	
+
+		class IndexerExpression : BoundExpression
+		{
+			containment Expression Expression;
+
+			IndexerExpression()
+			{
+				Definitions = select_of_name(select_of_type(Expression, typeof(FunctionType)), "operator[]");
+			}
+		}	
+
+		abstract class OperatorExpression : BoundExpression
+		{
+			string Name;
+
+			OperatorExpression()
+			{
+				Definitions = resolve_name(Name);
+			}
+		}
+
+		abstract class UnaryExpression : OperatorExpression
+		{
+			UnaryExpression()
+			{
+				Arguments = Expression;
+			}
+
+			containment Expression Expression;
+		}
+
+		class UnaryPlusExpression : UnaryExpression
+		{
+			UnaryPlusExpression()
+			{
+				Name = "operator+()";
+			}
+		}
+
+		class NegateExpression : UnaryExpression
+		{
+			NegateExpression()
+			{
+				Name ="operator-()";
+			}
+		}
+
+		class OnesComplementExpression : UnaryExpression
+		{
+			OnesComplementExpression()
+			{
+				Name ="operator~()";
+			}
+		}
+
+		class NotExpression : UnaryExpression
+		{
+			NotExpression()
+			{
+				Name ="operator!()";
+			}
+		}
+
+
+		abstract class UnaryAssignExpression : UnaryExpression
 		{
 		}
+
+		class PostIncrementAssignExpression : UnaryAssignExpression
+		{
+			PostIncrementAssignExpression()
+			{
+				Name ="operator()++";
+			}
+		}
+
+		class PostDecrementAssignExpression : UnaryAssignExpression
+		{
+			PostDecrementAssignExpression()
+			{
+				Name ="operator()--";
+			}
+		}
+
+		class PreIncrementAssignExpression : UnaryAssignExpression
+		{
+			PreIncrementAssignExpression()
+			{
+				Name ="operator++()";
+			}
+		}
+
+		class PreDecrementAssignExpression : UnaryAssignExpression
+		{
+			PreDecrementAssignExpression()
+			{
+				Name ="operator--()";
+			}
+		}
+
+
+		abstract class BinaryExpression : OperatorExpression
+		{
+			BinaryExpression()
+			{
+				Arguments = Left;
+				Arguments = Right;
+			}
+
+			containment Expression Left;
+			containment Expression Right;
+		}
+
+		abstract class BinaryArithmeticExpression : BinaryExpression
+		{
+		}
+
+		class MultiplyExpression : BinaryArithmeticExpression
+		{
+			MultiplyExpression()
+			{
+				Name = "operator()*()";
+			}
+		}
+
+		class DivideExpression : BinaryArithmeticExpression
+		{
+			DivideExpression()
+			{
+				Name = "operator()/()";
+			}
+		}
+
+		class ModuloExpression : BinaryArithmeticExpression
+		{
+			ModuloExpression()
+			{
+				Name = "operator()%()";
+			}
+		}
+
+		class AddExpression : BinaryArithmeticExpression
+		{
+			AddExpression()
+			{
+				Name = "operator()+()";
+			}
+		}
+
+		class SubtractExpression : BinaryArithmeticExpression
+		{
+			SubtractExpression()
+			{
+				Name = "operator()-()";
+			}
+		}
+
+		class LeftShiftExpression : BinaryArithmeticExpression
+		{
+			LeftShiftExpression()
+			{
+				Name = "operator()<<()";
+			}
+		}
+
+		class RightShiftExpression : BinaryArithmeticExpression
+		{
+			RightShiftExpression()
+			{
+				Name = "operator()>>()";
+			}
+		}
+
+
+		abstract class BinaryComparisonExpression : BinaryExpression
+		{
+		}
+
+		class LessThanExpression : BinaryComparisonExpression
+		{
+			LessThanExpression()
+			{
+				Name = "operator()<()";
+			}
+		}
+
+		class LessThanOrEqualExpression : BinaryComparisonExpression
+		{
+			LessThanOrEqualExpression()
+			{
+				Name = "operator()<=()";
+			}
+		}
+
+		class GreaterThanExpression : BinaryComparisonExpression
+		{
+			GreaterThanExpression()
+			{
+				Name = "operator()>()";
+			}
+		}
+
+		class GreaterThanOrEqualExpression : BinaryComparisonExpression
+		{
+			GreaterThanOrEqualExpression()
+			{
+				Name = "operator()>=()";
+			}
+		}
+
+		class EqualExpression : BinaryComparisonExpression
+		{
+			EqualExpression()
+			{
+				Name = "operator()==()";
+			}
+		}
+
+		class NotEqualExpression : BinaryComparisonExpression
+		{
+			NotEqualExpression()
+			{
+				Name = "operator()!=()";
+			}
+		}
+
+
+		abstract class BinaryLogicalExpression : BinaryExpression
+		{
+		}
+
+		class AndExpression : BinaryLogicalExpression
+		{
+			AndExpression()
+			{
+				Name = "operator()&()";
+			}
+		}
+
+		class OrExpression : BinaryLogicalExpression
+		{
+			OrExpression()
+			{
+				Name = "operator()|()";
+			}
+		}
+
+		class ExclusiveOrExpression : BinaryLogicalExpression
+		{
+			ExclusiveOrExpression()
+			{
+				Name = "operator()^()";
+			}
+		}
+
+		class AndAlsoExpression : BinaryLogicalExpression
+		{
+			AndAlsoExpression()
+			{
+				Name = "operator()&&()";
+			}
+		}
+
+		class OrElseExpression : BinaryLogicalExpression
+		{
+			OrElseExpression()
+			{
+				Name = "operator()||()";
+			}
+		}
+
+
+		class NullCoalescingExpression : BinaryExpression
+		{
+			NullCoalescingExpression()
+			{
+				Name = "operator()??()";
+			}
+		}
+
+		abstract class AssignmentExpression : BinaryExpression
+		{
+			AssignmentExpression()
+			{
+				Type = Left.Type;
+				Right.ExpectedType = Type;
+			}
+		}
+
+		class AssignExpression : AssignmentExpression
+		{
+			AssignExpression()
+			{
+				Name = "operator()=()";
+			}
+		}
+
+
+		abstract class ArithmeticAssignmentExpression : AssignmentExpression
+		{
+		}
+
+		class MultiplyAssignExpression : ArithmeticAssignmentExpression
+		{
+			MultiplyAssignExpression()
+			{
+				Name = "operator()*=()";
+			}
+		}
+
+		class DivideAssignExpression : ArithmeticAssignmentExpression
+		{
+			DivideAssignExpression()
+			{
+				Name = "operator()/=()";
+			}
+		}
+
+		class ModuloAssignExpression : ArithmeticAssignmentExpression
+		{
+			ModuloAssignExpression()
+			{
+				Name = "operator()%=()";
+			}
+		}
+
+		class AddAssignExpression : ArithmeticAssignmentExpression
+		{
+			AddAssignExpression()
+			{
+				Name = "operator()+=()";
+			}
+		}
+
+		class SubtractAssignExpression : ArithmeticAssignmentExpression
+		{
+			SubtractAssignExpression()
+			{
+				Name = "operator()-=()";
+			}
+		}
+
+		class LeftShiftAssignExpression : ArithmeticAssignmentExpression
+		{
+			LeftShiftAssignExpression()
+			{
+				Name = "operator()<<=()";
+			}
+		}
+
+		class RightShiftAssignExpression : ArithmeticAssignmentExpression
+		{
+			RightShiftAssignExpression()
+			{
+				Name = "operator()>>=()";
+			}
+		}
+
+
+		abstract class LogicalAssignmentExpression : AssignmentExpression
+		{
+		}
+
+		class AndAssignExpression : LogicalAssignmentExpression
+		{
+			AndAssignExpression()
+			{
+				Name = "operator()&=()";
+			}
+		}
+
+		class ExclusiveOrAssignExpression : LogicalAssignmentExpression
+		{
+			ExclusiveOrAssignExpression()
+			{
+				Name = "operator()^=()";
+			}
+		}
+
+		class OrAssignExpression : LogicalAssignmentExpression
+		{
+			OrAssignExpression()
+			{
+				//Type = X *= Y++;
+				Name = "operator()|=()";
+			}
+		}
+
+
 	}
 }
-
-*/

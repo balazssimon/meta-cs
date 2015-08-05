@@ -28,7 +28,7 @@ annotationParam : name=identifier TAssign value=expression;
 */
 
 
-namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName TAssign  stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName TAssign stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
 
 
 metamodelDeclaration: annotation* KMetamodel identifier TOpenBrace declaration* TCloseBrace;
@@ -82,19 +82,24 @@ typeReference : collectionType | simpleType;
 
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
 
+
 objectType 
-	:  KObject 
-	|  KString
+	: KObject 
+	| KString
 	;
+
 primitiveType 
-	:  KInt 
-	|  KLong 
-	|  KFloat 
-	|  KDouble 
-	|  KByte 
-	|  KBool
+	: KInt 
+	| KLong 
+	| KFloat 
+	| KDouble 
+	| KByte 
+	| KBool
 	;
-voidType :  KVoid;
+
+voidType 
+	: KVoid
+	;
 
 
 nullableType :  primitiveType TQuestion;
@@ -132,10 +137,11 @@ argumentList
 
 
 
+
 expression 
-	: TOpenParen typeReference TCloseParen expression #castExpression  
+	: TOpenParen typeReference TCloseParen expression #castExpression 
     | KTypeof TOpenParen typeReference TCloseParen #typeofExpression 
-	| TOpenParen expression TCloseParen #bracketExpression  
+	| TOpenParen expression TCloseParen #bracketExpression 
 	| KThis #thisExpression 
 	| value=literal #constantExpression 
 	|  name=identifier #identifierExpression 
@@ -145,18 +151,18 @@ expression
     | expression kind=postOperator #postExpression 
     | kind=preOperator expression #preExpression 
     | kind=unaryOperator expression #unaryExpression 
-    | expression KAs typeReference #typeConversionExpression  
+    | expression KAs typeReference #typeConversionExpression 
     | expression KIs typeReference #typeCheckExpression 
-    | left=expression kind=multiplicativeOperator right=expression #multiplicativeExpression 
-    | left=expression kind=additiveOperator right=expression #additiveExpression 
-    | left=expression kind=shiftOperator right=expression #shiftExpression 
-    | left=expression kind=comparisonOperator right=expression #comparisonExpression 
-    | left=expression kind=equalityOperator right=expression #equalityExpression 
-    | left=expression TAmpersand right=expression #bitwiseAndExpression  
-    | left=expression THat right=expression #bitwiseXorExpression  
-    | left=expression TBar right=expression #bitwiseOrExpression  
-    | left=expression TAndAlso right=expression #logicalAndExpression  
-    | left=expression TOrElse right=expression #logicalOrExpression  
+    | left=expression kind=multiplicativeOperator right=expression #multiplicativeExpression
+    | left=expression kind=additiveOperator right=expression #additiveExpression
+    | left=expression kind=shiftOperator right=expression #shiftExpression
+    | left=expression kind=comparisonOperator right=expression #comparisonExpression
+    | left=expression kind=equalityOperator right=expression #equalityExpression
+    | left=expression TAmpersand right=expression #bitwiseAndExpression 
+    | left=expression THat right=expression #bitwiseXorExpression 
+    | left=expression TBar right=expression #bitwiseOrExpression 
+    | left=expression TAndAlso right=expression #logicalAndExpression 
+    | left=expression TOrElse right=expression #logicalOrExpression 
     | left=expression TQuestionQuestion right=expression #nullCoalescingExpression 
     | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression 
     | left=expression operator=assignmentOperator right=expression #assignmentExpression 
@@ -237,6 +243,7 @@ identifier : IdentifierNormal /*| IdentifierVerbatim*/;
 //identifier : IdentifierGeneral | IdentifierVerbatim;
 
 // Literals
+
 literal 
     : nullLiteral
 	| booleanLiteral
@@ -247,18 +254,18 @@ literal
 	;
 
 // Null literal
-nullLiteral : KNull ;
+nullLiteral : KNull;
 
 // Boolean literals
-booleanLiteral : KTrue | KFalse ;
+booleanLiteral : KTrue | KFalse;
 
 // Number literals
-integerLiteral : IntegerLiteral ;
-decimalLiteral : DecimalLiteral ;
-scientificLiteral : ScientificLiteral ;
+integerLiteral : IntegerLiteral;
+decimalLiteral : DecimalLiteral;
+scientificLiteral : ScientificLiteral;
 
 // String literals
-stringLiteral : RegularStringLiteral ;
+stringLiteral : RegularStringLiteral;
 
 
 /*

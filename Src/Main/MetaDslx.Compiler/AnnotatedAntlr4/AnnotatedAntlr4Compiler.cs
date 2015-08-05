@@ -211,6 +211,14 @@ namespace MetaDslx.Compiler
             currentGrammar.Modes.Add(currentMode);
             this.CollectAnnotations(context.annotation());
 
+            this.dynamicAnnotations.Add("TypeDef");
+            this.dynamicAnnotations.Add("NameDef");
+            this.dynamicAnnotations.Add("TypeCtr");
+            this.dynamicAnnotations.Add("NameCtr");
+            this.dynamicAnnotations.Add("TypeUse");
+            this.dynamicAnnotations.Add("NameUse");
+            this.dynamicAnnotations.Add("Symbol");
+            this.dynamicAnnotations.Add("Scope");
             this.dynamicAnnotations.Add("Value");
             foreach (var annot in currentGrammar.Annotations)
             {
@@ -307,6 +315,7 @@ namespace MetaDslx.Compiler
                 this.currentGrammar.ParserRules.Add(this.currentParserRule);
                 this.CollectAnnotations(context.annotation());
                 this.HandleAutoSymbols(this.currentParserRule);
+                this.HandleAutoProperties(this.currentParserRule);
                 this.currentParserRule = null;
             }
             return null;
@@ -338,6 +347,7 @@ namespace MetaDslx.Compiler
             }
             base.VisitLabeledAlt(context);
             this.HandleAutoSymbols(this.currentParserRuleAlt);
+            this.HandleAutoProperties(this.currentParserRuleAlt);
             this.currentParserRuleAlt = null;
             return null;
         }
@@ -363,6 +373,27 @@ namespace MetaDslx.Compiler
             }
         }
 
+        private void HandleAutoProperties(ParserRule rule)
+        {
+            if (rule == null) return;
+            Annotation autoSymbol = rule.Annotations.FirstOrDefault(a => a.Type.Name == "AutoProperty");
+            if (autoSymbol != null)
+            {
+                rule.Annotations.RemoveAll(a => a.Type.Name == "AutoProperty");
+                if (rule.Alternatives.Count > 0)
+                {
+                    foreach (var alt in rule.Alternatives)
+                    {
+                        this.CreatePropertyAnnotations(alt);
+                    }
+                }
+                else
+                {
+                    this.CreatePropertyAnnotations(rule);
+                }
+            }
+        }
+
         private void CreateSymbolAnnotations(ParserRule rule)
         {
             if (rule == null) return;
@@ -374,6 +405,11 @@ namespace MetaDslx.Compiler
                 symbolAnnot.Value = this.ToPascalCase(rule.Name);
                 rule.Annotations.Add(symbolAnnot);
             }
+            this.CreatePropertyAnnotations(rule);
+        }
+
+        private void CreatePropertyAnnotations(ParserRule rule)
+        {
             foreach (var elem in rule.Elements)
             {
                 if (elem.IsParserRule)
@@ -1050,20 +1086,110 @@ namespace MetaDslx.Compiler
                 WriteLine("}");
                 DecIndent();
                 WriteLine("}");
+                if (isParser)
+                {
+                    WriteLine("this.HandleSymbolType(node);");
+                }
                 WriteLine("return null;");
             }
             else
             {
-                WriteLine("return this.lexerAnnotator.VisitTerminal(node, treeAnnotations);");
+                WriteLine("this.lexerAnnotator.VisitTerminal(node, treeAnnotations);");
+                if (isParser)
+                {
+                    WriteLine("this.HandleSymbolType(node);");
+                }
+                WriteLine("return null;");
             }
             DecIndent();
             WriteLine("}");
 
             if (isParser)
             {
+                this.GenerateOverrideSymbolType();
                 this.GenerateAnnotatorVisitMethods();
             }
 
+            DecIndent();
+            WriteLine("}");
+        }
+
+        private void GenerateOverrideSymbolType()
+        {
+            WriteLine("");
+            WriteLine("private void HandleSymbolType(IParseTree node)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("List<object> treeAnnotList = null;");
+            WriteLine("if (this.treeAnnotations.TryGetValue(node, out treeAnnotList))");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("foreach (var treeAnnot in treeAnnotList)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("SymbolTypeAnnotation sta = treeAnnot as SymbolTypeAnnotation;");
+            WriteLine("if (sta != null)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("this.OverrideSymbolType(node, sta.SymbolType);");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
+            WriteLine(@"treeAnnotList.RemoveAll(a => a is SymbolTypeAnnotation);");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("");
+            WriteLine("private void OverrideSymbolType(IParseTree node, Type symbolType)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("if (node == null) return;");
+            WriteLine("if (symbolType == null) return;");
+            WriteLine("bool set = false;");
+            WriteLine("while(!set && node != null)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("List<object> treeAnnotList = null;");
+            WriteLine("if (this.treeAnnotations.TryGetValue(node, out treeAnnotList))");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("foreach (var treeAnnot in treeAnnotList)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("SymbolTypedAnnotation sta = treeAnnot as SymbolTypedAnnotation;");
+            WriteLine("if (sta != null)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("set = true;");
+            WriteLine("if (sta.SymbolType == null)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("sta.SymbolType = symbolType;");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("else if (sta.OverrideSymbolType)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("sta.SymbolType = symbolType;");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("else");
+            WriteLine("{");
+            IncIndent();
+            WriteLine(@"throw new InvalidOperationException(""Cannot change symbol type from '""+sta.SymbolType+""' to '""+symbolType+""'"");");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("node = node.Parent;");
+            DecIndent();
+            WriteLine("}");
             DecIndent();
             WriteLine("}");
         }
@@ -1182,6 +1308,7 @@ namespace MetaDslx.Compiler
                     }
                 }
             }
+            this.WriteLine("this.HandleSymbolType(context);");
             this.WriteLine("return base.Visit{0}(context);", ToPascalCase(rule.Name));
             DecIndent();
             WriteLine("}");
@@ -1190,7 +1317,6 @@ namespace MetaDslx.Compiler
         private void GenerateAnnotationCreation(Annotation annot, string variableName, bool createVariable)
         {
             string annotName = this.ToAnnotationName(annot.Type.Name);
-            //if (annot.Type.Name == "AutoSymbol") return;
             if (createVariable)
             {
                 WriteLine("{1} {0} = new {1}();", variableName, annotName);
@@ -1219,7 +1345,7 @@ namespace MetaDslx.Compiler
                 if (annot.Value != null)
                 {
                     string annotValue = annot.Value;
-                    if (annot.Type.Name == "Symbol" || annot.Type.Name == "TypeCtr" || annot.Type.Name == "TypeDef" || annot.Type.Name == "NameCtr" || annot.Type.Name == "NameDef")
+                    if (annot.Type.Name == "Symbol" || annot.Type.Name == "SymbolType" || annot.Type.Name == "TypeCtr" || annot.Type.Name == "TypeDef" || annot.Type.Name == "NameCtr" || annot.Type.Name == "NameDef")
                     {
                         WriteLine("{0}.SymbolType = typeof({1});", variableName, annotValue);
                     }
@@ -1271,7 +1397,7 @@ namespace MetaDslx.Compiler
                 {
                     if (prop.Value != null)
                     {
-                        if (prop.Name == "symbolType" && (annot.Type.Name == "Symbol" || annot.Type.Name == "TypeCtr" || annot.Type.Name == "TypeDef" || annot.Type.Name == "NameCtr" || annot.Type.Name == "NameDef"))
+                        if (prop.Name == "symbolType" && (annot.Type.Name == "Symbol" || annot.Type.Name == "SymbolType" || annot.Type.Name == "TypeCtr" || annot.Type.Name == "TypeDef" || annot.Type.Name == "NameCtr" || annot.Type.Name == "NameDef"))
                         {
                             WriteLine("{0}.{1} = typeof({2});", variableName, propName, prop.Value);
                         }

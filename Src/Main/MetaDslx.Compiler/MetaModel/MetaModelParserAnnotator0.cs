@@ -26,144 +26,129 @@ using MetaDslx.Core;
         public Dictionary<object, List<object>> TreeAnnotations { get { return this.treeAnnotations; } }
         
         private QualifiedNameAnnotation qualifiedName_QualifiedName;
-        private PropertyAnnotation annotation_Property;
-        private PropertyAnnotation annotation_Identifier_Property;
+        private NameDefAnnotation namespaceDeclaration_NameDef;
+        private PropertyAnnotation namespaceDeclaration_StringLiteral_Property;
         private PropertyAnnotation namespaceDeclaration_MetamodelDeclaration_Property;
-        private PropertyAnnotation enumDeclaration_Property;
+        private TypeDefAnnotation metamodelDeclaration_TypeDef;
+        private PropertyAnnotation metamodelDeclaration_Declaration_Property;
+        private TypeDefAnnotation enumDeclaration_TypeDef;
         private PropertyAnnotation enumDeclaration_EnumValues_Property;
+        private NameDefAnnotation enumValue_NameDef;
         private PropertyAnnotation enumMemberDeclaration_OperationDeclaration_Property;
-        private PropertyAnnotation classDeclaration_Property;
+        private TypeDefAnnotation classDeclaration_TypeDef;
         private PropertyAnnotation classDeclaration_KAbstract_Property;
         private PropertyAnnotation classDeclaration_ClassAncestors_Property;
-        private InheritScopeAnnotation classDeclaration_ClassAncestors_InheritScope;
+        private TypeUseAnnotation classAncestor_QualifiedName_TypeUse;
         private PropertyAnnotation classMemberDeclaration_FieldDeclaration_Property;
         private PropertyAnnotation classMemberDeclaration_OperationDeclaration_Property;
-        private PropertyAnnotation classMemberDeclaration_ConstructorDeclaration_Property;
+        private NameDefAnnotation fieldDeclaration_NameDef;
         private PropertyAnnotation fieldDeclaration_FieldModifier_Property;
-        private PropertyAnnotation fieldDeclaration_TypeReference_Property;
-        private PropertyAnnotation redefinitions_NameUseList_Property;
-        private PropertyAnnotation subsettings_NameUseList_Property;
+        private TypeUseAnnotation returnType_TypeUse;
+        private TypeUseAnnotation typeReference_TypeUse;
+        private TypeUseAnnotation simpleType_TypeUse;
         private NameAnnotation objectType_Name;
+        private PreDefSymbolAnnotation objectType_KObject_PreDefSymbol;
+        private PreDefSymbolAnnotation objectType_KString_PreDefSymbol;
         private NameAnnotation primitiveType_Name;
+        private PreDefSymbolAnnotation primitiveType_KInt_PreDefSymbol;
+        private PreDefSymbolAnnotation primitiveType_KLong_PreDefSymbol;
+        private PreDefSymbolAnnotation primitiveType_KFloat_PreDefSymbol;
+        private PreDefSymbolAnnotation primitiveType_KDouble_PreDefSymbol;
+        private PreDefSymbolAnnotation primitiveType_KByte_PreDefSymbol;
+        private PreDefSymbolAnnotation primitiveType_KBool_PreDefSymbol;
         private NameAnnotation voidType_Name;
+        private PreDefSymbolAnnotation voidType_KVoid_PreDefSymbol;
+        private TypeCtrAnnotation nullableType_TypeCtr;
         private PropertyAnnotation nullableType_PrimitiveType_Property;
+        private TypeCtrAnnotation collectionType_TypeCtr;
         private PropertyAnnotation collectionType_CollectionKind_Property;
         private PropertyAnnotation collectionType_SimpleType_Property;
+        private NameDefAnnotation operationDeclaration_NameDef;
+        private TypeCtrAnnotation operationDeclaration_TypeCtr;
         private PropertyAnnotation operationDeclaration_ReturnType_Property;
         private PropertyAnnotation operationDeclaration_ParameterList_Property;
-        private PropertyAnnotation parameter_TypeReference_Property;
-        private PropertyAnnotation constructorDeclaration_InitializerDeclaration_Property;
-        private PropertyAnnotation synthetizedPropertyInitializer_Property_Property;
-        private PropertyAnnotation synthetizedPropertyInitializer_Expression_Property;
-        private PropertyAnnotation inheritedPropertyInitializer_Object_Property;
-        private PropertyAnnotation inheritedPropertyInitializer_Property_Property;
-        private PropertyAnnotation inheritedPropertyInitializer_Expression_Property;
+        private NameDefAnnotation parameter_NameDef;
+        private SymbolAnnotation argumentList_Symbol;
+        private PropertyAnnotation argumentList_Expression_Property;
         private ExpressionAnnotation expression_Expression;
-        private SymbolTypeAnnotation castExpression_SymbolType;
+        private SymbolAnnotation castExpression_Symbol;
         private PropertyAnnotation castExpression_TypeReference_Property;
         private PropertyAnnotation castExpression_Expression_Property;
-        private SymbolTypeAnnotation typeofExpression_SymbolType;
+        private SymbolAnnotation typeofExpression_Symbol;
         private PropertyAnnotation typeofExpression_TypeReference_Property;
-        private SymbolTypeAnnotation bracketExpression_SymbolType;
+        private SymbolAnnotation bracketExpression_Symbol;
         private PropertyAnnotation bracketExpression_Expression_Property;
-        private SymbolTypeAnnotation thisExpression_SymbolType;
-        private SymbolTypeAnnotation constantExpression_SymbolType;
-        private PropertyAnnotation constantExpression_Value_Property;
-        private SymbolTypeAnnotation identifierExpression_SymbolType;
-        private PropertyAnnotation identifierExpression_Name_Property;
-        private SymbolTypeAnnotation indexerExpression_SymbolType;
+        private SymbolAnnotation constantExpression_Symbol;
+        private PropertyAnnotation constantExpression_Literal_Property;
+        private NameUseAnnotation identifierExpression_NameUse;
+        private SymbolAnnotation identifierExpression_Symbol;
+        private PropertyAnnotation identifierExpression_Identifier_Property;
+        private SymbolAnnotation indexerExpression_Symbol;
         private PropertyAnnotation indexerExpression_Expression_Property;
         private PropertyAnnotation indexerExpression_ArgumentList_Property;
-        private SymbolTypeAnnotation functionCallExpression_SymbolType;
+        private SymbolAnnotation functionCallExpression_Symbol;
         private PropertyAnnotation functionCallExpression_Expression_Property;
         private PropertyAnnotation functionCallExpression_ArgumentList_Property;
-        private SymbolTypeAnnotation memberAccessExpression_SymbolType;
+        private SymbolAnnotation memberAccessExpression_Symbol;
         private PropertyAnnotation memberAccessExpression_Expression_Property;
-        private PropertyAnnotation memberAccessExpression_Name_Property;
+        private PropertyAnnotation memberAccessExpression_Identifier_Property;
+        private SymbolAnnotation postExpression_Symbol;
         private PropertyAnnotation postExpression_Expression_Property;
-        private PropertyAnnotation postExpression_Kind_Property;
-        private PropertyAnnotation preExpression_Kind_Property;
+        private PropertyAnnotation postExpression_Operator_Property;
+        private SymbolAnnotation preExpression_Symbol;
+        private PropertyAnnotation preExpression_Operator_Property;
         private PropertyAnnotation preExpression_Expression_Property;
-        private PropertyAnnotation unaryExpression_Kind_Property;
+        private SymbolAnnotation unaryExpression_Symbol;
+        private PropertyAnnotation unaryExpression_Operator_Property;
         private PropertyAnnotation unaryExpression_Expression_Property;
-        private SymbolTypeAnnotation typeConversionExpression_SymbolType;
+        private SymbolAnnotation typeConversionExpression_Symbol;
         private PropertyAnnotation typeConversionExpression_Expression_Property;
         private PropertyAnnotation typeConversionExpression_TypeReference_Property;
-        private SymbolTypeAnnotation typeCheckExpression_SymbolType;
+        private SymbolAnnotation typeCheckExpression_Symbol;
         private PropertyAnnotation typeCheckExpression_Expression_Property;
         private PropertyAnnotation typeCheckExpression_TypeReference_Property;
+        private SymbolAnnotation multiplicativeExpression_Symbol;
         private PropertyAnnotation multiplicativeExpression_Left_Property;
-        private PropertyAnnotation multiplicativeExpression_Kind_Property;
+        private PropertyAnnotation multiplicativeExpression_Operator_Property;
         private PropertyAnnotation multiplicativeExpression_Right_Property;
+        private SymbolAnnotation additiveExpression_Symbol;
         private PropertyAnnotation additiveExpression_Left_Property;
-        private PropertyAnnotation additiveExpression_Kind_Property;
+        private PropertyAnnotation additiveExpression_Operator_Property;
         private PropertyAnnotation additiveExpression_Right_Property;
+        private SymbolAnnotation shiftExpression_Symbol;
         private PropertyAnnotation shiftExpression_Left_Property;
-        private PropertyAnnotation shiftExpression_Kind_Property;
+        private PropertyAnnotation shiftExpression_Operator_Property;
         private PropertyAnnotation shiftExpression_Right_Property;
+        private SymbolAnnotation comparisonExpression_Symbol;
         private PropertyAnnotation comparisonExpression_Left_Property;
-        private PropertyAnnotation comparisonExpression_Kind_Property;
+        private PropertyAnnotation comparisonExpression_Operator_Property;
         private PropertyAnnotation comparisonExpression_Right_Property;
+        private SymbolAnnotation equalityExpression_Symbol;
         private PropertyAnnotation equalityExpression_Left_Property;
-        private PropertyAnnotation equalityExpression_Kind_Property;
+        private PropertyAnnotation equalityExpression_Operator_Property;
         private PropertyAnnotation equalityExpression_Right_Property;
-        private SymbolTypeAnnotation bitwiseAndExpression_SymbolType;
+        private SymbolAnnotation bitwiseAndExpression_Symbol;
         private PropertyAnnotation bitwiseAndExpression_Left_Property;
         private PropertyAnnotation bitwiseAndExpression_Right_Property;
-        private SymbolTypeAnnotation bitwiseXorExpression_SymbolType;
+        private SymbolAnnotation bitwiseXorExpression_Symbol;
         private PropertyAnnotation bitwiseXorExpression_Left_Property;
         private PropertyAnnotation bitwiseXorExpression_Right_Property;
-        private SymbolTypeAnnotation bitwiseOrExpression_SymbolType;
+        private SymbolAnnotation bitwiseOrExpression_Symbol;
         private PropertyAnnotation bitwiseOrExpression_Left_Property;
         private PropertyAnnotation bitwiseOrExpression_Right_Property;
-        private SymbolTypeAnnotation logicalAndExpression_SymbolType;
+        private SymbolAnnotation logicalAndExpression_Symbol;
         private PropertyAnnotation logicalAndExpression_Left_Property;
         private PropertyAnnotation logicalAndExpression_Right_Property;
-        private SymbolTypeAnnotation logicalOrExpression_SymbolType;
+        private SymbolAnnotation logicalOrExpression_Symbol;
         private PropertyAnnotation logicalOrExpression_Left_Property;
         private PropertyAnnotation logicalOrExpression_Right_Property;
-        private SymbolTypeAnnotation nullCoalescingExpression_SymbolType;
-        private PropertyAnnotation nullCoalescingExpression_Left_Property;
-        private PropertyAnnotation nullCoalescingExpression_Right_Property;
-        private SymbolTypeAnnotation conditionalExpression_SymbolType;
+        private SymbolAnnotation conditionalExpression_Symbol;
         private PropertyAnnotation conditionalExpression_Condition_Property;
         private PropertyAnnotation conditionalExpression_Then_Property;
         private PropertyAnnotation conditionalExpression_Else_Property;
-        private PropertyAnnotation assignmentExpression_Left_Property;
-        private PropertyAnnotation assignmentExpression_Operator_Property;
-        private PropertyAnnotation assignmentExpression_Right_Property;
-        private SymbolTypeAnnotation postOperator_TPlusPlus_SymbolType;
-        private SymbolTypeAnnotation postOperator_TMinusMinus_SymbolType;
-        private SymbolTypeAnnotation preOperator_TPlusPlus_SymbolType;
-        private SymbolTypeAnnotation preOperator_TMinusMinus_SymbolType;
-        private SymbolTypeAnnotation unaryOperator_TPlus_SymbolType;
-        private SymbolTypeAnnotation unaryOperator_TMinus_SymbolType;
-        private SymbolTypeAnnotation unaryOperator_TTilde_SymbolType;
-        private SymbolTypeAnnotation unaryOperator_TExclamation_SymbolType;
-        private SymbolTypeAnnotation multiplicativeOperator_TAsterisk_SymbolType;
-        private SymbolTypeAnnotation multiplicativeOperator_TSlash_SymbolType;
-        private SymbolTypeAnnotation multiplicativeOperator_TPercent_SymbolType;
-        private SymbolTypeAnnotation additiveOperator_TPlus_SymbolType;
-        private SymbolTypeAnnotation additiveOperator_TMinus_SymbolType;
-        private SymbolTypeAnnotation shiftOperator_TLessThan_SymbolType;
-        private SymbolTypeAnnotation shiftOperator_TGreaterThan_SymbolType;
-        private SymbolTypeAnnotation comparisonOperator_TLessThan_SymbolType;
-        private SymbolTypeAnnotation comparisonOperator_TGreaterThan_SymbolType;
-        private SymbolTypeAnnotation comparisonOperator_TLessThanOrEqual_SymbolType;
-        private SymbolTypeAnnotation comparisonOperator_TGreaterThanOrEqual_SymbolType;
-        private SymbolTypeAnnotation equalityOperator_TEqual_SymbolType;
-        private SymbolTypeAnnotation equalityOperator_TNotEqual_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_TAssign_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_TAsteriskAssign_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_TSlashAssign_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_TPercentAssign_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_TPlusAssign_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_TMinusAssign_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_TLeftShiftAssign_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_TRightShiftAssign_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_TAmpersandAssign_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_THatAssign_SymbolType;
-        private SymbolTypeAnnotation assignmentOperator_TBarAssign_SymbolType;
+        private ScopeAnnotation associationDeclaration_Scope;
+        private NameUseAnnotation associationDeclaration_Source_NameUse;
+        private NameUseAnnotation associationDeclaration_Target_NameUse;
         private NameAnnotation identifier_Name;
         private IdentifierAnnotation identifier_Identifier;
         
@@ -177,102 +162,161 @@ using MetaDslx.Core;
             annotList.Add(this.qualifiedName_QualifiedName);
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaModelParser.AnnotationContext), annotList);
-            this.annotation_Property = new PropertyAnnotation();
-            this.annotation_Property.Name = "Annotations";
-            annotList.Add(this.annotation_Property);
-            this.annotation_Identifier_Property = new PropertyAnnotation();
-            this.annotation_Identifier_Property.Name = "Name";
-            
+            this.ruleAnnotations.Add(typeof(MetaModelParser.NamespaceDeclarationContext), annotList);
+            this.namespaceDeclaration_NameDef = new NameDefAnnotation();
+            this.namespaceDeclaration_NameDef.SymbolType = typeof(MetaNamespace);
+            this.namespaceDeclaration_NameDef.NestingProperty = "Namespaces";
+            this.namespaceDeclaration_NameDef.Scope = true;
+            this.namespaceDeclaration_NameDef.Merge = true;
+            annotList.Add(this.namespaceDeclaration_NameDef);
+            this.namespaceDeclaration_StringLiteral_Property = new PropertyAnnotation();
+            this.namespaceDeclaration_StringLiteral_Property.Name = "Uri";
             this.namespaceDeclaration_MetamodelDeclaration_Property = new PropertyAnnotation();
             this.namespaceDeclaration_MetamodelDeclaration_Property.Name = "Models";
             
             annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.MetamodelDeclarationContext), annotList);
+            this.metamodelDeclaration_TypeDef = new TypeDefAnnotation();
+            this.metamodelDeclaration_TypeDef.SymbolType = typeof(MetaModel);
+            annotList.Add(this.metamodelDeclaration_TypeDef);
+            this.metamodelDeclaration_Declaration_Property = new PropertyAnnotation();
+            this.metamodelDeclaration_Declaration_Property.Name = "Types";
+            
+            annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.EnumDeclarationContext), annotList);
-            this.enumDeclaration_Property = new PropertyAnnotation();
-            this.enumDeclaration_Property.Name = "Types";
-            annotList.Add(this.enumDeclaration_Property);
+            this.enumDeclaration_TypeDef = new TypeDefAnnotation();
+            this.enumDeclaration_TypeDef.SymbolType = typeof(MetaEnum);
+            annotList.Add(this.enumDeclaration_TypeDef);
             this.enumDeclaration_EnumValues_Property = new PropertyAnnotation();
             this.enumDeclaration_EnumValues_Property.Name = "EnumLiterals";
+            
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.EnumValueContext), annotList);
+            this.enumValue_NameDef = new NameDefAnnotation();
+            this.enumValue_NameDef.SymbolType = typeof(MetaEnumLiteral);
+            annotList.Add(this.enumValue_NameDef);
             
             this.enumMemberDeclaration_OperationDeclaration_Property = new PropertyAnnotation();
             this.enumMemberDeclaration_OperationDeclaration_Property.Name = "Operations";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ClassDeclarationContext), annotList);
-            this.classDeclaration_Property = new PropertyAnnotation();
-            this.classDeclaration_Property.Name = "Types";
-            annotList.Add(this.classDeclaration_Property);
+            this.classDeclaration_TypeDef = new TypeDefAnnotation();
+            this.classDeclaration_TypeDef.SymbolType = typeof(MetaClass);
+            annotList.Add(this.classDeclaration_TypeDef);
             this.classDeclaration_KAbstract_Property = new PropertyAnnotation();
             this.classDeclaration_KAbstract_Property.Name = "IsAbstract";
             this.classDeclaration_KAbstract_Property.Value = true;
             this.classDeclaration_ClassAncestors_Property = new PropertyAnnotation();
             this.classDeclaration_ClassAncestors_Property.Name = "SuperClasses";
-            this.classDeclaration_ClassAncestors_InheritScope = new InheritScopeAnnotation();
+            
+            this.classAncestor_QualifiedName_TypeUse = new TypeUseAnnotation();
+            this.classAncestor_QualifiedName_TypeUse.SymbolTypes.Add(typeof(MetaClass));
             
             this.classMemberDeclaration_FieldDeclaration_Property = new PropertyAnnotation();
             this.classMemberDeclaration_FieldDeclaration_Property.Name = "Properties";
             this.classMemberDeclaration_OperationDeclaration_Property = new PropertyAnnotation();
             this.classMemberDeclaration_OperationDeclaration_Property.Name = "Operations";
-            this.classMemberDeclaration_ConstructorDeclaration_Property = new PropertyAnnotation();
-            this.classMemberDeclaration_ConstructorDeclaration_Property.Name = "Constructor";
             
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.FieldDeclarationContext), annotList);
+            this.fieldDeclaration_NameDef = new NameDefAnnotation();
+            this.fieldDeclaration_NameDef.SymbolType = typeof(MetaProperty);
+            annotList.Add(this.fieldDeclaration_NameDef);
             this.fieldDeclaration_FieldModifier_Property = new PropertyAnnotation();
             this.fieldDeclaration_FieldModifier_Property.Name = "Kind";
-            this.fieldDeclaration_TypeReference_Property = new PropertyAnnotation();
-            this.fieldDeclaration_TypeReference_Property.Name = "Type";
             
-            this.redefinitions_NameUseList_Property = new PropertyAnnotation();
-            this.redefinitions_NameUseList_Property.Name = "RedefinedProperties";
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.ReturnTypeContext), annotList);
+            this.returnType_TypeUse = new TypeUseAnnotation();
+            annotList.Add(this.returnType_TypeUse);
             
-            this.subsettings_NameUseList_Property = new PropertyAnnotation();
-            this.subsettings_NameUseList_Property.Name = "SubsettedProperties";
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.TypeReferenceContext), annotList);
+            this.typeReference_TypeUse = new TypeUseAnnotation();
+            annotList.Add(this.typeReference_TypeUse);
+            
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.SimpleTypeContext), annotList);
+            this.simpleType_TypeUse = new TypeUseAnnotation();
+            annotList.Add(this.simpleType_TypeUse);
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ObjectTypeContext), annotList);
             this.objectType_Name = new NameAnnotation();
             annotList.Add(this.objectType_Name);
+            this.objectType_KObject_PreDefSymbol = new PreDefSymbolAnnotation();
+            this.objectType_KObject_PreDefSymbol.Value = MetaBuiltInType.Object;
+            this.objectType_KString_PreDefSymbol = new PreDefSymbolAnnotation();
+            this.objectType_KString_PreDefSymbol.Value = MetaBuiltInType.String;
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.PrimitiveTypeContext), annotList);
             this.primitiveType_Name = new NameAnnotation();
             annotList.Add(this.primitiveType_Name);
+            this.primitiveType_KInt_PreDefSymbol = new PreDefSymbolAnnotation();
+            this.primitiveType_KInt_PreDefSymbol.Value = MetaBuiltInType.Int;
+            this.primitiveType_KLong_PreDefSymbol = new PreDefSymbolAnnotation();
+            this.primitiveType_KLong_PreDefSymbol.Value = MetaBuiltInType.Long;
+            this.primitiveType_KFloat_PreDefSymbol = new PreDefSymbolAnnotation();
+            this.primitiveType_KFloat_PreDefSymbol.Value = MetaBuiltInType.Float;
+            this.primitiveType_KDouble_PreDefSymbol = new PreDefSymbolAnnotation();
+            this.primitiveType_KDouble_PreDefSymbol.Value = MetaBuiltInType.Double;
+            this.primitiveType_KByte_PreDefSymbol = new PreDefSymbolAnnotation();
+            this.primitiveType_KByte_PreDefSymbol.Value = MetaBuiltInType.Byte;
+            this.primitiveType_KBool_PreDefSymbol = new PreDefSymbolAnnotation();
+            this.primitiveType_KBool_PreDefSymbol.Value = MetaBuiltInType.Bool;
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.VoidTypeContext), annotList);
             this.voidType_Name = new NameAnnotation();
             annotList.Add(this.voidType_Name);
+            this.voidType_KVoid_PreDefSymbol = new PreDefSymbolAnnotation();
+            this.voidType_KVoid_PreDefSymbol.Value = MetaBuiltInType.Void;
             
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.NullableTypeContext), annotList);
+            this.nullableType_TypeCtr = new TypeCtrAnnotation();
+            this.nullableType_TypeCtr.SymbolType = typeof(MetaNullableType);
+            annotList.Add(this.nullableType_TypeCtr);
             this.nullableType_PrimitiveType_Property = new PropertyAnnotation();
             this.nullableType_PrimitiveType_Property.Name = "InnerType";
             
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.CollectionTypeContext), annotList);
+            this.collectionType_TypeCtr = new TypeCtrAnnotation();
+            this.collectionType_TypeCtr.SymbolType = typeof(MetaCollectionType);
+            annotList.Add(this.collectionType_TypeCtr);
             this.collectionType_CollectionKind_Property = new PropertyAnnotation();
             this.collectionType_CollectionKind_Property.Name = "Kind";
             this.collectionType_SimpleType_Property = new PropertyAnnotation();
             this.collectionType_SimpleType_Property.Name = "InnerType";
             
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.OperationDeclarationContext), annotList);
+            this.operationDeclaration_NameDef = new NameDefAnnotation();
+            this.operationDeclaration_NameDef.SymbolType = typeof(MetaOperation);
+            annotList.Add(this.operationDeclaration_NameDef);
+            this.operationDeclaration_TypeCtr = new TypeCtrAnnotation();
+            annotList.Add(this.operationDeclaration_TypeCtr);
             this.operationDeclaration_ReturnType_Property = new PropertyAnnotation();
             this.operationDeclaration_ReturnType_Property.Name = "ReturnType";
             this.operationDeclaration_ParameterList_Property = new PropertyAnnotation();
             this.operationDeclaration_ParameterList_Property.Name = "Parameters";
             
-            this.parameter_TypeReference_Property = new PropertyAnnotation();
-            this.parameter_TypeReference_Property.Name = "Type";
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.ParameterContext), annotList);
+            this.parameter_NameDef = new NameDefAnnotation();
+            this.parameter_NameDef.SymbolType = typeof(MetaParameter);
+            annotList.Add(this.parameter_NameDef);
             
-            this.constructorDeclaration_InitializerDeclaration_Property = new PropertyAnnotation();
-            this.constructorDeclaration_InitializerDeclaration_Property.Name = "Initializers";
-            
-            this.synthetizedPropertyInitializer_Property_Property = new PropertyAnnotation();
-            this.synthetizedPropertyInitializer_Property_Property.Name = "PropertyName";
-            this.synthetizedPropertyInitializer_Expression_Property = new PropertyAnnotation();
-            this.synthetizedPropertyInitializer_Expression_Property.Name = "Value";
-            
-            this.inheritedPropertyInitializer_Object_Property = new PropertyAnnotation();
-            this.inheritedPropertyInitializer_Object_Property.Name = "ObjectName";
-            this.inheritedPropertyInitializer_Property_Property = new PropertyAnnotation();
-            this.inheritedPropertyInitializer_Property_Property.Name = "PropertyName";
-            this.inheritedPropertyInitializer_Expression_Property = new PropertyAnnotation();
-            this.inheritedPropertyInitializer_Expression_Property.Name = "Value";
+            annotList = new List<object>();
+            this.ruleAnnotations.Add(typeof(MetaModelParser.ArgumentListContext), annotList);
+            this.argumentList_Symbol = new SymbolAnnotation();
+            this.argumentList_Symbol.SymbolType = typeof(ArgumentList);
+            annotList.Add(this.argumentList_Symbol);
+            this.argumentList_Expression_Property = new PropertyAnnotation();
+            this.argumentList_Expression_Property.Name = "Arguments";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ExpressionContext), annotList);
@@ -282,9 +326,9 @@ using MetaDslx.Core;
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.CastExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.castExpression_SymbolType = new SymbolTypeAnnotation();
-            this.castExpression_SymbolType.SymbolType = typeof(MetaTypeCastExpression);
-            annotList.Add(this.castExpression_SymbolType);
+            this.castExpression_Symbol = new SymbolAnnotation();
+            this.castExpression_Symbol.SymbolType = typeof(TypeConversionExpression);
+            annotList.Add(this.castExpression_Symbol);
             this.castExpression_TypeReference_Property = new PropertyAnnotation();
             this.castExpression_TypeReference_Property.Name = "TypeReference";
             this.castExpression_Expression_Property = new PropertyAnnotation();
@@ -293,109 +337,113 @@ using MetaDslx.Core;
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.TypeofExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.typeofExpression_SymbolType = new SymbolTypeAnnotation();
-            this.typeofExpression_SymbolType.SymbolType = typeof(MetaTypeOfExpression);
-            annotList.Add(this.typeofExpression_SymbolType);
+            this.typeofExpression_Symbol = new SymbolAnnotation();
+            this.typeofExpression_Symbol.SymbolType = typeof(TypeofExpression);
+            annotList.Add(this.typeofExpression_Symbol);
             this.typeofExpression_TypeReference_Property = new PropertyAnnotation();
             this.typeofExpression_TypeReference_Property.Name = "TypeReference";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.BracketExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.bracketExpression_SymbolType = new SymbolTypeAnnotation();
-            this.bracketExpression_SymbolType.SymbolType = typeof(MetaBracketExpression);
-            annotList.Add(this.bracketExpression_SymbolType);
+            this.bracketExpression_Symbol = new SymbolAnnotation();
+            this.bracketExpression_Symbol.SymbolType = typeof(BracketExpression);
+            annotList.Add(this.bracketExpression_Symbol);
             this.bracketExpression_Expression_Property = new PropertyAnnotation();
             this.bracketExpression_Expression_Property.Name = "Expression";
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaModelParser.ThisExpressionContext), annotList);
-            annotList.Add(this.expression_Expression);
-            this.thisExpression_SymbolType = new SymbolTypeAnnotation();
-            this.thisExpression_SymbolType.SymbolType = typeof(MetaThisExpression);
-            annotList.Add(this.thisExpression_SymbolType);
-            
-            annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ConstantExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.constantExpression_SymbolType = new SymbolTypeAnnotation();
-            this.constantExpression_SymbolType.SymbolType = typeof(MetaConstantExpression);
-            annotList.Add(this.constantExpression_SymbolType);
-            this.constantExpression_Value_Property = new PropertyAnnotation();
-            this.constantExpression_Value_Property.Name = "Value";
+            this.constantExpression_Symbol = new SymbolAnnotation();
+            this.constantExpression_Symbol.SymbolType = typeof(ConstantExpression);
+            annotList.Add(this.constantExpression_Symbol);
+            this.constantExpression_Literal_Property = new PropertyAnnotation();
+            this.constantExpression_Literal_Property.Name = "Literal";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.IdentifierExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.identifierExpression_SymbolType = new SymbolTypeAnnotation();
-            this.identifierExpression_SymbolType.SymbolType = typeof(MetaIdentifierExpression);
-            annotList.Add(this.identifierExpression_SymbolType);
-            this.identifierExpression_Name_Property = new PropertyAnnotation();
-            this.identifierExpression_Name_Property.Name = "Name";
+            this.identifierExpression_NameUse = new NameUseAnnotation();
+            annotList.Add(this.identifierExpression_NameUse);
+            this.identifierExpression_Symbol = new SymbolAnnotation();
+            this.identifierExpression_Symbol.SymbolType = typeof(IdentifierExpression);
+            annotList.Add(this.identifierExpression_Symbol);
+            this.identifierExpression_Identifier_Property = new PropertyAnnotation();
+            this.identifierExpression_Identifier_Property.Name = "Identifier";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.IndexerExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.indexerExpression_SymbolType = new SymbolTypeAnnotation();
-            this.indexerExpression_SymbolType.SymbolType = typeof(MetaIndexerExpression);
-            annotList.Add(this.indexerExpression_SymbolType);
+            this.indexerExpression_Symbol = new SymbolAnnotation();
+            this.indexerExpression_Symbol.SymbolType = typeof(IndexerExpression);
+            annotList.Add(this.indexerExpression_Symbol);
             this.indexerExpression_Expression_Property = new PropertyAnnotation();
             this.indexerExpression_Expression_Property.Name = "Expression";
             this.indexerExpression_ArgumentList_Property = new PropertyAnnotation();
-            this.indexerExpression_ArgumentList_Property.Name = "Arguments";
+            this.indexerExpression_ArgumentList_Property.Name = "ArgumentList";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.FunctionCallExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.functionCallExpression_SymbolType = new SymbolTypeAnnotation();
-            this.functionCallExpression_SymbolType.SymbolType = typeof(MetaFunctionCallExpression);
-            annotList.Add(this.functionCallExpression_SymbolType);
+            this.functionCallExpression_Symbol = new SymbolAnnotation();
+            this.functionCallExpression_Symbol.SymbolType = typeof(FunctionCallExpression);
+            annotList.Add(this.functionCallExpression_Symbol);
             this.functionCallExpression_Expression_Property = new PropertyAnnotation();
             this.functionCallExpression_Expression_Property.Name = "Expression";
             this.functionCallExpression_ArgumentList_Property = new PropertyAnnotation();
-            this.functionCallExpression_ArgumentList_Property.Name = "Arguments";
+            this.functionCallExpression_ArgumentList_Property.Name = "ArgumentList";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.MemberAccessExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.memberAccessExpression_SymbolType = new SymbolTypeAnnotation();
-            this.memberAccessExpression_SymbolType.SymbolType = typeof(MetaMemberAccessExpression);
-            annotList.Add(this.memberAccessExpression_SymbolType);
+            this.memberAccessExpression_Symbol = new SymbolAnnotation();
+            this.memberAccessExpression_Symbol.SymbolType = typeof(MemberAccessExpression);
+            annotList.Add(this.memberAccessExpression_Symbol);
             this.memberAccessExpression_Expression_Property = new PropertyAnnotation();
             this.memberAccessExpression_Expression_Property.Name = "Expression";
-            this.memberAccessExpression_Name_Property = new PropertyAnnotation();
-            this.memberAccessExpression_Name_Property.Name = "Name";
+            this.memberAccessExpression_Identifier_Property = new PropertyAnnotation();
+            this.memberAccessExpression_Identifier_Property.Name = "Identifier";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.PostExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
+            this.postExpression_Symbol = new SymbolAnnotation();
+            this.postExpression_Symbol.SymbolType = typeof(UnaryExpression);
+            annotList.Add(this.postExpression_Symbol);
             this.postExpression_Expression_Property = new PropertyAnnotation();
             this.postExpression_Expression_Property.Name = "Expression";
-            this.postExpression_Kind_Property = new PropertyAnnotation();
-            this.postExpression_Kind_Property.Name = "Kind";
+            this.postExpression_Operator_Property = new PropertyAnnotation();
+            this.postExpression_Operator_Property.Name = "Operator";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.PreExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.preExpression_Kind_Property = new PropertyAnnotation();
-            this.preExpression_Kind_Property.Name = "Kind";
+            this.preExpression_Symbol = new SymbolAnnotation();
+            this.preExpression_Symbol.SymbolType = typeof(UnaryExpression);
+            annotList.Add(this.preExpression_Symbol);
+            this.preExpression_Operator_Property = new PropertyAnnotation();
+            this.preExpression_Operator_Property.Name = "Operator";
             this.preExpression_Expression_Property = new PropertyAnnotation();
             this.preExpression_Expression_Property.Name = "Expression";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.UnaryExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.unaryExpression_Kind_Property = new PropertyAnnotation();
-            this.unaryExpression_Kind_Property.Name = "Kind";
+            this.unaryExpression_Symbol = new SymbolAnnotation();
+            this.unaryExpression_Symbol.SymbolType = typeof(UnaryExpression);
+            annotList.Add(this.unaryExpression_Symbol);
+            this.unaryExpression_Operator_Property = new PropertyAnnotation();
+            this.unaryExpression_Operator_Property.Name = "Operator";
             this.unaryExpression_Expression_Property = new PropertyAnnotation();
             this.unaryExpression_Expression_Property.Name = "Expression";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.TypeConversionExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.typeConversionExpression_SymbolType = new SymbolTypeAnnotation();
-            this.typeConversionExpression_SymbolType.SymbolType = typeof(MetaTypeAsExpression);
-            annotList.Add(this.typeConversionExpression_SymbolType);
+            this.typeConversionExpression_Symbol = new SymbolAnnotation();
+            this.typeConversionExpression_Symbol.SymbolType = typeof(TypeConversionExpression);
+            annotList.Add(this.typeConversionExpression_Symbol);
             this.typeConversionExpression_Expression_Property = new PropertyAnnotation();
             this.typeConversionExpression_Expression_Property.Name = "Expression";
             this.typeConversionExpression_TypeReference_Property = new PropertyAnnotation();
@@ -404,9 +452,9 @@ using MetaDslx.Core;
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.TypeCheckExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.typeCheckExpression_SymbolType = new SymbolTypeAnnotation();
-            this.typeCheckExpression_SymbolType.SymbolType = typeof(MetaTypeCheckExpression);
-            annotList.Add(this.typeCheckExpression_SymbolType);
+            this.typeCheckExpression_Symbol = new SymbolAnnotation();
+            this.typeCheckExpression_Symbol.SymbolType = typeof(TypeConversionExpression);
+            annotList.Add(this.typeCheckExpression_Symbol);
             this.typeCheckExpression_Expression_Property = new PropertyAnnotation();
             this.typeCheckExpression_Expression_Property.Name = "Expression";
             this.typeCheckExpression_TypeReference_Property = new PropertyAnnotation();
@@ -415,59 +463,74 @@ using MetaDslx.Core;
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.MultiplicativeExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
+            this.multiplicativeExpression_Symbol = new SymbolAnnotation();
+            this.multiplicativeExpression_Symbol.SymbolType = typeof(BinaryExpression);
+            annotList.Add(this.multiplicativeExpression_Symbol);
             this.multiplicativeExpression_Left_Property = new PropertyAnnotation();
             this.multiplicativeExpression_Left_Property.Name = "Left";
-            this.multiplicativeExpression_Kind_Property = new PropertyAnnotation();
-            this.multiplicativeExpression_Kind_Property.Name = "Kind";
+            this.multiplicativeExpression_Operator_Property = new PropertyAnnotation();
+            this.multiplicativeExpression_Operator_Property.Name = "Operator";
             this.multiplicativeExpression_Right_Property = new PropertyAnnotation();
             this.multiplicativeExpression_Right_Property.Name = "Right";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.AdditiveExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
+            this.additiveExpression_Symbol = new SymbolAnnotation();
+            this.additiveExpression_Symbol.SymbolType = typeof(BinaryExpression);
+            annotList.Add(this.additiveExpression_Symbol);
             this.additiveExpression_Left_Property = new PropertyAnnotation();
             this.additiveExpression_Left_Property.Name = "Left";
-            this.additiveExpression_Kind_Property = new PropertyAnnotation();
-            this.additiveExpression_Kind_Property.Name = "Kind";
+            this.additiveExpression_Operator_Property = new PropertyAnnotation();
+            this.additiveExpression_Operator_Property.Name = "Operator";
             this.additiveExpression_Right_Property = new PropertyAnnotation();
             this.additiveExpression_Right_Property.Name = "Right";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ShiftExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
+            this.shiftExpression_Symbol = new SymbolAnnotation();
+            this.shiftExpression_Symbol.SymbolType = typeof(BinaryExpression);
+            annotList.Add(this.shiftExpression_Symbol);
             this.shiftExpression_Left_Property = new PropertyAnnotation();
             this.shiftExpression_Left_Property.Name = "Left";
-            this.shiftExpression_Kind_Property = new PropertyAnnotation();
-            this.shiftExpression_Kind_Property.Name = "Kind";
+            this.shiftExpression_Operator_Property = new PropertyAnnotation();
+            this.shiftExpression_Operator_Property.Name = "Operator";
             this.shiftExpression_Right_Property = new PropertyAnnotation();
             this.shiftExpression_Right_Property.Name = "Right";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ComparisonExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
+            this.comparisonExpression_Symbol = new SymbolAnnotation();
+            this.comparisonExpression_Symbol.SymbolType = typeof(BinaryExpression);
+            annotList.Add(this.comparisonExpression_Symbol);
             this.comparisonExpression_Left_Property = new PropertyAnnotation();
             this.comparisonExpression_Left_Property.Name = "Left";
-            this.comparisonExpression_Kind_Property = new PropertyAnnotation();
-            this.comparisonExpression_Kind_Property.Name = "Kind";
+            this.comparisonExpression_Operator_Property = new PropertyAnnotation();
+            this.comparisonExpression_Operator_Property.Name = "Operator";
             this.comparisonExpression_Right_Property = new PropertyAnnotation();
             this.comparisonExpression_Right_Property.Name = "Right";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.EqualityExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
+            this.equalityExpression_Symbol = new SymbolAnnotation();
+            this.equalityExpression_Symbol.SymbolType = typeof(BinaryExpression);
+            annotList.Add(this.equalityExpression_Symbol);
             this.equalityExpression_Left_Property = new PropertyAnnotation();
             this.equalityExpression_Left_Property.Name = "Left";
-            this.equalityExpression_Kind_Property = new PropertyAnnotation();
-            this.equalityExpression_Kind_Property.Name = "Kind";
+            this.equalityExpression_Operator_Property = new PropertyAnnotation();
+            this.equalityExpression_Operator_Property.Name = "Operator";
             this.equalityExpression_Right_Property = new PropertyAnnotation();
             this.equalityExpression_Right_Property.Name = "Right";
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.BitwiseAndExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.bitwiseAndExpression_SymbolType = new SymbolTypeAnnotation();
-            this.bitwiseAndExpression_SymbolType.SymbolType = typeof(MetaAndExpression);
-            annotList.Add(this.bitwiseAndExpression_SymbolType);
+            this.bitwiseAndExpression_Symbol = new SymbolAnnotation();
+            this.bitwiseAndExpression_Symbol.SymbolType = typeof(BinaryExpression);
+            annotList.Add(this.bitwiseAndExpression_Symbol);
             this.bitwiseAndExpression_Left_Property = new PropertyAnnotation();
             this.bitwiseAndExpression_Left_Property.Name = "Left";
             this.bitwiseAndExpression_Right_Property = new PropertyAnnotation();
@@ -476,9 +539,9 @@ using MetaDslx.Core;
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.BitwiseXorExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.bitwiseXorExpression_SymbolType = new SymbolTypeAnnotation();
-            this.bitwiseXorExpression_SymbolType.SymbolType = typeof(MetaExclusiveOrExpression);
-            annotList.Add(this.bitwiseXorExpression_SymbolType);
+            this.bitwiseXorExpression_Symbol = new SymbolAnnotation();
+            this.bitwiseXorExpression_Symbol.SymbolType = typeof(BinaryExpression);
+            annotList.Add(this.bitwiseXorExpression_Symbol);
             this.bitwiseXorExpression_Left_Property = new PropertyAnnotation();
             this.bitwiseXorExpression_Left_Property.Name = "Left";
             this.bitwiseXorExpression_Right_Property = new PropertyAnnotation();
@@ -487,9 +550,9 @@ using MetaDslx.Core;
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.BitwiseOrExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.bitwiseOrExpression_SymbolType = new SymbolTypeAnnotation();
-            this.bitwiseOrExpression_SymbolType.SymbolType = typeof(MetaOrExpression);
-            annotList.Add(this.bitwiseOrExpression_SymbolType);
+            this.bitwiseOrExpression_Symbol = new SymbolAnnotation();
+            this.bitwiseOrExpression_Symbol.SymbolType = typeof(BinaryExpression);
+            annotList.Add(this.bitwiseOrExpression_Symbol);
             this.bitwiseOrExpression_Left_Property = new PropertyAnnotation();
             this.bitwiseOrExpression_Left_Property.Name = "Left";
             this.bitwiseOrExpression_Right_Property = new PropertyAnnotation();
@@ -498,9 +561,9 @@ using MetaDslx.Core;
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.LogicalAndExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.logicalAndExpression_SymbolType = new SymbolTypeAnnotation();
-            this.logicalAndExpression_SymbolType.SymbolType = typeof(MetaAndAlsoExpression);
-            annotList.Add(this.logicalAndExpression_SymbolType);
+            this.logicalAndExpression_Symbol = new SymbolAnnotation();
+            this.logicalAndExpression_Symbol.SymbolType = typeof(BinaryExpression);
+            annotList.Add(this.logicalAndExpression_Symbol);
             this.logicalAndExpression_Left_Property = new PropertyAnnotation();
             this.logicalAndExpression_Left_Property.Name = "Left";
             this.logicalAndExpression_Right_Property = new PropertyAnnotation();
@@ -509,31 +572,20 @@ using MetaDslx.Core;
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.LogicalOrExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.logicalOrExpression_SymbolType = new SymbolTypeAnnotation();
-            this.logicalOrExpression_SymbolType.SymbolType = typeof(MetaOrElseExpression);
-            annotList.Add(this.logicalOrExpression_SymbolType);
+            this.logicalOrExpression_Symbol = new SymbolAnnotation();
+            this.logicalOrExpression_Symbol.SymbolType = typeof(BinaryExpression);
+            annotList.Add(this.logicalOrExpression_Symbol);
             this.logicalOrExpression_Left_Property = new PropertyAnnotation();
             this.logicalOrExpression_Left_Property.Name = "Left";
             this.logicalOrExpression_Right_Property = new PropertyAnnotation();
             this.logicalOrExpression_Right_Property.Name = "Right";
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaModelParser.NullCoalescingExpressionContext), annotList);
-            annotList.Add(this.expression_Expression);
-            this.nullCoalescingExpression_SymbolType = new SymbolTypeAnnotation();
-            this.nullCoalescingExpression_SymbolType.SymbolType = typeof(MetaNullCoalescingExpression);
-            annotList.Add(this.nullCoalescingExpression_SymbolType);
-            this.nullCoalescingExpression_Left_Property = new PropertyAnnotation();
-            this.nullCoalescingExpression_Left_Property.Name = "Left";
-            this.nullCoalescingExpression_Right_Property = new PropertyAnnotation();
-            this.nullCoalescingExpression_Right_Property.Name = "Right";
-            
-            annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ConditionalExpressionContext), annotList);
             annotList.Add(this.expression_Expression);
-            this.conditionalExpression_SymbolType = new SymbolTypeAnnotation();
-            this.conditionalExpression_SymbolType.SymbolType = typeof(MetaConditionalExpression);
-            annotList.Add(this.conditionalExpression_SymbolType);
+            this.conditionalExpression_Symbol = new SymbolAnnotation();
+            this.conditionalExpression_Symbol.SymbolType = typeof(ConditionalExpression);
+            annotList.Add(this.conditionalExpression_Symbol);
             this.conditionalExpression_Condition_Property = new PropertyAnnotation();
             this.conditionalExpression_Condition_Property.Name = "Condition";
             this.conditionalExpression_Then_Property = new PropertyAnnotation();
@@ -542,87 +594,13 @@ using MetaDslx.Core;
             this.conditionalExpression_Else_Property.Name = "Else";
             
             annotList = new List<object>();
-            this.ruleAnnotations.Add(typeof(MetaModelParser.AssignmentExpressionContext), annotList);
-            annotList.Add(this.expression_Expression);
-            this.assignmentExpression_Left_Property = new PropertyAnnotation();
-            this.assignmentExpression_Left_Property.Name = "Left";
-            this.assignmentExpression_Operator_Property = new PropertyAnnotation();
-            this.assignmentExpression_Operator_Property.Name = "Operator";
-            this.assignmentExpression_Right_Property = new PropertyAnnotation();
-            this.assignmentExpression_Right_Property.Name = "Right";
-            
-            this.postOperator_TPlusPlus_SymbolType = new SymbolTypeAnnotation();
-            this.postOperator_TPlusPlus_SymbolType.SymbolType = typeof(MetaPostIncrementAssignExpression);
-            this.postOperator_TMinusMinus_SymbolType = new SymbolTypeAnnotation();
-            this.postOperator_TMinusMinus_SymbolType.SymbolType = typeof(MetaPostDecrementAssignExpression);
-            
-            this.preOperator_TPlusPlus_SymbolType = new SymbolTypeAnnotation();
-            this.preOperator_TPlusPlus_SymbolType.SymbolType = typeof(MetaPreIncrementAssignExpression);
-            this.preOperator_TMinusMinus_SymbolType = new SymbolTypeAnnotation();
-            this.preOperator_TMinusMinus_SymbolType.SymbolType = typeof(MetaPreDecrementAssignExpression);
-            
-            this.unaryOperator_TPlus_SymbolType = new SymbolTypeAnnotation();
-            this.unaryOperator_TPlus_SymbolType.SymbolType = typeof(MetaUnaryPlusExpression);
-            this.unaryOperator_TMinus_SymbolType = new SymbolTypeAnnotation();
-            this.unaryOperator_TMinus_SymbolType.SymbolType = typeof(MetaNegateExpression);
-            this.unaryOperator_TTilde_SymbolType = new SymbolTypeAnnotation();
-            this.unaryOperator_TTilde_SymbolType.SymbolType = typeof(MetaOnesComplementExpression);
-            this.unaryOperator_TExclamation_SymbolType = new SymbolTypeAnnotation();
-            this.unaryOperator_TExclamation_SymbolType.SymbolType = typeof(MetaNotExpression);
-            
-            this.multiplicativeOperator_TAsterisk_SymbolType = new SymbolTypeAnnotation();
-            this.multiplicativeOperator_TAsterisk_SymbolType.SymbolType = typeof(MetaMultiplyExpression);
-            this.multiplicativeOperator_TSlash_SymbolType = new SymbolTypeAnnotation();
-            this.multiplicativeOperator_TSlash_SymbolType.SymbolType = typeof(MetaDivideExpression);
-            this.multiplicativeOperator_TPercent_SymbolType = new SymbolTypeAnnotation();
-            this.multiplicativeOperator_TPercent_SymbolType.SymbolType = typeof(MetaModuloExpression);
-            
-            this.additiveOperator_TPlus_SymbolType = new SymbolTypeAnnotation();
-            this.additiveOperator_TPlus_SymbolType.SymbolType = typeof(MetaAddExpression);
-            this.additiveOperator_TMinus_SymbolType = new SymbolTypeAnnotation();
-            this.additiveOperator_TMinus_SymbolType.SymbolType = typeof(MetaSubtractExpression);
-            
-            this.shiftOperator_TLessThan_SymbolType = new SymbolTypeAnnotation();
-            this.shiftOperator_TLessThan_SymbolType.SymbolType = typeof(MetaLeftShiftExpression);
-            this.shiftOperator_TGreaterThan_SymbolType = new SymbolTypeAnnotation();
-            this.shiftOperator_TGreaterThan_SymbolType.SymbolType = typeof(MetaRightShiftExpression);
-            
-            this.comparisonOperator_TLessThan_SymbolType = new SymbolTypeAnnotation();
-            this.comparisonOperator_TLessThan_SymbolType.SymbolType = typeof(MetaLessThanExpression);
-            this.comparisonOperator_TGreaterThan_SymbolType = new SymbolTypeAnnotation();
-            this.comparisonOperator_TGreaterThan_SymbolType.SymbolType = typeof(MetaGreaterThanExpression);
-            this.comparisonOperator_TLessThanOrEqual_SymbolType = new SymbolTypeAnnotation();
-            this.comparisonOperator_TLessThanOrEqual_SymbolType.SymbolType = typeof(MetaLessThanOrEqualExpression);
-            this.comparisonOperator_TGreaterThanOrEqual_SymbolType = new SymbolTypeAnnotation();
-            this.comparisonOperator_TGreaterThanOrEqual_SymbolType.SymbolType = typeof(MetaGreaterThanOrEqualExpression);
-            
-            this.equalityOperator_TEqual_SymbolType = new SymbolTypeAnnotation();
-            this.equalityOperator_TEqual_SymbolType.SymbolType = typeof(MetaEqualExpression);
-            this.equalityOperator_TNotEqual_SymbolType = new SymbolTypeAnnotation();
-            this.equalityOperator_TNotEqual_SymbolType.SymbolType = typeof(MetaNotEqualExpression);
-            
-            this.assignmentOperator_TAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_TAssign_SymbolType.SymbolType = typeof(MetaAssignExpression);
-            this.assignmentOperator_TAsteriskAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_TAsteriskAssign_SymbolType.SymbolType = typeof(MetaMultiplyAssignExpression);
-            this.assignmentOperator_TSlashAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_TSlashAssign_SymbolType.SymbolType = typeof(MetaDivideAssignExpression);
-            this.assignmentOperator_TPercentAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_TPercentAssign_SymbolType.SymbolType = typeof(MetaModuloAssignExpression);
-            this.assignmentOperator_TPlusAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_TPlusAssign_SymbolType.SymbolType = typeof(MetaAddAssignExpression);
-            this.assignmentOperator_TMinusAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_TMinusAssign_SymbolType.SymbolType = typeof(MetaSubtractAssignExpression);
-            this.assignmentOperator_TLeftShiftAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_TLeftShiftAssign_SymbolType.SymbolType = typeof(MetaLeftShiftAssignExpression);
-            this.assignmentOperator_TRightShiftAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_TRightShiftAssign_SymbolType.SymbolType = typeof(MetaRightShiftAssignExpression);
-            this.assignmentOperator_TAmpersandAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_TAmpersandAssign_SymbolType.SymbolType = typeof(MetaAndAssignExpression);
-            this.assignmentOperator_THatAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_THatAssign_SymbolType.SymbolType = typeof(MetaExclusiveOrAssignExpression);
-            this.assignmentOperator_TBarAssign_SymbolType = new SymbolTypeAnnotation();
-            this.assignmentOperator_TBarAssign_SymbolType.SymbolType = typeof(MetaOrAssignExpression);
+            this.ruleAnnotations.Add(typeof(MetaModelParser.AssociationDeclarationContext), annotList);
+            this.associationDeclaration_Scope = new ScopeAnnotation();
+            annotList.Add(this.associationDeclaration_Scope);
+            this.associationDeclaration_Source_NameUse = new NameUseAnnotation();
+            this.associationDeclaration_Source_NameUse.SymbolTypes.Add(typeof(MetaProperty));
+            this.associationDeclaration_Target_NameUse = new NameUseAnnotation();
+            this.associationDeclaration_Target_NameUse.SymbolTypes.Add(typeof(MetaProperty));
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.IdentifierContext), annotList);
@@ -634,66 +612,11 @@ using MetaDslx.Core;
         
         public override object VisitTerminal(ITerminalNode node)
         {
-            this.lexerAnnotator.VisitTerminal(node, treeAnnotations);
-            this.HandleSymbolType(node);
-            return null;
-        }
-        
-        private void HandleSymbolType(IParseTree node)
-        {
-            List<object> treeAnnotList = null;
-            if (this.treeAnnotations.TryGetValue(node, out treeAnnotList))
-            {
-                foreach (var treeAnnot in treeAnnotList)
-                {
-                    SymbolTypeAnnotation sta = treeAnnot as SymbolTypeAnnotation;
-                    if (sta != null)
-                    {
-                        this.OverrideSymbolType(node, sta.SymbolType);
-                    }
-                }
-                treeAnnotList.RemoveAll(a => a is SymbolTypeAnnotation);
-            }
-        }
-        
-        private void OverrideSymbolType(IParseTree node, Type symbolType)
-        {
-            if (node == null) return;
-            if (symbolType == null) return;
-            bool set = false;
-            while(!set && node != null)
-            {
-                List<object> treeAnnotList = null;
-                if (this.treeAnnotations.TryGetValue(node, out treeAnnotList))
-                {
-                    foreach (var treeAnnot in treeAnnotList)
-                    {
-                        SymbolTypedAnnotation sta = treeAnnot as SymbolTypedAnnotation;
-                        if (sta != null)
-                        {
-                            set = true;
-                            if (sta.SymbolType == null)
-                            {
-                                sta.SymbolType = symbolType;
-                            }
-                            else if (sta.OverrideSymbolType)
-                            {
-                                sta.SymbolType = symbolType;
-                            }
-                            else
-                            {
-                                throw new InvalidOperationException("Cannot change symbol type from '"+sta.SymbolType+"' to '"+symbolType+"'");
-                            }
-                        }
-                    }
-                }
-                node = node.Parent;
-            }
+            return this.lexerAnnotator.VisitTerminal(node, treeAnnotations);
         }
         
         public override object VisitMain(MetaModelParser.MainContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitMain(context);
         }
         
@@ -706,49 +629,17 @@ using MetaDslx.Core;
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             treeAnnotList.Add(this.qualifiedName_QualifiedName);
-            this.HandleSymbolType(context);
             return base.VisitQualifiedName(context);
         }
         
         public override object VisitIdentifierList(MetaModelParser.IdentifierListContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitIdentifierList(context);
         }
         
         public override object VisitQualifiedNameList(MetaModelParser.QualifiedNameListContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitQualifiedNameList(context);
-        }
-        
-        public override object VisitAnnotation(MetaModelParser.AnnotationContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            treeAnnotList.Add(this.annotation_Property);
-            SymbolAnnotation __tmp1 = new SymbolAnnotation();
-            __tmp1.SymbolType = typeof(MetaAnnotation);
-            treeAnnotList.Add(__tmp1);
-            List<object> elemAnnotList = null;
-            if (context.identifier() != null)
-            {
-                object elem = context.identifier();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.annotation_Identifier_Property);
-                ValueAnnotation __tmp2 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp2);
-            }
-            this.HandleSymbolType(context);
-            return base.VisitAnnotation(context);
         }
         
         public override object VisitNamespaceDeclaration(MetaModelParser.NamespaceDeclarationContext context)
@@ -759,12 +650,20 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp3 = new NameDefAnnotation();
-            __tmp3.SymbolType = typeof(MetaNamespace);
-            __tmp3.NestingProperty = "Namespaces";
-            __tmp3.Merge = true;
-            treeAnnotList.Add(__tmp3);
+            treeAnnotList.Add(this.namespaceDeclaration_NameDef);
             List<object> elemAnnotList = null;
+            if (context.stringLiteral() != null)
+            {
+                object elem = context.stringLiteral();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.namespaceDeclaration_StringLiteral_Property);
+                ValueAnnotation __tmp1 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp1);
+            }
             if (context.metamodelDeclaration() != null)
             {
                 foreach(object elem in context.metamodelDeclaration())
@@ -777,7 +676,6 @@ using MetaDslx.Core;
                     elemAnnotList.Add(this.namespaceDeclaration_MetamodelDeclaration_Property);
                 }
             }
-            this.HandleSymbolType(context);
             return base.VisitNamespaceDeclaration(context);
         }
         
@@ -789,16 +687,25 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp4 = new NameDefAnnotation();
-            __tmp4.SymbolType = typeof(MetaModel);
-            treeAnnotList.Add(__tmp4);
-            this.HandleSymbolType(context);
+            treeAnnotList.Add(this.metamodelDeclaration_TypeDef);
+            List<object> elemAnnotList = null;
+            if (context.declaration() != null)
+            {
+                foreach(object elem in context.declaration())
+                {
+                    if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                    {
+                        elemAnnotList = new List<object>();
+                        this.treeAnnotations.Add(elem, elemAnnotList);
+                    }
+                    elemAnnotList.Add(this.metamodelDeclaration_Declaration_Property);
+                }
+            }
             return base.VisitMetamodelDeclaration(context);
         }
         
         public override object VisitDeclaration(MetaModelParser.DeclarationContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitDeclaration(context);
         }
         
@@ -810,10 +717,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            treeAnnotList.Add(this.enumDeclaration_Property);
-            TypeDefAnnotation __tmp5 = new TypeDefAnnotation();
-            __tmp5.SymbolType = typeof(MetaEnum);
-            treeAnnotList.Add(__tmp5);
+            treeAnnotList.Add(this.enumDeclaration_TypeDef);
             List<object> elemAnnotList = null;
             if (context.enumValues() != null)
             {
@@ -825,13 +729,11 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.enumDeclaration_EnumValues_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitEnumDeclaration(context);
         }
         
         public override object VisitEnumValues(MetaModelParser.EnumValuesContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitEnumValues(context);
         }
         
@@ -843,10 +745,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp6 = new NameDefAnnotation();
-            __tmp6.SymbolType = typeof(MetaEnumLiteral);
-            treeAnnotList.Add(__tmp6);
-            this.HandleSymbolType(context);
+            treeAnnotList.Add(this.enumValue_NameDef);
             return base.VisitEnumValue(context);
         }
         
@@ -863,7 +762,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.enumMemberDeclaration_OperationDeclaration_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitEnumMemberDeclaration(context);
         }
         
@@ -875,10 +773,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            treeAnnotList.Add(this.classDeclaration_Property);
-            TypeDefAnnotation __tmp7 = new TypeDefAnnotation();
-            __tmp7.SymbolType = typeof(MetaClass);
-            treeAnnotList.Add(__tmp7);
+            treeAnnotList.Add(this.classDeclaration_TypeDef);
             List<object> elemAnnotList = null;
             if (context.KAbstract() != null)
             {
@@ -899,15 +794,12 @@ using MetaDslx.Core;
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
                 elemAnnotList.Add(this.classDeclaration_ClassAncestors_Property);
-                elemAnnotList.Add(this.classDeclaration_ClassAncestors_InheritScope);
             }
-            this.HandleSymbolType(context);
             return base.VisitClassDeclaration(context);
         }
         
         public override object VisitClassAncestors(MetaModelParser.ClassAncestorsContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitClassAncestors(context);
         }
         
@@ -922,11 +814,8 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                TypeUseAnnotation __tmp8 = new TypeUseAnnotation();
-                __tmp8.SymbolTypes.Add(typeof(MetaClass));
-                elemAnnotList.Add(__tmp8);
+                elemAnnotList.Add(this.classAncestor_QualifiedName_TypeUse);
             }
-            this.HandleSymbolType(context);
             return base.VisitClassAncestor(context);
         }
         
@@ -953,17 +842,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.classMemberDeclaration_OperationDeclaration_Property);
             }
-            if (context.constructorDeclaration() != null)
-            {
-                object elem = context.constructorDeclaration();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.classMemberDeclaration_ConstructorDeclaration_Property);
-            }
-            this.HandleSymbolType(context);
             return base.VisitClassMemberDeclaration(context);
         }
         
@@ -975,9 +853,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp9 = new NameDefAnnotation();
-            __tmp9.SymbolType = typeof(MetaProperty);
-            treeAnnotList.Add(__tmp9);
+            treeAnnotList.Add(this.fieldDeclaration_NameDef);
             List<object> elemAnnotList = null;
             if (context.fieldModifier() != null)
             {
@@ -989,17 +865,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.fieldDeclaration_FieldModifier_Property);
             }
-            if (context.typeReference() != null)
-            {
-                object elem = context.typeReference();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.fieldDeclaration_TypeReference_Property);
-            }
-            this.HandleSymbolType(context);
             return base.VisitFieldDeclaration(context);
         }
         
@@ -1014,9 +879,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp10 = new ValueAnnotation();
-                __tmp10.Value = MetaPropertyKind.Containment;
-                elemAnnotList.Add(__tmp10);
+                ValueAnnotation __tmp2 = new ValueAnnotation();
+                __tmp2.Value = MetaPropertyKind.Containment;
+                elemAnnotList.Add(__tmp2);
             }
             if (context.KReadonly() != null)
             {
@@ -1026,9 +891,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp11 = new ValueAnnotation();
-                __tmp11.Value = MetaPropertyKind.Readonly;
-                elemAnnotList.Add(__tmp11);
+                ValueAnnotation __tmp3 = new ValueAnnotation();
+                __tmp3.Value = MetaPropertyKind.Readonly;
+                elemAnnotList.Add(__tmp3);
             }
             if (context.KLazy() != null)
             {
@@ -1038,9 +903,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp12 = new ValueAnnotation();
-                __tmp12.Value = MetaPropertyKind.Lazy;
-                elemAnnotList.Add(__tmp12);
+                ValueAnnotation __tmp4 = new ValueAnnotation();
+                __tmp4.Value = MetaPropertyKind.Lazy;
+                elemAnnotList.Add(__tmp4);
             }
             if (context.KDerived() != null)
             {
@@ -1050,112 +915,15 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp13 = new ValueAnnotation();
-                __tmp13.Value = MetaPropertyKind.Derived;
-                elemAnnotList.Add(__tmp13);
+                ValueAnnotation __tmp5 = new ValueAnnotation();
+                __tmp5.Value = MetaPropertyKind.Derived;
+                elemAnnotList.Add(__tmp5);
             }
-            if (context.KSynthetized() != null)
-            {
-                object elem = context.KSynthetized();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                ValueAnnotation __tmp14 = new ValueAnnotation();
-                __tmp14.Value = MetaPropertyKind.Synthetized;
-                elemAnnotList.Add(__tmp14);
-            }
-            if (context.KInherited() != null)
-            {
-                object elem = context.KInherited();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                ValueAnnotation __tmp15 = new ValueAnnotation();
-                __tmp15.Value = MetaPropertyKind.Inherited;
-                elemAnnotList.Add(__tmp15);
-            }
-            this.HandleSymbolType(context);
             return base.VisitFieldModifier(context);
-        }
-        
-        public override object VisitRedefinitions(MetaModelParser.RedefinitionsContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            ScopeAnnotation __tmp16 = new ScopeAnnotation();
-            treeAnnotList.Add(__tmp16);
-            List<object> elemAnnotList = null;
-            if (context.nameUseList() != null)
-            {
-                object elem = context.nameUseList();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.redefinitions_NameUseList_Property);
-            }
-            this.HandleSymbolType(context);
-            return base.VisitRedefinitions(context);
-        }
-        
-        public override object VisitSubsettings(MetaModelParser.SubsettingsContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            ScopeAnnotation __tmp17 = new ScopeAnnotation();
-            treeAnnotList.Add(__tmp17);
-            List<object> elemAnnotList = null;
-            if (context.nameUseList() != null)
-            {
-                object elem = context.nameUseList();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.subsettings_NameUseList_Property);
-            }
-            this.HandleSymbolType(context);
-            return base.VisitSubsettings(context);
-        }
-        
-        public override object VisitNameUseList(MetaModelParser.NameUseListContext context)
-        {
-            List<object> elemAnnotList = null;
-            if (context.qualifiedName() != null)
-            {
-                foreach(object elem in context.qualifiedName())
-                {
-                    if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                    {
-                        elemAnnotList = new List<object>();
-                        this.treeAnnotations.Add(elem, elemAnnotList);
-                    }
-                    NameUseAnnotation __tmp18 = new NameUseAnnotation();
-                    __tmp18.SymbolTypes.Add(typeof(MetaProperty));
-                    elemAnnotList.Add(__tmp18);
-                }
-            }
-            this.HandleSymbolType(context);
-            return base.VisitNameUseList(context);
         }
         
         public override object VisitConstDeclaration(MetaModelParser.ConstDeclarationContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitConstDeclaration(context);
         }
         
@@ -1167,9 +935,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            TypeUseAnnotation __tmp19 = new TypeUseAnnotation();
-            treeAnnotList.Add(__tmp19);
-            this.HandleSymbolType(context);
+            treeAnnotList.Add(this.returnType_TypeUse);
             return base.VisitReturnType(context);
         }
         
@@ -1181,9 +947,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            TypeUseAnnotation __tmp20 = new TypeUseAnnotation();
-            treeAnnotList.Add(__tmp20);
-            this.HandleSymbolType(context);
+            treeAnnotList.Add(this.typeReference_TypeUse);
             return base.VisitTypeReference(context);
         }
         
@@ -1195,9 +959,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            TypeUseAnnotation __tmp21 = new TypeUseAnnotation();
-            treeAnnotList.Add(__tmp21);
-            this.HandleSymbolType(context);
+            treeAnnotList.Add(this.simpleType_TypeUse);
             return base.VisitSimpleType(context);
         }
         
@@ -1210,7 +972,27 @@ using MetaDslx.Core;
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             treeAnnotList.Add(this.objectType_Name);
-            this.HandleSymbolType(context);
+            List<object> elemAnnotList = null;
+            if (context.KObject() != null)
+            {
+                object elem = context.KObject();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.objectType_KObject_PreDefSymbol);
+            }
+            if (context.KString() != null)
+            {
+                object elem = context.KString();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.objectType_KString_PreDefSymbol);
+            }
             return base.VisitObjectType(context);
         }
         
@@ -1223,7 +1005,67 @@ using MetaDslx.Core;
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             treeAnnotList.Add(this.primitiveType_Name);
-            this.HandleSymbolType(context);
+            List<object> elemAnnotList = null;
+            if (context.KInt() != null)
+            {
+                object elem = context.KInt();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.primitiveType_KInt_PreDefSymbol);
+            }
+            if (context.KLong() != null)
+            {
+                object elem = context.KLong();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.primitiveType_KLong_PreDefSymbol);
+            }
+            if (context.KFloat() != null)
+            {
+                object elem = context.KFloat();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.primitiveType_KFloat_PreDefSymbol);
+            }
+            if (context.KDouble() != null)
+            {
+                object elem = context.KDouble();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.primitiveType_KDouble_PreDefSymbol);
+            }
+            if (context.KByte() != null)
+            {
+                object elem = context.KByte();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.primitiveType_KByte_PreDefSymbol);
+            }
+            if (context.KBool() != null)
+            {
+                object elem = context.KBool();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.primitiveType_KBool_PreDefSymbol);
+            }
             return base.VisitPrimitiveType(context);
         }
         
@@ -1236,7 +1078,17 @@ using MetaDslx.Core;
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             treeAnnotList.Add(this.voidType_Name);
-            this.HandleSymbolType(context);
+            List<object> elemAnnotList = null;
+            if (context.KVoid() != null)
+            {
+                object elem = context.KVoid();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.voidType_KVoid_PreDefSymbol);
+            }
             return base.VisitVoidType(context);
         }
         
@@ -1248,9 +1100,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            TypeCtrAnnotation __tmp22 = new TypeCtrAnnotation();
-            __tmp22.SymbolType = typeof(MetaNullableType);
-            treeAnnotList.Add(__tmp22);
+            treeAnnotList.Add(this.nullableType_TypeCtr);
             List<object> elemAnnotList = null;
             if (context.primitiveType() != null)
             {
@@ -1262,7 +1112,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.nullableType_PrimitiveType_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitNullableType(context);
         }
         
@@ -1274,9 +1123,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            TypeCtrAnnotation __tmp23 = new TypeCtrAnnotation();
-            __tmp23.SymbolType = typeof(MetaCollectionType);
-            treeAnnotList.Add(__tmp23);
+            treeAnnotList.Add(this.collectionType_TypeCtr);
             List<object> elemAnnotList = null;
             if (context.collectionKind() != null)
             {
@@ -1298,7 +1145,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.collectionType_SimpleType_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitCollectionType(context);
         }
         
@@ -1313,9 +1159,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp24 = new ValueAnnotation();
-                __tmp24.Value = MetaCollectionKind.Set;
-                elemAnnotList.Add(__tmp24);
+                ValueAnnotation __tmp6 = new ValueAnnotation();
+                __tmp6.Value = MetaCollectionKind.Set;
+                elemAnnotList.Add(__tmp6);
             }
             if (context.KList() != null)
             {
@@ -1325,11 +1171,10 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp25 = new ValueAnnotation();
-                __tmp25.Value = MetaCollectionKind.List;
-                elemAnnotList.Add(__tmp25);
+                ValueAnnotation __tmp7 = new ValueAnnotation();
+                __tmp7.Value = MetaCollectionKind.List;
+                elemAnnotList.Add(__tmp7);
             }
-            this.HandleSymbolType(context);
             return base.VisitCollectionKind(context);
         }
         
@@ -1341,9 +1186,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp26 = new NameDefAnnotation();
-            __tmp26.SymbolType = typeof(MetaOperation);
-            treeAnnotList.Add(__tmp26);
+            treeAnnotList.Add(this.operationDeclaration_NameDef);
+            treeAnnotList.Add(this.operationDeclaration_TypeCtr);
             List<object> elemAnnotList = null;
             if (context.returnType() != null)
             {
@@ -1365,13 +1209,11 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.operationDeclaration_ParameterList_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitOperationDeclaration(context);
         }
         
         public override object VisitParameterList(MetaModelParser.ParameterListContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitParameterList(context);
         }
         
@@ -1383,149 +1225,30 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp27 = new NameDefAnnotation();
-            __tmp27.SymbolType = typeof(MetaParameter);
-            treeAnnotList.Add(__tmp27);
-            List<object> elemAnnotList = null;
-            if (context.typeReference() != null)
-            {
-                object elem = context.typeReference();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.parameter_TypeReference_Property);
-            }
-            this.HandleSymbolType(context);
+            treeAnnotList.Add(this.parameter_NameDef);
             return base.VisitParameter(context);
-        }
-        
-        public override object VisitConstructorDeclaration(MetaModelParser.ConstructorDeclarationContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            NameDefAnnotation __tmp28 = new NameDefAnnotation();
-            __tmp28.SymbolType = typeof(MetaConstructor);
-            treeAnnotList.Add(__tmp28);
-            List<object> elemAnnotList = null;
-            if (context.initializerDeclaration() != null)
-            {
-                foreach(object elem in context.initializerDeclaration())
-                {
-                    if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                    {
-                        elemAnnotList = new List<object>();
-                        this.treeAnnotations.Add(elem, elemAnnotList);
-                    }
-                    elemAnnotList.Add(this.constructorDeclaration_InitializerDeclaration_Property);
-                }
-            }
-            this.HandleSymbolType(context);
-            return base.VisitConstructorDeclaration(context);
-        }
-        
-        public override object VisitInitializerDeclaration(MetaModelParser.InitializerDeclarationContext context)
-        {
-            this.HandleSymbolType(context);
-            return base.VisitInitializerDeclaration(context);
-        }
-        
-        public override object VisitSynthetizedPropertyInitializer(MetaModelParser.SynthetizedPropertyInitializerContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            SymbolAnnotation __tmp29 = new SymbolAnnotation();
-            __tmp29.SymbolType = typeof(MetaSynthetizedPropertyInitializer);
-            treeAnnotList.Add(__tmp29);
-            List<object> elemAnnotList = null;
-            if (context.property != null)
-            {
-                object elem = context.property;
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.synthetizedPropertyInitializer_Property_Property);
-                ValueAnnotation __tmp30 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp30);
-            }
-            if (context.expression() != null)
-            {
-                object elem = context.expression();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.synthetizedPropertyInitializer_Expression_Property);
-            }
-            this.HandleSymbolType(context);
-            return base.VisitSynthetizedPropertyInitializer(context);
-        }
-        
-        public override object VisitInheritedPropertyInitializer(MetaModelParser.InheritedPropertyInitializerContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            SymbolAnnotation __tmp31 = new SymbolAnnotation();
-            __tmp31.SymbolType = typeof(MetaInheritedPropertyInitializer);
-            treeAnnotList.Add(__tmp31);
-            List<object> elemAnnotList = null;
-            if (context.@object != null)
-            {
-                object elem = context.@object;
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.inheritedPropertyInitializer_Object_Property);
-                ValueAnnotation __tmp32 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp32);
-            }
-            if (context.property != null)
-            {
-                object elem = context.property;
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.inheritedPropertyInitializer_Property_Property);
-                ValueAnnotation __tmp33 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp33);
-            }
-            if (context.expression() != null)
-            {
-                object elem = context.expression();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.inheritedPropertyInitializer_Expression_Property);
-            }
-            this.HandleSymbolType(context);
-            return base.VisitInheritedPropertyInitializer(context);
         }
         
         public override object VisitArgumentList(MetaModelParser.ArgumentListContext context)
         {
-            this.HandleSymbolType(context);
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            treeAnnotList.Add(this.argumentList_Symbol);
+            List<object> elemAnnotList = null;
+            if (context.expression() != null)
+            {
+                object elem = context.expression();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                elemAnnotList.Add(this.argumentList_Expression_Property);
+            }
             return base.VisitArgumentList(context);
         }
         
@@ -1537,10 +1260,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp34 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp34);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.castExpression_SymbolType);
+            treeAnnotList.Add(this.castExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.typeReference() != null)
             {
@@ -1562,7 +1283,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.castExpression_Expression_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitCastExpression(context);
         }
         
@@ -1574,10 +1294,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp35 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp35);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.typeofExpression_SymbolType);
+            treeAnnotList.Add(this.typeofExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.typeReference() != null)
             {
@@ -1589,7 +1307,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.typeofExpression_TypeReference_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitTypeofExpression(context);
         }
         
@@ -1601,10 +1318,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp36 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp36);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.bracketExpression_SymbolType);
+            treeAnnotList.Add(this.bracketExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.expression() != null)
             {
@@ -1616,24 +1331,7 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.bracketExpression_Expression_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitBracketExpression(context);
-        }
-        
-        public override object VisitThisExpression(MetaModelParser.ThisExpressionContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            SymbolAnnotation __tmp37 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp37);
-            treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.thisExpression_SymbolType);
-            this.HandleSymbolType(context);
-            return base.VisitThisExpression(context);
         }
         
         public override object VisitConstantExpression(MetaModelParser.ConstantExpressionContext context)
@@ -1644,22 +1342,19 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp38 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp38);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.constantExpression_SymbolType);
+            treeAnnotList.Add(this.constantExpression_Symbol);
             List<object> elemAnnotList = null;
-            if (context.value != null)
+            if (context.literal() != null)
             {
-                object elem = context.value;
+                object elem = context.literal();
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.constantExpression_Value_Property);
+                elemAnnotList.Add(this.constantExpression_Literal_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitConstantExpression(context);
         }
         
@@ -1671,24 +1366,20 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp39 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp39);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.identifierExpression_SymbolType);
+            treeAnnotList.Add(this.identifierExpression_NameUse);
+            treeAnnotList.Add(this.identifierExpression_Symbol);
             List<object> elemAnnotList = null;
-            if (context.name != null)
+            if (context.identifier() != null)
             {
-                object elem = context.name;
+                object elem = context.identifier();
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp40 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp40);
-                elemAnnotList.Add(this.identifierExpression_Name_Property);
+                elemAnnotList.Add(this.identifierExpression_Identifier_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitIdentifierExpression(context);
         }
         
@@ -1700,10 +1391,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp41 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp41);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.indexerExpression_SymbolType);
+            treeAnnotList.Add(this.indexerExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.expression() != null)
             {
@@ -1725,7 +1414,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.indexerExpression_ArgumentList_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitIndexerExpression(context);
         }
         
@@ -1737,10 +1425,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp42 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp42);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.functionCallExpression_SymbolType);
+            treeAnnotList.Add(this.functionCallExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.expression() != null)
             {
@@ -1762,7 +1448,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.functionCallExpression_ArgumentList_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitFunctionCallExpression(context);
         }
         
@@ -1774,10 +1459,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp43 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp43);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.memberAccessExpression_SymbolType);
+            treeAnnotList.Add(this.memberAccessExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.expression() != null)
             {
@@ -1789,19 +1472,16 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.memberAccessExpression_Expression_Property);
             }
-            if (context.name != null)
+            if (context.identifier() != null)
             {
-                object elem = context.name;
+                object elem = context.identifier();
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp44 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp44);
-                elemAnnotList.Add(this.memberAccessExpression_Name_Property);
+                elemAnnotList.Add(this.memberAccessExpression_Identifier_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitMemberAccessExpression(context);
         }
         
@@ -1813,9 +1493,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp45 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp45);
             treeAnnotList.Add(this.expression_Expression);
+            treeAnnotList.Add(this.postExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.expression() != null)
             {
@@ -1827,17 +1506,16 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.postExpression_Expression_Property);
             }
-            if (context.kind != null)
+            if (context.@operator != null)
             {
-                object elem = context.kind;
+                object elem = context.@operator;
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.postExpression_Kind_Property);
+                elemAnnotList.Add(this.postExpression_Operator_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitPostExpression(context);
         }
         
@@ -1849,19 +1527,18 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp46 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp46);
             treeAnnotList.Add(this.expression_Expression);
+            treeAnnotList.Add(this.preExpression_Symbol);
             List<object> elemAnnotList = null;
-            if (context.kind != null)
+            if (context.@operator != null)
             {
-                object elem = context.kind;
+                object elem = context.@operator;
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.preExpression_Kind_Property);
+                elemAnnotList.Add(this.preExpression_Operator_Property);
             }
             if (context.expression() != null)
             {
@@ -1873,7 +1550,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.preExpression_Expression_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitPreExpression(context);
         }
         
@@ -1885,19 +1561,18 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp47 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp47);
             treeAnnotList.Add(this.expression_Expression);
+            treeAnnotList.Add(this.unaryExpression_Symbol);
             List<object> elemAnnotList = null;
-            if (context.kind != null)
+            if (context.@operator != null)
             {
-                object elem = context.kind;
+                object elem = context.@operator;
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.unaryExpression_Kind_Property);
+                elemAnnotList.Add(this.unaryExpression_Operator_Property);
             }
             if (context.expression() != null)
             {
@@ -1909,7 +1584,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.unaryExpression_Expression_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitUnaryExpression(context);
         }
         
@@ -1921,10 +1595,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp48 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp48);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.typeConversionExpression_SymbolType);
+            treeAnnotList.Add(this.typeConversionExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.expression() != null)
             {
@@ -1946,7 +1618,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.typeConversionExpression_TypeReference_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitTypeConversionExpression(context);
         }
         
@@ -1958,10 +1629,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp49 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp49);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.typeCheckExpression_SymbolType);
+            treeAnnotList.Add(this.typeCheckExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.expression() != null)
             {
@@ -1983,7 +1652,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.typeCheckExpression_TypeReference_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitTypeCheckExpression(context);
         }
         
@@ -1995,9 +1663,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp50 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp50);
             treeAnnotList.Add(this.expression_Expression);
+            treeAnnotList.Add(this.multiplicativeExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.left != null)
             {
@@ -2009,15 +1676,15 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.multiplicativeExpression_Left_Property);
             }
-            if (context.kind != null)
+            if (context.@operator != null)
             {
-                object elem = context.kind;
+                object elem = context.@operator;
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.multiplicativeExpression_Kind_Property);
+                elemAnnotList.Add(this.multiplicativeExpression_Operator_Property);
             }
             if (context.right != null)
             {
@@ -2029,7 +1696,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.multiplicativeExpression_Right_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitMultiplicativeExpression(context);
         }
         
@@ -2041,9 +1707,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp51 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp51);
             treeAnnotList.Add(this.expression_Expression);
+            treeAnnotList.Add(this.additiveExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.left != null)
             {
@@ -2055,15 +1720,15 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.additiveExpression_Left_Property);
             }
-            if (context.kind != null)
+            if (context.@operator != null)
             {
-                object elem = context.kind;
+                object elem = context.@operator;
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.additiveExpression_Kind_Property);
+                elemAnnotList.Add(this.additiveExpression_Operator_Property);
             }
             if (context.right != null)
             {
@@ -2075,7 +1740,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.additiveExpression_Right_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitAdditiveExpression(context);
         }
         
@@ -2087,9 +1751,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp52 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp52);
             treeAnnotList.Add(this.expression_Expression);
+            treeAnnotList.Add(this.shiftExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.left != null)
             {
@@ -2101,15 +1764,15 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.shiftExpression_Left_Property);
             }
-            if (context.kind != null)
+            if (context.@operator != null)
             {
-                object elem = context.kind;
+                object elem = context.@operator;
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.shiftExpression_Kind_Property);
+                elemAnnotList.Add(this.shiftExpression_Operator_Property);
             }
             if (context.right != null)
             {
@@ -2121,7 +1784,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.shiftExpression_Right_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitShiftExpression(context);
         }
         
@@ -2133,9 +1795,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp53 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp53);
             treeAnnotList.Add(this.expression_Expression);
+            treeAnnotList.Add(this.comparisonExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.left != null)
             {
@@ -2147,15 +1808,15 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.comparisonExpression_Left_Property);
             }
-            if (context.kind != null)
+            if (context.@operator != null)
             {
-                object elem = context.kind;
+                object elem = context.@operator;
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.comparisonExpression_Kind_Property);
+                elemAnnotList.Add(this.comparisonExpression_Operator_Property);
             }
             if (context.right != null)
             {
@@ -2167,7 +1828,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.comparisonExpression_Right_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitComparisonExpression(context);
         }
         
@@ -2179,9 +1839,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp54 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp54);
             treeAnnotList.Add(this.expression_Expression);
+            treeAnnotList.Add(this.equalityExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.left != null)
             {
@@ -2193,15 +1852,15 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.equalityExpression_Left_Property);
             }
-            if (context.kind != null)
+            if (context.@operator != null)
             {
-                object elem = context.kind;
+                object elem = context.@operator;
                 if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.equalityExpression_Kind_Property);
+                elemAnnotList.Add(this.equalityExpression_Operator_Property);
             }
             if (context.right != null)
             {
@@ -2213,7 +1872,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.equalityExpression_Right_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitEqualityExpression(context);
         }
         
@@ -2225,10 +1883,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp55 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp55);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.bitwiseAndExpression_SymbolType);
+            treeAnnotList.Add(this.bitwiseAndExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.left != null)
             {
@@ -2250,7 +1906,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.bitwiseAndExpression_Right_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitBitwiseAndExpression(context);
         }
         
@@ -2262,10 +1917,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp56 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp56);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.bitwiseXorExpression_SymbolType);
+            treeAnnotList.Add(this.bitwiseXorExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.left != null)
             {
@@ -2287,7 +1940,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.bitwiseXorExpression_Right_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitBitwiseXorExpression(context);
         }
         
@@ -2299,10 +1951,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp57 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp57);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.bitwiseOrExpression_SymbolType);
+            treeAnnotList.Add(this.bitwiseOrExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.left != null)
             {
@@ -2324,7 +1974,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.bitwiseOrExpression_Right_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitBitwiseOrExpression(context);
         }
         
@@ -2336,10 +1985,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp58 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp58);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.logicalAndExpression_SymbolType);
+            treeAnnotList.Add(this.logicalAndExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.left != null)
             {
@@ -2361,7 +2008,6 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.logicalAndExpression_Right_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitLogicalAndExpression(context);
         }
         
@@ -2373,10 +2019,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp59 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp59);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.logicalOrExpression_SymbolType);
+            treeAnnotList.Add(this.logicalOrExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.left != null)
             {
@@ -2398,45 +2042,7 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.logicalOrExpression_Right_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitLogicalOrExpression(context);
-        }
-        
-        public override object VisitNullCoalescingExpression(MetaModelParser.NullCoalescingExpressionContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            SymbolAnnotation __tmp60 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp60);
-            treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.nullCoalescingExpression_SymbolType);
-            List<object> elemAnnotList = null;
-            if (context.left != null)
-            {
-                object elem = context.left;
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.nullCoalescingExpression_Left_Property);
-            }
-            if (context.right != null)
-            {
-                object elem = context.right;
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.nullCoalescingExpression_Right_Property);
-            }
-            this.HandleSymbolType(context);
-            return base.VisitNullCoalescingExpression(context);
         }
         
         public override object VisitConditionalExpression(MetaModelParser.ConditionalExpressionContext context)
@@ -2447,10 +2053,8 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp61 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp61);
             treeAnnotList.Add(this.expression_Expression);
-            treeAnnotList.Add(this.conditionalExpression_SymbolType);
+            treeAnnotList.Add(this.conditionalExpression_Symbol);
             List<object> elemAnnotList = null;
             if (context.condition != null)
             {
@@ -2482,54 +2086,7 @@ using MetaDslx.Core;
                 }
                 elemAnnotList.Add(this.conditionalExpression_Else_Property);
             }
-            this.HandleSymbolType(context);
             return base.VisitConditionalExpression(context);
-        }
-        
-        public override object VisitAssignmentExpression(MetaModelParser.AssignmentExpressionContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            SymbolAnnotation __tmp62 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp62);
-            treeAnnotList.Add(this.expression_Expression);
-            List<object> elemAnnotList = null;
-            if (context.left != null)
-            {
-                object elem = context.left;
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.assignmentExpression_Left_Property);
-            }
-            if (context.@operator != null)
-            {
-                object elem = context.@operator;
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.assignmentExpression_Operator_Property);
-            }
-            if (context.right != null)
-            {
-                object elem = context.right;
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                elemAnnotList.Add(this.assignmentExpression_Right_Property);
-            }
-            this.HandleSymbolType(context);
-            return base.VisitAssignmentExpression(context);
         }
         
         public override object VisitPostOperator(MetaModelParser.PostOperatorContext context)
@@ -2543,7 +2100,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.postOperator_TPlusPlus_SymbolType);
+                ValueAnnotation __tmp8 = new ValueAnnotation();
+                __tmp8.Value = MetaOperatorKind.PostIncrementAssign;
+                elemAnnotList.Add(__tmp8);
             }
             if (context.TMinusMinus() != null)
             {
@@ -2553,9 +2112,10 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.postOperator_TMinusMinus_SymbolType);
+                ValueAnnotation __tmp9 = new ValueAnnotation();
+                __tmp9.Value = MetaOperatorKind.PostDecrementAssign;
+                elemAnnotList.Add(__tmp9);
             }
-            this.HandleSymbolType(context);
             return base.VisitPostOperator(context);
         }
         
@@ -2570,7 +2130,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.preOperator_TPlusPlus_SymbolType);
+                ValueAnnotation __tmp10 = new ValueAnnotation();
+                __tmp10.Value = MetaOperatorKind.PreIncrementAssign;
+                elemAnnotList.Add(__tmp10);
             }
             if (context.TMinusMinus() != null)
             {
@@ -2580,9 +2142,10 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.preOperator_TMinusMinus_SymbolType);
+                ValueAnnotation __tmp11 = new ValueAnnotation();
+                __tmp11.Value = MetaOperatorKind.PreDecrementAssign;
+                elemAnnotList.Add(__tmp11);
             }
-            this.HandleSymbolType(context);
             return base.VisitPreOperator(context);
         }
         
@@ -2597,7 +2160,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.unaryOperator_TPlus_SymbolType);
+                ValueAnnotation __tmp12 = new ValueAnnotation();
+                __tmp12.Value = MetaOperatorKind.UnaryPlus;
+                elemAnnotList.Add(__tmp12);
             }
             if (context.TMinus() != null)
             {
@@ -2607,7 +2172,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.unaryOperator_TMinus_SymbolType);
+                ValueAnnotation __tmp13 = new ValueAnnotation();
+                __tmp13.Value = MetaOperatorKind.Negate;
+                elemAnnotList.Add(__tmp13);
             }
             if (context.TTilde() != null)
             {
@@ -2617,7 +2184,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.unaryOperator_TTilde_SymbolType);
+                ValueAnnotation __tmp14 = new ValueAnnotation();
+                __tmp14.Value = MetaOperatorKind.OnesComplement;
+                elemAnnotList.Add(__tmp14);
             }
             if (context.TExclamation() != null)
             {
@@ -2627,9 +2196,10 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.unaryOperator_TExclamation_SymbolType);
+                ValueAnnotation __tmp15 = new ValueAnnotation();
+                __tmp15.Value = MetaOperatorKind.Not;
+                elemAnnotList.Add(__tmp15);
             }
-            this.HandleSymbolType(context);
             return base.VisitUnaryOperator(context);
         }
         
@@ -2644,7 +2214,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.multiplicativeOperator_TAsterisk_SymbolType);
+                ValueAnnotation __tmp16 = new ValueAnnotation();
+                __tmp16.Value = MetaOperatorKind.Multiply;
+                elemAnnotList.Add(__tmp16);
             }
             if (context.TSlash() != null)
             {
@@ -2654,7 +2226,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.multiplicativeOperator_TSlash_SymbolType);
+                ValueAnnotation __tmp17 = new ValueAnnotation();
+                __tmp17.Value = MetaOperatorKind.Divide;
+                elemAnnotList.Add(__tmp17);
             }
             if (context.TPercent() != null)
             {
@@ -2664,9 +2238,10 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.multiplicativeOperator_TPercent_SymbolType);
+                ValueAnnotation __tmp18 = new ValueAnnotation();
+                __tmp18.Value = MetaOperatorKind.Modulo;
+                elemAnnotList.Add(__tmp18);
             }
-            this.HandleSymbolType(context);
             return base.VisitMultiplicativeOperator(context);
         }
         
@@ -2681,7 +2256,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.additiveOperator_TPlus_SymbolType);
+                ValueAnnotation __tmp19 = new ValueAnnotation();
+                __tmp19.Value = MetaOperatorKind.Add;
+                elemAnnotList.Add(__tmp19);
             }
             if (context.TMinus() != null)
             {
@@ -2691,9 +2268,10 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.additiveOperator_TMinus_SymbolType);
+                ValueAnnotation __tmp20 = new ValueAnnotation();
+                __tmp20.Value = MetaOperatorKind.Subtract;
+                elemAnnotList.Add(__tmp20);
             }
-            this.HandleSymbolType(context);
             return base.VisitAdditiveOperator(context);
         }
         
@@ -2702,29 +2280,28 @@ using MetaDslx.Core;
             List<object> elemAnnotList = null;
             if (context.TLessThan() != null)
             {
-                foreach(object elem in context.TLessThan())
+                object elem = context.TLessThan();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
-                    if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                    {
-                        elemAnnotList = new List<object>();
-                        this.treeAnnotations.Add(elem, elemAnnotList);
-                    }
-                    elemAnnotList.Add(this.shiftOperator_TLessThan_SymbolType);
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
                 }
+                ValueAnnotation __tmp21 = new ValueAnnotation();
+                __tmp21.Value = MetaOperatorKind.LeftShift;
+                elemAnnotList.Add(__tmp21);
             }
             if (context.TGreaterThan() != null)
             {
-                foreach(object elem in context.TGreaterThan())
+                object elem = context.TGreaterThan();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
                 {
-                    if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                    {
-                        elemAnnotList = new List<object>();
-                        this.treeAnnotations.Add(elem, elemAnnotList);
-                    }
-                    elemAnnotList.Add(this.shiftOperator_TGreaterThan_SymbolType);
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
                 }
+                ValueAnnotation __tmp22 = new ValueAnnotation();
+                __tmp22.Value = MetaOperatorKind.RightShift;
+                elemAnnotList.Add(__tmp22);
             }
-            this.HandleSymbolType(context);
             return base.VisitShiftOperator(context);
         }
         
@@ -2739,7 +2316,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.comparisonOperator_TLessThan_SymbolType);
+                ValueAnnotation __tmp23 = new ValueAnnotation();
+                __tmp23.Value = MetaOperatorKind.LessThan;
+                elemAnnotList.Add(__tmp23);
             }
             if (context.TGreaterThan() != null)
             {
@@ -2749,7 +2328,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.comparisonOperator_TGreaterThan_SymbolType);
+                ValueAnnotation __tmp24 = new ValueAnnotation();
+                __tmp24.Value = MetaOperatorKind.GreaterThan;
+                elemAnnotList.Add(__tmp24);
             }
             if (context.TLessThanOrEqual() != null)
             {
@@ -2759,7 +2340,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.comparisonOperator_TLessThanOrEqual_SymbolType);
+                ValueAnnotation __tmp25 = new ValueAnnotation();
+                __tmp25.Value = MetaOperatorKind.LessThanOrEqual;
+                elemAnnotList.Add(__tmp25);
             }
             if (context.TGreaterThanOrEqual() != null)
             {
@@ -2769,9 +2352,10 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.comparisonOperator_TGreaterThanOrEqual_SymbolType);
+                ValueAnnotation __tmp26 = new ValueAnnotation();
+                __tmp26.Value = MetaOperatorKind.GreaterThanOrEqual;
+                elemAnnotList.Add(__tmp26);
             }
-            this.HandleSymbolType(context);
             return base.VisitComparisonOperator(context);
         }
         
@@ -2786,7 +2370,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.equalityOperator_TEqual_SymbolType);
+                ValueAnnotation __tmp27 = new ValueAnnotation();
+                __tmp27.Value = MetaOperatorKind.Equal;
+                elemAnnotList.Add(__tmp27);
             }
             if (context.TNotEqual() != null)
             {
@@ -2796,9 +2382,10 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.equalityOperator_TNotEqual_SymbolType);
+                ValueAnnotation __tmp28 = new ValueAnnotation();
+                __tmp28.Value = MetaOperatorKind.NotEqual;
+                elemAnnotList.Add(__tmp28);
             }
-            this.HandleSymbolType(context);
             return base.VisitEqualityOperator(context);
         }
         
@@ -2813,7 +2400,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_TAssign_SymbolType);
+                ValueAnnotation __tmp29 = new ValueAnnotation();
+                __tmp29.Value = MetaOperatorKind.Assign;
+                elemAnnotList.Add(__tmp29);
             }
             if (context.TAsteriskAssign() != null)
             {
@@ -2823,7 +2412,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_TAsteriskAssign_SymbolType);
+                ValueAnnotation __tmp30 = new ValueAnnotation();
+                __tmp30.Value = MetaOperatorKind.MultiplyAssign;
+                elemAnnotList.Add(__tmp30);
             }
             if (context.TSlashAssign() != null)
             {
@@ -2833,7 +2424,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_TSlashAssign_SymbolType);
+                ValueAnnotation __tmp31 = new ValueAnnotation();
+                __tmp31.Value = MetaOperatorKind.DivideAssign;
+                elemAnnotList.Add(__tmp31);
             }
             if (context.TPercentAssign() != null)
             {
@@ -2843,7 +2436,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_TPercentAssign_SymbolType);
+                ValueAnnotation __tmp32 = new ValueAnnotation();
+                __tmp32.Value = MetaOperatorKind.ModuloAssign;
+                elemAnnotList.Add(__tmp32);
             }
             if (context.TPlusAssign() != null)
             {
@@ -2853,7 +2448,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_TPlusAssign_SymbolType);
+                ValueAnnotation __tmp33 = new ValueAnnotation();
+                __tmp33.Value = MetaOperatorKind.AddAssign;
+                elemAnnotList.Add(__tmp33);
             }
             if (context.TMinusAssign() != null)
             {
@@ -2863,7 +2460,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_TMinusAssign_SymbolType);
+                ValueAnnotation __tmp34 = new ValueAnnotation();
+                __tmp34.Value = MetaOperatorKind.SubtractAssign;
+                elemAnnotList.Add(__tmp34);
             }
             if (context.TLeftShiftAssign() != null)
             {
@@ -2873,7 +2472,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_TLeftShiftAssign_SymbolType);
+                ValueAnnotation __tmp35 = new ValueAnnotation();
+                __tmp35.Value = MetaOperatorKind.LeftShiftAssign;
+                elemAnnotList.Add(__tmp35);
             }
             if (context.TRightShiftAssign() != null)
             {
@@ -2883,7 +2484,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_TRightShiftAssign_SymbolType);
+                ValueAnnotation __tmp36 = new ValueAnnotation();
+                __tmp36.Value = MetaOperatorKind.RightShiftAssign;
+                elemAnnotList.Add(__tmp36);
             }
             if (context.TAmpersandAssign() != null)
             {
@@ -2893,7 +2496,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_TAmpersandAssign_SymbolType);
+                ValueAnnotation __tmp37 = new ValueAnnotation();
+                __tmp37.Value = MetaOperatorKind.AndAssign;
+                elemAnnotList.Add(__tmp37);
             }
             if (context.THatAssign() != null)
             {
@@ -2903,7 +2508,9 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_THatAssign_SymbolType);
+                ValueAnnotation __tmp38 = new ValueAnnotation();
+                __tmp38.Value = MetaOperatorKind.ExclusiveOrAssign;
+                elemAnnotList.Add(__tmp38);
             }
             if (context.TBarAssign() != null)
             {
@@ -2913,9 +2520,10 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                elemAnnotList.Add(this.assignmentOperator_TBarAssign_SymbolType);
+                ValueAnnotation __tmp39 = new ValueAnnotation();
+                __tmp39.Value = MetaOperatorKind.OrAssign;
+                elemAnnotList.Add(__tmp39);
             }
-            this.HandleSymbolType(context);
             return base.VisitAssignmentOperator(context);
         }
         
@@ -2927,8 +2535,7 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            ScopeAnnotation __tmp63 = new ScopeAnnotation();
-            treeAnnotList.Add(__tmp63);
+            treeAnnotList.Add(this.associationDeclaration_Scope);
             List<object> elemAnnotList = null;
             if (context.source != null)
             {
@@ -2938,9 +2545,7 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                NameUseAnnotation __tmp64 = new NameUseAnnotation();
-                __tmp64.SymbolTypes.Add(typeof(MetaProperty));
-                elemAnnotList.Add(__tmp64);
+                elemAnnotList.Add(this.associationDeclaration_Source_NameUse);
             }
             if (context.target != null)
             {
@@ -2950,11 +2555,8 @@ using MetaDslx.Core;
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                NameUseAnnotation __tmp65 = new NameUseAnnotation();
-                __tmp65.SymbolTypes.Add(typeof(MetaProperty));
-                elemAnnotList.Add(__tmp65);
+                elemAnnotList.Add(this.associationDeclaration_Target_NameUse);
             }
-            this.HandleSymbolType(context);
             return base.VisitAssociationDeclaration(context);
         }
         
@@ -2968,57 +2570,41 @@ using MetaDslx.Core;
             }
             treeAnnotList.Add(this.identifier_Name);
             treeAnnotList.Add(this.identifier_Identifier);
-            this.HandleSymbolType(context);
             return base.VisitIdentifier(context);
         }
         
         public override object VisitLiteral(MetaModelParser.LiteralContext context)
         {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            ValueAnnotation __tmp66 = new ValueAnnotation();
-            treeAnnotList.Add(__tmp66);
-            this.HandleSymbolType(context);
             return base.VisitLiteral(context);
         }
         
         public override object VisitNullLiteral(MetaModelParser.NullLiteralContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitNullLiteral(context);
         }
         
         public override object VisitBooleanLiteral(MetaModelParser.BooleanLiteralContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitBooleanLiteral(context);
         }
         
         public override object VisitIntegerLiteral(MetaModelParser.IntegerLiteralContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitIntegerLiteral(context);
         }
         
         public override object VisitDecimalLiteral(MetaModelParser.DecimalLiteralContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitDecimalLiteral(context);
         }
         
         public override object VisitScientificLiteral(MetaModelParser.ScientificLiteralContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitScientificLiteral(context);
         }
         
         public override object VisitStringLiteral(MetaModelParser.StringLiteralContext context)
         {
-            this.HandleSymbolType(context);
             return base.VisitStringLiteral(context);
         }
     }
@@ -3032,423 +2618,465 @@ using MetaDslx.Core;
         
         public virtual object VisitMain(MetaModelParser.MainContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitQualifiedName(MetaModelParser.QualifiedNameContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitIdentifierList(MetaModelParser.IdentifierListContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitQualifiedNameList(MetaModelParser.QualifiedNameListContext context)
         {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitAnnotation(MetaModelParser.AnnotationContext context)
-        {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitNamespaceDeclaration(MetaModelParser.NamespaceDeclarationContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitMetamodelDeclaration(MetaModelParser.MetamodelDeclarationContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitDeclaration(MetaModelParser.DeclarationContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitEnumDeclaration(MetaModelParser.EnumDeclarationContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitEnumValues(MetaModelParser.EnumValuesContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitEnumValue(MetaModelParser.EnumValueContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitEnumMemberDeclaration(MetaModelParser.EnumMemberDeclarationContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitClassDeclaration(MetaModelParser.ClassDeclarationContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitClassAncestors(MetaModelParser.ClassAncestorsContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitClassAncestor(MetaModelParser.ClassAncestorContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitClassMemberDeclaration(MetaModelParser.ClassMemberDeclarationContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitFieldDeclaration(MetaModelParser.FieldDeclarationContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitFieldModifier(MetaModelParser.FieldModifierContext context)
         {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitRedefinitions(MetaModelParser.RedefinitionsContext context)
-        {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitSubsettings(MetaModelParser.SubsettingsContext context)
-        {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitNameUseList(MetaModelParser.NameUseListContext context)
-        {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitConstDeclaration(MetaModelParser.ConstDeclarationContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitReturnType(MetaModelParser.ReturnTypeContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitTypeReference(MetaModelParser.TypeReferenceContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitSimpleType(MetaModelParser.SimpleTypeContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitObjectType(MetaModelParser.ObjectTypeContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitPrimitiveType(MetaModelParser.PrimitiveTypeContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitVoidType(MetaModelParser.VoidTypeContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitNullableType(MetaModelParser.NullableTypeContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitCollectionType(MetaModelParser.CollectionTypeContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitCollectionKind(MetaModelParser.CollectionKindContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitOperationDeclaration(MetaModelParser.OperationDeclarationContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitParameterList(MetaModelParser.ParameterListContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitParameter(MetaModelParser.ParameterContext context)
         {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitConstructorDeclaration(MetaModelParser.ConstructorDeclarationContext context)
-        {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitInitializerDeclaration(MetaModelParser.InitializerDeclarationContext context)
-        {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitSynthetizedPropertyInitializer(MetaModelParser.SynthetizedPropertyInitializerContext context)
-        {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitInheritedPropertyInitializer(MetaModelParser.InheritedPropertyInitializerContext context)
-        {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitArgumentList(MetaModelParser.ArgumentListContext context)
         {
-            return this.VisitChildren(context);
+            for (int curr = 0; curr < context.expression().Length; ++curr)
+            {
+                int first = 0;
+                int last = context.expression().Length - 1;
+                int prev = curr - 1;
+                int next = curr + 1;
+                if (curr >= first && curr <= last)
+                {
+                    this.SetValue(context.expression()[curr], "ExpectedType", () => this.GetValue(context, "ExpectedTypes", curr));
+                }
+            }
+            return null;
         }
         
         public virtual object VisitCastExpression(MetaModelParser.CastExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Operator", () => MetaOperatorKind.TypeCast);
+            this.SetValue(context, "Type", () => this.Symbol(context.typeReference()));
+            return null;
         }
         
         public virtual object VisitTypeofExpression(MetaModelParser.TypeofExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => this.Typeof(MetaType));
+            return null;
         }
         
         public virtual object VisitBracketExpression(MetaModelParser.BracketExpressionContext context)
         {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitThisExpression(MetaModelParser.ThisExpressionContext context)
-        {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => this.GetValue(context.expression(), "Type"));
+            this.SetValue(context.expression(), "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitConstantExpression(MetaModelParser.ConstantExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context.literal(), "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitIdentifierExpression(MetaModelParser.IdentifierExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context.identifier(), "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            this.SetValue(context, "Type", () => this.GetValue(context.identifier(), "Type"));
+            return null;
         }
         
         public virtual object VisitIndexerExpression(MetaModelParser.IndexerExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Definition", () => this.Bind(this.Symbol(context.expression()), this.Symbol(context.argumentList())));
+            this.SetValue(context, "Type", () => this.GetValue(this.GetValue(context, "Definition"), "ReturnType"));
+            this.SetValue(context.argumentList(), "ExpectedTypes", () => this.GetValue(this.GetValue(context, "Definition"), "ExpectedTypes"));
+            return null;
         }
         
         public virtual object VisitFunctionCallExpression(MetaModelParser.FunctionCallExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Definition", () => this.Bind(this.Symbol(context.expression()), this.Symbol(context.argumentList())));
+            this.SetValue(context, "Type", () => this.GetValue(this.GetValue(context, "Definition"), "ReturnType"));
+            this.SetValue(context.argumentList(), "ExpectedTypes", () => this.GetValue(this.GetValue(context, "Definition"), "ExpectedTypes"));
+            return null;
         }
         
         public virtual object VisitMemberAccessExpression(MetaModelParser.MemberAccessExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Definition", () => this.Bind(this.Symbol(context.expression()), this.Symbol(context.identifier())));
+            this.SetValue(context, "Type", () => this.GetValue(this.GetValue(context, "Definition"), "Type"));
+            return null;
         }
         
         public virtual object VisitPostExpression(MetaModelParser.PostExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => this.GetValue(context.expression(), "Type"));
+            this.SetValue(context.expression(), "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitPreExpression(MetaModelParser.PreExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => this.GetValue(context.expression(), "Type"));
+            this.SetValue(context.expression(), "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitUnaryExpression(MetaModelParser.UnaryExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => this.GetValue(context.expression(), "Type"));
+            this.SetValue(context.expression(), "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitTypeConversionExpression(MetaModelParser.TypeConversionExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Operator", () => MetaOperatorKind.TypeAs);
+            this.SetValue(context, "Type", () => this.Symbol(context.typeReference()));
+            return null;
         }
         
         public virtual object VisitTypeCheckExpression(MetaModelParser.TypeCheckExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Operator", () => MetaOperatorKind.TypeIs);
+            this.SetValue(context, "Type", () => MetaBuiltInType.Bool);
+            return null;
         }
         
         public virtual object VisitMultiplicativeExpression(MetaModelParser.MultiplicativeExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "BalancedType", () => this.Balance(this.Symbol(context.left), this.Symbol(context.right)));
+            this.SetValue(context, "Type", () => this.GetValue(context, "BalancedType"));
+            this.SetValue(context.left, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            this.SetValue(context.right, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitAdditiveExpression(MetaModelParser.AdditiveExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "BalancedType", () => this.Balance(this.Symbol(context.left), this.Symbol(context.right)));
+            this.SetValue(context, "Type", () => this.GetValue(context, "BalancedType"));
+            this.SetValue(context.left, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            this.SetValue(context.right, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitShiftExpression(MetaModelParser.ShiftExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "BalancedType", () => this.Balance(this.Symbol(context.left), this.Symbol(context.right)));
+            this.SetValue(context, "Type", () => this.GetValue(context, "BalancedType"));
+            this.SetValue(context.left, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            this.SetValue(context.right, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitComparisonExpression(MetaModelParser.ComparisonExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "BalancedType", () => this.Balance(this.Symbol(context.left), this.Symbol(context.right)));
+            this.SetValue(context, "Type", () => MetaBuiltInType.Bool);
+            this.SetValue(context.left, "ExpectedType", () => this.GetValue(context, "BalancedType"));
+            this.SetValue(context.right, "ExpectedType", () => this.GetValue(context, "BalancedType"));
+            return null;
         }
         
         public virtual object VisitEqualityExpression(MetaModelParser.EqualityExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "BalancedType", () => this.Balance(this.Symbol(context.left), this.Symbol(context.right)));
+            this.SetValue(context, "Type", () => MetaBuiltInType.Bool);
+            this.SetValue(context.left, "ExpectedType", () => this.GetValue(context, "BalancedType"));
+            this.SetValue(context.right, "ExpectedType", () => this.GetValue(context, "BalancedType"));
+            return null;
         }
         
         public virtual object VisitBitwiseAndExpression(MetaModelParser.BitwiseAndExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Operator", () => MetaOperatorKind.And);
+            this.SetValue(context, "BalancedType", () => this.Balance(this.Symbol(context.left), this.Symbol(context.right)));
+            this.SetValue(context, "Type", () => this.GetValue(context, "BalancedType"));
+            this.SetValue(context.left, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            this.SetValue(context.right, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitBitwiseXorExpression(MetaModelParser.BitwiseXorExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Operator", () => MetaOperatorKind.ExclusiveOr);
+            this.SetValue(context, "BalancedType", () => this.Balance(this.Symbol(context.left), this.Symbol(context.right)));
+            this.SetValue(context, "Type", () => this.GetValue(context, "BalancedType"));
+            this.SetValue(context.left, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            this.SetValue(context.right, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitBitwiseOrExpression(MetaModelParser.BitwiseOrExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Operator", () => MetaOperatorKind.Or);
+            this.SetValue(context, "BalancedType", () => this.Balance(this.Symbol(context.left), this.Symbol(context.right)));
+            this.SetValue(context, "Type", () => this.GetValue(context, "BalancedType"));
+            this.SetValue(context.left, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            this.SetValue(context.right, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitLogicalAndExpression(MetaModelParser.LogicalAndExpressionContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Operator", () => MetaOperatorKind.AndAlso);
+            this.SetValue(context, "Type", () => MetaBuiltInType.Bool);
+            this.SetValue(context.left, "ExpectedType", () => MetaBuiltInType.Bool);
+            this.SetValue(context.right, "ExpectedType", () => MetaBuiltInType.Bool);
+            return null;
         }
         
         public virtual object VisitLogicalOrExpression(MetaModelParser.LogicalOrExpressionContext context)
         {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitNullCoalescingExpression(MetaModelParser.NullCoalescingExpressionContext context)
-        {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Operator", () => MetaOperatorKind.OrElse);
+            this.SetValue(context, "Type", () => MetaBuiltInType.Bool);
+            this.SetValue(context.left, "ExpectedType", () => MetaBuiltInType.Bool);
+            this.SetValue(context.right, "ExpectedType", () => MetaBuiltInType.Bool);
+            return null;
         }
         
         public virtual object VisitConditionalExpression(MetaModelParser.ConditionalExpressionContext context)
         {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitAssignmentExpression(MetaModelParser.AssignmentExpressionContext context)
-        {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => this.Balance(this.Symbol(context.then), this.Symbol(context.@else)));
+            this.SetValue(context.condition, "ExpectedType", () => MetaBuiltInType.Bool);
+            this.SetValue(context.then, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            this.SetValue(context.@else, "ExpectedType", () => this.GetValue(context, "ExpectedType"));
+            return null;
         }
         
         public virtual object VisitPostOperator(MetaModelParser.PostOperatorContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitPreOperator(MetaModelParser.PreOperatorContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitUnaryOperator(MetaModelParser.UnaryOperatorContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitMultiplicativeOperator(MetaModelParser.MultiplicativeOperatorContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitAdditiveOperator(MetaModelParser.AdditiveOperatorContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitShiftOperator(MetaModelParser.ShiftOperatorContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitComparisonOperator(MetaModelParser.ComparisonOperatorContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitEqualityOperator(MetaModelParser.EqualityOperatorContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitAssignmentOperator(MetaModelParser.AssignmentOperatorContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitAssociationDeclaration(MetaModelParser.AssociationDeclarationContext context)
         {
-            this.SetValue(context.source, "OppositeProperties", new Lazy<object>(() => this.Symbol(context.target)));
-            return this.VisitChildren(context);
+            this.SetValue(context.source, "Opposites", () => this.Symbol(context.target));
+            this.SetValue(context.source, "X", () => this.GetValue(context.target, "Y"));
+            return null;
         }
         
         public virtual object VisitIdentifier(MetaModelParser.IdentifierContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitLiteral(MetaModelParser.LiteralContext context)
         {
-            return this.VisitChildren(context);
+            return null;
         }
         
         public virtual object VisitNullLiteral(MetaModelParser.NullLiteralContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => BuiltInType.Null);
+            this.SetValue(context, "Value", () => null);
+            return null;
         }
         
         public virtual object VisitBooleanLiteral(MetaModelParser.BooleanLiteralContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => BuiltInType.Bool);
+            this.SetValue(context, "Value", () => this.Valueof(this.Symbol(context)));
+            return null;
         }
         
         public virtual object VisitIntegerLiteral(MetaModelParser.IntegerLiteralContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => BuiltInType.Int);
+            this.SetValue(context, "Value", () => this.Valueof(this.Symbol(context)));
+            return null;
         }
         
         public virtual object VisitDecimalLiteral(MetaModelParser.DecimalLiteralContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => BuiltInType.Double);
+            this.SetValue(context, "Value", () => this.Valueof(this.Symbol(context)));
+            return null;
         }
         
         public virtual object VisitScientificLiteral(MetaModelParser.ScientificLiteralContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => BuiltInType.Double);
+            this.SetValue(context, "Value", () => this.Valueof(this.Symbol(context)));
+            return null;
         }
         
         public virtual object VisitStringLiteral(MetaModelParser.StringLiteralContext context)
         {
-            return this.VisitChildren(context);
+            this.SetValue(context, "Type", () => BuiltInType.String);
+            this.SetValue(context, "Value", () => this.Valueof(this.Symbol(context)));
+            return null;
         }
     }
 }

@@ -17,6 +17,26 @@ namespace MetaDslx.Core
             this.items = new HashSet<T>();
         }
 
+        public ModelSet(ModelObject owner, ModelProperty ownerProperty, IEnumerable<T> values)
+            : base(owner, ownerProperty)
+        {
+            this.items = new HashSet<T>();
+            foreach (var value in values)
+            {
+                this.Add(value);
+            }
+        }
+
+        public ModelSet(ModelObject owner, ModelProperty ownerProperty, IEnumerable<Lazy<object>> values)
+            : base(owner, ownerProperty)
+        {
+            this.items = new HashSet<T>();
+            foreach (var value in values)
+            {
+                this.MLazyAdd(value);
+            }
+        }
+
         #region ICollection<T> Members
 
         public void Add(T item)

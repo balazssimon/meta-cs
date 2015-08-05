@@ -9,22 +9,26 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler
 {
-    public class TypeDefAnnotation
+    public class SymbolTypedAnnotation
+    {
+        public Type SymbolType { get; set; }
+        public bool OverrideSymbolType { get; set; }
+    }
+
+    public class TypeDefAnnotation : SymbolTypedAnnotation
     {
         public TypeDefAnnotation()
         {
             this.Scope = true;
         }
-        public Type SymbolType { get; set; }
         public bool Merge { get; set; }
         public bool Overload { get; set; }
         public bool Scope { get; set; }
     }
 
-    public class NameDefAnnotation
+    public class NameDefAnnotation : SymbolTypedAnnotation
     {
         public string NestingProperty { get; set; }
-        public Type SymbolType { get; set; }
         public bool Merge { get; set; }
         public bool Overload { get; set; }
         public bool Scope { get; set; }
@@ -48,25 +52,22 @@ namespace MetaDslx.Compiler
         public List<Type> SymbolTypes { get; set; }
     }
 
-    public class TypeCtrAnnotation
+    public class TypeCtrAnnotation : SymbolTypedAnnotation
     {
         public TypeCtrAnnotation()
         {
         }
-        public Type SymbolType { get; set; }
     }
 
-    public class NameCtrAnnotation
+    public class NameCtrAnnotation : SymbolTypedAnnotation
     {
         public NameCtrAnnotation()
         {
         }
-        public Type SymbolType { get; set; }
     }
 
-    public class ScopeAnnotation
+    public class ScopeAnnotation : SymbolTypedAnnotation
     {
-        public Type SymbolType { get; set; }
     }
 
     public class InheritScopeAnnotation
@@ -126,10 +127,14 @@ namespace MetaDslx.Compiler
         public bool HasValue { get; set; }
     }
 
-    public class SymbolAnnotation
+    public class SymbolAnnotation : SymbolTypedAnnotation
+    {
+        public bool NoScope { get; set; }
+    }
+
+    public class SymbolTypeAnnotation
     {
         public Type SymbolType { get; set; }
-        public bool NoScope { get; set; }
     }
 
     public class AutoSymbolAnnotation
@@ -740,7 +745,7 @@ namespace MetaDslx.Compiler
             if (symbolOK)
             {
                 ModelObject mo = symbol as ModelObject;
-                ModelProperty prop = mo.MFindProperty(propertyAnnotation.Name);
+                ModelProperty prop = mo.MFindProperties(propertyAnnotation.Name).FirstOrDefault();
                 if (prop != null)
                 {
                     if (value != null)

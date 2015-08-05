@@ -17,6 +17,25 @@ namespace MetaDslx.Core
             this.items = new List<T>();
         }
 
+        public ModelList(ModelObject owner, ModelProperty ownerProperty, IEnumerable<T> values)
+            : base(owner, ownerProperty)
+        {
+            this.items = new List<T>();
+            foreach (var value in values)
+            {
+                this.Add(value);
+            }
+        }
+
+        public ModelList(ModelObject owner, ModelProperty ownerProperty, IEnumerable<Lazy<object>> values)
+            : base(owner, ownerProperty)
+        {
+            this.items = new List<T>();
+            foreach (var value in values)
+            {
+                this.MLazyAdd(value);
+            }
+        }
 
         #region IList<T> Members
 

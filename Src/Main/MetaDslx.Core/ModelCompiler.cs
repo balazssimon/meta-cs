@@ -63,6 +63,7 @@ namespace MetaDslx.Core
         bool IsAssignableFrom(ModelObject left, ModelObject right);
         bool Equals(ModelObject left, ModelObject right);
         MetaType GetTypeOf(ModelObject symbol);
+        MetaType GetTypeOf(object value);
         MetaType GetReturnTypeOf(ModelObject symbol);
     }
 
@@ -131,7 +132,7 @@ namespace MetaDslx.Core
 
         public override string ToString()
         {
-            return string.Format("{0} in '{1}' ({2},{3})-({4},{5}): {6}", this.Severity, this.FileName, this.TextSpan.StartLine, this.TextSpan.StartPosition, this.TextSpan.EndLine, this.TextSpan.EndPosition, this.Message);
+            return string.Format("{0} in '{1}' ({2},{3}): {6}", this.Severity, this.FileName, this.TextSpan.StartLine, this.TextSpan.StartPosition, this.TextSpan.EndLine, this.TextSpan.EndPosition, this.Message);
         }
 
         public override bool Equals(object obj)
@@ -191,7 +192,7 @@ namespace MetaDslx.Core
 
         public override string ToString()
         {
-            return string.Format("({0},{1})-({2},{3})", this.StartLine, this.StartPosition, this.EndLine, this.EndPosition);
+            return string.Format("({0},{1})", this.StartLine, this.StartPosition, this.EndLine, this.EndPosition);
         }
 
         public override int GetHashCode()
@@ -508,13 +509,17 @@ namespace MetaDslx.Core
 
         public bool IsAssignableFrom(ModelObject left, ModelObject right)
         {
-            if (left == right) return true;
+            if (this.Equals(left, right)) return true;
             if (left == MetaBuiltInTypes.Error) return false;
             if (right == MetaBuiltInTypes.Error) return false;
             if (left == MetaBuiltInTypes.Any) return true;
             if (left == MetaBuiltInTypes.Object) return true;
             if (right == MetaBuiltInTypes.Any) return true;
             if (right == MetaBuiltInTypes.Object) return false;
+            if (left == MetaBuiltInTypes.ModelObject) return (right is ModelObject) || (right == MetaBuiltInTypes.ModelObject);
+            if (left == MetaBuiltInTypes.MetaType) return (right is MetaType) || (right == MetaBuiltInTypes.MetaType);
+            if (right == MetaBuiltInTypes.ModelObject) return (left is ModelObject) || (left == MetaBuiltInTypes.ModelObject);
+            if (right == MetaBuiltInTypes.MetaType) return (left is MetaType) || (left == MetaBuiltInTypes.MetaType);
             MetaPrimitiveType primLeft = left as MetaPrimitiveType;
             MetaPrimitiveType primRight = right as MetaPrimitiveType;
             if (primLeft != null && primRight != null)
@@ -561,8 +566,38 @@ namespace MetaDslx.Core
             if (right == MetaBuiltInTypes.Error) return false;
             if (left == MetaBuiltInTypes.Any) return true;
             if (right == MetaBuiltInTypes.Any) return true;
-            if (left == MetaBuiltInTypes.Object) return false;
+            if (left == MetaBuiltInTypes.Object) return right == MetaBuiltInTypes.Object;
             if (right == MetaBuiltInTypes.Object) return false;
+            if (left == MetaBuiltInTypes.ModelObject) return right == MetaBuiltInTypes.ModelObject;
+            if (right == MetaBuiltInTypes.ModelObject) return false;
+            if (left == MetaBuiltInTypes.MetaType) return right == MetaBuiltInTypes.MetaType;
+            if (right == MetaBuiltInTypes.MetaType) return false;
+            if (left == MetaBuiltInTypes.ModelObjectList)
+            {
+                if (right == MetaBuiltInTypes.ModelObjectList) return true;
+                MetaCollectionType cr = right as MetaCollectionType;
+                if (cr != null)
+                {
+                    return cr.Kind == MetaCollectionKind.List && this.Equals((ModelObject)cr.InnerType, (ModelObject)MetaBuiltInTypes.ModelObject);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            if (right == MetaBuiltInTypes.ModelObjectList)
+            {
+                if (left == MetaBuiltInTypes.ModelObjectList) return true;
+                MetaCollectionType cl = left as MetaCollectionType;
+                if (cl != null)
+                {
+                    return cl.Kind == MetaCollectionKind.List && this.Equals((ModelObject)cl.InnerType, (ModelObject)MetaBuiltInTypes.ModelObject);
+                }
+                else
+                {
+                    return false;
+                }
+            }
             MetaPrimitiveType primLeft = left as MetaPrimitiveType;
             MetaPrimitiveType primRight = right as MetaPrimitiveType;
             if (primLeft != null && primRight != null)
@@ -587,6 +622,7 @@ namespace MetaDslx.Core
 
         public MetaType GetTypeOf(ModelObject symbol)
         {
+            if (symbol == null) return null;
             MetaTypedElement mte = symbol as MetaTypedElement;
             if (mte != null) return mte.Type;
             MetaType mt = symbol as MetaType;
@@ -594,10 +630,19 @@ namespace MetaDslx.Core
             return null;
         }
 
+        public MetaType GetTypeOf(object value)
+        {
+            ModelObject symbol = value as ModelObject;
+            if (symbol != null) return this.GetTypeOf(symbol);
+            if (value is string) return MetaBuiltInTypes.String;
+            return null;
+        }
+
         public MetaType GetReturnTypeOf(ModelObject symbol)
         {
-            MetaOperation mo = symbol as MetaOperation;
-            if (mo != null) return mo.ReturnType;
+            if (symbol == null) return null;
+            MetaFunction mf = symbol as MetaFunction;
+            if (mf != null) return mf.ReturnType;
             return null;
         }
     }
@@ -832,6 +877,7 @@ namespace MetaDslx.Core
         protected virtual IEnumerable<ModelObject> ResolveEntries(IEnumerable<ModelObject> entries, ResolveKind kind, string name, ResolutionInfo info)
         {
             List<ModelObject> result = new List<ModelObject>();
+            if (name == null) return result;
             foreach (var entry in entries)
             {
                 ModelObject entryObject = entry as ModelObject;
@@ -850,10 +896,74 @@ namespace MetaDslx.Core
 
     public class DefaultBindingProvider : IBindingProvider
     {
+        protected virtual void SelectBestAlternative(List<ModelObject> alternativeList, MetaFunctionCallExpression call)
+        {
+            if (alternativeList.Count <= 1) return;
+            ModelContext ctx = ModelContext.Current;
+            for (int i = 0; i < alternativeList.Count; i++)
+            {
+                ModelObject alternative = alternativeList[i];
+                MetaTypedElement mte = alternative as MetaTypedElement;
+                if (mte != null && mte.Type is MetaFunctionType)
+                {
+                    MetaFunctionType ft = mte.Type as MetaFunctionType;
+                    // TODO
+                    bool goodAlternative = true;
+                    for (int j = 0; j < call.Arguments.Count; j++)
+                    {
+                        MetaType paramType = ft.ParameterTypes[j];
+                        MetaType argType = call.Arguments[j].Type;
+                        if (!ctx.Compiler.TypeProvider.Equals((ModelObject)paramType, (ModelObject)argType))
+                        {
+                            goodAlternative = false;
+                        }
+                    }
+                    if (!goodAlternative && alternativeList.Count > 1)
+                    {
+                        alternativeList.RemoveAt(i);
+                        --i;
+                    }
+                }
+            }
+        }
+
         public virtual ModelObject Bind(ModelObject context, IEnumerable<ModelObject> alternatives, BindingInfo info)
         {
             ModelContext ctx = ModelContext.Current;
             List<ModelObject> alternativeList = alternatives.ToList();
+            MetaFunctionCallExpression fce = context as MetaFunctionCallExpression;
+            if (fce != null)
+            {
+                for (int i = 0; i < alternativeList.Count; i++)
+                {
+                    bool goodAlternative = false;
+                    ModelObject alternative = alternativeList[i];
+                    MetaTypedElement mte = alternative as MetaTypedElement;
+                    if (mte != null && mte.Type is MetaFunctionType)
+                    {
+                        MetaFunctionType ft = mte.Type as MetaFunctionType;
+                        if (ft.ParameterTypes.Count == fce.Arguments.Count)
+                        {
+                            goodAlternative = true;
+                            for (int j = 0; j < fce.Arguments.Count; j++)
+                            {
+                                MetaType paramType = ft.ParameterTypes[j];
+                                MetaType argType = fce.Arguments[j].Type;
+                                if (!ctx.Compiler.TypeProvider.IsAssignableFrom((ModelObject)paramType, (ModelObject)argType))
+                                {
+                                    goodAlternative = false;
+                                }
+                            }
+                        }
+                    }
+                    if (!goodAlternative)
+                    {
+                        alternativeList.RemoveAt(i);
+                        --i;
+                    }
+                }
+                this.SelectBestAlternative(alternativeList, fce);
+            }
             if (alternativeList.Count == 0)
             {
                 if (ctx != null)
@@ -871,6 +981,9 @@ namespace MetaDslx.Core
             }
             else if (alternativeList.Count > 1)
             {
+                if (context.MParent is MetaFunctionCallExpression) return null;
+                if (context.MParent is MetaIndexerExpression) return null;
+                if (context.MParent is MetaOperatorExpression) return null;
                 if (ctx != null)
                 {
                     if (info.Node != null)
@@ -887,6 +1000,26 @@ namespace MetaDslx.Core
             else
             {
                 ModelObject symbol = alternativeList[0];
+                if (fce != null)
+                {
+                    MetaTypedElement mte = symbol as MetaTypedElement;
+                    if (mte != null && mte.Type is MetaFunctionType)
+                    {
+                        MetaFunctionType ft = mte.Type as MetaFunctionType;
+                        if (ft.ParameterTypes.Count == fce.Arguments.Count)
+                        {
+                            for (int i = 0; i < fce.Arguments.Count; i++)
+                            {
+                                MetaType paramType = ft.ParameterTypes[i];
+                                ((ModelObject)fce.Arguments[i]).MLazySet(Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => paramType));
+                            }
+                        }
+                        else
+                        {
+                            ctx.Compiler.Diagnostics.AddError("The number of formal and actual parameters are different.", ctx.Compiler.FileName, context);
+                        }
+                    }
+                }
                 // TODO
                 return symbol;
             }
