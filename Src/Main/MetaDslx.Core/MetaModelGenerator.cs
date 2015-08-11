@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelGenerator_1206075394;
-    namespace __Hidden_MetaModelGenerator_1206075394
+    using __Hidden_MetaModelGenerator_1554364042;
+    namespace __Hidden_MetaModelGenerator_1554364042
     {
         internal static class __Extensions
         {
@@ -3255,196 +3255,200 @@ namespace MetaDslx.Core //1:1
             {
                 return "false"; //377:52
             }
-            else if (value is MetaExpression) //378:2
+            else if (value is string) //378:2
             {
-                return GenerateExpression((MetaExpression)value); //378:36
+                return "\"" + value.ToString() + "\""; //378:28
             }
-            else //379:2
+            else if (value is MetaExpression) //379:2
             {
-                return value.ToString(); //379:7
+                return GenerateExpression((MetaExpression)value); //379:36
             }
-        }
-
-        public string GetCSharpOperator(MetaOperatorExpression expr) //383:1
-        {
-            var __tmp1 = expr; //384:9
-            if (expr is MetaUnaryPlusExpression) //385:3
+            else //380:2
             {
-                return "+"; //385:36
-            }
-            else if (expr is MetaNegateExpression) //386:3
-            {
-                return "-"; //386:33
-            }
-            else if (expr is MetaOnesComplementExpression) //387:3
-            {
-                return "~"; //387:41
-            }
-            else if (expr is MetaNotExpression) //388:3
-            {
-                return "!"; //388:30
-            }
-            else if (expr is MetaPostIncrementAssignExpression) //389:3
-            {
-                return "++"; //389:46
-            }
-            else if (expr is MetaPostDecrementAssignExpression) //390:3
-            {
-                return "--"; //390:46
-            }
-            else if (expr is MetaPreIncrementAssignExpression) //391:3
-            {
-                return "++"; //391:45
-            }
-            else if (expr is MetaPreDecrementAssignExpression) //392:3
-            {
-                return "--"; //392:45
-            }
-            else if (expr is MetaMultiplyExpression) //393:3
-            {
-                return "*"; //393:35
-            }
-            else if (expr is MetaDivideExpression) //394:3
-            {
-                return "/"; //394:33
-            }
-            else if (expr is MetaModuloExpression) //395:3
-            {
-                return "%"; //395:33
-            }
-            else if (expr is MetaAddExpression) //396:3
-            {
-                return "+"; //396:30
-            }
-            else if (expr is MetaSubtractExpression) //397:3
-            {
-                return "-"; //397:35
-            }
-            else if (expr is MetaLeftShiftExpression) //398:3
-            {
-                return "<<"; //398:36
-            }
-            else if (expr is MetaRightShiftExpression) //399:3
-            {
-                return ">>"; //399:37
-            }
-            else if (expr is MetaLessThanExpression) //400:3
-            {
-                return "<"; //400:35
-            }
-            else if (expr is MetaLessThanOrEqualExpression) //401:3
-            {
-                return "<="; //401:42
-            }
-            else if (expr is MetaGreaterThanExpression) //402:3
-            {
-                return ">"; //402:38
-            }
-            else if (expr is MetaGreaterThanOrEqualExpression) //403:3
-            {
-                return ">="; //403:45
-            }
-            else if (expr is MetaEqualExpression) //404:3
-            {
-                return "=="; //404:32
-            }
-            else if (expr is MetaNotEqualExpression) //405:3
-            {
-                return "!="; //405:35
-            }
-            else if (expr is MetaAndExpression) //406:3
-            {
-                return "&"; //406:30
-            }
-            else if (expr is MetaOrExpression) //407:3
-            {
-                return "|"; //407:29
-            }
-            else if (expr is MetaExclusiveOrExpression) //408:3
-            {
-                return "^"; //408:38
-            }
-            else if (expr is MetaAndAlsoExpression) //409:3
-            {
-                return "&&"; //409:34
-            }
-            else if (expr is MetaOrElseExpression) //410:3
-            {
-                return "||"; //410:33
-            }
-            else if (expr is MetaNullCoalescingExpression) //411:3
-            {
-                return "??"; //411:41
-            }
-            else if (expr is MetaMultiplyAssignExpression) //412:3
-            {
-                return "*="; //412:41
-            }
-            else if (expr is MetaDivideAssignExpression) //413:3
-            {
-                return "/="; //413:39
-            }
-            else if (expr is MetaModuloAssignExpression) //414:3
-            {
-                return "%="; //414:39
-            }
-            else if (expr is MetaAddAssignExpression) //415:3
-            {
-                return "+="; //415:36
-            }
-            else if (expr is MetaSubtractAssignExpression) //416:3
-            {
-                return "-="; //416:41
-            }
-            else if (expr is MetaLeftShiftAssignExpression) //417:3
-            {
-                return "<<="; //417:42
-            }
-            else if (expr is MetaRightShiftAssignExpression) //418:3
-            {
-                return ">>="; //418:43
-            }
-            else if (expr is MetaAndAssignExpression) //419:3
-            {
-                return "&="; //419:36
-            }
-            else if (expr is MetaExclusiveOrAssignExpression) //420:3
-            {
-                return "^="; //420:44
-            }
-            else if (expr is MetaOrAssignExpression) //421:3
-            {
-                return "|="; //421:35
-            }
-            else //422:3
-            {
-                return ""; //422:12
-            }//423:2
-        }
-
-        public string GetTypeName(MetaExpression expr) //426:1
-        {
-            if (expr is MetaTypeOfExpression) //427:2
-            {
-                return ((MetaTypeOfExpression)expr).TypeReference.CSharpName(); //427:36
-            }
-            else //428:2
-            {
-                return null; //428:7
+                return value.ToString(); //380:7
             }
         }
 
-        public MetaSynthetizedPropertyInitializer GetSynthetizedInitializerFor(MetaClass cls, MetaProperty prop) //432:1
+        public string GetCSharpOperator(MetaOperatorExpression expr) //384:1
         {
-            MetaSynthetizedPropertyInitializer lastInit = null; //433:2
+            var __tmp1 = expr; //385:9
+            if (expr is MetaUnaryPlusExpression) //386:3
+            {
+                return "+"; //386:36
+            }
+            else if (expr is MetaNegateExpression) //387:3
+            {
+                return "-"; //387:33
+            }
+            else if (expr is MetaOnesComplementExpression) //388:3
+            {
+                return "~"; //388:41
+            }
+            else if (expr is MetaNotExpression) //389:3
+            {
+                return "!"; //389:30
+            }
+            else if (expr is MetaPostIncrementAssignExpression) //390:3
+            {
+                return "++"; //390:46
+            }
+            else if (expr is MetaPostDecrementAssignExpression) //391:3
+            {
+                return "--"; //391:46
+            }
+            else if (expr is MetaPreIncrementAssignExpression) //392:3
+            {
+                return "++"; //392:45
+            }
+            else if (expr is MetaPreDecrementAssignExpression) //393:3
+            {
+                return "--"; //393:45
+            }
+            else if (expr is MetaMultiplyExpression) //394:3
+            {
+                return "*"; //394:35
+            }
+            else if (expr is MetaDivideExpression) //395:3
+            {
+                return "/"; //395:33
+            }
+            else if (expr is MetaModuloExpression) //396:3
+            {
+                return "%"; //396:33
+            }
+            else if (expr is MetaAddExpression) //397:3
+            {
+                return "+"; //397:30
+            }
+            else if (expr is MetaSubtractExpression) //398:3
+            {
+                return "-"; //398:35
+            }
+            else if (expr is MetaLeftShiftExpression) //399:3
+            {
+                return "<<"; //399:36
+            }
+            else if (expr is MetaRightShiftExpression) //400:3
+            {
+                return ">>"; //400:37
+            }
+            else if (expr is MetaLessThanExpression) //401:3
+            {
+                return "<"; //401:35
+            }
+            else if (expr is MetaLessThanOrEqualExpression) //402:3
+            {
+                return "<="; //402:42
+            }
+            else if (expr is MetaGreaterThanExpression) //403:3
+            {
+                return ">"; //403:38
+            }
+            else if (expr is MetaGreaterThanOrEqualExpression) //404:3
+            {
+                return ">="; //404:45
+            }
+            else if (expr is MetaEqualExpression) //405:3
+            {
+                return "=="; //405:32
+            }
+            else if (expr is MetaNotEqualExpression) //406:3
+            {
+                return "!="; //406:35
+            }
+            else if (expr is MetaAndExpression) //407:3
+            {
+                return "&"; //407:30
+            }
+            else if (expr is MetaOrExpression) //408:3
+            {
+                return "|"; //408:29
+            }
+            else if (expr is MetaExclusiveOrExpression) //409:3
+            {
+                return "^"; //409:38
+            }
+            else if (expr is MetaAndAlsoExpression) //410:3
+            {
+                return "&&"; //410:34
+            }
+            else if (expr is MetaOrElseExpression) //411:3
+            {
+                return "||"; //411:33
+            }
+            else if (expr is MetaNullCoalescingExpression) //412:3
+            {
+                return "??"; //412:41
+            }
+            else if (expr is MetaMultiplyAssignExpression) //413:3
+            {
+                return "*="; //413:41
+            }
+            else if (expr is MetaDivideAssignExpression) //414:3
+            {
+                return "/="; //414:39
+            }
+            else if (expr is MetaModuloAssignExpression) //415:3
+            {
+                return "%="; //415:39
+            }
+            else if (expr is MetaAddAssignExpression) //416:3
+            {
+                return "+="; //416:36
+            }
+            else if (expr is MetaSubtractAssignExpression) //417:3
+            {
+                return "-="; //417:41
+            }
+            else if (expr is MetaLeftShiftAssignExpression) //418:3
+            {
+                return "<<="; //418:42
+            }
+            else if (expr is MetaRightShiftAssignExpression) //419:3
+            {
+                return ">>="; //419:43
+            }
+            else if (expr is MetaAndAssignExpression) //420:3
+            {
+                return "&="; //420:36
+            }
+            else if (expr is MetaExclusiveOrAssignExpression) //421:3
+            {
+                return "^="; //421:44
+            }
+            else if (expr is MetaOrAssignExpression) //422:3
+            {
+                return "|="; //422:35
+            }
+            else //423:3
+            {
+                return ""; //423:12
+            }//424:2
+        }
+
+        public string GetTypeName(MetaExpression expr) //427:1
+        {
+            if (expr is MetaTypeOfExpression) //428:2
+            {
+                return ((MetaTypeOfExpression)expr).TypeReference.CSharpName(); //428:36
+            }
+            else //429:2
+            {
+                return null; //429:7
+            }
+        }
+
+        public MetaSynthetizedPropertyInitializer GetSynthetizedInitializerFor(MetaClass cls, MetaProperty prop) //433:1
+        {
+            MetaSynthetizedPropertyInitializer lastInit = null; //434:2
             var __loop25_results = 
-                (from __loop25_var1 in __Enumerate((cls).GetEnumerator()) //434:7
-                from sup in __Enumerate((__loop25_var1.GetAllSuperClasses(true)).GetEnumerator()) //434:12
-                from Constructor in __Enumerate((sup.Constructor).GetEnumerator()) //434:42
-                from Initializers in __Enumerate((Constructor.Initializers).GetEnumerator()) //434:55
-                from init in __Enumerate((Initializers).GetEnumerator()).OfType<MetaSynthetizedPropertyInitializer>() //434:69
+                (from __loop25_var1 in __Enumerate((cls).GetEnumerator()) //435:7
+                from sup in __Enumerate((__loop25_var1.GetAllSuperClasses(true)).GetEnumerator()) //435:12
+                from Constructor in __Enumerate((sup.Constructor).GetEnumerator()) //435:42
+                from Initializers in __Enumerate((Constructor.Initializers).GetEnumerator()) //435:55
+                from init in __Enumerate((Initializers).GetEnumerator()).OfType<MetaSynthetizedPropertyInitializer>() //435:69
                 select new { __loop25_var1 = __loop25_var1, sup = sup, Constructor = Constructor, Initializers = Initializers, init = init}
-                ).ToList(); //434:2
+                ).ToList(); //435:2
             int __loop25_iteration = 0;
             foreach (var __tmp1 in __loop25_results)
             {
@@ -3454,19 +3458,19 @@ namespace MetaDslx.Core //1:1
                 var Constructor = __tmp1.Constructor;
                 var Initializers = __tmp1.Initializers;
                 var init = __tmp1.init;
-                if (init.Property == prop) //435:3
+                if (init.Property == prop) //436:3
                 {
-                    lastInit = init; //436:4
+                    lastInit = init; //437:4
                 }
             }
-            return lastInit; //439:2
+            return lastInit; //440:2
         }
 
-        public string GenerateConstructorImpl(MetaModel model, MetaClass cls) //442:1
+        public string GenerateConstructorImpl(MetaModel model, MetaClass cls) //443:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "public "; //443:1
-            string __tmp2Suffix = "() "; //443:30
+            string __tmp1Prefix = "public "; //444:1
+            string __tmp2Suffix = "() "; //444:30
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(cls.CSharpImplName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -3483,17 +3487,17 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //443:33
+                    __out.AppendLine(); //444:33
                 }
             }
-            __out.Append("    : this(true)"); //444:1
-            __out.AppendLine(); //444:17
-            __out.Append("{"); //445:1
-            __out.AppendLine(); //445:2
-            __out.Append("}"); //446:1
+            __out.Append("    : this(true)"); //445:1
+            __out.AppendLine(); //445:17
+            __out.Append("{"); //446:1
             __out.AppendLine(); //446:2
-            string __tmp4Prefix = "public "; //448:1
-            string __tmp5Suffix = "(bool addToModelContext) "; //448:30
+            __out.Append("}"); //447:1
+            __out.AppendLine(); //447:2
+            string __tmp4Prefix = "public "; //449:1
+            string __tmp5Suffix = "(bool addToModelContext) "; //449:30
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(cls.CSharpImplName());
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
@@ -3510,33 +3514,33 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
                     __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //448:55
+                    __out.AppendLine(); //449:55
                 }
             }
-            __out.Append("    : base(addToModelContext)"); //449:1
-            __out.AppendLine(); //449:30
-            __out.Append("{"); //450:1
-            __out.AppendLine(); //450:2
+            __out.Append("    : base(addToModelContext)"); //450:1
+            __out.AppendLine(); //450:30
+            __out.Append("{"); //451:1
+            __out.AppendLine(); //451:2
             var __loop26_results = 
-                (from __loop26_var1 in __Enumerate((cls).GetEnumerator()) //451:8
-                from prop in __Enumerate((__loop26_var1.GetAllProperties()).GetEnumerator()) //451:13
+                (from __loop26_var1 in __Enumerate((cls).GetEnumerator()) //452:8
+                from prop in __Enumerate((__loop26_var1.GetAllProperties()).GetEnumerator()) //452:13
                 select new { __loop26_var1 = __loop26_var1, prop = prop}
-                ).ToList(); //451:3
+                ).ToList(); //452:3
             int __loop26_iteration = 0;
             foreach (var __tmp7 in __loop26_results)
             {
                 ++__loop26_iteration;
                 var __loop26_var1 = __tmp7.__loop26_var1;
                 var prop = __tmp7.prop;
-                MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop); //452:4
-                if (synInit != null) //453:4
+                MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop); //453:4
+                if (synInit != null) //454:4
                 {
-                    if (prop.Kind != MetaPropertyKind.Derived) //454:5
+                    if (prop.Kind != MetaPropertyKind.Derived) //455:5
                     {
-                        if (ModelContext.Current.Compiler.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType) //455:6
+                        if (ModelContext.Current.Compiler.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType) //456:6
                         {
-                            string __tmp8Prefix = "    this.MLazySet("; //456:1
-                            string __tmp9Suffix = "));"; //456:149
+                            string __tmp8Prefix = "    this.MLazySet("; //457:1
+                            string __tmp9Suffix = "));"; //457:149
                             StringBuilder __tmp10 = new StringBuilder();
                             __tmp10.Append(model.CSharpFullName());
                             using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
@@ -3554,7 +3558,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp10Line);
                                 }
                             }
-                            string __tmp11Line = "."; //456:43
+                            string __tmp11Line = "."; //457:43
                             __out.Append(__tmp11Line);
                             StringBuilder __tmp12 = new StringBuilder();
                             __tmp12.Append(prop.Class.CSharpName());
@@ -3572,7 +3576,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp12Line);
                                 }
                             }
-                            string __tmp13Line = "."; //456:69
+                            string __tmp13Line = "."; //457:69
                             __out.Append(__tmp13Line);
                             StringBuilder __tmp14 = new StringBuilder();
                             __tmp14.Append(prop.Name);
@@ -3590,7 +3594,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp14Line);
                                 }
                             }
-                            string __tmp15Line = "Property, new Lazy<object>(() => "; //456:81
+                            string __tmp15Line = "Property, new Lazy<object>(() => "; //457:81
                             __out.Append(__tmp15Line);
                             StringBuilder __tmp16 = new StringBuilder();
                             __tmp16.Append(GenerateExpression(synInit.Value));
@@ -3607,14 +3611,14 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp16Line);
                                     __out.Append(__tmp9Suffix);
-                                    __out.AppendLine(); //456:152
+                                    __out.AppendLine(); //457:152
                                 }
                             }
                         }
-                        else //457:6
+                        else //458:6
                         {
-                            string __tmp17Prefix = "    this.MLazySet("; //458:1
-                            string __tmp18Suffix = "));"; //458:149
+                            string __tmp17Prefix = "    this.MLazySet("; //459:1
+                            string __tmp18Suffix = "));"; //459:149
                             StringBuilder __tmp19 = new StringBuilder();
                             __tmp19.Append(model.CSharpFullName());
                             using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
@@ -3632,7 +3636,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp19Line);
                                 }
                             }
-                            string __tmp20Line = "."; //458:43
+                            string __tmp20Line = "."; //459:43
                             __out.Append(__tmp20Line);
                             StringBuilder __tmp21 = new StringBuilder();
                             __tmp21.Append(prop.Class.CSharpName());
@@ -3650,7 +3654,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp21Line);
                                 }
                             }
-                            string __tmp22Line = "."; //458:69
+                            string __tmp22Line = "."; //459:69
                             __out.Append(__tmp22Line);
                             StringBuilder __tmp23 = new StringBuilder();
                             __tmp23.Append(prop.Name);
@@ -3668,7 +3672,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp23Line);
                                 }
                             }
-                            string __tmp24Line = "Property, new Lazy<object>(() => "; //458:81
+                            string __tmp24Line = "Property, new Lazy<object>(() => "; //459:81
                             __out.Append(__tmp24Line);
                             StringBuilder __tmp25 = new StringBuilder();
                             __tmp25.Append(GenerateExpression(synInit.Value));
@@ -3685,20 +3689,20 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp25Line);
                                     __out.Append(__tmp18Suffix);
-                                    __out.AppendLine(); //458:152
+                                    __out.AppendLine(); //459:152
                                 }
                             }
                         }
                     }
                 }
-                else //461:4
+                else //462:4
                 {
-                    if (prop.Type is MetaCollectionType) //462:5
+                    if (prop.Type is MetaCollectionType) //463:5
                     {
-                        if (prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) //463:6
+                        if (prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) //464:6
                         {
-                            string __tmp26Prefix = "    this.MSet("; //464:1
-                            string __tmp27Suffix = "));"; //464:154
+                            string __tmp26Prefix = "    this.MSet("; //465:1
+                            string __tmp27Suffix = "));"; //465:154
                             StringBuilder __tmp28 = new StringBuilder();
                             __tmp28.Append(model.CSharpFullName());
                             using(StreamReader __tmp28Reader = new StreamReader(this.__ToStream(__tmp28.ToString())))
@@ -3716,7 +3720,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp28Line);
                                 }
                             }
-                            string __tmp29Line = "."; //464:39
+                            string __tmp29Line = "."; //465:39
                             __out.Append(__tmp29Line);
                             StringBuilder __tmp30 = new StringBuilder();
                             __tmp30.Append(prop.Class.CSharpName());
@@ -3734,7 +3738,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp30Line);
                                 }
                             }
-                            string __tmp31Line = "."; //464:65
+                            string __tmp31Line = "."; //465:65
                             __out.Append(__tmp31Line);
                             StringBuilder __tmp32 = new StringBuilder();
                             __tmp32.Append(prop.Name);
@@ -3752,7 +3756,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp32Line);
                                 }
                             }
-                            string __tmp33Line = "Property, new "; //464:77
+                            string __tmp33Line = "Property, new "; //465:77
                             __out.Append(__tmp33Line);
                             StringBuilder __tmp34 = new StringBuilder();
                             __tmp34.Append(prop.Type.CSharpName());
@@ -3770,7 +3774,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp34Line);
                                 }
                             }
-                            string __tmp35Line = "("; //464:115
+                            string __tmp35Line = "("; //465:115
                             __out.Append(__tmp35Line);
                             StringBuilder __tmp36 = new StringBuilder();
                             __tmp36.Append(GetCollectionConstructorParams(prop));
@@ -3787,14 +3791,14 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp36Line);
                                     __out.Append(__tmp27Suffix);
-                                    __out.AppendLine(); //464:157
+                                    __out.AppendLine(); //465:157
                                 }
                             }
                         }
-                        else if (prop.Kind == MetaPropertyKind.Lazy) //465:6
+                        else if (prop.Kind == MetaPropertyKind.Lazy) //466:6
                         {
-                            string __tmp37Prefix = "    this.MLazySet("; //466:1
-                            string __tmp38Suffix = "(this)));"; //466:209
+                            string __tmp37Prefix = "    this.MLazySet("; //467:1
+                            string __tmp38Suffix = "(this)));"; //467:209
                             StringBuilder __tmp39 = new StringBuilder();
                             __tmp39.Append(model.CSharpFullName());
                             using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
@@ -3812,7 +3816,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp39Line);
                                 }
                             }
-                            string __tmp40Line = "."; //466:43
+                            string __tmp40Line = "."; //467:43
                             __out.Append(__tmp40Line);
                             StringBuilder __tmp41 = new StringBuilder();
                             __tmp41.Append(prop.Class.CSharpName());
@@ -3830,7 +3834,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp41Line);
                                 }
                             }
-                            string __tmp42Line = "."; //466:69
+                            string __tmp42Line = "."; //467:69
                             __out.Append(__tmp42Line);
                             StringBuilder __tmp43 = new StringBuilder();
                             __tmp43.Append(prop.Name);
@@ -3848,7 +3852,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp43Line);
                                 }
                             }
-                            string __tmp44Line = "Property, new Lazy<object>(() => "; //466:81
+                            string __tmp44Line = "Property, new Lazy<object>(() => "; //467:81
                             __out.Append(__tmp44Line);
                             StringBuilder __tmp45 = new StringBuilder();
                             __tmp45.Append(model.CSharpName());
@@ -3866,7 +3870,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp45Line);
                                 }
                             }
-                            string __tmp46Line = "ImplementationProvider.Implementation."; //466:134
+                            string __tmp46Line = "ImplementationProvider.Implementation."; //467:134
                             __out.Append(__tmp46Line);
                             StringBuilder __tmp47 = new StringBuilder();
                             __tmp47.Append(prop.Class.CSharpName());
@@ -3884,7 +3888,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp47Line);
                                 }
                             }
-                            string __tmp48Line = "_"; //466:197
+                            string __tmp48Line = "_"; //467:197
                             __out.Append(__tmp48Line);
                             StringBuilder __tmp49 = new StringBuilder();
                             __tmp49.Append(prop.Name);
@@ -3901,13 +3905,13 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp49Line);
                                     __out.Append(__tmp38Suffix);
-                                    __out.AppendLine(); //466:218
+                                    __out.AppendLine(); //467:218
                                 }
                             }
                         }
-                        else if (prop.Kind == MetaPropertyKind.Readonly) //467:6
+                        else if (prop.Kind == MetaPropertyKind.Readonly) //468:6
                         {
-                            string __tmp50Prefix = "    // Init "; //468:1
+                            string __tmp50Prefix = "    // Init "; //469:1
                             string __tmp51Suffix = string.Empty; 
                             StringBuilder __tmp52 = new StringBuilder();
                             __tmp52.Append(model.CSharpFullName());
@@ -3926,7 +3930,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp52Line);
                                 }
                             }
-                            string __tmp53Line = "."; //468:37
+                            string __tmp53Line = "."; //469:37
                             __out.Append(__tmp53Line);
                             StringBuilder __tmp54 = new StringBuilder();
                             __tmp54.Append(prop.Class.CSharpName());
@@ -3944,7 +3948,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp54Line);
                                 }
                             }
-                            string __tmp55Line = "."; //468:63
+                            string __tmp55Line = "."; //469:63
                             __out.Append(__tmp55Line);
                             StringBuilder __tmp56 = new StringBuilder();
                             __tmp56.Append(prop.Name);
@@ -3962,7 +3966,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp56Line);
                                 }
                             }
-                            string __tmp57Line = "Property in "; //468:75
+                            string __tmp57Line = "Property in "; //469:75
                             __out.Append(__tmp57Line);
                             StringBuilder __tmp58 = new StringBuilder();
                             __tmp58.Append(model.CSharpName());
@@ -3980,7 +3984,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp58Line);
                                 }
                             }
-                            string __tmp59Line = "Implementation."; //468:107
+                            string __tmp59Line = "Implementation."; //469:107
                             __out.Append(__tmp59Line);
                             StringBuilder __tmp60 = new StringBuilder();
                             __tmp60.Append(cls.CSharpName());
@@ -3998,7 +4002,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp60Line);
                                 }
                             }
-                            string __tmp61Line = "_"; //468:140
+                            string __tmp61Line = "_"; //469:140
                             __out.Append(__tmp61Line);
                             StringBuilder __tmp62 = new StringBuilder();
                             __tmp62.Append(cls.CSharpName());
@@ -4015,17 +4019,17 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp62Line);
                                     __out.Append(__tmp51Suffix);
-                                    __out.AppendLine(); //468:159
+                                    __out.AppendLine(); //469:159
                                 }
                             }
                         }
                     }
-                    else //470:5
+                    else //471:5
                     {
-                        if (prop.Kind == MetaPropertyKind.Lazy) //471:6
+                        if (prop.Kind == MetaPropertyKind.Lazy) //472:6
                         {
-                            string __tmp63Prefix = "    this.MLazySet("; //472:1
-                            string __tmp64Suffix = "(this)));"; //472:209
+                            string __tmp63Prefix = "    this.MLazySet("; //473:1
+                            string __tmp64Suffix = "(this)));"; //473:209
                             StringBuilder __tmp65 = new StringBuilder();
                             __tmp65.Append(model.CSharpFullName());
                             using(StreamReader __tmp65Reader = new StreamReader(this.__ToStream(__tmp65.ToString())))
@@ -4043,7 +4047,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp65Line);
                                 }
                             }
-                            string __tmp66Line = "."; //472:43
+                            string __tmp66Line = "."; //473:43
                             __out.Append(__tmp66Line);
                             StringBuilder __tmp67 = new StringBuilder();
                             __tmp67.Append(prop.Class.CSharpName());
@@ -4061,7 +4065,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp67Line);
                                 }
                             }
-                            string __tmp68Line = "."; //472:69
+                            string __tmp68Line = "."; //473:69
                             __out.Append(__tmp68Line);
                             StringBuilder __tmp69 = new StringBuilder();
                             __tmp69.Append(prop.Name);
@@ -4079,7 +4083,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp69Line);
                                 }
                             }
-                            string __tmp70Line = "Property, new Lazy<object>(() => "; //472:81
+                            string __tmp70Line = "Property, new Lazy<object>(() => "; //473:81
                             __out.Append(__tmp70Line);
                             StringBuilder __tmp71 = new StringBuilder();
                             __tmp71.Append(model.CSharpName());
@@ -4097,7 +4101,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp71Line);
                                 }
                             }
-                            string __tmp72Line = "ImplementationProvider.Implementation."; //472:134
+                            string __tmp72Line = "ImplementationProvider.Implementation."; //473:134
                             __out.Append(__tmp72Line);
                             StringBuilder __tmp73 = new StringBuilder();
                             __tmp73.Append(prop.Class.CSharpName());
@@ -4115,7 +4119,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp73Line);
                                 }
                             }
-                            string __tmp74Line = "_"; //472:197
+                            string __tmp74Line = "_"; //473:197
                             __out.Append(__tmp74Line);
                             StringBuilder __tmp75 = new StringBuilder();
                             __tmp75.Append(prop.Name);
@@ -4132,13 +4136,13 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp75Line);
                                     __out.Append(__tmp64Suffix);
-                                    __out.AppendLine(); //472:218
+                                    __out.AppendLine(); //473:218
                                 }
                             }
                         }
-                        else if (prop.Kind == MetaPropertyKind.Readonly) //473:6
+                        else if (prop.Kind == MetaPropertyKind.Readonly) //474:6
                         {
-                            string __tmp76Prefix = "    // Init "; //474:1
+                            string __tmp76Prefix = "    // Init "; //475:1
                             string __tmp77Suffix = string.Empty; 
                             StringBuilder __tmp78 = new StringBuilder();
                             __tmp78.Append(model.CSharpFullName());
@@ -4157,7 +4161,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp78Line);
                                 }
                             }
-                            string __tmp79Line = "."; //474:37
+                            string __tmp79Line = "."; //475:37
                             __out.Append(__tmp79Line);
                             StringBuilder __tmp80 = new StringBuilder();
                             __tmp80.Append(prop.Class.CSharpName());
@@ -4175,7 +4179,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp80Line);
                                 }
                             }
-                            string __tmp81Line = "."; //474:63
+                            string __tmp81Line = "."; //475:63
                             __out.Append(__tmp81Line);
                             StringBuilder __tmp82 = new StringBuilder();
                             __tmp82.Append(prop.Name);
@@ -4193,7 +4197,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp82Line);
                                 }
                             }
-                            string __tmp83Line = "Property in "; //474:75
+                            string __tmp83Line = "Property in "; //475:75
                             __out.Append(__tmp83Line);
                             StringBuilder __tmp84 = new StringBuilder();
                             __tmp84.Append(model.CSharpName());
@@ -4211,7 +4215,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp84Line);
                                 }
                             }
-                            string __tmp85Line = "Implementation."; //474:107
+                            string __tmp85Line = "Implementation."; //475:107
                             __out.Append(__tmp85Line);
                             StringBuilder __tmp86 = new StringBuilder();
                             __tmp86.Append(cls.CSharpName());
@@ -4229,7 +4233,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp86Line);
                                 }
                             }
-                            string __tmp87Line = "_"; //474:140
+                            string __tmp87Line = "_"; //475:140
                             __out.Append(__tmp87Line);
                             StringBuilder __tmp88 = new StringBuilder();
                             __tmp88.Append(cls.CSharpName());
@@ -4246,7 +4250,7 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp88Line);
                                     __out.Append(__tmp77Suffix);
-                                    __out.AppendLine(); //474:159
+                                    __out.AppendLine(); //475:159
                                 }
                             }
                         }
@@ -4254,13 +4258,13 @@ namespace MetaDslx.Core //1:1
                 }
             }
             var __loop27_results = 
-                (from __loop27_var1 in __Enumerate((cls).GetEnumerator()) //479:8
-                from sup in __Enumerate((__loop27_var1.GetAllSuperClasses(true)).GetEnumerator()) //479:13
-                from Constructor in __Enumerate((sup.Constructor).GetEnumerator()) //479:43
-                from Initializers in __Enumerate((Constructor.Initializers).GetEnumerator()) //479:56
-                from init in __Enumerate((Initializers).GetEnumerator()).OfType<MetaInheritedPropertyInitializer>() //479:70
+                (from __loop27_var1 in __Enumerate((cls).GetEnumerator()) //480:8
+                from sup in __Enumerate((__loop27_var1.GetAllSuperClasses(true)).GetEnumerator()) //480:13
+                from Constructor in __Enumerate((sup.Constructor).GetEnumerator()) //480:43
+                from Initializers in __Enumerate((Constructor.Initializers).GetEnumerator()) //480:56
+                from init in __Enumerate((Initializers).GetEnumerator()).OfType<MetaInheritedPropertyInitializer>() //480:70
                 select new { __loop27_var1 = __loop27_var1, sup = sup, Constructor = Constructor, Initializers = Initializers, init = init}
-                ).ToList(); //479:3
+                ).ToList(); //480:3
             int __loop27_iteration = 0;
             foreach (var __tmp89 in __loop27_results)
             {
@@ -4270,10 +4274,10 @@ namespace MetaDslx.Core //1:1
                 var Constructor = __tmp89.Constructor;
                 var Initializers = __tmp89.Initializers;
                 var init = __tmp89.init;
-                if (init.Object != null && init.Property != null) //480:4
+                if (init.Object != null && init.Property != null) //481:4
                 {
-                    string __tmp90Prefix = "    this.MLazySetChild("; //481:1
-                    string __tmp91Suffix = "));"; //481:293
+                    string __tmp90Prefix = "    this.MLazySetChild("; //482:1
+                    string __tmp91Suffix = "));"; //482:293
                     StringBuilder __tmp92 = new StringBuilder();
                     __tmp92.Append(init.Object.Class.Model.CSharpFullName());
                     using(StreamReader __tmp92Reader = new StreamReader(this.__ToStream(__tmp92.ToString())))
@@ -4291,7 +4295,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp92Line);
                         }
                     }
-                    string __tmp93Line = "."; //481:66
+                    string __tmp93Line = "."; //482:66
                     __out.Append(__tmp93Line);
                     StringBuilder __tmp94 = new StringBuilder();
                     __tmp94.Append(init.Object.Class.CSharpName());
@@ -4309,7 +4313,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp94Line);
                         }
                     }
-                    string __tmp95Line = "."; //481:99
+                    string __tmp95Line = "."; //482:99
                     __out.Append(__tmp95Line);
                     StringBuilder __tmp96 = new StringBuilder();
                     __tmp96.Append(init.Object.Name);
@@ -4327,7 +4331,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp96Line);
                         }
                     }
-                    string __tmp97Line = "Property, "; //481:118
+                    string __tmp97Line = "Property, "; //482:118
                     __out.Append(__tmp97Line);
                     StringBuilder __tmp98 = new StringBuilder();
                     __tmp98.Append(init.Property.Class.Model.CSharpFullName());
@@ -4345,7 +4349,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp98Line);
                         }
                     }
-                    string __tmp99Line = "."; //481:172
+                    string __tmp99Line = "."; //482:172
                     __out.Append(__tmp99Line);
                     StringBuilder __tmp100 = new StringBuilder();
                     __tmp100.Append(init.Property.Class.CSharpName());
@@ -4363,7 +4367,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp100Line);
                         }
                     }
-                    string __tmp101Line = "."; //481:207
+                    string __tmp101Line = "."; //482:207
                     __out.Append(__tmp101Line);
                     StringBuilder __tmp102 = new StringBuilder();
                     __tmp102.Append(init.Property.Name);
@@ -4381,7 +4385,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp102Line);
                         }
                     }
-                    string __tmp103Line = "Property, new Lazy<object>(() => "; //481:228
+                    string __tmp103Line = "Property, new Lazy<object>(() => "; //482:228
                     __out.Append(__tmp103Line);
                     StringBuilder __tmp104 = new StringBuilder();
                     __tmp104.Append(GenerateExpression(init.Value));
@@ -4398,13 +4402,13 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp104Line);
                             __out.Append(__tmp91Suffix);
-                            __out.AppendLine(); //481:296
+                            __out.AppendLine(); //482:296
                         }
                     }
                 }
             }
-            string __tmp105Prefix = "    "; //484:1
-            string __tmp106Suffix = "(this);"; //484:104
+            string __tmp105Prefix = "    "; //485:1
+            string __tmp106Suffix = "(this);"; //485:104
             StringBuilder __tmp107 = new StringBuilder();
             __tmp107.Append(cls.Model.CSharpName());
             using(StreamReader __tmp107Reader = new StreamReader(this.__ToStream(__tmp107.ToString())))
@@ -4422,7 +4426,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp107Line);
                 }
             }
-            string __tmp108Line = "ImplementationProvider.Implementation."; //484:29
+            string __tmp108Line = "ImplementationProvider.Implementation."; //485:29
             __out.Append(__tmp108Line);
             StringBuilder __tmp109 = new StringBuilder();
             __tmp109.Append(cls.CSharpName());
@@ -4440,7 +4444,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp109Line);
                 }
             }
-            string __tmp110Line = "_"; //484:85
+            string __tmp110Line = "_"; //485:85
             __out.Append(__tmp110Line);
             StringBuilder __tmp111 = new StringBuilder();
             __tmp111.Append(cls.CSharpName());
@@ -4457,24 +4461,24 @@ namespace MetaDslx.Core //1:1
                     }
                     __out.Append(__tmp111Line);
                     __out.Append(__tmp106Suffix);
-                    __out.AppendLine(); //484:111
+                    __out.AppendLine(); //485:111
                 }
             }
             var __loop28_results = 
-                (from __loop28_var1 in __Enumerate((cls).GetEnumerator()) //485:11
-                from prop in __Enumerate((__loop28_var1.GetAllProperties()).GetEnumerator()) //485:16
+                (from __loop28_var1 in __Enumerate((cls).GetEnumerator()) //486:11
+                from prop in __Enumerate((__loop28_var1.GetAllProperties()).GetEnumerator()) //486:16
                 select new { __loop28_var1 = __loop28_var1, prop = prop}
-                ).ToList(); //485:6
+                ).ToList(); //486:6
             int __loop28_iteration = 0;
             foreach (var __tmp112 in __loop28_results)
             {
                 ++__loop28_iteration;
                 var __loop28_var1 = __tmp112.__loop28_var1;
                 var prop = __tmp112.prop;
-                if (prop.Kind == MetaPropertyKind.Readonly) //486:4
+                if (prop.Kind == MetaPropertyKind.Readonly) //487:4
                 {
-                    string __tmp113Prefix = "    if (!this.MIsSet("; //487:1
-                    string __tmp114Suffix = "().\");"; //487:258
+                    string __tmp113Prefix = "    if (!this.MIsSet("; //488:1
+                    string __tmp114Suffix = "().\");"; //488:258
                     StringBuilder __tmp115 = new StringBuilder();
                     __tmp115.Append(model.CSharpFullName());
                     using(StreamReader __tmp115Reader = new StreamReader(this.__ToStream(__tmp115.ToString())))
@@ -4492,7 +4496,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp115Line);
                         }
                     }
-                    string __tmp116Line = "."; //487:46
+                    string __tmp116Line = "."; //488:46
                     __out.Append(__tmp116Line);
                     StringBuilder __tmp117 = new StringBuilder();
                     __tmp117.Append(prop.Class.CSharpName());
@@ -4510,7 +4514,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp117Line);
                         }
                     }
-                    string __tmp118Line = "."; //487:72
+                    string __tmp118Line = "."; //488:72
                     __out.Append(__tmp118Line);
                     StringBuilder __tmp119 = new StringBuilder();
                     __tmp119.Append(prop.Name);
@@ -4528,7 +4532,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp119Line);
                         }
                     }
-                    string __tmp120Line = "Property)) throw new ModelException(\"Readonly property "; //487:84
+                    string __tmp120Line = "Property)) throw new ModelException(\"Readonly property "; //488:84
                     __out.Append(__tmp120Line);
                     StringBuilder __tmp121 = new StringBuilder();
                     __tmp121.Append(model.CSharpName());
@@ -4546,7 +4550,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp121Line);
                         }
                     }
-                    string __tmp122Line = "."; //487:159
+                    string __tmp122Line = "."; //488:159
                     __out.Append(__tmp122Line);
                     StringBuilder __tmp123 = new StringBuilder();
                     __tmp123.Append(prop.Class.CSharpName());
@@ -4564,7 +4568,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp123Line);
                         }
                     }
-                    string __tmp124Line = "."; //487:185
+                    string __tmp124Line = "."; //488:185
                     __out.Append(__tmp124Line);
                     StringBuilder __tmp125 = new StringBuilder();
                     __tmp125.Append(prop.Name);
@@ -4582,7 +4586,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp125Line);
                         }
                     }
-                    string __tmp126Line = "Property was not set in "; //487:197
+                    string __tmp126Line = "Property was not set in "; //488:197
                     __out.Append(__tmp126Line);
                     StringBuilder __tmp127 = new StringBuilder();
                     __tmp127.Append(cls.CSharpName());
@@ -4600,7 +4604,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp127Line);
                         }
                     }
-                    string __tmp128Line = "_"; //487:239
+                    string __tmp128Line = "_"; //488:239
                     __out.Append(__tmp128Line);
                     StringBuilder __tmp129 = new StringBuilder();
                     __tmp129.Append(cls.CSharpName());
@@ -4617,36 +4621,36 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp129Line);
                             __out.Append(__tmp114Suffix);
-                            __out.AppendLine(); //487:264
+                            __out.AppendLine(); //488:264
                         }
                     }
                 }
             }
-            __out.Append("    this.MMakeDefault();"); //490:1
-            __out.AppendLine(); //490:25
-            __out.Append("}"); //491:1
-            __out.AppendLine(); //491:2
+            __out.Append("    this.MMakeDefault();"); //491:1
+            __out.AppendLine(); //491:25
+            __out.Append("}"); //492:1
+            __out.AppendLine(); //492:2
             return __out.ToString();
         }
 
-        public string GetReturn(MetaOperation op) //494:1
+        public string GetReturn(MetaOperation op) //495:1
         {
-            if (op.ReturnType.CSharpName() == "void") //495:5
+            if (op.ReturnType.CSharpName() == "void") //496:5
             {
-                return ""; //496:3
+                return ""; //497:3
             }
-            else //497:2
+            else //498:2
             {
-                return "return "; //498:3
+                return "return "; //499:3
             }
         }
 
-        public string GenerateOperationImpl(MetaModel model, MetaOperation op) //502:1
+        public string GenerateOperationImpl(MetaModel model, MetaOperation op) //503:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.AppendLine(); //503:2
+            __out.AppendLine(); //504:2
             string __tmp1Prefix = string.Empty; 
-            string __tmp2Suffix = ")"; //504:97
+            string __tmp2Suffix = ")"; //505:97
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(op.ReturnType.CSharpPublicName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -4664,7 +4668,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp3Line);
                 }
             }
-            string __tmp4Line = " "; //504:35
+            string __tmp4Line = " "; //505:35
             __out.Append(__tmp4Line);
             StringBuilder __tmp5 = new StringBuilder();
             __tmp5.Append(op.Parent.CSharpName());
@@ -4682,7 +4686,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp5Line);
                 }
             }
-            string __tmp6Line = "."; //504:60
+            string __tmp6Line = "."; //505:60
             __out.Append(__tmp6Line);
             StringBuilder __tmp7 = new StringBuilder();
             __tmp7.Append(op.Name);
@@ -4700,7 +4704,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp7Line);
                 }
             }
-            string __tmp8Line = "("; //504:70
+            string __tmp8Line = "("; //505:70
             __out.Append(__tmp8Line);
             StringBuilder __tmp9 = new StringBuilder();
             __tmp9.Append(GetParameters(op, false));
@@ -4717,13 +4721,13 @@ namespace MetaDslx.Core //1:1
                     }
                     __out.Append(__tmp9Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //504:98
+                    __out.AppendLine(); //505:98
                 }
             }
-            __out.Append("{"); //505:1
-            __out.AppendLine(); //505:2
-            string __tmp10Prefix = "    "; //506:1
-            string __tmp11Suffix = ");"; //506:144
+            __out.Append("{"); //506:1
+            __out.AppendLine(); //506:2
+            string __tmp10Prefix = "    "; //507:1
+            string __tmp11Suffix = ");"; //507:144
             StringBuilder __tmp12 = new StringBuilder();
             __tmp12.Append(GetReturn(op));
             using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
@@ -4757,7 +4761,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp13Line);
                 }
             }
-            string __tmp14Line = "ImplementationProvider.Implementation."; //506:40
+            string __tmp14Line = "ImplementationProvider.Implementation."; //507:40
             __out.Append(__tmp14Line);
             StringBuilder __tmp15 = new StringBuilder();
             __tmp15.Append(op.Parent.CSharpName());
@@ -4775,7 +4779,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp15Line);
                 }
             }
-            string __tmp16Line = "_"; //506:102
+            string __tmp16Line = "_"; //507:102
             __out.Append(__tmp16Line);
             StringBuilder __tmp17 = new StringBuilder();
             __tmp17.Append(op.Name);
@@ -4793,7 +4797,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp17Line);
                 }
             }
-            string __tmp18Line = "("; //506:112
+            string __tmp18Line = "("; //507:112
             __out.Append(__tmp18Line);
             StringBuilder __tmp19 = new StringBuilder();
             __tmp19.Append(GetImplCallParameterNames(op));
@@ -4810,66 +4814,66 @@ namespace MetaDslx.Core //1:1
                     }
                     __out.Append(__tmp19Line);
                     __out.Append(__tmp11Suffix);
-                    __out.AppendLine(); //506:146
+                    __out.AppendLine(); //507:146
                 }
             }
-            __out.Append("}"); //507:1
-            __out.AppendLine(); //507:2
+            __out.Append("}"); //508:1
+            __out.AppendLine(); //508:2
             return __out.ToString();
         }
 
-        public string GetSuperClasses(MetaClass cls) //510:1
+        public string GetSuperClasses(MetaClass cls) //511:1
         {
-            string result = ""; //511:2
+            string result = ""; //512:2
             var __loop29_results = 
-                (from __loop29_var1 in __Enumerate((cls).GetEnumerator()) //512:10
-                from sup in __Enumerate((__loop29_var1.SuperClasses).GetEnumerator()) //512:15
+                (from __loop29_var1 in __Enumerate((cls).GetEnumerator()) //513:10
+                from sup in __Enumerate((__loop29_var1.SuperClasses).GetEnumerator()) //513:15
                 select new { __loop29_var1 = __loop29_var1, sup = sup}
-                ).ToList(); //512:5
+                ).ToList(); //513:5
             int __loop29_iteration = 0;
-            string delim = ""; //512:33
+            string delim = ""; //513:33
             foreach (var __tmp1 in __loop29_results)
             {
                 ++__loop29_iteration;
-                if (__loop29_iteration >= 2) //512:52
+                if (__loop29_iteration >= 2) //513:52
                 {
-                    delim = ", "; //512:52
+                    delim = ", "; //513:52
                 }
                 var __loop29_var1 = __tmp1.__loop29_var1;
                 var sup = __tmp1.sup;
-                result += delim + sup.CSharpName(); //513:3
+                result += delim + sup.CSharpName(); //514:3
             }
-            return result; //515:2
+            return result; //516:2
         }
 
-        public string GetAllSuperClasses(MetaClass cls) //518:1
+        public string GetAllSuperClasses(MetaClass cls) //519:1
         {
-            string result = ""; //519:2
+            string result = ""; //520:2
             var __loop30_results = 
-                (from __loop30_var1 in __Enumerate((cls).GetEnumerator()) //520:10
-                from sup in __Enumerate((__loop30_var1.GetAllSuperClasses(false)).GetEnumerator()) //520:15
+                (from __loop30_var1 in __Enumerate((cls).GetEnumerator()) //521:10
+                from sup in __Enumerate((__loop30_var1.GetAllSuperClasses(false)).GetEnumerator()) //521:15
                 select new { __loop30_var1 = __loop30_var1, sup = sup}
-                ).ToList(); //520:5
+                ).ToList(); //521:5
             int __loop30_iteration = 0;
-            string delim = ""; //520:46
+            string delim = ""; //521:46
             foreach (var __tmp1 in __loop30_results)
             {
                 ++__loop30_iteration;
-                if (__loop30_iteration >= 2) //520:65
+                if (__loop30_iteration >= 2) //521:65
                 {
-                    delim = ", "; //520:65
+                    delim = ", "; //521:65
                 }
                 var __loop30_var1 = __tmp1.__loop30_var1;
                 var sup = __tmp1.sup;
-                result += delim + sup.CSharpName(); //521:3
+                result += delim + sup.CSharpName(); //522:3
             }
-            return result; //523:2
+            return result; //524:2
         }
 
-        public string GenerateMetaModel(MetaModel model) //526:1
+        public string GenerateMetaModel(MetaModel model) //527:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "public static class "; //527:1
+            string __tmp1Prefix = "public static class "; //528:1
             string __tmp2Suffix = string.Empty; 
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(model.CSharpName());
@@ -4887,16 +4891,16 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //527:41
+                    __out.AppendLine(); //528:41
                 }
             }
-            __out.Append("{"); //528:1
-            __out.AppendLine(); //528:2
-            __out.Append("	internal static global::MetaDslx.Core.Model model;"); //529:1
-            __out.AppendLine(); //529:52
-            __out.AppendLine(); //530:2
-            string __tmp4Prefix = "    static "; //531:1
-            string __tmp5Suffix = "()"; //531:32
+            __out.Append("{"); //529:1
+            __out.AppendLine(); //529:2
+            __out.Append("	internal static global::MetaDslx.Core.Model model;"); //530:1
+            __out.AppendLine(); //530:52
+            __out.AppendLine(); //531:2
+            string __tmp4Prefix = "    static "; //532:1
+            string __tmp5Suffix = "()"; //532:32
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(model.CSharpName());
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
@@ -4913,13 +4917,13 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
                     __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //531:34
+                    __out.AppendLine(); //532:34
                 }
             }
-            __out.Append("    {"); //532:1
-            __out.AppendLine(); //532:6
-            string __tmp7Prefix = "	    "; //533:1
-            string __tmp8Suffix = ".model = new global::MetaDslx.Core.Model();"; //533:26
+            __out.Append("    {"); //533:1
+            __out.AppendLine(); //533:6
+            string __tmp7Prefix = "	    "; //534:1
+            string __tmp8Suffix = ".model = new global::MetaDslx.Core.Model();"; //534:26
             StringBuilder __tmp9 = new StringBuilder();
             __tmp9.Append(model.CSharpName());
             using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
@@ -4936,15 +4940,15 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp7Prefix);
                     __out.Append(__tmp9Line);
                     __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //533:69
+                    __out.AppendLine(); //534:69
                 }
             }
             var __loop31_results = 
-                (from __loop31_var1 in __Enumerate((model).GetEnumerator()) //534:11
-                from Types in __Enumerate((__loop31_var1.Types).GetEnumerator()) //534:18
-                from cls in __Enumerate((Types).GetEnumerator()).OfType<MetaClass>() //534:25
+                (from __loop31_var1 in __Enumerate((model).GetEnumerator()) //535:11
+                from Types in __Enumerate((__loop31_var1.Types).GetEnumerator()) //535:18
+                from cls in __Enumerate((Types).GetEnumerator()).OfType<MetaClass>() //535:25
                 select new { __loop31_var1 = __loop31_var1, Types = Types, cls = cls}
-                ).ToList(); //534:6
+                ).ToList(); //535:6
             int __loop31_iteration = 0;
             foreach (var __tmp10 in __loop31_results)
             {
@@ -4952,8 +4956,8 @@ namespace MetaDslx.Core //1:1
                 var __loop31_var1 = __tmp10.__loop31_var1;
                 var Types = __tmp10.Types;
                 var cls = __tmp10.cls;
-                string __tmp11Prefix = "        "; //535:1
-                string __tmp12Suffix = ".StaticInit();"; //535:27
+                string __tmp11Prefix = "        "; //536:1
+                string __tmp12Suffix = ".StaticInit();"; //536:27
                 StringBuilder __tmp13 = new StringBuilder();
                 __tmp13.Append(cls.CSharpName());
                 using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
@@ -4970,11 +4974,11 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp11Prefix);
                         __out.Append(__tmp13Line);
                         __out.Append(__tmp12Suffix);
-                        __out.AppendLine(); //535:41
+                        __out.AppendLine(); //536:41
                     }
                 }
-                string __tmp14Prefix = "        model.AddInstance((global::MetaDslx.Core.ModelObject)"; //536:1
-                string __tmp15Suffix = ".Instance);"; //536:80
+                string __tmp14Prefix = "        model.AddInstance((global::MetaDslx.Core.ModelObject)"; //537:1
+                string __tmp15Suffix = ".Instance);"; //537:80
                 StringBuilder __tmp16 = new StringBuilder();
                 __tmp16.Append(cls.CSharpName());
                 using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
@@ -4991,28 +4995,24 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp14Prefix);
                         __out.Append(__tmp16Line);
                         __out.Append(__tmp15Suffix);
-                        __out.AppendLine(); //536:91
+                        __out.AppendLine(); //537:91
                     }
                 }
             }
-            __out.Append("    }"); //538:1
-            __out.AppendLine(); //538:6
-            __out.AppendLine(); //539:2
-            __out.Append("    internal static void StaticInit()"); //540:1
-            __out.AppendLine(); //540:38
-            __out.Append("    {"); //541:1
-            __out.AppendLine(); //541:6
-            __out.Append("    }"); //542:1
+            __out.Append("    }"); //539:1
+            __out.AppendLine(); //539:6
+            __out.AppendLine(); //540:2
+            __out.Append("    internal static void StaticInit()"); //541:1
+            __out.AppendLine(); //541:38
+            __out.Append("    {"); //542:1
             __out.AppendLine(); //542:6
-            __out.AppendLine(); //543:2
-            __out.Append("    public static MetaDslx.Core.Model Model"); //544:1
-            __out.AppendLine(); //544:44
-            __out.Append("    {"); //545:1
-            __out.AppendLine(); //545:6
-            string __tmp17Prefix = "        get { return "; //546:1
-            string __tmp18Suffix = ".model; }"; //546:42
+            __out.Append("    }"); //543:1
+            __out.AppendLine(); //543:6
+            __out.AppendLine(); //544:2
+            string __tmp17Prefix = "	public const string Uri = \""; //545:1
+            string __tmp18Suffix = "\";"; //545:40
             StringBuilder __tmp19 = new StringBuilder();
-            __tmp19.Append(model.CSharpName());
+            __tmp19.Append(model.Uri);
             using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
             {
                 bool __tmp19_first = true;
@@ -5027,206 +5027,253 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp17Prefix);
                     __out.Append(__tmp19Line);
                     __out.Append(__tmp18Suffix);
-                    __out.AppendLine(); //546:51
+                    __out.AppendLine(); //545:42
                 }
             }
-            __out.Append("    }"); //547:1
-            __out.AppendLine(); //547:6
-            __out.AppendLine(); //548:2
-            __out.Append("    public static class Constants"); //549:1
-            __out.AppendLine(); //549:34
-            __out.Append("    {"); //550:1
-            __out.AppendLine(); //550:6
-            __out.Append("        static Constants()"); //551:1
-            __out.AppendLine(); //551:27
-            __out.Append("        {"); //552:1
-            __out.AppendLine(); //552:10
+            string __tmp20Prefix = "	public const string Prefix = \""; //546:1
+            string __tmp21Suffix = "\";"; //546:46
+            StringBuilder __tmp22 = new StringBuilder();
+            __tmp22.Append(model.Prefix);
+            using(StreamReader __tmp22Reader = new StreamReader(this.__ToStream(__tmp22.ToString())))
+            {
+                bool __tmp22_first = true;
+                while(__tmp22_first || !__tmp22Reader.EndOfStream)
+                {
+                    __tmp22_first = false;
+                    string __tmp22Line = __tmp22Reader.ReadLine();
+                    if (__tmp22Line == null)
+                    {
+                        __tmp22Line = "";
+                    }
+                    __out.Append(__tmp20Prefix);
+                    __out.Append(__tmp22Line);
+                    __out.Append(__tmp21Suffix);
+                    __out.AppendLine(); //546:48
+                }
+            }
+            __out.AppendLine(); //547:2
+            __out.Append("    public static global::MetaDslx.Core.Model Model"); //548:1
+            __out.AppendLine(); //548:52
+            __out.Append("    {"); //549:1
+            __out.AppendLine(); //549:6
+            string __tmp23Prefix = "        get { return "; //550:1
+            string __tmp24Suffix = ".model; }"; //550:42
+            StringBuilder __tmp25 = new StringBuilder();
+            __tmp25.Append(model.CSharpName());
+            using(StreamReader __tmp25Reader = new StreamReader(this.__ToStream(__tmp25.ToString())))
+            {
+                bool __tmp25_first = true;
+                while(__tmp25_first || !__tmp25Reader.EndOfStream)
+                {
+                    __tmp25_first = false;
+                    string __tmp25Line = __tmp25Reader.ReadLine();
+                    if (__tmp25Line == null)
+                    {
+                        __tmp25Line = "";
+                    }
+                    __out.Append(__tmp23Prefix);
+                    __out.Append(__tmp25Line);
+                    __out.Append(__tmp24Suffix);
+                    __out.AppendLine(); //550:51
+                }
+            }
+            __out.Append("    }"); //551:1
+            __out.AppendLine(); //551:6
+            __out.AppendLine(); //552:2
+            __out.Append("    public static class Constants"); //553:1
+            __out.AppendLine(); //553:34
+            __out.Append("    {"); //554:1
+            __out.AppendLine(); //554:6
+            __out.Append("        static Constants()"); //555:1
+            __out.AppendLine(); //555:27
+            __out.Append("        {"); //556:1
+            __out.AppendLine(); //556:10
             var __loop32_results = 
-                (from __loop32_var1 in __Enumerate((model).GetEnumerator()) //553:11
-                from c in __Enumerate((__loop32_var1.Constants).GetEnumerator()) //553:18
+                (from __loop32_var1 in __Enumerate((model).GetEnumerator()) //557:11
+                from c in __Enumerate((__loop32_var1.Constants).GetEnumerator()) //557:18
                 select new { __loop32_var1 = __loop32_var1, c = c}
-                ).ToList(); //553:6
+                ).ToList(); //557:6
             int __loop32_iteration = 0;
-            foreach (var __tmp20 in __loop32_results)
+            foreach (var __tmp26 in __loop32_results)
             {
                 ++__loop32_iteration;
-                var __loop32_var1 = __tmp20.__loop32_var1;
-                var c = __tmp20.c;
-                string __tmp21Prefix = "            "; //554:1
-                string __tmp22Suffix = string.Empty; 
-                StringBuilder __tmp23 = new StringBuilder();
-                __tmp23.Append(GenerateModelConstantImpl(c));
-                using(StreamReader __tmp23Reader = new StreamReader(this.__ToStream(__tmp23.ToString())))
+                var __loop32_var1 = __tmp26.__loop32_var1;
+                var c = __tmp26.c;
+                string __tmp27Prefix = "            "; //558:1
+                string __tmp28Suffix = string.Empty; 
+                StringBuilder __tmp29 = new StringBuilder();
+                __tmp29.Append(GenerateModelConstantImpl(c));
+                using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
                 {
-                    bool __tmp23_first = true;
-                    while(__tmp23_first || !__tmp23Reader.EndOfStream)
+                    bool __tmp29_first = true;
+                    while(__tmp29_first || !__tmp29Reader.EndOfStream)
                     {
-                        __tmp23_first = false;
-                        string __tmp23Line = __tmp23Reader.ReadLine();
-                        if (__tmp23Line == null)
+                        __tmp29_first = false;
+                        string __tmp29Line = __tmp29Reader.ReadLine();
+                        if (__tmp29Line == null)
                         {
-                            __tmp23Line = "";
+                            __tmp29Line = "";
                         }
-                        __out.Append(__tmp21Prefix);
-                        __out.Append(__tmp23Line);
-                        __out.Append(__tmp22Suffix);
-                        __out.AppendLine(); //554:43
-                    }
-                }
-            }
-            __out.AppendLine(); //556:2
-            var __loop33_results = 
-                (from __loop33_var1 in __Enumerate((model).GetEnumerator()) //557:11
-                from f in __Enumerate((__loop33_var1.Functions).GetEnumerator()) //557:18
-                select new { __loop33_var1 = __loop33_var1, f = f}
-                ).ToList(); //557:6
-            int __loop33_iteration = 0;
-            foreach (var __tmp24 in __loop33_results)
-            {
-                ++__loop33_iteration;
-                var __loop33_var1 = __tmp24.__loop33_var1;
-                var f = __tmp24.f;
-                string __tmp25Prefix = "            "; //558:1
-                string __tmp26Suffix = string.Empty; 
-                StringBuilder __tmp27 = new StringBuilder();
-                __tmp27.Append(GenerateModelFunctionImpl(f));
-                using(StreamReader __tmp27Reader = new StreamReader(this.__ToStream(__tmp27.ToString())))
-                {
-                    bool __tmp27_first = true;
-                    while(__tmp27_first || !__tmp27Reader.EndOfStream)
-                    {
-                        __tmp27_first = false;
-                        string __tmp27Line = __tmp27Reader.ReadLine();
-                        if (__tmp27Line == null)
-                        {
-                            __tmp27Line = "";
-                        }
-                        __out.Append(__tmp25Prefix);
-                        __out.Append(__tmp27Line);
-                        __out.Append(__tmp26Suffix);
+                        __out.Append(__tmp27Prefix);
+                        __out.Append(__tmp29Line);
+                        __out.Append(__tmp28Suffix);
                         __out.AppendLine(); //558:43
                     }
                 }
             }
-            __out.Append("        }"); //560:1
-            __out.AppendLine(); //560:10
-            __out.AppendLine(); //561:2
-            var __loop34_results = 
-                (from __loop34_var1 in __Enumerate((model).GetEnumerator()) //562:11
-                from c in __Enumerate((__loop34_var1.Constants).GetEnumerator()) //562:18
-                select new { __loop34_var1 = __loop34_var1, c = c}
-                ).ToList(); //562:6
-            int __loop34_iteration = 0;
-            foreach (var __tmp28 in __loop34_results)
+            __out.AppendLine(); //560:2
+            var __loop33_results = 
+                (from __loop33_var1 in __Enumerate((model).GetEnumerator()) //561:11
+                from f in __Enumerate((__loop33_var1.Functions).GetEnumerator()) //561:18
+                select new { __loop33_var1 = __loop33_var1, f = f}
+                ).ToList(); //561:6
+            int __loop33_iteration = 0;
+            foreach (var __tmp30 in __loop33_results)
             {
-                ++__loop34_iteration;
-                var __loop34_var1 = __tmp28.__loop34_var1;
-                var c = __tmp28.c;
-                string __tmp29Prefix = "        "; //563:1
-                string __tmp30Suffix = string.Empty; 
-                StringBuilder __tmp31 = new StringBuilder();
-                __tmp31.Append(GenerateModelConstant(c));
-                using(StreamReader __tmp31Reader = new StreamReader(this.__ToStream(__tmp31.ToString())))
+                ++__loop33_iteration;
+                var __loop33_var1 = __tmp30.__loop33_var1;
+                var f = __tmp30.f;
+                string __tmp31Prefix = "            "; //562:1
+                string __tmp32Suffix = string.Empty; 
+                StringBuilder __tmp33 = new StringBuilder();
+                __tmp33.Append(GenerateModelFunctionImpl(f));
+                using(StreamReader __tmp33Reader = new StreamReader(this.__ToStream(__tmp33.ToString())))
                 {
-                    bool __tmp31_first = true;
-                    while(__tmp31_first || !__tmp31Reader.EndOfStream)
+                    bool __tmp33_first = true;
+                    while(__tmp33_first || !__tmp33Reader.EndOfStream)
                     {
-                        __tmp31_first = false;
-                        string __tmp31Line = __tmp31Reader.ReadLine();
-                        if (__tmp31Line == null)
+                        __tmp33_first = false;
+                        string __tmp33Line = __tmp33Reader.ReadLine();
+                        if (__tmp33Line == null)
                         {
-                            __tmp31Line = "";
+                            __tmp33Line = "";
                         }
-                        __out.Append(__tmp29Prefix);
-                        __out.Append(__tmp31Line);
-                        __out.Append(__tmp30Suffix);
-                        __out.AppendLine(); //563:35
+                        __out.Append(__tmp31Prefix);
+                        __out.Append(__tmp33Line);
+                        __out.Append(__tmp32Suffix);
+                        __out.AppendLine(); //562:43
                     }
                 }
             }
+            __out.Append("        }"); //564:1
+            __out.AppendLine(); //564:10
             __out.AppendLine(); //565:2
-            var __loop35_results = 
-                (from __loop35_var1 in __Enumerate((model).GetEnumerator()) //566:11
-                from f in __Enumerate((__loop35_var1.Functions).GetEnumerator()) //566:18
-                select new { __loop35_var1 = __loop35_var1, f = f}
+            var __loop34_results = 
+                (from __loop34_var1 in __Enumerate((model).GetEnumerator()) //566:11
+                from c in __Enumerate((__loop34_var1.Constants).GetEnumerator()) //566:18
+                select new { __loop34_var1 = __loop34_var1, c = c}
                 ).ToList(); //566:6
-            int __loop35_iteration = 0;
-            foreach (var __tmp32 in __loop35_results)
+            int __loop34_iteration = 0;
+            foreach (var __tmp34 in __loop34_results)
             {
-                ++__loop35_iteration;
-                var __loop35_var1 = __tmp32.__loop35_var1;
-                var f = __tmp32.f;
-                string __tmp33Prefix = "        "; //567:1
-                string __tmp34Suffix = string.Empty; 
-                StringBuilder __tmp35 = new StringBuilder();
-                __tmp35.Append(GenerateModelFunction(f));
-                using(StreamReader __tmp35Reader = new StreamReader(this.__ToStream(__tmp35.ToString())))
+                ++__loop34_iteration;
+                var __loop34_var1 = __tmp34.__loop34_var1;
+                var c = __tmp34.c;
+                string __tmp35Prefix = "        "; //567:1
+                string __tmp36Suffix = string.Empty; 
+                StringBuilder __tmp37 = new StringBuilder();
+                __tmp37.Append(GenerateModelConstant(c));
+                using(StreamReader __tmp37Reader = new StreamReader(this.__ToStream(__tmp37.ToString())))
                 {
-                    bool __tmp35_first = true;
-                    while(__tmp35_first || !__tmp35Reader.EndOfStream)
+                    bool __tmp37_first = true;
+                    while(__tmp37_first || !__tmp37Reader.EndOfStream)
                     {
-                        __tmp35_first = false;
-                        string __tmp35Line = __tmp35Reader.ReadLine();
-                        if (__tmp35Line == null)
+                        __tmp37_first = false;
+                        string __tmp37Line = __tmp37Reader.ReadLine();
+                        if (__tmp37Line == null)
                         {
-                            __tmp35Line = "";
+                            __tmp37Line = "";
                         }
-                        __out.Append(__tmp33Prefix);
-                        __out.Append(__tmp35Line);
-                        __out.Append(__tmp34Suffix);
+                        __out.Append(__tmp35Prefix);
+                        __out.Append(__tmp37Line);
+                        __out.Append(__tmp36Suffix);
                         __out.AppendLine(); //567:35
                     }
                 }
             }
-            __out.Append("    }"); //569:1
-            __out.AppendLine(); //569:6
-            __out.AppendLine(); //570:2
-            var __loop36_results = 
-                (from __loop36_var1 in __Enumerate((model).GetEnumerator()) //571:11
-                from Types in __Enumerate((__loop36_var1.Types).GetEnumerator()) //571:18
-                from cls in __Enumerate((Types).GetEnumerator()).OfType<MetaClass>() //571:25
-                select new { __loop36_var1 = __loop36_var1, Types = Types, cls = cls}
-                ).ToList(); //571:6
-            int __loop36_iteration = 0;
-            foreach (var __tmp36 in __loop36_results)
+            __out.AppendLine(); //569:2
+            var __loop35_results = 
+                (from __loop35_var1 in __Enumerate((model).GetEnumerator()) //570:11
+                from f in __Enumerate((__loop35_var1.Functions).GetEnumerator()) //570:18
+                select new { __loop35_var1 = __loop35_var1, f = f}
+                ).ToList(); //570:6
+            int __loop35_iteration = 0;
+            foreach (var __tmp38 in __loop35_results)
             {
-                ++__loop36_iteration;
-                var __loop36_var1 = __tmp36.__loop36_var1;
-                var Types = __tmp36.Types;
-                var cls = __tmp36.cls;
-                string __tmp37Prefix = "    "; //572:1
-                string __tmp38Suffix = string.Empty; 
-                StringBuilder __tmp39 = new StringBuilder();
-                __tmp39.Append(GenerateMetaModelClass(cls));
-                using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
+                ++__loop35_iteration;
+                var __loop35_var1 = __tmp38.__loop35_var1;
+                var f = __tmp38.f;
+                string __tmp39Prefix = "        "; //571:1
+                string __tmp40Suffix = string.Empty; 
+                StringBuilder __tmp41 = new StringBuilder();
+                __tmp41.Append(GenerateModelFunction(f));
+                using(StreamReader __tmp41Reader = new StreamReader(this.__ToStream(__tmp41.ToString())))
                 {
-                    bool __tmp39_first = true;
-                    while(__tmp39_first || !__tmp39Reader.EndOfStream)
+                    bool __tmp41_first = true;
+                    while(__tmp41_first || !__tmp41Reader.EndOfStream)
                     {
-                        __tmp39_first = false;
-                        string __tmp39Line = __tmp39Reader.ReadLine();
-                        if (__tmp39Line == null)
+                        __tmp41_first = false;
+                        string __tmp41Line = __tmp41Reader.ReadLine();
+                        if (__tmp41Line == null)
                         {
-                            __tmp39Line = "";
+                            __tmp41Line = "";
                         }
-                        __out.Append(__tmp37Prefix);
-                        __out.Append(__tmp39Line);
-                        __out.Append(__tmp38Suffix);
-                        __out.AppendLine(); //572:34
+                        __out.Append(__tmp39Prefix);
+                        __out.Append(__tmp41Line);
+                        __out.Append(__tmp40Suffix);
+                        __out.AppendLine(); //571:35
                     }
                 }
             }
-            __out.Append("}"); //574:1
+            __out.Append("    }"); //573:1
+            __out.AppendLine(); //573:6
             __out.AppendLine(); //574:2
-            __out.AppendLine(); //575:2
+            var __loop36_results = 
+                (from __loop36_var1 in __Enumerate((model).GetEnumerator()) //575:11
+                from Types in __Enumerate((__loop36_var1.Types).GetEnumerator()) //575:18
+                from cls in __Enumerate((Types).GetEnumerator()).OfType<MetaClass>() //575:25
+                select new { __loop36_var1 = __loop36_var1, Types = Types, cls = cls}
+                ).ToList(); //575:6
+            int __loop36_iteration = 0;
+            foreach (var __tmp42 in __loop36_results)
+            {
+                ++__loop36_iteration;
+                var __loop36_var1 = __tmp42.__loop36_var1;
+                var Types = __tmp42.Types;
+                var cls = __tmp42.cls;
+                string __tmp43Prefix = "    "; //576:1
+                string __tmp44Suffix = string.Empty; 
+                StringBuilder __tmp45 = new StringBuilder();
+                __tmp45.Append(GenerateMetaModelClass(cls));
+                using(StreamReader __tmp45Reader = new StreamReader(this.__ToStream(__tmp45.ToString())))
+                {
+                    bool __tmp45_first = true;
+                    while(__tmp45_first || !__tmp45Reader.EndOfStream)
+                    {
+                        __tmp45_first = false;
+                        string __tmp45Line = __tmp45Reader.ReadLine();
+                        if (__tmp45Line == null)
+                        {
+                            __tmp45Line = "";
+                        }
+                        __out.Append(__tmp43Prefix);
+                        __out.Append(__tmp45Line);
+                        __out.Append(__tmp44Suffix);
+                        __out.AppendLine(); //576:34
+                    }
+                }
+            }
+            __out.Append("}"); //578:1
+            __out.AppendLine(); //578:2
+            __out.AppendLine(); //579:2
             return __out.ToString();
         }
 
-        public string GenerateMetaModelClass(MetaClass cls) //578:1
+        public string GenerateMetaModelClass(MetaClass cls) //582:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.AppendLine(); //579:2
-            string __tmp1Prefix = "public static class "; //580:1
+            __out.AppendLine(); //583:2
+            string __tmp1Prefix = "public static class "; //584:1
             string __tmp2Suffix = string.Empty; 
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(cls.CSharpName());
@@ -5244,22 +5291,22 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //580:39
+                    __out.AppendLine(); //584:39
                 }
             }
-            __out.Append("{"); //581:1
-            __out.AppendLine(); //581:2
-            __out.Append("	internal static global::MetaDslx.Core.MetaClass instance;"); //582:1
-            __out.AppendLine(); //582:59
-            __out.Append("    internal static void StaticInit()"); //584:1
-            __out.AppendLine(); //584:38
-            __out.Append("    {"); //585:1
-            __out.AppendLine(); //585:6
-            __out.Append("    }"); //586:1
-            __out.AppendLine(); //586:6
-            __out.AppendLine(); //587:2
-            string __tmp4Prefix = "    static "; //588:1
-            string __tmp5Suffix = "()"; //588:30
+            __out.Append("{"); //585:1
+            __out.AppendLine(); //585:2
+            __out.Append("	internal static global::MetaDslx.Core.MetaClass instance;"); //586:1
+            __out.AppendLine(); //586:59
+            __out.Append("    internal static void StaticInit()"); //588:1
+            __out.AppendLine(); //588:38
+            __out.Append("    {"); //589:1
+            __out.AppendLine(); //589:6
+            __out.Append("    }"); //590:1
+            __out.AppendLine(); //590:6
+            __out.AppendLine(); //591:2
+            string __tmp4Prefix = "    static "; //592:1
+            string __tmp5Suffix = "()"; //592:30
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(cls.CSharpName());
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
@@ -5276,13 +5323,13 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
                     __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //588:32
+                    __out.AppendLine(); //592:32
                 }
             }
-            __out.Append("    {"); //589:1
-            __out.AppendLine(); //589:6
-            string __tmp7Prefix = "        "; //590:1
-            string __tmp8Suffix = ".StaticInit();"; //590:37
+            __out.Append("    {"); //593:1
+            __out.AppendLine(); //593:6
+            string __tmp7Prefix = "        "; //594:1
+            string __tmp8Suffix = ".StaticInit();"; //594:37
             StringBuilder __tmp9 = new StringBuilder();
             __tmp9.Append(cls.Model.CSharpFullName());
             using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
@@ -5299,11 +5346,11 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp7Prefix);
                     __out.Append(__tmp9Line);
                     __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //590:51
+                    __out.AppendLine(); //594:51
                 }
             }
-            string __tmp10Prefix = "        "; //591:1
-            string __tmp11Suffix = ".instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);"; //591:27
+            string __tmp10Prefix = "        "; //595:1
+            string __tmp11Suffix = ".instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);"; //595:27
             StringBuilder __tmp12 = new StringBuilder();
             __tmp12.Append(cls.CSharpName());
             using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
@@ -5320,13 +5367,13 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp10Prefix);
                     __out.Append(__tmp12Line);
                     __out.Append(__tmp11Suffix);
-                    __out.AppendLine(); //591:110
+                    __out.AppendLine(); //595:110
                 }
             }
-            if (cls.IsAbstract) //592:4
+            if (cls.IsAbstract) //596:4
             {
-                string __tmp13Prefix = "		"; //593:1
-                string __tmp14Suffix = ".instance.IsAbstract = true;"; //593:21
+                string __tmp13Prefix = "		"; //597:1
+                string __tmp14Suffix = ".instance.IsAbstract = true;"; //597:21
                 StringBuilder __tmp15 = new StringBuilder();
                 __tmp15.Append(cls.CSharpName());
                 using(StreamReader __tmp15Reader = new StreamReader(this.__ToStream(__tmp15.ToString())))
@@ -5343,12 +5390,12 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp13Prefix);
                         __out.Append(__tmp15Line);
                         __out.Append(__tmp14Suffix);
-                        __out.AppendLine(); //593:49
+                        __out.AppendLine(); //597:49
                     }
                 }
             }
-            string __tmp16Prefix = "        "; //595:1
-            string __tmp17Suffix = "\";"; //595:63
+            string __tmp16Prefix = "        "; //599:1
+            string __tmp17Suffix = "\";"; //599:63
             StringBuilder __tmp18 = new StringBuilder();
             __tmp18.Append(cls.CSharpName());
             using(StreamReader __tmp18Reader = new StreamReader(this.__ToStream(__tmp18.ToString())))
@@ -5366,7 +5413,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp18Line);
                 }
             }
-            string __tmp19Line = ".instance.Name = \""; //595:27
+            string __tmp19Line = ".instance.Name = \""; //599:27
             __out.Append(__tmp19Line);
             StringBuilder __tmp20 = new StringBuilder();
             __tmp20.Append(cls.CSharpName());
@@ -5383,22 +5430,22 @@ namespace MetaDslx.Core //1:1
                     }
                     __out.Append(__tmp20Line);
                     __out.Append(__tmp17Suffix);
-                    __out.AppendLine(); //595:65
+                    __out.AppendLine(); //599:65
                 }
             }
             var __loop37_results = 
-                (from __loop37_var1 in __Enumerate((cls).GetEnumerator()) //596:9
-                from sup in __Enumerate((__loop37_var1.SuperClasses).GetEnumerator()) //596:14
+                (from __loop37_var1 in __Enumerate((cls).GetEnumerator()) //600:9
+                from sup in __Enumerate((__loop37_var1.SuperClasses).GetEnumerator()) //600:14
                 select new { __loop37_var1 = __loop37_var1, sup = sup}
-                ).ToList(); //596:4
+                ).ToList(); //600:4
             int __loop37_iteration = 0;
             foreach (var __tmp21 in __loop37_results)
             {
                 ++__loop37_iteration;
                 var __loop37_var1 = __tmp21.__loop37_var1;
                 var sup = __tmp21.sup;
-                string __tmp22Prefix = "        ((ModelCollection)"; //597:1
-                string __tmp23Suffix = ".Instance));"; //597:148
+                string __tmp22Prefix = "        ((ModelCollection)"; //601:1
+                string __tmp23Suffix = ".Instance));"; //601:148
                 StringBuilder __tmp24 = new StringBuilder();
                 __tmp24.Append(cls.CSharpName());
                 using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
@@ -5416,7 +5463,7 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp24Line);
                     }
                 }
-                string __tmp25Line = ".instance.SuperClasses).MLazyAdd(new Lazy<object>(() => "; //597:45
+                string __tmp25Line = ".instance.SuperClasses).MLazyAdd(new Lazy<object>(() => "; //601:45
                 __out.Append(__tmp25Line);
                 StringBuilder __tmp26 = new StringBuilder();
                 __tmp26.Append(sup.Model.CSharpFullName());
@@ -5434,7 +5481,7 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp26Line);
                     }
                 }
-                string __tmp27Line = "."; //597:129
+                string __tmp27Line = "."; //601:129
                 __out.Append(__tmp27Line);
                 StringBuilder __tmp28 = new StringBuilder();
                 __tmp28.Append(sup.CSharpName());
@@ -5451,19 +5498,19 @@ namespace MetaDslx.Core //1:1
                         }
                         __out.Append(__tmp28Line);
                         __out.Append(__tmp23Suffix);
-                        __out.AppendLine(); //597:160
+                        __out.AppendLine(); //601:160
                     }
                 }
             }
-            __out.Append("    }"); //599:1
-            __out.AppendLine(); //599:6
-            __out.AppendLine(); //600:2
-            __out.Append("    public static global::MetaDslx.Core.MetaClass Instance"); //601:1
-            __out.AppendLine(); //601:59
-            __out.Append("    {"); //602:1
-            __out.AppendLine(); //602:6
-            string __tmp29Prefix = "        get { return "; //603:1
-            string __tmp30Suffix = ".instance; }"; //603:40
+            __out.Append("    }"); //603:1
+            __out.AppendLine(); //603:6
+            __out.AppendLine(); //604:2
+            __out.Append("    public static global::MetaDslx.Core.MetaClass Instance"); //605:1
+            __out.AppendLine(); //605:59
+            __out.Append("    {"); //606:1
+            __out.AppendLine(); //606:6
+            string __tmp29Prefix = "        get { return "; //607:1
+            string __tmp30Suffix = ".instance; }"; //607:40
             StringBuilder __tmp31 = new StringBuilder();
             __tmp31.Append(cls.CSharpName());
             using(StreamReader __tmp31Reader = new StreamReader(this.__ToStream(__tmp31.ToString())))
@@ -5480,24 +5527,24 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp29Prefix);
                     __out.Append(__tmp31Line);
                     __out.Append(__tmp30Suffix);
-                    __out.AppendLine(); //603:52
+                    __out.AppendLine(); //607:52
                 }
             }
-            __out.Append("    }"); //604:1
-            __out.AppendLine(); //604:6
-            __out.AppendLine(); //605:2
+            __out.Append("    }"); //608:1
+            __out.AppendLine(); //608:6
+            __out.AppendLine(); //609:2
             var __loop38_results = 
-                (from __loop38_var1 in __Enumerate((cls).GetEnumerator()) //606:11
-                from prop in __Enumerate((__loop38_var1.Properties).GetEnumerator()) //606:16
+                (from __loop38_var1 in __Enumerate((cls).GetEnumerator()) //610:11
+                from prop in __Enumerate((__loop38_var1.Properties).GetEnumerator()) //610:16
                 select new { __loop38_var1 = __loop38_var1, prop = prop}
-                ).ToList(); //606:6
+                ).ToList(); //610:6
             int __loop38_iteration = 0;
             foreach (var __tmp32 in __loop38_results)
             {
                 ++__loop38_iteration;
                 var __loop38_var1 = __tmp32.__loop38_var1;
                 var prop = __tmp32.prop;
-                string __tmp33Prefix = "    "; //607:1
+                string __tmp33Prefix = "    "; //611:1
                 string __tmp34Suffix = string.Empty; 
                 StringBuilder __tmp35 = new StringBuilder();
                 __tmp35.Append(GeneratePropertyDeclaration(cls.Model, cls, prop));
@@ -5515,20 +5562,20 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp33Prefix);
                         __out.Append(__tmp35Line);
                         __out.Append(__tmp34Suffix);
-                        __out.AppendLine(); //607:56
+                        __out.AppendLine(); //611:56
                     }
                 }
             }
-            __out.Append("}"); //609:1
-            __out.AppendLine(); //609:2
+            __out.Append("}"); //613:1
+            __out.AppendLine(); //613:2
             return __out.ToString();
         }
 
-        public string GenerateModelConstant(MetaConstant mconst) //613:1
+        public string GenerateModelConstant(MetaConstant mconst) //617:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "public static "; //614:1
-            string __tmp2Suffix = " { get; private set; }"; //614:59
+            string __tmp1Prefix = "public static "; //618:1
+            string __tmp2Suffix = " { get; private set; }"; //618:59
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(mconst.Type.CSharpFullName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -5546,7 +5593,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp3Line);
                 }
             }
-            string __tmp4Line = " "; //614:45
+            string __tmp4Line = " "; //618:45
             __out.Append(__tmp4Line);
             StringBuilder __tmp5 = new StringBuilder();
             __tmp5.Append(mconst.Name);
@@ -5563,17 +5610,17 @@ namespace MetaDslx.Core //1:1
                     }
                     __out.Append(__tmp5Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //614:81
+                    __out.AppendLine(); //618:81
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateModelFunction(MetaFunction mfunc) //617:1
+        public string GenerateModelFunction(MetaFunction mfunc) //621:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "public static global::MetaDslx.Core.MetaFunction "; //618:1
-            string __tmp2Suffix = " { get; private set; }"; //618:62
+            string __tmp1Prefix = "public static global::MetaDslx.Core.MetaFunction "; //622:1
+            string __tmp2Suffix = " { get; private set; }"; //622:62
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(mfunc.Name);
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -5590,13 +5637,13 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //618:84
+                    __out.AppendLine(); //622:84
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateModelConstantImpl(MetaConstant mconst) //621:1
+        public string GenerateModelConstantImpl(MetaConstant mconst) //625:1
         {
             StringBuilder __out = new StringBuilder();
             string __tmp1Prefix = string.Empty;
@@ -5617,17 +5664,17 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //622:67
+                    __out.AppendLine(); //626:67
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateModelFunctionImpl(MetaFunction mfunc) //625:1
+        public string GenerateModelFunctionImpl(MetaFunction mfunc) //629:1
         {
             StringBuilder __out = new StringBuilder();
             string __tmp1Prefix = string.Empty; 
-            string __tmp2Suffix = " = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();"; //626:13
+            string __tmp2Suffix = " = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();"; //630:13
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(mfunc.Name);
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -5644,22 +5691,22 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //626:85
+                    __out.AppendLine(); //630:85
                 }
             }
-            if ((from __loop39_var1 in __Enumerate((mfunc).GetEnumerator()) //627:14
-            from a in __Enumerate((__loop39_var1.Annotations).GetEnumerator()) //627:21
-            where a.Name == "Name" //627:35
+            if ((from __loop39_var1 in __Enumerate((mfunc).GetEnumerator()) //631:14
+            from a in __Enumerate((__loop39_var1.Annotations).GetEnumerator()) //631:21
+            where a.Name == "Name" //631:35
             select new { __loop39_var1 = __loop39_var1, a = a}
-            ).GetEnumerator().MoveNext()) //627:2
+            ).GetEnumerator().MoveNext()) //631:2
             {
                 var __loop40_results = 
-                    (from __loop40_var1 in __Enumerate((mfunc).GetEnumerator()) //628:8
-                    from a in __Enumerate((__loop40_var1.Annotations).GetEnumerator()) //628:15
-                    from p in __Enumerate((a.Properties).GetEnumerator()) //628:30
-                    where a.Name == "Name" && p.Name == "Name" //628:43
+                    (from __loop40_var1 in __Enumerate((mfunc).GetEnumerator()) //632:8
+                    from a in __Enumerate((__loop40_var1.Annotations).GetEnumerator()) //632:15
+                    from p in __Enumerate((a.Properties).GetEnumerator()) //632:30
+                    where a.Name == "Name" && p.Name == "Name" //632:43
                     select new { __loop40_var1 = __loop40_var1, a = a, p = p}
-                    ).ToList(); //628:3
+                    ).ToList(); //632:3
                 int __loop40_iteration = 0;
                 foreach (var __tmp4 in __loop40_results)
                 {
@@ -5668,7 +5715,7 @@ namespace MetaDslx.Core //1:1
                     var a = __tmp4.a;
                     var p = __tmp4.p;
                     string __tmp5Prefix = string.Empty; 
-                    string __tmp6Suffix = ";"; //629:50
+                    string __tmp6Suffix = ";"; //633:50
                     StringBuilder __tmp7 = new StringBuilder();
                     __tmp7.Append(mfunc.Name);
                     using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
@@ -5686,7 +5733,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp7Line);
                         }
                     }
-                    string __tmp8Line = ".Name = "; //629:13
+                    string __tmp8Line = ".Name = "; //633:13
                     __out.Append(__tmp8Line);
                     StringBuilder __tmp9 = new StringBuilder();
                     __tmp9.Append(GenerateExpression(p.Value));
@@ -5703,15 +5750,15 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp9Line);
                             __out.Append(__tmp6Suffix);
-                            __out.AppendLine(); //629:51
+                            __out.AppendLine(); //633:51
                         }
                     }
                 }
             }
-            else //631:2
+            else //635:2
             {
                 string __tmp10Prefix = string.Empty; 
-                string __tmp11Suffix = "\";"; //632:34
+                string __tmp11Suffix = "\";"; //636:34
                 StringBuilder __tmp12 = new StringBuilder();
                 __tmp12.Append(mfunc.Name);
                 using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
@@ -5729,7 +5776,7 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp12Line);
                     }
                 }
-                string __tmp13Line = ".Name = \""; //632:13
+                string __tmp13Line = ".Name = \""; //636:13
                 __out.Append(__tmp13Line);
                 StringBuilder __tmp14 = new StringBuilder();
                 __tmp14.Append(mfunc.Name);
@@ -5746,7 +5793,7 @@ namespace MetaDslx.Core //1:1
                         }
                         __out.Append(__tmp14Line);
                         __out.Append(__tmp11Suffix);
-                        __out.AppendLine(); //632:36
+                        __out.AppendLine(); //636:36
                     }
                 }
             }
@@ -5768,23 +5815,23 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp15Prefix);
                     __out.Append(__tmp17Line);
                     __out.Append(__tmp16Suffix);
-                    __out.AppendLine(); //634:78
+                    __out.AppendLine(); //638:78
                 }
             }
             var __loop41_results = 
-                (from __loop41_var1 in __Enumerate((mfunc).GetEnumerator()) //635:7
-                from p in __Enumerate((__loop41_var1.Parameters).GetEnumerator()) //635:14
+                (from __loop41_var1 in __Enumerate((mfunc).GetEnumerator()) //639:7
+                from p in __Enumerate((__loop41_var1.Parameters).GetEnumerator()) //639:14
                 select new { __loop41_var1 = __loop41_var1, p = p}
-                ).ToList(); //635:2
+                ).ToList(); //639:2
             int __loop41_iteration = 0;
             foreach (var __tmp18 in __loop41_results)
             {
                 ++__loop41_iteration;
                 var __loop41_var1 = __tmp18.__loop41_var1;
                 var p = __tmp18.p;
-                string tmpName = "tmp" + NextCounter(); //636:2
-                string __tmp19Prefix = "global::MetaDslx.Core.MetaParameter "; //637:1
-                string __tmp20Suffix = " = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();"; //637:46
+                string tmpName = "tmp" + NextCounter(); //640:2
+                string __tmp19Prefix = "global::MetaDslx.Core.MetaParameter "; //641:1
+                string __tmp20Suffix = " = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();"; //641:46
                 StringBuilder __tmp21 = new StringBuilder();
                 __tmp21.Append(tmpName);
                 using(StreamReader __tmp21Reader = new StreamReader(this.__ToStream(__tmp21.ToString())))
@@ -5801,11 +5848,11 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp19Prefix);
                         __out.Append(__tmp21Line);
                         __out.Append(__tmp20Suffix);
-                        __out.AppendLine(); //637:119
+                        __out.AppendLine(); //641:119
                     }
                 }
                 string __tmp22Prefix = string.Empty; 
-                string __tmp23Suffix = "\";"; //638:27
+                string __tmp23Suffix = "\";"; //642:27
                 StringBuilder __tmp24 = new StringBuilder();
                 __tmp24.Append(tmpName);
                 using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
@@ -5823,7 +5870,7 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp24Line);
                     }
                 }
-                string __tmp25Line = ".Name = \""; //638:10
+                string __tmp25Line = ".Name = \""; //642:10
                 __out.Append(__tmp25Line);
                 StringBuilder __tmp26 = new StringBuilder();
                 __tmp26.Append(p.Name);
@@ -5840,7 +5887,7 @@ namespace MetaDslx.Core //1:1
                         }
                         __out.Append(__tmp26Line);
                         __out.Append(__tmp23Suffix);
-                        __out.AppendLine(); //638:29
+                        __out.AppendLine(); //642:29
                     }
                 }
                 string __tmp27Prefix = string.Empty;
@@ -5861,11 +5908,11 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp27Prefix);
                         __out.Append(__tmp29Line);
                         __out.Append(__tmp28Suffix);
-                        __out.AppendLine(); //639:59
+                        __out.AppendLine(); //643:59
                     }
                 }
                 string __tmp30Prefix = string.Empty; 
-                string __tmp31Suffix = ");"; //640:38
+                string __tmp31Suffix = ");"; //644:38
                 StringBuilder __tmp32 = new StringBuilder();
                 __tmp32.Append(mfunc.Name);
                 using(StreamReader __tmp32Reader = new StreamReader(this.__ToStream(__tmp32.ToString())))
@@ -5883,7 +5930,7 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp32Line);
                     }
                 }
-                string __tmp33Line = ".Parameters.Add("; //640:13
+                string __tmp33Line = ".Parameters.Add("; //644:13
                 __out.Append(__tmp33Line);
                 StringBuilder __tmp34 = new StringBuilder();
                 __tmp34.Append(tmpName);
@@ -5900,22 +5947,22 @@ namespace MetaDslx.Core //1:1
                         }
                         __out.Append(__tmp34Line);
                         __out.Append(__tmp31Suffix);
-                        __out.AppendLine(); //640:40
+                        __out.AppendLine(); //644:40
                     }
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateModelFunctionImplTypeOf(string name, MetaType mtype) //644:1
+        public string GenerateModelFunctionImplTypeOf(string name, MetaType mtype) //648:1
         {
             StringBuilder __out = new StringBuilder();
-            var __tmp1 = mtype; //645:9
-            if (mtype is MetaCollectionType) //646:2
+            var __tmp1 = mtype; //649:9
+            if (mtype is MetaCollectionType) //650:2
             {
-                string tmpName = "tmp" + NextCounter(); //647:2
-                string __tmp2Prefix = "global::MetaDslx.Core.MetaCollectionType "; //648:1
-                string __tmp3Suffix = " = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();"; //648:51
+                string tmpName = "tmp" + NextCounter(); //651:2
+                string __tmp2Prefix = "global::MetaDslx.Core.MetaCollectionType "; //652:1
+                string __tmp3Suffix = " = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();"; //652:51
                 StringBuilder __tmp4 = new StringBuilder();
                 __tmp4.Append(tmpName);
                 using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
@@ -5932,11 +5979,11 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp2Prefix);
                         __out.Append(__tmp4Line);
                         __out.Append(__tmp3Suffix);
-                        __out.AppendLine(); //648:129
+                        __out.AppendLine(); //652:129
                     }
                 }
                 string __tmp5Prefix = string.Empty; 
-                string __tmp6Suffix = ";"; //649:19
+                string __tmp6Suffix = ";"; //653:19
                 StringBuilder __tmp7 = new StringBuilder();
                 __tmp7.Append(name);
                 using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
@@ -5954,7 +6001,7 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp7Line);
                     }
                 }
-                string __tmp8Line = " = "; //649:7
+                string __tmp8Line = " = "; //653:7
                 __out.Append(__tmp8Line);
                 StringBuilder __tmp9 = new StringBuilder();
                 __tmp9.Append(tmpName);
@@ -5971,11 +6018,11 @@ namespace MetaDslx.Core //1:1
                         }
                         __out.Append(__tmp9Line);
                         __out.Append(__tmp6Suffix);
-                        __out.AppendLine(); //649:20
+                        __out.AppendLine(); //653:20
                     }
                 }
                 string __tmp10Prefix = string.Empty; 
-                string __tmp11Suffix = ";"; //650:49
+                string __tmp11Suffix = ";"; //654:49
                 StringBuilder __tmp12 = new StringBuilder();
                 __tmp12.Append(tmpName);
                 using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
@@ -5993,7 +6040,7 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp12Line);
                     }
                 }
-                string __tmp13Line = ".Kind = MetaCollectionKind."; //650:10
+                string __tmp13Line = ".Kind = MetaCollectionKind."; //654:10
                 __out.Append(__tmp13Line);
                 StringBuilder __tmp14 = new StringBuilder();
                 __tmp14.Append(((MetaCollectionType)mtype).Kind);
@@ -6010,7 +6057,7 @@ namespace MetaDslx.Core //1:1
                         }
                         __out.Append(__tmp14Line);
                         __out.Append(__tmp11Suffix);
-                        __out.AppendLine(); //650:50
+                        __out.AppendLine(); //654:50
                     }
                 }
                 string __tmp15Prefix = string.Empty;
@@ -6031,26 +6078,26 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp15Prefix);
                         __out.Append(__tmp17Line);
                         __out.Append(__tmp16Suffix);
-                        __out.AppendLine(); //651:73
+                        __out.AppendLine(); //655:73
                     }
                 }
             }
-            else //652:2
+            else //656:2
             {
                 __out.Append(name);
-                __out.Append(" = "); //652:17
+                __out.Append(" = "); //656:17
                 __out.Append(GenerateTypeOf(mtype));
-                __out.Append(";"); //652:43
-                __out.AppendLine(); //652:44
-            }//653:2
+                __out.Append(";"); //656:43
+                __out.AppendLine(); //656:44
+            }//657:2
             return __out.ToString();
         }
 
-        public string GenerateImplementationProvider(MetaModel model) //656:1
+        public string GenerateImplementationProvider(MetaModel model) //660:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "internal static class "; //657:1
-            string __tmp2Suffix = "ImplementationProvider"; //657:43
+            string __tmp1Prefix = "internal static class "; //661:1
+            string __tmp2Suffix = "ImplementationProvider"; //661:43
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(model.CSharpName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -6067,13 +6114,13 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //657:65
+                    __out.AppendLine(); //661:65
                 }
             }
-            __out.Append("{"); //658:1
-            __out.AppendLine(); //658:2
-            string __tmp4Prefix = "    // If there is a compile error at this line, create a new class called "; //659:1
-            string __tmp5Suffix = "Implementation"; //659:96
+            __out.Append("{"); //662:1
+            __out.AppendLine(); //662:2
+            string __tmp4Prefix = "    // If there is a compile error at this line, create a new class called "; //663:1
+            string __tmp5Suffix = "Implementation"; //663:96
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(model.CSharpName());
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
@@ -6090,11 +6137,11 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp4Prefix);
                     __out.Append(__tmp6Line);
                     __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //659:110
+                    __out.AppendLine(); //663:110
                 }
             }
-            string __tmp7Prefix = "	// which is a subclass of "; //660:1
-            string __tmp8Suffix = "ImplementationBase:"; //660:48
+            string __tmp7Prefix = "	// which is a subclass of "; //664:1
+            string __tmp8Suffix = "ImplementationBase:"; //664:48
             StringBuilder __tmp9 = new StringBuilder();
             __tmp9.Append(model.CSharpName());
             using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
@@ -6111,11 +6158,11 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp7Prefix);
                     __out.Append(__tmp9Line);
                     __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //660:67
+                    __out.AppendLine(); //664:67
                 }
             }
-            string __tmp10Prefix = "    private static "; //661:1
-            string __tmp11Suffix = "Implementation();"; //661:96
+            string __tmp10Prefix = "    private static "; //665:1
+            string __tmp11Suffix = "Implementation();"; //665:96
             StringBuilder __tmp12 = new StringBuilder();
             __tmp12.Append(model.CSharpName());
             using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
@@ -6133,7 +6180,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp12Line);
                 }
             }
-            string __tmp13Line = "Implementation implementation = new "; //661:40
+            string __tmp13Line = "Implementation implementation = new "; //665:40
             __out.Append(__tmp13Line);
             StringBuilder __tmp14 = new StringBuilder();
             __tmp14.Append(model.CSharpName());
@@ -6150,12 +6197,12 @@ namespace MetaDslx.Core //1:1
                     }
                     __out.Append(__tmp14Line);
                     __out.Append(__tmp11Suffix);
-                    __out.AppendLine(); //661:113
+                    __out.AppendLine(); //665:113
                 }
             }
-            __out.AppendLine(); //662:2
-            string __tmp15Prefix = "    public static "; //663:1
-            string __tmp16Suffix = "Implementation Implementation"; //663:39
+            __out.AppendLine(); //666:2
+            string __tmp15Prefix = "    public static "; //667:1
+            string __tmp16Suffix = "Implementation Implementation"; //667:39
             StringBuilder __tmp17 = new StringBuilder();
             __tmp17.Append(model.CSharpName());
             using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
@@ -6172,13 +6219,13 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp15Prefix);
                     __out.Append(__tmp17Line);
                     __out.Append(__tmp16Suffix);
-                    __out.AppendLine(); //663:68
+                    __out.AppendLine(); //667:68
                 }
             }
-            __out.Append("    {"); //664:1
-            __out.AppendLine(); //664:6
-            string __tmp18Prefix = "        get { return "; //665:1
-            string __tmp19Suffix = "ImplementationProvider.implementation; }"; //665:42
+            __out.Append("    {"); //668:1
+            __out.AppendLine(); //668:6
+            string __tmp18Prefix = "        get { return "; //669:1
+            string __tmp19Suffix = "ImplementationProvider.implementation; }"; //669:42
             StringBuilder __tmp20 = new StringBuilder();
             __tmp20.Append(model.CSharpName());
             using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
@@ -6195,19 +6242,19 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp18Prefix);
                     __out.Append(__tmp20Line);
                     __out.Append(__tmp19Suffix);
-                    __out.AppendLine(); //665:82
+                    __out.AppendLine(); //669:82
                 }
             }
-            __out.Append("    }"); //666:1
-            __out.AppendLine(); //666:6
-            __out.Append("}"); //667:1
-            __out.AppendLine(); //667:2
+            __out.Append("    }"); //670:1
+            __out.AppendLine(); //670:6
+            __out.Append("}"); //671:1
+            __out.AppendLine(); //671:2
             var __loop42_results = 
-                (from __loop42_var1 in __Enumerate((model).GetEnumerator()) //668:8
-                from Types in __Enumerate((__loop42_var1.Types).GetEnumerator()) //668:15
-                from enm in __Enumerate((Types).GetEnumerator()).OfType<MetaEnum>() //668:22
+                (from __loop42_var1 in __Enumerate((model).GetEnumerator()) //672:8
+                from Types in __Enumerate((__loop42_var1.Types).GetEnumerator()) //672:15
+                from enm in __Enumerate((Types).GetEnumerator()).OfType<MetaEnum>() //672:22
                 select new { __loop42_var1 = __loop42_var1, Types = Types, enm = enm}
-                ).ToList(); //668:3
+                ).ToList(); //672:3
             int __loop42_iteration = 0;
             foreach (var __tmp21 in __loop42_results)
             {
@@ -6215,9 +6262,9 @@ namespace MetaDslx.Core //1:1
                 var __loop42_var1 = __tmp21.__loop42_var1;
                 var Types = __tmp21.Types;
                 var enm = __tmp21.enm;
-                __out.AppendLine(); //669:2
-                string __tmp22Prefix = "public static class "; //670:1
-                string __tmp23Suffix = "Extensions"; //670:51
+                __out.AppendLine(); //673:2
+                string __tmp22Prefix = "public static class "; //674:1
+                string __tmp23Suffix = "Extensions"; //674:51
                 StringBuilder __tmp24 = new StringBuilder();
                 __tmp24.Append(model.CSharpName());
                 using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
@@ -6250,24 +6297,24 @@ namespace MetaDslx.Core //1:1
                         }
                         __out.Append(__tmp25Line);
                         __out.Append(__tmp23Suffix);
-                        __out.AppendLine(); //670:61
+                        __out.AppendLine(); //674:61
                     }
                 }
-                __out.Append("{"); //671:1
-                __out.AppendLine(); //671:2
+                __out.Append("{"); //675:1
+                __out.AppendLine(); //675:2
                 var __loop43_results = 
-                    (from __loop43_var1 in __Enumerate((enm).GetEnumerator()) //672:11
-                    from op in __Enumerate((__loop43_var1.Operations).GetEnumerator()) //672:16
+                    (from __loop43_var1 in __Enumerate((enm).GetEnumerator()) //676:11
+                    from op in __Enumerate((__loop43_var1.Operations).GetEnumerator()) //676:16
                     select new { __loop43_var1 = __loop43_var1, op = op}
-                    ).ToList(); //672:6
+                    ).ToList(); //676:6
                 int __loop43_iteration = 0;
                 foreach (var __tmp26 in __loop43_results)
                 {
                     ++__loop43_iteration;
                     var __loop43_var1 = __tmp26.__loop43_var1;
                     var op = __tmp26.op;
-                    string __tmp27Prefix = "    public static "; //673:1
-                    string __tmp28Suffix = ")"; //673:96
+                    string __tmp27Prefix = "    public static "; //677:1
+                    string __tmp28Suffix = ")"; //677:96
                     StringBuilder __tmp29 = new StringBuilder();
                     __tmp29.Append(op.ReturnType.CSharpPublicName());
                     using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
@@ -6285,7 +6332,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp29Line);
                         }
                     }
-                    string __tmp30Line = " "; //673:53
+                    string __tmp30Line = " "; //677:53
                     __out.Append(__tmp30Line);
                     StringBuilder __tmp31 = new StringBuilder();
                     __tmp31.Append(op.Name);
@@ -6303,7 +6350,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp31Line);
                         }
                     }
-                    string __tmp32Line = "("; //673:63
+                    string __tmp32Line = "("; //677:63
                     __out.Append(__tmp32Line);
                     StringBuilder __tmp33 = new StringBuilder();
                     __tmp33.Append(GetEnumImplParameters(enm, op));
@@ -6320,13 +6367,13 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp33Line);
                             __out.Append(__tmp28Suffix);
-                            __out.AppendLine(); //673:97
+                            __out.AppendLine(); //677:97
                         }
                     }
-                    __out.Append("    {"); //674:1
-                    __out.AppendLine(); //674:6
-                    string __tmp34Prefix = "        "; //675:1
-                    string __tmp35Suffix = ");"; //675:152
+                    __out.Append("    {"); //678:1
+                    __out.AppendLine(); //678:6
+                    string __tmp34Prefix = "        "; //679:1
+                    string __tmp35Suffix = ");"; //679:152
                     StringBuilder __tmp36 = new StringBuilder();
                     __tmp36.Append(GetReturn(op));
                     using(StreamReader __tmp36Reader = new StreamReader(this.__ToStream(__tmp36.ToString())))
@@ -6360,7 +6407,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp37Line);
                         }
                     }
-                    string __tmp38Line = "ImplementationProvider.Implementation."; //675:44
+                    string __tmp38Line = "ImplementationProvider.Implementation."; //679:44
                     __out.Append(__tmp38Line);
                     StringBuilder __tmp39 = new StringBuilder();
                     __tmp39.Append(op.Parent.CSharpName());
@@ -6378,7 +6425,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp39Line);
                         }
                     }
-                    string __tmp40Line = "_"; //675:106
+                    string __tmp40Line = "_"; //679:106
                     __out.Append(__tmp40Line);
                     StringBuilder __tmp41 = new StringBuilder();
                     __tmp41.Append(op.Name);
@@ -6396,7 +6443,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp41Line);
                         }
                     }
-                    string __tmp42Line = "("; //675:116
+                    string __tmp42Line = "("; //679:116
                     __out.Append(__tmp42Line);
                     StringBuilder __tmp43 = new StringBuilder();
                     __tmp43.Append(GetEnumImplCallParameterNames(op));
@@ -6413,22 +6460,22 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp43Line);
                             __out.Append(__tmp35Suffix);
-                            __out.AppendLine(); //675:154
+                            __out.AppendLine(); //679:154
                         }
                     }
-                    __out.Append("    }"); //676:1
-                    __out.AppendLine(); //676:6
+                    __out.Append("    }"); //680:1
+                    __out.AppendLine(); //680:6
                 }
-                __out.Append("}"); //678:1
-                __out.AppendLine(); //678:2
+                __out.Append("}"); //682:1
+                __out.AppendLine(); //682:2
             }
-            __out.AppendLine(); //680:2
-            __out.Append("/// <summary>"); //681:1
-            __out.AppendLine(); //681:14
-            __out.Append("/// Base class for implementing the behavior of the model elements."); //682:1
-            __out.AppendLine(); //682:68
-            string __tmp44Prefix = "/// This class has to be be overriden in "; //683:1
-            string __tmp45Suffix = "Implementation to provide custom"; //683:62
+            __out.AppendLine(); //684:2
+            __out.Append("/// <summary>"); //685:1
+            __out.AppendLine(); //685:14
+            __out.Append("/// Base class for implementing the behavior of the model elements."); //686:1
+            __out.AppendLine(); //686:68
+            string __tmp44Prefix = "/// This class has to be be overriden in "; //687:1
+            string __tmp45Suffix = "Implementation to provide custom"; //687:62
             StringBuilder __tmp46 = new StringBuilder();
             __tmp46.Append(model.CSharpName());
             using(StreamReader __tmp46Reader = new StreamReader(this.__ToStream(__tmp46.ToString())))
@@ -6445,15 +6492,15 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp44Prefix);
                     __out.Append(__tmp46Line);
                     __out.Append(__tmp45Suffix);
-                    __out.AppendLine(); //683:94
+                    __out.AppendLine(); //687:94
                 }
             }
-            __out.Append("/// implementation for the constructors, operations and property values."); //684:1
-            __out.AppendLine(); //684:73
-            __out.Append("/// </summary>"); //685:1
-            __out.AppendLine(); //685:15
-            string __tmp47Prefix = "internal abstract class "; //686:1
-            string __tmp48Suffix = "ImplementationBase"; //686:45
+            __out.Append("/// implementation for the constructors, operations and property values."); //688:1
+            __out.AppendLine(); //688:73
+            __out.Append("/// </summary>"); //689:1
+            __out.AppendLine(); //689:15
+            string __tmp47Prefix = "internal abstract class "; //690:1
+            string __tmp48Suffix = "ImplementationBase"; //690:45
             StringBuilder __tmp49 = new StringBuilder();
             __tmp49.Append(model.CSharpName());
             using(StreamReader __tmp49Reader = new StreamReader(this.__ToStream(__tmp49.ToString())))
@@ -6470,17 +6517,17 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp47Prefix);
                     __out.Append(__tmp49Line);
                     __out.Append(__tmp48Suffix);
-                    __out.AppendLine(); //686:63
+                    __out.AppendLine(); //690:63
                 }
             }
-            __out.Append("{"); //687:1
-            __out.AppendLine(); //687:2
+            __out.Append("{"); //691:1
+            __out.AppendLine(); //691:2
             var __loop44_results = 
-                (from __loop44_var1 in __Enumerate((model).GetEnumerator()) //688:8
-                from Types in __Enumerate((__loop44_var1.Types).GetEnumerator()) //688:15
-                from cls in __Enumerate((Types).GetEnumerator()).OfType<MetaClass>() //688:22
+                (from __loop44_var1 in __Enumerate((model).GetEnumerator()) //692:8
+                from Types in __Enumerate((__loop44_var1.Types).GetEnumerator()) //692:15
+                from cls in __Enumerate((Types).GetEnumerator()).OfType<MetaClass>() //692:22
                 select new { __loop44_var1 = __loop44_var1, Types = Types, cls = cls}
-                ).ToList(); //688:3
+                ).ToList(); //692:3
             int __loop44_iteration = 0;
             foreach (var __tmp50 in __loop44_results)
             {
@@ -6488,10 +6535,10 @@ namespace MetaDslx.Core //1:1
                 var __loop44_var1 = __tmp50.__loop44_var1;
                 var Types = __tmp50.Types;
                 var cls = __tmp50.cls;
-                __out.Append("    /// <summary>"); //689:1
-                __out.AppendLine(); //689:18
-                string __tmp51Prefix = "	/// Implements the constructor: "; //690:1
-                string __tmp52Suffix = "()"; //690:52
+                __out.Append("    /// <summary>"); //693:1
+                __out.AppendLine(); //693:18
+                string __tmp51Prefix = "	/// Implements the constructor: "; //694:1
+                string __tmp52Suffix = "()"; //694:52
                 StringBuilder __tmp53 = new StringBuilder();
                 __tmp53.Append(cls.CSharpName());
                 using(StreamReader __tmp53Reader = new StreamReader(this.__ToStream(__tmp53.ToString())))
@@ -6508,15 +6555,15 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp51Prefix);
                         __out.Append(__tmp53Line);
                         __out.Append(__tmp52Suffix);
-                        __out.AppendLine(); //690:54
+                        __out.AppendLine(); //694:54
                     }
                 }
-                if ((from __loop45_var1 in __Enumerate((cls).GetEnumerator()) //691:15
-                from sup in __Enumerate((__loop45_var1.SuperClasses).GetEnumerator()) //691:20
+                if ((from __loop45_var1 in __Enumerate((cls).GetEnumerator()) //695:15
+                from sup in __Enumerate((__loop45_var1.SuperClasses).GetEnumerator()) //695:20
                 select new { __loop45_var1 = __loop45_var1, sup = sup}
-                ).GetEnumerator().MoveNext()) //691:3
+                ).GetEnumerator().MoveNext()) //695:3
                 {
-                    string __tmp54Prefix = "	/// Direct superclasses: "; //692:1
+                    string __tmp54Prefix = "	/// Direct superclasses: "; //696:1
                     string __tmp55Suffix = string.Empty; 
                     StringBuilder __tmp56 = new StringBuilder();
                     __tmp56.Append(GetSuperClasses(cls));
@@ -6534,10 +6581,10 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp54Prefix);
                             __out.Append(__tmp56Line);
                             __out.Append(__tmp55Suffix);
-                            __out.AppendLine(); //692:49
+                            __out.AppendLine(); //696:49
                         }
                     }
-                    string __tmp57Prefix = "	/// All superclasses: "; //693:1
+                    string __tmp57Prefix = "	/// All superclasses: "; //697:1
                     string __tmp58Suffix = string.Empty; 
                     StringBuilder __tmp59 = new StringBuilder();
                     __tmp59.Append(GetAllSuperClasses(cls));
@@ -6555,33 +6602,33 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp57Prefix);
                             __out.Append(__tmp59Line);
                             __out.Append(__tmp58Suffix);
-                            __out.AppendLine(); //693:49
+                            __out.AppendLine(); //697:49
                         }
                     }
                 }
-                if ((from __loop46_var1 in __Enumerate((cls).GetEnumerator()) //695:15
-                from prop in __Enumerate((__loop46_var1.GetAllProperties()).GetEnumerator()) //695:20
-                where prop.Kind == MetaPropertyKind.Readonly //695:44
+                if ((from __loop46_var1 in __Enumerate((cls).GetEnumerator()) //699:15
+                from prop in __Enumerate((__loop46_var1.GetAllProperties()).GetEnumerator()) //699:20
+                where prop.Kind == MetaPropertyKind.Readonly //699:44
                 select new { __loop46_var1 = __loop46_var1, prop = prop}
-                ).GetEnumerator().MoveNext()) //695:3
+                ).GetEnumerator().MoveNext()) //699:3
                 {
-                    __out.Append("    // Initializes the following readonly properties:"); //696:1
-                    __out.AppendLine(); //696:54
+                    __out.Append("    // Initializes the following readonly properties:"); //700:1
+                    __out.AppendLine(); //700:54
                 }
                 var __loop47_results = 
-                    (from __loop47_var1 in __Enumerate((cls).GetEnumerator()) //698:11
-                    from prop in __Enumerate((__loop47_var1.GetAllProperties()).GetEnumerator()) //698:16
+                    (from __loop47_var1 in __Enumerate((cls).GetEnumerator()) //702:11
+                    from prop in __Enumerate((__loop47_var1.GetAllProperties()).GetEnumerator()) //702:16
                     select new { __loop47_var1 = __loop47_var1, prop = prop}
-                    ).ToList(); //698:6
+                    ).ToList(); //702:6
                 int __loop47_iteration = 0;
                 foreach (var __tmp60 in __loop47_results)
                 {
                     ++__loop47_iteration;
                     var __loop47_var1 = __tmp60.__loop47_var1;
                     var prop = __tmp60.prop;
-                    if (prop.Kind == MetaPropertyKind.Readonly) //699:3
+                    if (prop.Kind == MetaPropertyKind.Readonly) //703:3
                     {
-                        string __tmp61Prefix = "    ///    "; //700:1
+                        string __tmp61Prefix = "    ///    "; //704:1
                         string __tmp62Suffix = string.Empty; 
                         StringBuilder __tmp63 = new StringBuilder();
                         __tmp63.Append(prop.Class.Name);
@@ -6600,7 +6647,7 @@ namespace MetaDslx.Core //1:1
                                 __out.Append(__tmp63Line);
                             }
                         }
-                        string __tmp64Line = "."; //700:29
+                        string __tmp64Line = "."; //704:29
                         __out.Append(__tmp64Line);
                         StringBuilder __tmp65 = new StringBuilder();
                         __tmp65.Append(prop.Name);
@@ -6617,15 +6664,15 @@ namespace MetaDslx.Core //1:1
                                 }
                                 __out.Append(__tmp65Line);
                                 __out.Append(__tmp62Suffix);
-                                __out.AppendLine(); //700:41
+                                __out.AppendLine(); //704:41
                             }
                         }
                     }
                 }
-                __out.Append("    /// </summary>"); //703:1
-                __out.AppendLine(); //703:19
-                string __tmp66Prefix = "    public virtual void "; //704:1
-                string __tmp67Suffix = " @this)"; //704:81
+                __out.Append("    /// </summary>"); //707:1
+                __out.AppendLine(); //707:19
+                string __tmp66Prefix = "    public virtual void "; //708:1
+                string __tmp67Suffix = " @this)"; //708:81
                 StringBuilder __tmp68 = new StringBuilder();
                 __tmp68.Append(cls.CSharpName());
                 using(StreamReader __tmp68Reader = new StreamReader(this.__ToStream(__tmp68.ToString())))
@@ -6643,7 +6690,7 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp68Line);
                     }
                 }
-                string __tmp69Line = "_"; //704:43
+                string __tmp69Line = "_"; //708:43
                 __out.Append(__tmp69Line);
                 StringBuilder __tmp70 = new StringBuilder();
                 __tmp70.Append(cls.CSharpName());
@@ -6661,7 +6708,7 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp70Line);
                     }
                 }
-                string __tmp71Line = "("; //704:62
+                string __tmp71Line = "("; //708:62
                 __out.Append(__tmp71Line);
                 StringBuilder __tmp72 = new StringBuilder();
                 __tmp72.Append(cls.CSharpName());
@@ -6678,24 +6725,24 @@ namespace MetaDslx.Core //1:1
                         }
                         __out.Append(__tmp72Line);
                         __out.Append(__tmp67Suffix);
-                        __out.AppendLine(); //704:88
+                        __out.AppendLine(); //708:88
                     }
                 }
-                __out.Append("    {"); //705:1
-                __out.AppendLine(); //705:6
+                __out.Append("    {"); //709:1
+                __out.AppendLine(); //709:6
                 var __loop48_results = 
-                    (from __loop48_var1 in __Enumerate((cls).GetEnumerator()) //706:9
-                    from sup in __Enumerate((__loop48_var1.SuperClasses).GetEnumerator()) //706:14
+                    (from __loop48_var1 in __Enumerate((cls).GetEnumerator()) //710:9
+                    from sup in __Enumerate((__loop48_var1.SuperClasses).GetEnumerator()) //710:14
                     select new { __loop48_var1 = __loop48_var1, sup = sup}
-                    ).ToList(); //706:4
+                    ).ToList(); //710:4
                 int __loop48_iteration = 0;
                 foreach (var __tmp73 in __loop48_results)
                 {
                     ++__loop48_iteration;
                     var __loop48_var1 = __tmp73.__loop48_var1;
                     var sup = __tmp73.sup;
-                    string __tmp74Prefix = "        this."; //707:1
-                    string __tmp75Suffix = "(@this);"; //707:51
+                    string __tmp74Prefix = "        this."; //711:1
+                    string __tmp75Suffix = "(@this);"; //711:51
                     StringBuilder __tmp76 = new StringBuilder();
                     __tmp76.Append(sup.CSharpName());
                     using(StreamReader __tmp76Reader = new StreamReader(this.__ToStream(__tmp76.ToString())))
@@ -6713,7 +6760,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp76Line);
                         }
                     }
-                    string __tmp77Line = "_"; //707:32
+                    string __tmp77Line = "_"; //711:32
                     __out.Append(__tmp77Line);
                     StringBuilder __tmp78 = new StringBuilder();
                     __tmp78.Append(sup.CSharpName());
@@ -6730,32 +6777,32 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp78Line);
                             __out.Append(__tmp75Suffix);
-                            __out.AppendLine(); //707:59
+                            __out.AppendLine(); //711:59
                         }
                     }
                 }
-                __out.Append("    }"); //709:1
-                __out.AppendLine(); //709:6
+                __out.Append("    }"); //713:1
+                __out.AppendLine(); //713:6
                 var __loop49_results = 
-                    (from __loop49_var1 in __Enumerate((cls).GetEnumerator()) //710:11
-                    from prop in __Enumerate((__loop49_var1.Properties).GetEnumerator()) //710:16
+                    (from __loop49_var1 in __Enumerate((cls).GetEnumerator()) //714:11
+                    from prop in __Enumerate((__loop49_var1.Properties).GetEnumerator()) //714:16
                     select new { __loop49_var1 = __loop49_var1, prop = prop}
-                    ).ToList(); //710:6
+                    ).ToList(); //714:6
                 int __loop49_iteration = 0;
                 foreach (var __tmp79 in __loop49_results)
                 {
                     ++__loop49_iteration;
                     var __loop49_var1 = __tmp79.__loop49_var1;
                     var prop = __tmp79.prop;
-                    MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop); //711:4
-                    if (synInit == null) //712:4
+                    MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop); //715:4
+                    if (synInit == null) //716:4
                     {
-                        if (prop.Kind == MetaPropertyKind.Derived) //713:5
+                        if (prop.Kind == MetaPropertyKind.Derived) //717:5
                         {
-                            __out.AppendLine(); //714:2
-                            __out.Append("    /// <summary>"); //715:1
-                            __out.AppendLine(); //715:18
-                            string __tmp80Prefix = "    /// Returns the value of the derived property: "; //716:1
+                            __out.AppendLine(); //718:2
+                            __out.Append("    /// <summary>"); //719:1
+                            __out.AppendLine(); //719:18
+                            string __tmp80Prefix = "    /// Returns the value of the derived property: "; //720:1
                             string __tmp81Suffix = string.Empty; 
                             StringBuilder __tmp82 = new StringBuilder();
                             __tmp82.Append(cls.CSharpName());
@@ -6774,7 +6821,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp82Line);
                                 }
                             }
-                            string __tmp83Line = "."; //716:70
+                            string __tmp83Line = "."; //720:70
                             __out.Append(__tmp83Line);
                             StringBuilder __tmp84 = new StringBuilder();
                             __tmp84.Append(prop.Name);
@@ -6791,13 +6838,13 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp84Line);
                                     __out.Append(__tmp81Suffix);
-                                    __out.AppendLine(); //716:82
+                                    __out.AppendLine(); //720:82
                                 }
                             }
-                            __out.Append("    /// </summary>"); //717:1
-                            __out.AppendLine(); //717:19
-                            string __tmp85Prefix = "    public virtual "; //718:1
-                            string __tmp86Suffix = " @this)"; //718:100
+                            __out.Append("    /// </summary>"); //721:1
+                            __out.AppendLine(); //721:19
+                            string __tmp85Prefix = "    public virtual "; //722:1
+                            string __tmp86Suffix = " @this)"; //722:100
                             StringBuilder __tmp87 = new StringBuilder();
                             __tmp87.Append(prop.Type.CSharpPublicName());
                             using(StreamReader __tmp87Reader = new StreamReader(this.__ToStream(__tmp87.ToString())))
@@ -6815,7 +6862,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp87Line);
                                 }
                             }
-                            string __tmp88Line = " "; //718:50
+                            string __tmp88Line = " "; //722:50
                             __out.Append(__tmp88Line);
                             StringBuilder __tmp89 = new StringBuilder();
                             __tmp89.Append(cls.CSharpName());
@@ -6833,7 +6880,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp89Line);
                                 }
                             }
-                            string __tmp90Line = "_"; //718:69
+                            string __tmp90Line = "_"; //722:69
                             __out.Append(__tmp90Line);
                             StringBuilder __tmp91 = new StringBuilder();
                             __tmp91.Append(prop.Name);
@@ -6851,7 +6898,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp91Line);
                                 }
                             }
-                            string __tmp92Line = "("; //718:81
+                            string __tmp92Line = "("; //722:81
                             __out.Append(__tmp92Line);
                             StringBuilder __tmp93 = new StringBuilder();
                             __tmp93.Append(cls.CSharpName());
@@ -6868,22 +6915,22 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp93Line);
                                     __out.Append(__tmp86Suffix);
-                                    __out.AppendLine(); //718:107
+                                    __out.AppendLine(); //722:107
                                 }
                             }
-                            __out.Append("    {"); //719:1
-                            __out.AppendLine(); //719:6
-                            __out.Append("        throw new NotImplementedException();"); //720:1
-                            __out.AppendLine(); //720:45
-                            __out.Append("    }"); //721:1
-                            __out.AppendLine(); //721:6
+                            __out.Append("    {"); //723:1
+                            __out.AppendLine(); //723:6
+                            __out.Append("        throw new NotImplementedException();"); //724:1
+                            __out.AppendLine(); //724:45
+                            __out.Append("    }"); //725:1
+                            __out.AppendLine(); //725:6
                         }
-                        else if (prop.Kind == MetaPropertyKind.Lazy) //722:5
+                        else if (prop.Kind == MetaPropertyKind.Lazy) //726:5
                         {
-                            __out.AppendLine(); //723:2
-                            __out.Append("    /// <summary>"); //724:1
-                            __out.AppendLine(); //724:18
-                            string __tmp94Prefix = "    /// Returns the value of the lazy property: "; //725:1
+                            __out.AppendLine(); //727:2
+                            __out.Append("    /// <summary>"); //728:1
+                            __out.AppendLine(); //728:18
+                            string __tmp94Prefix = "    /// Returns the value of the lazy property: "; //729:1
                             string __tmp95Suffix = string.Empty; 
                             StringBuilder __tmp96 = new StringBuilder();
                             __tmp96.Append(cls.CSharpName());
@@ -6902,7 +6949,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp96Line);
                                 }
                             }
-                            string __tmp97Line = "."; //725:67
+                            string __tmp97Line = "."; //729:67
                             __out.Append(__tmp97Line);
                             StringBuilder __tmp98 = new StringBuilder();
                             __tmp98.Append(prop.Name);
@@ -6919,13 +6966,13 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp98Line);
                                     __out.Append(__tmp95Suffix);
-                                    __out.AppendLine(); //725:79
+                                    __out.AppendLine(); //729:79
                                 }
                             }
-                            __out.Append("    /// </summary>"); //726:1
-                            __out.AppendLine(); //726:19
-                            string __tmp99Prefix = "    public virtual "; //727:1
-                            string __tmp100Suffix = " @this)"; //727:100
+                            __out.Append("    /// </summary>"); //730:1
+                            __out.AppendLine(); //730:19
+                            string __tmp99Prefix = "    public virtual "; //731:1
+                            string __tmp100Suffix = " @this)"; //731:100
                             StringBuilder __tmp101 = new StringBuilder();
                             __tmp101.Append(prop.Type.CSharpPublicName());
                             using(StreamReader __tmp101Reader = new StreamReader(this.__ToStream(__tmp101.ToString())))
@@ -6943,7 +6990,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp101Line);
                                 }
                             }
-                            string __tmp102Line = " "; //727:50
+                            string __tmp102Line = " "; //731:50
                             __out.Append(__tmp102Line);
                             StringBuilder __tmp103 = new StringBuilder();
                             __tmp103.Append(cls.CSharpName());
@@ -6961,7 +7008,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp103Line);
                                 }
                             }
-                            string __tmp104Line = "_"; //727:69
+                            string __tmp104Line = "_"; //731:69
                             __out.Append(__tmp104Line);
                             StringBuilder __tmp105 = new StringBuilder();
                             __tmp105.Append(prop.Name);
@@ -6979,7 +7026,7 @@ namespace MetaDslx.Core //1:1
                                     __out.Append(__tmp105Line);
                                 }
                             }
-                            string __tmp106Line = "("; //727:81
+                            string __tmp106Line = "("; //731:81
                             __out.Append(__tmp106Line);
                             StringBuilder __tmp107 = new StringBuilder();
                             __tmp107.Append(cls.CSharpName());
@@ -6996,34 +7043,34 @@ namespace MetaDslx.Core //1:1
                                     }
                                     __out.Append(__tmp107Line);
                                     __out.Append(__tmp100Suffix);
-                                    __out.AppendLine(); //727:107
+                                    __out.AppendLine(); //731:107
                                 }
                             }
-                            __out.Append("    {"); //728:1
-                            __out.AppendLine(); //728:6
-                            __out.Append("        throw new NotImplementedException();"); //729:1
-                            __out.AppendLine(); //729:45
-                            __out.Append("    }"); //730:1
-                            __out.AppendLine(); //730:6
+                            __out.Append("    {"); //732:1
+                            __out.AppendLine(); //732:6
+                            __out.Append("        throw new NotImplementedException();"); //733:1
+                            __out.AppendLine(); //733:45
+                            __out.Append("    }"); //734:1
+                            __out.AppendLine(); //734:6
                         }
                     }
                 }
                 var __loop50_results = 
-                    (from __loop50_var1 in __Enumerate((cls).GetEnumerator()) //734:11
-                    from op in __Enumerate((__loop50_var1.Operations).GetEnumerator()) //734:16
+                    (from __loop50_var1 in __Enumerate((cls).GetEnumerator()) //738:11
+                    from op in __Enumerate((__loop50_var1.Operations).GetEnumerator()) //738:16
                     select new { __loop50_var1 = __loop50_var1, op = op}
-                    ).ToList(); //734:6
+                    ).ToList(); //738:6
                 int __loop50_iteration = 0;
                 foreach (var __tmp108 in __loop50_results)
                 {
                     ++__loop50_iteration;
                     var __loop50_var1 = __tmp108.__loop50_var1;
                     var op = __tmp108.op;
-                    __out.AppendLine(); //735:2
-                    __out.Append("    /// <summary>"); //736:1
-                    __out.AppendLine(); //736:18
-                    string __tmp109Prefix = "    /// Implements the operation: "; //737:1
-                    string __tmp110Suffix = "()"; //737:63
+                    __out.AppendLine(); //739:2
+                    __out.Append("    /// <summary>"); //740:1
+                    __out.AppendLine(); //740:18
+                    string __tmp109Prefix = "    /// Implements the operation: "; //741:1
+                    string __tmp110Suffix = "()"; //741:63
                     StringBuilder __tmp111 = new StringBuilder();
                     __tmp111.Append(cls.CSharpName());
                     using(StreamReader __tmp111Reader = new StreamReader(this.__ToStream(__tmp111.ToString())))
@@ -7041,7 +7088,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp111Line);
                         }
                     }
-                    string __tmp112Line = "."; //737:53
+                    string __tmp112Line = "."; //741:53
                     __out.Append(__tmp112Line);
                     StringBuilder __tmp113 = new StringBuilder();
                     __tmp113.Append(op.Name);
@@ -7058,13 +7105,13 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp113Line);
                             __out.Append(__tmp110Suffix);
-                            __out.AppendLine(); //737:65
+                            __out.AppendLine(); //741:65
                         }
                     }
-                    __out.Append("    /// </summary>"); //738:1
-                    __out.AppendLine(); //738:19
-                    string __tmp114Prefix = "    public virtual "; //739:1
-                    string __tmp115Suffix = ")"; //739:112
+                    __out.Append("    /// </summary>"); //742:1
+                    __out.AppendLine(); //742:19
+                    string __tmp114Prefix = "    public virtual "; //743:1
+                    string __tmp115Suffix = ")"; //743:112
                     StringBuilder __tmp116 = new StringBuilder();
                     __tmp116.Append(op.ReturnType.CSharpPublicName());
                     using(StreamReader __tmp116Reader = new StreamReader(this.__ToStream(__tmp116.ToString())))
@@ -7082,7 +7129,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp116Line);
                         }
                     }
-                    string __tmp117Line = " "; //739:54
+                    string __tmp117Line = " "; //743:54
                     __out.Append(__tmp117Line);
                     StringBuilder __tmp118 = new StringBuilder();
                     __tmp118.Append(cls.CSharpName());
@@ -7100,7 +7147,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp118Line);
                         }
                     }
-                    string __tmp119Line = "_"; //739:73
+                    string __tmp119Line = "_"; //743:73
                     __out.Append(__tmp119Line);
                     StringBuilder __tmp120 = new StringBuilder();
                     __tmp120.Append(op.Name);
@@ -7118,7 +7165,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp120Line);
                         }
                     }
-                    string __tmp121Line = "("; //739:83
+                    string __tmp121Line = "("; //743:83
                     __out.Append(__tmp121Line);
                     StringBuilder __tmp122 = new StringBuilder();
                     __tmp122.Append(GetImplParameters(cls, op));
@@ -7135,24 +7182,24 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp122Line);
                             __out.Append(__tmp115Suffix);
-                            __out.AppendLine(); //739:113
+                            __out.AppendLine(); //743:113
                         }
                     }
-                    __out.Append("    {"); //740:1
-                    __out.AppendLine(); //740:6
-                    __out.Append("        throw new NotImplementedException();"); //741:1
-                    __out.AppendLine(); //741:45
-                    __out.Append("    }"); //742:1
-                    __out.AppendLine(); //742:6
+                    __out.Append("    {"); //744:1
+                    __out.AppendLine(); //744:6
+                    __out.Append("        throw new NotImplementedException();"); //745:1
+                    __out.AppendLine(); //745:45
+                    __out.Append("    }"); //746:1
+                    __out.AppendLine(); //746:6
                 }
-                __out.AppendLine(); //744:2
+                __out.AppendLine(); //748:2
             }
             var __loop51_results = 
-                (from __loop51_var1 in __Enumerate((model).GetEnumerator()) //746:8
-                from Types in __Enumerate((__loop51_var1.Types).GetEnumerator()) //746:15
-                from enm in __Enumerate((Types).GetEnumerator()).OfType<MetaEnum>() //746:22
+                (from __loop51_var1 in __Enumerate((model).GetEnumerator()) //750:8
+                from Types in __Enumerate((__loop51_var1.Types).GetEnumerator()) //750:15
+                from enm in __Enumerate((Types).GetEnumerator()).OfType<MetaEnum>() //750:22
                 select new { __loop51_var1 = __loop51_var1, Types = Types, enm = enm}
-                ).ToList(); //746:3
+                ).ToList(); //750:3
             int __loop51_iteration = 0;
             foreach (var __tmp123 in __loop51_results)
             {
@@ -7161,20 +7208,20 @@ namespace MetaDslx.Core //1:1
                 var Types = __tmp123.Types;
                 var enm = __tmp123.enm;
                 var __loop52_results = 
-                    (from __loop52_var1 in __Enumerate((enm).GetEnumerator()) //747:11
-                    from op in __Enumerate((__loop52_var1.Operations).GetEnumerator()) //747:16
+                    (from __loop52_var1 in __Enumerate((enm).GetEnumerator()) //751:11
+                    from op in __Enumerate((__loop52_var1.Operations).GetEnumerator()) //751:16
                     select new { __loop52_var1 = __loop52_var1, op = op}
-                    ).ToList(); //747:6
+                    ).ToList(); //751:6
                 int __loop52_iteration = 0;
                 foreach (var __tmp124 in __loop52_results)
                 {
                     ++__loop52_iteration;
                     var __loop52_var1 = __tmp124.__loop52_var1;
                     var op = __tmp124.op;
-                    __out.AppendLine(); //748:2
-                    __out.Append("    /// <summary>"); //749:1
-                    __out.AppendLine(); //749:18
-                    string __tmp125Prefix = "    /// Implements the operation: "; //750:1
+                    __out.AppendLine(); //752:2
+                    __out.Append("    /// <summary>"); //753:1
+                    __out.AppendLine(); //753:18
+                    string __tmp125Prefix = "    /// Implements the operation: "; //754:1
                     string __tmp126Suffix = string.Empty; 
                     StringBuilder __tmp127 = new StringBuilder();
                     __tmp127.Append(enm.CSharpName());
@@ -7193,7 +7240,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp127Line);
                         }
                     }
-                    string __tmp128Line = "."; //750:53
+                    string __tmp128Line = "."; //754:53
                     __out.Append(__tmp128Line);
                     StringBuilder __tmp129 = new StringBuilder();
                     __tmp129.Append(op.Name);
@@ -7210,13 +7257,13 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp129Line);
                             __out.Append(__tmp126Suffix);
-                            __out.AppendLine(); //750:63
+                            __out.AppendLine(); //754:63
                         }
                     }
-                    __out.Append("    /// </summary>"); //751:1
-                    __out.AppendLine(); //751:19
-                    string __tmp130Prefix = "    public virtual "; //752:1
-                    string __tmp131Suffix = ")"; //752:112
+                    __out.Append("    /// </summary>"); //755:1
+                    __out.AppendLine(); //755:19
+                    string __tmp130Prefix = "    public virtual "; //756:1
+                    string __tmp131Suffix = ")"; //756:112
                     StringBuilder __tmp132 = new StringBuilder();
                     __tmp132.Append(op.ReturnType.CSharpPublicName());
                     using(StreamReader __tmp132Reader = new StreamReader(this.__ToStream(__tmp132.ToString())))
@@ -7234,7 +7281,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp132Line);
                         }
                     }
-                    string __tmp133Line = " "; //752:54
+                    string __tmp133Line = " "; //756:54
                     __out.Append(__tmp133Line);
                     StringBuilder __tmp134 = new StringBuilder();
                     __tmp134.Append(enm.CSharpName());
@@ -7252,7 +7299,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp134Line);
                         }
                     }
-                    string __tmp135Line = "_"; //752:73
+                    string __tmp135Line = "_"; //756:73
                     __out.Append(__tmp135Line);
                     StringBuilder __tmp136 = new StringBuilder();
                     __tmp136.Append(op.Name);
@@ -7270,7 +7317,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp136Line);
                         }
                     }
-                    string __tmp137Line = "("; //752:83
+                    string __tmp137Line = "("; //756:83
                     __out.Append(__tmp137Line);
                     StringBuilder __tmp138 = new StringBuilder();
                     __tmp138.Append(GetImplParameters(enm, op));
@@ -7287,35 +7334,35 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp138Line);
                             __out.Append(__tmp131Suffix);
-                            __out.AppendLine(); //752:113
+                            __out.AppendLine(); //756:113
                         }
                     }
-                    __out.Append("    {"); //753:1
-                    __out.AppendLine(); //753:6
-                    __out.Append("        throw new NotImplementedException();"); //754:1
-                    __out.AppendLine(); //754:45
-                    __out.Append("    }"); //755:1
-                    __out.AppendLine(); //755:6
+                    __out.Append("    {"); //757:1
+                    __out.AppendLine(); //757:6
+                    __out.Append("        throw new NotImplementedException();"); //758:1
+                    __out.AppendLine(); //758:45
+                    __out.Append("    }"); //759:1
+                    __out.AppendLine(); //759:6
                 }
-                __out.AppendLine(); //757:2
+                __out.AppendLine(); //761:2
             }
-            __out.Append("}"); //759:1
-            __out.AppendLine(); //759:2
-            __out.AppendLine(); //760:2
+            __out.Append("}"); //763:1
+            __out.AppendLine(); //763:2
+            __out.AppendLine(); //764:2
             return __out.ToString();
         }
 
-        public string GenerateFactory(MetaModel model) //763:1
+        public string GenerateFactory(MetaModel model) //767:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.Append("/// <summary>"); //764:1
-            __out.AppendLine(); //764:14
-            __out.Append("/// Factory class for creating instances of model elements."); //765:1
-            __out.AppendLine(); //765:60
-            __out.Append("/// </summary>"); //766:1
-            __out.AppendLine(); //766:15
-            string __tmp1Prefix = "public class "; //767:1
-            string __tmp2Suffix = "Factory : ModelFactory"; //767:26
+            __out.Append("/// <summary>"); //768:1
+            __out.AppendLine(); //768:14
+            __out.Append("/// Factory class for creating instances of model elements."); //769:1
+            __out.AppendLine(); //769:60
+            __out.Append("/// </summary>"); //770:1
+            __out.AppendLine(); //770:15
+            string __tmp1Prefix = "public class "; //771:1
+            string __tmp2Suffix = "Factory : ModelFactory"; //771:26
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(model.Name);
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -7332,13 +7379,13 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //767:48
+                    __out.AppendLine(); //771:48
                 }
             }
-            __out.Append("{"); //768:1
-            __out.AppendLine(); //768:2
-            string __tmp4Prefix = "    private static "; //769:1
-            string __tmp5Suffix = "Factory();"; //769:67
+            __out.Append("{"); //772:1
+            __out.AppendLine(); //772:2
+            string __tmp4Prefix = "    private static "; //773:1
+            string __tmp5Suffix = "Factory();"; //773:67
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(model.Name);
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
@@ -7356,7 +7403,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp6Line);
                 }
             }
-            string __tmp7Line = "Factory instance = new "; //769:32
+            string __tmp7Line = "Factory instance = new "; //773:32
             __out.Append(__tmp7Line);
             StringBuilder __tmp8 = new StringBuilder();
             __tmp8.Append(model.Name);
@@ -7373,12 +7420,12 @@ namespace MetaDslx.Core //1:1
                     }
                     __out.Append(__tmp8Line);
                     __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //769:77
+                    __out.AppendLine(); //773:77
                 }
             }
-            __out.AppendLine(); //770:2
-            string __tmp9Prefix = "	private "; //771:1
-            string __tmp10Suffix = "Factory()"; //771:22
+            __out.AppendLine(); //774:2
+            string __tmp9Prefix = "	private "; //775:1
+            string __tmp10Suffix = "Factory()"; //775:22
             StringBuilder __tmp11 = new StringBuilder();
             __tmp11.Append(model.Name);
             using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
@@ -7395,22 +7442,22 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp9Prefix);
                     __out.Append(__tmp11Line);
                     __out.Append(__tmp10Suffix);
-                    __out.AppendLine(); //771:31
+                    __out.AppendLine(); //775:31
                 }
             }
-            __out.Append("	{"); //772:1
-            __out.AppendLine(); //772:3
-            __out.Append("	}"); //773:1
-            __out.AppendLine(); //773:3
-            __out.AppendLine(); //774:2
-            __out.Append("    /// <summary>"); //775:1
-            __out.AppendLine(); //775:18
-            __out.Append("    /// The singleton instance of the factory."); //776:1
-            __out.AppendLine(); //776:47
-            __out.Append("    /// </summary>"); //777:1
-            __out.AppendLine(); //777:19
-            string __tmp12Prefix = "    public static "; //778:1
-            string __tmp13Suffix = "Factory Instance"; //778:31
+            __out.Append("	{"); //776:1
+            __out.AppendLine(); //776:3
+            __out.Append("	}"); //777:1
+            __out.AppendLine(); //777:3
+            __out.AppendLine(); //778:2
+            __out.Append("    /// <summary>"); //779:1
+            __out.AppendLine(); //779:18
+            __out.Append("    /// The singleton instance of the factory."); //780:1
+            __out.AppendLine(); //780:47
+            __out.Append("    /// </summary>"); //781:1
+            __out.AppendLine(); //781:19
+            string __tmp12Prefix = "    public static "; //782:1
+            string __tmp13Suffix = "Factory Instance"; //782:31
             StringBuilder __tmp14 = new StringBuilder();
             __tmp14.Append(model.Name);
             using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
@@ -7427,13 +7474,13 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp12Prefix);
                     __out.Append(__tmp14Line);
                     __out.Append(__tmp13Suffix);
-                    __out.AppendLine(); //778:47
+                    __out.AppendLine(); //782:47
                 }
             }
-            __out.Append("    {"); //779:1
-            __out.AppendLine(); //779:6
-            string __tmp15Prefix = "        get { return "; //780:1
-            string __tmp16Suffix = "Factory.instance; }"; //780:34
+            __out.Append("    {"); //783:1
+            __out.AppendLine(); //783:6
+            string __tmp15Prefix = "        get { return "; //784:1
+            string __tmp16Suffix = "Factory.instance; }"; //784:34
             StringBuilder __tmp17 = new StringBuilder();
             __tmp17.Append(model.Name);
             using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
@@ -7450,17 +7497,17 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp15Prefix);
                     __out.Append(__tmp17Line);
                     __out.Append(__tmp16Suffix);
-                    __out.AppendLine(); //780:53
+                    __out.AppendLine(); //784:53
                 }
             }
-            __out.Append("    }"); //781:1
-            __out.AppendLine(); //781:6
+            __out.Append("    }"); //785:1
+            __out.AppendLine(); //785:6
             var __loop53_results = 
-                (from __loop53_var1 in __Enumerate((model).GetEnumerator()) //782:8
-                from Types in __Enumerate((__loop53_var1.Types).GetEnumerator()) //782:15
-                from cls in __Enumerate((Types).GetEnumerator()).OfType<MetaClass>() //782:22
+                (from __loop53_var1 in __Enumerate((model).GetEnumerator()) //786:8
+                from Types in __Enumerate((__loop53_var1.Types).GetEnumerator()) //786:15
+                from cls in __Enumerate((Types).GetEnumerator()).OfType<MetaClass>() //786:22
                 select new { __loop53_var1 = __loop53_var1, Types = Types, cls = cls}
-                ).ToList(); //782:3
+                ).ToList(); //786:3
             int __loop53_iteration = 0;
             foreach (var __tmp18 in __loop53_results)
             {
@@ -7468,13 +7515,13 @@ namespace MetaDslx.Core //1:1
                 var __loop53_var1 = __tmp18.__loop53_var1;
                 var Types = __tmp18.Types;
                 var cls = __tmp18.cls;
-                if (!cls.IsAbstract) //783:4
+                if (!cls.IsAbstract) //787:4
                 {
-                    __out.AppendLine(); //784:2
-                    __out.Append("    /// <summary>"); //785:1
-                    __out.AppendLine(); //785:18
-                    string __tmp19Prefix = "    /// Creates a new instance of "; //786:1
-                    string __tmp20Suffix = "."; //786:53
+                    __out.AppendLine(); //788:2
+                    __out.Append("    /// <summary>"); //789:1
+                    __out.AppendLine(); //789:18
+                    string __tmp19Prefix = "    /// Creates a new instance of "; //790:1
+                    string __tmp20Suffix = "."; //790:53
                     StringBuilder __tmp21 = new StringBuilder();
                     __tmp21.Append(cls.CSharpName());
                     using(StreamReader __tmp21Reader = new StreamReader(this.__ToStream(__tmp21.ToString())))
@@ -7491,13 +7538,13 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp19Prefix);
                             __out.Append(__tmp21Line);
                             __out.Append(__tmp20Suffix);
-                            __out.AppendLine(); //786:54
+                            __out.AppendLine(); //790:54
                         }
                     }
-                    __out.Append("    /// </summary>"); //787:1
-                    __out.AppendLine(); //787:19
-                    string __tmp22Prefix = "    public "; //788:1
-                    string __tmp23Suffix = "(bool addToModelContext = true)"; //788:55
+                    __out.Append("    /// </summary>"); //791:1
+                    __out.AppendLine(); //791:19
+                    string __tmp22Prefix = "    public "; //792:1
+                    string __tmp23Suffix = "(bool addToModelContext = true)"; //792:55
                     StringBuilder __tmp24 = new StringBuilder();
                     __tmp24.Append(cls.CSharpName());
                     using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
@@ -7515,7 +7562,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp24Line);
                         }
                     }
-                    string __tmp25Line = " Create"; //788:30
+                    string __tmp25Line = " Create"; //792:30
                     __out.Append(__tmp25Line);
                     StringBuilder __tmp26 = new StringBuilder();
                     __tmp26.Append(cls.CSharpName());
@@ -7532,13 +7579,13 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp26Line);
                             __out.Append(__tmp23Suffix);
-                            __out.AppendLine(); //788:86
+                            __out.AppendLine(); //792:86
                         }
                     }
-                    __out.Append("	{"); //789:1
-                    __out.AppendLine(); //789:3
-                    string __tmp27Prefix = "		"; //790:1
-                    string __tmp28Suffix = "Impl(addToModelContext);"; //790:57
+                    __out.Append("	{"); //793:1
+                    __out.AppendLine(); //793:3
+                    string __tmp27Prefix = "		"; //794:1
+                    string __tmp28Suffix = "Impl(addToModelContext);"; //794:57
                     StringBuilder __tmp29 = new StringBuilder();
                     __tmp29.Append(cls.CSharpName());
                     using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
@@ -7556,7 +7603,7 @@ namespace MetaDslx.Core //1:1
                             __out.Append(__tmp29Line);
                         }
                     }
-                    string __tmp30Line = " result = new "; //790:21
+                    string __tmp30Line = " result = new "; //794:21
                     __out.Append(__tmp30Line);
                     StringBuilder __tmp31 = new StringBuilder();
                     __tmp31.Append(cls.CSharpFullName());
@@ -7573,18 +7620,18 @@ namespace MetaDslx.Core //1:1
                             }
                             __out.Append(__tmp31Line);
                             __out.Append(__tmp28Suffix);
-                            __out.AppendLine(); //790:81
+                            __out.AppendLine(); //794:81
                         }
                     }
-                    __out.Append("		return result;"); //791:1
-                    __out.AppendLine(); //791:17
-                    __out.Append("	}"); //792:1
-                    __out.AppendLine(); //792:3
+                    __out.Append("		return result;"); //795:1
+                    __out.AppendLine(); //795:17
+                    __out.Append("	}"); //796:1
+                    __out.AppendLine(); //796:3
                 }
             }
-            __out.Append("}"); //795:1
-            __out.AppendLine(); //795:2
-            __out.AppendLine(); //796:2
+            __out.Append("}"); //799:1
+            __out.AppendLine(); //799:2
+            __out.AppendLine(); //800:2
             return __out.ToString();
         }
 

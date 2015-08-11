@@ -110,9 +110,6 @@ namespace MetaDslx.Core
 
             MetaBuiltInTypes.types.Add(Meta.Constants.ModelObject);
 
-            MetaBuiltInTypes.types.Add(Meta.Constants.None);
-            MetaBuiltInTypes.types.Add(Meta.Constants.Any);
-
             MetaBuiltInTypes.types.Add(Meta.Constants.ModelObjectList);
         }
 
@@ -320,8 +317,8 @@ namespace MetaDslx.Core
         {
             if (@this == null) return string.Empty;
             string nsName = @this.Namespace.CSharpName();
-            if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + ".Meta";
-            else return "Meta";
+            if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + "." + @this.Prefix;
+            else return @this.Prefix;
         }
 
         public static string CSharpFullName(this MetaType @this)
@@ -344,7 +341,7 @@ namespace MetaDslx.Core
         public static string CSharpName(this MetaModel @this)
         {
             if (@this == null) return string.Empty;
-            return "Meta";
+            return @this.Prefix;
         }
 
         public static string CSharpName(this MetaType @this)
@@ -377,7 +374,7 @@ namespace MetaDslx.Core
             {
                 return primitive.Name;
             }
-            return "Meta" + ((MetaNamedElement)@this).Name;
+            return ((MetaDeclaration)@this).Model.Prefix + ((MetaNamedElement)@this).Name;
         }
 
         public static string CSharpImplName(this MetaType @this)
@@ -408,7 +405,7 @@ namespace MetaDslx.Core
             {
                 return primitive.Name;
             }
-            return "Meta" + ((MetaNamedElement)@this).Name + "Impl";
+            return ((MetaDeclaration)@this).Model.Prefix + ((MetaNamedElement)@this).Name + "Impl";
         }
 
         public static string CSharpFullImplName(this MetaType @this)
@@ -470,7 +467,7 @@ namespace MetaDslx.Core
             {
                 return primitive.Name;
             }
-            return "Meta" + ((MetaNamedElement)@this).Name;
+            return ((MetaDeclaration)@this).Model.Prefix + ((MetaNamedElement)@this).Name;
         }
 
         public static string CSharpFullPublicName(this MetaType @this)

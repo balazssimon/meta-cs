@@ -234,6 +234,7 @@ namespace MetaDslx.Compiler
                 typeof(SymbolAnnotation),
                 typeof(PreDefSymbolAnnotation),
                 typeof(ScopeAnnotation),
+                typeof(PropertyAnnotation),
                 typeof(ExpressionAnnotation),
             };
 
@@ -256,6 +257,7 @@ namespace MetaDslx.Compiler
                 typeof(NameDefAnnotation),
                 typeof(TypeUseAnnotation),
                 typeof(NameUseAnnotation),
+                typeof(PropertyAnnotation),
                 typeof(ScopeAnnotation),
                 typeof(ExpressionAnnotation),
             };
@@ -547,7 +549,7 @@ namespace MetaDslx.Compiler
             //ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
             //if (va == null)
             {
-                List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).Where(pa => !pa.HasValue).ToList();
+                List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).Where(pa => !string.IsNullOrEmpty(pa.Name) && !pa.HasValue).ToList();
                 foreach (var pa in pas)
                 {
                     this.AddProperty(node, pa);
@@ -572,7 +574,18 @@ namespace MetaDslx.Compiler
                 object annot = this.GetAnnotationFor(node, type);
                 if (annot != null)
                 {
-                    ++counter;
+                    PropertyAnnotation pa = annot as PropertyAnnotation;
+                    if (pa != null)
+                    {
+                        if (string.IsNullOrEmpty(pa.Name))
+                        {
+                            ++counter;
+                        }
+                    }
+                    else
+                    {
+                        ++counter;
+                    }
                 }
             }
             if (counter == 0) return;
@@ -956,13 +969,24 @@ namespace MetaDslx.Compiler
                 object annot = this.GetAnnotationFor(node, type);
                 if (annot != null)
                 {
-                    ++counter;
+                    PropertyAnnotation pa = annot as PropertyAnnotation;
+                    if (pa != null)
+                    {
+                        if (string.IsNullOrEmpty(pa.Name))
+                        {
+                            ++counter;
+                        }
+                    }
+                    else
+                    {
+                        ++counter;
+                    }
                 }
             }
             if (counter == 0) return;
             if (counter > 1)
             {
-                this.Compiler.Diagnostics.AddError("A node can have at most one of the following annotations: @TypeDef, @NameDef, @TypeUse, @NameUse, @Scope, @Expression.", this.Compiler.FileName, node, true);
+                this.Compiler.Diagnostics.AddError("A node can have at most one of the following annotations: @TypeDef, @NameDef, @TypeUse, @NameUse, @Scope, @Expression and unnaped @Property.", this.Compiler.FileName, node, true);
             }
             TypeDefAnnotation tda = this.GetAnnotationFor<TypeDefAnnotation>(node);
             NameDefAnnotation nda = this.GetAnnotationFor<NameDefAnnotation>(node);
@@ -993,6 +1017,7 @@ namespace MetaDslx.Compiler
             NameDefAnnotation nda = this.GetAnnotationFor<NameDefAnnotation>(this.CurrentNameKind);
             TypeUseAnnotation tua = this.GetAnnotationFor<TypeUseAnnotation>(this.CurrentNameKind);
             NameUseAnnotation nua = this.GetAnnotationFor<NameUseAnnotation>(this.CurrentNameKind);
+            PropertyAnnotation pa = this.GetAnnotationFor<PropertyAnnotation>(this.CurrentNameKind);
             if (tda != null)
             {
                 if (qna != null)
@@ -1060,6 +1085,18 @@ namespace MetaDslx.Compiler
                             }
                         }
                     }
+                }
+            }
+            if (pa != null && string.IsNullOrEmpty(pa.Name))
+            {
+                if (qna != null)
+                {
+                    this.Compiler.Diagnostics.AddError("A @Property cannot have a qualified name.", this.Compiler.FileName, node, true);
+                }
+                string name = this.GetName(node);
+                if (name != null)
+                {
+                    pa.Name = name;
                 }
             }
         }

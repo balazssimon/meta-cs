@@ -375,6 +375,7 @@ function string GetCSharpValue(object value)
 	if (value == null) return "null";
 	else if (value is bool && ((bool)value) == true) return "true";
 	else if (value is bool && ((bool)value) == false) return "false";
+	else if (value is string) return "\""+value.ToString()+"\"";
 	else if (value is MetaExpression) return GenerateExpression((MetaExpression)value);
 	else return value.ToString();
 	end if
@@ -541,7 +542,10 @@ public static class [model.CSharpName()]
     {
     }
 ^
-    public static MetaDslx.Core.Model Model
+	public const string Uri = "[model.Uri]";
+	public const string Prefix = "[model.Prefix]";
+^
+    public static global::MetaDslx.Core.Model Model
     {
         get { return [model.CSharpName()].model; }
     }

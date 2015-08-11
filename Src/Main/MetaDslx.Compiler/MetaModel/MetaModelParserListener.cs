@@ -133,6 +133,26 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitMetamodelDeclaration([NotNull] MetaModelParser.MetamodelDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.metamodelPropertyList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMetamodelPropertyList([NotNull] MetaModelParser.MetamodelPropertyListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.metamodelPropertyList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMetamodelPropertyList([NotNull] MetaModelParser.MetamodelPropertyListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.metamodelProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMetamodelProperty([NotNull] MetaModelParser.MetamodelPropertyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.metamodelProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMetamodelProperty([NotNull] MetaModelParser.MetamodelPropertyContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.declaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

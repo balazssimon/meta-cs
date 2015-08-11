@@ -157,6 +157,30 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMetamodelDeclaration([NotNull] MetaModelParser.MetamodelDeclarationContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.metamodelPropertyList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMetamodelPropertyList([NotNull] MetaModelParser.MetamodelPropertyListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.metamodelPropertyList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMetamodelPropertyList([NotNull] MetaModelParser.MetamodelPropertyListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.metamodelProperty"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMetamodelProperty([NotNull] MetaModelParser.MetamodelPropertyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.metamodelProperty"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMetamodelProperty([NotNull] MetaModelParser.MetamodelPropertyContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.declaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

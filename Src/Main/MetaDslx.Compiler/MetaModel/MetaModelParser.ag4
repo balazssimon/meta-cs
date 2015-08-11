@@ -28,10 +28,15 @@ annotationParam : $Property(Name) $Value identifier TAssign $Property(Value) exp
 
 
 $NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,merge=true)
-namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName TAssign stringLiteral TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: annotation* KNamespace qualifiedName TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;
 
 $NameDef(MetaModel)
-metamodelDeclaration: annotation* KMetamodel identifier TOpenBrace declaration* TCloseBrace;
+metamodelDeclaration: annotation* KMetamodel identifier (TOpenParen metamodelPropertyList? TCloseParen)? TOpenBrace declaration* TCloseBrace;
+
+metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
+
+$Property
+metamodelProperty : identifier TAssign $Value stringLiteral;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | functionDeclaration;
 
@@ -65,9 +70,7 @@ fieldModifier
 	| $Value(MetaPropertyKind.Inherited) KInherited
 	;
 
-$Scope
 redefinitions : KRedefines $Property(RedefinedProperties) nameUseList?;
-$Scope
 subsettings : KSubsets $Property(SubsettedProperties) nameUseList?;
 
 nameUseList : $NameUse(MetaProperty) qualifiedName (TComma qualifiedName)*;
@@ -109,7 +112,7 @@ $Name
 voidType 
 	: KVoid
 	;
-$Name
+
 invisibleType
 	: $PreDefSymbol(Meta.Constants.Any) KAny
 	| $PreDefSymbol(Meta.Constants.None) KNone
@@ -262,8 +265,6 @@ assignmentOperator
 	| $SymbolType(MetaOrAssignExpression) TBarAssign
 	;
 
-
-$Scope
 associationDeclaration : annotation* KAssociation $NameUse(MetaProperty) source=qualifiedName KWith $NameUse(MetaProperty) target=qualifiedName TSemicolon 
 	-> { source.OppositeProperties = target; }
 	;

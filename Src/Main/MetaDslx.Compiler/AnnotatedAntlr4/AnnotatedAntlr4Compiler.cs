@@ -217,6 +217,7 @@ namespace MetaDslx.Compiler
             this.dynamicAnnotations.Add("NameCtr");
             this.dynamicAnnotations.Add("TypeUse");
             this.dynamicAnnotations.Add("NameUse");
+            this.dynamicAnnotations.Add("Property");
             this.dynamicAnnotations.Add("Symbol");
             this.dynamicAnnotations.Add("Scope");
             this.dynamicAnnotations.Add("Value");

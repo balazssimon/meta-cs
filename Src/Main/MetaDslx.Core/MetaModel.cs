@@ -204,7 +204,10 @@ namespace MetaDslx.Core
         {
         }
     
-        public static MetaDslx.Core.Model Model
+    	public const string Uri = "http://metadslx.core/1.0";
+    	public const string Prefix = "Meta";
+    
+        public static global::MetaDslx.Core.Model Model
         {
             get { return Meta.model; }
         }
@@ -242,13 +245,13 @@ namespace MetaDslx.Core
                 tmp9.Name = "void";
                 global::MetaDslx.Core.MetaPrimitiveType tmp10 = MetaModelFactory.Instance.CreateMetaPrimitiveType();
                 None = tmp10;
-                tmp10.Name = "none";
+                tmp10.Name = "*none*";
                 global::MetaDslx.Core.MetaPrimitiveType tmp11 = MetaModelFactory.Instance.CreateMetaPrimitiveType();
                 Any = tmp11;
-                tmp11.Name = "any";
+                tmp11.Name = "*any*";
                 global::MetaDslx.Core.MetaPrimitiveType tmp12 = MetaModelFactory.Instance.CreateMetaPrimitiveType();
                 Error = tmp12;
-                tmp12.Name = "error";
+                tmp12.Name = "*error*";
                 global::MetaDslx.Core.MetaPrimitiveType tmp13 = MetaModelFactory.Instance.CreateMetaPrimitiveType();
                 ModelObject = tmp13;
                 tmp13.Name = "ModelObject";

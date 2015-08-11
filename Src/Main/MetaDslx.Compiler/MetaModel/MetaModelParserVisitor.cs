@@ -94,6 +94,18 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMetamodelDeclaration([NotNull] MetaModelParser.MetamodelDeclarationContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.metamodelPropertyList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMetamodelPropertyList([NotNull] MetaModelParser.MetamodelPropertyListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.metamodelProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMetamodelProperty([NotNull] MetaModelParser.MetamodelPropertyContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.declaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

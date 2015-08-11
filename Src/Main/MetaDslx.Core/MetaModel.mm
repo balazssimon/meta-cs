@@ -1,6 +1,6 @@
-﻿namespace MetaDslx.Core="http://metadslx.core/1.0"
+﻿namespace MetaDslx.Core
 {
-	metamodel MetaModel//(Uri="http://metadslx.core/1.0", Prefix="Meta")
+	metamodel MetaModel(Uri="http://metadslx.core/1.0", Prefix="Meta")
 	{
 		const PrimitiveType Object = new PrimitiveType() { Name = "object" };
 		const PrimitiveType String = new PrimitiveType() { Name = "string" };
@@ -11,9 +11,9 @@
 		const PrimitiveType Byte = new PrimitiveType() { Name = "byte" };
 		const PrimitiveType Bool = new PrimitiveType() { Name = "bool" };
 		const PrimitiveType Void = new PrimitiveType() { Name = "void" };
-		const PrimitiveType None = new PrimitiveType() { Name = "none" };
-		const PrimitiveType Any = new PrimitiveType() { Name = "any" };
-		const PrimitiveType Error = new PrimitiveType() { Name = "error" };
+		const PrimitiveType None = new PrimitiveType() { Name = "*none*" };
+		const PrimitiveType Any = new PrimitiveType() { Name = "*any*" };
+		const PrimitiveType Error = new PrimitiveType() { Name = "*error*" };
 		const PrimitiveType ModelObject = new PrimitiveType() { Name = "ModelObject" };
 		const CollectionType ModelObjectList = new CollectionType() { InnerType = typeof(ModelObject) };
 

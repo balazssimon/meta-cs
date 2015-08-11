@@ -28,10 +28,15 @@ annotationParam :   identifier TAssign  expression;
 
 
 
-namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName TAssign stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: annotation* KNamespace qualifiedName TOpenBrace  metamodelDeclaration* TCloseBrace;
 
 
-metamodelDeclaration: annotation* KMetamodel identifier TOpenBrace declaration* TCloseBrace;
+metamodelDeclaration: annotation* KMetamodel identifier (TOpenParen metamodelPropertyList? TCloseParen)? TOpenBrace declaration* TCloseBrace;
+
+metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
+
+
+metamodelProperty : identifier TAssign  stringLiteral;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | functionDeclaration;
 
@@ -65,9 +70,7 @@ fieldModifier
 	|  KInherited
 	;
 
-
 redefinitions : KRedefines  nameUseList?;
-
 subsettings : KSubsets  nameUseList?;
 
 nameUseList :  qualifiedName (TComma qualifiedName)*;
@@ -261,8 +264,6 @@ assignmentOperator
 	|  THatAssign
 	|  TBarAssign
 	;
-
-
 
 associationDeclaration : annotation* KAssociation  source=qualifiedName KWith  target=qualifiedName TSemicolon 
 	

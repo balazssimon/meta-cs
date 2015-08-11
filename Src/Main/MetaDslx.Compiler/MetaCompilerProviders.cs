@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler
@@ -25,6 +26,10 @@ namespace MetaDslx.Compiler
             if (text == "null") return null;
             if (text == "true") return true;
             if (text == "false") return false;
+            if (text.Length >= 2 && text.StartsWith("\"") && text.EndsWith("\""))
+            {
+                return Regex.Unescape(text.Substring(1, text.Length - 2));
+            }
             return parseTree.GetText();
         }
 
