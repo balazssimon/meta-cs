@@ -226,6 +226,39 @@ function string GetCollectionConstructorParams(MetaProperty prop)
 	end if
 end function
 
+template GenerateConstantValueExpression(string name, MetaExpression expr, string nameType)
+[switch (expr)]
+[type as MetaNewExpression:]
+[string tmpName = "tmp"+NextCounter()]
+[string tmpType = expr.TypeReference.CSharpFullName()]
+[tmpType] [tmpName] = [expr.TypeReference.Model.Name]Factory.Instance.Create[expr.TypeReference.CSharpName()]();
+[if (nameType != null)]
+[nameType] \
+[end if]
+[name] = [tmpName];
+[loop (expr->pi:PropertyInitializers)]
+[GenerateConstantValueExpression(tmpName+"."+pi.PropertyName, pi.Value, null)]
+[end loop]
+[type as MetaNewCollectionExpression:]
+[loop (expr->v:Values)]
+[string tmpName = "tmp"+NextCounter()]
+[string tmpType = v.Type.CSharpFullName()]
+	[if (v is MetaNewExpression)]
+[GenerateConstantValueExpression(tmpName, v, tmpType)]
+[name].Add([tmpName]);
+	[else if (v is MetaNewCollectionExpression)]
+// TODO
+	[else]
+[name].Add([GenerateExpression(expr)]);
+	[end if]
+[end loop]
+[default:][name] = [GenerateExpression(expr)];
+[end switch]
+end template
+
+template GenerateNewObject()
+end template
+
 template GenerateExpression(MetaExpression expr)
 [switch (expr)]
 [type as MetaBracketExpression:]([GenerateExpression(expr.Expression)])\
@@ -242,6 +275,7 @@ template GenerateExpression(MetaExpression expr)
 [type as MetaFunctionCallExpression:][GenerateFunctionCall(expr)]\
 [type as MetaIndexerExpression:][GenerateIndexerCall(expr)]\
 [type as MetaOperatorExpression:][GenerateOperator(expr)]\
+[default:]***unknown expression type***
 [end switch]
 end template
 
@@ -301,6 +335,7 @@ template GenerateTypeOf(object expr)
 [case MetaBuiltInTypes.ModelObjectList:]MetaBuiltInTypes.ModelObjectList\
 [type as MetaTypeOfExpression:][GenerateTypeOf(expr.TypeReference)]\
 [type as MetaClass:]global::MetaDslx.Core.[expr.Model.CSharpName()].[expr.CSharpName()].Instance\
+[type as MetaCollectionType:][expr.CSharpFullName()]\
 [default:]***error***\
 [end switch]
 end template
@@ -322,6 +357,18 @@ template GenerateOperator(MetaOperatorExpression expr)
 [type as MetaBinaryExpression:]
 [GenerateExpression(expr.Left)][GetCSharpOperator(expr)][GenerateExpression(expr.Right)]\
 [end switch]
+end template
+
+template GenerateNewPropertyInitializers(MetaNewExpression expr)
+[loop(expr->pi:PropertyInitializers; string delim = ""; delim = ", ")]
+[delim][pi.Property.Name] = [GenerateExpression(pi.Value)]\
+[end loop]
+end template
+
+template GenerateNewCollectionInitializers(MetaNewCollectionExpression expr)
+[loop(expr->v:Values; string delim = ""; delim = ", ")]
+[delim][GenerateExpression(v)]\
+[end loop]
 end template
 
 function string GetCSharpValue(object value)
@@ -499,6 +546,20 @@ public static class [model.CSharpName()]
         get { return [model.CSharpName()].model; }
     }
 ^
+    public static class Constants
+    {
+        static Constants()
+        {
+    [loop(model->c:Constants)]
+            [GenerateModelConstantImpl(c)]
+    [end loop]
+        }
+^
+    [loop(model->c:Constants)]
+        [GenerateModelConstant(c)]
+    [end loop]
+    }
+^
     [loop(model->Types->cls:typeof(MetaClass))]
     [GenerateMetaModelClass(cls)]
     [end loop]
@@ -538,6 +599,15 @@ public static class [cls.CSharpName()]
     [GeneratePropertyDeclaration(cls.Model, cls, prop)]
     [end loop]
 }
+end template
+
+
+template GenerateModelConstant(MetaConstant mconst)
+public static [mconst.Type.CSharpFullName()] [mconst.Name] { get; private set; }
+end template
+
+template GenerateModelConstantImpl(MetaConstant mconst)
+[GenerateConstantValueExpression(mconst.Name, mconst.Value, null)]
 end template
 
 template GenerateImplementationProvider(MetaModel model)

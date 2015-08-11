@@ -403,6 +403,14 @@ namespace MetaDslx.Compiler
             DecIndent();
             WriteLine("}");
             AppendLine();
+            WriteLine("private int counter = 0;");
+            WriteLine("private int NextCounter()");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("return ++counter;");
+            DecIndent();
+            WriteLine("}");
+            AppendLine();
             return null;
         }
 
@@ -777,11 +785,11 @@ namespace MetaDslx.Compiler
             return null;
         }
 
-        public override object VisitIdentifierExpression(MetaGeneratorParser.IdentifierExpressionContext context)
+        private string ResolveIdentifier(string name)
         {
+            StringBuilder result = new StringBuilder();
             if (this.switchStack.Count > 0)
             {
-                string name = context.GetText();
                 List<MetaGeneratorParser.TypeReferenceContext> casts = new List<MetaGeneratorParser.TypeReferenceContext>();
                 for (int i = this.switchStack.Count - 1; i >= 0; i--)
                 {
@@ -796,25 +804,31 @@ namespace MetaDslx.Compiler
                 }
                 if (casts.Count > 0)
                 {
-                    Write("(");
+                    result.Append("(");
                     for (int i = 0; i < casts.Count; i++)
                     {
-                        Write("(");
-                        Write(casts[i].GetText());
-                        Write(")");
+                        result.Append("(");
+                        result.Append(casts[i].GetText());
+                        result.Append(")");
                     }
-                    Write(name);
-                    Write(")");
+                    result.Append(name);
+                    result.Append(")");
                 }
                 else
                 {
-                    Write(name);
+                    result.Append(name);
                 }
             }
             else
             {
-                Write(context.GetText());
+                result.Append(name);
             }
+            return result.ToString();
+        }
+
+        public override object VisitIdentifierExpression(MetaGeneratorParser.IdentifierExpressionContext context)
+        {
+            Write(ResolveIdentifier(context.GetText()));
             return null;
         }
 
@@ -1368,7 +1382,7 @@ namespace MetaDslx.Compiler
                 {
                     MetaGeneratorParser.LoopChainTypeofExpressionContext expression = (MetaGeneratorParser.LoopChainTypeofExpressionContext)lci.loopChainExpression();
                     WriteIndent();
-                    Write("from {0} in __Enumerate(({1}).GetEnumerator()).OfType<{2}>() {3}", lii.Name, i > 0 ? li.Items[i - 1].Name : "", expression.typeReference().GetText(), lci.ToComment());
+                    Write("from {0} in __Enumerate(({1}).GetEnumerator()).OfType<{2}>() {3}", lii.Name, i > 0 ? ResolveIdentifier(li.Items[i - 1].Name) : "", expression.typeReference().GetText(), lci.ToComment());
                     AppendLine();
                 }
                 else if (i == 0)
@@ -1382,7 +1396,7 @@ namespace MetaDslx.Compiler
                 else
                 {
                     WriteIndent();
-                    Write("from {0} in __Enumerate(({1}.", lii.Name, li.Items[i - 1].Name);
+                    Write("from {0} in __Enumerate(({1}.", lii.Name, ResolveIdentifier(li.Items[i - 1].Name));
                     Visit(lci);
                     Write(").GetEnumerator()) {0}", lci.ToComment());
                     AppendLine();
@@ -1468,7 +1482,7 @@ namespace MetaDslx.Compiler
                 {
                     MetaGeneratorParser.LoopChainTypeofExpressionContext expression = (MetaGeneratorParser.LoopChainTypeofExpressionContext)lci.loopChainExpression();
                     WriteIndent();
-                    Write("from {0} in __Enumerate(({1}).GetEnumerator()).OfType<{2}>() {3}", lii.Name, i > 0 ? li.Items[i - 1].Name : "", expression.typeReference().GetText(), lci.ToComment());
+                    Write("from {0} in __Enumerate(({1}).GetEnumerator()).OfType<{2}>() {3}", lii.Name, i > 0 ? ResolveIdentifier(li.Items[i - 1].Name) : "", expression.typeReference().GetText(), lci.ToComment());
                     AppendLine();
                 }
                 else if (i == 0)
@@ -1481,7 +1495,7 @@ namespace MetaDslx.Compiler
                 else
                 {
                     WriteIndent();
-                    Write("from {0} in __Enumerate(({1}.", lii.Name, li.Items[i - 1].Name);
+                    Write("from {0} in __Enumerate(({1}.", lii.Name, ResolveIdentifier(li.Items[i - 1].Name));
                     Visit(lci);
                     Write(").GetEnumerator()) {0}", lci.ToComment());
                     AppendLine();
@@ -1512,7 +1526,7 @@ namespace MetaDslx.Compiler
 
         public override object VisitLoopChainIdentifierExpression(MetaGeneratorParser.LoopChainIdentifierExpressionContext context)
         {
-            Write(context.identifier().GetText());
+            Write(ResolveIdentifier(context.identifier().GetText()));
             if (context.typeArgumentList() != null)
             {
                 Write(context.typeArgumentList().GetText());

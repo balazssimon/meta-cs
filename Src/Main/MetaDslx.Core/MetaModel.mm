@@ -2,7 +2,49 @@
 {
 	metamodel MetaModel//(Uri="http://metadslx.core/1.0", Prefix="Meta")
 	{
+		/*extern ModelObject bind(ModelObject symbols);
+		extern ModelObject bind(list<ModelObject> symbols);*/
+
+		const PrimitiveType Object = new PrimitiveType() { Name = "object" };
+		const PrimitiveType String = new PrimitiveType() { Name = "string" };
+		const PrimitiveType Int = new PrimitiveType() { Name = "int" };
+		const PrimitiveType Long = new PrimitiveType() { Name = "long" };
+		const PrimitiveType Float = new PrimitiveType() { Name = "float" };
+		const PrimitiveType Double = new PrimitiveType() { Name = "double" };
+		const PrimitiveType Byte = new PrimitiveType() { Name = "byte" };
+		const PrimitiveType Bool = new PrimitiveType() { Name = "bool" };
+		const PrimitiveType Void = new PrimitiveType() { Name = "void" };
+		const PrimitiveType None = new PrimitiveType() { Name = "none" };
+		const PrimitiveType Any = new PrimitiveType() { Name = "any" };
+		const PrimitiveType Error = new PrimitiveType() { Name = "error" };
+		const PrimitiveType ModelObject = new PrimitiveType() { Name = "ModelObject" };
+		const CollectionType ModelObjectList = new CollectionType() { InnerType = typeof(ModelObject) };
+
+		const Function Bind1 = 
+			new Function()
+			{
+				Name = "bind",
+				Parameters = 
+					new list<Parameter>()
+					{
+						new Parameter() { Name = "symbols", Type = new CollectionType() { InnerType = typeof(ModelObject) } }
+					},
+				ReturnType = typeof(ModelObject)
+			};
 		/* 
+
+		typedef object Object;
+		typedef string String;
+		typedef int Int;
+		typedef long Long;
+		typedef float Float;
+		typedef double Double;
+		typedef byte Byte;
+		typedef bool Bool;
+		typedef ModelObject ModelObject;
+		typedef list<ModelObject> ModelObjectList;
+
+		MetaPrimitiveType Bool = new MetaPrimitiveType() { Name = "bool" };
 		Function Bind = 
 			new Function()
 			{
@@ -66,9 +108,9 @@
 			[ScopeEntry]
 			containment list<Type> Types;
 			[ScopeEntry]
-			containment list<Property> Properties;
+			containment list<Constant> Constants;
 			[ScopeEntry]
-			containment list<Operation> Operations;
+			containment list<Function> Functions;
 		}
 
 		association Namespace.Models with Model.Namespace;
@@ -172,6 +214,16 @@
 			Type Parent;
 		}
 
+		class Constant : TypedElement, Declaration
+		{
+			Constant()
+			{
+				Value.ExpectedType = Type;
+			}
+
+			Expression Value;
+		}
+
 		class Constructor : NamedElement, AnnotatedElement
 		{
 			Class Parent;
@@ -184,10 +236,10 @@
 
 		class Parameter : NamedElement, TypedElement, AnnotatedElement
 		{
-			Operation Operation;
+			Function Function;
 		}
 
-		association Operation.Parameters with Parameter.Operation;
+		association Function.Parameters with Parameter.Function;
 
 		enum PropertyKind
 		{
@@ -423,6 +475,45 @@
 				Definitions = Expression is BoundExpression ? select_of_name(select_of_type(((BoundExpression)Expression).Definitions, typeof(FunctionType)), "operator[]") : null; // TODO
 			}
 		}	
+
+		class NewExpression : Expression
+		{
+			Class TypeReference;
+			containment list<NewPropertyInitializer> PropertyInitializers;
+			
+			NewExpression()
+			{
+				Type = TypeReference;
+			}
+		}
+
+		class NewPropertyInitializer 
+		{
+			NewExpression Parent;
+			string PropertyName;
+			Expression Value;
+			Property Property;
+
+			NewPropertyInitializer()
+			{
+				Property = bind(resolve_name(Parent.Type, PropertyName));
+				Value.ExpectedType = get_type(Property);
+			}
+		}
+
+		association NewExpression.PropertyInitializers with NewPropertyInitializer.Parent;
+
+		class NewCollectionExpression : Expression
+		{
+			CollectionType TypeReference;
+			containment list<Expression> Values;
+
+			NewCollectionExpression()
+			{
+				// Values.ExpectedType = TypeReference.InnerType;
+				Type = TypeReference;
+			}
+		}
 
 		abstract class OperatorExpression : BoundExpression
 		{

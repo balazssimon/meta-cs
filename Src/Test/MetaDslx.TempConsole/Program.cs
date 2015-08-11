@@ -75,7 +75,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
@@ -135,7 +135,7 @@ namespace MetaDslx.TempConsole
             //Console.WriteLine(Meta.MetaTypedElement.TypeProperty);
             //Meta.StaticInit();
             //Console.WriteLine(Meta.Model);
-            
+                        
             Model model = new Model();
             using (new ModelContextScope(model))
             {

@@ -33,7 +33,7 @@ namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName T
 $NameDef(MetaModel)
 metamodelDeclaration: annotation* KMetamodel identifier TOpenBrace declaration* TCloseBrace;
 
-declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
+declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | functionDeclaration;
 
 $Property(Types) 
 $TypeDef(MetaEnum)
@@ -72,8 +72,13 @@ subsettings : KSubsets $Property(SubsettedProperties) nameUseList?;
 
 nameUseList : $NameUse(MetaProperty) qualifiedName (TComma qualifiedName)*;
 
-//$NameDef(MetaConstant)
-constDeclaration : KConst typeReference /*$NameDef*/ identifier /*(TAssign expression)?*/ TSemicolon;
+$Property(Constants) 
+$NameDef(MetaConstant)
+constDeclaration : KConst $Property(Type) typeReference identifier (TAssign $Property(Value) expressionOrNewExpression)? TSemicolon;
+
+$Property(Functions) 
+$NameDef(MetaFunction)
+functionDeclaration : annotation* KExtern $Property(ReturnType) returnType identifier TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 
 $TypeUse
 returnType : typeReference | voidType;
@@ -83,6 +88,8 @@ $TypeUse
 typeReference : collectionType | simpleType;
 $TypeUse
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
+$TypeUse(MetaClass)
+classType : qualifiedName;
 
 $Name
 objectType 
@@ -104,8 +111,9 @@ voidType
 	;
 $Name
 invisibleType
-	: KAny
-	| KNone
+	: $PreDefSymbol(Meta.Constants.Any) KAny
+	| $PreDefSymbol(Meta.Constants.None) KNone
+	| $PreDefSymbol(Meta.Constants.Error) KError
 	;
 
 $TypeCtr(MetaNullableType)
@@ -143,9 +151,10 @@ $Symbol(MetaInheritedPropertyInitializer)
 inheritedPropertyInitializer
 	: (KThis TDot)? $Property(ObjectName) $Value object=identifier TDot (TOpenBracket $Property(PropertyContext) $TypeUse(MetaClass) qualifiedName TCloseBracket)? $Property(PropertyName) $Value property=identifier TAssign $Property(Value) expression TSemicolon;
 
-argumentList 
-	: expression (',' expression)*
-	;
+expressionList : expression (',' expression)*;
+
+expressionOrNewExpressionList : expressionOrNewExpression (',' expressionOrNewExpression)*;
+expressionOrNewExpression : expression | newExpression;
 
 $Symbol
 $AutoProperty
@@ -157,8 +166,8 @@ expression
 	| KThis #thisExpression $SymbolType(MetaThisExpression)
 	| value=literal #constantExpression $SymbolType(MetaConstantExpression)
 	| $Value name=identifier #identifierExpression $SymbolType(MetaIdentifierExpression)
-    | expression TOpenBracket $Property(Arguments) argumentList TCloseBracket #indexerExpression $SymbolType(MetaIndexerExpression)
-    | expression TOpenParen $Property(Arguments) argumentList? TCloseParen #functionCallExpression $SymbolType(MetaFunctionCallExpression)
+    | expression TOpenBracket $Property(Arguments) expressionList TCloseBracket #indexerExpression $SymbolType(MetaIndexerExpression)
+    | expression TOpenParen $Property(Arguments) expressionList? TCloseParen #functionCallExpression $SymbolType(MetaFunctionCallExpression)
     | expression TDot $Value name=identifier #memberAccessExpression $SymbolType(MetaMemberAccessExpression)
     | expression kind=postOperator #postExpression 
     | kind=preOperator expression #preExpression 
@@ -179,6 +188,20 @@ expression
     | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression $SymbolType(MetaConditionalExpression)
     | left=expression operator=assignmentOperator right=expression #assignmentExpression 
 	;
+
+$Symbol
+$AutoProperty
+$Expression
+newExpression 
+	: KNew $Property(TypeReference) classType TOpenParen TCloseParen (TOpenBrace newPropertyInitList? TCloseBrace)? #newObjectExpression $SymbolType(MetaNewExpression)
+	| KNew $Property(TypeReference) collectionType TOpenParen TCloseParen (TOpenBrace $Property(Values) expressionOrNewExpression? TCloseBrace)? #newCollectionExpression $SymbolType(MetaNewCollectionExpression)
+	;
+
+newPropertyInitList : newPropertyInit (TComma newPropertyInit)* TComma?;
+
+$Property(PropertyInitializers)
+$Symbol(MetaNewPropertyInitializer)
+newPropertyInit : $Property(PropertyName) $Value identifier TAssign $Property(Value) expressionOrNewExpression;
 
 postOperator
 	: $SymbolType(MetaPostIncrementAssignExpression) TPlusPlus

@@ -33,7 +33,7 @@ namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName T
 
 metamodelDeclaration: annotation* KMetamodel identifier TOpenBrace declaration* TCloseBrace;
 
-declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
+declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | functionDeclaration;
 
  
 
@@ -72,8 +72,13 @@ subsettings : KSubsets  nameUseList?;
 
 nameUseList :  qualifiedName (TComma qualifiedName)*;
 
-//$NameDef(MetaConstant)
-constDeclaration : KConst typeReference /*$NameDef*/ identifier /*(TAssign expression)?*/ TSemicolon;
+ 
+
+constDeclaration : KConst  typeReference identifier (TAssign  expressionOrNewExpression)? TSemicolon;
+
+ 
+
+functionDeclaration : annotation* KExtern  returnType identifier TOpenParen  parameterList? TCloseParen TSemicolon;
 
 
 returnType : typeReference | voidType;
@@ -83,6 +88,8 @@ typeOfReference : invisibleType | typeReference;
 typeReference : collectionType | simpleType;
 
 simpleType : primitiveType | objectType | nullableType | qualifiedName;
+
+classType : qualifiedName;
 
 
 objectType 
@@ -104,8 +111,9 @@ voidType
 	;
 
 invisibleType
-	: KAny
-	| KNone
+	:  KAny
+	|  KNone
+	|  KError
 	;
 
 
@@ -143,9 +151,10 @@ synthetizedPropertyInitializer
 inheritedPropertyInitializer
 	: (KThis TDot)?   object=identifier TDot (TOpenBracket   qualifiedName TCloseBracket)?   property=identifier TAssign  expression TSemicolon;
 
-argumentList 
-	: expression (',' expression)*
-	;
+expressionList : expression (',' expression)*;
+
+expressionOrNewExpressionList : expressionOrNewExpression (',' expressionOrNewExpression)*;
+expressionOrNewExpression : expression | newExpression;
 
 
 
@@ -157,8 +166,8 @@ expression
 	| KThis #thisExpression 
 	| value=literal #constantExpression 
 	|  name=identifier #identifierExpression 
-    | expression TOpenBracket  argumentList TCloseBracket #indexerExpression 
-    | expression TOpenParen  argumentList? TCloseParen #functionCallExpression 
+    | expression TOpenBracket  expressionList TCloseBracket #indexerExpression 
+    | expression TOpenParen  expressionList? TCloseParen #functionCallExpression 
     | expression TDot  name=identifier #memberAccessExpression 
     | expression kind=postOperator #postExpression 
     | kind=preOperator expression #preExpression 
@@ -179,6 +188,20 @@ expression
     | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression 
     | left=expression operator=assignmentOperator right=expression #assignmentExpression 
 	;
+
+
+
+
+newExpression 
+	: KNew  classType TOpenParen TCloseParen (TOpenBrace newPropertyInitList? TCloseBrace)? #newObjectExpression 
+	| KNew  collectionType TOpenParen TCloseParen (TOpenBrace  expressionOrNewExpression? TCloseBrace)? #newCollectionExpression 
+	;
+
+newPropertyInitList : newPropertyInit (TComma newPropertyInit)* TComma?;
+
+
+
+newPropertyInit :   identifier TAssign  expressionOrNewExpression;
 
 postOperator
 	:  TPlusPlus
