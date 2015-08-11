@@ -24,6 +24,8 @@ namespace MetaDslx.Core
             model.AddInstance((global::MetaDslx.Core.ModelObject)MetaType.Instance);
             MetaAnnotation.StaticInit();
             model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAnnotation.Instance);
+            MetaAnnotationProperty.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAnnotationProperty.Instance);
             MetaNamespace.StaticInit();
             model.AddInstance((global::MetaDslx.Core.ModelObject)MetaNamespace.Instance);
             MetaModel.StaticInit();
@@ -253,17 +255,229 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaCollectionType tmp14 = MetaModelFactory.Instance.CreateMetaCollectionType();
                 ModelObjectList = tmp14;
                 tmp14.InnerType = Meta.Constants.ModelObject;
-                global::MetaDslx.Core.MetaFunction tmp15 = MetaModelFactory.Instance.CreateMetaFunction();
-                Bind1 = tmp15;
-                tmp15.Name = "bind";
-                global::MetaDslx.Core.MetaParameter tmp17 = MetaModelFactory.Instance.CreateMetaParameter();
-                global::MetaDslx.Core.MetaParameter tmp16 = tmp17;
-                tmp17.Name = "symbols";
-                global::MetaDslx.Core.MetaCollectionType tmp18 = MetaModelFactory.Instance.CreateMetaCollectionType();
-                tmp17.Type = tmp18;
-                tmp18.InnerType = Meta.Constants.ModelObject;
-                tmp15.Parameters.Add(tmp16);
-                tmp15.ReturnType = Meta.Constants.ModelObject;
+    
+                TypeOf = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                TypeOf.Name = "typeof";
+                TypeOf.ReturnType = global::MetaDslx.Core.Meta.MetaType.Instance;
+                global::MetaDslx.Core.MetaParameter tmp15 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp15.Name = "type";
+                tmp15.Type = Meta.Constants.Object;
+                TypeOf.Parameters.Add(tmp15);
+                GetValueType = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                GetValueType.Name = "get_type";
+                GetValueType.ReturnType = global::MetaDslx.Core.Meta.MetaType.Instance;
+                global::MetaDslx.Core.MetaParameter tmp16 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp16.Name = "value";
+                tmp16.Type = Meta.Constants.Object;
+                GetValueType.Parameters.Add(tmp16);
+                GetReturnType = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                GetReturnType.Name = "get_return_type";
+                GetReturnType.ReturnType = global::MetaDslx.Core.Meta.MetaType.Instance;
+                global::MetaDslx.Core.MetaParameter tmp17 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp17.Name = "value";
+                tmp17.Type = Meta.Constants.Object;
+                GetReturnType.Parameters.Add(tmp17);
+                CurrentType = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                CurrentType.Name = "current_type";
+                CurrentType.ReturnType = global::MetaDslx.Core.Meta.MetaType.Instance;
+                global::MetaDslx.Core.MetaParameter tmp18 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp18.Name = "symbol";
+                tmp18.Type = Meta.Constants.ModelObject;
+                CurrentType.Parameters.Add(tmp18);
+                TypeCheck = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                TypeCheck.Name = "type_check";
+                TypeCheck.ReturnType = Meta.Constants.Bool;
+                global::MetaDslx.Core.MetaParameter tmp19 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp19.Name = "symbol";
+                tmp19.Type = Meta.Constants.ModelObject;
+                TypeCheck.Parameters.Add(tmp19);
+                Balance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                Balance.Name = "balance";
+                Balance.ReturnType = global::MetaDslx.Core.Meta.MetaType.Instance;
+                global::MetaDslx.Core.MetaParameter tmp20 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp20.Name = "left";
+                tmp20.Type = global::MetaDslx.Core.Meta.MetaType.Instance;
+                Balance.Parameters.Add(tmp20);
+                global::MetaDslx.Core.MetaParameter tmp21 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp21.Name = "right";
+                tmp21.Type = global::MetaDslx.Core.Meta.MetaType.Instance;
+                Balance.Parameters.Add(tmp21);
+                Resolve1 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                Resolve1.Name = "resolve";
+                global::MetaDslx.Core.MetaCollectionType tmp22 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                Resolve1.ReturnType = tmp22;
+                tmp22.Kind = MetaCollectionKind.List;
+                tmp22.InnerType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp23 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp23.Name = "name";
+                tmp23.Type = Meta.Constants.String;
+                Resolve1.Parameters.Add(tmp23);
+                Resolve2 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                Resolve2.Name = "resolve";
+                global::MetaDslx.Core.MetaCollectionType tmp24 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                Resolve2.ReturnType = tmp24;
+                tmp24.Kind = MetaCollectionKind.List;
+                tmp24.InnerType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp25 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp25.Name = "context";
+                tmp25.Type = Meta.Constants.ModelObject;
+                Resolve2.Parameters.Add(tmp25);
+                global::MetaDslx.Core.MetaParameter tmp26 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp26.Name = "name";
+                tmp26.Type = Meta.Constants.String;
+                Resolve2.Parameters.Add(tmp26);
+                ResolveType1 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                ResolveType1.Name = "resolve_type";
+                global::MetaDslx.Core.MetaCollectionType tmp27 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                ResolveType1.ReturnType = tmp27;
+                tmp27.Kind = MetaCollectionKind.List;
+                tmp27.InnerType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp28 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp28.Name = "name";
+                tmp28.Type = Meta.Constants.String;
+                ResolveType1.Parameters.Add(tmp28);
+                ResolveType2 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                ResolveType2.Name = "resolve_type";
+                global::MetaDslx.Core.MetaCollectionType tmp29 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                ResolveType2.ReturnType = tmp29;
+                tmp29.Kind = MetaCollectionKind.List;
+                tmp29.InnerType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp30 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp30.Name = "context";
+                tmp30.Type = Meta.Constants.ModelObject;
+                ResolveType2.Parameters.Add(tmp30);
+                global::MetaDslx.Core.MetaParameter tmp31 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp31.Name = "name";
+                tmp31.Type = Meta.Constants.String;
+                ResolveType2.Parameters.Add(tmp31);
+                ResolveName1 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                ResolveName1.Name = "resolve_name";
+                global::MetaDslx.Core.MetaCollectionType tmp32 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                ResolveName1.ReturnType = tmp32;
+                tmp32.Kind = MetaCollectionKind.List;
+                tmp32.InnerType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp33 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp33.Name = "name";
+                tmp33.Type = Meta.Constants.String;
+                ResolveName1.Parameters.Add(tmp33);
+                ResolveName2 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                ResolveName2.Name = "resolve_name";
+                global::MetaDslx.Core.MetaCollectionType tmp34 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                ResolveName2.ReturnType = tmp34;
+                tmp34.Kind = MetaCollectionKind.List;
+                tmp34.InnerType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp35 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp35.Name = "context";
+                tmp35.Type = Meta.Constants.ModelObject;
+                ResolveName2.Parameters.Add(tmp35);
+                global::MetaDslx.Core.MetaParameter tmp36 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp36.Name = "name";
+                tmp36.Type = Meta.Constants.String;
+                ResolveName2.Parameters.Add(tmp36);
+                Bind1 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                Bind1.Name = "bind";
+                Bind1.ReturnType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp37 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp37.Name = "symbol";
+                tmp37.Type = Meta.Constants.ModelObject;
+                Bind1.Parameters.Add(tmp37);
+                Bind2 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                Bind2.Name = "bind";
+                Bind2.ReturnType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp38 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp38.Name = "symbols";
+                global::MetaDslx.Core.MetaCollectionType tmp39 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                tmp38.Type = tmp39;
+                tmp39.Kind = MetaCollectionKind.List;
+                tmp39.InnerType = Meta.Constants.ModelObject;
+                Bind2.Parameters.Add(tmp38);
+                Bind3 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                Bind3.Name = "bind";
+                Bind3.ReturnType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp40 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp40.Name = "context";
+                tmp40.Type = Meta.Constants.ModelObject;
+                Bind3.Parameters.Add(tmp40);
+                global::MetaDslx.Core.MetaParameter tmp41 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp41.Name = "symbol";
+                tmp41.Type = Meta.Constants.ModelObject;
+                Bind3.Parameters.Add(tmp41);
+                Bind4 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                Bind4.Name = "bind";
+                Bind4.ReturnType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp42 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp42.Name = "context";
+                tmp42.Type = Meta.Constants.ModelObject;
+                Bind4.Parameters.Add(tmp42);
+                global::MetaDslx.Core.MetaParameter tmp43 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp43.Name = "symbols";
+                global::MetaDslx.Core.MetaCollectionType tmp44 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                tmp43.Type = tmp44;
+                tmp44.Kind = MetaCollectionKind.List;
+                tmp44.InnerType = Meta.Constants.ModelObject;
+                Bind4.Parameters.Add(tmp43);
+                SelectOfType1 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                SelectOfType1.Name = "select_of_type";
+                global::MetaDslx.Core.MetaCollectionType tmp45 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                SelectOfType1.ReturnType = tmp45;
+                tmp45.Kind = MetaCollectionKind.List;
+                tmp45.InnerType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp46 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp46.Name = "symbol";
+                tmp46.Type = Meta.Constants.ModelObject;
+                SelectOfType1.Parameters.Add(tmp46);
+                global::MetaDslx.Core.MetaParameter tmp47 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp47.Name = "type";
+                tmp47.Type = global::MetaDslx.Core.Meta.MetaType.Instance;
+                SelectOfType1.Parameters.Add(tmp47);
+                SelectOfType2 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                SelectOfType2.Name = "select_of_type";
+                global::MetaDslx.Core.MetaCollectionType tmp48 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                SelectOfType2.ReturnType = tmp48;
+                tmp48.Kind = MetaCollectionKind.List;
+                tmp48.InnerType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp49 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp49.Name = "symbols";
+                global::MetaDslx.Core.MetaCollectionType tmp50 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                tmp49.Type = tmp50;
+                tmp50.Kind = MetaCollectionKind.List;
+                tmp50.InnerType = Meta.Constants.ModelObject;
+                SelectOfType2.Parameters.Add(tmp49);
+                global::MetaDslx.Core.MetaParameter tmp51 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp51.Name = "type";
+                tmp51.Type = global::MetaDslx.Core.Meta.MetaType.Instance;
+                SelectOfType2.Parameters.Add(tmp51);
+                SelectOfName1 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                SelectOfName1.Name = "select_of_name";
+                global::MetaDslx.Core.MetaCollectionType tmp52 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                SelectOfName1.ReturnType = tmp52;
+                tmp52.Kind = MetaCollectionKind.List;
+                tmp52.InnerType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp53 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp53.Name = "symbol";
+                tmp53.Type = Meta.Constants.ModelObject;
+                SelectOfName1.Parameters.Add(tmp53);
+                global::MetaDslx.Core.MetaParameter tmp54 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp54.Name = "name";
+                tmp54.Type = Meta.Constants.String;
+                SelectOfName1.Parameters.Add(tmp54);
+                SelectOfName2 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaFunction();
+                SelectOfName2.Name = "select_of_name";
+                global::MetaDslx.Core.MetaCollectionType tmp55 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                SelectOfName2.ReturnType = tmp55;
+                tmp55.Kind = MetaCollectionKind.List;
+                tmp55.InnerType = Meta.Constants.ModelObject;
+                global::MetaDslx.Core.MetaParameter tmp56 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp56.Name = "symbols";
+                global::MetaDslx.Core.MetaCollectionType tmp57 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaCollectionType();
+                tmp56.Type = tmp57;
+                tmp57.Kind = MetaCollectionKind.List;
+                tmp57.InnerType = Meta.Constants.ModelObject;
+                SelectOfName2.Parameters.Add(tmp56);
+                global::MetaDslx.Core.MetaParameter tmp58 = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaParameter();
+                tmp58.Name = "name";
+                tmp58.Type = Meta.Constants.String;
+                SelectOfName2.Parameters.Add(tmp58);
             }
     
             public static global::MetaDslx.Core.MetaPrimitiveType Object { get; private set; }
@@ -280,7 +494,27 @@ namespace MetaDslx.Core
             public static global::MetaDslx.Core.MetaPrimitiveType Error { get; private set; }
             public static global::MetaDslx.Core.MetaPrimitiveType ModelObject { get; private set; }
             public static global::MetaDslx.Core.MetaCollectionType ModelObjectList { get; private set; }
+    
+            public static global::MetaDslx.Core.MetaFunction TypeOf { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction GetValueType { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction GetReturnType { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction CurrentType { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction TypeCheck { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction Balance { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction Resolve1 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction Resolve2 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction ResolveType1 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction ResolveType2 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction ResolveName1 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction ResolveName2 { get; private set; }
             public static global::MetaDslx.Core.MetaFunction Bind1 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction Bind2 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction Bind3 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction Bind4 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction SelectOfType1 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction SelectOfType2 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction SelectOfName1 { get; private set; }
+            public static global::MetaDslx.Core.MetaFunction SelectOfName2 { get; private set; }
         }
     
         
@@ -405,6 +639,37 @@ namespace MetaDslx.Core
                 get { return MetaAnnotation.instance; }
             }
         
+            
+            [ContainmentAttribute]
+            public static readonly ModelProperty PropertiesProperty =
+                ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaAnnotationProperty>), typeof(global::MetaDslx.Core.MetaAnnotation), typeof(global::MetaDslx.Core.Meta.MetaAnnotation));
+            
+        }
+        
+        public static class MetaAnnotationProperty
+        {
+        	internal static global::MetaDslx.Core.MetaClass instance;
+            internal static void StaticInit()
+            {
+            }
+        
+            static MetaAnnotationProperty()
+            {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaAnnotationProperty.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaAnnotationProperty.instance.Name = "MetaAnnotationProperty";
+                ((ModelCollection)MetaAnnotationProperty.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaAnnotationProperty.instance; }
+            }
+        
+            
+            public static readonly ModelProperty ValueProperty =
+                ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaAnnotationProperty), typeof(global::MetaDslx.Core.Meta.MetaAnnotationProperty));
+            
         }
         
         public static class MetaNamespace
@@ -2875,6 +3140,7 @@ namespace MetaDslx.Core
     
     public interface MetaAnnotation : MetaDslx.Core.MetaNamedElement
     {
+        IList<MetaAnnotationProperty> Properties { get; }
     
     }
     
@@ -2892,6 +3158,7 @@ namespace MetaDslx.Core
         public MetaAnnotationImpl(bool addToModelContext) 
             : base(addToModelContext)
         {
+            this.MSet(global::MetaDslx.Core.Meta.MetaAnnotation.PropertiesProperty, new ModelList<MetaAnnotationProperty>(this, global::MetaDslx.Core.Meta.MetaAnnotation.PropertiesProperty));
             MetaImplementationProvider.Implementation.MetaAnnotation_MetaAnnotation(this);
             this.MMakeDefault();
         }
@@ -2905,6 +3172,65 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
+        }
+        
+        IList<MetaAnnotationProperty> MetaAnnotation.Properties
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotation.PropertiesProperty); 
+                if (result != null) return (IList<MetaAnnotationProperty>)result;
+                else return default(IList<MetaAnnotationProperty>);
+            }
+        }
+    }
+    
+    
+    public interface MetaAnnotationProperty : MetaDslx.Core.MetaNamedElement
+    {
+        MetaExpression Value { get; set; }
+    
+    }
+    
+    internal class MetaAnnotationPropertyImpl : ModelObject, MetaDslx.Core.MetaAnnotationProperty
+    {
+        static MetaAnnotationPropertyImpl()
+        {
+            global::MetaDslx.Core.Meta.StaticInit();
+        }
+    
+        public MetaAnnotationPropertyImpl() 
+            : this(true)
+        {
+        }
+        public MetaAnnotationPropertyImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaAnnotationProperty.ValueProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Meta.Constants.Any));
+            MetaImplementationProvider.Implementation.MetaAnnotationProperty_MetaAnnotationProperty(this);
+            this.MMakeDefault();
+        }
+        
+        string MetaNamedElement.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaNamedElement.NameProperty, value); }
+        }
+        
+        MetaExpression MetaAnnotationProperty.Value
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.Meta.MetaAnnotationProperty.ValueProperty); 
+                if (result != null) return (MetaExpression)result;
+                else return default(MetaExpression);
+            }
+            set { this.MSet(global::MetaDslx.Core.Meta.MetaAnnotationProperty.ValueProperty, value); }
         }
     }
     
@@ -12701,6 +13027,15 @@ namespace MetaDslx.Core
     	}
     
         /// <summary>
+        /// Creates a new instance of MetaAnnotationProperty.
+        /// </summary>
+        public MetaAnnotationProperty CreateMetaAnnotationProperty(bool addToModelContext = true)
+    	{
+    		MetaAnnotationProperty result = new global::MetaDslx.Core.MetaAnnotationPropertyImpl(addToModelContext);
+    		return result;
+    	}
+    
+        /// <summary>
         /// Creates a new instance of MetaNamespace.
         /// </summary>
         public MetaNamespace CreateMetaNamespace(bool addToModelContext = true)
@@ -13401,6 +13736,16 @@ namespace MetaDslx.Core
     	/// All superclasses: MetaNamedElement
         /// </summary>
         public virtual void MetaAnnotation_MetaAnnotation(MetaAnnotation @this)
+        {
+            this.MetaNamedElement_MetaNamedElement(@this);
+        }
+    
+        /// <summary>
+    	/// Implements the constructor: MetaAnnotationProperty()
+    	/// Direct superclasses: MetaNamedElement
+    	/// All superclasses: MetaNamedElement
+        /// </summary>
+        public virtual void MetaAnnotationProperty_MetaAnnotationProperty(MetaAnnotationProperty @this)
         {
             this.MetaNamedElement_MetaNamedElement(@this);
         }

@@ -83,6 +83,36 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAnnotation([NotNull] MetaModelParser.AnnotationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.annotationParams"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAnnotationParams([NotNull] MetaModelParser.AnnotationParamsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.annotationParams"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAnnotationParams([NotNull] MetaModelParser.AnnotationParamsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.annotationParamList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAnnotationParamList([NotNull] MetaModelParser.AnnotationParamListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.annotationParamList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAnnotationParamList([NotNull] MetaModelParser.AnnotationParamListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.annotationParam"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAnnotationParam([NotNull] MetaModelParser.AnnotationParamContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.annotationParam"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAnnotationParam([NotNull] MetaModelParser.AnnotationParamContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.namespaceDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

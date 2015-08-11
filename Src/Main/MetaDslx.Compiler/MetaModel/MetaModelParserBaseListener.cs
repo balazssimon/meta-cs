@@ -97,6 +97,42 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAnnotation([NotNull] MetaModelParser.AnnotationContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.annotationParams"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAnnotationParams([NotNull] MetaModelParser.AnnotationParamsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.annotationParams"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAnnotationParams([NotNull] MetaModelParser.AnnotationParamsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.annotationParamList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAnnotationParamList([NotNull] MetaModelParser.AnnotationParamListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.annotationParamList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAnnotationParamList([NotNull] MetaModelParser.AnnotationParamListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.annotationParam"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAnnotationParam([NotNull] MetaModelParser.AnnotationParamContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.annotationParam"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAnnotationParam([NotNull] MetaModelParser.AnnotationParamContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.namespaceDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

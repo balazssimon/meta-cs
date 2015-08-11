@@ -18,14 +18,14 @@ qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
 $Property(Annotations)
 $Symbol(MetaAnnotation)
-annotation : TOpenBracket $Property(Name) $Value identifier TCloseBracket;
-
-/*
-annotation : TOpenBracket identifier annotationParams? TCloseBracket;
+annotation : TOpenBracket $Property(Name) $Value identifier annotationParams? TCloseBracket;
 annotationParams : TOpenParen annotationParamList? TCloseParen;
 annotationParamList : annotationParam (TComma annotationParam)*;
-annotationParam : name=identifier TAssign value=expression;
-*/
+
+$Property(Properties)
+$Symbol(MetaAnnotationProperty)
+annotationParam : $Property(Name) $Value identifier TAssign $Property(Value) expression;
+
 
 $NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,merge=true)
 namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName TAssign stringLiteral TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;

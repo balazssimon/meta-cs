@@ -64,6 +64,24 @@ public interface IMetaModelParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAnnotation([NotNull] MetaModelParser.AnnotationContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.annotationParams"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotationParams([NotNull] MetaModelParser.AnnotationParamsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.annotationParamList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotationParamList([NotNull] MetaModelParser.AnnotationParamListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaModelParser.annotationParam"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotationParam([NotNull] MetaModelParser.AnnotationParamContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaModelParser.namespaceDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -18,14 +18,14 @@ qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
 
 
-annotation : TOpenBracket   identifier TCloseBracket;
-
-/*
-annotation : TOpenBracket identifier annotationParams? TCloseBracket;
+annotation : TOpenBracket   identifier annotationParams? TCloseBracket;
 annotationParams : TOpenParen annotationParamList? TCloseParen;
 annotationParamList : annotationParam (TComma annotationParam)*;
-annotationParam : name=identifier TAssign value=expression;
-*/
+
+
+
+annotationParam :   identifier TAssign  expression;
+
 
 
 namespaceDeclaration: annotation* KNamespace /*$Property(Name)*/ qualifiedName TAssign stringLiteral TOpenBrace  metamodelDeclaration* TCloseBrace;

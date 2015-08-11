@@ -2,9 +2,6 @@
 {
 	metamodel MetaModel//(Uri="http://metadslx.core/1.0", Prefix="Meta")
 	{
-		/*extern ModelObject bind(ModelObject symbols);
-		extern ModelObject bind(list<ModelObject> symbols);*/
-
 		const PrimitiveType Object = new PrimitiveType() { Name = "object" };
 		const PrimitiveType String = new PrimitiveType() { Name = "string" };
 		const PrimitiveType Int = new PrimitiveType() { Name = "int" };
@@ -20,44 +17,51 @@
 		const PrimitiveType ModelObject = new PrimitiveType() { Name = "ModelObject" };
 		const CollectionType ModelObjectList = new CollectionType() { InnerType = typeof(ModelObject) };
 
-		const Function Bind1 = 
-			new Function()
-			{
-				Name = "bind",
-				Parameters = 
-					new list<Parameter>()
-					{
-						new Parameter() { Name = "symbols", Type = new CollectionType() { InnerType = typeof(ModelObject) } }
-					},
-				ReturnType = typeof(ModelObject)
-			};
-		/* 
 
-		typedef object Object;
-		typedef string String;
-		typedef int Int;
-		typedef long Long;
-		typedef float Float;
-		typedef double Double;
-		typedef byte Byte;
-		typedef bool Bool;
-		typedef ModelObject ModelObject;
-		typedef list<ModelObject> ModelObjectList;
+		[Name(Name="typeof")]
+		extern Type TypeOf(object type);
+		[Name(Name="get_type")]
+		extern Type GetValueType(object value);
+		[Name(Name="get_return_type")]
+		extern Type GetReturnType(object value);
+		[Name(Name="current_type")]
+		extern Type CurrentType(ModelObject symbol);
+		[Name(Name="type_check")]
+		extern bool TypeCheck(ModelObject symbol);
+		[Name(Name="balance")]
+		extern Type Balance(Type left, Type right);
 
-		MetaPrimitiveType Bool = new MetaPrimitiveType() { Name = "bool" };
-		Function Bind = 
-			new Function()
-			{
-				Name = "bind",
-				Parameters = 
-					new ModelList<Parameter>()
-					{
-						new Parameter() { Name = "symbols", Type = typeof(list<object>) }
-					},
-				ReturnType = typeof(object)
-			};
-		*/
+		[Name(Name="resolve")]
+		extern list<ModelObject> Resolve1(string name);
+		[Name(Name="resolve")]
+		extern list<ModelObject> Resolve2(ModelObject context, string name);
+		[Name(Name="resolve_type")]
+		extern list<ModelObject> ResolveType1(string name);
+		[Name(Name="resolve_type")]
+		extern list<ModelObject> ResolveType2(ModelObject context, string name);
+		[Name(Name="resolve_name")]
+		extern list<ModelObject> ResolveName1(string name);
+		[Name(Name="resolve_name")]
+		extern list<ModelObject> ResolveName2(ModelObject context, string name);
 
+		[Name(Name="bind")]
+		extern ModelObject Bind1(ModelObject symbol);
+		[Name(Name="bind")]
+		extern ModelObject Bind2(list<ModelObject> symbols);
+		[Name(Name="bind")]
+		extern ModelObject Bind3(ModelObject context, ModelObject symbol);
+		[Name(Name="bind")]
+		extern ModelObject Bind4(ModelObject context, list<ModelObject> symbols);
+
+		[Name(Name="select_of_type")]
+		extern list<ModelObject> SelectOfType1(ModelObject symbol, Type type);
+		[Name(Name="select_of_type")]
+		extern list<ModelObject> SelectOfType2(list<ModelObject> symbols, Type type);
+		[Name(Name="select_of_name")]
+		extern list<ModelObject> SelectOfName1(ModelObject symbol, string name);
+		[Name(Name="select_of_name")]
+		extern list<ModelObject> SelectOfName2(list<ModelObject> symbols, string name);
+		
 
 		abstract class AnnotatedElement
 		{
@@ -83,6 +87,17 @@
 
 		class Annotation : NamedElement
 		{
+			containment list<AnnotationProperty> Properties;
+		}
+
+		class AnnotationProperty : NamedElement
+		{
+			Expression Value;
+
+			AnnotationProperty()
+			{
+				Value.ExpectedType = typeof(any);
+			}
 		}
 
 		[Scope]

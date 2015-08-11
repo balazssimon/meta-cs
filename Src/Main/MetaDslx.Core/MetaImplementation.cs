@@ -127,218 +127,28 @@ namespace MetaDslx.Core
             get { return MetaBuiltInFunctions.functions; }
         }
 
-        public static readonly MetaFunction TypeOf;
-        public static readonly MetaFunction GetValueType;
-        public static readonly MetaFunction GetReturnType;
-        public static readonly MetaFunction CurrentType;
-        public static readonly MetaFunction TypeCheck;
-        public static readonly MetaFunction Balance;
-        public static readonly MetaFunction Resolve1;
-        public static readonly MetaFunction ResolveName1;
-        public static readonly MetaFunction ResolveType1;
-        public static readonly MetaFunction Resolve2;
-        public static readonly MetaFunction ResolveName2;
-        public static readonly MetaFunction ResolveType2;
-        public static readonly MetaFunction Bind1;
-        public static readonly MetaFunction Bind2;
-        public static readonly MetaFunction Bind3;
-        public static readonly MetaFunction Bind4;
-        public static readonly MetaFunction SelectOfType1;
-        public static readonly MetaFunction SelectOfType2;
-        public static readonly MetaFunction SelectOfName1;
-        public static readonly MetaFunction SelectOfName2;
-
         static MetaBuiltInFunctions()
         {
-            MetaBuiltInFunctions.TypeOf = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.TypeOf.Name = "typeof";
-            MetaBuiltInFunctions.TypeOf.ReturnType = Meta.MetaType.Instance;
-            var typeOfParam = MetaModelFactory.Instance.CreateMetaParameter();
-            typeOfParam.Type = Meta.Constants.Any;
-            MetaBuiltInFunctions.TypeOf.Parameters.Add(typeOfParam);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.TypeOf);
-
-            MetaBuiltInFunctions.GetValueType = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.GetValueType.Name = "get_type";
-            MetaBuiltInFunctions.GetValueType.ReturnType = Meta.MetaType.Instance;
-            var getValueTypeParam = MetaModelFactory.Instance.CreateMetaParameter();
-            getValueTypeParam.Type = Meta.Constants.Any;
-            MetaBuiltInFunctions.GetValueType.Parameters.Add(getValueTypeParam);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.GetValueType);
-
-            MetaBuiltInFunctions.GetReturnType = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.GetReturnType.Name = "get_return_type";
-            MetaBuiltInFunctions.GetReturnType.ReturnType = Meta.MetaType.Instance;
-            var getReturnTypeParam = MetaModelFactory.Instance.CreateMetaParameter();
-            getReturnTypeParam.Type = Meta.Constants.Any;
-            MetaBuiltInFunctions.GetReturnType.Parameters.Add(getReturnTypeParam);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.GetReturnType);
-
-            MetaBuiltInFunctions.CurrentType = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.CurrentType.Name = "current_type";
-            MetaBuiltInFunctions.CurrentType.ReturnType = Meta.MetaType.Instance;
-            var currentTypeParam = MetaModelFactory.Instance.CreateMetaParameter();
-            currentTypeParam.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.CurrentType.Parameters.Add(currentTypeParam);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.CurrentType);
-
-            MetaBuiltInFunctions.TypeCheck = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.TypeCheck.Name = "type_check";
-            MetaBuiltInFunctions.TypeCheck.ReturnType = Meta.Constants.Bool;
-            var typeCheckParam = MetaModelFactory.Instance.CreateMetaParameter();
-            typeCheckParam.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.TypeCheck.Parameters.Add(typeCheckParam);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.TypeCheck);
-
-            MetaBuiltInFunctions.Balance = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.Balance.Name = "balance";
-            MetaBuiltInFunctions.Balance.ReturnType = Meta.MetaType.Instance;
-            var balanceLeftParam = MetaModelFactory.Instance.CreateMetaParameter();
-            balanceLeftParam.Type = Meta.MetaType.Instance;
-            MetaBuiltInFunctions.Balance.Parameters.Add(balanceLeftParam);
-            var balanceRightParam = MetaModelFactory.Instance.CreateMetaParameter();
-            balanceRightParam.Type = Meta.MetaType.Instance;
-            MetaBuiltInFunctions.Balance.Parameters.Add(balanceRightParam);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Balance);
-
-            MetaBuiltInFunctions.Resolve1 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.Resolve1.Name = "resolve";
-            MetaBuiltInFunctions.Resolve1.ReturnType = Meta.Constants.ModelObjectList;
-            var resolve1Param = MetaModelFactory.Instance.CreateMetaParameter();
-            resolve1Param.Type = Meta.Constants.String;
-            MetaBuiltInFunctions.Resolve1.Parameters.Add(resolve1Param);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Resolve1);
-
-            MetaBuiltInFunctions.ResolveName1 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.ResolveName1.Name = "resolve_name";
-            MetaBuiltInFunctions.ResolveName1.ReturnType = Meta.Constants.ModelObjectList;
-            var resolveName1Param = MetaModelFactory.Instance.CreateMetaParameter();
-            resolveName1Param.Type = Meta.Constants.String;
-            MetaBuiltInFunctions.ResolveName1.Parameters.Add(resolveName1Param);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.ResolveName1);
-
-            MetaBuiltInFunctions.ResolveType1 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.ResolveType1.Name = "resolve_type";
-            MetaBuiltInFunctions.ResolveType1.ReturnType = Meta.Constants.ModelObjectList;
-            var resolveType1Param = MetaModelFactory.Instance.CreateMetaParameter();
-            resolveType1Param.Type = Meta.Constants.String;
-            MetaBuiltInFunctions.ResolveType1.Parameters.Add(resolveType1Param);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.ResolveType1);
-
-            MetaBuiltInFunctions.Resolve2 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.Resolve2.Name = "resolve";
-            MetaBuiltInFunctions.Resolve2.ReturnType = Meta.Constants.ModelObjectList;
-            var resolve2ContextParam = MetaModelFactory.Instance.CreateMetaParameter();
-            resolve2ContextParam.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.Resolve2.Parameters.Add(resolve2ContextParam);
-            var resolve2Param = MetaModelFactory.Instance.CreateMetaParameter();
-            resolve2Param.Type = Meta.Constants.String;
-            MetaBuiltInFunctions.Resolve2.Parameters.Add(resolve2Param);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Resolve2);
-
-            MetaBuiltInFunctions.ResolveName2 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.ResolveName2.Name = "resolve_name";
-            MetaBuiltInFunctions.ResolveName2.ReturnType = Meta.Constants.ModelObjectList;
-            var resolveName2ContextParam = MetaModelFactory.Instance.CreateMetaParameter();
-            resolveName2ContextParam.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.ResolveName2.Parameters.Add(resolveName2ContextParam);
-            var resolveName2Param = MetaModelFactory.Instance.CreateMetaParameter();
-            resolveName2Param.Type = Meta.Constants.String;
-            MetaBuiltInFunctions.ResolveName2.Parameters.Add(resolveName2Param);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.ResolveName2);
-
-            MetaBuiltInFunctions.ResolveType2 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.ResolveType2.Name = "resolve_type";
-            MetaBuiltInFunctions.ResolveType2.ReturnType = Meta.Constants.ModelObjectList;
-            var resolveType2ContextParam = MetaModelFactory.Instance.CreateMetaParameter();
-            resolveType2ContextParam.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.ResolveType2.Parameters.Add(resolveType2ContextParam);
-            var resolveType2Param = MetaModelFactory.Instance.CreateMetaParameter();
-            resolveType2Param.Type = Meta.Constants.String;
-            MetaBuiltInFunctions.ResolveType2.Parameters.Add(resolveType2Param);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.ResolveType2);
-
-            MetaBuiltInFunctions.Bind1 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.Bind1.Name = "bind";
-            MetaBuiltInFunctions.Bind1.ReturnType = Meta.Constants.ModelObject;
-            var bind1Param = MetaModelFactory.Instance.CreateMetaParameter();
-            bind1Param.Type = Meta.Constants.ModelObjectList;
-            MetaBuiltInFunctions.Bind1.Parameters.Add(bind1Param);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Bind1);
-
-            MetaBuiltInFunctions.Bind2 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.Bind2.Name = "bind";
-            MetaBuiltInFunctions.Bind2.ReturnType = Meta.Constants.ModelObject;
-            var bind2Param = MetaModelFactory.Instance.CreateMetaParameter();
-            bind2Param.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.Bind2.Parameters.Add(bind2Param);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Bind2);
-            
-            MetaBuiltInFunctions.Bind3 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.Bind3.Name = "bind";
-            MetaBuiltInFunctions.Bind3.ReturnType = Meta.Constants.ModelObject;
-            var bind3ContextParam = MetaModelFactory.Instance.CreateMetaParameter();
-            bind3ContextParam.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.Bind3.Parameters.Add(bind3ContextParam);
-            var bind3Param = MetaModelFactory.Instance.CreateMetaParameter();
-            bind3Param.Type = Meta.Constants.ModelObjectList;
-            MetaBuiltInFunctions.Bind3.Parameters.Add(bind3Param);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Bind3);
-
-            MetaBuiltInFunctions.Bind4 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.Bind4.Name = "bind";
-            MetaBuiltInFunctions.Bind4.ReturnType = Meta.Constants.ModelObject;
-            var bind4ContextParam = MetaModelFactory.Instance.CreateMetaParameter();
-            bind4ContextParam.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.Bind4.Parameters.Add(bind4ContextParam);
-            var bind4Param = MetaModelFactory.Instance.CreateMetaParameter();
-            bind4Param.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.Bind4.Parameters.Add(bind4Param);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Bind4);
-            
-            MetaBuiltInFunctions.SelectOfType1 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.SelectOfType1.Name = "select_of_type";
-            MetaBuiltInFunctions.SelectOfType1.ReturnType = Meta.Constants.ModelObjectList;
-            var selectOfType1SymbolsParam = MetaModelFactory.Instance.CreateMetaParameter();
-            selectOfType1SymbolsParam.Type = Meta.Constants.ModelObjectList;
-            MetaBuiltInFunctions.SelectOfType1.Parameters.Add(selectOfType1SymbolsParam);
-            var selectOfType1TypeParam = MetaModelFactory.Instance.CreateMetaParameter();
-            selectOfType1TypeParam.Type = Meta.MetaType.Instance;
-            MetaBuiltInFunctions.SelectOfType1.Parameters.Add(selectOfType1TypeParam);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.SelectOfType1);
-
-            MetaBuiltInFunctions.SelectOfType2 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.SelectOfType2.Name = "select_of_type";
-            MetaBuiltInFunctions.SelectOfType2.ReturnType = Meta.Constants.ModelObjectList;
-            var selectOfType2SymbolsParam = MetaModelFactory.Instance.CreateMetaParameter();
-            selectOfType2SymbolsParam.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.SelectOfType2.Parameters.Add(selectOfType2SymbolsParam);
-            var selectOfType2TypeParam = MetaModelFactory.Instance.CreateMetaParameter();
-            selectOfType2TypeParam.Type = Meta.MetaType.Instance;
-            MetaBuiltInFunctions.SelectOfType2.Parameters.Add(selectOfType2TypeParam);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.SelectOfType2);
-
-            MetaBuiltInFunctions.SelectOfName1 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.SelectOfName1.Name = "select_of_name";
-            MetaBuiltInFunctions.SelectOfName1.ReturnType = Meta.Constants.ModelObjectList;
-            var selectOfName1SymbolsParam = MetaModelFactory.Instance.CreateMetaParameter();
-            selectOfName1SymbolsParam.Type = Meta.Constants.ModelObjectList;
-            MetaBuiltInFunctions.SelectOfName1.Parameters.Add(selectOfName1SymbolsParam);
-            var selectOfName1NameParam = MetaModelFactory.Instance.CreateMetaParameter();
-            selectOfName1NameParam.Type = Meta.Constants.String;
-            MetaBuiltInFunctions.SelectOfName1.Parameters.Add(selectOfName1NameParam);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.SelectOfName1);
-
-            MetaBuiltInFunctions.SelectOfName2 = MetaModelFactory.Instance.CreateMetaFunction();
-            MetaBuiltInFunctions.SelectOfName2.Name = "select_of_name";
-            MetaBuiltInFunctions.SelectOfName2.ReturnType = Meta.Constants.ModelObjectList;
-            var selectOfName2SymbolsParam = MetaModelFactory.Instance.CreateMetaParameter();
-            selectOfName2SymbolsParam.Type = Meta.Constants.ModelObject;
-            MetaBuiltInFunctions.SelectOfName2.Parameters.Add(selectOfName2SymbolsParam);
-            var selectOfName2NameParam = MetaModelFactory.Instance.CreateMetaParameter();
-            selectOfName2NameParam.Type = Meta.Constants.String;
-            MetaBuiltInFunctions.SelectOfName2.Parameters.Add(selectOfName2NameParam);
-            MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.SelectOfName2);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.TypeOf);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.GetValueType);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.GetReturnType);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.CurrentType);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.TypeCheck);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.Balance);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.Resolve1);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.Resolve2);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.ResolveName1);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.ResolveName2);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.ResolveType1);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.ResolveType2);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.Bind1);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.Bind2);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.Bind3);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.Bind4);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.SelectOfType1);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.SelectOfType2);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.SelectOfName1);
+            MetaBuiltInFunctions.functions.Add(Meta.Constants.SelectOfName2);
         }
     }
 
