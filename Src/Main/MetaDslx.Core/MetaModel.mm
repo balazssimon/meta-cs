@@ -75,6 +75,11 @@
 
 		abstract class Declaration : NamedElement, AnnotatedElement
 		{
+			Declaration()
+			{
+				Namespace = Model.Namespace;
+			}
+
 			Model Model;
 			derived Namespace Namespace;
 		}
@@ -83,10 +88,10 @@
 
 		enum CollectionKind
 		{
-			Set,
 			List,
-			MultiSet,
-			MultiList
+			Set,
+			MultiList,
+			MultiSet
 		}
 
 		class CollectionType : Type
@@ -152,6 +157,8 @@
 			Function()
 			{
 				// Type = new FunctionType();
+				// Type.ReturnType = ReturnType;
+				// Type.ParameterTypes = map(Parameters, p => p.Type);
 			}
 
 			[Type]
@@ -196,7 +203,7 @@
 		class Property : NamedElement, TypedElement, AnnotatedElement
 		{
 			PropertyKind Kind;
-			Class Parent;
+			Class Class;
 			list<Property> OppositeProperties;
 			list<Property> SubsettedProperties;
 			list<Property> SubsettingProperties;
@@ -204,7 +211,7 @@
 			list<Property> RedefiningProperties;
 		}
 
-		association Property.Parent with Class.Properties;
+		association Property.Class with Class.Properties;
 		association Property.OppositeProperties with Property.OppositeProperties;
 		association Property.SubsettedProperties with Property.SubsettingProperties;
 		association Property.RedefinedProperties with Property.RedefiningProperties;
@@ -220,7 +227,7 @@
 
 			PropertyInitializer()
 			{
-			    PropertyContext = current_type(this);
+			    PropertyContext = current_type(this) as Class;
 				Property = bind(resolve_name(this.PropertyContext, PropertyName));
 				Value.ExpectedType = get_type(Property);
 			}
@@ -240,7 +247,7 @@
 			PropertyInitializer()
 			{
 				Object = bind(resolve_name(ObjectName));
-				PropertyContext = get_type(Object);
+				PropertyContext = get_type(Object) as Class;
 				Property = bind(resolve_name(PropertyContext, PropertyName));
 			}
 		}
@@ -253,7 +260,7 @@
 				NoTypeError = type_check(this);
 			}
 
-			lazy bool NoTypeError;
+			readonly bool NoTypeError;
 			inherited Type ExpectedType;
 		}
 
@@ -274,7 +281,7 @@
 			BoundExpression()
 			{
 				UniqueDefinition = true;
-			    Definition = bind(this);
+			    Definition = bind(Definitions);
 				Type = get_type(Definition);
 			}
 
@@ -288,7 +295,7 @@
 		{
 			ThisExpression()
 			{
-				Definitions = current_type(this);
+				Definition = current_type(this);
 			}
 		}
 
@@ -400,7 +407,7 @@
 			{
 				Expression.[BoundExpression]UniqueDefinition = false;
 				Expression.ExpectedType = typeof(none);
-				Definitions = select_of_type(Expression, typeof(FunctionType));
+				Definitions = Expression is BoundExpression ? select_of_type(((BoundExpression)Expression).Definitions, typeof(FunctionType)) : null; // TODO
 				Type = get_return_type(Definition);
 			}
 		}	
@@ -413,7 +420,7 @@
 			{
 				Expression.[BoundExpression]UniqueDefinition = false;
 				Expression.ExpectedType = typeof(none);
-				Definitions = select_of_name(select_of_type(Expression, typeof(FunctionType)), "operator[]");
+				Definitions = Expression is BoundExpression ? select_of_name(select_of_type(((BoundExpression)Expression).Definitions, typeof(FunctionType)), "operator[]") : null; // TODO
 			}
 		}	
 

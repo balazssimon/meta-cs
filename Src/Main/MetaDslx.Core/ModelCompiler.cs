@@ -52,6 +52,7 @@ namespace MetaDslx.Core
     public interface INameProvider
     {
         string GetName(object node);
+        string GetNameOf(ModelObject symbol);
         object GetValue(object node);
         IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject node);
         TextSpan GetTreeNodeTextSpan(object node);
@@ -72,6 +73,7 @@ namespace MetaDslx.Core
     {
         ModelObject GetParentScope(ModelObject obj);
         ModelObject GetCurrentScope(ModelObject obj);
+        ModelObject GetCurrentTypeScopeOf(ModelObject obj);
         IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, List<string> qualifiedName, ResolutionInfo info, ResolveFlags flags);
         IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, string name, ResolutionInfo info, ResolveFlags flags);
     }
@@ -359,6 +361,22 @@ namespace MetaDslx.Core
             return node.ToString();
         }
 
+        public string GetNameOf(ModelObject symbol)
+        {
+            if (symbol == null) return null;
+            foreach (var prop in symbol.MGetAllProperties())
+            {
+                if (prop.IsMetaName())
+                {
+                    object value = symbol.MGet(prop);
+                    if (value == null) return null;
+                    else if (value is string) return (string)value;
+                    else return value.ToString();
+                }
+            }
+            return null;
+        }
+
         public virtual IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject symbol)
         {
             List<TextSpan> result = new List<TextSpan>();
@@ -522,9 +540,9 @@ namespace MetaDslx.Core
             if (right == MetaBuiltInTypes.Any) return true;
             if (right == MetaBuiltInTypes.Object) return false;
             if (left == MetaBuiltInTypes.ModelObject) return (right is ModelObject) || (right == MetaBuiltInTypes.ModelObject);
-            if (left == MetaBuiltInTypes.MetaType) return (right is MetaType) || (right == MetaBuiltInTypes.MetaType);
+            if (left == Meta.MetaType.Instance) return (right is MetaType) || (right == Meta.MetaType.Instance);
             if (right == MetaBuiltInTypes.ModelObject) return (left is ModelObject) || (left == MetaBuiltInTypes.ModelObject);
-            if (right == MetaBuiltInTypes.MetaType) return (left is MetaType) || (left == MetaBuiltInTypes.MetaType);
+            if (right == Meta.MetaType.Instance) return (left is MetaType) || (left == Meta.MetaType.Instance);
             MetaPrimitiveType primLeft = left as MetaPrimitiveType;
             MetaPrimitiveType primRight = right as MetaPrimitiveType;
             if (primLeft != null && primRight != null)
@@ -577,8 +595,8 @@ namespace MetaDslx.Core
             if (right == MetaBuiltInTypes.Object) return false;
             if (left == MetaBuiltInTypes.ModelObject) return right == MetaBuiltInTypes.ModelObject;
             if (right == MetaBuiltInTypes.ModelObject) return false;
-            if (left == MetaBuiltInTypes.MetaType) return right == MetaBuiltInTypes.MetaType;
-            if (right == MetaBuiltInTypes.MetaType) return false;
+            if (left == Meta.MetaType.Instance) return right == Meta.MetaType.Instance;
+            if (right == Meta.MetaType.Instance) return false;
             if (left == MetaBuiltInTypes.ModelObjectList)
             {
                 if (right == MetaBuiltInTypes.ModelObjectList) return true;
@@ -725,6 +743,25 @@ namespace MetaDslx.Core
                 result = ModelContext.Current.Compiler.GlobalScope;
             }
             while (obj != null && !obj.IsMetaScope())
+            {
+                obj = obj.MParent;
+            }
+            if (obj != null)
+            {
+                result = obj;
+            }
+            return result;
+        }
+
+        public virtual ModelObject GetCurrentTypeScopeOf(ModelObject obj)
+        {
+            ModelContext ctx = ModelContext.Current;
+            ModelObject result = null;
+            if (ctx != null)
+            {
+                result = ModelContext.Current.Compiler.GlobalScope;
+            }
+            while (obj != null && !obj.IsMetaScope() && !obj.IsMetaType())
             {
                 obj = obj.MParent;
             }

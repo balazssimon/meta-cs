@@ -15,11 +15,19 @@ namespace MetaDslx.Core
         private Dictionary<ModelProperty, Dictionary<ModelProperty, Lazy<object>>> childInitializers;
 
         public ModelObject()
+            : this(true)
         {
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
+        }
+
+        public ModelObject(bool addToModelContext)
+        {
+            if (addToModelContext)
             {
-                ctx.Model.AddInstance(this);
+                ModelContext ctx = ModelContext.Current;
+                if (ctx != null)
+                {
+                    ctx.Model.AddInstance(this);
+                }
             }
             this.MetaID = Guid.NewGuid().ToString();
             this.values = new Dictionary<ModelProperty, object>();

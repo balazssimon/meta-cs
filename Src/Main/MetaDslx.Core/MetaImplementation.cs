@@ -107,7 +107,6 @@ namespace MetaDslx.Core
 
         public static readonly MetaPrimitiveType Any;
         public static readonly MetaPrimitiveType Error;
-        public static readonly MetaPrimitiveType MetaType;
 
         public static readonly MetaCollectionType ModelObjectList;
 
@@ -159,8 +158,6 @@ namespace MetaDslx.Core
             MetaBuiltInTypes.Error = MetaModelFactory.Instance.CreateMetaPrimitiveType();
             MetaBuiltInTypes.Error.Name = "*error*";
 
-            MetaBuiltInTypes.MetaType = MetaModelFactory.Instance.CreateMetaPrimitiveType();
-            MetaBuiltInTypes.MetaType.Name = "MetaType";
             MetaBuiltInTypes.ModelObjectList = MetaModelFactory.Instance.CreateMetaCollectionType();
             MetaBuiltInTypes.ModelObjectList.Kind = MetaCollectionKind.List;
             MetaBuiltInTypes.ModelObjectList.InnerType = MetaBuiltInTypes.ModelObject;
@@ -203,7 +200,7 @@ namespace MetaDslx.Core
         {
             MetaBuiltInFunctions.TypeOf = MetaModelFactory.Instance.CreateMetaFunction();
             MetaBuiltInFunctions.TypeOf.Name = "typeof";
-            MetaBuiltInFunctions.TypeOf.ReturnType = MetaBuiltInTypes.MetaType;
+            MetaBuiltInFunctions.TypeOf.ReturnType = Meta.MetaType.Instance;
             var typeOfParam = MetaModelFactory.Instance.CreateMetaParameter();
             typeOfParam.Type = MetaBuiltInTypes.Any;
             MetaBuiltInFunctions.TypeOf.Parameters.Add(typeOfParam);
@@ -211,7 +208,7 @@ namespace MetaDslx.Core
 
             MetaBuiltInFunctions.GetValueType = MetaModelFactory.Instance.CreateMetaFunction();
             MetaBuiltInFunctions.GetValueType.Name = "get_type";
-            MetaBuiltInFunctions.GetValueType.ReturnType = MetaBuiltInTypes.MetaType;
+            MetaBuiltInFunctions.GetValueType.ReturnType = Meta.MetaType.Instance;
             var getValueTypeParam = MetaModelFactory.Instance.CreateMetaParameter();
             getValueTypeParam.Type = MetaBuiltInTypes.Any;
             MetaBuiltInFunctions.GetValueType.Parameters.Add(getValueTypeParam);
@@ -219,7 +216,7 @@ namespace MetaDslx.Core
 
             MetaBuiltInFunctions.GetReturnType = MetaModelFactory.Instance.CreateMetaFunction();
             MetaBuiltInFunctions.GetReturnType.Name = "get_return_type";
-            MetaBuiltInFunctions.GetReturnType.ReturnType = MetaBuiltInTypes.MetaType;
+            MetaBuiltInFunctions.GetReturnType.ReturnType = Meta.MetaType.Instance;
             var getReturnTypeParam = MetaModelFactory.Instance.CreateMetaParameter();
             getReturnTypeParam.Type = MetaBuiltInTypes.Any;
             MetaBuiltInFunctions.GetReturnType.Parameters.Add(getReturnTypeParam);
@@ -227,7 +224,7 @@ namespace MetaDslx.Core
 
             MetaBuiltInFunctions.CurrentType = MetaModelFactory.Instance.CreateMetaFunction();
             MetaBuiltInFunctions.CurrentType.Name = "current_type";
-            MetaBuiltInFunctions.CurrentType.ReturnType = MetaBuiltInTypes.MetaType;
+            MetaBuiltInFunctions.CurrentType.ReturnType = Meta.MetaType.Instance;
             var currentTypeParam = MetaModelFactory.Instance.CreateMetaParameter();
             currentTypeParam.Type = MetaBuiltInTypes.ModelObject;
             MetaBuiltInFunctions.CurrentType.Parameters.Add(currentTypeParam);
@@ -243,12 +240,12 @@ namespace MetaDslx.Core
 
             MetaBuiltInFunctions.Balance = MetaModelFactory.Instance.CreateMetaFunction();
             MetaBuiltInFunctions.Balance.Name = "balance";
-            MetaBuiltInFunctions.Balance.ReturnType = MetaBuiltInTypes.MetaType;
+            MetaBuiltInFunctions.Balance.ReturnType = Meta.MetaType.Instance;
             var balanceLeftParam = MetaModelFactory.Instance.CreateMetaParameter();
-            balanceLeftParam.Type = MetaBuiltInTypes.MetaType;
+            balanceLeftParam.Type = Meta.MetaType.Instance;
             MetaBuiltInFunctions.Balance.Parameters.Add(balanceLeftParam);
             var balanceRightParam = MetaModelFactory.Instance.CreateMetaParameter();
-            balanceRightParam.Type = MetaBuiltInTypes.MetaType;
+            balanceRightParam.Type = Meta.MetaType.Instance;
             MetaBuiltInFunctions.Balance.Parameters.Add(balanceRightParam);
             MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Balance);
 
@@ -324,7 +321,7 @@ namespace MetaDslx.Core
             bind2Param.Type = MetaBuiltInTypes.ModelObject;
             MetaBuiltInFunctions.Bind2.Parameters.Add(bind2Param);
             MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Bind2);
-
+            
             MetaBuiltInFunctions.Bind3 = MetaModelFactory.Instance.CreateMetaFunction();
             MetaBuiltInFunctions.Bind3.Name = "bind";
             MetaBuiltInFunctions.Bind3.ReturnType = MetaBuiltInTypes.ModelObject;
@@ -346,7 +343,7 @@ namespace MetaDslx.Core
             bind4Param.Type = MetaBuiltInTypes.ModelObject;
             MetaBuiltInFunctions.Bind4.Parameters.Add(bind4Param);
             MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.Bind4);
-
+            
             MetaBuiltInFunctions.SelectOfType1 = MetaModelFactory.Instance.CreateMetaFunction();
             MetaBuiltInFunctions.SelectOfType1.Name = "select_of_type";
             MetaBuiltInFunctions.SelectOfType1.ReturnType = MetaBuiltInTypes.ModelObjectList;
@@ -354,7 +351,7 @@ namespace MetaDslx.Core
             selectOfType1SymbolsParam.Type = MetaBuiltInTypes.ModelObjectList;
             MetaBuiltInFunctions.SelectOfType1.Parameters.Add(selectOfType1SymbolsParam);
             var selectOfType1TypeParam = MetaModelFactory.Instance.CreateMetaParameter();
-            selectOfType1TypeParam.Type = MetaBuiltInTypes.MetaType;
+            selectOfType1TypeParam.Type = Meta.MetaType.Instance;
             MetaBuiltInFunctions.SelectOfType1.Parameters.Add(selectOfType1TypeParam);
             MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.SelectOfType1);
 
@@ -365,7 +362,7 @@ namespace MetaDslx.Core
             selectOfType2SymbolsParam.Type = MetaBuiltInTypes.ModelObject;
             MetaBuiltInFunctions.SelectOfType2.Parameters.Add(selectOfType2SymbolsParam);
             var selectOfType2TypeParam = MetaModelFactory.Instance.CreateMetaParameter();
-            selectOfType2TypeParam.Type = MetaBuiltInTypes.MetaType;
+            selectOfType2TypeParam.Type = Meta.MetaType.Instance;
             MetaBuiltInFunctions.SelectOfType2.Parameters.Add(selectOfType2TypeParam);
             MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.SelectOfType2);
 
@@ -391,13 +388,6 @@ namespace MetaDslx.Core
             MetaBuiltInFunctions.SelectOfName2.Parameters.Add(selectOfName2NameParam);
             MetaBuiltInFunctions.functions.Add(MetaBuiltInFunctions.SelectOfName2);
         }
-    }
-
-    public enum MetaScopeEntryKind
-    {
-        None,
-        Name,
-        Type
     }
 
     public static class MetaScopeEntryProperties
@@ -457,20 +447,8 @@ namespace MetaDslx.Core
 
     }
 
-    //internal class MetaModelImplementation : MetaModelImplementationBase
     internal class MetaImplementation : MetaImplementationBase
     {
-        public override void MetaAnnotation_MetaAnnotation(MetaAnnotation @this)
-        {
-            base.MetaAnnotation_MetaAnnotation(@this);
-        }
-
-        public override void MetaEnumLiteral_MetaEnumLiteral(MetaEnumLiteral @this)
-        {
-            base.MetaEnumLiteral_MetaEnumLiteral(@this);
-            ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => @this.Enum));
-        }
-
         public override void MetaFunction_MetaFunction(MetaFunction @this)
         {
             base.MetaFunction_MetaFunction(@this);
@@ -481,269 +459,10 @@ namespace MetaDslx.Core
             ((ModelObject)@this).MSet(Meta.MetaFunction.TypeProperty, type);
         }
 
-        public override void MetaPropertyInitializer_MetaPropertyInitializer(MetaPropertyInitializer @this)
-        {
-            base.MetaPropertyInitializer_MetaPropertyInitializer(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaPropertyInitializer.PropertyContextProperty,
-                    new Lazy<object>(() => compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this)));
-                ((ModelObject)@this).MLazySet(Meta.MetaPropertyInitializer.PropertyProperty,
-                    new Lazy<object>(() =>
-                    compiler.BindingProvider.Bind(
-                        (ModelObject)@this,
-                        compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)@this.PropertyContext }, ResolveKind.Name, @this.PropertyName, new ResolutionInfo(), ResolveFlags.Scope),
-                        new BindingInfo()
-                        )));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaPropertyInitializer.ValueProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => compiler.TypeProvider.GetTypeOf((ModelObject)@this.Property)));
-            }
-        }
-
-        public override void MetaInheritedPropertyInitializer_MetaInheritedPropertyInitializer(MetaInheritedPropertyInitializer @this)
-        {
-            base.MetaInheritedPropertyInitializer_MetaInheritedPropertyInitializer(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaPropertyInitializer.PropertyContextProperty,
-                    new Lazy<object>(() => compiler.TypeProvider.GetTypeOf(@this.Object)));
-                ((ModelObject)@this).MLazySet(Meta.MetaInheritedPropertyInitializer.ObjectProperty,
-                    new Lazy<object>(() =>
-                    compiler.BindingProvider.Bind(
-                        (ModelObject)@this,
-                        compiler.ResolutionProvider.Resolve(new ModelObject[] { compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this) }, ResolveKind.Name, @this.ObjectName, new ResolutionInfo(), ResolveFlags.Scope),
-                        new BindingInfo()
-                        )));
-                ((ModelObject)@this).MLazySet(Meta.MetaPropertyInitializer.PropertyProperty,
-                    new Lazy<object>(() =>
-                    compiler.BindingProvider.Bind(
-                        (ModelObject)@this,
-                        compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)@this.PropertyContext }, ResolveKind.Name, @this.PropertyName, new ResolutionInfo(), ResolveFlags.Scope),
-                        new BindingInfo()
-                        )));
-            }
-        }
-
-        public override void MetaExpression_MetaExpression(MetaExpression @this)
-        {
-            base.MetaExpression_MetaExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => compiler.TypeProvider.TypeCheck((ModelObject)@this)));
-            }
-        }
-
-        public override void MetaBracketExpression_MetaBracketExpression(MetaBracketExpression @this)
-        {
-            base.MetaBracketExpression_MetaBracketExpression(@this);
-            ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => @this.Expression.Type));
-            ((ModelObject)@this).MLazySetChild(Meta.MetaBracketExpression.ExpressionProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => @this.ExpectedType));
-        }
-
-        public override void MetaBoundExpression_MetaBoundExpression(MetaBoundExpression @this)
-        {
-            base.MetaBoundExpression_MetaBoundExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => compiler.BindingProvider.Bind((ModelObject)@this, @this.Definitions != null ? @this.Definitions.OfType<ModelObject>() : new ModelObject[0], new BindingInfo())));
-                ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => this.GetType((ModelObject)@this.Definition)));
-            }
-        }
-
-        public override void MetaThisExpression_MetaThisExpression(MetaThisExpression @this)
-        {
-            base.MetaThisExpression_MetaThisExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this)));
-            }
-        }
-
-        public override void MetaNullExpression_MetaNullExpression(MetaNullExpression @this)
-        {
-            base.MetaNullExpression_MetaNullExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaTypedElement.TypeProperty, MetaBuiltInTypes.Any);
-        }
-
-        public override void MetaTypeConversionExpression_MetaTypeConversionExpression(MetaTypeConversionExpression @this)
-        {
-            base.MetaTypeConversionExpression_MetaTypeConversionExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => @this.TypeReference));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaTypeConversionExpression.ExpressionProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Any));
-            }
-        }
-
-        public override void MetaTypeCheckExpression_MetaTypeCheckExpression(MetaTypeCheckExpression @this)
-        {
-            base.MetaTypeCheckExpression_MetaTypeCheckExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Bool));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaTypeCheckExpression.ExpressionProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Any));
-            }
-        }
-
-        public override void MetaTypeOfExpression_MetaTypeOfExpression(MetaTypeOfExpression @this)
-        {
-            base.MetaTypeOfExpression_MetaTypeOfExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaTypedElement.TypeProperty, MetaBuiltInTypes.MetaType);
-        }
-
-        public override void MetaConditionalExpression_MetaConditionalExpression(MetaConditionalExpression @this)
-        {
-            base.MetaConditionalExpression_MetaConditionalExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => compiler.TypeProvider.Balance((ModelObject)@this.Then.Type, (ModelObject)@this.Else.Type)));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaConditionalExpression.ConditionProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Bool));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaConditionalExpression.ThenProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => @this.ExpectedType));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaConditionalExpression.ElseProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => @this.ExpectedType));
-            }
-        }
-
-        public override void MetaConstantExpression_MetaConstantExpression(MetaConstantExpression @this)
-        {
-            base.MetaConstantExpression_MetaConstantExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => compiler.TypeProvider.GetTypeOf(@this.Value)));
-            }
-        }
-
-        public override void MetaIdentifierExpression_MetaIdentifierExpression(MetaIdentifierExpression @this)
-        {
-            base.MetaIdentifierExpression_MetaIdentifierExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this) }, ResolveKind.NameOrType, @this.Name, new ResolutionInfo(), ResolveFlags.All).ToList()));
-            }
-        }
-
-        public override void MetaMemberAccessExpression_MetaMemberAccessExpression(MetaMemberAccessExpression @this)
-        {
-            base.MetaMemberAccessExpression_MetaMemberAccessExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)this.GetType((ModelObject)@this.Expression) }, ResolveKind.Name, @this.Name, new ResolutionInfo(), ResolveFlags.Scope).ToList()));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaMemberAccessExpression.ExpressionProperty, Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaMemberAccessExpression.ExpressionProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.None));
-            }
-        }
-
-        public override void MetaFunctionCallExpression_MetaFunctionCallExpression(MetaFunctionCallExpression @this)
-        {
-            base.MetaFunctionCallExpression_MetaFunctionCallExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ((MetaBoundExpression)@this.Expression).Definitions.OfType<MetaFunction>().OfType<ModelObject>().ToList()));
-                ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => this.GetReturnType((ModelObject)@this.Definition)));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaFunctionCallExpression.ExpressionProperty, Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaFunctionCallExpression.ExpressionProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.None));
-            }
-        }
-
-        public override void MetaIndexerExpression_MetaIndexerExpression(MetaIndexerExpression @this)
-        {
-            base.MetaIndexerExpression_MetaIndexerExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ((MetaBoundExpression)@this.Expression).Definitions.OfType<MetaFunction>().Where(e => e.Name == "operator[]").ToList()));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaIndexerExpression.ExpressionProperty, Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaIndexerExpression.ExpressionProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.None));
-            }
-        }
-
-        public override void MetaOperatorExpression_MetaOperatorExpression(MetaOperatorExpression @this)
-        {
-            base.MetaOperatorExpression_MetaOperatorExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySet(Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => compiler.ResolutionProvider.Resolve(new ModelObject[] { compiler.ResolutionProvider.GetCurrentScope((ModelObject)@this) }, ResolveKind.Name, @this.Name, new ResolutionInfo(), ResolveFlags.All).ToList()));
-            }
-        }
-
         public override void MetaUnaryExpression_MetaUnaryExpression(MetaUnaryExpression @this)
         {
             base.MetaUnaryExpression_MetaUnaryExpression(@this);
             ((ModelObject)@this).MLazyAdd(Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Expression));
-        }
-
-        public override void MetaUnaryPlusExpression_MetaUnaryPlusExpression(MetaUnaryPlusExpression @this)
-        {
-            base.MetaUnaryPlusExpression_MetaUnaryPlusExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator+()");
-        }
-
-        public override void MetaNegateExpression_MetaNegateExpression(MetaNegateExpression @this)
-        {
-            base.MetaNegateExpression_MetaNegateExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator-()");
-        }
-
-        public override void MetaOnesComplementExpression_MetaOnesComplementExpression(MetaOnesComplementExpression @this)
-        {
-            base.MetaOnesComplementExpression_MetaOnesComplementExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator~()");
-        }
-
-        public override void MetaNotExpression_MetaNotExpression(MetaNotExpression @this)
-        {
-            base.MetaNotExpression_MetaNotExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator!()");
-        }
-
-        public override void MetaPostIncrementAssignExpression_MetaPostIncrementAssignExpression(MetaPostIncrementAssignExpression @this)
-        {
-            base.MetaPostIncrementAssignExpression_MetaPostIncrementAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()++");
-        }
-
-        public override void MetaPostDecrementAssignExpression_MetaPostDecrementAssignExpression(MetaPostDecrementAssignExpression @this)
-        {
-            base.MetaPostDecrementAssignExpression_MetaPostDecrementAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()--");
-        }
-
-        public override void MetaPreIncrementAssignExpression_MetaPreIncrementAssignExpression(MetaPreIncrementAssignExpression @this)
-        {
-            base.MetaPreIncrementAssignExpression_MetaPreIncrementAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator++()");
-        }
-
-        public override void MetaPreDecrementAssignExpression_MetaPreDecrementAssignExpression(MetaPreDecrementAssignExpression @this)
-        {
-            base.MetaPreDecrementAssignExpression_MetaPreDecrementAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator--()");
         }
 
         public override void MetaBinaryExpression_MetaBinaryExpression(MetaBinaryExpression @this)
@@ -751,239 +470,6 @@ namespace MetaDslx.Core
             base.MetaBinaryExpression_MetaBinaryExpression(@this);
             ((ModelObject)@this).MLazyAdd(Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Left));
             ((ModelObject)@this).MLazyAdd(Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Right));
-        }
-
-        public override void MetaMultiplyExpression_MetaMultiplyExpression(MetaMultiplyExpression @this)
-        {
-            base.MetaMultiplyExpression_MetaMultiplyExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()*()");
-        }
-
-        public override void MetaDivideExpression_MetaDivideExpression(MetaDivideExpression @this)
-        {
-            base.MetaDivideExpression_MetaDivideExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()/()");
-        }
-
-        public override void MetaModuloExpression_MetaModuloExpression(MetaModuloExpression @this)
-        {
-            base.MetaModuloExpression_MetaModuloExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()%()");
-        }
-
-        public override void MetaAddExpression_MetaAddExpression(MetaAddExpression @this)
-        {
-            base.MetaAddExpression_MetaAddExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()+()");
-        }
-
-        public override void MetaSubtractExpression_MetaSubtractExpression(MetaSubtractExpression @this)
-        {
-            base.MetaSubtractExpression_MetaSubtractExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()-()");
-        }
-
-        public override void MetaLeftShiftExpression_MetaLeftShiftExpression(MetaLeftShiftExpression @this)
-        {
-            base.MetaLeftShiftExpression_MetaLeftShiftExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()<<()");
-        }
-
-        public override void MetaRightShiftExpression_MetaRightShiftExpression(MetaRightShiftExpression @this)
-        {
-            base.MetaRightShiftExpression_MetaRightShiftExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()>>()");
-        }
-
-        public override void MetaLessThanExpression_MetaLessThanExpression(MetaLessThanExpression @this)
-        {
-            base.MetaLessThanExpression_MetaLessThanExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()<()");
-        }
-
-        public override void MetaLessThanOrEqualExpression_MetaLessThanOrEqualExpression(MetaLessThanOrEqualExpression @this)
-        {
-            base.MetaLessThanOrEqualExpression_MetaLessThanOrEqualExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()<=()");
-        }
-
-        public override void MetaGreaterThanExpression_MetaGreaterThanExpression(MetaGreaterThanExpression @this)
-        {
-            base.MetaGreaterThanExpression_MetaGreaterThanExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()>()");
-        }
-
-        public override void MetaGreaterThanOrEqualExpression_MetaGreaterThanOrEqualExpression(MetaGreaterThanOrEqualExpression @this)
-        {
-            base.MetaGreaterThanOrEqualExpression_MetaGreaterThanOrEqualExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()>=()");
-        }
-
-        public override void MetaEqualExpression_MetaEqualExpression(MetaEqualExpression @this)
-        {
-            base.MetaEqualExpression_MetaEqualExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()==()");
-        }
-
-        public override void MetaNotEqualExpression_MetaNotEqualExpression(MetaNotEqualExpression @this)
-        {
-            base.MetaNotEqualExpression_MetaNotEqualExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()!=()");
-        }
-
-        public override void MetaAndExpression_MetaAndExpression(MetaAndExpression @this)
-        {
-            base.MetaAndExpression_MetaAndExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()&()");
-        }
-
-        public override void MetaOrExpression_MetaOrExpression(MetaOrExpression @this)
-        {
-            base.MetaOrExpression_MetaOrExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()|()");
-        }
-
-        public override void MetaExclusiveOrExpression_MetaExclusiveOrExpression(MetaExclusiveOrExpression @this)
-        {
-            base.MetaExclusiveOrExpression_MetaExclusiveOrExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()^()");
-        }
-
-        public override void MetaAndAlsoExpression_MetaAndAlsoExpression(MetaAndAlsoExpression @this)
-        {
-            base.MetaAndAlsoExpression_MetaAndAlsoExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()&&()");
-        }
-
-        public override void MetaOrElseExpression_MetaOrElseExpression(MetaOrElseExpression @this)
-        {
-            base.MetaOrElseExpression_MetaOrElseExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()||()");
-        }
-
-        public override void MetaNullCoalescingExpression_MetaNullCoalescingExpression(MetaNullCoalescingExpression @this)
-        {
-            base.MetaNullCoalescingExpression_MetaNullCoalescingExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()??()");
-        }
-
-        public override void MetaAssignmentExpression_MetaAssignmentExpression(MetaAssignmentExpression @this)
-        {
-            base.MetaAssignmentExpression_MetaAssignmentExpression(@this);
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                IModelCompiler compiler = ctx.Compiler;
-                ((ModelObject)@this).MLazySetChild(Meta.MetaBinaryExpression.LeftProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => @this.ExpectedType));
-                ((ModelObject)@this).MLazySetChild(Meta.MetaBinaryExpression.RightProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => @this.Type));
-                ((ModelObject)@this).MLazySet(Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => this.GetType((ModelObject)@this.Left)));
-            }
-        }
-
-        public override void MetaAssignExpression_MetaAssignExpression(MetaAssignExpression @this)
-        {
-            base.MetaAssignExpression_MetaAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()=()");
-        }
-
-        public override void MetaMultiplyAssignExpression_MetaMultiplyAssignExpression(MetaMultiplyAssignExpression @this)
-        {
-            base.MetaMultiplyAssignExpression_MetaMultiplyAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()*=()");
-        }
-
-        public override void MetaDivideAssignExpression_MetaDivideAssignExpression(MetaDivideAssignExpression @this)
-        {
-            base.MetaDivideAssignExpression_MetaDivideAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()/=()");
-        }
-
-        public override void MetaModuloAssignExpression_MetaModuloAssignExpression(MetaModuloAssignExpression @this)
-        {
-            base.MetaModuloAssignExpression_MetaModuloAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()%=()");
-        }
-
-        public override void MetaAddAssignExpression_MetaAddAssignExpression(MetaAddAssignExpression @this)
-        {
-            base.MetaAddAssignExpression_MetaAddAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()+=()");
-        }
-
-        public override void MetaSubtractAssignExpression_MetaSubtractAssignExpression(MetaSubtractAssignExpression @this)
-        {
-            base.MetaSubtractAssignExpression_MetaSubtractAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()-=()");
-        }
-
-        public override void MetaLeftShiftAssignExpression_MetaLeftShiftAssignExpression(MetaLeftShiftAssignExpression @this)
-        {
-            base.MetaLeftShiftAssignExpression_MetaLeftShiftAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()<<=()");
-        }
-
-        public override void MetaRightShiftAssignExpression_MetaRightShiftAssignExpression(MetaRightShiftAssignExpression @this)
-        {
-            base.MetaRightShiftAssignExpression_MetaRightShiftAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()>>=()");
-        }
-
-        public override void MetaAndAssignExpression_MetaAndAssignExpression(MetaAndAssignExpression @this)
-        {
-            base.MetaAndAssignExpression_MetaAndAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()&=()");
-        }
-
-        public override void MetaOrAssignExpression_MetaOrAssignExpression(MetaOrAssignExpression @this)
-        {
-            base.MetaOrAssignExpression_MetaOrAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()|=()");
-        }
-
-        public override void MetaExclusiveOrAssignExpression_MetaExclusiveOrAssignExpression(MetaExclusiveOrAssignExpression @this)
-        {
-            base.MetaExclusiveOrAssignExpression_MetaExclusiveOrAssignExpression(@this);
-            ((ModelObject)@this).MSet(Meta.MetaOperatorExpression.NameProperty, "operator()^=()");
-        }
-
-        private MetaType GetType(ModelObject symbol)
-        {
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                return ctx.Compiler.TypeProvider.GetTypeOf(symbol);
-            }
-            else
-            {
-                return MetaBuiltInTypes.Error;
-            }
-        }
-
-        private MetaType GetReturnType(ModelObject symbol)
-        {
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
-            {
-                return ctx.Compiler.TypeProvider.GetReturnTypeOf(symbol);
-            }
-            else
-            {
-                return MetaBuiltInTypes.Error;
-            }
-        }
-
-
-        public override void MetaProperty_MetaProperty(MetaProperty @this)
-        {
-            base.MetaProperty_MetaProperty(@this);
-            @this.Kind = MetaPropertyKind.Normal;
-            ((ModelObject)@this).MMakeDefault();
-        }
-
-        public override MetaNamespace MetaDeclaration_Namespace(MetaDeclaration @this)
-        {
-            if (@this.Model == null) return null;
-            return @this.Model.Namespace;
         }
 
         public override IList<MetaOperation> MetaClass_GetAllOperations(MetaClass @this)
@@ -1040,13 +526,6 @@ namespace MetaDslx.Core
             }
             return result;
         }
-
-        public override void MetaCollectionType_MetaCollectionType(MetaCollectionType @this)
-        {
-            base.MetaCollectionType_MetaCollectionType(@this);
-            @this.Kind = MetaCollectionKind.List;
-            ((ModelObject)@this).MMakeDefault();
-        }
     }
 
     internal static class MetaModelExtensions
@@ -1068,14 +547,6 @@ namespace MetaDslx.Core
             }
             return result;
         }
-        /*
-        public static string CSharpName(this MetaScopeEntry @this)
-        {
-            if (@this == null) return string.Empty;
-            MetaNamedElement ne = @this as MetaNamedElement;
-            if (ne != null) return "Meta"+ne.Name;
-            else return string.Empty;
-        }*/
 
         public static string CSharpFullName(this MetaModel @this)
         {

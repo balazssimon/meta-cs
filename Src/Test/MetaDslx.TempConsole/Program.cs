@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.TempConsole
 {
+    /*
     public class A
     {
         public partial class B
@@ -38,6 +39,8 @@ namespace MetaDslx.TempConsole
     {
 
     }
+    */
+
     class Program
     {
         static void Main(string[] args)
@@ -72,7 +75,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
@@ -131,6 +134,8 @@ namespace MetaDslx.TempConsole
             //Meta.MetaTypedElement.StaticInit();
             //Console.WriteLine(Meta.MetaTypedElement.TypeProperty);
             //Meta.StaticInit();
+            //Console.WriteLine(Meta.Model);
+            
             Model model = new Model();
             using (new ModelContextScope(model))
             {
@@ -171,6 +176,12 @@ namespace MetaDslx.TempConsole
                             {
                                 writer.WriteLine("  Uri=" + mo.MGet(mp));
                                 Console.WriteLine("  Uri=" + mo.MGet(mp));
+                            }
+                            mp = mo.MFindProperty("IsAbstract");
+                            if (mp != null)
+                            {
+                                writer.WriteLine("  IsAbstract=" + mo.MGet(mp));
+                                Console.WriteLine("  IsAbstract=" + mo.MGet(mp));
                             }
                             mp = mo.MFindProperty("NoTypeError");
                             if (mp != null)

@@ -1357,44 +1357,55 @@ namespace MetaDslx.Compiler
                     }
                 }
             }
-            PropertyAnnotation pa = this.CurrentProperty;
-            if (pa != null)
+            List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).Where(p => p.HasValue).ToList();
+            if (pas.Count > 0)
             {
-                if (pa.HasValue)
+                foreach (var pa in pas)
                 {
                     this.SetProperty(node, this.ActiveSymbol, pa, pa.Value);
-                    pa = null;
                 }
             }
             else
             {
-                pa = this.ActiveProperty;
-                if (pa != null && pa.HasValue)
+                PropertyAnnotation pa = this.CurrentProperty;
+                if (pa != null)
                 {
-                    pa = null;
-                }
-            }
-            if (pa != null)
-            {
-                ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
-                if (va != null)
-                {
-                    if (va.HasValue)
+                    if (pa.HasValue)
                     {
-                        this.SetProperty(node, this.ActiveSymbol, pa, va.Value);
-                    }
-                    else
-                    {
-                        object value = this.Compiler.NameProvider.GetValue(node);
-                        this.SetProperty(node, this.ActiveSymbol, pa, value);
+                        this.SetProperty(node, this.ActiveSymbol, pa, pa.Value);
+                        pa = null;
                     }
                 }
                 else
                 {
-                    ModelObject symbol = this.CurrentSymbol;
-                    if (symbol != null)
+                    pa = this.ActiveProperty;
+                    if (pa != null && pa.HasValue)
                     {
-                        this.SetProperty(node, this.ParentSymbol, pa, symbol);
+                        pa = null;
+                    }
+                }
+                if (pa != null)
+                {
+                    ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
+                    if (va != null)
+                    {
+                        if (va.HasValue)
+                        {
+                            this.SetProperty(node, this.ActiveSymbol, pa, va.Value);
+                        }
+                        else
+                        {
+                            object value = this.Compiler.NameProvider.GetValue(node);
+                            this.SetProperty(node, this.ActiveSymbol, pa, value);
+                        }
+                    }
+                    else
+                    {
+                        ModelObject symbol = this.CurrentSymbol;
+                        if (symbol != null)
+                        {
+                            this.SetProperty(node, this.ParentSymbol, pa, symbol);
+                        }
                     }
                 }
             }

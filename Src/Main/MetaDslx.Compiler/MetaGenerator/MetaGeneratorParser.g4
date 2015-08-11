@@ -39,7 +39,8 @@ statement
     | returnStatement TSemicolon
     | expressionStatement TSemicolon
     | ifStatement
-    | loopStatement;
+    | loopStatement
+	| switchStatement;
 
 variableDeclarationStatement : typeReference identifier (TAssign expression)?;
 returnStatement : KReturn expression;
@@ -64,6 +65,17 @@ loopWhereExpression : KWhere expression;
 loopRunExpression : (TSemicolon loopRunList)+;
 loopRunList : loopRun (TComma loopRun)*;
 loopRun : variableDeclarationStatement | expressionStatement;
+switchStatement : switchStatementBegin switchBranchStatement* switchDefaultStatement? switchStatementEnd;
+switchStatementBegin : KSwitch TOpenParenthesis expression TCloseParenthesis;
+switchStatementEnd : KEnd KSwitch;
+switchBranchStatement : switchBranchHeadStatement body;
+switchBranchHeadStatement : switchCaseOrTypeIsHeadStatement+ | switchTypeAsHeadStatement;
+switchCaseOrTypeIsHeadStatement : switchCaseHeadStatement | switchTypeIsHeadStatement;
+switchCaseHeadStatement : KCase expressionList TColon;
+switchTypeIsHeadStatement : KType KIs typeReferenceList TColon;
+switchTypeAsHeadStatement : KType KAs typeReference TColon;
+switchDefaultStatement : switchDefaultHeadStatement body;
+switchDefaultHeadStatement : KDefault TColon;
 
 templateDeclaration : templateSignature templateBody KEndTemplate;
 templateSignature : KTemplate identifier TOpenParenthesis paramList? TCloseParenthesis;
@@ -81,15 +93,20 @@ templateStatement
     | ifStatementElse
     | ifStatementEnd
     | loopStatementBegin
-    | loopStatementEnd;
+    | loopStatementEnd
+	| switchStatementBegin
+	| switchStatementEnd
+	| switchBranchHeadStatement
+	| switchDefaultHeadStatement;
 
 //*** Expressions
 
-typeArgumentList : TLessThan typeReference (TComma typeReference)* TGreaterThan;
+typeArgumentList : TLessThan typeReferenceList TGreaterThan;
 
 predefinedType 
     : KBool | KByte | KChar | KDecimal | KDouble | KFloat | KInt | KLong 
     | KObject | KSByte | KShort | KString | KUInt | KULong | KUShort;
+
 typeReferenceList : typeReference (TComma typeReference)*;
 typeReference : arrayType | nullableType | genericType | simpleType;
 arrayType : (nullableType | genericType | simpleType) rankSpecifiers;

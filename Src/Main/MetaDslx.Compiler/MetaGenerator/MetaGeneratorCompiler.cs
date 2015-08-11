@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Antlr4.Runtime.Misc;
 
 namespace MetaDslx.Compiler
 {
@@ -70,6 +71,15 @@ namespace MetaDslx.Compiler
         public string Name { get; set; }
         public string Type { get; set; }
         public MetaGeneratorParser.LoopChainItemContext ChainItem { get; set; }
+    }
+
+    internal class SwitchInfo
+    {
+        public string TmpName { get; set; }
+        public int CaseCount { get; set; }
+        public string IdentifierName { get; set; }
+        public bool AllowTypeAs { get; set; }
+        public MetaGeneratorParser.TypeReferenceContext TypeAsContext { get; set; }
     }
 
     internal static class ContextExtensions
@@ -282,6 +292,7 @@ namespace MetaDslx.Compiler
     internal class MetaGenCSharpClassVisitor : MetaGenVisitor
     {
         private int tmpCounter = 0;
+        private List<SwitchInfo> switchStack = new List<SwitchInfo>();
 
         public MetaGenCSharpClassVisitor(StringBuilder sb)
             : base(sb)
@@ -768,7 +779,42 @@ namespace MetaDslx.Compiler
 
         public override object VisitIdentifierExpression(MetaGeneratorParser.IdentifierExpressionContext context)
         {
-            Write(context.GetText());
+            if (this.switchStack.Count > 0)
+            {
+                string name = context.GetText();
+                List<MetaGeneratorParser.TypeReferenceContext> casts = new List<MetaGeneratorParser.TypeReferenceContext>();
+                for (int i = this.switchStack.Count - 1; i >= 0; i--)
+                {
+                    SwitchInfo switchInfo = this.switchStack[i];
+                    if (switchInfo.IdentifierName == name)
+                    {
+                        if (switchInfo.AllowTypeAs && switchInfo.TypeAsContext != null)
+                        {
+                            casts.Add(switchInfo.TypeAsContext);
+                        }
+                    }
+                }
+                if (casts.Count > 0)
+                {
+                    Write("(");
+                    for (int i = 0; i < casts.Count; i++)
+                    {
+                        Write("(");
+                        Write(casts[i].GetText());
+                        Write(")");
+                    }
+                    Write(name);
+                    Write(")");
+                }
+                else
+                {
+                    Write(name);
+                }
+            }
+            else
+            {
+                Write(context.GetText());
+            }
             return null;
         }
 
@@ -1495,6 +1541,180 @@ namespace MetaDslx.Compiler
                 Visit(context.expressionList());
             }
             Write(")");
+            return null;
+        }
+
+
+        public override object VisitSwitchStatementBegin([NotNull] MetaGeneratorParser.SwitchStatementBeginContext context)
+        {
+            string tmp1 = NewTmp();
+            SwitchInfo switchInfo =
+                new SwitchInfo()
+                {
+                    TmpName = tmp1
+                };
+            this.switchStack.Add(switchInfo);
+            WriteIndent();
+            Write("var {0} = ", tmp1);
+            MetaGeneratorParser.IdentifierExpressionContext id = context.expression() as MetaGeneratorParser.IdentifierExpressionContext;
+            if (id != null && id.typeArgumentList() == null)
+            {
+                switchInfo.AllowTypeAs = true;
+                switchInfo.IdentifierName = id.identifier().GetText();
+            }
+            this.Visit(context.expression());
+            Write("; {0}", context.expression().ToComment());
+            AppendLine();
+            return null;
+        }
+
+        public override object VisitSwitchStatementEnd([NotNull] MetaGeneratorParser.SwitchStatementEndContext context)
+        {
+            if (this.switchStack.Count > 0)
+            {
+                this.switchStack.RemoveAt(this.switchStack.Count - 1);
+            }
+            DecIndent();
+            WriteIndent();
+            Write("}");
+            Write("{0}", context.ToComment());
+            AppendLine();
+            return null;
+        }
+
+        public override object VisitSwitchBranchHeadStatement([NotNull] MetaGeneratorParser.SwitchBranchHeadStatementContext context)
+        {
+            SwitchInfo switchInfo = null;
+            if (this.switchStack.Count > 0)
+            {
+                switchInfo = this.switchStack[this.switchStack.Count - 1];
+            }
+            else
+            {
+                switchInfo = new SwitchInfo();
+            }
+            if (switchInfo.CaseCount > 0)
+            {
+                DecIndent();
+                WriteLine("}");
+                WriteIndent();
+                Write("else ");
+            }
+            else
+            {
+                WriteIndent();
+            }
+            switchInfo.CaseCount = switchInfo.CaseCount + 1;
+            switchInfo.TypeAsContext = null;
+            if (context.switchTypeAsHeadStatement() != null)
+            {
+                if (switchInfo.AllowTypeAs)
+                {
+                    switchInfo.TypeAsContext = context.switchTypeAsHeadStatement().typeReference();
+                }
+                else
+                {
+                    // TODO: error message
+                }
+                Write("if ({0} is ", switchInfo.IdentifierName);
+                Write(context.switchTypeAsHeadStatement().typeReference().GetText());
+                Write(") {0}", context.ToComment());
+            }
+            else
+            {
+                Write("if (");
+                MetaGeneratorParser.SwitchCaseOrTypeIsHeadStatementContext currentCase = null;
+                for (int i = 0; i < context.switchCaseOrTypeIsHeadStatement().Length; i++)
+                {
+                    currentCase = context.switchCaseOrTypeIsHeadStatement()[i];
+                    if (i == 0)
+                    {
+                        IncIndent();
+                    }
+                    else
+                    {
+                        WriteIndent();
+                    }
+                    Visit(currentCase);
+                    if (i == context.switchCaseOrTypeIsHeadStatement().Length - 1)
+                    {
+                        Write(") {0}", currentCase.ToComment());
+                        DecIndent();
+                    }
+                    else
+                    {
+                        Write(" || {0}", currentCase.ToComment());
+                        AppendLine();
+                    }
+                }
+            }
+            AppendLine();
+            WriteLine("{");
+            IncIndent();
+            return null;
+        }
+
+        public override object VisitSwitchCaseHeadStatement([NotNull] MetaGeneratorParser.SwitchCaseHeadStatementContext context)
+        {
+            SwitchInfo switchInfo = null;
+            if (this.switchStack.Count > 0)
+            {
+                switchInfo = this.switchStack[this.switchStack.Count - 1];
+            }
+            else
+            {
+                switchInfo = new SwitchInfo();
+            }
+            string delim = "";
+            for (int i = 0; i < context.expressionList().expression().Length; i++)
+            {
+                Write("{0}{1} == ", delim, switchInfo.TmpName);
+                Visit(context.expressionList().expression()[i]);
+                delim = " || ";
+            }
+            return null;
+        }
+
+        public override object VisitSwitchTypeIsHeadStatement([NotNull] MetaGeneratorParser.SwitchTypeIsHeadStatementContext context)
+        {
+            SwitchInfo switchInfo = null;
+            if (this.switchStack.Count > 0)
+            {
+                switchInfo = this.switchStack[this.switchStack.Count - 1];
+            }
+            else
+            {
+                switchInfo = new SwitchInfo();
+            }
+            Write("{0} is ", switchInfo.TmpName);
+            string delim = "";
+            for (int i = 0; i < context.typeReferenceList().typeReference().Length; i++)
+            {
+                Write("{0}{1} == ", delim, switchInfo.TmpName);
+                Write(context.typeReferenceList().typeReference()[i].GetText());
+                delim = " || ";
+            }
+            return null;
+        }
+
+        public override object VisitSwitchDefaultHeadStatement([NotNull] MetaGeneratorParser.SwitchDefaultHeadStatementContext context)
+        {
+            SwitchInfo switchInfo = null;
+            if (this.switchStack.Count > 0)
+            {
+                switchInfo = this.switchStack[this.switchStack.Count - 1];
+            }
+            else
+            {
+                switchInfo = new SwitchInfo();
+            }
+            DecIndent();
+            WriteLine("}");
+            WriteLine("else {0}", context.ToComment());
+            WriteLine("{");
+            IncIndent();
+            switchInfo.CaseCount = switchInfo.CaseCount + 1;
+            switchInfo.TypeAsContext = null;
             return null;
         }
     }

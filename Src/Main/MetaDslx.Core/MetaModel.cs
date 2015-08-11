@@ -9,110 +9,215 @@ namespace MetaDslx.Core
 {
     public static class Meta
     {
+    	internal static global::MetaDslx.Core.Model model;
+    
         static Meta()
         {
+    	    Meta.model = new global::MetaDslx.Core.Model();
             MetaAnnotatedElement.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAnnotatedElement.Instance);
             MetaNamedElement.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaNamedElement.Instance);
             MetaTypedElement.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaTypedElement.Instance);
             MetaType.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaType.Instance);
             MetaAnnotation.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAnnotation.Instance);
             MetaNamespace.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaNamespace.Instance);
             MetaModel.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaModel.Instance);
             MetaDeclaration.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaDeclaration.Instance);
             MetaCollectionType.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaCollectionType.Instance);
             MetaNullableType.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaNullableType.Instance);
             MetaPrimitiveType.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaPrimitiveType.Instance);
             MetaEnum.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaEnum.Instance);
             MetaEnumLiteral.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaEnumLiteral.Instance);
             MetaClass.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaClass.Instance);
             MetaFunctionType.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaFunctionType.Instance);
             MetaFunction.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaFunction.Instance);
             MetaOperation.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaOperation.Instance);
             MetaConstructor.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaConstructor.Instance);
             MetaParameter.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaParameter.Instance);
             MetaProperty.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaProperty.Instance);
             MetaPropertyInitializer.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaPropertyInitializer.Instance);
             MetaSynthetizedPropertyInitializer.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaSynthetizedPropertyInitializer.Instance);
             MetaInheritedPropertyInitializer.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaInheritedPropertyInitializer.Instance);
             MetaExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaExpression.Instance);
             MetaBracketExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaBracketExpression.Instance);
             MetaBoundExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaBoundExpression.Instance);
             MetaThisExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaThisExpression.Instance);
             MetaNullExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaNullExpression.Instance);
             MetaTypeConversionExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaTypeConversionExpression.Instance);
             MetaTypeAsExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaTypeAsExpression.Instance);
             MetaTypeCastExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaTypeCastExpression.Instance);
             MetaTypeCheckExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaTypeCheckExpression.Instance);
             MetaTypeOfExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaTypeOfExpression.Instance);
             MetaConditionalExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaConditionalExpression.Instance);
             MetaConstantExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaConstantExpression.Instance);
             MetaIdentifierExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaIdentifierExpression.Instance);
             MetaMemberAccessExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaMemberAccessExpression.Instance);
             MetaFunctionCallExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaFunctionCallExpression.Instance);
             MetaIndexerExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaIndexerExpression.Instance);
             MetaOperatorExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaOperatorExpression.Instance);
             MetaUnaryExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaUnaryExpression.Instance);
             MetaUnaryPlusExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaUnaryPlusExpression.Instance);
             MetaNegateExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaNegateExpression.Instance);
             MetaOnesComplementExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaOnesComplementExpression.Instance);
             MetaNotExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaNotExpression.Instance);
             MetaUnaryAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaUnaryAssignExpression.Instance);
             MetaPostIncrementAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaPostIncrementAssignExpression.Instance);
             MetaPostDecrementAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaPostDecrementAssignExpression.Instance);
             MetaPreIncrementAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaPreIncrementAssignExpression.Instance);
             MetaPreDecrementAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaPreDecrementAssignExpression.Instance);
             MetaBinaryExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaBinaryExpression.Instance);
             MetaBinaryArithmeticExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaBinaryArithmeticExpression.Instance);
             MetaMultiplyExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaMultiplyExpression.Instance);
             MetaDivideExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaDivideExpression.Instance);
             MetaModuloExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaModuloExpression.Instance);
             MetaAddExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAddExpression.Instance);
             MetaSubtractExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaSubtractExpression.Instance);
             MetaLeftShiftExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaLeftShiftExpression.Instance);
             MetaRightShiftExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaRightShiftExpression.Instance);
             MetaBinaryComparisonExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaBinaryComparisonExpression.Instance);
             MetaLessThanExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaLessThanExpression.Instance);
             MetaLessThanOrEqualExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaLessThanOrEqualExpression.Instance);
             MetaGreaterThanExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaGreaterThanExpression.Instance);
             MetaGreaterThanOrEqualExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaGreaterThanOrEqualExpression.Instance);
             MetaEqualExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaEqualExpression.Instance);
             MetaNotEqualExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaNotEqualExpression.Instance);
             MetaBinaryLogicalExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaBinaryLogicalExpression.Instance);
             MetaAndExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAndExpression.Instance);
             MetaOrExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaOrExpression.Instance);
             MetaExclusiveOrExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaExclusiveOrExpression.Instance);
             MetaAndAlsoExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAndAlsoExpression.Instance);
             MetaOrElseExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaOrElseExpression.Instance);
             MetaNullCoalescingExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaNullCoalescingExpression.Instance);
             MetaAssignmentExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAssignmentExpression.Instance);
             MetaAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAssignExpression.Instance);
             MetaArithmeticAssignmentExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaArithmeticAssignmentExpression.Instance);
             MetaMultiplyAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaMultiplyAssignExpression.Instance);
             MetaDivideAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaDivideAssignExpression.Instance);
             MetaModuloAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaModuloAssignExpression.Instance);
             MetaAddAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAddAssignExpression.Instance);
             MetaSubtractAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaSubtractAssignExpression.Instance);
             MetaLeftShiftAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaLeftShiftAssignExpression.Instance);
             MetaRightShiftAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaRightShiftAssignExpression.Instance);
             MetaLogicalAssignmentExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaLogicalAssignmentExpression.Instance);
             MetaAndAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaAndAssignExpression.Instance);
             MetaExclusiveOrAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaExclusiveOrAssignExpression.Instance);
             MetaOrAssignExpression.StaticInit();
+            model.AddInstance((global::MetaDslx.Core.ModelObject)MetaOrAssignExpression.Instance);
         }
     
         internal static void StaticInit()
         {
         }
     
+        public static MetaDslx.Core.Model Model
+        {
+            get { return Meta.model; }
+        }
+    
         
         public static class MetaAnnotatedElement
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaAnnotatedElement()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaAnnotatedElement.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaAnnotatedElement.instance.IsAbstract = true;
+                MetaAnnotatedElement.instance.Name = "MetaAnnotatedElement";
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaAnnotatedElement.instance; }
             }
         
             
@@ -124,12 +229,22 @@ namespace MetaDslx.Core
         
         public static class MetaNamedElement
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaNamedElement()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaNamedElement.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaNamedElement.instance.IsAbstract = true;
+                MetaNamedElement.instance.Name = "MetaNamedElement";
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaNamedElement.instance; }
             }
         
             [Name]
@@ -140,12 +255,22 @@ namespace MetaDslx.Core
         
         public static class MetaTypedElement
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaTypedElement()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaTypedElement.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaTypedElement.instance.IsAbstract = true;
+                MetaTypedElement.instance.Name = "MetaTypedElement";
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaTypedElement.instance; }
             }
         
             [Type]
@@ -156,36 +281,67 @@ namespace MetaDslx.Core
         
         public static class MetaType
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaType()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaType.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaType.instance.IsAbstract = true;
+                MetaType.instance.Name = "MetaType";
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaType.instance; }
             }
         
         }
         
         public static class MetaAnnotation
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaAnnotation()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaAnnotation.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaAnnotation.instance.Name = "MetaAnnotation";
+                ((ModelCollection)MetaAnnotation.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaAnnotation.instance; }
             }
         
         }
         
         public static class MetaNamespace
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaNamespace()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaNamespace.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaNamespace.instance.Name = "MetaNamespace";
+                ((ModelCollection)MetaNamespace.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+                ((ModelCollection)MetaNamespace.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaAnnotatedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaNamespace.instance; }
             }
         
             
@@ -213,12 +369,23 @@ namespace MetaDslx.Core
         
         public static class MetaModel
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaModel()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaModel.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaModel.instance.Name = "MetaModel";
+                ((ModelCollection)MetaModel.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+                ((ModelCollection)MetaModel.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaAnnotatedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaModel.instance; }
             }
         
             
@@ -254,12 +421,24 @@ namespace MetaDslx.Core
         
         public static class MetaDeclaration
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaDeclaration()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaDeclaration.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaDeclaration.instance.IsAbstract = true;
+                MetaDeclaration.instance.Name = "MetaDeclaration";
+                ((ModelCollection)MetaDeclaration.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+                ((ModelCollection)MetaDeclaration.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaAnnotatedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaDeclaration.instance; }
             }
         
             
@@ -276,12 +455,22 @@ namespace MetaDslx.Core
         
         public static class MetaCollectionType
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaCollectionType()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaCollectionType.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaCollectionType.instance.Name = "MetaCollectionType";
+                ((ModelCollection)MetaCollectionType.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaType.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaCollectionType.instance; }
             }
         
             
@@ -296,12 +485,22 @@ namespace MetaDslx.Core
         
         public static class MetaNullableType
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaNullableType()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaNullableType.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaNullableType.instance.Name = "MetaNullableType";
+                ((ModelCollection)MetaNullableType.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaType.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaNullableType.instance; }
             }
         
             
@@ -312,24 +511,46 @@ namespace MetaDslx.Core
         
         public static class MetaPrimitiveType
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaPrimitiveType()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaPrimitiveType.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaPrimitiveType.instance.Name = "MetaPrimitiveType";
+                ((ModelCollection)MetaPrimitiveType.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaType.Instance));
+                ((ModelCollection)MetaPrimitiveType.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaPrimitiveType.instance; }
             }
         
         }
         
         public static class MetaEnum
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaEnum()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaEnum.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaEnum.instance.Name = "MetaEnum";
+                ((ModelCollection)MetaEnum.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaType.Instance));
+                ((ModelCollection)MetaEnum.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaDeclaration.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaEnum.instance; }
             }
         
             [ScopeEntry]
@@ -348,12 +569,23 @@ namespace MetaDslx.Core
         
         public static class MetaEnumLiteral
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaEnumLiteral()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaEnumLiteral.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaEnumLiteral.instance.Name = "MetaEnumLiteral";
+                ((ModelCollection)MetaEnumLiteral.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+                ((ModelCollection)MetaEnumLiteral.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaTypedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaEnumLiteral.instance; }
             }
         
             
@@ -365,12 +597,23 @@ namespace MetaDslx.Core
         
         public static class MetaClass
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaClass()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaClass.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaClass.instance.Name = "MetaClass";
+                ((ModelCollection)MetaClass.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaType.Instance));
+                ((ModelCollection)MetaClass.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaDeclaration.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaClass.instance; }
             }
         
             
@@ -384,7 +627,6 @@ namespace MetaDslx.Core
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "Class")]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaProperty), "Parent")]
             public static readonly ModelProperty PropertiesProperty =
                 ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.Meta.MetaClass));
             
@@ -404,12 +646,22 @@ namespace MetaDslx.Core
         
         public static class MetaFunctionType
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaFunctionType()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaFunctionType.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaFunctionType.instance.Name = "MetaFunctionType";
+                ((ModelCollection)MetaFunctionType.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaType.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaFunctionType.instance; }
             }
         
             
@@ -424,12 +676,24 @@ namespace MetaDslx.Core
         
         public static class MetaFunction
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaFunction()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaFunction.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaFunction.instance.Name = "MetaFunction";
+                ((ModelCollection)MetaFunction.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+                ((ModelCollection)MetaFunction.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaTypedElement.Instance));
+                ((ModelCollection)MetaFunction.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaAnnotatedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaFunction.instance; }
             }
         
             [Type]
@@ -452,12 +716,22 @@ namespace MetaDslx.Core
         
         public static class MetaOperation
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaOperation()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaOperation.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaOperation.instance.Name = "MetaOperation";
+                ((ModelCollection)MetaOperation.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaFunction.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaOperation.instance; }
             }
         
             
@@ -470,12 +744,23 @@ namespace MetaDslx.Core
         
         public static class MetaConstructor
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaConstructor()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaConstructor.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaConstructor.instance.Name = "MetaConstructor";
+                ((ModelCollection)MetaConstructor.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+                ((ModelCollection)MetaConstructor.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaAnnotatedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaConstructor.instance; }
             }
         
             
@@ -493,12 +778,24 @@ namespace MetaDslx.Core
         
         public static class MetaParameter
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaParameter()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaParameter.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaParameter.instance.Name = "MetaParameter";
+                ((ModelCollection)MetaParameter.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+                ((ModelCollection)MetaParameter.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaTypedElement.Instance));
+                ((ModelCollection)MetaParameter.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaAnnotatedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaParameter.instance; }
             }
         
             
@@ -510,19 +807,26 @@ namespace MetaDslx.Core
         
         public static class MetaProperty
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaProperty()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaProperty.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaProperty.instance.Name = "MetaProperty";
+                ((ModelCollection)MetaProperty.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaNamedElement.Instance));
+                ((ModelCollection)MetaProperty.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaTypedElement.Instance));
+                ((ModelCollection)MetaProperty.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaAnnotatedElement.Instance));
             }
         
-            
-            [OppositeAttribute(typeof(global::MetaDslx.Core.Meta.MetaClass), "Properties")]
-            public static readonly ModelProperty ParentProperty =
-                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
-            
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaProperty.instance; }
+            }
+        
             
             public static readonly ModelProperty KindProperty =
                 ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaPropertyKind), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.Meta.MetaProperty));
@@ -561,12 +865,22 @@ namespace MetaDslx.Core
         
         public static class MetaPropertyInitializer
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaPropertyInitializer()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaPropertyInitializer.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaPropertyInitializer.instance.IsAbstract = true;
+                MetaPropertyInitializer.instance.Name = "MetaPropertyInitializer";
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaPropertyInitializer.instance; }
             }
         
             
@@ -595,24 +909,44 @@ namespace MetaDslx.Core
         
         public static class MetaSynthetizedPropertyInitializer
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaSynthetizedPropertyInitializer()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaSynthetizedPropertyInitializer.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaSynthetizedPropertyInitializer.instance.Name = "MetaSynthetizedPropertyInitializer";
+                ((ModelCollection)MetaSynthetizedPropertyInitializer.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaPropertyInitializer.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaSynthetizedPropertyInitializer.instance; }
             }
         
         }
         
         public static class MetaInheritedPropertyInitializer
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaInheritedPropertyInitializer()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaInheritedPropertyInitializer.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaInheritedPropertyInitializer.instance.Name = "MetaInheritedPropertyInitializer";
+                ((ModelCollection)MetaInheritedPropertyInitializer.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaPropertyInitializer.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaInheritedPropertyInitializer.instance; }
             }
         
             
@@ -627,12 +961,23 @@ namespace MetaDslx.Core
         
         public static class MetaExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaExpression.instance.IsAbstract = true;
+                MetaExpression.instance.Name = "MetaExpression";
+                ((ModelCollection)MetaExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaTypedElement.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaExpression.instance; }
             }
         
             
@@ -649,12 +994,22 @@ namespace MetaDslx.Core
         
         public static class MetaBracketExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaBracketExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaBracketExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaBracketExpression.instance.Name = "MetaBracketExpression";
+                ((ModelCollection)MetaBracketExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaBracketExpression.instance; }
             }
         
             
@@ -666,12 +1021,23 @@ namespace MetaDslx.Core
         
         public static class MetaBoundExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaBoundExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaBoundExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaBoundExpression.instance.IsAbstract = true;
+                MetaBoundExpression.instance.Name = "MetaBoundExpression";
+                ((ModelCollection)MetaBoundExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaBoundExpression.instance; }
             }
         
             
@@ -697,36 +1063,67 @@ namespace MetaDslx.Core
         
         public static class MetaThisExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaThisExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaThisExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaThisExpression.instance.Name = "MetaThisExpression";
+                ((ModelCollection)MetaThisExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBoundExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaThisExpression.instance; }
             }
         
         }
         
         public static class MetaNullExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaNullExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaNullExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaNullExpression.instance.Name = "MetaNullExpression";
+                ((ModelCollection)MetaNullExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaNullExpression.instance; }
             }
         
         }
         
         public static class MetaTypeConversionExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaTypeConversionExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaTypeConversionExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaTypeConversionExpression.instance.IsAbstract = true;
+                MetaTypeConversionExpression.instance.Name = "MetaTypeConversionExpression";
+                ((ModelCollection)MetaTypeConversionExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaTypeConversionExpression.instance; }
             }
         
             
@@ -742,36 +1139,66 @@ namespace MetaDslx.Core
         
         public static class MetaTypeAsExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaTypeAsExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaTypeAsExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaTypeAsExpression.instance.Name = "MetaTypeAsExpression";
+                ((ModelCollection)MetaTypeAsExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaTypeConversionExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaTypeAsExpression.instance; }
             }
         
         }
         
         public static class MetaTypeCastExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaTypeCastExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaTypeCastExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaTypeCastExpression.instance.Name = "MetaTypeCastExpression";
+                ((ModelCollection)MetaTypeCastExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaTypeConversionExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaTypeCastExpression.instance; }
             }
         
         }
         
         public static class MetaTypeCheckExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaTypeCheckExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaTypeCheckExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaTypeCheckExpression.instance.Name = "MetaTypeCheckExpression";
+                ((ModelCollection)MetaTypeCheckExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaTypeCheckExpression.instance; }
             }
         
             
@@ -787,12 +1214,22 @@ namespace MetaDslx.Core
         
         public static class MetaTypeOfExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaTypeOfExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaTypeOfExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaTypeOfExpression.instance.Name = "MetaTypeOfExpression";
+                ((ModelCollection)MetaTypeOfExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaTypeOfExpression.instance; }
             }
         
             
@@ -803,12 +1240,22 @@ namespace MetaDslx.Core
         
         public static class MetaConditionalExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaConditionalExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaConditionalExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaConditionalExpression.instance.Name = "MetaConditionalExpression";
+                ((ModelCollection)MetaConditionalExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaConditionalExpression.instance; }
             }
         
             
@@ -834,12 +1281,22 @@ namespace MetaDslx.Core
         
         public static class MetaConstantExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaConstantExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaConstantExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaConstantExpression.instance.Name = "MetaConstantExpression";
+                ((ModelCollection)MetaConstantExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaConstantExpression.instance; }
             }
         
             
@@ -850,12 +1307,22 @@ namespace MetaDslx.Core
         
         public static class MetaIdentifierExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaIdentifierExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaIdentifierExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaIdentifierExpression.instance.Name = "MetaIdentifierExpression";
+                ((ModelCollection)MetaIdentifierExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBoundExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaIdentifierExpression.instance; }
             }
         
             
@@ -866,12 +1333,22 @@ namespace MetaDslx.Core
         
         public static class MetaMemberAccessExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaMemberAccessExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaMemberAccessExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaMemberAccessExpression.instance.Name = "MetaMemberAccessExpression";
+                ((ModelCollection)MetaMemberAccessExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBoundExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaMemberAccessExpression.instance; }
             }
         
             
@@ -887,12 +1364,22 @@ namespace MetaDslx.Core
         
         public static class MetaFunctionCallExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaFunctionCallExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaFunctionCallExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaFunctionCallExpression.instance.Name = "MetaFunctionCallExpression";
+                ((ModelCollection)MetaFunctionCallExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBoundExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaFunctionCallExpression.instance; }
             }
         
             
@@ -904,12 +1391,22 @@ namespace MetaDslx.Core
         
         public static class MetaIndexerExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaIndexerExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaIndexerExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaIndexerExpression.instance.Name = "MetaIndexerExpression";
+                ((ModelCollection)MetaIndexerExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBoundExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaIndexerExpression.instance; }
             }
         
             
@@ -921,12 +1418,23 @@ namespace MetaDslx.Core
         
         public static class MetaOperatorExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaOperatorExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaOperatorExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaOperatorExpression.instance.IsAbstract = true;
+                MetaOperatorExpression.instance.Name = "MetaOperatorExpression";
+                ((ModelCollection)MetaOperatorExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBoundExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaOperatorExpression.instance; }
             }
         
             
@@ -938,12 +1446,23 @@ namespace MetaDslx.Core
         
         public static class MetaUnaryExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaUnaryExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaUnaryExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaUnaryExpression.instance.IsAbstract = true;
+                MetaUnaryExpression.instance.Name = "MetaUnaryExpression";
+                ((ModelCollection)MetaUnaryExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaOperatorExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaUnaryExpression.instance; }
             }
         
             
@@ -955,120 +1474,222 @@ namespace MetaDslx.Core
         
         public static class MetaUnaryPlusExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaUnaryPlusExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaUnaryPlusExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaUnaryPlusExpression.instance.Name = "MetaUnaryPlusExpression";
+                ((ModelCollection)MetaUnaryPlusExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaUnaryExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaUnaryPlusExpression.instance; }
             }
         
         }
         
         public static class MetaNegateExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaNegateExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaNegateExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaNegateExpression.instance.Name = "MetaNegateExpression";
+                ((ModelCollection)MetaNegateExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaUnaryExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaNegateExpression.instance; }
             }
         
         }
         
         public static class MetaOnesComplementExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaOnesComplementExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaOnesComplementExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaOnesComplementExpression.instance.Name = "MetaOnesComplementExpression";
+                ((ModelCollection)MetaOnesComplementExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaUnaryExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaOnesComplementExpression.instance; }
             }
         
         }
         
         public static class MetaNotExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaNotExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaNotExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaNotExpression.instance.Name = "MetaNotExpression";
+                ((ModelCollection)MetaNotExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaUnaryExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaNotExpression.instance; }
             }
         
         }
         
         public static class MetaUnaryAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaUnaryAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaUnaryAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaUnaryAssignExpression.instance.IsAbstract = true;
+                MetaUnaryAssignExpression.instance.Name = "MetaUnaryAssignExpression";
+                ((ModelCollection)MetaUnaryAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaUnaryExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaUnaryAssignExpression.instance; }
             }
         
         }
         
         public static class MetaPostIncrementAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaPostIncrementAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaPostIncrementAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaPostIncrementAssignExpression.instance.Name = "MetaPostIncrementAssignExpression";
+                ((ModelCollection)MetaPostIncrementAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaUnaryAssignExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaPostIncrementAssignExpression.instance; }
             }
         
         }
         
         public static class MetaPostDecrementAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaPostDecrementAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaPostDecrementAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaPostDecrementAssignExpression.instance.Name = "MetaPostDecrementAssignExpression";
+                ((ModelCollection)MetaPostDecrementAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaUnaryAssignExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaPostDecrementAssignExpression.instance; }
             }
         
         }
         
         public static class MetaPreIncrementAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaPreIncrementAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaPreIncrementAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaPreIncrementAssignExpression.instance.Name = "MetaPreIncrementAssignExpression";
+                ((ModelCollection)MetaPreIncrementAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaUnaryAssignExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaPreIncrementAssignExpression.instance; }
             }
         
         }
         
         public static class MetaPreDecrementAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaPreDecrementAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaPreDecrementAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaPreDecrementAssignExpression.instance.Name = "MetaPreDecrementAssignExpression";
+                ((ModelCollection)MetaPreDecrementAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaUnaryAssignExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaPreDecrementAssignExpression.instance; }
             }
         
         }
         
         public static class MetaBinaryExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaBinaryExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaBinaryExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaBinaryExpression.instance.IsAbstract = true;
+                MetaBinaryExpression.instance.Name = "MetaBinaryExpression";
+                ((ModelCollection)MetaBinaryExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaOperatorExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaBinaryExpression.instance; }
             }
         
             
@@ -1085,432 +1706,798 @@ namespace MetaDslx.Core
         
         public static class MetaBinaryArithmeticExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaBinaryArithmeticExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaBinaryArithmeticExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaBinaryArithmeticExpression.instance.IsAbstract = true;
+                MetaBinaryArithmeticExpression.instance.Name = "MetaBinaryArithmeticExpression";
+                ((ModelCollection)MetaBinaryArithmeticExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaBinaryArithmeticExpression.instance; }
             }
         
         }
         
         public static class MetaMultiplyExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaMultiplyExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaMultiplyExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaMultiplyExpression.instance.Name = "MetaMultiplyExpression";
+                ((ModelCollection)MetaMultiplyExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryArithmeticExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaMultiplyExpression.instance; }
             }
         
         }
         
         public static class MetaDivideExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaDivideExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaDivideExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaDivideExpression.instance.Name = "MetaDivideExpression";
+                ((ModelCollection)MetaDivideExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryArithmeticExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaDivideExpression.instance; }
             }
         
         }
         
         public static class MetaModuloExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaModuloExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaModuloExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaModuloExpression.instance.Name = "MetaModuloExpression";
+                ((ModelCollection)MetaModuloExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryArithmeticExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaModuloExpression.instance; }
             }
         
         }
         
         public static class MetaAddExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaAddExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaAddExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaAddExpression.instance.Name = "MetaAddExpression";
+                ((ModelCollection)MetaAddExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryArithmeticExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaAddExpression.instance; }
             }
         
         }
         
         public static class MetaSubtractExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaSubtractExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaSubtractExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaSubtractExpression.instance.Name = "MetaSubtractExpression";
+                ((ModelCollection)MetaSubtractExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryArithmeticExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaSubtractExpression.instance; }
             }
         
         }
         
         public static class MetaLeftShiftExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaLeftShiftExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaLeftShiftExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaLeftShiftExpression.instance.Name = "MetaLeftShiftExpression";
+                ((ModelCollection)MetaLeftShiftExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryArithmeticExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaLeftShiftExpression.instance; }
             }
         
         }
         
         public static class MetaRightShiftExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaRightShiftExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaRightShiftExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaRightShiftExpression.instance.Name = "MetaRightShiftExpression";
+                ((ModelCollection)MetaRightShiftExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryArithmeticExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaRightShiftExpression.instance; }
             }
         
         }
         
         public static class MetaBinaryComparisonExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaBinaryComparisonExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaBinaryComparisonExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaBinaryComparisonExpression.instance.IsAbstract = true;
+                MetaBinaryComparisonExpression.instance.Name = "MetaBinaryComparisonExpression";
+                ((ModelCollection)MetaBinaryComparisonExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaBinaryComparisonExpression.instance; }
             }
         
         }
         
         public static class MetaLessThanExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaLessThanExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaLessThanExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaLessThanExpression.instance.Name = "MetaLessThanExpression";
+                ((ModelCollection)MetaLessThanExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryComparisonExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaLessThanExpression.instance; }
             }
         
         }
         
         public static class MetaLessThanOrEqualExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaLessThanOrEqualExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaLessThanOrEqualExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaLessThanOrEqualExpression.instance.Name = "MetaLessThanOrEqualExpression";
+                ((ModelCollection)MetaLessThanOrEqualExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryComparisonExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaLessThanOrEqualExpression.instance; }
             }
         
         }
         
         public static class MetaGreaterThanExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaGreaterThanExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaGreaterThanExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaGreaterThanExpression.instance.Name = "MetaGreaterThanExpression";
+                ((ModelCollection)MetaGreaterThanExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryComparisonExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaGreaterThanExpression.instance; }
             }
         
         }
         
         public static class MetaGreaterThanOrEqualExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaGreaterThanOrEqualExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaGreaterThanOrEqualExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaGreaterThanOrEqualExpression.instance.Name = "MetaGreaterThanOrEqualExpression";
+                ((ModelCollection)MetaGreaterThanOrEqualExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryComparisonExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaGreaterThanOrEqualExpression.instance; }
             }
         
         }
         
         public static class MetaEqualExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaEqualExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaEqualExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaEqualExpression.instance.Name = "MetaEqualExpression";
+                ((ModelCollection)MetaEqualExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryComparisonExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaEqualExpression.instance; }
             }
         
         }
         
         public static class MetaNotEqualExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaNotEqualExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaNotEqualExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaNotEqualExpression.instance.Name = "MetaNotEqualExpression";
+                ((ModelCollection)MetaNotEqualExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryComparisonExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaNotEqualExpression.instance; }
             }
         
         }
         
         public static class MetaBinaryLogicalExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaBinaryLogicalExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaBinaryLogicalExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaBinaryLogicalExpression.instance.IsAbstract = true;
+                MetaBinaryLogicalExpression.instance.Name = "MetaBinaryLogicalExpression";
+                ((ModelCollection)MetaBinaryLogicalExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaBinaryLogicalExpression.instance; }
             }
         
         }
         
         public static class MetaAndExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaAndExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaAndExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaAndExpression.instance.Name = "MetaAndExpression";
+                ((ModelCollection)MetaAndExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryLogicalExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaAndExpression.instance; }
             }
         
         }
         
         public static class MetaOrExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaOrExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaOrExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaOrExpression.instance.Name = "MetaOrExpression";
+                ((ModelCollection)MetaOrExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryLogicalExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaOrExpression.instance; }
             }
         
         }
         
         public static class MetaExclusiveOrExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaExclusiveOrExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaExclusiveOrExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaExclusiveOrExpression.instance.Name = "MetaExclusiveOrExpression";
+                ((ModelCollection)MetaExclusiveOrExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryLogicalExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaExclusiveOrExpression.instance; }
             }
         
         }
         
         public static class MetaAndAlsoExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaAndAlsoExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaAndAlsoExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaAndAlsoExpression.instance.Name = "MetaAndAlsoExpression";
+                ((ModelCollection)MetaAndAlsoExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryLogicalExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaAndAlsoExpression.instance; }
             }
         
         }
         
         public static class MetaOrElseExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaOrElseExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaOrElseExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaOrElseExpression.instance.Name = "MetaOrElseExpression";
+                ((ModelCollection)MetaOrElseExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryLogicalExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaOrElseExpression.instance; }
             }
         
         }
         
         public static class MetaNullCoalescingExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaNullCoalescingExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaNullCoalescingExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaNullCoalescingExpression.instance.Name = "MetaNullCoalescingExpression";
+                ((ModelCollection)MetaNullCoalescingExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaNullCoalescingExpression.instance; }
             }
         
         }
         
         public static class MetaAssignmentExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaAssignmentExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaAssignmentExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaAssignmentExpression.instance.IsAbstract = true;
+                MetaAssignmentExpression.instance.Name = "MetaAssignmentExpression";
+                ((ModelCollection)MetaAssignmentExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaBinaryExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaAssignmentExpression.instance; }
             }
         
         }
         
         public static class MetaAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaAssignExpression.instance.Name = "MetaAssignExpression";
+                ((ModelCollection)MetaAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaAssignExpression.instance; }
             }
         
         }
         
         public static class MetaArithmeticAssignmentExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaArithmeticAssignmentExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaArithmeticAssignmentExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaArithmeticAssignmentExpression.instance.IsAbstract = true;
+                MetaArithmeticAssignmentExpression.instance.Name = "MetaArithmeticAssignmentExpression";
+                ((ModelCollection)MetaArithmeticAssignmentExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaArithmeticAssignmentExpression.instance; }
             }
         
         }
         
         public static class MetaMultiplyAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaMultiplyAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaMultiplyAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaMultiplyAssignExpression.instance.Name = "MetaMultiplyAssignExpression";
+                ((ModelCollection)MetaMultiplyAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaArithmeticAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaMultiplyAssignExpression.instance; }
             }
         
         }
         
         public static class MetaDivideAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaDivideAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaDivideAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaDivideAssignExpression.instance.Name = "MetaDivideAssignExpression";
+                ((ModelCollection)MetaDivideAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaArithmeticAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaDivideAssignExpression.instance; }
             }
         
         }
         
         public static class MetaModuloAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaModuloAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaModuloAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaModuloAssignExpression.instance.Name = "MetaModuloAssignExpression";
+                ((ModelCollection)MetaModuloAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaArithmeticAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaModuloAssignExpression.instance; }
             }
         
         }
         
         public static class MetaAddAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaAddAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaAddAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaAddAssignExpression.instance.Name = "MetaAddAssignExpression";
+                ((ModelCollection)MetaAddAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaArithmeticAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaAddAssignExpression.instance; }
             }
         
         }
         
         public static class MetaSubtractAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaSubtractAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaSubtractAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaSubtractAssignExpression.instance.Name = "MetaSubtractAssignExpression";
+                ((ModelCollection)MetaSubtractAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaArithmeticAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaSubtractAssignExpression.instance; }
             }
         
         }
         
         public static class MetaLeftShiftAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaLeftShiftAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaLeftShiftAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaLeftShiftAssignExpression.instance.Name = "MetaLeftShiftAssignExpression";
+                ((ModelCollection)MetaLeftShiftAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaArithmeticAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaLeftShiftAssignExpression.instance; }
             }
         
         }
         
         public static class MetaRightShiftAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaRightShiftAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaRightShiftAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaRightShiftAssignExpression.instance.Name = "MetaRightShiftAssignExpression";
+                ((ModelCollection)MetaRightShiftAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaArithmeticAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaRightShiftAssignExpression.instance; }
             }
         
         }
         
         public static class MetaLogicalAssignmentExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaLogicalAssignmentExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaLogicalAssignmentExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+        		MetaLogicalAssignmentExpression.instance.IsAbstract = true;
+                MetaLogicalAssignmentExpression.instance.Name = "MetaLogicalAssignmentExpression";
+                ((ModelCollection)MetaLogicalAssignmentExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaLogicalAssignmentExpression.instance; }
             }
         
         }
         
         public static class MetaAndAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaAndAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaAndAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaAndAssignExpression.instance.Name = "MetaAndAssignExpression";
+                ((ModelCollection)MetaAndAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaLogicalAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaAndAssignExpression.instance; }
             }
         
         }
         
         public static class MetaExclusiveOrAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaExclusiveOrAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaExclusiveOrAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaExclusiveOrAssignExpression.instance.Name = "MetaExclusiveOrAssignExpression";
+                ((ModelCollection)MetaExclusiveOrAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaLogicalAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaExclusiveOrAssignExpression.instance; }
             }
         
         }
         
         public static class MetaOrAssignExpression
         {
+        	internal static global::MetaDslx.Core.MetaClass instance;
             internal static void StaticInit()
             {
             }
         
             static MetaOrAssignExpression()
             {
+                global::MetaDslx.Core.Meta.StaticInit();
+                MetaOrAssignExpression.instance = global::MetaDslx.Core.MetaModelFactory.Instance.CreateMetaClass(false);
+                MetaOrAssignExpression.instance.Name = "MetaOrAssignExpression";
+                ((ModelCollection)MetaOrAssignExpression.instance.SuperClasses).MLazyAdd(new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaLogicalAssignmentExpression.Instance));
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Instance
+            {
+                get { return MetaOrAssignExpression.instance; }
             }
         
         }
@@ -1519,10 +2506,10 @@ namespace MetaDslx.Core
     
     public enum MetaCollectionKind
     {
-        Set,
         List,
-        MultiSet,
+        Set,
         MultiList,
+        MultiSet,
     }
     
     
@@ -1551,7 +2538,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaAnnotatedElementImpl()
+        public MetaAnnotatedElementImpl() 
+            : this(true)
+        {
+        }
+        public MetaAnnotatedElementImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             MetaImplementationProvider.Implementation.MetaAnnotatedElement_MetaAnnotatedElement(this);
@@ -1583,7 +2575,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaNamedElementImpl()
+        public MetaNamedElementImpl() 
+            : this(true)
+        {
+        }
+        public MetaNamedElementImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             MetaImplementationProvider.Implementation.MetaNamedElement_MetaNamedElement(this);
             this.MMakeDefault();
@@ -1615,7 +2612,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaTypedElementImpl()
+        public MetaTypedElementImpl() 
+            : this(true)
+        {
+        }
+        public MetaTypedElementImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             MetaImplementationProvider.Implementation.MetaTypedElement_MetaTypedElement(this);
             this.MMakeDefault();
@@ -1646,7 +2648,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaTypeImpl()
+        public MetaTypeImpl() 
+            : this(true)
+        {
+        }
+        public MetaTypeImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             MetaImplementationProvider.Implementation.MetaType_MetaType(this);
             this.MMakeDefault();
@@ -1666,7 +2673,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaAnnotationImpl()
+        public MetaAnnotationImpl() 
+            : this(true)
+        {
+        }
+        public MetaAnnotationImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             MetaImplementationProvider.Implementation.MetaAnnotation_MetaAnnotation(this);
             this.MMakeDefault();
@@ -1701,7 +2713,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaNamespaceImpl()
+        public MetaNamespaceImpl() 
+            : this(true)
+        {
+        }
+        public MetaNamespaceImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaNamespace.UsingsProperty, new ModelList<MetaNamespace>(this, global::MetaDslx.Core.Meta.MetaNamespace.UsingsProperty));
@@ -1793,7 +2810,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaModelImpl()
+        public MetaModelImpl() 
+            : this(true)
+        {
+        }
+        public MetaModelImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaModel.TypesProperty, new ModelList<MetaType>(this, global::MetaDslx.Core.Meta.MetaModel.TypesProperty));
@@ -1903,7 +2925,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaDeclarationImpl()
+        public MetaDeclarationImpl() 
+            : this(true)
+        {
+        }
+        public MetaDeclarationImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             MetaImplementationProvider.Implementation.MetaDeclaration_MetaDeclaration(this);
@@ -1944,7 +2971,7 @@ namespace MetaDslx.Core
         
         MetaNamespace MetaDeclaration.Namespace
         {
-            get { return MetaImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
+            get { return ((MetaDeclaration)this).Model.Namespace; }
         }
     }
     
@@ -1963,7 +2990,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaCollectionTypeImpl()
+        public MetaCollectionTypeImpl() 
+            : this(true)
+        {
+        }
+        public MetaCollectionTypeImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             MetaImplementationProvider.Implementation.MetaCollectionType_MetaCollectionType(this);
             this.MMakeDefault();
@@ -2006,7 +3038,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaNullableTypeImpl()
+        public MetaNullableTypeImpl() 
+            : this(true)
+        {
+        }
+        public MetaNullableTypeImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             MetaImplementationProvider.Implementation.MetaNullableType_MetaNullableType(this);
             this.MMakeDefault();
@@ -2037,7 +3074,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaPrimitiveTypeImpl()
+        public MetaPrimitiveTypeImpl() 
+            : this(true)
+        {
+        }
+        public MetaPrimitiveTypeImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             MetaImplementationProvider.Implementation.MetaPrimitiveType_MetaPrimitiveType(this);
             this.MMakeDefault();
@@ -2070,7 +3112,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaEnumImpl()
+        public MetaEnumImpl() 
+            : this(true)
+        {
+        }
+        public MetaEnumImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaEnum.EnumLiteralsProperty, new ModelList<MetaEnumLiteral>(this, global::MetaDslx.Core.Meta.MetaEnum.EnumLiteralsProperty));
@@ -2113,7 +3160,7 @@ namespace MetaDslx.Core
         
         MetaNamespace MetaDeclaration.Namespace
         {
-            get { return MetaImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
+            get { return ((MetaDeclaration)this).Model.Namespace; }
         }
         
         IList<MetaEnumLiteral> MetaEnum.EnumLiterals
@@ -2151,9 +3198,14 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaEnumLiteralImpl()
+        public MetaEnumLiteralImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
+        }
+        public MetaEnumLiteralImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ((MetaEnumLiteral)this).Enum));
             MetaImplementationProvider.Implementation.MetaEnumLiteral_MetaEnumLiteral(this);
             this.MMakeDefault();
         }
@@ -2213,7 +3265,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaClassImpl()
+        public MetaClassImpl() 
+            : this(true)
+        {
+        }
+        public MetaClassImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaClass.SuperClassesProperty, new ModelList<MetaClass>(this, global::MetaDslx.Core.Meta.MetaClass.SuperClassesProperty));
@@ -2257,7 +3314,7 @@ namespace MetaDslx.Core
         
         MetaNamespace MetaDeclaration.Namespace
         {
-            get { return MetaImplementationProvider.Implementation.MetaDeclaration_Namespace(this); }
+            get { return ((MetaDeclaration)this).Model.Namespace; }
         }
         
         bool MetaClass.IsAbstract
@@ -2343,7 +3400,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaFunctionTypeImpl()
+        public MetaFunctionTypeImpl() 
+            : this(true)
+        {
+        }
+        public MetaFunctionTypeImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaFunctionType.ParameterTypesProperty, new ModelMultiList<MetaType>(this, global::MetaDslx.Core.Meta.MetaFunctionType.ParameterTypesProperty));
             MetaImplementationProvider.Implementation.MetaFunctionType_MetaFunctionType(this);
@@ -2388,7 +3450,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaFunctionImpl()
+        public MetaFunctionImpl() 
+            : this(true)
+        {
+        }
+        public MetaFunctionImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             // Init global::MetaDslx.Core.Meta.MetaFunction.TypeProperty in MetaImplementation.MetaFunction_MetaFunction
@@ -2476,7 +3543,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaOperationImpl()
+        public MetaOperationImpl() 
+            : this(true)
+        {
+        }
+        public MetaOperationImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             // Init global::MetaDslx.Core.Meta.MetaFunction.TypeProperty in MetaImplementation.MetaOperation_MetaOperation
@@ -2576,7 +3648,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaConstructorImpl()
+        public MetaConstructorImpl() 
+            : this(true)
+        {
+        }
+        public MetaConstructorImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaConstructor.InitializersProperty, new ModelList<MetaPropertyInitializer>(this, global::MetaDslx.Core.Meta.MetaConstructor.InitializersProperty));
@@ -2641,7 +3718,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaParameterImpl()
+        public MetaParameterImpl() 
+            : this(true)
+        {
+        }
+        public MetaParameterImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             MetaImplementationProvider.Implementation.MetaParameter_MetaParameter(this);
@@ -2695,7 +3777,6 @@ namespace MetaDslx.Core
     
     public interface MetaProperty : MetaDslx.Core.MetaNamedElement, MetaDslx.Core.MetaTypedElement, MetaDslx.Core.MetaAnnotatedElement
     {
-        MetaType Parent { get; set; }
         MetaPropertyKind Kind { get; set; }
         MetaClass Class { get; set; }
         IList<MetaProperty> OppositeProperties { get; }
@@ -2713,7 +3794,12 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaPropertyImpl()
+        public MetaPropertyImpl() 
+            : this(true)
+        {
+        }
+        public MetaPropertyImpl(bool addToModelContext) 
+            : base(addToModelContext)
         {
             this.MSet(global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty, new ModelList<MetaAnnotation>(this, global::MetaDslx.Core.Meta.MetaAnnotatedElement.AnnotationsProperty));
             this.MSet(global::MetaDslx.Core.Meta.MetaProperty.OppositePropertiesProperty, new ModelList<MetaProperty>(this, global::MetaDslx.Core.Meta.MetaProperty.OppositePropertiesProperty));
@@ -2755,17 +3841,6 @@ namespace MetaDslx.Core
                 if (result != null) return (IList<MetaAnnotation>)result;
                 else return default(IList<MetaAnnotation>);
             }
-        }
-        
-        MetaType MetaProperty.Parent
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Core.Meta.MetaProperty.ParentProperty); 
-                if (result != null) return (MetaType)result;
-                else return default(MetaType);
-            }
-            set { this.MSet(global::MetaDslx.Core.Meta.MetaProperty.ParentProperty, value); }
         }
         
         MetaPropertyKind MetaProperty.Kind
@@ -2859,11 +3934,16 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaPropertyInitializerImpl()
+        public MetaPropertyInitializerImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty, new Lazy<object>(() => ));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty, new Lazy<object>(() => ));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
+        }
+        public MetaPropertyInitializerImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)((MetaPropertyInitializer)this)) as MetaClass));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)((MetaPropertyInitializer)this).PropertyContext }, ResolveKind.Name, ((MetaPropertyInitializer)this).PropertyName, new ResolutionInfo(), ResolveFlags.All), new BindingInfo())));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaPropertyInitializer)this).Property)));
             MetaImplementationProvider.Implementation.MetaPropertyInitializer_MetaPropertyInitializer(this);
             this.MMakeDefault();
         }
@@ -2937,8 +4017,16 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaSynthetizedPropertyInitializerImpl()
+        public MetaSynthetizedPropertyInitializerImpl() 
+            : this(true)
         {
+        }
+        public MetaSynthetizedPropertyInitializerImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)((MetaPropertyInitializer)this)) as MetaClass));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)((MetaPropertyInitializer)this).PropertyContext }, ResolveKind.Name, ((MetaPropertyInitializer)this).PropertyName, new ResolutionInfo(), ResolveFlags.All), new BindingInfo())));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaPropertyInitializer)this).Property)));
             MetaImplementationProvider.Implementation.MetaSynthetizedPropertyInitializer_MetaSynthetizedPropertyInitializer(this);
             this.MMakeDefault();
         }
@@ -3014,10 +4102,17 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaInheritedPropertyInitializerImpl()
+        public MetaInheritedPropertyInitializerImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty, new Lazy<object>(() => ));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer.ObjectProperty, new Lazy<object>(() => ));
+        }
+        public MetaInheritedPropertyInitializerImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyContextProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaInheritedPropertyInitializer)this).Object) as MetaClass));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaPropertyInitializer.PropertyProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)((MetaInheritedPropertyInitializer)this).PropertyContext }, ResolveKind.Name, ((MetaInheritedPropertyInitializer)this).PropertyName, new ResolutionInfo(), ResolveFlags.All), new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaInheritedPropertyInitializer.ObjectProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaInheritedPropertyInitializer)this).ObjectName, new ResolutionInfo(), ResolveFlags.All), new BindingInfo())));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaPropertyInitializer.ValueProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaPropertyInitializer)this).Property)));
             MetaImplementationProvider.Implementation.MetaInheritedPropertyInitializer_MetaInheritedPropertyInitializer(this);
             this.MMakeDefault();
         }
@@ -3115,10 +4210,16 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaExpressionImpl()
+        public MetaExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ));
+        }
+        public MetaExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
             MetaImplementationProvider.Implementation.MetaExpression_MetaExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaExpression_MetaExpression().");
             this.MMakeDefault();
         }
         
@@ -3168,12 +4269,18 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaBracketExpressionImpl()
+        public MetaBracketExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBracketExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
+        }
+        public MetaBracketExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ((MetaBracketExpression)this).Expression.Type));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBracketExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaBracketExpression)this).ExpectedType));
             MetaImplementationProvider.Implementation.MetaBracketExpression_MetaBracketExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaBracketExpression_MetaBracketExpression().");
             this.MMakeDefault();
         }
         
@@ -3237,14 +4344,20 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaBoundExpressionImpl()
+        public MetaBoundExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => ));
+        }
+        public MetaBoundExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             MetaImplementationProvider.Implementation.MetaBoundExpression_MetaBoundExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaBoundExpression_MetaBoundExpression().");
             this.MMakeDefault();
         }
         
@@ -3333,12 +4446,20 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaThisExpressionImpl()
+        public MetaThisExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaThisExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)((MetaThisExpression)this))));
             MetaImplementationProvider.Implementation.MetaThisExpression_MetaThisExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaThisExpression_MetaThisExpression().");
             this.MMakeDefault();
         }
         
@@ -3427,11 +4548,17 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaNullExpressionImpl()
+        public MetaNullExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaNullExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Any));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
             MetaImplementationProvider.Implementation.MetaNullExpression_MetaNullExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaNullExpression_MetaNullExpression().");
             this.MMakeDefault();
         }
         
@@ -3482,12 +4609,18 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaTypeConversionExpressionImpl()
+        public MetaTypeConversionExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaTypeConversionExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
+        }
+        public MetaTypeConversionExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ((MetaTypeConversionExpression)this).TypeReference));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaTypeConversionExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Any));
             MetaImplementationProvider.Implementation.MetaTypeConversionExpression_MetaTypeConversionExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaTypeConversionExpression_MetaTypeConversionExpression().");
             this.MMakeDefault();
         }
         
@@ -3558,10 +4691,18 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaTypeAsExpressionImpl()
+        public MetaTypeAsExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaTypeAsExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ((MetaTypeConversionExpression)this).TypeReference));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaTypeConversionExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Any));
             MetaImplementationProvider.Implementation.MetaTypeAsExpression_MetaTypeAsExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaTypeAsExpression_MetaTypeAsExpression().");
             this.MMakeDefault();
         }
         
@@ -3632,10 +4773,18 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaTypeCastExpressionImpl()
+        public MetaTypeCastExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaTypeCastExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ((MetaTypeConversionExpression)this).TypeReference));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaTypeConversionExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Any));
             MetaImplementationProvider.Implementation.MetaTypeCastExpression_MetaTypeCastExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaTypeCastExpression_MetaTypeCastExpression().");
             this.MMakeDefault();
         }
         
@@ -3708,12 +4857,18 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaTypeCheckExpressionImpl()
+        public MetaTypeCheckExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaTypeCheckExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
+        }
+        public MetaTypeCheckExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Bool));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaTypeCheckExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Any));
             MetaImplementationProvider.Implementation.MetaTypeCheckExpression_MetaTypeCheckExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaTypeCheckExpression_MetaTypeCheckExpression().");
             this.MMakeDefault();
         }
         
@@ -3785,11 +4940,17 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaTypeOfExpressionImpl()
+        public MetaTypeOfExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaTypeOfExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => global::MetaDslx.Core.Meta.MetaType.Instance));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
             MetaImplementationProvider.Implementation.MetaTypeOfExpression_MetaTypeOfExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaTypeOfExpression_MetaTypeOfExpression().");
             this.MMakeDefault();
         }
         
@@ -3853,14 +5014,20 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaConditionalExpressionImpl()
+        public MetaConditionalExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaConditionalExpression.ConditionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaConditionalExpression.ThenProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaConditionalExpression.ElseProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
+        }
+        public MetaConditionalExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.Balance((ModelObject)((MetaConditionalExpression)this).Then.Type, (ModelObject)((MetaConditionalExpression)this).Else.Type)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaConditionalExpression.ConditionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.Bool));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaConditionalExpression.ThenProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaConditionalExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaConditionalExpression.ElseProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaConditionalExpression)this).ExpectedType));
             MetaImplementationProvider.Implementation.MetaConditionalExpression_MetaConditionalExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaConditionalExpression_MetaConditionalExpression().");
             this.MMakeDefault();
         }
         
@@ -3954,11 +5121,17 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaConstantExpressionImpl()
+        public MetaConstantExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaConstantExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaConstantExpression)this).Value)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
             MetaImplementationProvider.Implementation.MetaConstantExpression_MetaConstantExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaConstantExpression_MetaConstantExpression().");
             this.MMakeDefault();
         }
         
@@ -4019,12 +5192,21 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaIdentifierExpressionImpl()
+        public MetaIdentifierExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaIdentifierExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaIdentifierExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             MetaImplementationProvider.Implementation.MetaIdentifierExpression_MetaIdentifierExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaIdentifierExpression_MetaIdentifierExpression().");
             this.MMakeDefault();
         }
         
@@ -4126,13 +5308,23 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaMemberAccessExpressionImpl()
+        public MetaMemberAccessExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaMemberAccessExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaMemberAccessExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { (ModelObject)((MetaMemberAccessExpression)this).Expression.Type }, ResolveKind.Name, ((MetaMemberAccessExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaMemberAccessExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaMemberAccessExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.None));
             MetaImplementationProvider.Implementation.MetaMemberAccessExpression_MetaMemberAccessExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaMemberAccessExpression_MetaMemberAccessExpression().");
             this.MMakeDefault();
         }
         
@@ -4244,14 +5436,23 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaFunctionCallExpressionImpl()
+        public MetaFunctionCallExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaFunctionCallExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetReturnTypeOf((ModelObject)((MetaFunctionCallExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaFunctionCallExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ((MetaFunctionCallExpression)this).Expression is MetaBoundExpression ? (((MetaBoundExpression)((MetaFunctionCallExpression)this).Expression).Definitions).Where(e => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(e) is MetaFunctionType).OfType<ModelObject>().ToList() : null));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaFunctionCallExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaFunctionCallExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.None));
             MetaImplementationProvider.Implementation.MetaFunctionCallExpression_MetaFunctionCallExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaFunctionCallExpression_MetaFunctionCallExpression().");
             this.MMakeDefault();
         }
         
@@ -4352,13 +5553,23 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaIndexerExpressionImpl()
+        public MetaIndexerExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaIndexerExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaIndexerExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ((MetaIndexerExpression)this).Expression is MetaBoundExpression ? ((((MetaBoundExpression)((MetaIndexerExpression)this).Expression).Definitions).Where(e => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(e) is MetaFunctionType).OfType<ModelObject>().ToList()).Where(e => ModelContext.Current.Compiler.NameProvider.GetNameOf((ModelObject)e) == "operator[]").OfType<ModelObject>().ToList() : null));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaIndexerExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaIndexerExpression.ExpressionProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => MetaBuiltInTypes.None));
             MetaImplementationProvider.Implementation.MetaIndexerExpression_MetaIndexerExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaIndexerExpression_MetaIndexerExpression().");
             this.MMakeDefault();
         }
         
@@ -4459,13 +5670,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaOperatorExpressionImpl()
+        public MetaOperatorExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaOperatorExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaOperatorExpression_MetaOperatorExpression
             MetaImplementationProvider.Implementation.MetaOperatorExpression_MetaOperatorExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaOperatorExpression_MetaOperatorExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaOperatorExpression_MetaOperatorExpression().");
             this.MMakeDefault();
         }
@@ -4566,12 +5786,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaUnaryExpressionImpl()
+        public MetaUnaryExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaUnaryExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaUnaryExpression_MetaUnaryExpression
             MetaImplementationProvider.Implementation.MetaUnaryExpression_MetaUnaryExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaUnaryExpression_MetaUnaryExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaUnaryExpression_MetaUnaryExpression().");
             this.MMakeDefault();
         }
@@ -4682,12 +5912,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaUnaryPlusExpressionImpl()
+        public MetaUnaryPlusExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaUnaryPlusExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator+()"));
             MetaImplementationProvider.Implementation.MetaUnaryPlusExpression_MetaUnaryPlusExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaUnaryPlusExpression_MetaUnaryPlusExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaUnaryPlusExpression_MetaUnaryPlusExpression().");
             this.MMakeDefault();
         }
@@ -4798,12 +6038,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaNegateExpressionImpl()
+        public MetaNegateExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaNegateExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator-()"));
             MetaImplementationProvider.Implementation.MetaNegateExpression_MetaNegateExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaNegateExpression_MetaNegateExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaNegateExpression_MetaNegateExpression().");
             this.MMakeDefault();
         }
@@ -4914,12 +6164,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaOnesComplementExpressionImpl()
+        public MetaOnesComplementExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaOnesComplementExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator~()"));
             MetaImplementationProvider.Implementation.MetaOnesComplementExpression_MetaOnesComplementExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaOnesComplementExpression_MetaOnesComplementExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaOnesComplementExpression_MetaOnesComplementExpression().");
             this.MMakeDefault();
         }
@@ -5030,12 +6290,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaNotExpressionImpl()
+        public MetaNotExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaNotExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator!()"));
             MetaImplementationProvider.Implementation.MetaNotExpression_MetaNotExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaNotExpression_MetaNotExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaNotExpression_MetaNotExpression().");
             this.MMakeDefault();
         }
@@ -5146,12 +6416,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaUnaryAssignExpressionImpl()
+        public MetaUnaryAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaUnaryAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaUnaryAssignExpression_MetaUnaryAssignExpression
             MetaImplementationProvider.Implementation.MetaUnaryAssignExpression_MetaUnaryAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaUnaryAssignExpression_MetaUnaryAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaUnaryAssignExpression_MetaUnaryAssignExpression().");
             this.MMakeDefault();
         }
@@ -5262,12 +6542,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaPostIncrementAssignExpressionImpl()
+        public MetaPostIncrementAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaPostIncrementAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()++"));
             MetaImplementationProvider.Implementation.MetaPostIncrementAssignExpression_MetaPostIncrementAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaPostIncrementAssignExpression_MetaPostIncrementAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaPostIncrementAssignExpression_MetaPostIncrementAssignExpression().");
             this.MMakeDefault();
         }
@@ -5378,12 +6668,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaPostDecrementAssignExpressionImpl()
+        public MetaPostDecrementAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaPostDecrementAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()--"));
             MetaImplementationProvider.Implementation.MetaPostDecrementAssignExpression_MetaPostDecrementAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaPostDecrementAssignExpression_MetaPostDecrementAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaPostDecrementAssignExpression_MetaPostDecrementAssignExpression().");
             this.MMakeDefault();
         }
@@ -5494,12 +6794,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaPreIncrementAssignExpressionImpl()
+        public MetaPreIncrementAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaPreIncrementAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator++()"));
             MetaImplementationProvider.Implementation.MetaPreIncrementAssignExpression_MetaPreIncrementAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaPreIncrementAssignExpression_MetaPreIncrementAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaPreIncrementAssignExpression_MetaPreIncrementAssignExpression().");
             this.MMakeDefault();
         }
@@ -5610,12 +6920,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaPreDecrementAssignExpressionImpl()
+        public MetaPreDecrementAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaPreDecrementAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator--()"));
             MetaImplementationProvider.Implementation.MetaPreDecrementAssignExpression_MetaPreDecrementAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaPreDecrementAssignExpression_MetaPreDecrementAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaPreDecrementAssignExpression_MetaPreDecrementAssignExpression().");
             this.MMakeDefault();
         }
@@ -5728,12 +7048,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaBinaryExpressionImpl()
+        public MetaBinaryExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaBinaryExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaBinaryExpression_MetaBinaryExpression
             MetaImplementationProvider.Implementation.MetaBinaryExpression_MetaBinaryExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaBinaryExpression_MetaBinaryExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaBinaryExpression_MetaBinaryExpression().");
             this.MMakeDefault();
         }
@@ -5855,12 +7185,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaBinaryArithmeticExpressionImpl()
+        public MetaBinaryArithmeticExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaBinaryArithmeticExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression
             MetaImplementationProvider.Implementation.MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression().");
             this.MMakeDefault();
         }
@@ -5982,12 +7322,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaMultiplyExpressionImpl()
+        public MetaMultiplyExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaMultiplyExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()*()"));
             MetaImplementationProvider.Implementation.MetaMultiplyExpression_MetaMultiplyExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaMultiplyExpression_MetaMultiplyExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaMultiplyExpression_MetaMultiplyExpression().");
             this.MMakeDefault();
         }
@@ -6109,12 +7459,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaDivideExpressionImpl()
+        public MetaDivideExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaDivideExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()/()"));
             MetaImplementationProvider.Implementation.MetaDivideExpression_MetaDivideExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaDivideExpression_MetaDivideExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaDivideExpression_MetaDivideExpression().");
             this.MMakeDefault();
         }
@@ -6236,12 +7596,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaModuloExpressionImpl()
+        public MetaModuloExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaModuloExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()%()"));
             MetaImplementationProvider.Implementation.MetaModuloExpression_MetaModuloExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaModuloExpression_MetaModuloExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaModuloExpression_MetaModuloExpression().");
             this.MMakeDefault();
         }
@@ -6363,12 +7733,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaAddExpressionImpl()
+        public MetaAddExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaAddExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()+()"));
             MetaImplementationProvider.Implementation.MetaAddExpression_MetaAddExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaAddExpression_MetaAddExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAddExpression_MetaAddExpression().");
             this.MMakeDefault();
         }
@@ -6490,12 +7870,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaSubtractExpressionImpl()
+        public MetaSubtractExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaSubtractExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()-()"));
             MetaImplementationProvider.Implementation.MetaSubtractExpression_MetaSubtractExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaSubtractExpression_MetaSubtractExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaSubtractExpression_MetaSubtractExpression().");
             this.MMakeDefault();
         }
@@ -6617,12 +8007,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaLeftShiftExpressionImpl()
+        public MetaLeftShiftExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaLeftShiftExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()<<()"));
             MetaImplementationProvider.Implementation.MetaLeftShiftExpression_MetaLeftShiftExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaLeftShiftExpression_MetaLeftShiftExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaLeftShiftExpression_MetaLeftShiftExpression().");
             this.MMakeDefault();
         }
@@ -6744,12 +8144,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaRightShiftExpressionImpl()
+        public MetaRightShiftExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaRightShiftExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()>>()"));
             MetaImplementationProvider.Implementation.MetaRightShiftExpression_MetaRightShiftExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaRightShiftExpression_MetaRightShiftExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaRightShiftExpression_MetaRightShiftExpression().");
             this.MMakeDefault();
         }
@@ -6871,12 +8281,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaBinaryComparisonExpressionImpl()
+        public MetaBinaryComparisonExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaBinaryComparisonExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaBinaryComparisonExpression_MetaBinaryComparisonExpression
             MetaImplementationProvider.Implementation.MetaBinaryComparisonExpression_MetaBinaryComparisonExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaBinaryComparisonExpression_MetaBinaryComparisonExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaBinaryComparisonExpression_MetaBinaryComparisonExpression().");
             this.MMakeDefault();
         }
@@ -6998,12 +8418,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaLessThanExpressionImpl()
+        public MetaLessThanExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaLessThanExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()<()"));
             MetaImplementationProvider.Implementation.MetaLessThanExpression_MetaLessThanExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaLessThanExpression_MetaLessThanExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaLessThanExpression_MetaLessThanExpression().");
             this.MMakeDefault();
         }
@@ -7125,12 +8555,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaLessThanOrEqualExpressionImpl()
+        public MetaLessThanOrEqualExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaLessThanOrEqualExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()<=()"));
             MetaImplementationProvider.Implementation.MetaLessThanOrEqualExpression_MetaLessThanOrEqualExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaLessThanOrEqualExpression_MetaLessThanOrEqualExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaLessThanOrEqualExpression_MetaLessThanOrEqualExpression().");
             this.MMakeDefault();
         }
@@ -7252,12 +8692,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaGreaterThanExpressionImpl()
+        public MetaGreaterThanExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaGreaterThanExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()>()"));
             MetaImplementationProvider.Implementation.MetaGreaterThanExpression_MetaGreaterThanExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaGreaterThanExpression_MetaGreaterThanExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaGreaterThanExpression_MetaGreaterThanExpression().");
             this.MMakeDefault();
         }
@@ -7379,12 +8829,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaGreaterThanOrEqualExpressionImpl()
+        public MetaGreaterThanOrEqualExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaGreaterThanOrEqualExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()>=()"));
             MetaImplementationProvider.Implementation.MetaGreaterThanOrEqualExpression_MetaGreaterThanOrEqualExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaGreaterThanOrEqualExpression_MetaGreaterThanOrEqualExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaGreaterThanOrEqualExpression_MetaGreaterThanOrEqualExpression().");
             this.MMakeDefault();
         }
@@ -7506,12 +8966,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaEqualExpressionImpl()
+        public MetaEqualExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaEqualExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()==()"));
             MetaImplementationProvider.Implementation.MetaEqualExpression_MetaEqualExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaEqualExpression_MetaEqualExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaEqualExpression_MetaEqualExpression().");
             this.MMakeDefault();
         }
@@ -7633,12 +9103,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaNotEqualExpressionImpl()
+        public MetaNotEqualExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaNotEqualExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()!=()"));
             MetaImplementationProvider.Implementation.MetaNotEqualExpression_MetaNotEqualExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaNotEqualExpression_MetaNotEqualExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaNotEqualExpression_MetaNotEqualExpression().");
             this.MMakeDefault();
         }
@@ -7760,12 +9240,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaBinaryLogicalExpressionImpl()
+        public MetaBinaryLogicalExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaBinaryLogicalExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaBinaryLogicalExpression_MetaBinaryLogicalExpression
             MetaImplementationProvider.Implementation.MetaBinaryLogicalExpression_MetaBinaryLogicalExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaBinaryLogicalExpression_MetaBinaryLogicalExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaBinaryLogicalExpression_MetaBinaryLogicalExpression().");
             this.MMakeDefault();
         }
@@ -7887,12 +9377,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaAndExpressionImpl()
+        public MetaAndExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaAndExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()&()"));
             MetaImplementationProvider.Implementation.MetaAndExpression_MetaAndExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaAndExpression_MetaAndExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAndExpression_MetaAndExpression().");
             this.MMakeDefault();
         }
@@ -8014,12 +9514,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaOrExpressionImpl()
+        public MetaOrExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaOrExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()|()"));
             MetaImplementationProvider.Implementation.MetaOrExpression_MetaOrExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaOrExpression_MetaOrExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaOrExpression_MetaOrExpression().");
             this.MMakeDefault();
         }
@@ -8141,12 +9651,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaExclusiveOrExpressionImpl()
+        public MetaExclusiveOrExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaExclusiveOrExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()^()"));
             MetaImplementationProvider.Implementation.MetaExclusiveOrExpression_MetaExclusiveOrExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaExclusiveOrExpression_MetaExclusiveOrExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaExclusiveOrExpression_MetaExclusiveOrExpression().");
             this.MMakeDefault();
         }
@@ -8268,12 +9788,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaAndAlsoExpressionImpl()
+        public MetaAndAlsoExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaAndAlsoExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()&&()"));
             MetaImplementationProvider.Implementation.MetaAndAlsoExpression_MetaAndAlsoExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaAndAlsoExpression_MetaAndAlsoExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAndAlsoExpression_MetaAndAlsoExpression().");
             this.MMakeDefault();
         }
@@ -8395,12 +9925,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaOrElseExpressionImpl()
+        public MetaOrElseExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaOrElseExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()||()"));
             MetaImplementationProvider.Implementation.MetaOrElseExpression_MetaOrElseExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaOrElseExpression_MetaOrElseExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaOrElseExpression_MetaOrElseExpression().");
             this.MMakeDefault();
         }
@@ -8522,12 +10062,22 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaNullCoalescingExpressionImpl()
+        public MetaNullCoalescingExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaNullCoalescingExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaBoundExpression)this).Definition)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()??()"));
             MetaImplementationProvider.Implementation.MetaNullCoalescingExpression_MetaNullCoalescingExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaNullCoalescingExpression_MetaNullCoalescingExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaNullCoalescingExpression_MetaNullCoalescingExpression().");
             this.MMakeDefault();
         }
@@ -8649,15 +10199,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaAssignmentExpressionImpl()
+        public MetaAssignmentExpressionImpl() 
+            : this(true)
         {
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ));
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaAssignmentExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaAssignmentExpression_MetaAssignmentExpression
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
-            //this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaAssignmentExpression_MetaAssignmentExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaAssignmentExpression_MetaAssignmentExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAssignmentExpression_MetaAssignmentExpression().");
             this.MMakeDefault();
         }
@@ -8779,12 +10338,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaAssignExpressionImpl()
+        public MetaAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaAssignExpression_MetaAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaAssignExpression_MetaAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAssignExpression_MetaAssignExpression().");
             this.MMakeDefault();
         }
@@ -8906,12 +10477,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaArithmeticAssignmentExpressionImpl()
+        public MetaArithmeticAssignmentExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaArithmeticAssignmentExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaArithmeticAssignmentExpression_MetaArithmeticAssignmentExpression
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaArithmeticAssignmentExpression_MetaArithmeticAssignmentExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaArithmeticAssignmentExpression_MetaArithmeticAssignmentExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaArithmeticAssignmentExpression_MetaArithmeticAssignmentExpression().");
             this.MMakeDefault();
         }
@@ -9033,12 +10616,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaMultiplyAssignExpressionImpl()
+        public MetaMultiplyAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaMultiplyAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()*=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaMultiplyAssignExpression_MetaMultiplyAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaMultiplyAssignExpression_MetaMultiplyAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaMultiplyAssignExpression_MetaMultiplyAssignExpression().");
             this.MMakeDefault();
         }
@@ -9160,12 +10755,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaDivideAssignExpressionImpl()
+        public MetaDivideAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaDivideAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()/=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaDivideAssignExpression_MetaDivideAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaDivideAssignExpression_MetaDivideAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaDivideAssignExpression_MetaDivideAssignExpression().");
             this.MMakeDefault();
         }
@@ -9287,12 +10894,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaModuloAssignExpressionImpl()
+        public MetaModuloAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaModuloAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()%=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaModuloAssignExpression_MetaModuloAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaModuloAssignExpression_MetaModuloAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaModuloAssignExpression_MetaModuloAssignExpression().");
             this.MMakeDefault();
         }
@@ -9414,12 +11033,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaAddAssignExpressionImpl()
+        public MetaAddAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaAddAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()+=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaAddAssignExpression_MetaAddAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaAddAssignExpression_MetaAddAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAddAssignExpression_MetaAddAssignExpression().");
             this.MMakeDefault();
         }
@@ -9541,12 +11172,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaSubtractAssignExpressionImpl()
+        public MetaSubtractAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaSubtractAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()-=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaSubtractAssignExpression_MetaSubtractAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaSubtractAssignExpression_MetaSubtractAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaSubtractAssignExpression_MetaSubtractAssignExpression().");
             this.MMakeDefault();
         }
@@ -9668,12 +11311,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaLeftShiftAssignExpressionImpl()
+        public MetaLeftShiftAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaLeftShiftAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()<<=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaLeftShiftAssignExpression_MetaLeftShiftAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaLeftShiftAssignExpression_MetaLeftShiftAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaLeftShiftAssignExpression_MetaLeftShiftAssignExpression().");
             this.MMakeDefault();
         }
@@ -9795,12 +11450,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaRightShiftAssignExpressionImpl()
+        public MetaRightShiftAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaRightShiftAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()>>=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaRightShiftAssignExpression_MetaRightShiftAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaRightShiftAssignExpression_MetaRightShiftAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaRightShiftAssignExpression_MetaRightShiftAssignExpression().");
             this.MMakeDefault();
         }
@@ -9922,12 +11589,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaLogicalAssignmentExpressionImpl()
+        public MetaLogicalAssignmentExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaLogicalAssignmentExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
             // Init global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty in MetaImplementation.MetaLogicalAssignmentExpression_MetaLogicalAssignmentExpression
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaLogicalAssignmentExpression_MetaLogicalAssignmentExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaLogicalAssignmentExpression_MetaLogicalAssignmentExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaLogicalAssignmentExpression_MetaLogicalAssignmentExpression().");
             this.MMakeDefault();
         }
@@ -10049,12 +11728,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaAndAssignExpressionImpl()
+        public MetaAndAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaAndAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()&=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaAndAssignExpression_MetaAndAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaAndAssignExpression_MetaAndAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaAndAssignExpression_MetaAndAssignExpression().");
             this.MMakeDefault();
         }
@@ -10176,12 +11867,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaExclusiveOrAssignExpressionImpl()
+        public MetaExclusiveOrAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaExclusiveOrAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()^=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaExclusiveOrAssignExpression_MetaExclusiveOrAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaExclusiveOrAssignExpression_MetaExclusiveOrAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaExclusiveOrAssignExpression_MetaExclusiveOrAssignExpression().");
             this.MMakeDefault();
         }
@@ -10303,12 +12006,24 @@ namespace MetaDslx.Core
             global::MetaDslx.Core.Meta.StaticInit();
         }
     
-        public MetaOrAssignExpressionImpl()
+        public MetaOrAssignExpressionImpl() 
+            : this(true)
         {
-            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => MetaImplementationProvider.Implementation.MetaExpression_NoTypeError(this)));
+        }
+        public MetaOrAssignExpressionImpl(bool addToModelContext) 
+            : base(addToModelContext)
+        {
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaTypedElement.TypeProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(((MetaAssignmentExpression)this).Left)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true));
             this.MSet(global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty, new ModelList<MetaExpression>(this, global::MetaDslx.Core.Meta.MetaBoundExpression.ArgumentsProperty));
-            //this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => ));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionsProperty, new Lazy<object>(() => ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject[] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, ((MetaOperatorExpression)this).Name, new ResolutionInfo(), ResolveFlags.All)));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ModelContext.Current.Compiler.BindingProvider.Bind(this, ((MetaBoundExpression)this).Definitions, new BindingInfo())));
+            this.MLazySet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty, new Lazy<object>(() => "operator()|=()"));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.LeftProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).ExpectedType));
+            this.MLazySetChild(global::MetaDslx.Core.Meta.MetaBinaryExpression.RightProperty, global::MetaDslx.Core.Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaAssignmentExpression)this).Type));
             MetaImplementationProvider.Implementation.MetaOrAssignExpression_MetaOrAssignExpression(this);
+            if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property Meta.MetaExpression.NoTypeErrorProperty was not set in MetaOrAssignExpression_MetaOrAssignExpression().");
             if (!this.MIsSet(global::MetaDslx.Core.Meta.MetaOperatorExpression.NameProperty)) throw new ModelException("Readonly property Meta.MetaOperatorExpression.NameProperty was not set in MetaOrAssignExpression_MetaOrAssignExpression().");
             this.MMakeDefault();
         }
@@ -10437,874 +12152,616 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
-        /// Creates a new instance of MetaAnnotatedElement.
-        /// </summary>
-        public MetaAnnotatedElement CreateMetaAnnotatedElement()
-    	{
-    		MetaAnnotatedElement result = new MetaAnnotatedElementImpl();
-    		return result;
-    	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaNamedElement.
-        /// </summary>
-        public MetaNamedElement CreateMetaNamedElement()
-    	{
-    		MetaNamedElement result = new MetaNamedElementImpl();
-    		return result;
-    	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaTypedElement.
-        /// </summary>
-        public MetaTypedElement CreateMetaTypedElement()
-    	{
-    		MetaTypedElement result = new MetaTypedElementImpl();
-    		return result;
-    	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaType.
-        /// </summary>
-        public MetaType CreateMetaType()
-    	{
-    		MetaType result = new MetaTypeImpl();
-    		return result;
-    	}
-    
-    
-        /// <summary>
         /// Creates a new instance of MetaAnnotation.
         /// </summary>
-        public MetaAnnotation CreateMetaAnnotation()
+        public MetaAnnotation CreateMetaAnnotation(bool addToModelContext = true)
     	{
-    		MetaAnnotation result = new MetaAnnotationImpl();
+    		MetaAnnotation result = new global::MetaDslx.Core.MetaAnnotationImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaNamespace.
         /// </summary>
-        public MetaNamespace CreateMetaNamespace()
+        public MetaNamespace CreateMetaNamespace(bool addToModelContext = true)
     	{
-    		MetaNamespace result = new MetaNamespaceImpl();
+    		MetaNamespace result = new global::MetaDslx.Core.MetaNamespaceImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaModel.
         /// </summary>
-        public MetaModel CreateMetaModel()
+        public MetaModel CreateMetaModel(bool addToModelContext = true)
     	{
-    		MetaModel result = new MetaModelImpl();
+    		MetaModel result = new global::MetaDslx.Core.MetaModelImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaDeclaration.
-        /// </summary>
-        public MetaDeclaration CreateMetaDeclaration()
-    	{
-    		MetaDeclaration result = new MetaDeclarationImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaCollectionType.
         /// </summary>
-        public MetaCollectionType CreateMetaCollectionType()
+        public MetaCollectionType CreateMetaCollectionType(bool addToModelContext = true)
     	{
-    		MetaCollectionType result = new MetaCollectionTypeImpl();
+    		MetaCollectionType result = new global::MetaDslx.Core.MetaCollectionTypeImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaNullableType.
         /// </summary>
-        public MetaNullableType CreateMetaNullableType()
+        public MetaNullableType CreateMetaNullableType(bool addToModelContext = true)
     	{
-    		MetaNullableType result = new MetaNullableTypeImpl();
+    		MetaNullableType result = new global::MetaDslx.Core.MetaNullableTypeImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaPrimitiveType.
         /// </summary>
-        public MetaPrimitiveType CreateMetaPrimitiveType()
+        public MetaPrimitiveType CreateMetaPrimitiveType(bool addToModelContext = true)
     	{
-    		MetaPrimitiveType result = new MetaPrimitiveTypeImpl();
+    		MetaPrimitiveType result = new global::MetaDslx.Core.MetaPrimitiveTypeImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaEnum.
         /// </summary>
-        public MetaEnum CreateMetaEnum()
+        public MetaEnum CreateMetaEnum(bool addToModelContext = true)
     	{
-    		MetaEnum result = new MetaEnumImpl();
+    		MetaEnum result = new global::MetaDslx.Core.MetaEnumImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaEnumLiteral.
         /// </summary>
-        public MetaEnumLiteral CreateMetaEnumLiteral()
+        public MetaEnumLiteral CreateMetaEnumLiteral(bool addToModelContext = true)
     	{
-    		MetaEnumLiteral result = new MetaEnumLiteralImpl();
+    		MetaEnumLiteral result = new global::MetaDslx.Core.MetaEnumLiteralImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaClass.
         /// </summary>
-        public MetaClass CreateMetaClass()
+        public MetaClass CreateMetaClass(bool addToModelContext = true)
     	{
-    		MetaClass result = new MetaClassImpl();
+    		MetaClass result = new global::MetaDslx.Core.MetaClassImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaFunctionType.
         /// </summary>
-        public MetaFunctionType CreateMetaFunctionType()
+        public MetaFunctionType CreateMetaFunctionType(bool addToModelContext = true)
     	{
-    		MetaFunctionType result = new MetaFunctionTypeImpl();
+    		MetaFunctionType result = new global::MetaDslx.Core.MetaFunctionTypeImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaFunction.
         /// </summary>
-        public MetaFunction CreateMetaFunction()
+        public MetaFunction CreateMetaFunction(bool addToModelContext = true)
     	{
-    		MetaFunction result = new MetaFunctionImpl();
+    		MetaFunction result = new global::MetaDslx.Core.MetaFunctionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaOperation.
         /// </summary>
-        public MetaOperation CreateMetaOperation()
+        public MetaOperation CreateMetaOperation(bool addToModelContext = true)
     	{
-    		MetaOperation result = new MetaOperationImpl();
+    		MetaOperation result = new global::MetaDslx.Core.MetaOperationImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaConstructor.
         /// </summary>
-        public MetaConstructor CreateMetaConstructor()
+        public MetaConstructor CreateMetaConstructor(bool addToModelContext = true)
     	{
-    		MetaConstructor result = new MetaConstructorImpl();
+    		MetaConstructor result = new global::MetaDslx.Core.MetaConstructorImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaParameter.
         /// </summary>
-        public MetaParameter CreateMetaParameter()
+        public MetaParameter CreateMetaParameter(bool addToModelContext = true)
     	{
-    		MetaParameter result = new MetaParameterImpl();
+    		MetaParameter result = new global::MetaDslx.Core.MetaParameterImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaProperty.
         /// </summary>
-        public MetaProperty CreateMetaProperty()
+        public MetaProperty CreateMetaProperty(bool addToModelContext = true)
     	{
-    		MetaProperty result = new MetaPropertyImpl();
+    		MetaProperty result = new global::MetaDslx.Core.MetaPropertyImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaPropertyInitializer.
-        /// </summary>
-        public MetaPropertyInitializer CreateMetaPropertyInitializer()
-    	{
-    		MetaPropertyInitializer result = new MetaPropertyInitializerImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaSynthetizedPropertyInitializer.
         /// </summary>
-        public MetaSynthetizedPropertyInitializer CreateMetaSynthetizedPropertyInitializer()
+        public MetaSynthetizedPropertyInitializer CreateMetaSynthetizedPropertyInitializer(bool addToModelContext = true)
     	{
-    		MetaSynthetizedPropertyInitializer result = new MetaSynthetizedPropertyInitializerImpl();
+    		MetaSynthetizedPropertyInitializer result = new global::MetaDslx.Core.MetaSynthetizedPropertyInitializerImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaInheritedPropertyInitializer.
         /// </summary>
-        public MetaInheritedPropertyInitializer CreateMetaInheritedPropertyInitializer()
+        public MetaInheritedPropertyInitializer CreateMetaInheritedPropertyInitializer(bool addToModelContext = true)
     	{
-    		MetaInheritedPropertyInitializer result = new MetaInheritedPropertyInitializerImpl();
+    		MetaInheritedPropertyInitializer result = new global::MetaDslx.Core.MetaInheritedPropertyInitializerImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaExpression.
-        /// </summary>
-        public MetaExpression CreateMetaExpression()
-    	{
-    		MetaExpression result = new MetaExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaBracketExpression.
         /// </summary>
-        public MetaBracketExpression CreateMetaBracketExpression()
+        public MetaBracketExpression CreateMetaBracketExpression(bool addToModelContext = true)
     	{
-    		MetaBracketExpression result = new MetaBracketExpressionImpl();
+    		MetaBracketExpression result = new global::MetaDslx.Core.MetaBracketExpressionImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaBoundExpression.
-        /// </summary>
-        public MetaBoundExpression CreateMetaBoundExpression()
-    	{
-    		MetaBoundExpression result = new MetaBoundExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaThisExpression.
         /// </summary>
-        public MetaThisExpression CreateMetaThisExpression()
+        public MetaThisExpression CreateMetaThisExpression(bool addToModelContext = true)
     	{
-    		MetaThisExpression result = new MetaThisExpressionImpl();
+    		MetaThisExpression result = new global::MetaDslx.Core.MetaThisExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaNullExpression.
         /// </summary>
-        public MetaNullExpression CreateMetaNullExpression()
+        public MetaNullExpression CreateMetaNullExpression(bool addToModelContext = true)
     	{
-    		MetaNullExpression result = new MetaNullExpressionImpl();
+    		MetaNullExpression result = new global::MetaDslx.Core.MetaNullExpressionImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaTypeConversionExpression.
-        /// </summary>
-        public MetaTypeConversionExpression CreateMetaTypeConversionExpression()
-    	{
-    		MetaTypeConversionExpression result = new MetaTypeConversionExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaTypeAsExpression.
         /// </summary>
-        public MetaTypeAsExpression CreateMetaTypeAsExpression()
+        public MetaTypeAsExpression CreateMetaTypeAsExpression(bool addToModelContext = true)
     	{
-    		MetaTypeAsExpression result = new MetaTypeAsExpressionImpl();
+    		MetaTypeAsExpression result = new global::MetaDslx.Core.MetaTypeAsExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaTypeCastExpression.
         /// </summary>
-        public MetaTypeCastExpression CreateMetaTypeCastExpression()
+        public MetaTypeCastExpression CreateMetaTypeCastExpression(bool addToModelContext = true)
     	{
-    		MetaTypeCastExpression result = new MetaTypeCastExpressionImpl();
+    		MetaTypeCastExpression result = new global::MetaDslx.Core.MetaTypeCastExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaTypeCheckExpression.
         /// </summary>
-        public MetaTypeCheckExpression CreateMetaTypeCheckExpression()
+        public MetaTypeCheckExpression CreateMetaTypeCheckExpression(bool addToModelContext = true)
     	{
-    		MetaTypeCheckExpression result = new MetaTypeCheckExpressionImpl();
+    		MetaTypeCheckExpression result = new global::MetaDslx.Core.MetaTypeCheckExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaTypeOfExpression.
         /// </summary>
-        public MetaTypeOfExpression CreateMetaTypeOfExpression()
+        public MetaTypeOfExpression CreateMetaTypeOfExpression(bool addToModelContext = true)
     	{
-    		MetaTypeOfExpression result = new MetaTypeOfExpressionImpl();
+    		MetaTypeOfExpression result = new global::MetaDslx.Core.MetaTypeOfExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaConditionalExpression.
         /// </summary>
-        public MetaConditionalExpression CreateMetaConditionalExpression()
+        public MetaConditionalExpression CreateMetaConditionalExpression(bool addToModelContext = true)
     	{
-    		MetaConditionalExpression result = new MetaConditionalExpressionImpl();
+    		MetaConditionalExpression result = new global::MetaDslx.Core.MetaConditionalExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaConstantExpression.
         /// </summary>
-        public MetaConstantExpression CreateMetaConstantExpression()
+        public MetaConstantExpression CreateMetaConstantExpression(bool addToModelContext = true)
     	{
-    		MetaConstantExpression result = new MetaConstantExpressionImpl();
+    		MetaConstantExpression result = new global::MetaDslx.Core.MetaConstantExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaIdentifierExpression.
         /// </summary>
-        public MetaIdentifierExpression CreateMetaIdentifierExpression()
+        public MetaIdentifierExpression CreateMetaIdentifierExpression(bool addToModelContext = true)
     	{
-    		MetaIdentifierExpression result = new MetaIdentifierExpressionImpl();
+    		MetaIdentifierExpression result = new global::MetaDslx.Core.MetaIdentifierExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaMemberAccessExpression.
         /// </summary>
-        public MetaMemberAccessExpression CreateMetaMemberAccessExpression()
+        public MetaMemberAccessExpression CreateMetaMemberAccessExpression(bool addToModelContext = true)
     	{
-    		MetaMemberAccessExpression result = new MetaMemberAccessExpressionImpl();
+    		MetaMemberAccessExpression result = new global::MetaDslx.Core.MetaMemberAccessExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaFunctionCallExpression.
         /// </summary>
-        public MetaFunctionCallExpression CreateMetaFunctionCallExpression()
+        public MetaFunctionCallExpression CreateMetaFunctionCallExpression(bool addToModelContext = true)
     	{
-    		MetaFunctionCallExpression result = new MetaFunctionCallExpressionImpl();
+    		MetaFunctionCallExpression result = new global::MetaDslx.Core.MetaFunctionCallExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaIndexerExpression.
         /// </summary>
-        public MetaIndexerExpression CreateMetaIndexerExpression()
+        public MetaIndexerExpression CreateMetaIndexerExpression(bool addToModelContext = true)
     	{
-    		MetaIndexerExpression result = new MetaIndexerExpressionImpl();
+    		MetaIndexerExpression result = new global::MetaDslx.Core.MetaIndexerExpressionImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaOperatorExpression.
-        /// </summary>
-        public MetaOperatorExpression CreateMetaOperatorExpression()
-    	{
-    		MetaOperatorExpression result = new MetaOperatorExpressionImpl();
-    		return result;
-    	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaUnaryExpression.
-        /// </summary>
-        public MetaUnaryExpression CreateMetaUnaryExpression()
-    	{
-    		MetaUnaryExpression result = new MetaUnaryExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaUnaryPlusExpression.
         /// </summary>
-        public MetaUnaryPlusExpression CreateMetaUnaryPlusExpression()
+        public MetaUnaryPlusExpression CreateMetaUnaryPlusExpression(bool addToModelContext = true)
     	{
-    		MetaUnaryPlusExpression result = new MetaUnaryPlusExpressionImpl();
+    		MetaUnaryPlusExpression result = new global::MetaDslx.Core.MetaUnaryPlusExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaNegateExpression.
         /// </summary>
-        public MetaNegateExpression CreateMetaNegateExpression()
+        public MetaNegateExpression CreateMetaNegateExpression(bool addToModelContext = true)
     	{
-    		MetaNegateExpression result = new MetaNegateExpressionImpl();
+    		MetaNegateExpression result = new global::MetaDslx.Core.MetaNegateExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaOnesComplementExpression.
         /// </summary>
-        public MetaOnesComplementExpression CreateMetaOnesComplementExpression()
+        public MetaOnesComplementExpression CreateMetaOnesComplementExpression(bool addToModelContext = true)
     	{
-    		MetaOnesComplementExpression result = new MetaOnesComplementExpressionImpl();
+    		MetaOnesComplementExpression result = new global::MetaDslx.Core.MetaOnesComplementExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaNotExpression.
         /// </summary>
-        public MetaNotExpression CreateMetaNotExpression()
+        public MetaNotExpression CreateMetaNotExpression(bool addToModelContext = true)
     	{
-    		MetaNotExpression result = new MetaNotExpressionImpl();
+    		MetaNotExpression result = new global::MetaDslx.Core.MetaNotExpressionImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaUnaryAssignExpression.
-        /// </summary>
-        public MetaUnaryAssignExpression CreateMetaUnaryAssignExpression()
-    	{
-    		MetaUnaryAssignExpression result = new MetaUnaryAssignExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaPostIncrementAssignExpression.
         /// </summary>
-        public MetaPostIncrementAssignExpression CreateMetaPostIncrementAssignExpression()
+        public MetaPostIncrementAssignExpression CreateMetaPostIncrementAssignExpression(bool addToModelContext = true)
     	{
-    		MetaPostIncrementAssignExpression result = new MetaPostIncrementAssignExpressionImpl();
+    		MetaPostIncrementAssignExpression result = new global::MetaDslx.Core.MetaPostIncrementAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaPostDecrementAssignExpression.
         /// </summary>
-        public MetaPostDecrementAssignExpression CreateMetaPostDecrementAssignExpression()
+        public MetaPostDecrementAssignExpression CreateMetaPostDecrementAssignExpression(bool addToModelContext = true)
     	{
-    		MetaPostDecrementAssignExpression result = new MetaPostDecrementAssignExpressionImpl();
+    		MetaPostDecrementAssignExpression result = new global::MetaDslx.Core.MetaPostDecrementAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaPreIncrementAssignExpression.
         /// </summary>
-        public MetaPreIncrementAssignExpression CreateMetaPreIncrementAssignExpression()
+        public MetaPreIncrementAssignExpression CreateMetaPreIncrementAssignExpression(bool addToModelContext = true)
     	{
-    		MetaPreIncrementAssignExpression result = new MetaPreIncrementAssignExpressionImpl();
+    		MetaPreIncrementAssignExpression result = new global::MetaDslx.Core.MetaPreIncrementAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaPreDecrementAssignExpression.
         /// </summary>
-        public MetaPreDecrementAssignExpression CreateMetaPreDecrementAssignExpression()
+        public MetaPreDecrementAssignExpression CreateMetaPreDecrementAssignExpression(bool addToModelContext = true)
     	{
-    		MetaPreDecrementAssignExpression result = new MetaPreDecrementAssignExpressionImpl();
+    		MetaPreDecrementAssignExpression result = new global::MetaDslx.Core.MetaPreDecrementAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaBinaryExpression.
-        /// </summary>
-        public MetaBinaryExpression CreateMetaBinaryExpression()
-    	{
-    		MetaBinaryExpression result = new MetaBinaryExpressionImpl();
-    		return result;
-    	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaBinaryArithmeticExpression.
-        /// </summary>
-        public MetaBinaryArithmeticExpression CreateMetaBinaryArithmeticExpression()
-    	{
-    		MetaBinaryArithmeticExpression result = new MetaBinaryArithmeticExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaMultiplyExpression.
         /// </summary>
-        public MetaMultiplyExpression CreateMetaMultiplyExpression()
+        public MetaMultiplyExpression CreateMetaMultiplyExpression(bool addToModelContext = true)
     	{
-    		MetaMultiplyExpression result = new MetaMultiplyExpressionImpl();
+    		MetaMultiplyExpression result = new global::MetaDslx.Core.MetaMultiplyExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaDivideExpression.
         /// </summary>
-        public MetaDivideExpression CreateMetaDivideExpression()
+        public MetaDivideExpression CreateMetaDivideExpression(bool addToModelContext = true)
     	{
-    		MetaDivideExpression result = new MetaDivideExpressionImpl();
+    		MetaDivideExpression result = new global::MetaDslx.Core.MetaDivideExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaModuloExpression.
         /// </summary>
-        public MetaModuloExpression CreateMetaModuloExpression()
+        public MetaModuloExpression CreateMetaModuloExpression(bool addToModelContext = true)
     	{
-    		MetaModuloExpression result = new MetaModuloExpressionImpl();
+    		MetaModuloExpression result = new global::MetaDslx.Core.MetaModuloExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaAddExpression.
         /// </summary>
-        public MetaAddExpression CreateMetaAddExpression()
+        public MetaAddExpression CreateMetaAddExpression(bool addToModelContext = true)
     	{
-    		MetaAddExpression result = new MetaAddExpressionImpl();
+    		MetaAddExpression result = new global::MetaDslx.Core.MetaAddExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaSubtractExpression.
         /// </summary>
-        public MetaSubtractExpression CreateMetaSubtractExpression()
+        public MetaSubtractExpression CreateMetaSubtractExpression(bool addToModelContext = true)
     	{
-    		MetaSubtractExpression result = new MetaSubtractExpressionImpl();
+    		MetaSubtractExpression result = new global::MetaDslx.Core.MetaSubtractExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaLeftShiftExpression.
         /// </summary>
-        public MetaLeftShiftExpression CreateMetaLeftShiftExpression()
+        public MetaLeftShiftExpression CreateMetaLeftShiftExpression(bool addToModelContext = true)
     	{
-    		MetaLeftShiftExpression result = new MetaLeftShiftExpressionImpl();
+    		MetaLeftShiftExpression result = new global::MetaDslx.Core.MetaLeftShiftExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaRightShiftExpression.
         /// </summary>
-        public MetaRightShiftExpression CreateMetaRightShiftExpression()
+        public MetaRightShiftExpression CreateMetaRightShiftExpression(bool addToModelContext = true)
     	{
-    		MetaRightShiftExpression result = new MetaRightShiftExpressionImpl();
+    		MetaRightShiftExpression result = new global::MetaDslx.Core.MetaRightShiftExpressionImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaBinaryComparisonExpression.
-        /// </summary>
-        public MetaBinaryComparisonExpression CreateMetaBinaryComparisonExpression()
-    	{
-    		MetaBinaryComparisonExpression result = new MetaBinaryComparisonExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaLessThanExpression.
         /// </summary>
-        public MetaLessThanExpression CreateMetaLessThanExpression()
+        public MetaLessThanExpression CreateMetaLessThanExpression(bool addToModelContext = true)
     	{
-    		MetaLessThanExpression result = new MetaLessThanExpressionImpl();
+    		MetaLessThanExpression result = new global::MetaDslx.Core.MetaLessThanExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaLessThanOrEqualExpression.
         /// </summary>
-        public MetaLessThanOrEqualExpression CreateMetaLessThanOrEqualExpression()
+        public MetaLessThanOrEqualExpression CreateMetaLessThanOrEqualExpression(bool addToModelContext = true)
     	{
-    		MetaLessThanOrEqualExpression result = new MetaLessThanOrEqualExpressionImpl();
+    		MetaLessThanOrEqualExpression result = new global::MetaDslx.Core.MetaLessThanOrEqualExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaGreaterThanExpression.
         /// </summary>
-        public MetaGreaterThanExpression CreateMetaGreaterThanExpression()
+        public MetaGreaterThanExpression CreateMetaGreaterThanExpression(bool addToModelContext = true)
     	{
-    		MetaGreaterThanExpression result = new MetaGreaterThanExpressionImpl();
+    		MetaGreaterThanExpression result = new global::MetaDslx.Core.MetaGreaterThanExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaGreaterThanOrEqualExpression.
         /// </summary>
-        public MetaGreaterThanOrEqualExpression CreateMetaGreaterThanOrEqualExpression()
+        public MetaGreaterThanOrEqualExpression CreateMetaGreaterThanOrEqualExpression(bool addToModelContext = true)
     	{
-    		MetaGreaterThanOrEqualExpression result = new MetaGreaterThanOrEqualExpressionImpl();
+    		MetaGreaterThanOrEqualExpression result = new global::MetaDslx.Core.MetaGreaterThanOrEqualExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaEqualExpression.
         /// </summary>
-        public MetaEqualExpression CreateMetaEqualExpression()
+        public MetaEqualExpression CreateMetaEqualExpression(bool addToModelContext = true)
     	{
-    		MetaEqualExpression result = new MetaEqualExpressionImpl();
+    		MetaEqualExpression result = new global::MetaDslx.Core.MetaEqualExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaNotEqualExpression.
         /// </summary>
-        public MetaNotEqualExpression CreateMetaNotEqualExpression()
+        public MetaNotEqualExpression CreateMetaNotEqualExpression(bool addToModelContext = true)
     	{
-    		MetaNotEqualExpression result = new MetaNotEqualExpressionImpl();
+    		MetaNotEqualExpression result = new global::MetaDslx.Core.MetaNotEqualExpressionImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaBinaryLogicalExpression.
-        /// </summary>
-        public MetaBinaryLogicalExpression CreateMetaBinaryLogicalExpression()
-    	{
-    		MetaBinaryLogicalExpression result = new MetaBinaryLogicalExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaAndExpression.
         /// </summary>
-        public MetaAndExpression CreateMetaAndExpression()
+        public MetaAndExpression CreateMetaAndExpression(bool addToModelContext = true)
     	{
-    		MetaAndExpression result = new MetaAndExpressionImpl();
+    		MetaAndExpression result = new global::MetaDslx.Core.MetaAndExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaOrExpression.
         /// </summary>
-        public MetaOrExpression CreateMetaOrExpression()
+        public MetaOrExpression CreateMetaOrExpression(bool addToModelContext = true)
     	{
-    		MetaOrExpression result = new MetaOrExpressionImpl();
+    		MetaOrExpression result = new global::MetaDslx.Core.MetaOrExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaExclusiveOrExpression.
         /// </summary>
-        public MetaExclusiveOrExpression CreateMetaExclusiveOrExpression()
+        public MetaExclusiveOrExpression CreateMetaExclusiveOrExpression(bool addToModelContext = true)
     	{
-    		MetaExclusiveOrExpression result = new MetaExclusiveOrExpressionImpl();
+    		MetaExclusiveOrExpression result = new global::MetaDslx.Core.MetaExclusiveOrExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaAndAlsoExpression.
         /// </summary>
-        public MetaAndAlsoExpression CreateMetaAndAlsoExpression()
+        public MetaAndAlsoExpression CreateMetaAndAlsoExpression(bool addToModelContext = true)
     	{
-    		MetaAndAlsoExpression result = new MetaAndAlsoExpressionImpl();
+    		MetaAndAlsoExpression result = new global::MetaDslx.Core.MetaAndAlsoExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaOrElseExpression.
         /// </summary>
-        public MetaOrElseExpression CreateMetaOrElseExpression()
+        public MetaOrElseExpression CreateMetaOrElseExpression(bool addToModelContext = true)
     	{
-    		MetaOrElseExpression result = new MetaOrElseExpressionImpl();
+    		MetaOrElseExpression result = new global::MetaDslx.Core.MetaOrElseExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaNullCoalescingExpression.
         /// </summary>
-        public MetaNullCoalescingExpression CreateMetaNullCoalescingExpression()
+        public MetaNullCoalescingExpression CreateMetaNullCoalescingExpression(bool addToModelContext = true)
     	{
-    		MetaNullCoalescingExpression result = new MetaNullCoalescingExpressionImpl();
+    		MetaNullCoalescingExpression result = new global::MetaDslx.Core.MetaNullCoalescingExpressionImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaAssignmentExpression.
-        /// </summary>
-        public MetaAssignmentExpression CreateMetaAssignmentExpression()
-    	{
-    		MetaAssignmentExpression result = new MetaAssignmentExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaAssignExpression.
         /// </summary>
-        public MetaAssignExpression CreateMetaAssignExpression()
+        public MetaAssignExpression CreateMetaAssignExpression(bool addToModelContext = true)
     	{
-    		MetaAssignExpression result = new MetaAssignExpressionImpl();
+    		MetaAssignExpression result = new global::MetaDslx.Core.MetaAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaArithmeticAssignmentExpression.
-        /// </summary>
-        public MetaArithmeticAssignmentExpression CreateMetaArithmeticAssignmentExpression()
-    	{
-    		MetaArithmeticAssignmentExpression result = new MetaArithmeticAssignmentExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaMultiplyAssignExpression.
         /// </summary>
-        public MetaMultiplyAssignExpression CreateMetaMultiplyAssignExpression()
+        public MetaMultiplyAssignExpression CreateMetaMultiplyAssignExpression(bool addToModelContext = true)
     	{
-    		MetaMultiplyAssignExpression result = new MetaMultiplyAssignExpressionImpl();
+    		MetaMultiplyAssignExpression result = new global::MetaDslx.Core.MetaMultiplyAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaDivideAssignExpression.
         /// </summary>
-        public MetaDivideAssignExpression CreateMetaDivideAssignExpression()
+        public MetaDivideAssignExpression CreateMetaDivideAssignExpression(bool addToModelContext = true)
     	{
-    		MetaDivideAssignExpression result = new MetaDivideAssignExpressionImpl();
+    		MetaDivideAssignExpression result = new global::MetaDslx.Core.MetaDivideAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaModuloAssignExpression.
         /// </summary>
-        public MetaModuloAssignExpression CreateMetaModuloAssignExpression()
+        public MetaModuloAssignExpression CreateMetaModuloAssignExpression(bool addToModelContext = true)
     	{
-    		MetaModuloAssignExpression result = new MetaModuloAssignExpressionImpl();
+    		MetaModuloAssignExpression result = new global::MetaDslx.Core.MetaModuloAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaAddAssignExpression.
         /// </summary>
-        public MetaAddAssignExpression CreateMetaAddAssignExpression()
+        public MetaAddAssignExpression CreateMetaAddAssignExpression(bool addToModelContext = true)
     	{
-    		MetaAddAssignExpression result = new MetaAddAssignExpressionImpl();
+    		MetaAddAssignExpression result = new global::MetaDslx.Core.MetaAddAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaSubtractAssignExpression.
         /// </summary>
-        public MetaSubtractAssignExpression CreateMetaSubtractAssignExpression()
+        public MetaSubtractAssignExpression CreateMetaSubtractAssignExpression(bool addToModelContext = true)
     	{
-    		MetaSubtractAssignExpression result = new MetaSubtractAssignExpressionImpl();
+    		MetaSubtractAssignExpression result = new global::MetaDslx.Core.MetaSubtractAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaLeftShiftAssignExpression.
         /// </summary>
-        public MetaLeftShiftAssignExpression CreateMetaLeftShiftAssignExpression()
+        public MetaLeftShiftAssignExpression CreateMetaLeftShiftAssignExpression(bool addToModelContext = true)
     	{
-    		MetaLeftShiftAssignExpression result = new MetaLeftShiftAssignExpressionImpl();
+    		MetaLeftShiftAssignExpression result = new global::MetaDslx.Core.MetaLeftShiftAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaRightShiftAssignExpression.
         /// </summary>
-        public MetaRightShiftAssignExpression CreateMetaRightShiftAssignExpression()
+        public MetaRightShiftAssignExpression CreateMetaRightShiftAssignExpression(bool addToModelContext = true)
     	{
-    		MetaRightShiftAssignExpression result = new MetaRightShiftAssignExpressionImpl();
+    		MetaRightShiftAssignExpression result = new global::MetaDslx.Core.MetaRightShiftAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
-    
-        /// <summary>
-        /// Creates a new instance of MetaLogicalAssignmentExpression.
-        /// </summary>
-        public MetaLogicalAssignmentExpression CreateMetaLogicalAssignmentExpression()
-    	{
-    		MetaLogicalAssignmentExpression result = new MetaLogicalAssignmentExpressionImpl();
-    		return result;
-    	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaAndAssignExpression.
         /// </summary>
-        public MetaAndAssignExpression CreateMetaAndAssignExpression()
+        public MetaAndAssignExpression CreateMetaAndAssignExpression(bool addToModelContext = true)
     	{
-    		MetaAndAssignExpression result = new MetaAndAssignExpressionImpl();
+    		MetaAndAssignExpression result = new global::MetaDslx.Core.MetaAndAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaExclusiveOrAssignExpression.
         /// </summary>
-        public MetaExclusiveOrAssignExpression CreateMetaExclusiveOrAssignExpression()
+        public MetaExclusiveOrAssignExpression CreateMetaExclusiveOrAssignExpression(bool addToModelContext = true)
     	{
-    		MetaExclusiveOrAssignExpression result = new MetaExclusiveOrAssignExpressionImpl();
+    		MetaExclusiveOrAssignExpression result = new global::MetaDslx.Core.MetaExclusiveOrAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     
         /// <summary>
         /// Creates a new instance of MetaOrAssignExpression.
         /// </summary>
-        public MetaOrAssignExpression CreateMetaOrAssignExpression()
+        public MetaOrAssignExpression CreateMetaOrAssignExpression(bool addToModelContext = true)
     	{
-    		MetaOrAssignExpression result = new MetaOrAssignExpressionImpl();
+    		MetaOrAssignExpression result = new global::MetaDslx.Core.MetaOrAssignExpressionImpl(addToModelContext);
     		return result;
     	}
-    
     }
     
     internal static class MetaImplementationProvider
@@ -11403,14 +12860,6 @@ namespace MetaDslx.Core
         {
             this.MetaNamedElement_MetaNamedElement(@this);
             this.MetaAnnotatedElement_MetaAnnotatedElement(@this);
-        }
-    
-        /// <summary>
-        /// Returns the value of the derived property: MetaDeclaration.Namespace
-        /// </summary>
-        public virtual MetaNamespace MetaDeclaration_Namespace(MetaDeclaration @this)
-        {
-            throw new NotImplementedException();
         }
     
         /// <summary>
@@ -11603,6 +13052,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaExpression()
     	/// Direct superclasses: MetaTypedElement
     	/// All superclasses: MetaTypedElement
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaExpression_MetaExpression(MetaExpression @this)
         {
@@ -11610,17 +13061,11 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
-        /// Returns the value of the lazy property: MetaExpression.NoTypeError
-        /// </summary>
-        public virtual bool MetaExpression_NoTypeError(MetaExpression @this)
-        {
-            throw new NotImplementedException();
-        }
-    
-        /// <summary>
     	/// Implements the constructor: MetaBracketExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaBracketExpression_MetaBracketExpression(MetaBracketExpression @this)
         {
@@ -11631,6 +13076,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBoundExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaBoundExpression_MetaBoundExpression(MetaBoundExpression @this)
         {
@@ -11641,6 +13088,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaThisExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaThisExpression_MetaThisExpression(MetaThisExpression @this)
         {
@@ -11651,6 +13100,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNullExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaNullExpression_MetaNullExpression(MetaNullExpression @this)
         {
@@ -11661,6 +13112,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaTypeConversionExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaTypeConversionExpression_MetaTypeConversionExpression(MetaTypeConversionExpression @this)
         {
@@ -11671,6 +13124,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaTypeAsExpression()
     	/// Direct superclasses: MetaTypeConversionExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaTypeConversionExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaTypeAsExpression_MetaTypeAsExpression(MetaTypeAsExpression @this)
         {
@@ -11681,6 +13136,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaTypeCastExpression()
     	/// Direct superclasses: MetaTypeConversionExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaTypeConversionExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaTypeCastExpression_MetaTypeCastExpression(MetaTypeCastExpression @this)
         {
@@ -11691,6 +13148,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaTypeCheckExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaTypeCheckExpression_MetaTypeCheckExpression(MetaTypeCheckExpression @this)
         {
@@ -11701,6 +13160,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaTypeOfExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaTypeOfExpression_MetaTypeOfExpression(MetaTypeOfExpression @this)
         {
@@ -11711,6 +13172,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaConditionalExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaConditionalExpression_MetaConditionalExpression(MetaConditionalExpression @this)
         {
@@ -11721,6 +13184,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaConstantExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaConstantExpression_MetaConstantExpression(MetaConstantExpression @this)
         {
@@ -11731,6 +13196,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaIdentifierExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaIdentifierExpression_MetaIdentifierExpression(MetaIdentifierExpression @this)
         {
@@ -11741,6 +13208,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaMemberAccessExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaMemberAccessExpression_MetaMemberAccessExpression(MetaMemberAccessExpression @this)
         {
@@ -11751,6 +13220,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaFunctionCallExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaFunctionCallExpression_MetaFunctionCallExpression(MetaFunctionCallExpression @this)
         {
@@ -11761,6 +13232,8 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaIndexerExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
+        // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         /// </summary>
         public virtual void MetaIndexerExpression_MetaIndexerExpression(MetaIndexerExpression @this)
         {
@@ -11772,6 +13245,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaOperatorExpression_MetaOperatorExpression(MetaOperatorExpression @this)
@@ -11784,6 +13258,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaOperatorExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaUnaryExpression_MetaUnaryExpression(MetaUnaryExpression @this)
@@ -11796,6 +13271,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaUnaryPlusExpression_MetaUnaryPlusExpression(MetaUnaryPlusExpression @this)
@@ -11808,6 +13284,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaNegateExpression_MetaNegateExpression(MetaNegateExpression @this)
@@ -11820,6 +13297,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaOnesComplementExpression_MetaOnesComplementExpression(MetaOnesComplementExpression @this)
@@ -11832,6 +13310,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaNotExpression_MetaNotExpression(MetaNotExpression @this)
@@ -11844,6 +13323,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaUnaryAssignExpression_MetaUnaryAssignExpression(MetaUnaryAssignExpression @this)
@@ -11856,6 +13336,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaPostIncrementAssignExpression_MetaPostIncrementAssignExpression(MetaPostIncrementAssignExpression @this)
@@ -11868,6 +13349,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaPostDecrementAssignExpression_MetaPostDecrementAssignExpression(MetaPostDecrementAssignExpression @this)
@@ -11880,6 +13362,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaPreIncrementAssignExpression_MetaPreIncrementAssignExpression(MetaPreIncrementAssignExpression @this)
@@ -11892,6 +13375,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaPreDecrementAssignExpression_MetaPreDecrementAssignExpression(MetaPreDecrementAssignExpression @this)
@@ -11904,6 +13388,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaOperatorExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaBinaryExpression_MetaBinaryExpression(MetaBinaryExpression @this)
@@ -11916,6 +13401,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaBinaryArithmeticExpression_MetaBinaryArithmeticExpression(MetaBinaryArithmeticExpression @this)
@@ -11928,6 +13414,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaMultiplyExpression_MetaMultiplyExpression(MetaMultiplyExpression @this)
@@ -11940,6 +13427,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaDivideExpression_MetaDivideExpression(MetaDivideExpression @this)
@@ -11952,6 +13440,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaModuloExpression_MetaModuloExpression(MetaModuloExpression @this)
@@ -11964,6 +13453,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAddExpression_MetaAddExpression(MetaAddExpression @this)
@@ -11976,6 +13466,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaSubtractExpression_MetaSubtractExpression(MetaSubtractExpression @this)
@@ -11988,6 +13479,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaLeftShiftExpression_MetaLeftShiftExpression(MetaLeftShiftExpression @this)
@@ -12000,6 +13492,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaRightShiftExpression_MetaRightShiftExpression(MetaRightShiftExpression @this)
@@ -12012,6 +13505,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaBinaryComparisonExpression_MetaBinaryComparisonExpression(MetaBinaryComparisonExpression @this)
@@ -12024,6 +13518,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaLessThanExpression_MetaLessThanExpression(MetaLessThanExpression @this)
@@ -12036,6 +13531,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaLessThanOrEqualExpression_MetaLessThanOrEqualExpression(MetaLessThanOrEqualExpression @this)
@@ -12048,6 +13544,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaGreaterThanExpression_MetaGreaterThanExpression(MetaGreaterThanExpression @this)
@@ -12060,6 +13557,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaGreaterThanOrEqualExpression_MetaGreaterThanOrEqualExpression(MetaGreaterThanOrEqualExpression @this)
@@ -12072,6 +13570,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaEqualExpression_MetaEqualExpression(MetaEqualExpression @this)
@@ -12084,6 +13583,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaNotEqualExpression_MetaNotEqualExpression(MetaNotEqualExpression @this)
@@ -12096,6 +13596,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaBinaryLogicalExpression_MetaBinaryLogicalExpression(MetaBinaryLogicalExpression @this)
@@ -12108,6 +13609,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAndExpression_MetaAndExpression(MetaAndExpression @this)
@@ -12120,6 +13622,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaOrExpression_MetaOrExpression(MetaOrExpression @this)
@@ -12132,6 +13635,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaExclusiveOrExpression_MetaExclusiveOrExpression(MetaExclusiveOrExpression @this)
@@ -12144,6 +13648,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAndAlsoExpression_MetaAndAlsoExpression(MetaAndAlsoExpression @this)
@@ -12156,6 +13661,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaOrElseExpression_MetaOrElseExpression(MetaOrElseExpression @this)
@@ -12168,6 +13674,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaNullCoalescingExpression_MetaNullCoalescingExpression(MetaNullCoalescingExpression @this)
@@ -12180,6 +13687,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAssignmentExpression_MetaAssignmentExpression(MetaAssignmentExpression @this)
@@ -12192,6 +13700,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAssignExpression_MetaAssignExpression(MetaAssignExpression @this)
@@ -12204,6 +13713,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaArithmeticAssignmentExpression_MetaArithmeticAssignmentExpression(MetaArithmeticAssignmentExpression @this)
@@ -12216,6 +13726,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaMultiplyAssignExpression_MetaMultiplyAssignExpression(MetaMultiplyAssignExpression @this)
@@ -12228,6 +13739,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaDivideAssignExpression_MetaDivideAssignExpression(MetaDivideAssignExpression @this)
@@ -12240,6 +13752,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaModuloAssignExpression_MetaModuloAssignExpression(MetaModuloAssignExpression @this)
@@ -12252,6 +13765,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAddAssignExpression_MetaAddAssignExpression(MetaAddAssignExpression @this)
@@ -12264,6 +13778,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaSubtractAssignExpression_MetaSubtractAssignExpression(MetaSubtractAssignExpression @this)
@@ -12276,6 +13791,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaLeftShiftAssignExpression_MetaLeftShiftAssignExpression(MetaLeftShiftAssignExpression @this)
@@ -12288,6 +13804,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaRightShiftAssignExpression_MetaRightShiftAssignExpression(MetaRightShiftAssignExpression @this)
@@ -12300,6 +13817,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaLogicalAssignmentExpression_MetaLogicalAssignmentExpression(MetaLogicalAssignmentExpression @this)
@@ -12312,6 +13830,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaLogicalAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaLogicalAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaAndAssignExpression_MetaAndAssignExpression(MetaAndAssignExpression @this)
@@ -12324,6 +13843,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaLogicalAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaLogicalAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaExclusiveOrAssignExpression_MetaExclusiveOrAssignExpression(MetaExclusiveOrAssignExpression @this)
@@ -12336,6 +13856,7 @@ namespace MetaDslx.Core
     	/// Direct superclasses: MetaLogicalAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaLogicalAssignmentExpression
         // Initializes the following readonly properties:
+        ///    Expression.NoTypeError
         ///    OperatorExpression.Name
         /// </summary>
         public virtual void MetaOrAssignExpression_MetaOrAssignExpression(MetaOrAssignExpression @this)
