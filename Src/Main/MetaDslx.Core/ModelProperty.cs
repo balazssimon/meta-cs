@@ -10,13 +10,13 @@ namespace MetaDslx.Core
 {
     public class ModelProperty
     {
-        internal static Dictionary<Type, Dictionary<string, ModelProperty>> declaredProperties;
-        internal static Dictionary<Type, Dictionary<string, ModelProperty>> properties;
+        internal static Dictionary<System.Type, Dictionary<string, ModelProperty>> declaredProperties;
+        internal static Dictionary<System.Type, Dictionary<string, ModelProperty>> properties;
 
         static ModelProperty()
         {
-            ModelProperty.declaredProperties = new Dictionary<Type, Dictionary<string, ModelProperty>>();
-            ModelProperty.properties = new Dictionary<Type, Dictionary<string, ModelProperty>>();
+            ModelProperty.declaredProperties = new Dictionary<System.Type, Dictionary<string, ModelProperty>>();
+            ModelProperty.properties = new Dictionary<System.Type, Dictionary<string, ModelProperty>>();
         }
 
         private bool initialized = false;
@@ -28,10 +28,10 @@ namespace MetaDslx.Core
         private List<ModelProperty> redefiningProperties;
         private bool isReadonly = false;
         private bool isContainment = false;
-        private Type itemType = null;
+        private System.Type itemType = null;
         private bool isCollection = false;
 
-        protected ModelProperty(string name, Type type, Type owningType, string declaredName, Type declaringType)
+        protected ModelProperty(string name, System.Type type, System.Type owningType, string declaredName, System.Type declaringType)
         {
             this.Name = name;
             this.DeclaredName = declaredName;
@@ -48,9 +48,9 @@ namespace MetaDslx.Core
 
         public string Name { get; private set; }
         public string DeclaredName { get; private set; }
-        public Type Type { get; private set; }
-        public Type OwningType { get; private set; }
-        public Type DeclaringType { get; private set; }
+        public System.Type Type { get; private set; }
+        public System.Type OwningType { get; private set; }
+        public System.Type DeclaringType { get; private set; }
 
         public IEnumerable<object> Annotations
         {
@@ -134,7 +134,7 @@ namespace MetaDslx.Core
             }
         }
 
-        public Type ItemType
+        public System.Type ItemType
         {
             get
             {
@@ -153,8 +153,8 @@ namespace MetaDslx.Core
                 this.annotations.AddRange(info.GetCustomAttributes());
                 if (ModelProperty.IsAssignableToGenericType(this.Type,typeof(ICollection<>)))
                 {
-                    Type[] genericArguments = this.Type.GetGenericArguments();
-                    Type lastGenericArgument = genericArguments[genericArguments.Length - 1];
+                    System.Type[] genericArguments = this.Type.GetGenericArguments();
+                    System.Type lastGenericArgument = genericArguments[genericArguments.Length - 1];
                     if (genericArguments.Length > 0 && !lastGenericArgument.IsGenericParameter)
                     {
                         this.isCollection = true;
@@ -221,7 +221,7 @@ namespace MetaDslx.Core
             }
         }
 
-        public bool IsAssignableFrom(Type type)
+        public bool IsAssignableFrom(System.Type type)
         {
             if (this.Type == null || type == null) return false;
             if (this.IsCollection)
@@ -234,27 +234,27 @@ namespace MetaDslx.Core
             }
         }
 
-        public static ModelProperty Register(string name, Type type, Type owningType)
+        public static ModelProperty Register(string name, System.Type type, System.Type owningType)
         {
             return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", owningType));
         }
 
-        public static ModelProperty Register(string name, Type type, Type owningType, string declaredName)
+        public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName)
         {
             return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, owningType));
         }
 
-        public static ModelProperty Register(string name, Type type, Type owningType, Type declaringType)
+        public static ModelProperty Register(string name, System.Type type, System.Type owningType, System.Type declaringType)
         {
             return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", declaringType));
         }
 
-        public static ModelProperty Register(string name, Type type, Type owningType, string declaredName, Type declaringType)
+        public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName, System.Type declaringType)
         {
             return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, declaringType));
         }
 
-        protected static ModelProperty Find(Type declaringType, string name)
+        protected static ModelProperty Find(System.Type declaringType, string name)
         {
             Dictionary<string, ModelProperty> propertyList;
             if (ModelProperty.declaredProperties.TryGetValue(declaringType, out propertyList))
@@ -294,7 +294,7 @@ namespace MetaDslx.Core
             return property;
         }
 
-        public static IEnumerable<ModelProperty> GetPropertiesForType(Type owningType)
+        public static IEnumerable<ModelProperty> GetPropertiesForType(System.Type owningType)
         {
             Dictionary<string, ModelProperty> propertyList;
             RuntimeHelpers.RunClassConstructor(owningType.TypeHandle);
@@ -305,7 +305,7 @@ namespace MetaDslx.Core
             return new ModelProperty[0];
         }
 
-        public static IEnumerable<ModelProperty> GetAllPropertiesForType(Type owningType)
+        public static IEnumerable<ModelProperty> GetAllPropertiesForType(System.Type owningType)
         {
             HashSet<ModelProperty> result = new HashSet<ModelProperty>();
             Dictionary<string, ModelProperty> propertyList;
@@ -333,7 +333,7 @@ namespace MetaDslx.Core
             }
         }
 
-        private static bool IsAssignableToGenericType(Type givenType, Type genericType)
+        private static bool IsAssignableToGenericType(System.Type givenType, System.Type genericType)
         {
             var interfaceTypes = givenType.GetInterfaces();
 
@@ -346,7 +346,7 @@ namespace MetaDslx.Core
             if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
                 return true;
 
-            Type baseType = givenType.BaseType;
+            System.Type baseType = givenType.BaseType;
             if (baseType == null) return false;
 
             return IsAssignableToGenericType(baseType, genericType);

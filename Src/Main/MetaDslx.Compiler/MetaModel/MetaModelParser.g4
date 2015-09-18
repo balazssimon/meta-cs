@@ -9,7 +9,7 @@ options
 using MetaDslx.Core;
 }
 
-main: namespaceDeclaration*;
+main: namespaceDeclaration;
 
 
 qualifiedName : identifier (TDot identifier)*;
@@ -28,10 +28,11 @@ annotationParam :   identifier TAssign  expression;
 
 
 
-namespaceDeclaration: annotation* KNamespace qualifiedName TOpenBrace  metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: annotation* KNamespace qualifiedName TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
 
-metamodelDeclaration: annotation* KMetamodel identifier (TOpenParen metamodelPropertyList? TCloseParen)? TOpenBrace declaration* TCloseBrace;
+
+metamodelDeclaration: annotation* KMetamodel identifier (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
 
 metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
 

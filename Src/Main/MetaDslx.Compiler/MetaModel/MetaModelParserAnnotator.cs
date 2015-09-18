@@ -117,11 +117,11 @@ using MetaDslx.Core;
             annotList.Add(this.voidType_Name);
             
             this.invisibleType_KAny_PreDefSymbol = new PreDefSymbolAnnotation();
-            this.invisibleType_KAny_PreDefSymbol.Value = Meta.Constants.Any;
+            this.invisibleType_KAny_PreDefSymbol.Value = MetaDescriptor.Constants.Any;
             this.invisibleType_KNone_PreDefSymbol = new PreDefSymbolAnnotation();
-            this.invisibleType_KNone_PreDefSymbol.Value = Meta.Constants.None;
+            this.invisibleType_KNone_PreDefSymbol.Value = MetaDescriptor.Constants.None;
             this.invisibleType_KError_PreDefSymbol = new PreDefSymbolAnnotation();
-            this.invisibleType_KError_PreDefSymbol.Value = Meta.Constants.Error;
+            this.invisibleType_KError_PreDefSymbol.Value = MetaDescriptor.Constants.Error;
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ExpressionContext), annotList);
@@ -583,21 +583,6 @@ using MetaDslx.Core;
             __tmp10.NestingProperty = "Namespaces";
             __tmp10.Merge = true;
             treeAnnotList.Add(__tmp10);
-            List<object> elemAnnotList = null;
-            if (context.metamodelDeclaration() != null)
-            {
-                foreach(object elem in context.metamodelDeclaration())
-                {
-                    if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                    {
-                        elemAnnotList = new List<object>();
-                        this.treeAnnotations.Add(elem, elemAnnotList);
-                    }
-                    PropertyAnnotation __tmp11 = new PropertyAnnotation();
-                    __tmp11.Name = "Models";
-                    elemAnnotList.Add(__tmp11);
-                }
-            }
             this.HandleSymbolType(context);
             return base.VisitNamespaceDeclaration(context);
         }
@@ -610,6 +595,9 @@ using MetaDslx.Core;
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            PropertyAnnotation __tmp11 = new PropertyAnnotation();
+            __tmp11.Name = "MetaModel";
+            treeAnnotList.Add(__tmp11);
             NameDefAnnotation __tmp12 = new NameDefAnnotation();
             __tmp12.SymbolType = typeof(MetaModel);
             treeAnnotList.Add(__tmp12);
@@ -664,7 +652,7 @@ using MetaDslx.Core;
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             PropertyAnnotation __tmp15 = new PropertyAnnotation();
-            __tmp15.Name = "Types";
+            __tmp15.Name = "Declarations";
             treeAnnotList.Add(__tmp15);
             TypeDefAnnotation __tmp16 = new TypeDefAnnotation();
             __tmp16.SymbolType = typeof(MetaEnum);
@@ -735,7 +723,7 @@ using MetaDslx.Core;
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             PropertyAnnotation __tmp20 = new PropertyAnnotation();
-            __tmp20.Name = "Types";
+            __tmp20.Name = "Declarations";
             treeAnnotList.Add(__tmp20);
             TypeDefAnnotation __tmp21 = new TypeDefAnnotation();
             __tmp21.SymbolType = typeof(MetaClass);
@@ -1026,7 +1014,7 @@ using MetaDslx.Core;
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             PropertyAnnotation __tmp40 = new PropertyAnnotation();
-            __tmp40.Name = "Constants";
+            __tmp40.Name = "Declarations";
             treeAnnotList.Add(__tmp40);
             NameDefAnnotation __tmp41 = new NameDefAnnotation();
             __tmp41.SymbolType = typeof(MetaConstant);
@@ -1069,7 +1057,7 @@ using MetaDslx.Core;
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             PropertyAnnotation __tmp44 = new PropertyAnnotation();
-            __tmp44.Name = "Functions";
+            __tmp44.Name = "Declarations";
             treeAnnotList.Add(__tmp44);
             NameDefAnnotation __tmp45 = new NameDefAnnotation();
             __tmp45.SymbolType = typeof(MetaFunction);

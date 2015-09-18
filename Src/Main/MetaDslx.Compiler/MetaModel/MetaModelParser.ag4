@@ -9,7 +9,7 @@ options
 using MetaDslx.Core;
 }
 
-main: namespaceDeclaration*;
+main: namespaceDeclaration;
 
 $QualifiedName
 qualifiedName : identifier (TDot identifier)*;
@@ -28,10 +28,11 @@ annotationParam : $Property(Name) $Value identifier TAssign $Property(Value) exp
 
 
 $NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,merge=true)
-namespaceDeclaration: annotation* KNamespace qualifiedName TOpenBrace $Property(Models) metamodelDeclaration* TCloseBrace;
+namespaceDeclaration: annotation* KNamespace qualifiedName TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
+$Property(MetaModel)
 $NameDef(MetaModel)
-metamodelDeclaration: annotation* KMetamodel identifier (TOpenParen metamodelPropertyList? TCloseParen)? TOpenBrace declaration* TCloseBrace;
+metamodelDeclaration: annotation* KMetamodel identifier (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
 
 metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
 
@@ -40,7 +41,7 @@ metamodelProperty : identifier TAssign $Value stringLiteral;
 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | functionDeclaration;
 
-$Property(Types) 
+$Property(Declarations) 
 $TypeDef(MetaEnum)
 enumDeclaration : annotation* KEnum identifier TOpenBrace $Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
@@ -48,7 +49,7 @@ $NameDef(MetaEnumLiteral)
 enumValue : annotation* identifier;
 enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
-$Property(Types) 
+$Property(Declarations) 
 $TypeDef(MetaClass)
 classDeclaration : annotation* $Property(name=IsAbstract,value=true) KAbstract? KClass identifier (TColon $Property(SuperClasses) $InheritScope classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
@@ -75,11 +76,11 @@ subsettings : KSubsets $Property(SubsettedProperties) nameUseList?;
 
 nameUseList : $NameUse(MetaProperty) qualifiedName (TComma qualifiedName)*;
 
-$Property(Constants) 
+$Property(Declarations) 
 $NameDef(MetaConstant)
 constDeclaration : KConst $Property(Type) typeReference identifier (TAssign $Property(Value) expressionOrNewExpression)? TSemicolon;
 
-$Property(Functions) 
+$Property(Declarations) 
 $NameDef(MetaFunction)
 functionDeclaration : annotation* KExtern $Property(ReturnType) returnType identifier TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 
@@ -114,9 +115,9 @@ voidType
 	;
 
 invisibleType
-	: $PreDefSymbol(Meta.Constants.Any) KAny
-	| $PreDefSymbol(Meta.Constants.None) KNone
-	| $PreDefSymbol(Meta.Constants.Error) KError
+	: $PreDefSymbol(MetaDescriptor.Constants.Any) KAny
+	| $PreDefSymbol(MetaDescriptor.Constants.None) KNone
+	| $PreDefSymbol(MetaDescriptor.Constants.Error) KError
 	;
 
 $TypeCtr(MetaNullableType)

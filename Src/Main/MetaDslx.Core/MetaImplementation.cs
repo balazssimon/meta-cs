@@ -89,63 +89,72 @@ namespace MetaDslx.Core
 
     public class MetaBuiltInTypes
     {
-        private static List<MetaType> types = new List<MetaType>();
+        private static List<MetaType> types;
 
         public static IEnumerable<MetaType> Types
         {
-            get { return MetaBuiltInTypes.types; }
+            get
+            {
+                if (MetaBuiltInTypes.types == null)
+                {
+                    MetaBuiltInTypes.types = new List<MetaType>();
+                    if (MetaBuiltInTypes.types.Count == 0 && MetaDescriptor.Constants.Object != null)
+                    {
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Object);
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.String);
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Int);
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Long);
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Float);
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Double);
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Byte);
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Bool);
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Void);
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.ModelObject);
+                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.ModelObjectList);
+                    }
+                }
+                return MetaBuiltInTypes.types;
+            }
         }
-
-        static MetaBuiltInTypes()
-        {
-            MetaBuiltInTypes.types.Add(Meta.Constants.Object);
-            MetaBuiltInTypes.types.Add(Meta.Constants.String);
-            MetaBuiltInTypes.types.Add(Meta.Constants.Int);
-            MetaBuiltInTypes.types.Add(Meta.Constants.Long);
-            MetaBuiltInTypes.types.Add(Meta.Constants.Float);
-            MetaBuiltInTypes.types.Add(Meta.Constants.Double);
-            MetaBuiltInTypes.types.Add(Meta.Constants.Byte);
-            MetaBuiltInTypes.types.Add(Meta.Constants.Bool);
-            MetaBuiltInTypes.types.Add(Meta.Constants.Void);
-
-            MetaBuiltInTypes.types.Add(Meta.Constants.ModelObject);
-
-            MetaBuiltInTypes.types.Add(Meta.Constants.ModelObjectList);
-        }
-
     }
 
     public class MetaBuiltInFunctions
     {
-        private static List<MetaFunction> functions = new List<MetaFunction>();
+        private static List<MetaFunction> functions;
 
         public static IEnumerable<MetaFunction> Functions
         {
-            get { return MetaBuiltInFunctions.functions; }
-        }
-
-        static MetaBuiltInFunctions()
-        {
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.TypeOf);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.GetValueType);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.GetReturnType);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.CurrentType);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.TypeCheck);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.Balance);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.Resolve1);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.Resolve2);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.ResolveName1);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.ResolveName2);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.ResolveType1);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.ResolveType2);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.Bind1);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.Bind2);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.Bind3);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.Bind4);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.SelectOfType1);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.SelectOfType2);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.SelectOfName1);
-            MetaBuiltInFunctions.functions.Add(Meta.Constants.SelectOfName2);
+            get
+            {
+                if (MetaBuiltInFunctions.functions == null)
+                {
+                    MetaBuiltInFunctions.functions = new List<MetaFunction>();
+                    if (MetaBuiltInFunctions.functions.Count == 0 && MetaDescriptor.Constants.TypeOf != null)
+                    {
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.TypeOf);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.GetValueType);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.GetReturnType);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.CurrentType);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.TypeCheck);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Balance);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Resolve1);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Resolve2);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.ResolveName1);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.ResolveName2);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.ResolveType1);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.ResolveType2);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Bind1);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Bind2);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Bind3);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Bind4);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.SelectOfType1);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.SelectOfType2);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.SelectOfName1);
+                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.SelectOfName2);
+                    }
+                }
+                return MetaBuiltInFunctions.functions;
+            }
         }
     }
 
@@ -211,30 +220,30 @@ namespace MetaDslx.Core
         public override void MetaFunction_MetaFunction(MetaFunction @this)
         {
             base.MetaFunction_MetaFunction(@this);
-            MetaFunctionType type = MetaModelFactory.Instance.CreateMetaFunctionType();
-            ((ModelObject)type).MUnSet(Meta.MetaFunctionType.ParameterTypesProperty);
-            ((ModelObject)type).MLazySet(Meta.MetaFunctionType.ParameterTypesProperty, new Lazy<object>(() => new ModelMultiList<MetaType>((ModelObject)type, Meta.MetaFunctionType.ParameterTypesProperty, @this.Parameters.Select(p => new Lazy<object>(() => p.Type))), false));
-            ((ModelObject)type).MLazySet(Meta.MetaFunctionType.ReturnTypeProperty, new Lazy<object>(() => @this.ReturnType));
-            ((ModelObject)@this).MSet(Meta.MetaFunction.TypeProperty, type);
+            MetaFunctionType type = MetaFactory.Instance.CreateMetaFunctionType();
+            ((ModelObject)type).MUnSet(MetaDescriptor.MetaFunctionType.ParameterTypesProperty);
+            ((ModelObject)type).MLazySet(MetaDescriptor.MetaFunctionType.ParameterTypesProperty, new Lazy<object>(() => new ModelMultiList<MetaType>((ModelObject)type, MetaDescriptor.MetaFunctionType.ParameterTypesProperty, @this.Parameters.Select(p => new Lazy<object>(() => p.Type))), false));
+            ((ModelObject)type).MLazySet(MetaDescriptor.MetaFunctionType.ReturnTypeProperty, new Lazy<object>(() => @this.ReturnType));
+            ((ModelObject)@this).MSet(MetaDescriptor.MetaFunction.TypeProperty, type);
         }
 
         public override void MetaUnaryExpression_MetaUnaryExpression(MetaUnaryExpression @this)
         {
             base.MetaUnaryExpression_MetaUnaryExpression(@this);
-            ((ModelObject)@this).MLazyAdd(Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Expression));
+            ((ModelObject)@this).MLazyAdd(MetaDescriptor.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Expression));
         }
 
         public override void MetaBinaryExpression_MetaBinaryExpression(MetaBinaryExpression @this)
         {
             base.MetaBinaryExpression_MetaBinaryExpression(@this);
-            ((ModelObject)@this).MLazyAdd(Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Left));
-            ((ModelObject)@this).MLazyAdd(Meta.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Right));
+            ((ModelObject)@this).MLazyAdd(MetaDescriptor.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Left));
+            ((ModelObject)@this).MLazyAdd(MetaDescriptor.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Right));
         }
 
         public override void MetaNewCollectionExpression_MetaNewCollectionExpression(MetaNewCollectionExpression @this)
         {
             base.MetaNewCollectionExpression_MetaNewCollectionExpression(@this);
-            ((ModelObject)@this).MLazySetChild(Meta.MetaNewCollectionExpression.ValuesProperty, Meta.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => @this.TypeReference.InnerType));
+            ((ModelObject)@this).MLazySetChild(MetaDescriptor.MetaNewCollectionExpression.ValuesProperty, MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => @this.TypeReference.InnerType));
         }
 
         public override IList<MetaOperation> MetaClass_GetAllOperations(MetaClass @this)
@@ -317,8 +326,8 @@ namespace MetaDslx.Core
         {
             if (@this == null) return string.Empty;
             string nsName = @this.Namespace.CSharpName();
-            if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + "." + @this.Prefix;
-            else return @this.Prefix;
+            if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + "." + @this.Name + "Descriptor";
+            else return "global::" + @this.Name + "Descriptor";
         }
 
         public static string CSharpFullName(this MetaType @this)
@@ -341,7 +350,7 @@ namespace MetaDslx.Core
         public static string CSharpName(this MetaModel @this)
         {
             if (@this == null) return string.Empty;
-            return @this.Prefix;
+            return @this.Name + "Descriptor";
         }
 
         public static string CSharpName(this MetaType @this)
@@ -374,7 +383,7 @@ namespace MetaDslx.Core
             {
                 return primitive.Name;
             }
-            return ((MetaDeclaration)@this).Model.Prefix + ((MetaNamedElement)@this).Name;
+            return ((MetaNamedElement)@this).Name;
         }
 
         public static string CSharpImplName(this MetaType @this)
@@ -405,7 +414,7 @@ namespace MetaDslx.Core
             {
                 return primitive.Name;
             }
-            return ((MetaDeclaration)@this).Model.Prefix + ((MetaNamedElement)@this).Name + "Impl";
+            return ((MetaNamedElement)@this).Name + "Impl";
         }
 
         public static string CSharpFullImplName(this MetaType @this)
@@ -467,7 +476,7 @@ namespace MetaDslx.Core
             {
                 return primitive.Name;
             }
-            return ((MetaDeclaration)@this).Model.Prefix + ((MetaNamedElement)@this).Name;
+            return ((MetaNamedElement)@this).Name;
         }
 
         public static string CSharpFullPublicName(this MetaType @this)

@@ -201,9 +201,12 @@ namespace MetaDslx.Compiler
                 }
             }
 
-            var metamodels = this.Data.GetSymbols().OfType<MetaModel>().Distinct().ToList();
-            MetaModelGenerator generator = new MetaModelGenerator(metamodels);
-            this.GeneratedSource = generator.Generate();
+            //var models = this.Data.GetSymbols().OfType<Model>().Distinct().ToList();
+            if (!this.Diagnostics.HasErrors())
+            {
+                MetaModelGenerator generator = new MetaModelGenerator(ModelContext.Current.Model.Instances);
+                this.GeneratedSource = generator.Generate();
+            }
         }
 
         public MetaModelParser.MainContext ParseTree { get; private set; }
@@ -1460,7 +1463,33 @@ namespace MetaDslx.Compiler
             this.ModelFactory = new ModelFactory();
         }
 
-        public virtual ModelObject Symbol(IParseTree node)
+        public override object Visit(IParseTree tree)
+        {
+            try
+            {
+                return base.Visit(tree);
+            }
+            catch (Exception ex)
+            {
+                this.Compiler.Diagnostics.AddError("Exception: "+ex, this.Compiler.FileName, tree, false);
+            }
+            return null;
+        }
+
+        public override object VisitChildren(IRuleNode node)
+        {
+            try
+            {
+                return base.VisitChildren(node);
+            }
+            catch (Exception ex)
+            {
+                this.Compiler.Diagnostics.AddError("Exception: " + ex, this.Compiler.FileName, node, false);
+            }
+            return null;
+        }
+
+public virtual ModelObject Symbol(IParseTree node)
         {
             ModelObject symbol = this.Compiler.Data.GetSymbol(node);
             if (symbol == null)
@@ -1468,11 +1497,6 @@ namespace MetaDslx.Compiler
                 this.Compiler.Diagnostics.AddError("Cannot resolve symbol. No symbols found for the node.", this.Compiler.FileName, node, true);
             }
             return symbol;
-        }
-
-        public virtual List<object> Bind(object scope, object info)
-        {
-            return null;
         }
 
         public virtual object GetValue(IParseTree node, string property)
@@ -1514,11 +1538,6 @@ namespace MetaDslx.Compiler
                     }
                 }
             }
-        }
-
-        public virtual object Valueof(object obj)
-        {
-            return null;
         }
     }
 

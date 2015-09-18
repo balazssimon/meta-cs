@@ -75,7 +75,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
@@ -107,7 +107,7 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(compiler.Antlr4Source);
             }
-            using (StreamWriter writer = new StreamWriter("messages.txt"))
+            using (StreamWriter writer = new StreamWriter("messages_a4.txt"))
             {
                 foreach (var msg in compiler.Diagnostics.GetMessages(true))
                 {
@@ -252,7 +252,7 @@ namespace MetaDslx.TempConsole
                     }
                 }
 
-                using (StreamWriter writer = new StreamWriter("messages.txt"))
+                using (StreamWriter writer = new StreamWriter("messages_meta.txt"))
                 {
                     foreach (var msg in compiler.Diagnostics.GetMessages(true))
                     {
@@ -276,7 +276,7 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(compiler.GeneratedSource);
             }
-            using (StreamWriter writer = new StreamWriter("messages.txt"))
+            using (StreamWriter writer = new StreamWriter("messages_gen.txt"))
             {
                 foreach (var msg in compiler.Diagnostics.GetMessages(true))
                 {
