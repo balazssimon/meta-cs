@@ -30,8 +30,9 @@ namespace MetaDslx.Core
         private bool isContainment = false;
         private System.Type itemType = null;
         private bool isCollection = false;
+        private Lazy<MetaProperty> metaProperty = null;
 
-        protected ModelProperty(string name, System.Type type, System.Type owningType, string declaredName, System.Type declaringType)
+        protected ModelProperty(string name, System.Type type, System.Type owningType, string declaredName, System.Type declaringType, Lazy<MetaProperty> metaProperty)
         {
             this.Name = name;
             this.DeclaredName = declaredName;
@@ -44,6 +45,7 @@ namespace MetaDslx.Core
             this.subsettingProperties = new List<ModelProperty>();
             this.redefinedProperties = new List<ModelProperty>();
             this.redefiningProperties = new List<ModelProperty>();
+            this.metaProperty = metaProperty;
         }
 
         public string Name { get; private set; }
@@ -51,6 +53,14 @@ namespace MetaDslx.Core
         public System.Type Type { get; private set; }
         public System.Type OwningType { get; private set; }
         public System.Type DeclaringType { get; private set; }
+        public MetaProperty MetaProperty
+        {
+            get
+            {
+                if (this.metaProperty != null) return this.metaProperty.Value;
+                else return null;
+            }
+        }
 
         public IEnumerable<object> Annotations
         {
@@ -236,22 +246,42 @@ namespace MetaDslx.Core
 
         public static ModelProperty Register(string name, System.Type type, System.Type owningType)
         {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", owningType));
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", owningType, null));
         }
 
         public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName)
         {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, owningType));
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, owningType, null));
         }
 
         public static ModelProperty Register(string name, System.Type type, System.Type owningType, System.Type declaringType)
         {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", declaringType));
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", declaringType, null));
         }
 
         public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName, System.Type declaringType)
         {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, declaringType));
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, declaringType, null));
+        }
+
+        public static ModelProperty Register(string name, System.Type type, System.Type owningType, Lazy<MetaProperty> metaProperty)
+        {
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", owningType, metaProperty));
+        }
+
+        public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName, Lazy<MetaProperty> metaProperty)
+        {
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, owningType, metaProperty));
+        }
+
+        public static ModelProperty Register(string name, System.Type type, System.Type owningType, System.Type declaringType, Lazy<MetaProperty> metaProperty)
+        {
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", declaringType, metaProperty));
+        }
+
+        public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName, System.Type declaringType, Lazy<MetaProperty> metaProperty)
+        {
+            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, declaringType, metaProperty));
         }
 
         protected static ModelProperty Find(System.Type declaringType, string name)

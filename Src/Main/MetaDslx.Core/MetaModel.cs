@@ -115,271 +115,243 @@ namespace MetaDslx.Core
         {
             static Constants()
             {
-                global::MetaDslx.Core.MetaPrimitiveType tmp1 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                Object = tmp1;
-                tmp1.Name = "object";
-                global::MetaDslx.Core.MetaPrimitiveType tmp2 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                String = tmp2;
-                tmp2.Name = "string";
-                global::MetaDslx.Core.MetaPrimitiveType tmp3 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                Int = tmp3;
-                tmp3.Name = "int";
-                global::MetaDslx.Core.MetaPrimitiveType tmp4 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                Long = tmp4;
-                tmp4.Name = "long";
-                global::MetaDslx.Core.MetaPrimitiveType tmp5 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                Float = tmp5;
-                tmp5.Name = "float";
-                global::MetaDslx.Core.MetaPrimitiveType tmp6 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                Double = tmp6;
-                tmp6.Name = "double";
-                global::MetaDslx.Core.MetaPrimitiveType tmp7 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                Byte = tmp7;
-                tmp7.Name = "byte";
-                global::MetaDslx.Core.MetaPrimitiveType tmp8 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                Bool = tmp8;
-                tmp8.Name = "bool";
-                global::MetaDslx.Core.MetaPrimitiveType tmp9 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                Void = tmp9;
-                tmp9.Name = "void";
-                global::MetaDslx.Core.MetaPrimitiveType tmp10 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                None = tmp10;
-                tmp10.Name = "*none*";
-                global::MetaDslx.Core.MetaPrimitiveType tmp11 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                Any = tmp11;
-                tmp11.Name = "*any*";
-                global::MetaDslx.Core.MetaPrimitiveType tmp12 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                Error = tmp12;
-                tmp12.Name = "*error*";
-                global::MetaDslx.Core.MetaPrimitiveType tmp13 = MetaFactory.Instance.CreateMetaPrimitiveType();
-                ModelObject = tmp13;
-                tmp13.Name = "ModelObject";
-                global::MetaDslx.Core.MetaCollectionType tmp14 = MetaFactory.Instance.CreateMetaCollectionType();
-                ModelObjectList = tmp14;
-                tmp14.InnerType = MetaDescriptor.Constants.ModelObject;
+                Object = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "object"))});
+                String = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "string"))});
+                Int = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "int"))});
+                Long = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "long"))});
+                Float = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "float"))});
+                Double = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "double"))});
+                Byte = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "byte"))});
+                Bool = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "bool"))});
+                Void = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "void"))});
+                None = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "*none*"))});
+                Any = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "*any*"))});
+                Error = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "*error*"))});
+                ModelObject = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaPrimitiveType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ModelObject"))});
+                ModelObjectList = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType(new List<ModelPropertyInitializer>() {new ModelPropertyInitializer(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject))});
     
                 TypeOf = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 TypeOf.Name = "typeof";
-                ((ModelObject)TypeOf).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaInstance.MetaType));
-                global::MetaDslx.Core.MetaParameter tmp15 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp15.Name = "type";
-                ((ModelObject)tmp15).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.Object));
-                TypeOf.Parameters.Add(tmp15);
+                ((ModelObject)TypeOf).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaDescriptor.MetaType.Meta));
+                global::MetaDslx.Core.MetaParameter tmp1 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp1.Name = "type";
+                ((ModelObject)tmp1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.Object));
+                TypeOf.Parameters.Add(tmp1);
                 GetValueType = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 GetValueType.Name = "get_type";
-                ((ModelObject)GetValueType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaInstance.MetaType));
-                global::MetaDslx.Core.MetaParameter tmp16 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp16.Name = "value";
-                ((ModelObject)tmp16).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.Object));
-                GetValueType.Parameters.Add(tmp16);
+                ((ModelObject)GetValueType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaDescriptor.MetaType.Meta));
+                global::MetaDslx.Core.MetaParameter tmp2 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp2.Name = "value";
+                ((ModelObject)tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.Object));
+                GetValueType.Parameters.Add(tmp2);
                 GetReturnType = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 GetReturnType.Name = "get_return_type";
-                ((ModelObject)GetReturnType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaInstance.MetaType));
-                global::MetaDslx.Core.MetaParameter tmp17 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp17.Name = "value";
-                ((ModelObject)tmp17).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.Object));
-                GetReturnType.Parameters.Add(tmp17);
+                ((ModelObject)GetReturnType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaDescriptor.MetaType.Meta));
+                global::MetaDslx.Core.MetaParameter tmp3 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp3.Name = "value";
+                ((ModelObject)tmp3).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.Object));
+                GetReturnType.Parameters.Add(tmp3);
                 CurrentType = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 CurrentType.Name = "current_type";
-                ((ModelObject)CurrentType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaInstance.MetaType));
-                global::MetaDslx.Core.MetaParameter tmp18 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp18.Name = "symbol";
-                ((ModelObject)tmp18).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                CurrentType.Parameters.Add(tmp18);
+                ((ModelObject)CurrentType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaDescriptor.MetaType.Meta));
+                global::MetaDslx.Core.MetaParameter tmp4 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp4.Name = "symbol";
+                ((ModelObject)tmp4).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                CurrentType.Parameters.Add(tmp4);
                 TypeCheck = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 TypeCheck.Name = "type_check";
                 ((ModelObject)TypeCheck).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.Bool));
-                global::MetaDslx.Core.MetaParameter tmp19 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp19.Name = "symbol";
-                ((ModelObject)tmp19).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                TypeCheck.Parameters.Add(tmp19);
+                global::MetaDslx.Core.MetaParameter tmp5 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp5.Name = "symbol";
+                ((ModelObject)tmp5).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                TypeCheck.Parameters.Add(tmp5);
                 Balance = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 Balance.Name = "balance";
-                ((ModelObject)Balance).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaInstance.MetaType));
-                global::MetaDslx.Core.MetaParameter tmp20 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp20.Name = "left";
-                ((ModelObject)tmp20).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaInstance.MetaType));
-                Balance.Parameters.Add(tmp20);
-                global::MetaDslx.Core.MetaParameter tmp21 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp21.Name = "right";
-                ((ModelObject)tmp21).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaInstance.MetaType));
-                Balance.Parameters.Add(tmp21);
+                ((ModelObject)Balance).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaDescriptor.MetaType.Meta));
+                global::MetaDslx.Core.MetaParameter tmp6 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp6.Name = "left";
+                ((ModelObject)tmp6).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.MetaType.Meta));
+                Balance.Parameters.Add(tmp6);
+                global::MetaDslx.Core.MetaParameter tmp7 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp7.Name = "right";
+                ((ModelObject)tmp7).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.MetaType.Meta));
+                Balance.Parameters.Add(tmp7);
                 Resolve1 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 Resolve1.Name = "resolve";
-                global::MetaDslx.Core.MetaCollectionType tmp22 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp22.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp22).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)Resolve1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp22));
-                global::MetaDslx.Core.MetaParameter tmp23 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp23.Name = "name";
-                ((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
-                Resolve1.Parameters.Add(tmp23);
+                global::MetaDslx.Core.MetaCollectionType tmp8 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp8.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp8).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)Resolve1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp8));
+                global::MetaDslx.Core.MetaParameter tmp9 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp9.Name = "name";
+                ((ModelObject)tmp9).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
+                Resolve1.Parameters.Add(tmp9);
                 Resolve2 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 Resolve2.Name = "resolve";
-                global::MetaDslx.Core.MetaCollectionType tmp24 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp24.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)Resolve2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp24));
-                global::MetaDslx.Core.MetaParameter tmp25 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp25.Name = "context";
-                ((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                Resolve2.Parameters.Add(tmp25);
-                global::MetaDslx.Core.MetaParameter tmp26 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp26.Name = "name";
-                ((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
-                Resolve2.Parameters.Add(tmp26);
+                global::MetaDslx.Core.MetaCollectionType tmp10 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp10.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp10).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)Resolve2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp10));
+                global::MetaDslx.Core.MetaParameter tmp11 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp11.Name = "context";
+                ((ModelObject)tmp11).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                Resolve2.Parameters.Add(tmp11);
+                global::MetaDslx.Core.MetaParameter tmp12 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp12.Name = "name";
+                ((ModelObject)tmp12).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
+                Resolve2.Parameters.Add(tmp12);
                 ResolveType1 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 ResolveType1.Name = "resolve_type";
-                global::MetaDslx.Core.MetaCollectionType tmp27 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp27.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp27).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)ResolveType1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp27));
-                global::MetaDslx.Core.MetaParameter tmp28 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp28.Name = "name";
-                ((ModelObject)tmp28).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
-                ResolveType1.Parameters.Add(tmp28);
+                global::MetaDslx.Core.MetaCollectionType tmp13 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp13.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp13).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)ResolveType1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp13));
+                global::MetaDslx.Core.MetaParameter tmp14 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp14.Name = "name";
+                ((ModelObject)tmp14).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
+                ResolveType1.Parameters.Add(tmp14);
                 ResolveType2 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 ResolveType2.Name = "resolve_type";
-                global::MetaDslx.Core.MetaCollectionType tmp29 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp29.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)ResolveType2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp29));
-                global::MetaDslx.Core.MetaParameter tmp30 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp30.Name = "context";
-                ((ModelObject)tmp30).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ResolveType2.Parameters.Add(tmp30);
-                global::MetaDslx.Core.MetaParameter tmp31 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp31.Name = "name";
-                ((ModelObject)tmp31).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
-                ResolveType2.Parameters.Add(tmp31);
+                global::MetaDslx.Core.MetaCollectionType tmp15 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp15.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp15).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)ResolveType2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp15));
+                global::MetaDslx.Core.MetaParameter tmp16 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp16.Name = "context";
+                ((ModelObject)tmp16).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ResolveType2.Parameters.Add(tmp16);
+                global::MetaDslx.Core.MetaParameter tmp17 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp17.Name = "name";
+                ((ModelObject)tmp17).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
+                ResolveType2.Parameters.Add(tmp17);
                 ResolveName1 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 ResolveName1.Name = "resolve_name";
-                global::MetaDslx.Core.MetaCollectionType tmp32 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp32.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp32).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)ResolveName1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp32));
-                global::MetaDslx.Core.MetaParameter tmp33 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp33.Name = "name";
-                ((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
-                ResolveName1.Parameters.Add(tmp33);
+                global::MetaDslx.Core.MetaCollectionType tmp18 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp18.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp18).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)ResolveName1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp18));
+                global::MetaDslx.Core.MetaParameter tmp19 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp19.Name = "name";
+                ((ModelObject)tmp19).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
+                ResolveName1.Parameters.Add(tmp19);
                 ResolveName2 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 ResolveName2.Name = "resolve_name";
-                global::MetaDslx.Core.MetaCollectionType tmp34 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp34.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)ResolveName2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp34));
-                global::MetaDslx.Core.MetaParameter tmp35 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp35.Name = "context";
-                ((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ResolveName2.Parameters.Add(tmp35);
-                global::MetaDslx.Core.MetaParameter tmp36 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp36.Name = "name";
-                ((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
-                ResolveName2.Parameters.Add(tmp36);
+                global::MetaDslx.Core.MetaCollectionType tmp20 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp20.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp20).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)ResolveName2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp20));
+                global::MetaDslx.Core.MetaParameter tmp21 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp21.Name = "context";
+                ((ModelObject)tmp21).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ResolveName2.Parameters.Add(tmp21);
+                global::MetaDslx.Core.MetaParameter tmp22 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp22.Name = "name";
+                ((ModelObject)tmp22).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
+                ResolveName2.Parameters.Add(tmp22);
                 Bind1 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 Bind1.Name = "bind";
                 ((ModelObject)Bind1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                global::MetaDslx.Core.MetaParameter tmp37 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp37.Name = "symbol";
-                ((ModelObject)tmp37).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                Bind1.Parameters.Add(tmp37);
+                global::MetaDslx.Core.MetaParameter tmp23 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp23.Name = "symbol";
+                ((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                Bind1.Parameters.Add(tmp23);
                 Bind2 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 Bind2.Name = "bind";
                 ((ModelObject)Bind2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                global::MetaDslx.Core.MetaParameter tmp38 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp38.Name = "symbols";
-                global::MetaDslx.Core.MetaCollectionType tmp39 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp39.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)tmp38).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp39));
-                Bind2.Parameters.Add(tmp38);
+                global::MetaDslx.Core.MetaParameter tmp24 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp24.Name = "symbols";
+                global::MetaDslx.Core.MetaCollectionType tmp25 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp25.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp25));
+                Bind2.Parameters.Add(tmp24);
                 Bind3 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 Bind3.Name = "bind";
                 ((ModelObject)Bind3).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                global::MetaDslx.Core.MetaParameter tmp40 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp40.Name = "context";
-                ((ModelObject)tmp40).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                Bind3.Parameters.Add(tmp40);
-                global::MetaDslx.Core.MetaParameter tmp41 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp41.Name = "symbol";
-                ((ModelObject)tmp41).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                Bind3.Parameters.Add(tmp41);
+                global::MetaDslx.Core.MetaParameter tmp26 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp26.Name = "context";
+                ((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                Bind3.Parameters.Add(tmp26);
+                global::MetaDslx.Core.MetaParameter tmp27 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp27.Name = "symbol";
+                ((ModelObject)tmp27).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                Bind3.Parameters.Add(tmp27);
                 Bind4 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 Bind4.Name = "bind";
                 ((ModelObject)Bind4).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                global::MetaDslx.Core.MetaParameter tmp42 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp42.Name = "context";
-                ((ModelObject)tmp42).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                Bind4.Parameters.Add(tmp42);
-                global::MetaDslx.Core.MetaParameter tmp43 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp43.Name = "symbols";
-                global::MetaDslx.Core.MetaCollectionType tmp44 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp44.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp44).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)tmp43).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp44));
-                Bind4.Parameters.Add(tmp43);
+                global::MetaDslx.Core.MetaParameter tmp28 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp28.Name = "context";
+                ((ModelObject)tmp28).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                Bind4.Parameters.Add(tmp28);
+                global::MetaDslx.Core.MetaParameter tmp29 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp29.Name = "symbols";
+                global::MetaDslx.Core.MetaCollectionType tmp30 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp30.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp30).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp30));
+                Bind4.Parameters.Add(tmp29);
                 SelectOfType1 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 SelectOfType1.Name = "select_of_type";
-                global::MetaDslx.Core.MetaCollectionType tmp45 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp45.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp45).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)SelectOfType1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp45));
-                global::MetaDslx.Core.MetaParameter tmp46 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp46.Name = "symbol";
-                ((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                SelectOfType1.Parameters.Add(tmp46);
-                global::MetaDslx.Core.MetaParameter tmp47 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp47.Name = "type";
-                ((ModelObject)tmp47).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaInstance.MetaType));
-                SelectOfType1.Parameters.Add(tmp47);
+                global::MetaDslx.Core.MetaCollectionType tmp31 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp31.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp31).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)SelectOfType1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp31));
+                global::MetaDslx.Core.MetaParameter tmp32 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp32.Name = "symbol";
+                ((ModelObject)tmp32).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                SelectOfType1.Parameters.Add(tmp32);
+                global::MetaDslx.Core.MetaParameter tmp33 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp33.Name = "type";
+                ((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.MetaType.Meta));
+                SelectOfType1.Parameters.Add(tmp33);
                 SelectOfType2 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 SelectOfType2.Name = "select_of_type";
-                global::MetaDslx.Core.MetaCollectionType tmp48 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp48.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp48).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)SelectOfType2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp48));
-                global::MetaDslx.Core.MetaParameter tmp49 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp49.Name = "symbols";
-                global::MetaDslx.Core.MetaCollectionType tmp50 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp50.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp50).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)tmp49).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp50));
-                SelectOfType2.Parameters.Add(tmp49);
-                global::MetaDslx.Core.MetaParameter tmp51 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp51.Name = "type";
-                ((ModelObject)tmp51).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaInstance.MetaType));
-                SelectOfType2.Parameters.Add(tmp51);
+                global::MetaDslx.Core.MetaCollectionType tmp34 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp34.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)SelectOfType2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp34));
+                global::MetaDslx.Core.MetaParameter tmp35 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp35.Name = "symbols";
+                global::MetaDslx.Core.MetaCollectionType tmp36 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp36.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp36));
+                SelectOfType2.Parameters.Add(tmp35);
+                global::MetaDslx.Core.MetaParameter tmp37 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp37.Name = "type";
+                ((ModelObject)tmp37).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.MetaType.Meta));
+                SelectOfType2.Parameters.Add(tmp37);
                 SelectOfName1 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 SelectOfName1.Name = "select_of_name";
-                global::MetaDslx.Core.MetaCollectionType tmp52 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp52.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp52).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)SelectOfName1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp52));
-                global::MetaDslx.Core.MetaParameter tmp53 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp53.Name = "symbol";
-                ((ModelObject)tmp53).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                SelectOfName1.Parameters.Add(tmp53);
-                global::MetaDslx.Core.MetaParameter tmp54 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp54.Name = "name";
-                ((ModelObject)tmp54).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
-                SelectOfName1.Parameters.Add(tmp54);
+                global::MetaDslx.Core.MetaCollectionType tmp38 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp38.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp38).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)SelectOfName1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp38));
+                global::MetaDslx.Core.MetaParameter tmp39 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp39.Name = "symbol";
+                ((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                SelectOfName1.Parameters.Add(tmp39);
+                global::MetaDslx.Core.MetaParameter tmp40 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp40.Name = "name";
+                ((ModelObject)tmp40).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
+                SelectOfName1.Parameters.Add(tmp40);
                 SelectOfName2 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaFunction();
                 SelectOfName2.Name = "select_of_name";
-                global::MetaDslx.Core.MetaCollectionType tmp55 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp55.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp55).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)SelectOfName2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp55));
-                global::MetaDslx.Core.MetaParameter tmp56 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp56.Name = "symbols";
-                global::MetaDslx.Core.MetaCollectionType tmp57 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
-                tmp57.Kind = MetaCollectionKind.List;
-                ((ModelObject)tmp57).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
-                ((ModelObject)tmp56).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp57));
-                SelectOfName2.Parameters.Add(tmp56);
-                global::MetaDslx.Core.MetaParameter tmp58 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
-                tmp58.Name = "name";
-                ((ModelObject)tmp58).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
-                SelectOfName2.Parameters.Add(tmp58);
+                global::MetaDslx.Core.MetaCollectionType tmp41 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp41.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp41).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)SelectOfName2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ReturnTypeProperty, new Lazy<object>(() => tmp41));
+                global::MetaDslx.Core.MetaParameter tmp42 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp42.Name = "symbols";
+                global::MetaDslx.Core.MetaCollectionType tmp43 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
+                tmp43.Kind = MetaCollectionKind.List;
+                ((ModelObject)tmp43).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.ModelObject));
+                ((ModelObject)tmp42).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp43));
+                SelectOfName2.Parameters.Add(tmp42);
+                global::MetaDslx.Core.MetaParameter tmp44 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaParameter();
+                tmp44.Name = "name";
+                ((ModelObject)tmp44).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.Constants.String));
+                SelectOfName2.Parameters.Add(tmp44);
             }
     
             public static readonly global::MetaDslx.Core.MetaPrimitiveType Object;
@@ -431,10 +403,15 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaAnnotatedElement; }
+            }
+        
             
             [ContainmentAttribute]
             public static readonly ModelProperty AnnotationsProperty =
-                ModelProperty.Register("Annotations", typeof(IList<global::MetaDslx.Core.MetaAnnotation>), typeof(global::MetaDslx.Core.MetaAnnotatedElement), typeof(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement));
+                ModelProperty.Register("Annotations", typeof(IList<global::MetaDslx.Core.MetaAnnotation>), typeof(global::MetaDslx.Core.MetaAnnotatedElement), typeof(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaAnnotatedElement_AnnotationsProperty));
             
         }
         
@@ -449,9 +426,14 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNamedElement; }
+            }
+        
             [Name]
             public static readonly ModelProperty NameProperty =
-                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaNamedElement), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement));
+                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaNamedElement), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNamedElement_NameProperty));
             
         }
         
@@ -466,9 +448,14 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaTypedElement; }
+            }
+        
             [Type]
             public static readonly ModelProperty TypeProperty =
-                ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypedElement), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement));
+                ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypedElement), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaTypedElement_TypeProperty));
             
         }
         
@@ -481,6 +468,11 @@ namespace MetaDslx.Core
             static MetaType()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaType; }
             }
         
         }
@@ -496,10 +488,15 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaAnnotation; }
+            }
+        
             
             [ContainmentAttribute]
             public static readonly ModelProperty PropertiesProperty =
-                ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaAnnotationProperty>), typeof(global::MetaDslx.Core.MetaAnnotation), typeof(global::MetaDslx.Core.MetaDescriptor.MetaAnnotation));
+                ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaAnnotationProperty>), typeof(global::MetaDslx.Core.MetaAnnotation), typeof(global::MetaDslx.Core.MetaDescriptor.MetaAnnotation), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaAnnotation_PropertiesProperty));
             
         }
         
@@ -514,9 +511,14 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaAnnotationProperty; }
+            }
+        
             
             public static readonly ModelProperty ValueProperty =
-                ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaAnnotationProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaAnnotationProperty));
+                ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaAnnotationProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaAnnotationProperty), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaAnnotationProperty_ValueProperty));
             
         }
         
@@ -531,32 +533,37 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNamespace; }
+            }
+        
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), "Namespaces")]
             public static readonly ModelProperty ParentProperty =
-                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace));
+                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNamespace_ParentProperty));
             
             [ImportedScope]
             public static readonly ModelProperty UsingsProperty =
-                ModelProperty.Register("Usings", typeof(IList<global::MetaDslx.Core.MetaNamespace>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace));
+                ModelProperty.Register("Usings", typeof(IList<global::MetaDslx.Core.MetaNamespace>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNamespace_UsingsProperty));
             
             
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaModel), "Namespace")]
             public static readonly ModelProperty MetaModelProperty =
-                ModelProperty.Register("MetaModel", typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace));
+                ModelProperty.Register("MetaModel", typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNamespace_MetaModelProperty));
             
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), "Parent")]
             public static readonly ModelProperty NamespacesProperty =
-                ModelProperty.Register("Namespaces", typeof(IList<global::MetaDslx.Core.MetaNamespace>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace));
+                ModelProperty.Register("Namespaces", typeof(IList<global::MetaDslx.Core.MetaNamespace>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNamespace_NamespacesProperty));
             
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration), "Namespace")]
             public static readonly ModelProperty DeclarationsProperty =
-                ModelProperty.Register("Declarations", typeof(IList<global::MetaDslx.Core.MetaDeclaration>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace));
+                ModelProperty.Register("Declarations", typeof(IList<global::MetaDslx.Core.MetaDeclaration>), typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNamespace_DeclarationsProperty));
             
         }
         
@@ -571,15 +578,20 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaDeclaration; }
+            }
+        
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), "Declarations")]
             public static readonly ModelProperty NamespaceProperty =
-                ModelProperty.Register("Namespace", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDeclaration), typeof(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration));
+                ModelProperty.Register("Namespace", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaDeclaration), typeof(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaDeclaration_NamespaceProperty));
             
             
             [ReadonlyAttribute]
             public static readonly ModelProperty ModelProperty =
-                ModelProperty.Register("Model", typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaDeclaration), typeof(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration));
+                ModelProperty.Register("Model", typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaDeclaration), typeof(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaDeclaration_ModelProperty));
             
         }
         
@@ -594,14 +606,19 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaModel; }
+            }
+        
             
             public static readonly ModelProperty UriProperty =
-                ModelProperty.Register("Uri", typeof(string), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaDescriptor.MetaModel));
+                ModelProperty.Register("Uri", typeof(string), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaDescriptor.MetaModel), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaModel_UriProperty));
             
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), "MetaModel")]
             public static readonly ModelProperty NamespaceProperty =
-                ModelProperty.Register("Namespace", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaDescriptor.MetaModel));
+                ModelProperty.Register("Namespace", typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaDescriptor.MetaModel), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaModel_NamespaceProperty));
             
         }
         
@@ -616,13 +633,18 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaCollectionType; }
+            }
+        
             
             public static readonly ModelProperty KindProperty =
-                ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaCollectionKind), typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType));
+                ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaCollectionKind), typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaCollectionType_KindProperty));
             
             
             public static readonly ModelProperty InnerTypeProperty =
-                ModelProperty.Register("InnerType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType));
+                ModelProperty.Register("InnerType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaCollectionType_InnerTypeProperty));
             
         }
         
@@ -637,9 +659,14 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNullableType; }
+            }
+        
             
             public static readonly ModelProperty InnerTypeProperty =
-                ModelProperty.Register("InnerType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaNullableType), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNullableType));
+                ModelProperty.Register("InnerType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaNullableType), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNullableType), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNullableType_InnerTypeProperty));
             
         }
         
@@ -652,6 +679,11 @@ namespace MetaDslx.Core
             static MetaPrimitiveType()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaPrimitiveType; }
             }
         
         }
@@ -667,17 +699,22 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaEnum; }
+            }
+        
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnumLiteral), "Enum")]
             public static readonly ModelProperty EnumLiteralsProperty =
-                ModelProperty.Register("EnumLiterals", typeof(IList<global::MetaDslx.Core.MetaEnumLiteral>), typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnum));
+                ModelProperty.Register("EnumLiterals", typeof(IList<global::MetaDslx.Core.MetaEnumLiteral>), typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnum), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaEnum_EnumLiteralsProperty));
             
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaOperation), "Parent")]
             public static readonly ModelProperty OperationsProperty =
-                ModelProperty.Register("Operations", typeof(IList<global::MetaDslx.Core.MetaOperation>), typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnum));
+                ModelProperty.Register("Operations", typeof(IList<global::MetaDslx.Core.MetaOperation>), typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnum), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaEnum_OperationsProperty));
             
         }
         
@@ -692,10 +729,15 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaEnumLiteral; }
+            }
+        
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnum), "EnumLiterals")]
             public static readonly ModelProperty EnumProperty =
-                ModelProperty.Register("Enum", typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.MetaEnumLiteral), typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnumLiteral));
+                ModelProperty.Register("Enum", typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.MetaEnumLiteral), typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnumLiteral), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaEnumLiteral_EnumProperty));
             
         }
         
@@ -710,31 +752,36 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaClass; }
+            }
+        
             
             public static readonly ModelProperty IsAbstractProperty =
-                ModelProperty.Register("IsAbstract", typeof(bool), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass));
+                ModelProperty.Register("IsAbstract", typeof(bool), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaClass_IsAbstractProperty));
             
             [InheritedScope]
             public static readonly ModelProperty SuperClassesProperty =
-                ModelProperty.Register("SuperClasses", typeof(IList<global::MetaDslx.Core.MetaClass>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass));
+                ModelProperty.Register("SuperClasses", typeof(IList<global::MetaDslx.Core.MetaClass>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaClass_SuperClassesProperty));
             
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "Class")]
             public static readonly ModelProperty PropertiesProperty =
-                ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass));
+                ModelProperty.Register("Properties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaClass_PropertiesProperty));
             
             [ScopeEntry]
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaOperation), "Parent")]
             public static readonly ModelProperty OperationsProperty =
-                ModelProperty.Register("Operations", typeof(IList<global::MetaDslx.Core.MetaOperation>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass));
+                ModelProperty.Register("Operations", typeof(IList<global::MetaDslx.Core.MetaOperation>), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaClass_OperationsProperty));
             
             
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstructor), "Parent")]
             public static readonly ModelProperty ConstructorProperty =
-                ModelProperty.Register("Constructor", typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass));
+                ModelProperty.Register("Constructor", typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaClass_ConstructorProperty));
             
         }
         
@@ -749,13 +796,18 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaFunctionType; }
+            }
+        
             
             public static readonly ModelProperty ParameterTypesProperty =
-                ModelProperty.Register("ParameterTypes", typeof(IList<global::MetaDslx.Core.MetaType>), typeof(global::MetaDslx.Core.MetaFunctionType), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunctionType));
+                ModelProperty.Register("ParameterTypes", typeof(IList<global::MetaDslx.Core.MetaType>), typeof(global::MetaDslx.Core.MetaFunctionType), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunctionType), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaFunctionType_ParameterTypesProperty));
             
             
             public static readonly ModelProperty ReturnTypeProperty =
-                ModelProperty.Register("ReturnType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaFunctionType), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunctionType));
+                ModelProperty.Register("ReturnType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaFunctionType), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunctionType), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaFunctionType_ReturnTypeProperty));
             
         }
         
@@ -770,21 +822,26 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaFunction; }
+            }
+        
             [Type]
             [ReadonlyAttribute]
             [RedefinesAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement), "Type")]
             public static readonly ModelProperty TypeProperty =
-                ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaFunctionType), typeof(global::MetaDslx.Core.MetaFunction), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunction));
+                ModelProperty.Register("Type", typeof(global::MetaDslx.Core.MetaFunctionType), typeof(global::MetaDslx.Core.MetaFunction), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunction), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaFunction_TypeProperty));
             
             
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaParameter), "Function")]
             public static readonly ModelProperty ParametersProperty =
-                ModelProperty.Register("Parameters", typeof(IList<global::MetaDslx.Core.MetaParameter>), typeof(global::MetaDslx.Core.MetaFunction), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunction));
+                ModelProperty.Register("Parameters", typeof(IList<global::MetaDslx.Core.MetaParameter>), typeof(global::MetaDslx.Core.MetaFunction), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunction), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaFunction_ParametersProperty));
             
             
             public static readonly ModelProperty ReturnTypeProperty =
-                ModelProperty.Register("ReturnType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaFunction), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunction));
+                ModelProperty.Register("ReturnType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaFunction), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunction), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaFunction_ReturnTypeProperty));
             
         }
         
@@ -799,11 +856,16 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaOperation; }
+            }
+        
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), "Operations")]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnum), "Operations")]
             public static readonly ModelProperty ParentProperty =
-                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.MetaDescriptor.MetaOperation));
+                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.MetaDescriptor.MetaOperation), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaOperation_ParentProperty));
             
         }
         
@@ -818,9 +880,14 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaConstant; }
+            }
+        
             
             public static readonly ModelProperty ValueProperty =
-                ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConstant), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstant));
+                ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConstant), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstant), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaConstant_ValueProperty));
             
         }
         
@@ -835,16 +902,21 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaConstructor; }
+            }
+        
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), "Constructor")]
             public static readonly ModelProperty ParentProperty =
-                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstructor));
+                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstructor), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaConstructor_ParentProperty));
             
             
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer), "Constructor")]
             public static readonly ModelProperty InitializersProperty =
-                ModelProperty.Register("Initializers", typeof(IList<global::MetaDslx.Core.MetaPropertyInitializer>), typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstructor));
+                ModelProperty.Register("Initializers", typeof(IList<global::MetaDslx.Core.MetaPropertyInitializer>), typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstructor), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaConstructor_InitializersProperty));
             
         }
         
@@ -859,10 +931,15 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaParameter; }
+            }
+        
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunction), "Parameters")]
             public static readonly ModelProperty FunctionProperty =
-                ModelProperty.Register("Function", typeof(global::MetaDslx.Core.MetaFunction), typeof(global::MetaDslx.Core.MetaParameter), typeof(global::MetaDslx.Core.MetaDescriptor.MetaParameter));
+                ModelProperty.Register("Function", typeof(global::MetaDslx.Core.MetaFunction), typeof(global::MetaDslx.Core.MetaParameter), typeof(global::MetaDslx.Core.MetaDescriptor.MetaParameter), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaParameter_FunctionProperty));
             
         }
         
@@ -877,39 +954,44 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaProperty; }
+            }
+        
             
             public static readonly ModelProperty KindProperty =
-                ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaPropertyKind), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty));
+                ModelProperty.Register("Kind", typeof(global::MetaDslx.Core.MetaPropertyKind), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaProperty_KindProperty));
             
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), "Properties")]
             public static readonly ModelProperty ClassProperty =
-                ModelProperty.Register("Class", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty));
+                ModelProperty.Register("Class", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaProperty_ClassProperty));
             
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "OppositeProperties")]
             public static readonly ModelProperty OppositePropertiesProperty =
-                ModelProperty.Register("OppositeProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty));
+                ModelProperty.Register("OppositeProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaProperty_OppositePropertiesProperty));
             
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "SubsettingProperties")]
             public static readonly ModelProperty SubsettedPropertiesProperty =
-                ModelProperty.Register("SubsettedProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty));
+                ModelProperty.Register("SubsettedProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaProperty_SubsettedPropertiesProperty));
             
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "SubsettedProperties")]
             public static readonly ModelProperty SubsettingPropertiesProperty =
-                ModelProperty.Register("SubsettingProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty));
+                ModelProperty.Register("SubsettingProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaProperty_SubsettingPropertiesProperty));
             
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "RedefiningProperties")]
             public static readonly ModelProperty RedefinedPropertiesProperty =
-                ModelProperty.Register("RedefinedProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty));
+                ModelProperty.Register("RedefinedProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaProperty_RedefinedPropertiesProperty));
             
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "RedefinedProperties")]
             public static readonly ModelProperty RedefiningPropertiesProperty =
-                ModelProperty.Register("RedefiningProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty));
+                ModelProperty.Register("RedefiningProperties", typeof(IList<global::MetaDslx.Core.MetaProperty>), typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaProperty_RedefiningPropertiesProperty));
             
         }
         
@@ -924,27 +1006,32 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaPropertyInitializer; }
+            }
+        
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstructor), "Initializers")]
             public static readonly ModelProperty ConstructorProperty =
-                ModelProperty.Register("Constructor", typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer));
+                ModelProperty.Register("Constructor", typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaPropertyInitializer_ConstructorProperty));
             
             
             public static readonly ModelProperty PropertyNameProperty =
-                ModelProperty.Register("PropertyName", typeof(string), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer));
+                ModelProperty.Register("PropertyName", typeof(string), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaPropertyInitializer_PropertyNameProperty));
             
             
             public static readonly ModelProperty PropertyContextProperty =
-                ModelProperty.Register("PropertyContext", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer));
+                ModelProperty.Register("PropertyContext", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaPropertyInitializer_PropertyContextProperty));
             
             
             public static readonly ModelProperty PropertyProperty =
-                ModelProperty.Register("Property", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer));
+                ModelProperty.Register("Property", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaPropertyInitializer_PropertyProperty));
             
             
             [ContainmentAttribute]
             public static readonly ModelProperty ValueProperty =
-                ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer));
+                ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaPropertyInitializer_ValueProperty));
             
         }
         
@@ -957,6 +1044,11 @@ namespace MetaDslx.Core
             static MetaSynthetizedPropertyInitializer()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaSynthetizedPropertyInitializer; }
             }
         
         }
@@ -972,13 +1064,18 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaInheritedPropertyInitializer; }
+            }
+        
             
             public static readonly ModelProperty ObjectNameProperty =
-                ModelProperty.Register("ObjectName", typeof(string), typeof(global::MetaDslx.Core.MetaInheritedPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaInheritedPropertyInitializer));
+                ModelProperty.Register("ObjectName", typeof(string), typeof(global::MetaDslx.Core.MetaInheritedPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaInheritedPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaInheritedPropertyInitializer_ObjectNameProperty));
             
             
             public static readonly ModelProperty ObjectProperty =
-                ModelProperty.Register("Object", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaInheritedPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaInheritedPropertyInitializer));
+                ModelProperty.Register("Object", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaInheritedPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaInheritedPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaInheritedPropertyInitializer_ObjectProperty));
             
         }
         
@@ -993,15 +1090,20 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaExpression; }
+            }
+        
             
             [ReadonlyAttribute]
             public static readonly ModelProperty NoTypeErrorProperty =
-                ModelProperty.Register("NoTypeError", typeof(bool), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaExpression));
+                ModelProperty.Register("NoTypeError", typeof(bool), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaExpression_NoTypeErrorProperty));
             
             
             [ReadonlyAttribute]
             public static readonly ModelProperty ExpectedTypeProperty =
-                ModelProperty.Register("ExpectedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaExpression));
+                ModelProperty.Register("ExpectedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaExpression_ExpectedTypeProperty));
             
         }
         
@@ -1016,10 +1118,15 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaBracketExpression; }
+            }
+        
             
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
-                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaBracketExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBracketExpression));
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaBracketExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBracketExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaBracketExpression_ExpressionProperty));
             
         }
         
@@ -1034,24 +1141,29 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaBoundExpression; }
+            }
+        
             
             [ReadonlyAttribute]
             public static readonly ModelProperty UniqueDefinitionProperty =
-                ModelProperty.Register("UniqueDefinition", typeof(bool), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression));
+                ModelProperty.Register("UniqueDefinition", typeof(bool), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaBoundExpression_UniqueDefinitionProperty));
             
             
             [ContainmentAttribute]
             public static readonly ModelProperty ArgumentsProperty =
-                ModelProperty.Register("Arguments", typeof(IList<global::MetaDslx.Core.MetaExpression>), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression));
+                ModelProperty.Register("Arguments", typeof(IList<global::MetaDslx.Core.MetaExpression>), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaBoundExpression_ArgumentsProperty));
             
             
             public static readonly ModelProperty DefinitionsProperty =
-                ModelProperty.Register("Definitions", typeof(IList<ModelObject>), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression));
+                ModelProperty.Register("Definitions", typeof(IList<ModelObject>), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaBoundExpression_DefinitionsProperty));
             
             
             [ReadonlyAttribute]
             public static readonly ModelProperty DefinitionProperty =
-                ModelProperty.Register("Definition", typeof(ModelObject), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression));
+                ModelProperty.Register("Definition", typeof(ModelObject), typeof(global::MetaDslx.Core.MetaBoundExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaBoundExpression_DefinitionProperty));
             
         }
         
@@ -1064,6 +1176,11 @@ namespace MetaDslx.Core
             static MetaThisExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaThisExpression; }
             }
         
         }
@@ -1079,6 +1196,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNullExpression; }
+            }
+        
         }
         
         public static class MetaTypeConversionExpression
@@ -1092,14 +1214,19 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaTypeConversionExpression; }
+            }
+        
             
             public static readonly ModelProperty TypeReferenceProperty =
-                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeConversionExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression));
+                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeConversionExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaTypeConversionExpression_TypeReferenceProperty));
             
             
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
-                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaTypeConversionExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression));
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaTypeConversionExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaTypeConversionExpression_ExpressionProperty));
             
         }
         
@@ -1112,6 +1239,11 @@ namespace MetaDslx.Core
             static MetaTypeAsExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaTypeAsExpression; }
             }
         
         }
@@ -1127,6 +1259,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaTypeCastExpression; }
+            }
+        
         }
         
         public static class MetaTypeCheckExpression
@@ -1140,14 +1277,19 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaTypeCheckExpression; }
+            }
+        
             
             public static readonly ModelProperty TypeReferenceProperty =
-                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeCheckExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression));
+                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeCheckExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaTypeCheckExpression_TypeReferenceProperty));
             
             
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
-                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaTypeCheckExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression));
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaTypeCheckExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaTypeCheckExpression_ExpressionProperty));
             
         }
         
@@ -1162,9 +1304,14 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaTypeOfExpression; }
+            }
+        
             
             public static readonly ModelProperty TypeReferenceProperty =
-                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeOfExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypeOfExpression));
+                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeOfExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypeOfExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaTypeOfExpression_TypeReferenceProperty));
             
         }
         
@@ -1179,24 +1326,29 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaConditionalExpression; }
+            }
+        
             
             [ContainmentAttribute]
             public static readonly ModelProperty ConditionProperty =
-                ModelProperty.Register("Condition", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression));
+                ModelProperty.Register("Condition", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaConditionalExpression_ConditionProperty));
             
             
             public static readonly ModelProperty BalancedTypeProperty =
-                ModelProperty.Register("BalancedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression));
+                ModelProperty.Register("BalancedType", typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaConditionalExpression_BalancedTypeProperty));
             
             
             [ContainmentAttribute]
             public static readonly ModelProperty ThenProperty =
-                ModelProperty.Register("Then", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression));
+                ModelProperty.Register("Then", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaConditionalExpression_ThenProperty));
             
             
             [ContainmentAttribute]
             public static readonly ModelProperty ElseProperty =
-                ModelProperty.Register("Else", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression));
+                ModelProperty.Register("Else", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaConditionalExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaConditionalExpression_ElseProperty));
             
         }
         
@@ -1211,9 +1363,14 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaConstantExpression; }
+            }
+        
             
             public static readonly ModelProperty ValueProperty =
-                ModelProperty.Register("Value", typeof(object), typeof(global::MetaDslx.Core.MetaConstantExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression));
+                ModelProperty.Register("Value", typeof(object), typeof(global::MetaDslx.Core.MetaConstantExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaConstantExpression_ValueProperty));
             
         }
         
@@ -1228,9 +1385,14 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaIdentifierExpression; }
+            }
+        
             
             public static readonly ModelProperty NameProperty =
-                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaIdentifierExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression));
+                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaIdentifierExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaIdentifierExpression_NameProperty));
             
         }
         
@@ -1245,14 +1407,19 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaMemberAccessExpression; }
+            }
+        
             
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
-                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaMemberAccessExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression));
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaMemberAccessExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaMemberAccessExpression_ExpressionProperty));
             
             
             public static readonly ModelProperty NameProperty =
-                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaMemberAccessExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression));
+                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaMemberAccessExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaMemberAccessExpression_NameProperty));
             
         }
         
@@ -1267,10 +1434,15 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaFunctionCallExpression; }
+            }
+        
             
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
-                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaFunctionCallExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunctionCallExpression));
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaFunctionCallExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunctionCallExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaFunctionCallExpression_ExpressionProperty));
             
         }
         
@@ -1285,10 +1457,15 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaIndexerExpression; }
+            }
+        
             
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
-                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaIndexerExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaIndexerExpression));
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaIndexerExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaIndexerExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaIndexerExpression_ExpressionProperty));
             
         }
         
@@ -1303,15 +1480,20 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNewExpression; }
+            }
+        
             
             public static readonly ModelProperty TypeReferenceProperty =
-                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaNewExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression));
+                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaNewExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNewExpression_TypeReferenceProperty));
             
             
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer), "Parent")]
             public static readonly ModelProperty PropertyInitializersProperty =
-                ModelProperty.Register("PropertyInitializers", typeof(IList<global::MetaDslx.Core.MetaNewPropertyInitializer>), typeof(global::MetaDslx.Core.MetaNewExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression));
+                ModelProperty.Register("PropertyInitializers", typeof(IList<global::MetaDslx.Core.MetaNewPropertyInitializer>), typeof(global::MetaDslx.Core.MetaNewExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNewExpression_PropertyInitializersProperty));
             
         }
         
@@ -1326,22 +1508,27 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer; }
+            }
+        
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression), "PropertyInitializers")]
             public static readonly ModelProperty ParentProperty =
-                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaNewExpression), typeof(global::MetaDslx.Core.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer));
+                ModelProperty.Register("Parent", typeof(global::MetaDslx.Core.MetaNewExpression), typeof(global::MetaDslx.Core.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer_ParentProperty));
             
             
             public static readonly ModelProperty PropertyNameProperty =
-                ModelProperty.Register("PropertyName", typeof(string), typeof(global::MetaDslx.Core.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer));
+                ModelProperty.Register("PropertyName", typeof(string), typeof(global::MetaDslx.Core.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer_PropertyNameProperty));
             
             
             public static readonly ModelProperty ValueProperty =
-                ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer));
+                ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer_ValueProperty));
             
             
             public static readonly ModelProperty PropertyProperty =
-                ModelProperty.Register("Property", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer));
+                ModelProperty.Register("Property", typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer_PropertyProperty));
             
         }
         
@@ -1356,14 +1543,19 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNewCollectionExpression; }
+            }
+        
             
             public static readonly ModelProperty TypeReferenceProperty =
-                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.MetaNewCollectionExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewCollectionExpression));
+                ModelProperty.Register("TypeReference", typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.MetaNewCollectionExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewCollectionExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNewCollectionExpression_TypeReferenceProperty));
             
             
             [ContainmentAttribute]
             public static readonly ModelProperty ValuesProperty =
-                ModelProperty.Register("Values", typeof(IList<global::MetaDslx.Core.MetaExpression>), typeof(global::MetaDslx.Core.MetaNewCollectionExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewCollectionExpression));
+                ModelProperty.Register("Values", typeof(IList<global::MetaDslx.Core.MetaExpression>), typeof(global::MetaDslx.Core.MetaNewCollectionExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewCollectionExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNewCollectionExpression_ValuesProperty));
             
         }
         
@@ -1378,10 +1570,15 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaOperatorExpression; }
+            }
+        
             
             [ReadonlyAttribute]
             public static readonly ModelProperty NameProperty =
-                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaOperatorExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaOperatorExpression));
+                ModelProperty.Register("Name", typeof(string), typeof(global::MetaDslx.Core.MetaOperatorExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaOperatorExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaOperatorExpression_NameProperty));
             
         }
         
@@ -1396,10 +1593,15 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaUnaryExpression; }
+            }
+        
             
             [ContainmentAttribute]
             public static readonly ModelProperty ExpressionProperty =
-                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaUnaryExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaUnaryExpression));
+                ModelProperty.Register("Expression", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaUnaryExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaUnaryExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaUnaryExpression_ExpressionProperty));
             
         }
         
@@ -1412,6 +1614,11 @@ namespace MetaDslx.Core
             static MetaUnaryPlusExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaUnaryPlusExpression; }
             }
         
         }
@@ -1427,6 +1634,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNegateExpression; }
+            }
+        
         }
         
         public static class MetaOnesComplementExpression
@@ -1438,6 +1650,11 @@ namespace MetaDslx.Core
             static MetaOnesComplementExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaOnesComplementExpression; }
             }
         
         }
@@ -1453,6 +1670,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNotExpression; }
+            }
+        
         }
         
         public static class MetaUnaryAssignExpression
@@ -1464,6 +1686,11 @@ namespace MetaDslx.Core
             static MetaUnaryAssignExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaUnaryAssignExpression; }
             }
         
         }
@@ -1479,6 +1706,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaPostIncrementAssignExpression; }
+            }
+        
         }
         
         public static class MetaPostDecrementAssignExpression
@@ -1490,6 +1722,11 @@ namespace MetaDslx.Core
             static MetaPostDecrementAssignExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaPostDecrementAssignExpression; }
             }
         
         }
@@ -1505,6 +1742,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaPreIncrementAssignExpression; }
+            }
+        
         }
         
         public static class MetaPreDecrementAssignExpression
@@ -1516,6 +1758,11 @@ namespace MetaDslx.Core
             static MetaPreDecrementAssignExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaPreDecrementAssignExpression; }
             }
         
         }
@@ -1531,15 +1778,20 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaBinaryExpression; }
+            }
+        
             
             [ContainmentAttribute]
             public static readonly ModelProperty LeftProperty =
-                ModelProperty.Register("Left", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaBinaryExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBinaryExpression));
+                ModelProperty.Register("Left", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaBinaryExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBinaryExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaBinaryExpression_LeftProperty));
             
             
             [ContainmentAttribute]
             public static readonly ModelProperty RightProperty =
-                ModelProperty.Register("Right", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaBinaryExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBinaryExpression));
+                ModelProperty.Register("Right", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaBinaryExpression), typeof(global::MetaDslx.Core.MetaDescriptor.MetaBinaryExpression), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaBinaryExpression_RightProperty));
             
         }
         
@@ -1552,6 +1804,11 @@ namespace MetaDslx.Core
             static MetaBinaryArithmeticExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaBinaryArithmeticExpression; }
             }
         
         }
@@ -1567,6 +1824,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaMultiplyExpression; }
+            }
+        
         }
         
         public static class MetaDivideExpression
@@ -1578,6 +1840,11 @@ namespace MetaDslx.Core
             static MetaDivideExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaDivideExpression; }
             }
         
         }
@@ -1593,6 +1860,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaModuloExpression; }
+            }
+        
         }
         
         public static class MetaAddExpression
@@ -1604,6 +1876,11 @@ namespace MetaDslx.Core
             static MetaAddExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaAddExpression; }
             }
         
         }
@@ -1619,6 +1896,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaSubtractExpression; }
+            }
+        
         }
         
         public static class MetaLeftShiftExpression
@@ -1630,6 +1912,11 @@ namespace MetaDslx.Core
             static MetaLeftShiftExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaLeftShiftExpression; }
             }
         
         }
@@ -1645,6 +1932,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaRightShiftExpression; }
+            }
+        
         }
         
         public static class MetaBinaryComparisonExpression
@@ -1656,6 +1948,11 @@ namespace MetaDslx.Core
             static MetaBinaryComparisonExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaBinaryComparisonExpression; }
             }
         
         }
@@ -1671,6 +1968,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaLessThanExpression; }
+            }
+        
         }
         
         public static class MetaLessThanOrEqualExpression
@@ -1682,6 +1984,11 @@ namespace MetaDslx.Core
             static MetaLessThanOrEqualExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaLessThanOrEqualExpression; }
             }
         
         }
@@ -1697,6 +2004,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaGreaterThanExpression; }
+            }
+        
         }
         
         public static class MetaGreaterThanOrEqualExpression
@@ -1708,6 +2020,11 @@ namespace MetaDslx.Core
             static MetaGreaterThanOrEqualExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaGreaterThanOrEqualExpression; }
             }
         
         }
@@ -1723,6 +2040,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaEqualExpression; }
+            }
+        
         }
         
         public static class MetaNotEqualExpression
@@ -1734,6 +2056,11 @@ namespace MetaDslx.Core
             static MetaNotEqualExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNotEqualExpression; }
             }
         
         }
@@ -1749,6 +2076,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaBinaryLogicalExpression; }
+            }
+        
         }
         
         public static class MetaAndExpression
@@ -1760,6 +2092,11 @@ namespace MetaDslx.Core
             static MetaAndExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaAndExpression; }
             }
         
         }
@@ -1775,6 +2112,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaOrExpression; }
+            }
+        
         }
         
         public static class MetaExclusiveOrExpression
@@ -1786,6 +2128,11 @@ namespace MetaDslx.Core
             static MetaExclusiveOrExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaExclusiveOrExpression; }
             }
         
         }
@@ -1801,6 +2148,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaAndAlsoExpression; }
+            }
+        
         }
         
         public static class MetaOrElseExpression
@@ -1812,6 +2164,11 @@ namespace MetaDslx.Core
             static MetaOrElseExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaOrElseExpression; }
             }
         
         }
@@ -1827,6 +2184,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaNullCoalescingExpression; }
+            }
+        
         }
         
         public static class MetaAssignmentExpression
@@ -1838,6 +2200,11 @@ namespace MetaDslx.Core
             static MetaAssignmentExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaAssignmentExpression; }
             }
         
         }
@@ -1853,6 +2220,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaAssignExpression; }
+            }
+        
         }
         
         public static class MetaArithmeticAssignmentExpression
@@ -1864,6 +2236,11 @@ namespace MetaDslx.Core
             static MetaArithmeticAssignmentExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaArithmeticAssignmentExpression; }
             }
         
         }
@@ -1879,6 +2256,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaMultiplyAssignExpression; }
+            }
+        
         }
         
         public static class MetaDivideAssignExpression
@@ -1890,6 +2272,11 @@ namespace MetaDslx.Core
             static MetaDivideAssignExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaDivideAssignExpression; }
             }
         
         }
@@ -1905,6 +2292,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaModuloAssignExpression; }
+            }
+        
         }
         
         public static class MetaAddAssignExpression
@@ -1916,6 +2308,11 @@ namespace MetaDslx.Core
             static MetaAddAssignExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaAddAssignExpression; }
             }
         
         }
@@ -1931,6 +2328,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaSubtractAssignExpression; }
+            }
+        
         }
         
         public static class MetaLeftShiftAssignExpression
@@ -1942,6 +2344,11 @@ namespace MetaDslx.Core
             static MetaLeftShiftAssignExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaLeftShiftAssignExpression; }
             }
         
         }
@@ -1957,6 +2364,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaRightShiftAssignExpression; }
+            }
+        
         }
         
         public static class MetaLogicalAssignmentExpression
@@ -1968,6 +2380,11 @@ namespace MetaDslx.Core
             static MetaLogicalAssignmentExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaLogicalAssignmentExpression; }
             }
         
         }
@@ -1983,6 +2400,11 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaAndAssignExpression; }
+            }
+        
         }
         
         public static class MetaExclusiveOrAssignExpression
@@ -1994,6 +2416,11 @@ namespace MetaDslx.Core
             static MetaExclusiveOrAssignExpression()
             {
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaExclusiveOrAssignExpression; }
             }
         
         }
@@ -2009,10 +2436,15 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
+            public static global::MetaDslx.Core.MetaClass Meta
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaOrAssignExpression; }
+            }
+        
         }
     }
     
-	public static class MetaInstance
+	internal static class MetaInstance
 	{
 	    internal static global::MetaDslx.Core.Model model;
 	
@@ -2326,6 +2758,174 @@ namespace MetaDslx.Core
 				MetaExclusiveOrAssignExpression.SuperClasses.Add(MetaInstance.MetaLogicalAssignmentExpression);
 				MetaOrAssignExpression.Name = "MetaOrAssignExpression";
 				MetaOrAssignExpression.SuperClasses.Add(MetaInstance.MetaLogicalAssignmentExpression);
+	
+				MetaAnnotatedElement_AnnotationsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNamedElement_NameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaTypedElement_TypeProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaAnnotation_PropertiesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaAnnotationProperty_ValueProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNamespace_ParentProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNamespace_UsingsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNamespace_MetaModelProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNamespace_NamespacesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNamespace_DeclarationsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaDeclaration_NamespaceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaDeclaration_ModelProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaModel_UriProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaModel_NamespaceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaCollectionType_KindProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaCollectionType_InnerTypeProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNullableType_InnerTypeProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaEnum_EnumLiteralsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaEnum_OperationsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaEnumLiteral_EnumProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaClass_IsAbstractProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaClass_SuperClassesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaClass_PropertiesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaClass_OperationsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaClass_ConstructorProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaFunctionType_ParameterTypesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaFunctionType_ReturnTypeProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaFunction_TypeProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaFunction_ParametersProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaFunction_ReturnTypeProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaOperation_ParentProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaConstant_ValueProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaConstructor_ParentProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaConstructor_InitializersProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaParameter_FunctionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaProperty_KindProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaProperty_ClassProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaProperty_OppositePropertiesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaProperty_SubsettedPropertiesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaProperty_SubsettingPropertiesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaProperty_RedefinedPropertiesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaProperty_RedefiningPropertiesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaPropertyInitializer_ConstructorProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaPropertyInitializer_PropertyNameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaPropertyInitializer_PropertyContextProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaPropertyInitializer_PropertyProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaPropertyInitializer_ValueProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaInheritedPropertyInitializer_ObjectNameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaInheritedPropertyInitializer_ObjectProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaExpression_NoTypeErrorProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaExpression_ExpectedTypeProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaBracketExpression_ExpressionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaBoundExpression_UniqueDefinitionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaBoundExpression_ArgumentsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaBoundExpression_DefinitionsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaBoundExpression_DefinitionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaTypeConversionExpression_TypeReferenceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaTypeConversionExpression_ExpressionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaTypeCheckExpression_TypeReferenceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaTypeCheckExpression_ExpressionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaTypeOfExpression_TypeReferenceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaConditionalExpression_ConditionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaConditionalExpression_BalancedTypeProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaConditionalExpression_ThenProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaConditionalExpression_ElseProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaConstantExpression_ValueProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaIdentifierExpression_NameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaMemberAccessExpression_ExpressionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaMemberAccessExpression_NameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaFunctionCallExpression_ExpressionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaIndexerExpression_ExpressionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNewExpression_TypeReferenceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNewExpression_PropertyInitializersProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNewPropertyInitializer_ParentProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNewPropertyInitializer_PropertyNameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNewPropertyInitializer_ValueProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNewPropertyInitializer_PropertyProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNewCollectionExpression_TypeReferenceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaNewCollectionExpression_ValuesProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaOperatorExpression_NameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaUnaryExpression_ExpressionProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaBinaryExpression_LeftProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaBinaryExpression_RightProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+	
+				MetaAnnotatedElement_AnnotationsProperty.Name = "Annotations";
+				MetaNamedElement_NameProperty.Name = "Name";
+				MetaTypedElement_TypeProperty.Name = "Type";
+				MetaAnnotation_PropertiesProperty.Name = "Properties";
+				MetaAnnotationProperty_ValueProperty.Name = "Value";
+				MetaNamespace_ParentProperty.Name = "Parent";
+				MetaNamespace_UsingsProperty.Name = "Usings";
+				MetaNamespace_MetaModelProperty.Name = "MetaModel";
+				MetaNamespace_NamespacesProperty.Name = "Namespaces";
+				MetaNamespace_DeclarationsProperty.Name = "Declarations";
+				MetaDeclaration_NamespaceProperty.Name = "Namespace";
+				MetaDeclaration_ModelProperty.Name = "Model";
+				MetaModel_UriProperty.Name = "Uri";
+				MetaModel_NamespaceProperty.Name = "Namespace";
+				MetaCollectionType_KindProperty.Name = "Kind";
+				MetaCollectionType_InnerTypeProperty.Name = "InnerType";
+				MetaNullableType_InnerTypeProperty.Name = "InnerType";
+				MetaEnum_EnumLiteralsProperty.Name = "EnumLiterals";
+				MetaEnum_OperationsProperty.Name = "Operations";
+				MetaEnumLiteral_EnumProperty.Name = "Enum";
+				MetaClass_IsAbstractProperty.Name = "IsAbstract";
+				MetaClass_SuperClassesProperty.Name = "SuperClasses";
+				MetaClass_PropertiesProperty.Name = "Properties";
+				MetaClass_OperationsProperty.Name = "Operations";
+				MetaClass_ConstructorProperty.Name = "Constructor";
+				MetaFunctionType_ParameterTypesProperty.Name = "ParameterTypes";
+				MetaFunctionType_ReturnTypeProperty.Name = "ReturnType";
+				MetaFunction_TypeProperty.Name = "Type";
+				MetaFunction_ParametersProperty.Name = "Parameters";
+				MetaFunction_ReturnTypeProperty.Name = "ReturnType";
+				MetaOperation_ParentProperty.Name = "Parent";
+				MetaConstant_ValueProperty.Name = "Value";
+				MetaConstructor_ParentProperty.Name = "Parent";
+				MetaConstructor_InitializersProperty.Name = "Initializers";
+				MetaParameter_FunctionProperty.Name = "Function";
+				MetaProperty_KindProperty.Name = "Kind";
+				MetaProperty_ClassProperty.Name = "Class";
+				MetaProperty_OppositePropertiesProperty.Name = "OppositeProperties";
+				MetaProperty_SubsettedPropertiesProperty.Name = "SubsettedProperties";
+				MetaProperty_SubsettingPropertiesProperty.Name = "SubsettingProperties";
+				MetaProperty_RedefinedPropertiesProperty.Name = "RedefinedProperties";
+				MetaProperty_RedefiningPropertiesProperty.Name = "RedefiningProperties";
+				MetaPropertyInitializer_ConstructorProperty.Name = "Constructor";
+				MetaPropertyInitializer_PropertyNameProperty.Name = "PropertyName";
+				MetaPropertyInitializer_PropertyContextProperty.Name = "PropertyContext";
+				MetaPropertyInitializer_PropertyProperty.Name = "Property";
+				MetaPropertyInitializer_ValueProperty.Name = "Value";
+				MetaInheritedPropertyInitializer_ObjectNameProperty.Name = "ObjectName";
+				MetaInheritedPropertyInitializer_ObjectProperty.Name = "Object";
+				MetaExpression_NoTypeErrorProperty.Name = "NoTypeError";
+				MetaExpression_ExpectedTypeProperty.Name = "ExpectedType";
+				MetaBracketExpression_ExpressionProperty.Name = "Expression";
+				MetaBoundExpression_UniqueDefinitionProperty.Name = "UniqueDefinition";
+				MetaBoundExpression_ArgumentsProperty.Name = "Arguments";
+				MetaBoundExpression_DefinitionsProperty.Name = "Definitions";
+				MetaBoundExpression_DefinitionProperty.Name = "Definition";
+				MetaTypeConversionExpression_TypeReferenceProperty.Name = "TypeReference";
+				MetaTypeConversionExpression_ExpressionProperty.Name = "Expression";
+				MetaTypeCheckExpression_TypeReferenceProperty.Name = "TypeReference";
+				MetaTypeCheckExpression_ExpressionProperty.Name = "Expression";
+				MetaTypeOfExpression_TypeReferenceProperty.Name = "TypeReference";
+				MetaConditionalExpression_ConditionProperty.Name = "Condition";
+				MetaConditionalExpression_BalancedTypeProperty.Name = "BalancedType";
+				MetaConditionalExpression_ThenProperty.Name = "Then";
+				MetaConditionalExpression_ElseProperty.Name = "Else";
+				MetaConstantExpression_ValueProperty.Name = "Value";
+				MetaIdentifierExpression_NameProperty.Name = "Name";
+				MetaMemberAccessExpression_ExpressionProperty.Name = "Expression";
+				MetaMemberAccessExpression_NameProperty.Name = "Name";
+				MetaFunctionCallExpression_ExpressionProperty.Name = "Expression";
+				MetaIndexerExpression_ExpressionProperty.Name = "Expression";
+				MetaNewExpression_TypeReferenceProperty.Name = "TypeReference";
+				MetaNewExpression_PropertyInitializersProperty.Name = "PropertyInitializers";
+				MetaNewPropertyInitializer_ParentProperty.Name = "Parent";
+				MetaNewPropertyInitializer_PropertyNameProperty.Name = "PropertyName";
+				MetaNewPropertyInitializer_ValueProperty.Name = "Value";
+				MetaNewPropertyInitializer_PropertyProperty.Name = "Property";
+				MetaNewCollectionExpression_TypeReferenceProperty.Name = "TypeReference";
+				MetaNewCollectionExpression_ValuesProperty.Name = "Values";
+				MetaOperatorExpression_NameProperty.Name = "Name";
+				MetaUnaryExpression_ExpressionProperty.Name = "Expression";
+				MetaBinaryExpression_LeftProperty.Name = "Left";
+				MetaBinaryExpression_RightProperty.Name = "Right";
 			}
 	    }
 	
@@ -2337,98 +2937,182 @@ namespace MetaDslx.Core
 			}
 	    }
 	
-		public static readonly MetaClass MetaAnnotatedElement;
-		public static readonly MetaClass MetaNamedElement;
-		public static readonly MetaClass MetaTypedElement;
-		public static readonly MetaClass MetaType;
-		public static readonly MetaClass MetaAnnotation;
-		public static readonly MetaClass MetaAnnotationProperty;
-		public static readonly MetaClass MetaNamespace;
-		public static readonly MetaClass MetaDeclaration;
-		public static readonly MetaClass MetaModel;
-		public static readonly MetaClass MetaCollectionType;
-		public static readonly MetaClass MetaNullableType;
-		public static readonly MetaClass MetaPrimitiveType;
-		public static readonly MetaClass MetaEnum;
-		public static readonly MetaClass MetaEnumLiteral;
-		public static readonly MetaClass MetaClass;
-		public static readonly MetaClass MetaFunctionType;
-		public static readonly MetaClass MetaFunction;
-		public static readonly MetaClass MetaOperation;
-		public static readonly MetaClass MetaConstant;
-		public static readonly MetaClass MetaConstructor;
-		public static readonly MetaClass MetaParameter;
-		public static readonly MetaClass MetaProperty;
-		public static readonly MetaClass MetaPropertyInitializer;
-		public static readonly MetaClass MetaSynthetizedPropertyInitializer;
-		public static readonly MetaClass MetaInheritedPropertyInitializer;
-		public static readonly MetaClass MetaExpression;
-		public static readonly MetaClass MetaBracketExpression;
-		public static readonly MetaClass MetaBoundExpression;
-		public static readonly MetaClass MetaThisExpression;
-		public static readonly MetaClass MetaNullExpression;
-		public static readonly MetaClass MetaTypeConversionExpression;
-		public static readonly MetaClass MetaTypeAsExpression;
-		public static readonly MetaClass MetaTypeCastExpression;
-		public static readonly MetaClass MetaTypeCheckExpression;
-		public static readonly MetaClass MetaTypeOfExpression;
-		public static readonly MetaClass MetaConditionalExpression;
-		public static readonly MetaClass MetaConstantExpression;
-		public static readonly MetaClass MetaIdentifierExpression;
-		public static readonly MetaClass MetaMemberAccessExpression;
-		public static readonly MetaClass MetaFunctionCallExpression;
-		public static readonly MetaClass MetaIndexerExpression;
-		public static readonly MetaClass MetaNewExpression;
-		public static readonly MetaClass MetaNewPropertyInitializer;
-		public static readonly MetaClass MetaNewCollectionExpression;
-		public static readonly MetaClass MetaOperatorExpression;
-		public static readonly MetaClass MetaUnaryExpression;
-		public static readonly MetaClass MetaUnaryPlusExpression;
-		public static readonly MetaClass MetaNegateExpression;
-		public static readonly MetaClass MetaOnesComplementExpression;
-		public static readonly MetaClass MetaNotExpression;
-		public static readonly MetaClass MetaUnaryAssignExpression;
-		public static readonly MetaClass MetaPostIncrementAssignExpression;
-		public static readonly MetaClass MetaPostDecrementAssignExpression;
-		public static readonly MetaClass MetaPreIncrementAssignExpression;
-		public static readonly MetaClass MetaPreDecrementAssignExpression;
-		public static readonly MetaClass MetaBinaryExpression;
-		public static readonly MetaClass MetaBinaryArithmeticExpression;
-		public static readonly MetaClass MetaMultiplyExpression;
-		public static readonly MetaClass MetaDivideExpression;
-		public static readonly MetaClass MetaModuloExpression;
-		public static readonly MetaClass MetaAddExpression;
-		public static readonly MetaClass MetaSubtractExpression;
-		public static readonly MetaClass MetaLeftShiftExpression;
-		public static readonly MetaClass MetaRightShiftExpression;
-		public static readonly MetaClass MetaBinaryComparisonExpression;
-		public static readonly MetaClass MetaLessThanExpression;
-		public static readonly MetaClass MetaLessThanOrEqualExpression;
-		public static readonly MetaClass MetaGreaterThanExpression;
-		public static readonly MetaClass MetaGreaterThanOrEqualExpression;
-		public static readonly MetaClass MetaEqualExpression;
-		public static readonly MetaClass MetaNotEqualExpression;
-		public static readonly MetaClass MetaBinaryLogicalExpression;
-		public static readonly MetaClass MetaAndExpression;
-		public static readonly MetaClass MetaOrExpression;
-		public static readonly MetaClass MetaExclusiveOrExpression;
-		public static readonly MetaClass MetaAndAlsoExpression;
-		public static readonly MetaClass MetaOrElseExpression;
-		public static readonly MetaClass MetaNullCoalescingExpression;
-		public static readonly MetaClass MetaAssignmentExpression;
-		public static readonly MetaClass MetaAssignExpression;
-		public static readonly MetaClass MetaArithmeticAssignmentExpression;
-		public static readonly MetaClass MetaMultiplyAssignExpression;
-		public static readonly MetaClass MetaDivideAssignExpression;
-		public static readonly MetaClass MetaModuloAssignExpression;
-		public static readonly MetaClass MetaAddAssignExpression;
-		public static readonly MetaClass MetaSubtractAssignExpression;
-		public static readonly MetaClass MetaLeftShiftAssignExpression;
-		public static readonly MetaClass MetaRightShiftAssignExpression;
-		public static readonly MetaClass MetaLogicalAssignmentExpression;
-		public static readonly MetaClass MetaAndAssignExpression;
-		public static readonly MetaClass MetaExclusiveOrAssignExpression;
-		public static readonly MetaClass MetaOrAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaAnnotatedElement;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNamedElement;
+		public static readonly global::MetaDslx.Core.MetaClass MetaTypedElement;
+		public static readonly global::MetaDslx.Core.MetaClass MetaType;
+		public static readonly global::MetaDslx.Core.MetaClass MetaAnnotation;
+		public static readonly global::MetaDslx.Core.MetaClass MetaAnnotationProperty;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNamespace;
+		public static readonly global::MetaDslx.Core.MetaClass MetaDeclaration;
+		public static readonly global::MetaDslx.Core.MetaClass MetaModel;
+		public static readonly global::MetaDslx.Core.MetaClass MetaCollectionType;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNullableType;
+		public static readonly global::MetaDslx.Core.MetaClass MetaPrimitiveType;
+		public static readonly global::MetaDslx.Core.MetaClass MetaEnum;
+		public static readonly global::MetaDslx.Core.MetaClass MetaEnumLiteral;
+		public static readonly global::MetaDslx.Core.MetaClass MetaClass;
+		public static readonly global::MetaDslx.Core.MetaClass MetaFunctionType;
+		public static readonly global::MetaDslx.Core.MetaClass MetaFunction;
+		public static readonly global::MetaDslx.Core.MetaClass MetaOperation;
+		public static readonly global::MetaDslx.Core.MetaClass MetaConstant;
+		public static readonly global::MetaDslx.Core.MetaClass MetaConstructor;
+		public static readonly global::MetaDslx.Core.MetaClass MetaParameter;
+		public static readonly global::MetaDslx.Core.MetaClass MetaProperty;
+		public static readonly global::MetaDslx.Core.MetaClass MetaPropertyInitializer;
+		public static readonly global::MetaDslx.Core.MetaClass MetaSynthetizedPropertyInitializer;
+		public static readonly global::MetaDslx.Core.MetaClass MetaInheritedPropertyInitializer;
+		public static readonly global::MetaDslx.Core.MetaClass MetaExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaBracketExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaBoundExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaThisExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNullExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaTypeConversionExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaTypeAsExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaTypeCastExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaTypeCheckExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaTypeOfExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaConditionalExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaConstantExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaIdentifierExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaMemberAccessExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaFunctionCallExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaIndexerExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNewExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNewPropertyInitializer;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNewCollectionExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaOperatorExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaUnaryExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaUnaryPlusExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNegateExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaOnesComplementExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNotExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaUnaryAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaPostIncrementAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaPostDecrementAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaPreIncrementAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaPreDecrementAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaBinaryExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaBinaryArithmeticExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaMultiplyExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaDivideExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaModuloExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaAddExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaSubtractExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaLeftShiftExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaRightShiftExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaBinaryComparisonExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaLessThanExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaLessThanOrEqualExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaGreaterThanExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaGreaterThanOrEqualExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaEqualExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNotEqualExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaBinaryLogicalExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaAndExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaOrExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaExclusiveOrExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaAndAlsoExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaOrElseExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaNullCoalescingExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaAssignmentExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaArithmeticAssignmentExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaMultiplyAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaDivideAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaModuloAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaAddAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaSubtractAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaLeftShiftAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaRightShiftAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaLogicalAssignmentExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaAndAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaExclusiveOrAssignExpression;
+		public static readonly global::MetaDslx.Core.MetaClass MetaOrAssignExpression;
+	
+		public static readonly global::MetaDslx.Core.MetaProperty MetaAnnotatedElement_AnnotationsProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNamedElement_NameProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaTypedElement_TypeProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaAnnotation_PropertiesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaAnnotationProperty_ValueProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNamespace_ParentProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNamespace_UsingsProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNamespace_MetaModelProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNamespace_NamespacesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNamespace_DeclarationsProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaDeclaration_NamespaceProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaDeclaration_ModelProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaModel_UriProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaModel_NamespaceProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaCollectionType_KindProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaCollectionType_InnerTypeProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNullableType_InnerTypeProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaEnum_EnumLiteralsProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaEnum_OperationsProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaEnumLiteral_EnumProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaClass_IsAbstractProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaClass_SuperClassesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaClass_PropertiesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaClass_OperationsProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaClass_ConstructorProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaFunctionType_ParameterTypesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaFunctionType_ReturnTypeProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaFunction_TypeProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaFunction_ParametersProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaFunction_ReturnTypeProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaOperation_ParentProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaConstant_ValueProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaConstructor_ParentProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaConstructor_InitializersProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaParameter_FunctionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaProperty_KindProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaProperty_ClassProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaProperty_OppositePropertiesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaProperty_SubsettedPropertiesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaProperty_SubsettingPropertiesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaProperty_RedefinedPropertiesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaProperty_RedefiningPropertiesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaPropertyInitializer_ConstructorProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaPropertyInitializer_PropertyNameProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaPropertyInitializer_PropertyContextProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaPropertyInitializer_PropertyProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaPropertyInitializer_ValueProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaInheritedPropertyInitializer_ObjectNameProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaInheritedPropertyInitializer_ObjectProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaExpression_NoTypeErrorProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaExpression_ExpectedTypeProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaBracketExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaBoundExpression_UniqueDefinitionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaBoundExpression_ArgumentsProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaBoundExpression_DefinitionsProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaBoundExpression_DefinitionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaTypeConversionExpression_TypeReferenceProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaTypeConversionExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaTypeCheckExpression_TypeReferenceProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaTypeCheckExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaTypeOfExpression_TypeReferenceProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaConditionalExpression_ConditionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaConditionalExpression_BalancedTypeProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaConditionalExpression_ThenProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaConditionalExpression_ElseProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaConstantExpression_ValueProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaIdentifierExpression_NameProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaMemberAccessExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaMemberAccessExpression_NameProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaFunctionCallExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaIndexerExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNewExpression_TypeReferenceProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNewExpression_PropertyInitializersProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNewPropertyInitializer_ParentProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNewPropertyInitializer_PropertyNameProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNewPropertyInitializer_ValueProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNewPropertyInitializer_PropertyProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNewCollectionExpression_TypeReferenceProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaNewCollectionExpression_ValuesProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaOperatorExpression_NameProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaUnaryExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaBinaryExpression_LeftProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaBinaryExpression_RightProperty;
 	}
     
     public enum MetaCollectionKind
@@ -4843,7 +5527,7 @@ namespace MetaDslx.Core
     
         public MetaTypeOfExpressionImpl() 
         {
-            this.MLazySet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaInstance.MetaType));
+            this.MLazySet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => MetaDescriptor.MetaType.Meta));
             this.MLazySet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => ModelContext.Current.Compiler.TypeProvider.TypeCheck((ModelObject)((MetaExpression)this))));
             MetaImplementationProvider.Implementation.MetaTypeOfExpression_MetaTypeOfExpression(this);
             if (!this.MIsSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty)) throw new ModelException("Readonly property MetaDescriptor.MetaExpression.NoTypeErrorProperty was not set in MetaTypeOfExpression_MetaTypeOfExpression().");
@@ -12006,657 +12690,949 @@ namespace MetaDslx.Core
         /// <summary>
         /// Creates a new instance of MetaAnnotation.
         /// </summary>
-        public MetaAnnotation CreateMetaAnnotation()
+        public MetaAnnotation CreateMetaAnnotation(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaAnnotation result = new global::MetaDslx.Core.MetaAnnotationImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAnnotationProperty.
         /// </summary>
-        public MetaAnnotationProperty CreateMetaAnnotationProperty()
+        public MetaAnnotationProperty CreateMetaAnnotationProperty(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaAnnotationProperty result = new global::MetaDslx.Core.MetaAnnotationPropertyImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNamespace.
         /// </summary>
-        public MetaNamespace CreateMetaNamespace()
+        public MetaNamespace CreateMetaNamespace(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaNamespace result = new global::MetaDslx.Core.MetaNamespaceImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaModel.
         /// </summary>
-        public MetaModel CreateMetaModel()
+        public MetaModel CreateMetaModel(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaModel result = new global::MetaDslx.Core.MetaModelImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaCollectionType.
         /// </summary>
-        public MetaCollectionType CreateMetaCollectionType()
+        public MetaCollectionType CreateMetaCollectionType(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaCollectionType result = new global::MetaDslx.Core.MetaCollectionTypeImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNullableType.
         /// </summary>
-        public MetaNullableType CreateMetaNullableType()
+        public MetaNullableType CreateMetaNullableType(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaNullableType result = new global::MetaDslx.Core.MetaNullableTypeImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaPrimitiveType.
         /// </summary>
-        public MetaPrimitiveType CreateMetaPrimitiveType()
+        public MetaPrimitiveType CreateMetaPrimitiveType(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaPrimitiveType result = new global::MetaDslx.Core.MetaPrimitiveTypeImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaEnum.
         /// </summary>
-        public MetaEnum CreateMetaEnum()
+        public MetaEnum CreateMetaEnum(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaEnum result = new global::MetaDslx.Core.MetaEnumImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaEnumLiteral.
         /// </summary>
-        public MetaEnumLiteral CreateMetaEnumLiteral()
+        public MetaEnumLiteral CreateMetaEnumLiteral(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaEnumLiteral result = new global::MetaDslx.Core.MetaEnumLiteralImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaClass.
         /// </summary>
-        public MetaClass CreateMetaClass()
+        public MetaClass CreateMetaClass(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaClass result = new global::MetaDslx.Core.MetaClassImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaFunctionType.
         /// </summary>
-        public MetaFunctionType CreateMetaFunctionType()
+        public MetaFunctionType CreateMetaFunctionType(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaFunctionType result = new global::MetaDslx.Core.MetaFunctionTypeImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaFunction.
         /// </summary>
-        public MetaFunction CreateMetaFunction()
+        public MetaFunction CreateMetaFunction(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaFunction result = new global::MetaDslx.Core.MetaFunctionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaOperation.
         /// </summary>
-        public MetaOperation CreateMetaOperation()
+        public MetaOperation CreateMetaOperation(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaOperation result = new global::MetaDslx.Core.MetaOperationImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaConstant.
         /// </summary>
-        public MetaConstant CreateMetaConstant()
+        public MetaConstant CreateMetaConstant(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaConstant result = new global::MetaDslx.Core.MetaConstantImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaConstructor.
         /// </summary>
-        public MetaConstructor CreateMetaConstructor()
+        public MetaConstructor CreateMetaConstructor(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaConstructor result = new global::MetaDslx.Core.MetaConstructorImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaParameter.
         /// </summary>
-        public MetaParameter CreateMetaParameter()
+        public MetaParameter CreateMetaParameter(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaParameter result = new global::MetaDslx.Core.MetaParameterImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaProperty.
         /// </summary>
-        public MetaProperty CreateMetaProperty()
+        public MetaProperty CreateMetaProperty(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaProperty result = new global::MetaDslx.Core.MetaPropertyImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaSynthetizedPropertyInitializer.
         /// </summary>
-        public MetaSynthetizedPropertyInitializer CreateMetaSynthetizedPropertyInitializer()
+        public MetaSynthetizedPropertyInitializer CreateMetaSynthetizedPropertyInitializer(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaSynthetizedPropertyInitializer result = new global::MetaDslx.Core.MetaSynthetizedPropertyInitializerImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaInheritedPropertyInitializer.
         /// </summary>
-        public MetaInheritedPropertyInitializer CreateMetaInheritedPropertyInitializer()
+        public MetaInheritedPropertyInitializer CreateMetaInheritedPropertyInitializer(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaInheritedPropertyInitializer result = new global::MetaDslx.Core.MetaInheritedPropertyInitializerImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaBracketExpression.
         /// </summary>
-        public MetaBracketExpression CreateMetaBracketExpression()
+        public MetaBracketExpression CreateMetaBracketExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaBracketExpression result = new global::MetaDslx.Core.MetaBracketExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaThisExpression.
         /// </summary>
-        public MetaThisExpression CreateMetaThisExpression()
+        public MetaThisExpression CreateMetaThisExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaThisExpression result = new global::MetaDslx.Core.MetaThisExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNullExpression.
         /// </summary>
-        public MetaNullExpression CreateMetaNullExpression()
+        public MetaNullExpression CreateMetaNullExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaNullExpression result = new global::MetaDslx.Core.MetaNullExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaTypeAsExpression.
         /// </summary>
-        public MetaTypeAsExpression CreateMetaTypeAsExpression()
+        public MetaTypeAsExpression CreateMetaTypeAsExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaTypeAsExpression result = new global::MetaDslx.Core.MetaTypeAsExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaTypeCastExpression.
         /// </summary>
-        public MetaTypeCastExpression CreateMetaTypeCastExpression()
+        public MetaTypeCastExpression CreateMetaTypeCastExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaTypeCastExpression result = new global::MetaDslx.Core.MetaTypeCastExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaTypeCheckExpression.
         /// </summary>
-        public MetaTypeCheckExpression CreateMetaTypeCheckExpression()
+        public MetaTypeCheckExpression CreateMetaTypeCheckExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaTypeCheckExpression result = new global::MetaDslx.Core.MetaTypeCheckExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaTypeOfExpression.
         /// </summary>
-        public MetaTypeOfExpression CreateMetaTypeOfExpression()
+        public MetaTypeOfExpression CreateMetaTypeOfExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaTypeOfExpression result = new global::MetaDslx.Core.MetaTypeOfExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaConditionalExpression.
         /// </summary>
-        public MetaConditionalExpression CreateMetaConditionalExpression()
+        public MetaConditionalExpression CreateMetaConditionalExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaConditionalExpression result = new global::MetaDslx.Core.MetaConditionalExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaConstantExpression.
         /// </summary>
-        public MetaConstantExpression CreateMetaConstantExpression()
+        public MetaConstantExpression CreateMetaConstantExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaConstantExpression result = new global::MetaDslx.Core.MetaConstantExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaIdentifierExpression.
         /// </summary>
-        public MetaIdentifierExpression CreateMetaIdentifierExpression()
+        public MetaIdentifierExpression CreateMetaIdentifierExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaIdentifierExpression result = new global::MetaDslx.Core.MetaIdentifierExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaMemberAccessExpression.
         /// </summary>
-        public MetaMemberAccessExpression CreateMetaMemberAccessExpression()
+        public MetaMemberAccessExpression CreateMetaMemberAccessExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaMemberAccessExpression result = new global::MetaDslx.Core.MetaMemberAccessExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaFunctionCallExpression.
         /// </summary>
-        public MetaFunctionCallExpression CreateMetaFunctionCallExpression()
+        public MetaFunctionCallExpression CreateMetaFunctionCallExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaFunctionCallExpression result = new global::MetaDslx.Core.MetaFunctionCallExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaIndexerExpression.
         /// </summary>
-        public MetaIndexerExpression CreateMetaIndexerExpression()
+        public MetaIndexerExpression CreateMetaIndexerExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaIndexerExpression result = new global::MetaDslx.Core.MetaIndexerExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNewExpression.
         /// </summary>
-        public MetaNewExpression CreateMetaNewExpression()
+        public MetaNewExpression CreateMetaNewExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaNewExpression result = new global::MetaDslx.Core.MetaNewExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNewPropertyInitializer.
         /// </summary>
-        public MetaNewPropertyInitializer CreateMetaNewPropertyInitializer()
+        public MetaNewPropertyInitializer CreateMetaNewPropertyInitializer(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaNewPropertyInitializer result = new global::MetaDslx.Core.MetaNewPropertyInitializerImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNewCollectionExpression.
         /// </summary>
-        public MetaNewCollectionExpression CreateMetaNewCollectionExpression()
+        public MetaNewCollectionExpression CreateMetaNewCollectionExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaNewCollectionExpression result = new global::MetaDslx.Core.MetaNewCollectionExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaUnaryPlusExpression.
         /// </summary>
-        public MetaUnaryPlusExpression CreateMetaUnaryPlusExpression()
+        public MetaUnaryPlusExpression CreateMetaUnaryPlusExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaUnaryPlusExpression result = new global::MetaDslx.Core.MetaUnaryPlusExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNegateExpression.
         /// </summary>
-        public MetaNegateExpression CreateMetaNegateExpression()
+        public MetaNegateExpression CreateMetaNegateExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaNegateExpression result = new global::MetaDslx.Core.MetaNegateExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaOnesComplementExpression.
         /// </summary>
-        public MetaOnesComplementExpression CreateMetaOnesComplementExpression()
+        public MetaOnesComplementExpression CreateMetaOnesComplementExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaOnesComplementExpression result = new global::MetaDslx.Core.MetaOnesComplementExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNotExpression.
         /// </summary>
-        public MetaNotExpression CreateMetaNotExpression()
+        public MetaNotExpression CreateMetaNotExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaNotExpression result = new global::MetaDslx.Core.MetaNotExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaPostIncrementAssignExpression.
         /// </summary>
-        public MetaPostIncrementAssignExpression CreateMetaPostIncrementAssignExpression()
+        public MetaPostIncrementAssignExpression CreateMetaPostIncrementAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaPostIncrementAssignExpression result = new global::MetaDslx.Core.MetaPostIncrementAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaPostDecrementAssignExpression.
         /// </summary>
-        public MetaPostDecrementAssignExpression CreateMetaPostDecrementAssignExpression()
+        public MetaPostDecrementAssignExpression CreateMetaPostDecrementAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaPostDecrementAssignExpression result = new global::MetaDslx.Core.MetaPostDecrementAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaPreIncrementAssignExpression.
         /// </summary>
-        public MetaPreIncrementAssignExpression CreateMetaPreIncrementAssignExpression()
+        public MetaPreIncrementAssignExpression CreateMetaPreIncrementAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaPreIncrementAssignExpression result = new global::MetaDslx.Core.MetaPreIncrementAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaPreDecrementAssignExpression.
         /// </summary>
-        public MetaPreDecrementAssignExpression CreateMetaPreDecrementAssignExpression()
+        public MetaPreDecrementAssignExpression CreateMetaPreDecrementAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaPreDecrementAssignExpression result = new global::MetaDslx.Core.MetaPreDecrementAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaMultiplyExpression.
         /// </summary>
-        public MetaMultiplyExpression CreateMetaMultiplyExpression()
+        public MetaMultiplyExpression CreateMetaMultiplyExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaMultiplyExpression result = new global::MetaDslx.Core.MetaMultiplyExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaDivideExpression.
         /// </summary>
-        public MetaDivideExpression CreateMetaDivideExpression()
+        public MetaDivideExpression CreateMetaDivideExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaDivideExpression result = new global::MetaDslx.Core.MetaDivideExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaModuloExpression.
         /// </summary>
-        public MetaModuloExpression CreateMetaModuloExpression()
+        public MetaModuloExpression CreateMetaModuloExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaModuloExpression result = new global::MetaDslx.Core.MetaModuloExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAddExpression.
         /// </summary>
-        public MetaAddExpression CreateMetaAddExpression()
+        public MetaAddExpression CreateMetaAddExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaAddExpression result = new global::MetaDslx.Core.MetaAddExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaSubtractExpression.
         /// </summary>
-        public MetaSubtractExpression CreateMetaSubtractExpression()
+        public MetaSubtractExpression CreateMetaSubtractExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaSubtractExpression result = new global::MetaDslx.Core.MetaSubtractExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaLeftShiftExpression.
         /// </summary>
-        public MetaLeftShiftExpression CreateMetaLeftShiftExpression()
+        public MetaLeftShiftExpression CreateMetaLeftShiftExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaLeftShiftExpression result = new global::MetaDslx.Core.MetaLeftShiftExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaRightShiftExpression.
         /// </summary>
-        public MetaRightShiftExpression CreateMetaRightShiftExpression()
+        public MetaRightShiftExpression CreateMetaRightShiftExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaRightShiftExpression result = new global::MetaDslx.Core.MetaRightShiftExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaLessThanExpression.
         /// </summary>
-        public MetaLessThanExpression CreateMetaLessThanExpression()
+        public MetaLessThanExpression CreateMetaLessThanExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaLessThanExpression result = new global::MetaDslx.Core.MetaLessThanExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaLessThanOrEqualExpression.
         /// </summary>
-        public MetaLessThanOrEqualExpression CreateMetaLessThanOrEqualExpression()
+        public MetaLessThanOrEqualExpression CreateMetaLessThanOrEqualExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaLessThanOrEqualExpression result = new global::MetaDslx.Core.MetaLessThanOrEqualExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaGreaterThanExpression.
         /// </summary>
-        public MetaGreaterThanExpression CreateMetaGreaterThanExpression()
+        public MetaGreaterThanExpression CreateMetaGreaterThanExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaGreaterThanExpression result = new global::MetaDslx.Core.MetaGreaterThanExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaGreaterThanOrEqualExpression.
         /// </summary>
-        public MetaGreaterThanOrEqualExpression CreateMetaGreaterThanOrEqualExpression()
+        public MetaGreaterThanOrEqualExpression CreateMetaGreaterThanOrEqualExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaGreaterThanOrEqualExpression result = new global::MetaDslx.Core.MetaGreaterThanOrEqualExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaEqualExpression.
         /// </summary>
-        public MetaEqualExpression CreateMetaEqualExpression()
+        public MetaEqualExpression CreateMetaEqualExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaEqualExpression result = new global::MetaDslx.Core.MetaEqualExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNotEqualExpression.
         /// </summary>
-        public MetaNotEqualExpression CreateMetaNotEqualExpression()
+        public MetaNotEqualExpression CreateMetaNotEqualExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaNotEqualExpression result = new global::MetaDslx.Core.MetaNotEqualExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAndExpression.
         /// </summary>
-        public MetaAndExpression CreateMetaAndExpression()
+        public MetaAndExpression CreateMetaAndExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaAndExpression result = new global::MetaDslx.Core.MetaAndExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaOrExpression.
         /// </summary>
-        public MetaOrExpression CreateMetaOrExpression()
+        public MetaOrExpression CreateMetaOrExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaOrExpression result = new global::MetaDslx.Core.MetaOrExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaExclusiveOrExpression.
         /// </summary>
-        public MetaExclusiveOrExpression CreateMetaExclusiveOrExpression()
+        public MetaExclusiveOrExpression CreateMetaExclusiveOrExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaExclusiveOrExpression result = new global::MetaDslx.Core.MetaExclusiveOrExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAndAlsoExpression.
         /// </summary>
-        public MetaAndAlsoExpression CreateMetaAndAlsoExpression()
+        public MetaAndAlsoExpression CreateMetaAndAlsoExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaAndAlsoExpression result = new global::MetaDslx.Core.MetaAndAlsoExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaOrElseExpression.
         /// </summary>
-        public MetaOrElseExpression CreateMetaOrElseExpression()
+        public MetaOrElseExpression CreateMetaOrElseExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaOrElseExpression result = new global::MetaDslx.Core.MetaOrElseExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNullCoalescingExpression.
         /// </summary>
-        public MetaNullCoalescingExpression CreateMetaNullCoalescingExpression()
+        public MetaNullCoalescingExpression CreateMetaNullCoalescingExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaNullCoalescingExpression result = new global::MetaDslx.Core.MetaNullCoalescingExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAssignExpression.
         /// </summary>
-        public MetaAssignExpression CreateMetaAssignExpression()
+        public MetaAssignExpression CreateMetaAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaAssignExpression result = new global::MetaDslx.Core.MetaAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaMultiplyAssignExpression.
         /// </summary>
-        public MetaMultiplyAssignExpression CreateMetaMultiplyAssignExpression()
+        public MetaMultiplyAssignExpression CreateMetaMultiplyAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaMultiplyAssignExpression result = new global::MetaDslx.Core.MetaMultiplyAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaDivideAssignExpression.
         /// </summary>
-        public MetaDivideAssignExpression CreateMetaDivideAssignExpression()
+        public MetaDivideAssignExpression CreateMetaDivideAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaDivideAssignExpression result = new global::MetaDslx.Core.MetaDivideAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaModuloAssignExpression.
         /// </summary>
-        public MetaModuloAssignExpression CreateMetaModuloAssignExpression()
+        public MetaModuloAssignExpression CreateMetaModuloAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaModuloAssignExpression result = new global::MetaDslx.Core.MetaModuloAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAddAssignExpression.
         /// </summary>
-        public MetaAddAssignExpression CreateMetaAddAssignExpression()
+        public MetaAddAssignExpression CreateMetaAddAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaAddAssignExpression result = new global::MetaDslx.Core.MetaAddAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaSubtractAssignExpression.
         /// </summary>
-        public MetaSubtractAssignExpression CreateMetaSubtractAssignExpression()
+        public MetaSubtractAssignExpression CreateMetaSubtractAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaSubtractAssignExpression result = new global::MetaDslx.Core.MetaSubtractAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaLeftShiftAssignExpression.
         /// </summary>
-        public MetaLeftShiftAssignExpression CreateMetaLeftShiftAssignExpression()
+        public MetaLeftShiftAssignExpression CreateMetaLeftShiftAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaLeftShiftAssignExpression result = new global::MetaDslx.Core.MetaLeftShiftAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaRightShiftAssignExpression.
         /// </summary>
-        public MetaRightShiftAssignExpression CreateMetaRightShiftAssignExpression()
+        public MetaRightShiftAssignExpression CreateMetaRightShiftAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaRightShiftAssignExpression result = new global::MetaDslx.Core.MetaRightShiftAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAndAssignExpression.
         /// </summary>
-        public MetaAndAssignExpression CreateMetaAndAssignExpression()
+        public MetaAndAssignExpression CreateMetaAndAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaAndAssignExpression result = new global::MetaDslx.Core.MetaAndAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaExclusiveOrAssignExpression.
         /// </summary>
-        public MetaExclusiveOrAssignExpression CreateMetaExclusiveOrAssignExpression()
+        public MetaExclusiveOrAssignExpression CreateMetaExclusiveOrAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaExclusiveOrAssignExpression result = new global::MetaDslx.Core.MetaExclusiveOrAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaOrAssignExpression.
         /// </summary>
-        public MetaOrAssignExpression CreateMetaOrAssignExpression()
+        public MetaOrAssignExpression CreateMetaOrAssignExpression(IEnumerable<ModelPropertyInitializer> initializers = null)
     	{
     		MetaOrAssignExpression result = new global::MetaDslx.Core.MetaOrAssignExpressionImpl();
+    		if (initializers != null)
+    		{
+    			this.Init((ModelObject)result, initializers);
+    		}
     		return result;
     	}
     }
@@ -12871,7 +13847,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaFunction()
     	/// Direct superclasses: MetaTypedElement, MetaDeclaration
     	/// All superclasses: MetaTypedElement, MetaNamedElement, MetaAnnotatedElement, MetaDeclaration
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaFunction.Type
         /// </summary>
         public virtual void MetaFunction_MetaFunction(MetaFunction @this)
@@ -12884,7 +13860,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOperation()
     	/// Direct superclasses: MetaFunction
     	/// All superclasses: MetaTypedElement, MetaNamedElement, MetaAnnotatedElement, MetaDeclaration, MetaFunction
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaFunction.Type
         /// </summary>
         public virtual void MetaOperation_MetaOperation(MetaOperation @this)
@@ -12969,7 +13945,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaExpression()
     	/// Direct superclasses: MetaTypedElement
     	/// All superclasses: MetaTypedElement
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaExpression_MetaExpression(MetaExpression @this)
@@ -12981,7 +13957,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBracketExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaBracketExpression_MetaBracketExpression(MetaBracketExpression @this)
@@ -12993,7 +13969,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBoundExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaBoundExpression_MetaBoundExpression(MetaBoundExpression @this)
@@ -13005,7 +13981,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaThisExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaThisExpression_MetaThisExpression(MetaThisExpression @this)
@@ -13017,7 +13993,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNullExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaNullExpression_MetaNullExpression(MetaNullExpression @this)
@@ -13029,7 +14005,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaTypeConversionExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaTypeConversionExpression_MetaTypeConversionExpression(MetaTypeConversionExpression @this)
@@ -13041,7 +14017,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaTypeAsExpression()
     	/// Direct superclasses: MetaTypeConversionExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaTypeConversionExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaTypeAsExpression_MetaTypeAsExpression(MetaTypeAsExpression @this)
@@ -13053,7 +14029,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaTypeCastExpression()
     	/// Direct superclasses: MetaTypeConversionExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaTypeConversionExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaTypeCastExpression_MetaTypeCastExpression(MetaTypeCastExpression @this)
@@ -13065,7 +14041,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaTypeCheckExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaTypeCheckExpression_MetaTypeCheckExpression(MetaTypeCheckExpression @this)
@@ -13077,7 +14053,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaTypeOfExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaTypeOfExpression_MetaTypeOfExpression(MetaTypeOfExpression @this)
@@ -13089,7 +14065,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaConditionalExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaConditionalExpression_MetaConditionalExpression(MetaConditionalExpression @this)
@@ -13101,7 +14077,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaConstantExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaConstantExpression_MetaConstantExpression(MetaConstantExpression @this)
@@ -13113,7 +14089,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaIdentifierExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaIdentifierExpression_MetaIdentifierExpression(MetaIdentifierExpression @this)
@@ -13125,7 +14101,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaMemberAccessExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaMemberAccessExpression_MetaMemberAccessExpression(MetaMemberAccessExpression @this)
@@ -13137,7 +14113,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaFunctionCallExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaFunctionCallExpression_MetaFunctionCallExpression(MetaFunctionCallExpression @this)
@@ -13149,7 +14125,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaIndexerExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaIndexerExpression_MetaIndexerExpression(MetaIndexerExpression @this)
@@ -13161,7 +14137,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNewExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaNewExpression_MetaNewExpression(MetaNewExpression @this)
@@ -13180,7 +14156,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNewCollectionExpression()
     	/// Direct superclasses: MetaExpression
     	/// All superclasses: MetaTypedElement, MetaExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         /// </summary>
         public virtual void MetaNewCollectionExpression_MetaNewCollectionExpression(MetaNewCollectionExpression @this)
@@ -13192,7 +14168,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOperatorExpression()
     	/// Direct superclasses: MetaBoundExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13205,7 +14181,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaUnaryExpression()
     	/// Direct superclasses: MetaOperatorExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13218,7 +14194,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaUnaryPlusExpression()
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13231,7 +14207,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNegateExpression()
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13244,7 +14220,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOnesComplementExpression()
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13257,7 +14233,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNotExpression()
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13270,7 +14246,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaUnaryAssignExpression()
     	/// Direct superclasses: MetaUnaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13283,7 +14259,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaPostIncrementAssignExpression()
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13296,7 +14272,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaPostDecrementAssignExpression()
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13309,7 +14285,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaPreIncrementAssignExpression()
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13322,7 +14298,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaPreDecrementAssignExpression()
     	/// Direct superclasses: MetaUnaryAssignExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaUnaryExpression, MetaUnaryAssignExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13335,7 +14311,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBinaryExpression()
     	/// Direct superclasses: MetaOperatorExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13348,7 +14324,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBinaryArithmeticExpression()
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13361,7 +14337,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaMultiplyExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13374,7 +14350,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaDivideExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13387,7 +14363,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaModuloExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13400,7 +14376,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAddExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13413,7 +14389,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaSubtractExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13426,7 +14402,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaLeftShiftExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13439,7 +14415,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaRightShiftExpression()
     	/// Direct superclasses: MetaBinaryArithmeticExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryArithmeticExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13452,7 +14428,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBinaryComparisonExpression()
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13465,7 +14441,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaLessThanExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13478,7 +14454,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaLessThanOrEqualExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13491,7 +14467,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaGreaterThanExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13504,7 +14480,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaGreaterThanOrEqualExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13517,7 +14493,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaEqualExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13530,7 +14506,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNotEqualExpression()
     	/// Direct superclasses: MetaBinaryComparisonExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryComparisonExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13543,7 +14519,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaBinaryLogicalExpression()
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13556,7 +14532,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAndExpression()
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13569,7 +14545,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOrExpression()
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13582,7 +14558,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaExclusiveOrExpression()
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13595,7 +14571,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAndAlsoExpression()
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13608,7 +14584,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOrElseExpression()
     	/// Direct superclasses: MetaBinaryLogicalExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaBinaryLogicalExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13621,7 +14597,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaNullCoalescingExpression()
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13634,7 +14610,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAssignmentExpression()
     	/// Direct superclasses: MetaBinaryExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13647,7 +14623,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAssignExpression()
     	/// Direct superclasses: MetaAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13660,7 +14636,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaArithmeticAssignmentExpression()
     	/// Direct superclasses: MetaAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13673,7 +14649,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaMultiplyAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13686,7 +14662,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaDivideAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13699,7 +14675,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaModuloAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13712,7 +14688,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAddAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13725,7 +14701,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaSubtractAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13738,7 +14714,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaLeftShiftAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13751,7 +14727,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaRightShiftAssignExpression()
     	/// Direct superclasses: MetaArithmeticAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaArithmeticAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13764,7 +14740,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaLogicalAssignmentExpression()
     	/// Direct superclasses: MetaAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13777,7 +14753,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaAndAssignExpression()
     	/// Direct superclasses: MetaLogicalAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaLogicalAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13790,7 +14766,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaExclusiveOrAssignExpression()
     	/// Direct superclasses: MetaLogicalAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaLogicalAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>
@@ -13803,7 +14779,7 @@ namespace MetaDslx.Core
     	/// Implements the constructor: MetaOrAssignExpression()
     	/// Direct superclasses: MetaLogicalAssignmentExpression
     	/// All superclasses: MetaTypedElement, MetaExpression, MetaBoundExpression, MetaOperatorExpression, MetaBinaryExpression, MetaAssignmentExpression, MetaLogicalAssignmentExpression
-        // Initializes the following readonly properties:
+        /// Initializes the following readonly properties:
         ///    MetaExpression.NoTypeError
         ///    MetaOperatorExpression.Name
         /// </summary>

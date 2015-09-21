@@ -326,8 +326,8 @@ namespace MetaDslx.Core
         {
             if (@this == null) return string.Empty;
             string nsName = @this.Namespace.CSharpName();
-            if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + "." + @this.Name + "Descriptor";
-            else return "global::" + @this.Name + "Descriptor";
+            if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + "." + @this.Name;
+            else return "global::" + @this.Name;
         }
 
         public static string CSharpFullName(this MetaType @this)

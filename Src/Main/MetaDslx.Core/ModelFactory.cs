@@ -62,5 +62,56 @@ namespace MetaDslx.Core
             }
             return typedResult;
         }
+
+        public void Init(ModelObject mobject, IEnumerable<ModelPropertyInitializer> initializers)
+        {
+            foreach (var init in initializers)
+            {
+                if (!init.Property.IsCollection)
+                {
+                    mobject.MUnSet(init.Property);
+                }
+                else
+                {
+                    ModelCollection mc = mobject.MGet(init.Property) as ModelCollection;
+                    if (mc != null)
+                    {
+                        mc.Clear();
+                    }
+                }
+            }
+            foreach (var init in initializers)
+            {
+                if (init.Values != null)
+                {
+                    foreach (var value in init.Values)
+                    {
+                        mobject.MLazyAdd(init.Property, value);
+                    }
+                }
+                else
+                {
+                    mobject.MLazyAdd(init.Property, init.Value);
+                }
+            }
+        }
+    }
+
+    public class ModelPropertyInitializer
+    {
+        public ModelProperty Property { get; private set; }
+        public Lazy<object> Value { get; private set; }
+        public IEnumerable<Lazy<object>> Values { get; private set; }
+
+        public ModelPropertyInitializer(ModelProperty property, Lazy<object> value)
+        {
+            this.Property = property;
+            this.Value = value;
+        }
+        public ModelPropertyInitializer(ModelProperty property, IEnumerable<Lazy<object>> values)
+        {
+            this.Property = property;
+            this.Values = values;
+        }
     }
 }

@@ -56,6 +56,19 @@ namespace MetaDslx.Core
             return true;
         }
 
+        public bool MLazyAdd(IEnumerable<Lazy<object>> values)
+        {
+            if (values == null) return false;
+            if (this.lazyItems == null)
+            {
+                this.lazyItems = new List<Lazy<object>>();
+            }
+            foreach (var value in values)
+            {
+                this.MLazyAdd(value);
+            }
+            return true;
+        }
         public abstract void Clear();
         public abstract bool MAdd(object value, bool firstCall);
         public abstract bool MRemove(object value, bool firstCall);

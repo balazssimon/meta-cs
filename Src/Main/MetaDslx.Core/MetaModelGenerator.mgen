@@ -147,7 +147,7 @@ internal class [cls.CSharpImplName()] : ModelObject, [cls.Namespace.CSharpName()
 {
     static [cls.CSharpImplName()]()
     {
-        [model.CSharpFullName()].StaticInit();
+        [model.CSharpFullName()]Descriptor.StaticInit();
     }
 ^
     [GenerateConstructorImpl(model, cls)]
@@ -171,24 +171,24 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 ["[ReadonlyAttribute]"]
 [end if]
 [loop(p:prop.OppositeProperties)]
-["[OppositeAttribute(typeof("][p.Class.Model.CSharpFullName()].[p.Class.CSharpName()]["), \""][p.Name]["\")]"]
+["[OppositeAttribute(typeof("][p.Class.Model.CSharpFullName()]Descriptor.[p.Class.CSharpName()]["), \""][p.Name]["\")]"]
 [end if]
 [loop(p:prop.SubsettedProperties)]
 	[if(cls.GetAllSuperClasses(false).Contains(p.Class))]
-["[SubsetsAttribute(typeof("][p.Class.Model.CSharpFullName()].[p.Class.CSharpName()]["), \""][p.Name]["\")]"]
+["[SubsetsAttribute(typeof("][p.Class.Model.CSharpFullName()]Descriptor.[p.Class.CSharpName()]["), \""][p.Name]["\")]"]
 	[else]
-// ERROR: subsetted property '[p.Class.Model.CSharpFullName()].[p.Class.CSharpName()].[p.Name]' must be a property of an ancestor class
+// ERROR: subsetted property '[p.Class.Model.CSharpFullName()]Descriptor.[p.Class.CSharpName()].[p.Name]' must be a property of an ancestor class
 	[end if]
 [end if]
 [loop(p:prop.RedefinedProperties)]
 	[if(cls.GetAllSuperClasses(false).Contains(p.Class))]
-["[RedefinesAttribute(typeof("][p.Class.Model.CSharpFullName()].[p.Class.CSharpName()]["), \""][p.Name]["\")]"]
+["[RedefinesAttribute(typeof("][p.Class.Model.CSharpFullName()]Descriptor.[p.Class.CSharpName()]["), \""][p.Name]["\")]"]
 	[else]
-// ERROR: redefined property '[p.Class.Model.CSharpFullName()].[p.Class.CSharpName()].[p.Name]' must be a property of an ancestor class
+// ERROR: redefined property '[p.Class.Model.CSharpFullName()]Descriptor.[p.Class.CSharpName()].[p.Name]' must be a property of an ancestor class
 	[end if]
 [end if]
 public static readonly ModelProperty [prop.Name]Property =
-    ModelProperty.Register("[prop.Name]", typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Class.CSharpFullName()]), typeof([prop.Class.Model.CSharpFullName()].[prop.Class.CSharpName()]));
+    ModelProperty.Register("[prop.Name]", typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Class.CSharpFullName()]), typeof([prop.Class.Model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()]), new Lazy<global::MetaDslx.Core.MetaProperty>(() => [prop.Class.Model.CSharpFullName()]Instance.[prop.Class.CSharpName()]_[prop.Name]Property));
 [end if]
 ^
 end template
@@ -207,13 +207,13 @@ template GeneratePropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
 	[else]
     get 
     {
-        object result = this.MGet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property); 
+        object result = this.MGet([model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()].[prop.Name]Property); 
         if (result != null) return ([prop.Type.CSharpPublicName()])result;
         else return default([prop.Type.CSharpPublicName()]);
     }
 	[end if]
 	[if((prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) && !(prop.Type is MetaCollectionType))]
-    set { this.MSet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property, value); }
+    set { this.MSet([model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()].[prop.Name]Property, value); }
 	[end if]
 }
 end template
@@ -221,44 +221,12 @@ end template
 function string GetCollectionConstructorParams(MetaProperty prop)
 	MetaCollectionType mct = prop.Type as MetaCollectionType;
 	if(mct != null && mct.InnerType is MetaClass)
-		return "this, " + prop.Class.Model.CSharpFullName() + "." + prop.Class.CSharpName() + "." + prop.Name + "Property";
+		return "this, " + prop.Class.Model.CSharpFullName() + "Descriptor." + prop.Class.CSharpName() + "." + prop.Name + "Property";
 	else
 		return "";
 	end if
 end function
 
-template GenerateConstantValueExpression(string name, MetaExpression expr, string nameType)
-[switch (expr)]
-[type as MetaNewExpression:]
-[string tmpName = "tmp"+NextCounter()]
-[string tmpType = expr.TypeReference.CSharpFullName()]
-[tmpType] [tmpName] = [expr.TypeReference.Model.Name]Factory.Instance.Create[expr.TypeReference.CSharpName()]();
-[if (nameType != null)]
-[nameType] \
-[end if]
-[name] = [tmpName];
-[loop (expr->pi:PropertyInitializers)]
-[GenerateConstantValueExpression(tmpName+"."+pi.PropertyName, pi.Value, null)]
-[end loop]
-[type as MetaNewCollectionExpression:]
-[loop (expr->v:Values)]
-[string tmpName = "tmp"+NextCounter()]
-[string tmpType = v.Type.CSharpFullName()]
-	[if (v is MetaNewExpression)]
-[GenerateConstantValueExpression(tmpName, v, tmpType)]
-[name].Add([tmpName]);
-	[else if (v is MetaNewCollectionExpression)]
-// TODO
-	[else]
-[name].Add([GenerateExpression(expr)]);
-	[end if]
-[end loop]
-[default:][name] = [GenerateExpression(expr)];
-[end switch]
-end template
-
-template GenerateNewObject()
-end template
 
 template GenerateExpression(MetaExpression expr)
 [switch (expr)]
@@ -276,6 +244,8 @@ template GenerateExpression(MetaExpression expr)
 [type as MetaFunctionCallExpression:][GenerateFunctionCall(expr)]\
 [type as MetaIndexerExpression:][GenerateIndexerCall(expr)]\
 [type as MetaOperatorExpression:][GenerateOperator(expr)]\
+[type as MetaNewExpression:][expr.TypeReference.Model.CSharpFullName()]Factory.Instance.Create[expr.TypeReference.CSharpName()]([GenerateNewPropertyInitializers(expr)])\
+[type as MetaNewCollectionExpression:]new List<Lazy<object>>() { [GenerateNewCollectionValues(expr)] }\
 [default:]***unknown expression type***
 [end switch]
 end template
@@ -335,7 +305,7 @@ template GenerateTypeOf(object expr)
 [case MetaDescriptor.Constants.ModelObject:]MetaDescriptor.Constants.ModelObject\
 [case MetaDescriptor.Constants.ModelObjectList:]MetaDescriptor.Constants.ModelObjectList\
 [type as MetaTypeOfExpression:][GenerateTypeOf(expr.TypeReference)]\
-[type as MetaClass:][expr.Model.Name]Instance.[expr.CSharpName()]\
+[type as MetaClass:][expr.Model.Name]Descriptor.[expr.CSharpName()].Meta\
 [type as MetaCollectionType:][expr.CSharpFullName()]\
 [default:]***error***\
 [end switch]
@@ -361,13 +331,17 @@ template GenerateOperator(MetaOperatorExpression expr)
 end template
 
 template GenerateNewPropertyInitializers(MetaNewExpression expr)
+[if (hasloop(expr->pi:PropertyInitializers))]
+new List<ModelPropertyInitializer>() {\
 [loop(expr->pi:PropertyInitializers; string delim = ""; delim = ", ")]
-[delim][pi.Property.Name] = [GenerateExpression(pi.Value)]\
+[delim]new ModelPropertyInitializer([pi.Property.Class.Model.CSharpFullName()]Descriptor.[pi.Property.Class.CSharpName()].[pi.Property.Name]Property, new Lazy<object>(() => [GenerateExpression(pi.Value)]))\
 [end loop]
+}\
+[end if]
 end template
 
-template GenerateNewCollectionInitializers(MetaNewCollectionExpression expr)
-[loop(expr->v:Values; string delim = ""; delim = ", ")]
+template GenerateNewCollectionValues(MetaNewCollectionExpression expr)
+[loop(expr->v:Values; string delim = ""; delim = ", \n")]
 [delim][GenerateExpression(v)]\
 [end loop]
 end template
@@ -449,38 +423,38 @@ public [cls.CSharpImplName()]()
 		[if (synInit != null)]
 			[if (prop.Kind != MetaPropertyKind.Derived)]
 				[if (ModelContext.Current.Compiler.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType)]
-    this.MLazySet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
+    this.MLazySet([model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
 				[else]
-    this.MLazySet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
+    this.MLazySet([model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
 				[end if]
 			[end if]
 		[else]
 			[if(prop.Type is MetaCollectionType)]
 				[if (prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment)]
-    this.MSet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property, new [prop.Type.CSharpName()]([GetCollectionConstructorParams(prop)]));
+    this.MSet([model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()].[prop.Name]Property, new [prop.Type.CSharpName()]([GetCollectionConstructorParams(prop)]));
 				[else if (prop.Kind == MetaPropertyKind.Lazy)]
-    this.MLazySet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [model.Name]ImplementationProvider.Implementation.[prop.Class.CSharpName()]_[prop.Name](this)));
+    this.MLazySet([model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [model.Name]ImplementationProvider.Implementation.[prop.Class.CSharpName()]_[prop.Name](this)));
 				[else if (prop.Kind == MetaPropertyKind.Readonly)]
-    // Init [model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property in [model.Name]Implementation.[cls.CSharpName()]_[cls.CSharpName()]
+    // Init [model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()].[prop.Name]Property in [model.Name]Implementation.[cls.CSharpName()]_[cls.CSharpName()]
 				[end if]
 			[else]
 				[if(prop.Kind == MetaPropertyKind.Lazy)]
-    this.MLazySet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [model.Name]ImplementationProvider.Implementation.[prop.Class.CSharpName()]_[prop.Name](this)));
+    this.MLazySet([model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()].[prop.Name]Property, new Lazy<object>(() => [model.Name]ImplementationProvider.Implementation.[prop.Class.CSharpName()]_[prop.Name](this)));
 				[else if (prop.Kind == MetaPropertyKind.Readonly)]
-    // Init [model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property in [model.Name]Implementation.[cls.CSharpName()]_[cls.CSharpName()]
+    // Init [model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()].[prop.Name]Property in [model.Name]Implementation.[cls.CSharpName()]_[cls.CSharpName()]
 				[end if]
 			[end if]
 		[end if]
 	[end loop]
 	[loop(cls->sup:GetAllSuperClasses(true)->Constructor->Initializers->init:typeof(MetaInheritedPropertyInitializer))]
 		[if (init.Object != null && init.Property != null)]
-    this.MLazySetChild([init.Object.Class.Model.CSharpFullName()].[init.Object.Class.CSharpName()].[init.Object.Name]Property, [init.Property.Class.Model.CSharpFullName()].[init.Property.Class.CSharpName()].[init.Property.Name]Property, new Lazy<object>(() => [GenerateExpression(init.Value)]));
+    this.MLazySetChild([init.Object.Class.Model.CSharpFullName()]Descriptor.[init.Object.Class.CSharpName()].[init.Object.Name]Property, [init.Property.Class.Model.CSharpFullName()]Descriptor.[init.Property.Class.CSharpName()].[init.Property.Name]Property, new Lazy<object>(() => [GenerateExpression(init.Value)]));
 		[end if]
 	[end loop]
     [cls.Model.Name]ImplementationProvider.Implementation.[cls.CSharpName()]_[cls.CSharpName()](this);
     [loop(cls->prop:GetAllProperties())]
 		[if (prop.Kind == MetaPropertyKind.Readonly)]
-    if (!this.MIsSet([model.CSharpFullName()].[prop.Class.CSharpName()].[prop.Name]Property)) throw new ModelException("Readonly property [model.CSharpName()].[prop.Class.CSharpName()].[prop.Name]Property was not set in [cls.CSharpName()]_[cls.CSharpName()]().");
+    if (!this.MIsSet([model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()].[prop.Name]Property)) throw new ModelException("Readonly property [model.CSharpName()].[prop.Class.CSharpName()].[prop.Name]Property was not set in [cls.CSharpName()]_[cls.CSharpName()]().");
 		[end if]
 	[end loop]
     this.MMakeDefault();
@@ -575,7 +549,12 @@ public static class [cls.CSharpName()]
 ^
     static [cls.CSharpName()]()
     {
-        [cls.Model.CSharpFullName()].StaticInit();
+        [cls.Model.CSharpFullName()]Descriptor.StaticInit();
+    }
+^
+    public static global::MetaDslx.Core.MetaClass Meta
+    {
+        get { return [cls.Model.CSharpFullName()]Instance.[cls.CSharpName()]; }
     }
 ^
     [loop(cls->prop:Properties)]
@@ -594,7 +573,7 @@ public static readonly global::MetaDslx.Core.MetaFunction [mfunc.Name];
 end template
 
 template GenerateModelConstantImpl(MetaModel model, MetaConstant mconst)
-[GenerateConstantValueExpression(mconst.Name, mconst.Value, null)]
+[mconst.Name] = [GenerateExpression(mconst.Value)];
 end template
 
 template GenerateModelFunctionImpl(MetaModel model, MetaFunction mfunc)
@@ -639,7 +618,7 @@ end template
 
 
 template GenerateMetaModelInstance(MetaModel model)
-public static class [model.Name]Instance
+internal static class [model.Name]Instance
 {
     internal static global::MetaDslx.Core.Model model;
 ^
@@ -656,6 +635,14 @@ public static class [model.Name]Instance
 			[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
 			[GenerateClassMetaInstanceInitializer(cls)]
 			[end loop]
+^
+			[loop(model->Namespace->Declarations->cls:typeof(MetaClass)->prop:Properties)]
+			[GeneratePropertyMetaInstance(prop)]
+			[end loop]
+^
+			[loop(model->Namespace->Declarations->cls:typeof(MetaClass)->prop:Properties)]
+			[GeneratePropertyMetaInstanceInitializer(prop)]
+			[end loop]
 		}
     }
 ^
@@ -668,13 +655,17 @@ public static class [model.Name]Instance
     }
 ^
 	[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
-	public static readonly MetaClass [cls.CSharpName()];
+	public static readonly global::MetaDslx.Core.MetaClass [cls.CSharpName()];
+	[end loop]
+^
+	[loop(model->Namespace->Declarations->cls:typeof(MetaClass)->prop:Properties)]
+	public static readonly global::MetaDslx.Core.MetaProperty [cls.CSharpName()]_[prop.Name]Property;
 	[end loop]
 }
 end template
 
 template GenerateClassMetaInstance(MetaClass cls)
-[cls.CSharpName()] = global::MetaDslx.Core.[cls.Model.Name]Factory.Instance.CreateMetaClass();
+[cls.CSharpName()] = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 end template
 
 template GenerateClassMetaInstanceInitializer(MetaClass cls)
@@ -685,6 +676,14 @@ template GenerateClassMetaInstanceInitializer(MetaClass cls)
 [loop(cls->sup:SuperClasses)]
 [cls.CSharpName()].SuperClasses.Add([sup.Model.Name]Instance.[sup.CSharpName()]);
 [end loop]
+end template
+
+template GeneratePropertyMetaInstance(MetaProperty prop)
+[prop.Class.CSharpName()]_[prop.Name]Property = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+end template
+
+template GeneratePropertyMetaInstanceInitializer(MetaProperty prop)
+[prop.Class.CSharpName()]_[prop.Name]Property.Name = "[prop.Name]";
 end template
 
 template GenerateImplementationProvider(MetaModel model)
@@ -727,7 +726,7 @@ internal abstract class [model.Name]ImplementationBase
 	/// All superclasses: [GetAllSuperClasses(cls)]
 	[end if]
 	[if (hasloop(cls->prop:GetAllProperties() where prop.Kind == MetaPropertyKind.Readonly))]
-    // Initializes the following readonly properties:
+    /// Initializes the following readonly properties:
 	[end if]
     [loop(cls->prop:GetAllProperties())]
 	[if (prop.Kind == MetaPropertyKind.Readonly)]
@@ -819,9 +818,13 @@ public class [model.Name]Factory : ModelFactory
     /// <summary>
     /// Creates a new instance of [cls.CSharpName()].
     /// </summary>
-    public [cls.CSharpName()] Create[cls.CSharpName()]()
+    public [cls.CSharpName()] Create[cls.CSharpName()](IEnumerable<ModelPropertyInitializer> initializers = null)
 	{
 		[cls.CSharpName()] result = new [cls.CSharpFullName()]Impl();
+		if (initializers != null)
+		{
+			this.Init((ModelObject)result, initializers);
+		}
 		return result;
 	}
 		[end if]
