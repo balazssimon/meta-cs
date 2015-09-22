@@ -15,7 +15,9 @@ namespace MetaDslx.Compiler
         {
             IParseTree parseTree = node as IParseTree;
             if (parseTree == null) return null;
-            return parseTree.GetText();
+            string name = parseTree.GetText();
+            if (name != null && name.StartsWith("@")) name = name.Substring(1);
+            return name;
         }
 
         public override object GetValue(object node)

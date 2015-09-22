@@ -1208,7 +1208,7 @@ namespace MetaDslx.Compiler
                 if (pa != null && !pa.HasValue)
                 {
                     ModelObject typeDef = this.CurrentSymbol;
-                    this.MergeNamedSymbols(this.CurrentNameKind, node, this.ParentSymbol, pa.Name, typeDef);
+                    this.MergeNamedSymbols(this.CurrentNameKind, node, this.ParentSymbol, pa.Name, typeDef, tda.Merge && !tda.Overload);
                 }
             }
             if (nda != null)
@@ -1231,7 +1231,8 @@ namespace MetaDslx.Compiler
                     {
                         IParseTree nameNode = names[i];
                         ModelObject nameDef = this.Data.GetSymbol(nameNode);
-                        ModelObject mergedNameDef = this.MergeNamedSymbols(i == names.Count - 1 ? this.CurrentNameKind : null, nameNode, parentSymbol, propertyName, nameDef);
+                        ModelObject mergedNameDef;
+                        mergedNameDef = this.MergeNamedSymbols(i == names.Count - 1 ? this.CurrentNameKind : null, nameNode, parentSymbol, propertyName, nameDef, nda.Merge && !nda.Overload);
                         parentSymbol = mergedNameDef;
                         propertyName = nda.NestingProperty;
                     }
@@ -1241,13 +1242,13 @@ namespace MetaDslx.Compiler
                     if (pa != null && !pa.HasValue)
                     {
                         ModelObject nameDef = this.CurrentSymbol;
-                        this.MergeNamedSymbols(this.CurrentNameKind, node, this.ParentSymbol, pa.Name, nameDef);
+                        this.MergeNamedSymbols(this.CurrentNameKind, node, this.ParentSymbol, pa.Name, nameDef, nda.Merge && !nda.Overload);
                     }
                 }
             }
         }
 
-        protected virtual ModelObject MergeNamedSymbols(IParseTree defNode, IParseTree nameNode, ModelObject parent, string propertyName, ModelObject symbol)
+        protected virtual ModelObject MergeNamedSymbols(IParseTree defNode, IParseTree nameNode, ModelObject parent, string propertyName, ModelObject symbol, bool merge)
         {
             if (parent == null) return symbol;
             if (propertyName == null) return symbol;
@@ -1257,15 +1258,33 @@ namespace MetaDslx.Compiler
             ModelProperty prop = parent.MFindProperty(propertyName);
             if (prop != null)
             {
-                if (prop.IsCollection)
+                if (merge)
                 {
-                    object existingEntries = parent.MGet(prop);
-                    IEnumerable<object> collection = existingEntries as IEnumerable<object>;
-                    if (collection != null)
+                    if (prop.IsCollection)
                     {
-                        foreach (var entry in collection)
+                        object existingEntries = parent.MGet(prop);
+                        IEnumerable<object> collection = existingEntries as IEnumerable<object>;
+                        if (collection != null)
                         {
-                            ModelObject mo = entry as ModelObject;
+                            foreach (var entry in collection)
+                            {
+                                ModelObject mo = entry as ModelObject;
+                                object existingName = this.GetNameProperty(null, mo);
+                                if (existingName != null && existingName.Equals(name))
+                                {
+                                    this.ReplaceSymbol(nameNode, symbol, mo);
+                                    this.ReplaceSymbol(defNode, symbol, mo);
+                                    return mo;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        object existingEntry = parent.MGet(prop);
+                        if (existingEntry != null)
+                        {
+                            ModelObject mo = existingEntry as ModelObject;
                             object existingName = this.GetNameProperty(null, mo);
                             if (existingName != null && existingName.Equals(name))
                             {
@@ -1273,26 +1292,11 @@ namespace MetaDslx.Compiler
                                 this.ReplaceSymbol(defNode, symbol, mo);
                                 return mo;
                             }
-                        }
-                    }
-                }
-                else
-                {
-                    object existingEntry = parent.MGet(prop);
-                    if (existingEntry != null)
-                    {
-                        ModelObject mo = existingEntry as ModelObject;
-                        object existingName = this.GetNameProperty(null, mo);
-                        if (existingName != null && existingName.Equals(name))
-                        {
-                            this.ReplaceSymbol(nameNode, symbol, mo);
-                            this.ReplaceSymbol(defNode, symbol, mo);
-                            return mo;
-                        }
-                        else
-                        {
-                            this.Compiler.Diagnostics.AddError("Cannot replace existing value of the property '"+prop+"' in '"+existingEntry+"'.", this.Compiler.FileName, nameNode, true);
-                            return symbol;
+                            else
+                            {
+                                this.Compiler.Diagnostics.AddError("Cannot replace existing value of the property '" + prop + "' in '" + existingEntry + "'.", this.Compiler.FileName, nameNode, true);
+                                return symbol;
+                            }
                         }
                     }
                 }

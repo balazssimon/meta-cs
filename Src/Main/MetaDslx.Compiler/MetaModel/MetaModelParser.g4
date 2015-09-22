@@ -276,7 +276,7 @@ associationDeclaration : annotation* KAssociation  source=qualifiedName KWith  t
 // Identifiers
 
 
-identifier : IdentifierNormal /*| IdentifierVerbatim*/;
+identifier : IdentifierNormal | IdentifierVerbatim;
 //identifier : IdentifierGeneral | IdentifierVerbatim;
 
 // Literals

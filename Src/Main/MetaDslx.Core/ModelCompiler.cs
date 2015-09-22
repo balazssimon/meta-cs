@@ -540,9 +540,9 @@ namespace MetaDslx.Core
             if (right == MetaDescriptor.Constants.Any) return true;
             if (right == MetaDescriptor.Constants.Object) return false;
             if (left == MetaDescriptor.Constants.ModelObject) return (right is ModelObject) || (right == MetaDescriptor.Constants.ModelObject);
-            if (left == MetaInstance.MetaType) return (right is MetaType) || (right == MetaInstance.MetaType);
+            if (left == MetaDescriptor.MetaType.GetMetaClass()) return (right is MetaType) || (right == MetaDescriptor.MetaType.GetMetaClass());
             if (right == MetaDescriptor.Constants.ModelObject) return (left is ModelObject) || (left == MetaDescriptor.Constants.ModelObject);
-            if (right == MetaInstance.MetaType) return (left is MetaType) || (left == MetaInstance.MetaType);
+            if (right == MetaDescriptor.MetaType.GetMetaClass()) return (left is MetaType) || (left == MetaDescriptor.MetaType.GetMetaClass());
             MetaPrimitiveType primLeft = left as MetaPrimitiveType;
             MetaPrimitiveType primRight = right as MetaPrimitiveType;
             if (primLeft != null && primRight != null)
@@ -595,8 +595,8 @@ namespace MetaDslx.Core
             if (right == MetaDescriptor.Constants.Object) return false;
             if (left == MetaDescriptor.Constants.ModelObject) return right == MetaDescriptor.Constants.ModelObject;
             if (right == MetaDescriptor.Constants.ModelObject) return false;
-            if (left == MetaInstance.MetaType) return right == MetaInstance.MetaType;
-            if (right == MetaInstance.MetaType) return false;
+            if (left == MetaDescriptor.MetaType.GetMetaClass()) return right == MetaDescriptor.MetaType.GetMetaClass();
+            if (right == MetaDescriptor.MetaType.GetMetaClass()) return false;
             if (left == MetaDescriptor.Constants.ModelObjectList)
             {
                 if (right == MetaDescriptor.Constants.ModelObjectList) return true;
@@ -641,6 +641,28 @@ namespace MetaDslx.Core
             if (collLeft != null && collRight != null)
             {
                 return collLeft.Kind == collRight.Kind && this.Equals((ModelObject)collLeft.InnerType, (ModelObject)collRight.InnerType);
+            }
+            MetaFunctionType funLeft = left as MetaFunctionType;
+            MetaFunctionType funRight = right as MetaFunctionType;
+            if (funLeft != null && funRight != null)
+            {
+                if (funLeft.ParameterTypes.Count != funRight.ParameterTypes.Count) return false;
+                // TODO
+                if (!this.Equals((ModelObject)funLeft.ReturnType, (ModelObject)funRight.ReturnType))
+                {
+                    if (funLeft.ReturnType.ToString() == funRight.ReturnType.ToString()) return true;
+                    else return false;
+                }
+                //if (!this.Equals((ModelObject)funLeft.ReturnType, (ModelObject)funRight.ReturnType)) return false;
+                for (int i = 0; i < funLeft.ParameterTypes.Count; i++)
+                {
+                    if (!this.Equals((ModelObject)funLeft.ParameterTypes[i], (ModelObject)funRight.ParameterTypes[i]))
+                    {
+                        if (funLeft.ParameterTypes[i].ToString() == funRight.ParameterTypes[i].ToString()) return true;
+                        else return false;
+                    }
+                }
+                return true;
             }
             return false;
         }

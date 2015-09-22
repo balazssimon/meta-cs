@@ -147,7 +147,12 @@ internal class [cls.CSharpImplName()] : ModelObject, [cls.Namespace.CSharpName()
 {
     static [cls.CSharpImplName()]()
     {
-        [model.CSharpFullName()]Descriptor.StaticInit();
+        [cls.Model.CSharpFullName()]Descriptor.StaticInit();
+    }
+^
+    public override global::MetaDslx.Core.MetaClass GetMetaClass()
+    {
+        return [cls.Model.CSharpFullName()]Instance.[cls.CSharpName()];
     }
 ^
     [GenerateConstructorImpl(model, cls)]
@@ -167,7 +172,7 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 [if(prop.Kind == MetaPropertyKind.Containment)]
 ["[ContainmentAttribute]"]
 [end if]
-[if(prop.Kind != MetaPropertyKind.Normal && prop.Kind != MetaPropertyKind.Containment && !(prop.Type is MetaCollectionType))]
+[if(prop.Kind != MetaPropertyKind.Normal && prop.Kind != MetaPropertyKind.Containment)]
 ["[ReadonlyAttribute]"]
 [end if]
 [loop(p:prop.OppositeProperties)]
@@ -258,30 +263,33 @@ template GenerateIdentifierExpression(MetaIdentifierExpression expr)
 [end if]
 end template
 
+function bool SameFunction(MetaFunction mfunc1, MetaFunction mfunc2)
+	return mfunc1.Name == mfunc2.Name && ModelContext.Current.Compiler.TypeProvider.Equals((ModelObject)mfunc1.Type, (ModelObject)mfunc2.Type);
+end function
+
 template GenerateFunctionCall(MetaFunctionCallExpression call)
-[switch(call.Definition)]
-[case MetaDescriptor.Constants.TypeOf:][GenerateTypeOf(call.Arguments[0])]\
-[case MetaDescriptor.Constants.GetValueType:]ModelContext.Current.Compiler.TypeProvider.GetTypeOf([GenerateCallArguments(call, "")])\
-[case MetaDescriptor.Constants.GetReturnType:]ModelContext.Current.Compiler.TypeProvider.GetReturnTypeOf([GenerateCallArguments(call, "(ModelObject)")])\
-[case MetaDescriptor.Constants.CurrentType:]ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf([GenerateCallArguments(call, "(ModelObject)")])\
-[case MetaDescriptor.Constants.TypeCheck:]ModelContext.Current.Compiler.TypeProvider.TypeCheck([GenerateCallArguments(call, "(ModelObject)")])\
-[case MetaDescriptor.Constants.Balance:]ModelContext.Current.Compiler.TypeProvider.Balance([GenerateCallArguments(call, "(ModelObject)")])\
-[case MetaDescriptor.Constants.Resolve1:]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.NameOrType, [GenerateExpression(call.Arguments[0])], new ResolutionInfo(), ResolveFlags.All)\
-[case MetaDescriptor.Constants.Resolve2:]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { (ModelObject)[GenerateExpression(call.Arguments[0])] }, ResolveKind.NameOrType, [GenerateExpression(call.Arguments[1])], new ResolutionInfo(), ResolveFlags.All)\
-[case MetaDescriptor.Constants.ResolveType1:]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Type, [GenerateExpression(call.Arguments[0])], new ResolutionInfo(), ResolveFlags.All)\
-[case MetaDescriptor.Constants.ResolveType2:]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { (ModelObject)[GenerateExpression(call.Arguments[0])] }, ResolveKind.Type, [GenerateExpression(call.Arguments[1])], new ResolutionInfo(), ResolveFlags.All)\
-[case MetaDescriptor.Constants.ResolveName1:]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, [GenerateExpression(call.Arguments[0])], new ResolutionInfo(), ResolveFlags.All)\
-[case MetaDescriptor.Constants.ResolveName2:]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { (ModelObject)[GenerateExpression(call.Arguments[0])] }, ResolveKind.Name, [GenerateExpression(call.Arguments[1])], new ResolutionInfo(), ResolveFlags.All)\
-[case MetaDescriptor.Constants.Bind1:]ModelContext.Current.Compiler.BindingProvider.Bind(this, new ModelObject["[]"] { (ModelObject)[GenerateExpression(call.Arguments[0])] }, new BindingInfo())\
-[case MetaDescriptor.Constants.Bind2:]ModelContext.Current.Compiler.BindingProvider.Bind(this, [GenerateExpression(call.Arguments[0])], new BindingInfo())\
-[case MetaDescriptor.Constants.Bind3:]ModelContext.Current.Compiler.BindingProvider.Bind((ModelObject)[GenerateExpression(call.Arguments[0])], new ModelObject["[]"] { (ModelObject)[GenerateExpression(call.Arguments[1])] }, new BindingInfo())\
-[case MetaDescriptor.Constants.Bind4:]ModelContext.Current.Compiler.BindingProvider.Bind((ModelObject)[GenerateExpression(call.Arguments[0])], [GenerateExpression(call.Arguments[1])], new BindingInfo())\
-[case MetaDescriptor.Constants.SelectOfType1:]new object["[]"] { [GenerateExpression(call.Arguments[0])] }.Where(e => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(e) is [GetTypeName(call.Arguments[1])]).OfType<ModelObject>().ToList()\
-[case MetaDescriptor.Constants.SelectOfType2:]([GenerateExpression(call.Arguments[0])]).Where(e => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(e) is [GetTypeName(call.Arguments[1])]).OfType<ModelObject>().ToList()\
-[case MetaDescriptor.Constants.SelectOfName1:]new object["[]"] { [GenerateExpression(call.Arguments[0])] }.Where(e => ModelContext.Current.Compiler.NameProvider.GetNameOf((ModelObject)e) == [GenerateExpression(call.Arguments[1])]).OfType<ModelObject>().ToList()\
-[case MetaDescriptor.Constants.SelectOfName2:]([GenerateExpression(call.Arguments[0])]).Where(e => ModelContext.Current.Compiler.NameProvider.GetNameOf((ModelObject)e) == [GenerateExpression(call.Arguments[1])]).OfType<ModelObject>().ToList()\
-[default:][GenerateExpression(call.Expression)]([GenerateCallArguments(call, "")])\
-[end switch]
+[if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.TypeOf))][GenerateTypeOf(call.Arguments[0])]\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.GetValueType))]ModelContext.Current.Compiler.TypeProvider.GetTypeOf([GenerateCallArguments(call, "")])\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.GetReturnType))]ModelContext.Current.Compiler.TypeProvider.GetReturnTypeOf([GenerateCallArguments(call, "(ModelObject)")])\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.CurrentType))]ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf([GenerateCallArguments(call, "(ModelObject)")])\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.TypeCheck))]ModelContext.Current.Compiler.TypeProvider.TypeCheck([GenerateCallArguments(call, "(ModelObject)")])\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.Balance))]ModelContext.Current.Compiler.TypeProvider.Balance([GenerateCallArguments(call, "(ModelObject)")])\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.Resolve1))]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.NameOrType, [GenerateExpression(call.Arguments[0])], new ResolutionInfo(), ResolveFlags.All)\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.Resolve2))]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { (ModelObject)[GenerateExpression(call.Arguments[0])] }, ResolveKind.NameOrType, [GenerateExpression(call.Arguments[1])], new ResolutionInfo(), ResolveFlags.All)\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.ResolveType1))]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Type, [GenerateExpression(call.Arguments[0])], new ResolutionInfo(), ResolveFlags.All)\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.ResolveType2))]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { (ModelObject)[GenerateExpression(call.Arguments[0])] }, ResolveKind.Type, [GenerateExpression(call.Arguments[1])], new ResolutionInfo(), ResolveFlags.All)\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.ResolveName1))]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, [GenerateExpression(call.Arguments[0])], new ResolutionInfo(), ResolveFlags.All)\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.ResolveName2))]ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject["[]"] { (ModelObject)[GenerateExpression(call.Arguments[0])] }, ResolveKind.Name, [GenerateExpression(call.Arguments[1])], new ResolutionInfo(), ResolveFlags.All)\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.Bind1))]ModelContext.Current.Compiler.BindingProvider.Bind(this, new ModelObject["[]"] { (ModelObject)[GenerateExpression(call.Arguments[0])] }, new BindingInfo())\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.Bind2))]ModelContext.Current.Compiler.BindingProvider.Bind(this, [GenerateExpression(call.Arguments[0])], new BindingInfo())\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.Bind3))]ModelContext.Current.Compiler.BindingProvider.Bind((ModelObject)[GenerateExpression(call.Arguments[0])], new ModelObject["[]"] { (ModelObject)[GenerateExpression(call.Arguments[1])] }, new BindingInfo())\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.Bind4))]ModelContext.Current.Compiler.BindingProvider.Bind((ModelObject)[GenerateExpression(call.Arguments[0])], [GenerateExpression(call.Arguments[1])], new BindingInfo())\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.SelectOfType1))]new object["[]"] { [GenerateExpression(call.Arguments[0])] }.Where(e => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(e) is [GetTypeName(call.Arguments[1])]).OfType<ModelObject>().ToList()\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.SelectOfType2))]([GenerateExpression(call.Arguments[0])]).Where(e => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(e) is [GetTypeName(call.Arguments[1])]).OfType<ModelObject>().ToList()\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.SelectOfName1))]new object["[]"] { [GenerateExpression(call.Arguments[0])] }.Where(e => ModelContext.Current.Compiler.NameProvider.GetNameOf((ModelObject)e) == [GenerateExpression(call.Arguments[1])]).OfType<ModelObject>().ToList()\
+[else if (SameFunction((MetaFunction)call.Definition, MetaDescriptor.Constants.SelectOfName2))]([GenerateExpression(call.Arguments[0])]).Where(e => ModelContext.Current.Compiler.NameProvider.GetNameOf((ModelObject)e) == [GenerateExpression(call.Arguments[1])]).OfType<ModelObject>().ToList()\
+[else][GenerateExpression(call.Expression)]([GenerateCallArguments(call, "")])\
+[end if]
 end template
 
 template GenerateIndexerCall(MetaIndexerExpression call)
@@ -290,22 +298,25 @@ end template
 
 template GenerateTypeOf(object expr)
 [switch(expr)]
-[case MetaDescriptor.Constants.None:]MetaDescriptor.Constants.None\
-[case MetaDescriptor.Constants.Error:]MetaDescriptor.Constants.Error\
-[case MetaDescriptor.Constants.Any:]MetaDescriptor.Constants.Any\
-[case MetaDescriptor.Constants.Object:]MetaDescriptor.Constants.Object\
-[case MetaDescriptor.Constants.String:]MetaDescriptor.Constants.String\
-[case MetaDescriptor.Constants.Int:]MetaDescriptor.Constants.Int\
-[case MetaDescriptor.Constants.Long:]MetaDescriptor.Constants.Long\
-[case MetaDescriptor.Constants.Float:]MetaDescriptor.Constants.Float\
-[case MetaDescriptor.Constants.Double:]MetaDescriptor.Constants.Double\
-[case MetaDescriptor.Constants.Byte:]MetaDescriptor.Constants.Byte\
-[case MetaDescriptor.Constants.Bool:]MetaDescriptor.Constants.Bool\
-[case MetaDescriptor.Constants.Void:]MetaDescriptor.Constants.Void\
-[case MetaDescriptor.Constants.ModelObject:]MetaDescriptor.Constants.ModelObject\
-[case MetaDescriptor.Constants.ModelObjectList:]MetaDescriptor.Constants.ModelObjectList\
+[type as MetaPrimitiveType:]
+	[switch(expr.Name)]
+	[case "*none*":]MetaDescriptor.Constants.None\
+	[case "*error*":]MetaDescriptor.Constants.Error\
+	[case "*any*":]MetaDescriptor.Constants.Any\
+	[case "object":]MetaDescriptor.Constants.Object\
+	[case "string":]MetaDescriptor.Constants.String\
+	[case "int":]MetaDescriptor.Constants.Int\
+	[case "long":]MetaDescriptor.Constants.Long\
+	[case "float":]MetaDescriptor.Constants.Float\
+	[case "double":]MetaDescriptor.Constants.Double\
+	[case "byte":]MetaDescriptor.Constants.Byte\
+	[case "bool":]MetaDescriptor.Constants.Bool\
+	[case "void":]MetaDescriptor.Constants.Void\
+	[case "ModelObject":]MetaDescriptor.Constants.ModelObject\
+	[case "ModelObjectList":]MetaDescriptor.Constants.ModelObjectList\
+	[end switch]
 [type as MetaTypeOfExpression:][GenerateTypeOf(expr.TypeReference)]\
-[type as MetaClass:][expr.Model.Name]Descriptor.[expr.CSharpName()].Meta\
+[type as MetaClass:][expr.Model.Name]Descriptor.[expr.CSharpName()].GetMetaClass()\
 [type as MetaCollectionType:][expr.CSharpFullName()]\
 [default:]***error***\
 [end switch]
@@ -353,6 +364,19 @@ function string GetCSharpValue(object value)
 	else if (value is string) return "\""+value.ToString()+"\"";
 	else if (value is MetaExpression) return GenerateExpression((MetaExpression)value);
 	else return value.ToString();
+	end if
+end function
+
+function string GetCSharpIdentifier(object value)
+	if (value == null) 
+		return null;
+	end if
+	if (value is MetaConstantExpression && ((MetaConstantExpression)value).Value != null)
+		return ((MetaConstantExpression)value).Value.ToString();
+	else if (value is string) 
+		return value.ToString();
+	else
+		return null;
 	end if
 end function
 
@@ -511,23 +535,18 @@ public static class [model.Name]Descriptor
 ^
     public static class Constants
     {
-        static Constants()
-        {
-    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
-            [GenerateModelConstantImpl(model, c)]
+    [loop(model->Namespace->Declarations->mconst:typeof(MetaConstant))]
+		public static [mconst.Type.CSharpFullName()] [mconst.Name]
+		{
+			get { return [model.Name]Instance.[mconst.Name]; }
+		}
     [end loop]
 ^
-    [loop(model->Namespace->Declarations->f:typeof(MetaFunction))]
-            [GenerateModelFunctionImpl(model, f)]
-    [end loop]
-        }
-^
-    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
-        [GenerateModelConstant(model, c)]
-    [end loop]
-^
-    [loop(model->Namespace->Declarations->f:typeof(MetaFunction))]
-        [GenerateModelFunction(model, f)]
+    [loop(model->Namespace->decl:Declarations->a:Annotations->p:Properties where a.Name == "BuiltInName" && p.Name == "Name")]
+		public static global::MetaDslx.Core.[((ModelObject)decl).GetMetaClass().CSharpName()] [GetCSharpIdentifier(p.Value)]
+		{
+			get { return [model.Name]Instance.[GetCSharpIdentifier(p.Value)]; }
+		}
     [end loop]
     }
 ^
@@ -552,9 +571,9 @@ public static class [cls.CSharpName()]
         [cls.Model.CSharpFullName()]Descriptor.StaticInit();
     }
 ^
-    public static global::MetaDslx.Core.MetaClass Meta
+    public static global::MetaDslx.Core.MetaClass GetMetaClass()
     {
-        get { return [cls.Model.CSharpFullName()]Instance.[cls.CSharpName()]; }
+        return [cls.Model.CSharpFullName()]Instance.[cls.CSharpName()];
     }
 ^
     [loop(cls->prop:Properties)]
@@ -572,14 +591,19 @@ template GenerateModelFunction(MetaModel model, MetaFunction mfunc)
 public static readonly global::MetaDslx.Core.MetaFunction [mfunc.Name];
 end template
 
-template GenerateModelConstantImpl(MetaModel model, MetaConstant mconst)
+template GenerateModelConstantImpl(MetaModel model, MetaConstant mconst, Dictionary<ModelObject, string> mobjToTmp)
 [mconst.Name] = [GenerateExpression(mconst.Value)];
 end template
 
-template GenerateModelFunctionImpl(MetaModel model, MetaFunction mfunc)
-[mfunc.Name] = global::MetaDslx.Core.[model.Name]Factory.Instance.CreateMetaFunction();
-[if (hasloop(mfunc->a:Annotations where a.Name == "Name"))]
-	[loop(mfunc->a:Annotations->p:Properties where a.Name == "Name" && p.Name == "Name")]
+template GenerateModelFunctionImpl(MetaModel model, MetaFunction mfunc, Dictionary<ModelObject, string> mobjToTmp)
+[RegisterModelObject((ModelObject)mfunc, mobjToTmp, mfunc.Name)] = global::MetaDslx.Core.[model.Name]Factory.Instance.CreateMetaFunction();
+end template
+
+
+template GenerateModelFunctionImpl0(MetaModel model, MetaFunction mfunc, Dictionary<ModelObject, string> mobjToTmp)
+[RegisterModelObject((ModelObject)mfunc, mobjToTmp, mfunc.Name)] = global::MetaDslx.Core.[model.Name]Factory.Instance.CreateMetaFunction();
+[if (hasloop(mfunc->a:Annotations where a.Name == "BuiltInName"))]
+	[loop(mfunc->a:Annotations->p:Properties where a.Name == "BuiltInName" && p.Name == "RenameTo")]
 [mfunc.Name].Name = [GenerateExpression(p.Value)];
 	[end loop]
 [else]
@@ -618,7 +642,8 @@ end template
 
 
 template GenerateMetaModelInstance(MetaModel model)
-internal static class [model.Name]Instance
+[Dictionary<ModelObject, string> mobjToTmp = new Dictionary<ModelObject, string>()]
+public static class [model.Name]Instance
 {
     internal static global::MetaDslx.Core.Model model;
 ^
@@ -628,21 +653,25 @@ internal static class [model.Name]Instance
 		[model.Name]Instance.model = new global::MetaDslx.Core.Model();
    		using (new ModelContextScope([model.Name]Instance.model))
 		{
-			[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
-			[GenerateClassMetaInstance(cls)]
+		    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
+            [GenerateModelConstantImpl(model, c, mobjToTmp)]
 			[end loop]
+^
+			[GenerateModelObjectInstance((ModelObject)model.Namespace.Parent, mobjToTmp)]
 ^
 			[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
-			[GenerateClassMetaInstanceInitializer(cls)]
+			[cls.CSharpName()] = [mobjToTmp[(ModelObject)cls]];
+				[loop(cls->prop:Properties)]
+			[cls.CSharpName()]_[prop.Name]Property = [mobjToTmp[(ModelObject)prop]];
+				[end loop]
 			[end loop]
 ^
-			[loop(model->Namespace->Declarations->cls:typeof(MetaClass)->prop:Properties)]
-			[GeneratePropertyMetaInstance(prop)]
-			[end loop]
+			[GenerateModelObjectInstanceInitializer((ModelObject)model.Namespace.Parent, mobjToTmp)]
 ^
-			[loop(model->Namespace->Declarations->cls:typeof(MetaClass)->prop:Properties)]
-			[GeneratePropertyMetaInstanceInitializer(prop)]
-			[end loop]
+            foreach (var mo in ModelContext.Current.Model.Instances)
+            {
+                mo.MEvalLazyValues();
+            }
 		}
     }
 ^
@@ -654,6 +683,14 @@ internal static class [model.Name]Instance
 		}
     }
 ^
+    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
+    [GenerateModelConstant(model, c)]
+    [end loop]
+^
+    [loop(model->Namespace->decl:Declarations->a:Annotations->p:Properties where a.Name == "BuiltInName" && p.Name == "Name")]
+    public static readonly global::MetaDslx.Core.[((ModelObject)decl).GetMetaClass().CSharpName()] [GetCSharpIdentifier(p.Value)];
+    [end loop]
+^
 	[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
 	public static readonly global::MetaDslx.Core.MetaClass [cls.CSharpName()];
 	[end loop]
@@ -663,6 +700,110 @@ internal static class [model.Name]Instance
 	[end loop]
 }
 end template
+
+function string RegisterModelObject(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp, string name)
+	if (!mobjToTmp.ContainsKey(mobj))
+		string tmpName = name;
+		mobjToTmp.Add(mobj, tmpName);
+		return tmpName;
+	else
+		return mobjToTmp[mobj];
+	end if
+end function
+
+function string RegisterModelObject(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
+	if (!mobjToTmp.ContainsKey(mobj))
+		string name = null;
+		MetaAnnotatedElement mannot = mobj as MetaAnnotatedElement;
+		if (mannot != null)
+			loop(mannot->a:Annotations->p:Properties where a.Name == "BuiltInName" && p.Name == "Name")
+				name = GetCSharpIdentifier(p.Value);
+			end loop
+		end if
+		if (name == null)
+			name = "tmp"+NextCounter();
+		end if
+		mobjToTmp.Add(mobj, name);
+		return name;
+	else
+		return null;
+	end if
+end function
+
+template GenerateModelObjectInstance(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
+[if (mobj != null)]
+	[string tmpName = RegisterModelObject(mobj, mobjToTmp)]
+	[if (tmpName != null)]
+		[if (tmpName.StartsWith("tmp"))]
+global::MetaDslx.Core.[mobj.GetMetaClass().CSharpName()] [tmpName] = global::MetaDslx.Core.MetaFactory.Instance.Create[mobj.GetMetaClass().CSharpName()]();
+		[else]
+[tmpName] = global::MetaDslx.Core.MetaFactory.Instance.Create[mobj.GetMetaClass().CSharpName()]();
+		[end if]
+		[loop(mobj->child:MChildren)]
+[GenerateModelObjectInstance(child, mobjToTmp)]
+		[end loop]
+	[end if]
+[end if]
+end template
+
+template GenerateModelObjectInstanceInitializer(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
+[if (mobj != null)]
+[loop(mobj->prop:MGetAllProperties())]
+[if (prop.MetaProperty != null && prop.MetaProperty.Kind != MetaPropertyKind.Derived)]
+[object propValue = mobj.MGet(prop)]
+[GenerateModelObjectPropertyValue(mobj, prop, propValue, mobjToTmp)]
+[end if]
+[end loop]
+[loop(mobj->child:MChildren)]
+[GenerateModelObjectInstanceInitializer(child, mobjToTmp)]
+[end loop]
+[end if]
+end template
+
+template GenerateModelObjectPropertyValue(ModelObject mobj, ModelProperty prop, object value, Dictionary<ModelObject, string> mobjToTmp)
+[string tmpName = mobjToTmp[mobj]]
+[if (!prop.IsCollection)]
+((ModelObject)[tmpName]).MUnSet(global::[prop.DeclaringType.FullName.Replace("+",".")].[prop.DeclaredName]);
+[end if]
+[ModelObject moValue = value as ModelObject]
+[if (value == null)]
+((ModelObject)[tmpName]).MLazyAdd(global::[prop.DeclaringType.FullName.Replace("+",".")].[prop.DeclaredName], new Lazy<object>(() => null));
+[else if (value is string)]
+((ModelObject)[tmpName]).MLazyAdd(global::[prop.DeclaringType.FullName.Replace("+",".")].[prop.DeclaredName], new Lazy<object>(() => "[value]"));
+[else if (value is bool)]
+((ModelObject)[tmpName]).MLazyAdd(global::[prop.DeclaringType.FullName.Replace("+",".")].[prop.DeclaredName], new Lazy<object>(() => [value.ToString().ToLower()]));
+[else if (value.GetType().IsPrimitive)]
+((ModelObject)[tmpName]).MLazyAdd(global::[prop.DeclaringType.FullName.Replace("+",".")].[prop.DeclaredName], new Lazy<object>(() => [value.ToString()]));
+[else if (MetaBuiltInTypes.Types.Contains(value))]
+((ModelObject)[tmpName]).MLazyAdd(global::[prop.DeclaringType.FullName.Replace("+",".")].[prop.DeclaredName], new Lazy<object>(() => [GenerateTypeOf(value)]));
+[else if (value is MetaPrimitiveType)]
+((ModelObject)[tmpName]).MLazyAdd(global::[prop.DeclaringType.FullName.Replace("+",".")].[prop.DeclaredName], new Lazy<object>(() => [GenerateTypeOf(value)]));
+[else if (value is Enum)]
+((ModelObject)[tmpName]).MLazyAdd(global::[prop.DeclaringType.FullName.Replace("+",".")].[prop.DeclaredName], new Lazy<object>(() => [GetEnumValueOf(value)]));
+[else if (moValue != null)]
+	[if (mobjToTmp.ContainsKey(moValue))]
+((ModelObject)[tmpName]).MLazyAdd(global::[prop.DeclaringType.FullName.Replace("+",".")].[prop.DeclaredName], new Lazy<object>(() => [mobjToTmp[moValue]]));
+	[else/* if (!(moValue is MetaFunction) || (moValue is MetaOperation))*/]
+[GenerateModelObjectInstance(moValue, mobjToTmp)]
+[GenerateModelObjectInstanceInitializer(moValue, mobjToTmp)]
+[string tmpValueName = mobjToTmp[moValue]]
+((ModelObject)[tmpName]).MLazyAdd(global::[prop.DeclaringType.FullName.Replace("+",".")].[prop.DeclaredName], new Lazy<object>(() => [tmpValueName]));
+	[end if]
+[else]
+	[IEnumerable<object> mc = (value as ModelCollection) as IEnumerable<object>]
+	[if (mc != null)]
+		[loop(cvalue:mc)]
+[GenerateModelObjectPropertyValue(mobj, prop, cvalue, mobjToTmp)]
+		[end loop]
+	[else]
+// [prop.DeclaringType.FullName].[prop.DeclaredName] = [value.GetType()]
+	[end if]
+[end if]
+end template
+
+function string GetEnumValueOf(object enm)
+	return "global::"+enm.GetType().FullName.Replace("+",".")+"."+enm.ToString();
+end function
 
 template GenerateClassMetaInstance(MetaClass cls)
 [cls.CSharpName()] = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();

@@ -1061,6 +1061,7 @@ using MetaDslx.Core;
             treeAnnotList.Add(__tmp44);
             NameDefAnnotation __tmp45 = new NameDefAnnotation();
             __tmp45.SymbolType = typeof(MetaFunction);
+            __tmp45.Overload = true;
             treeAnnotList.Add(__tmp45);
             List<object> elemAnnotList = null;
             if (context.returnType() != null)

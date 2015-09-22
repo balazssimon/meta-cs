@@ -97,6 +97,7 @@ TBarAssign : '|=';
 //IdentifierGeneral : IdentifierGeneralBegin IdentifierGeneralCharacter*;
 
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;
+IdentifierVerbatim : '@' IdentifierBegin IdentifierCharacter*;
 //IdentifierVerbatimStart : '@[' -> more, mode(VERBATIM_IDENTIFIER);
 fragment IdentifierBegin : [a-zA-Z_];
 fragment IdentifierCharacter : [a-zA-Z0-9_];

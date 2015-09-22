@@ -19,49 +19,49 @@
 	const MetaCollectionType ModelObjectList = new MetaCollectionType() { InnerType = typeof(ModelObject) };
 
 
-	[Name(Name="typeof")]
-	extern MetaType TypeOf(object type);
-	[Name(Name="get_type")]
-	extern MetaType GetValueType(object value);
-	[Name(Name="get_return_type")]
-	extern MetaType GetReturnType(object value);
-	[Name(Name="current_type")]
-	extern MetaType CurrentType(ModelObject symbol);
-	[Name(Name="type_check")]
-	extern bool TypeCheck(ModelObject symbol);
-	[Name(Name="balance")]
-	extern MetaType Balance(MetaType left, MetaType right);
+	[BuiltInName(Name="TypeOf")]
+	extern MetaType @typeof(object type);
+	[BuiltInName(Name="GetValueType")]
+	extern MetaType get_type(object value);
+	[BuiltInName(Name="GetReturnType")]
+	extern MetaType get_return_type(object value);
+	[BuiltInName(Name="CurrentType")]
+	extern MetaType current_type(ModelObject symbol);
+	[BuiltInName(Name="TypeCheck")]
+	extern bool type_check(ModelObject symbol);
+	[BuiltInName(Name="Balance")]
+	extern MetaType balance(MetaType left, MetaType right);
 
-	[Name(Name="resolve")]
-	extern list<ModelObject> Resolve1(string name);
-	[Name(Name="resolve")]
-	extern list<ModelObject> Resolve2(ModelObject context, string name);
-	[Name(Name="resolve_type")]
-	extern list<ModelObject> ResolveType1(string name);
-	[Name(Name="resolve_type")]
-	extern list<ModelObject> ResolveType2(ModelObject context, string name);
-	[Name(Name="resolve_name")]
-	extern list<ModelObject> ResolveName1(string name);
-	[Name(Name="resolve_name")]
-	extern list<ModelObject> ResolveName2(ModelObject context, string name);
+	[BuiltInName(Name="Resolve1")]
+	extern list<ModelObject> resolve(string name);
+	[BuiltInName(Name="Resolve2")]
+	extern list<ModelObject> resolve(ModelObject context, string name);
+	[BuiltInName(Name="ResolveType1")]
+	extern list<ModelObject> resolve_type(string name);
+	[BuiltInName(Name="ResolveType2")]
+	extern list<ModelObject> resolve_type(ModelObject context, string name);
+	[BuiltInName(Name="ResolveName1")]
+	extern list<ModelObject> resolve_name(string name);
+	[BuiltInName(Name="ResolveName2")]
+	extern list<ModelObject> resolve_name(ModelObject context, string name);
 
-	[Name(Name="bind")]
-	extern ModelObject Bind1(ModelObject symbol);
-	[Name(Name="bind")]
-	extern ModelObject Bind2(list<ModelObject> symbols);
-	[Name(Name="bind")]
-	extern ModelObject Bind3(ModelObject context, ModelObject symbol);
-	[Name(Name="bind")]
-	extern ModelObject Bind4(ModelObject context, list<ModelObject> symbols);
+	[BuiltInName(Name="Bind1")]
+	extern ModelObject bind(ModelObject symbol);
+	[BuiltInName(Name="Bind2")]
+	extern ModelObject bind(list<ModelObject> symbols);
+	[BuiltInName(Name="Bind3")]
+	extern ModelObject bind(ModelObject context, ModelObject symbol);
+	[BuiltInName(Name="Bind4")]
+	extern ModelObject bind(ModelObject context, list<ModelObject> symbols);
 
-	[Name(Name="select_of_type")]
-	extern list<ModelObject> SelectOfType1(ModelObject symbol, MetaType type);
-	[Name(Name="select_of_type")]
-	extern list<ModelObject> SelectOfType2(list<ModelObject> symbols, MetaType type);
-	[Name(Name="select_of_name")]
-	extern list<ModelObject> SelectOfName1(ModelObject symbol, string name);
-	[Name(Name="select_of_name")]
-	extern list<ModelObject> SelectOfName2(list<ModelObject> symbols, string name);
+	[BuiltInName(Name="SelectOfType1")]
+	extern list<ModelObject> select_of_type(ModelObject symbol, MetaType type);
+	[BuiltInName(Name="SelectOfType2")]
+	extern list<ModelObject> select_of_type(list<ModelObject> symbols, MetaType type);
+	[BuiltInName(Name="SelectOfName1")]
+	extern list<ModelObject> select_of_name(ModelObject symbol, string name);
+	[BuiltInName(Name="SelectOfName2")]
+	extern list<ModelObject> select_of_name(list<ModelObject> symbols, string name);
 		
 
 	abstract class MetaAnnotatedElement

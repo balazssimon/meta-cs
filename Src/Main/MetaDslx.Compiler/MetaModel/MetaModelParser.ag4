@@ -81,7 +81,7 @@ $NameDef(MetaConstant)
 constDeclaration : KConst $Property(Type) typeReference identifier (TAssign $Property(Value) expressionOrNewExpression)? TSemicolon;
 
 $Property(Declarations) 
-$NameDef(MetaFunction)
+$NameDef(symbolType=MetaFunction,overload=true)
 functionDeclaration : annotation* KExtern $Property(ReturnType) returnType identifier TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 
 $TypeUse
@@ -276,7 +276,7 @@ associationDeclaration : annotation* KAssociation $NameUse(MetaProperty) source=
 // Identifiers
 $Name
 $Identifier
-identifier : IdentifierNormal /*| IdentifierVerbatim*/;
+identifier : IdentifierNormal | IdentifierVerbatim;
 //identifier : IdentifierGeneral | IdentifierVerbatim;
 
 // Literals

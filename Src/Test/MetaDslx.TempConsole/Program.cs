@@ -68,20 +68,31 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.g4"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.cs"
                     );
                 //*/
+                //*
+                using (ModelContextScope scope = new ModelContextScope(MetaInstance.Model))
+                {
+                    MetaModelGenerator generator = new MetaModelGenerator(ModelContext.Current.Model.Instances);
+                    using (StreamWriter writer = new StreamWriter(@"..\..\..\..\Main\MetaDslx.Core\MetaModel00.cs"))
+                    {
+                        writer.WriteLine(generator.Generate());
+                    }
+                }
+                //*/
+                //PrintScope("", (ModelObject)MetaDescriptor.MetaModel.GetMetaClass().Namespace.Parent);
             }
             catch (Exception ex)
             {
