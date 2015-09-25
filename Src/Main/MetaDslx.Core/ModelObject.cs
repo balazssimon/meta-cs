@@ -35,9 +35,14 @@ namespace MetaDslx.Core
             this.childInitializers = new Dictionary<ModelProperty, Dictionary<ModelProperty, Lazy<object>>>();
         }
 
-        public virtual MetaClass GetMetaClass()
+        public virtual MetaModel MMetaModel
         {
-            return null;
+            get { return null; }
+        }
+
+        public virtual MetaClass MMetaClass
+        {
+            get { return null; }
         }
 
         public void MEvalLazyValues()

@@ -117,11 +117,11 @@ using MetaDslx.Core;
             annotList.Add(this.voidType_Name);
             
             this.invisibleType_KAny_PreDefSymbol = new PreDefSymbolAnnotation();
-            this.invisibleType_KAny_PreDefSymbol.Value = MetaDescriptor.Constants.Any;
+            this.invisibleType_KAny_PreDefSymbol.Value = MetaInstance.Any;
             this.invisibleType_KNone_PreDefSymbol = new PreDefSymbolAnnotation();
-            this.invisibleType_KNone_PreDefSymbol.Value = MetaDescriptor.Constants.None;
+            this.invisibleType_KNone_PreDefSymbol.Value = MetaInstance.None;
             this.invisibleType_KError_PreDefSymbol = new PreDefSymbolAnnotation();
-            this.invisibleType_KError_PreDefSymbol.Value = MetaDescriptor.Constants.Error;
+            this.invisibleType_KError_PreDefSymbol.Value = MetaInstance.Error;
             
             annotList = new List<object>();
             this.ruleAnnotations.Add(typeof(MetaModelParser.ExpressionContext), annotList);

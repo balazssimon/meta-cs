@@ -68,7 +68,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.g4"
                     );
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
@@ -82,7 +82,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.cs"
                     );
                 //*/
-                //*
+                /*
                 using (ModelContextScope scope = new ModelContextScope(MetaInstance.Model))
                 {
                     MetaModelGenerator generator = new MetaModelGenerator(ModelContext.Current.Model.Instances);

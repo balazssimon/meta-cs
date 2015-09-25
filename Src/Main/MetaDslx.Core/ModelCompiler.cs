@@ -412,39 +412,39 @@ namespace MetaDslx.Core
         public ModelObject Balance(ModelObject left, ModelObject right)
         {
             if (left == right) return left;
-            if (left == MetaDescriptor.Constants.Error) return (ModelObject)MetaDescriptor.Constants.Error;
-            if (right == MetaDescriptor.Constants.Error) return (ModelObject)MetaDescriptor.Constants.Error;
-            if (left == MetaDescriptor.Constants.None) return (ModelObject)MetaDescriptor.Constants.None;
-            if (right == MetaDescriptor.Constants.None) return (ModelObject)MetaDescriptor.Constants.None;
-            if (left == MetaDescriptor.Constants.Object) return (ModelObject)MetaDescriptor.Constants.Object;
-            if (right == MetaDescriptor.Constants.Object) return (ModelObject)MetaDescriptor.Constants.Object;
-            if (left == MetaDescriptor.Constants.Any) return right;
-            if (right == MetaDescriptor.Constants.Any) return left;
+            if (left == MetaInstance.Error) return (ModelObject)MetaInstance.Error;
+            if (right == MetaInstance.Error) return (ModelObject)MetaInstance.Error;
+            if (left == MetaInstance.None) return (ModelObject)MetaInstance.None;
+            if (right == MetaInstance.None) return (ModelObject)MetaInstance.None;
+            if (left == MetaInstance.Object) return (ModelObject)MetaInstance.Object;
+            if (right == MetaInstance.Object) return (ModelObject)MetaInstance.Object;
+            if (left == MetaInstance.Any) return right;
+            if (right == MetaInstance.Any) return left;
             MetaPrimitiveType primLeft = left as MetaPrimitiveType;
             MetaPrimitiveType primRight = right as MetaPrimitiveType;
             if (primLeft != null && primRight != null)
             {
-                if (primLeft == MetaDescriptor.Constants.Byte && primRight == MetaDescriptor.Constants.Int) return (ModelObject)MetaDescriptor.Constants.Int;
-                if (primLeft == MetaDescriptor.Constants.Byte && primRight == MetaDescriptor.Constants.Long) return (ModelObject)MetaDescriptor.Constants.Long;
-                if (primLeft == MetaDescriptor.Constants.Int && primRight == MetaDescriptor.Constants.Byte) return (ModelObject)MetaDescriptor.Constants.Int;
-                if (primLeft == MetaDescriptor.Constants.Int && primRight == MetaDescriptor.Constants.Long) return (ModelObject)MetaDescriptor.Constants.Long;
-                if (primLeft == MetaDescriptor.Constants.Long && primRight == MetaDescriptor.Constants.Byte) return (ModelObject)MetaDescriptor.Constants.Long;
-                if (primLeft == MetaDescriptor.Constants.Long && primRight == MetaDescriptor.Constants.Int) return (ModelObject)MetaDescriptor.Constants.Long;
-                if (primLeft == MetaDescriptor.Constants.Byte && primRight == MetaDescriptor.Constants.Float) return (ModelObject)MetaDescriptor.Constants.Float;
-                if (primLeft == MetaDescriptor.Constants.Byte && primRight == MetaDescriptor.Constants.Double) return (ModelObject)MetaDescriptor.Constants.Double;
-                if (primLeft == MetaDescriptor.Constants.Int && primRight == MetaDescriptor.Constants.Float) return (ModelObject)MetaDescriptor.Constants.Float;
-                if (primLeft == MetaDescriptor.Constants.Int && primRight == MetaDescriptor.Constants.Double) return (ModelObject)MetaDescriptor.Constants.Double;
-                if (primLeft == MetaDescriptor.Constants.Long && primRight == MetaDescriptor.Constants.Float) return (ModelObject)MetaDescriptor.Constants.Float;
-                if (primLeft == MetaDescriptor.Constants.Long && primRight == MetaDescriptor.Constants.Double) return (ModelObject)MetaDescriptor.Constants.Double;
-                if (primLeft == MetaDescriptor.Constants.Float && primRight == MetaDescriptor.Constants.Byte) return (ModelObject)MetaDescriptor.Constants.Float;
-                if (primLeft == MetaDescriptor.Constants.Double && primRight == MetaDescriptor.Constants.Byte) return (ModelObject)MetaDescriptor.Constants.Double;
-                if (primLeft == MetaDescriptor.Constants.Float && primRight == MetaDescriptor.Constants.Int) return (ModelObject)MetaDescriptor.Constants.Float;
-                if (primLeft == MetaDescriptor.Constants.Double && primRight == MetaDescriptor.Constants.Int) return (ModelObject)MetaDescriptor.Constants.Double;
-                if (primLeft == MetaDescriptor.Constants.Float && primRight == MetaDescriptor.Constants.Long) return (ModelObject)MetaDescriptor.Constants.Float;
-                if (primLeft == MetaDescriptor.Constants.Double && primRight == MetaDescriptor.Constants.Long) return (ModelObject)MetaDescriptor.Constants.Double;
-                if (primLeft == MetaDescriptor.Constants.Float && primRight == MetaDescriptor.Constants.Double) return (ModelObject)MetaDescriptor.Constants.Double;
-                if (primLeft == MetaDescriptor.Constants.Double && primRight == MetaDescriptor.Constants.Float) return (ModelObject)MetaDescriptor.Constants.Double;
-                return (ModelObject)MetaDescriptor.Constants.Error;
+                if (primLeft == MetaInstance.Byte && primRight == MetaInstance.Int) return (ModelObject)MetaInstance.Int;
+                if (primLeft == MetaInstance.Byte && primRight == MetaInstance.Long) return (ModelObject)MetaInstance.Long;
+                if (primLeft == MetaInstance.Int && primRight == MetaInstance.Byte) return (ModelObject)MetaInstance.Int;
+                if (primLeft == MetaInstance.Int && primRight == MetaInstance.Long) return (ModelObject)MetaInstance.Long;
+                if (primLeft == MetaInstance.Long && primRight == MetaInstance.Byte) return (ModelObject)MetaInstance.Long;
+                if (primLeft == MetaInstance.Long && primRight == MetaInstance.Int) return (ModelObject)MetaInstance.Long;
+                if (primLeft == MetaInstance.Byte && primRight == MetaInstance.Float) return (ModelObject)MetaInstance.Float;
+                if (primLeft == MetaInstance.Byte && primRight == MetaInstance.Double) return (ModelObject)MetaInstance.Double;
+                if (primLeft == MetaInstance.Int && primRight == MetaInstance.Float) return (ModelObject)MetaInstance.Float;
+                if (primLeft == MetaInstance.Int && primRight == MetaInstance.Double) return (ModelObject)MetaInstance.Double;
+                if (primLeft == MetaInstance.Long && primRight == MetaInstance.Float) return (ModelObject)MetaInstance.Float;
+                if (primLeft == MetaInstance.Long && primRight == MetaInstance.Double) return (ModelObject)MetaInstance.Double;
+                if (primLeft == MetaInstance.Float && primRight == MetaInstance.Byte) return (ModelObject)MetaInstance.Float;
+                if (primLeft == MetaInstance.Double && primRight == MetaInstance.Byte) return (ModelObject)MetaInstance.Double;
+                if (primLeft == MetaInstance.Float && primRight == MetaInstance.Int) return (ModelObject)MetaInstance.Float;
+                if (primLeft == MetaInstance.Double && primRight == MetaInstance.Int) return (ModelObject)MetaInstance.Double;
+                if (primLeft == MetaInstance.Float && primRight == MetaInstance.Long) return (ModelObject)MetaInstance.Float;
+                if (primLeft == MetaInstance.Double && primRight == MetaInstance.Long) return (ModelObject)MetaInstance.Double;
+                if (primLeft == MetaInstance.Float && primRight == MetaInstance.Double) return (ModelObject)MetaInstance.Double;
+                if (primLeft == MetaInstance.Double && primRight == MetaInstance.Float) return (ModelObject)MetaInstance.Double;
+                return (ModelObject)MetaInstance.Error;
             }
             MetaFactory factory = MetaFactory.Instance;
             MetaNullableType nullLeft = left as MetaNullableType;
@@ -453,7 +453,7 @@ namespace MetaDslx.Core
             {
                 ModelObject balancedInnerTypeObject = this.Balance((ModelObject)nullLeft.InnerType, (ModelObject)nullRight.InnerType);
                 MetaType balancedInnerType = balancedInnerTypeObject as MetaType;
-                if (balancedInnerType != null && balancedInnerType != MetaDescriptor.Constants.Error)
+                if (balancedInnerType != null && balancedInnerType != MetaInstance.Error)
                 {
                     MetaNullableType nullResult = factory.CreateMetaNullableType();
                     nullResult.InnerType = balancedInnerType as MetaType;
@@ -463,7 +463,7 @@ namespace MetaDslx.Core
                 {
                     balancedInnerTypeObject = this.Balance((ModelObject)nullLeft.InnerType, right);
                     balancedInnerType = balancedInnerTypeObject as MetaType;
-                    if (balancedInnerType != null && balancedInnerType != MetaDescriptor.Constants.Error)
+                    if (balancedInnerType != null && balancedInnerType != MetaInstance.Error)
                     {
                         MetaNullableType nullResult = factory.CreateMetaNullableType();
                         nullResult.InnerType = balancedInnerType as MetaType;
@@ -473,7 +473,7 @@ namespace MetaDslx.Core
                     {
                         balancedInnerTypeObject = this.Balance(left, (ModelObject)nullRight.InnerType);
                         balancedInnerType = balancedInnerTypeObject as MetaType;
-                        if (balancedInnerType != null && balancedInnerType != MetaDescriptor.Constants.Error)
+                        if (balancedInnerType != null && balancedInnerType != MetaInstance.Error)
                         {
                             MetaNullableType nullResult = factory.CreateMetaNullableType();
                             nullResult.InnerType = balancedInnerType as MetaType;
@@ -481,7 +481,7 @@ namespace MetaDslx.Core
                         }
                         else
                         {
-                            return (ModelObject)MetaDescriptor.Constants.Error;
+                            return (ModelObject)MetaInstance.Error;
                         }
                     }
                 }
@@ -494,7 +494,7 @@ namespace MetaDslx.Core
                 {
                     ModelObject balancedInnerTypeObject = this.Balance((ModelObject)collLeft.InnerType, (ModelObject)collLeft.InnerType);
                     MetaType balancedInnerType = balancedInnerTypeObject as MetaType;
-                    if (balancedInnerType != null && balancedInnerType != MetaDescriptor.Constants.Error)
+                    if (balancedInnerType != null && balancedInnerType != MetaInstance.Error)
                     {
                         MetaCollectionType collResult = factory.CreateMetaCollectionType();
                         collResult.Kind = collLeft.Kind;
@@ -503,12 +503,12 @@ namespace MetaDslx.Core
                     }
                     else
                     {
-                        return (ModelObject)MetaDescriptor.Constants.Error;
+                        return (ModelObject)MetaInstance.Error;
                     }
                 }
                 else
                 {
-                    return (ModelObject)MetaDescriptor.Constants.Error;
+                    return (ModelObject)MetaInstance.Error;
                 }
             }
             MetaClass clsLeft = left as MetaClass;
@@ -523,40 +523,40 @@ namespace MetaDslx.Core
                 {
                     return right;
                 }
-                return (ModelObject)MetaDescriptor.Constants.Error;
+                return (ModelObject)MetaInstance.Error;
             }
-            return (ModelObject)MetaDescriptor.Constants.Error;
+            return (ModelObject)MetaInstance.Error;
         }
 
         public bool IsAssignableFrom(ModelObject left, ModelObject right)
         {
             if (this.Equals(left, right)) return true;
-            if (left == MetaDescriptor.Constants.Error) return false;
-            if (right == MetaDescriptor.Constants.Error) return false;
-            if (left == MetaDescriptor.Constants.None) return false;
-            if (right == MetaDescriptor.Constants.None) return false;
-            if (left == MetaDescriptor.Constants.Any) return true;
-            if (left == MetaDescriptor.Constants.Object) return true;
-            if (right == MetaDescriptor.Constants.Any) return true;
-            if (right == MetaDescriptor.Constants.Object) return false;
-            if (left == MetaDescriptor.Constants.ModelObject) return (right is ModelObject) || (right == MetaDescriptor.Constants.ModelObject);
-            if (left == MetaDescriptor.MetaType.GetMetaClass()) return (right is MetaType) || (right == MetaDescriptor.MetaType.GetMetaClass());
-            if (right == MetaDescriptor.Constants.ModelObject) return (left is ModelObject) || (left == MetaDescriptor.Constants.ModelObject);
-            if (right == MetaDescriptor.MetaType.GetMetaClass()) return (left is MetaType) || (left == MetaDescriptor.MetaType.GetMetaClass());
+            if (left == MetaInstance.Error) return false;
+            if (right == MetaInstance.Error) return false;
+            if (left == MetaInstance.None) return false;
+            if (right == MetaInstance.None) return false;
+            if (left == MetaInstance.Any) return true;
+            if (left == MetaInstance.Object) return true;
+            if (right == MetaInstance.Any) return true;
+            if (right == MetaInstance.Object) return false;
+            if (left == MetaInstance.ModelObject) return (right is ModelObject) || (right == MetaInstance.ModelObject);
+            if (left == MetaDescriptor.MetaType.MetaClass) return (right is MetaType) || (right == MetaDescriptor.MetaType.MetaClass);
+            if (right == MetaInstance.ModelObject) return (left is ModelObject) || (left == MetaInstance.ModelObject);
+            if (right == MetaDescriptor.MetaType.MetaClass) return (left is MetaType) || (left == MetaDescriptor.MetaType.MetaClass);
             MetaPrimitiveType primLeft = left as MetaPrimitiveType;
             MetaPrimitiveType primRight = right as MetaPrimitiveType;
             if (primLeft != null && primRight != null)
             {
-                if (primLeft == MetaDescriptor.Constants.Int && primRight == MetaDescriptor.Constants.Byte) return true;
-                if (primLeft == MetaDescriptor.Constants.Long && primRight == MetaDescriptor.Constants.Byte) return true;
-                if (primLeft == MetaDescriptor.Constants.Long && primRight == MetaDescriptor.Constants.Int) return true;
-                if (primLeft == MetaDescriptor.Constants.Float && primRight == MetaDescriptor.Constants.Byte) return true;
-                if (primLeft == MetaDescriptor.Constants.Double && primRight == MetaDescriptor.Constants.Byte) return true;
-                if (primLeft == MetaDescriptor.Constants.Float && primRight == MetaDescriptor.Constants.Int) return true;
-                if (primLeft == MetaDescriptor.Constants.Double && primRight == MetaDescriptor.Constants.Int) return true;
-                if (primLeft == MetaDescriptor.Constants.Float && primRight == MetaDescriptor.Constants.Long) return true;
-                if (primLeft == MetaDescriptor.Constants.Double && primRight == MetaDescriptor.Constants.Long) return true;
-                if (primLeft == MetaDescriptor.Constants.Double && primRight == MetaDescriptor.Constants.Float) return true;
+                if (primLeft == MetaInstance.Int && primRight == MetaInstance.Byte) return true;
+                if (primLeft == MetaInstance.Long && primRight == MetaInstance.Byte) return true;
+                if (primLeft == MetaInstance.Long && primRight == MetaInstance.Int) return true;
+                if (primLeft == MetaInstance.Float && primRight == MetaInstance.Byte) return true;
+                if (primLeft == MetaInstance.Double && primRight == MetaInstance.Byte) return true;
+                if (primLeft == MetaInstance.Float && primRight == MetaInstance.Int) return true;
+                if (primLeft == MetaInstance.Double && primRight == MetaInstance.Int) return true;
+                if (primLeft == MetaInstance.Float && primRight == MetaInstance.Long) return true;
+                if (primLeft == MetaInstance.Double && primRight == MetaInstance.Long) return true;
+                if (primLeft == MetaInstance.Double && primRight == MetaInstance.Float) return true;
                 return false;
             }
             MetaFactory factory = MetaFactory.Instance;
@@ -585,38 +585,38 @@ namespace MetaDslx.Core
         public bool Equals(ModelObject left, ModelObject right)
         {
             if (left == right) return true;
-            if (left == MetaDescriptor.Constants.Error) return false;
-            if (right == MetaDescriptor.Constants.Error) return false;
-            if (left == MetaDescriptor.Constants.None) return false;
-            if (right == MetaDescriptor.Constants.None) return false;
-            if (left == MetaDescriptor.Constants.Any) return true;
-            if (right == MetaDescriptor.Constants.Any) return true;
-            if (left == MetaDescriptor.Constants.Object) return right == MetaDescriptor.Constants.Object;
-            if (right == MetaDescriptor.Constants.Object) return false;
-            if (left == MetaDescriptor.Constants.ModelObject) return right == MetaDescriptor.Constants.ModelObject;
-            if (right == MetaDescriptor.Constants.ModelObject) return false;
-            if (left == MetaDescriptor.MetaType.GetMetaClass()) return right == MetaDescriptor.MetaType.GetMetaClass();
-            if (right == MetaDescriptor.MetaType.GetMetaClass()) return false;
-            if (left == MetaDescriptor.Constants.ModelObjectList)
+            if (left == MetaInstance.Error) return false;
+            if (right == MetaInstance.Error) return false;
+            if (left == MetaInstance.None) return false;
+            if (right == MetaInstance.None) return false;
+            if (left == MetaInstance.Any) return true;
+            if (right == MetaInstance.Any) return true;
+            if (left == MetaInstance.Object) return right == MetaInstance.Object;
+            if (right == MetaInstance.Object) return false;
+            if (left == MetaInstance.ModelObject) return right == MetaInstance.ModelObject;
+            if (right == MetaInstance.ModelObject) return false;
+            if (left == MetaDescriptor.MetaType.MetaClass) return right == MetaDescriptor.MetaType.MetaClass;
+            if (right == MetaDescriptor.MetaType.MetaClass) return false;
+            if (left == MetaInstance.ModelObjectList)
             {
-                if (right == MetaDescriptor.Constants.ModelObjectList) return true;
+                if (right == MetaInstance.ModelObjectList) return true;
                 MetaCollectionType cr = right as MetaCollectionType;
                 if (cr != null)
                 {
-                    return cr.Kind == MetaCollectionKind.List && this.Equals((ModelObject)cr.InnerType, (ModelObject)MetaDescriptor.Constants.ModelObject);
+                    return cr.Kind == MetaCollectionKind.List && this.Equals((ModelObject)cr.InnerType, (ModelObject)MetaInstance.ModelObject);
                 }
                 else
                 {
                     return false;
                 }
             }
-            if (right == MetaDescriptor.Constants.ModelObjectList)
+            if (right == MetaInstance.ModelObjectList)
             {
-                if (left == MetaDescriptor.Constants.ModelObjectList) return true;
+                if (left == MetaInstance.ModelObjectList) return true;
                 MetaCollectionType cl = left as MetaCollectionType;
                 if (cl != null)
                 {
-                    return cl.Kind == MetaCollectionKind.List && this.Equals((ModelObject)cl.InnerType, (ModelObject)MetaDescriptor.Constants.ModelObject);
+                    return cl.Kind == MetaCollectionKind.List && this.Equals((ModelObject)cl.InnerType, (ModelObject)MetaInstance.ModelObject);
                 }
                 else
                 {
@@ -669,34 +669,34 @@ namespace MetaDslx.Core
 
         public MetaType GetTypeOf(ModelObject symbol)
         {
-            if (symbol == null) return MetaDescriptor.Constants.None;
+            if (symbol == null) return MetaInstance.None;
             MetaTypedElement mte = symbol as MetaTypedElement;
             if (mte != null) return mte.Type;
             MetaType mt = symbol as MetaType;
             if (mt != null) return mt;
-            return MetaDescriptor.Constants.None;
+            return MetaInstance.None;
         }
 
         public MetaType GetTypeOf(object value)
         {
             ModelObject symbol = value as ModelObject;
             if (symbol != null) return this.GetTypeOf(symbol);
-            if (value is string) return MetaDescriptor.Constants.String;
-            if (value is bool) return MetaDescriptor.Constants.Bool;
-            if (value is byte) return MetaDescriptor.Constants.Byte;
-            if (value is int) return MetaDescriptor.Constants.Int;
-            if (value is long) return MetaDescriptor.Constants.Long;
-            if (value is float) return MetaDescriptor.Constants.Float;
-            if (value is double) return MetaDescriptor.Constants.Double;
-            return MetaDescriptor.Constants.None;
+            if (value is string) return MetaInstance.String;
+            if (value is bool) return MetaInstance.Bool;
+            if (value is byte) return MetaInstance.Byte;
+            if (value is int) return MetaInstance.Int;
+            if (value is long) return MetaInstance.Long;
+            if (value is float) return MetaInstance.Float;
+            if (value is double) return MetaInstance.Double;
+            return MetaInstance.None;
         }
 
         public MetaType GetReturnTypeOf(ModelObject symbol)
         {
-            if (symbol == null) return MetaDescriptor.Constants.None;
+            if (symbol == null) return MetaInstance.None;
             MetaFunction mf = symbol as MetaFunction;
             if (mf != null) return mf.ReturnType;
-            return MetaDescriptor.Constants.None;
+            return MetaInstance.None;
         }
 
         public bool TypeCheck(ModelObject symbol)
@@ -709,7 +709,7 @@ namespace MetaDslx.Core
                 ModelContext ctx = ModelContext.Current;
                 if (ctx != null)
                 {
-                    if (expr.ExpectedType == MetaDescriptor.Constants.None)
+                    if (expr.ExpectedType == MetaInstance.None)
                     {
                         return true;
                     }

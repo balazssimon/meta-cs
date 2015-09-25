@@ -98,19 +98,19 @@ namespace MetaDslx.Core
                 if (MetaBuiltInTypes.types == null)
                 {
                     MetaBuiltInTypes.types = new List<MetaType>();
-                    if (MetaBuiltInTypes.types.Count == 0 && MetaDescriptor.Constants.Object != null)
+                    if (MetaBuiltInTypes.types.Count == 0 && MetaInstance.Object != null)
                     {
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Object);
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.String);
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Int);
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Long);
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Float);
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Double);
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Byte);
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Bool);
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.Void);
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.ModelObject);
-                        MetaBuiltInTypes.types.Add(MetaDescriptor.Constants.ModelObjectList);
+                        MetaBuiltInTypes.types.Add(MetaInstance.Object);
+                        MetaBuiltInTypes.types.Add(MetaInstance.String);
+                        MetaBuiltInTypes.types.Add(MetaInstance.Int);
+                        MetaBuiltInTypes.types.Add(MetaInstance.Long);
+                        MetaBuiltInTypes.types.Add(MetaInstance.Float);
+                        MetaBuiltInTypes.types.Add(MetaInstance.Double);
+                        MetaBuiltInTypes.types.Add(MetaInstance.Byte);
+                        MetaBuiltInTypes.types.Add(MetaInstance.Bool);
+                        MetaBuiltInTypes.types.Add(MetaInstance.Void);
+                        MetaBuiltInTypes.types.Add(MetaInstance.ModelObject);
+                        MetaBuiltInTypes.types.Add(MetaInstance.ModelObjectList);
                     }
                 }
                 return MetaBuiltInTypes.types;
@@ -129,28 +129,28 @@ namespace MetaDslx.Core
                 if (MetaBuiltInFunctions.functions == null)
                 {
                     MetaBuiltInFunctions.functions = new List<MetaFunction>();
-                    if (MetaBuiltInFunctions.functions.Count == 0 && MetaDescriptor.Constants.TypeOf != null)
+                    if (MetaBuiltInFunctions.functions.Count == 0 && MetaInstance.TypeOf != null)
                     {
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.TypeOf);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.GetValueType);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.GetReturnType);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.CurrentType);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.TypeCheck);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Balance);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Resolve1);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Resolve2);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.ResolveName1);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.ResolveName2);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.ResolveType1);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.ResolveType2);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Bind1);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Bind2);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Bind3);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.Bind4);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.SelectOfType1);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.SelectOfType2);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.SelectOfName1);
-                        MetaBuiltInFunctions.functions.Add(MetaDescriptor.Constants.SelectOfName2);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.TypeOf);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.GetValueType);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.GetReturnType);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.CurrentType);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.TypeCheck);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.Balance);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.Resolve1);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.Resolve2);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.ResolveName1);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.ResolveName2);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.ResolveType1);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.ResolveType2);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.Bind1);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.Bind2);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.Bind3);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.Bind4);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.SelectOfType1);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.SelectOfType2);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.SelectOfName1);
+                        MetaBuiltInFunctions.functions.Add(MetaInstance.SelectOfName2);
                     }
                 }
                 return MetaBuiltInFunctions.functions;
@@ -304,9 +304,11 @@ namespace MetaDslx.Core
 
     internal static class MetaModelExtensions
     {
-        public static string CSharpPrefix(this MetaNamespace @this)
+        public static bool HasSameMetaModel(this ModelObject @this, ModelObject mobj)
         {
-            return string.Empty;
+            if (@this == null || @this.MMetaModel == null) return false;
+            if (mobj == null || mobj.MMetaModel == null) return false;
+            return @this.MMetaModel == mobj.MMetaModel;
         }
 
         public static string CSharpName(this MetaNamespace @this)
@@ -322,6 +324,12 @@ namespace MetaDslx.Core
             return result;
         }
 
+        public static string CSharpName(this MetaModel @this)
+        {
+            if (@this == null) return string.Empty;
+            return @this.Name;
+        }
+
         public static string CSharpFullName(this MetaModel @this)
         {
             if (@this == null) return string.Empty;
@@ -330,9 +338,77 @@ namespace MetaDslx.Core
             else return "global::" + @this.Name;
         }
 
+        public static string CSharpName(this MetaType @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaCollectionType collection = @this as MetaCollectionType;
+            if (collection != null)
+            {
+                string innerName = null;
+                if (((ModelObject)collection.InnerType).HasSameMetaModel((ModelObject)@this)) innerName = collection.InnerType.CSharpName();
+                else innerName = collection.InnerType.CSharpFullName();
+                switch (collection.Kind)
+                {
+                    case MetaCollectionKind.Set:
+                        return "global::MetaDslx.Core.ModelSet<" + innerName + ">";
+                    case MetaCollectionKind.List:
+                        return "global::MetaDslx.Core.ModelList<" + innerName + ">";
+                    case MetaCollectionKind.MultiSet:
+                        return "global::MetaDslx.Core.ModelMultiSet<" + innerName + ">";
+                    case MetaCollectionKind.MultiList:
+                        return "global::MetaDslx.Core.ModelMultiList<" + innerName + ">";
+                    default:
+                        return null;
+                }
+            }
+            MetaNullableType nullable = @this as MetaNullableType;
+            if (nullable != null)
+            {
+                string innerName = null;
+                if (((ModelObject)nullable.InnerType).HasSameMetaModel((ModelObject)@this)) innerName = nullable.InnerType.CSharpName();
+                else innerName = nullable.InnerType.CSharpFullName();
+                return innerName + "?";
+            }
+            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.Name;
+            }
+            return ((MetaNamedElement)@this).Name;
+        }
+
         public static string CSharpFullName(this MetaType @this)
         {
             if (@this == null) return string.Empty;
+            MetaCollectionType collection = @this as MetaCollectionType;
+            if (collection != null)
+            {
+                string innerName = collection.InnerType.CSharpFullName();
+                switch (collection.Kind)
+                {
+                    case MetaCollectionKind.Set:
+                        return "global::MetaDslx.Core.ModelSet<" + innerName + ">";
+                    case MetaCollectionKind.List:
+                        return "global::MetaDslx.Core.ModelList<" + innerName + ">";
+                    case MetaCollectionKind.MultiSet:
+                        return "global::MetaDslx.Core.ModelMultiSet<" + innerName + ">";
+                    case MetaCollectionKind.MultiList:
+                        return "global::MetaDslx.Core.ModelMultiList<" + innerName + ">";
+                    default:
+                        return null;
+                }
+            }
+            MetaNullableType nullable = @this as MetaNullableType;
+            if (nullable != null)
+            {
+                string innerName = nullable.InnerType.CSharpFullName();
+                return innerName + "?";
+            }
+            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.Name;
+            }
             MetaDeclaration decl = @this as MetaDeclaration;
             string nsName = string.Empty;
             if (decl != null)
@@ -347,43 +423,120 @@ namespace MetaDslx.Core
             }
         }
 
-        public static string CSharpName(this MetaModel @this)
+        public static string CSharpDescriptorName(this MetaModel @this)
         {
-            if (@this == null) return string.Empty;
-            return @this.Name + "Descriptor";
+            return @this.CSharpName() + "Descriptor";
         }
 
-        public static string CSharpName(this MetaType @this)
+        public static string CSharpFullDescriptorName(this MetaModel @this)
         {
-            if (@this == null) return string.Empty;
-            MetaCollectionType collection = @this as MetaCollectionType;
-            if (collection != null)
+            return @this.CSharpFullName() + "Descriptor";
+        }
+
+        public static string CSharpInstancesName(this MetaModel @this)
+        {
+            return @this.CSharpName() + "Instance";
+        }
+
+        public static string CSharpFullInstancesName(this MetaModel @this)
+        {
+            return @this.CSharpFullName() + "Instance";
+        }
+
+        public static string CSharpFactoryName(this MetaModel @this)
+        {
+            return @this.CSharpName() + "Factory";
+        }
+
+        public static string CSharpFullFactoryName(this MetaModel @this)
+        {
+            return @this.CSharpFullName() + "Factory";
+        }
+
+        public static string CSharpFullImplementationName(this MetaModel @this)
+        {
+            return @this.CSharpFullName() + "ImplementationProvider.Implementation";
+        }
+        public static string GetCSharpValue(this MetaExpression @this)
+        {
+            MetaConstantExpression mce = @this as MetaConstantExpression;
+            if (mce != null)
             {
-                switch (collection.Kind)
+                if (mce.Value != null) return mce.Value.ToString();
+                else return string.Empty;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public static string BuiltInName(this MetaDeclaration @this)
+        {
+            foreach (var annot in @this.Annotations)
+            {
+                if (annot.Name == "BuiltInName")
                 {
-                    case MetaCollectionKind.Set:
-                        return "ModelSet<" + collection.InnerType.CSharpName() + ">";
-                    case MetaCollectionKind.List:
-                        return "ModelList<" + collection.InnerType.CSharpName() + ">";
-                    case MetaCollectionKind.MultiSet:
-                        return "ModelMultiSet<" + collection.InnerType.CSharpName() + ">";
-                    case MetaCollectionKind.MultiList:
-                        return "ModelMultiList<" + collection.InnerType.CSharpName() + ">";
-                    default:
-                        return null;
+                    foreach (var prop in annot.Properties)
+                    {
+                        if (prop.Name == "Name")
+                        {
+                            return prop.Value.GetCSharpValue();
+                        }
+                    }
                 }
             }
-            MetaNullableType nullable = @this as MetaNullableType;
-            if (nullable != null)
-            {
-                return nullable.InnerType.CSharpName() + "?";
-            }
-            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
-            if (primitive != null)
-            {
-                return primitive.Name;
-            }
-            return ((MetaNamedElement)@this).Name;
+            return @this.Name;
+        }
+
+        public static string CSharpFullFactoryMethodName(this MetaClass @this)
+        {
+            return @this.Model.CSharpFullFactoryName() + ".Instance.Create" + @this.CSharpName();
+        }
+
+        public static string CSharpDescriptorName(this MetaDeclaration @this)
+        {
+            return @this.BuiltInName();
+        }
+
+        public static string CSharpDescriptorName(this MetaProperty @this)
+        {
+            return @this.Name + "Property";
+        }
+
+        public static string CSharpFullDescriptorName(this MetaDeclaration @this)
+        {
+            return ((ModelObject)@this).MMetaModel.CSharpFullDescriptorName() + "." + @this.CSharpDescriptorName();
+        }
+
+        public static string CSharpFullDescriptorName(this MetaProperty @this)
+        {
+            return @this.Class.CSharpFullDescriptorName() + "." + @this.CSharpDescriptorName();
+        }
+
+        public static string CSharpInstanceName(this MetaDeclaration @this)
+        {
+            return @this.BuiltInName();
+        }
+
+        public static string CSharpInstanceName(this MetaProperty @this)
+        {
+            return @this.Class.CSharpName() + "_" + @this.Name + "Property";
+        }
+
+        public static string CSharpFullInstanceName(this MetaModel @this)
+        {
+            return ((ModelObject)@this).MMetaModel.CSharpFullInstancesName() + ".Meta";
+        }
+
+        public static string CSharpFullInstanceName(this MetaDeclaration @this)
+        {
+            return ((ModelObject)@this).MMetaModel.CSharpFullInstancesName() + "." + @this.CSharpInstanceName();
+        }
+
+        public static string CSharpFullInstanceName(this MetaProperty @this)
+        {
+            return ((ModelObject)@this).MMetaModel.CSharpFullInstancesName() + "." + @this.CSharpInstanceName();
         }
 
         public static string CSharpImplName(this MetaType @this)
@@ -396,10 +549,10 @@ namespace MetaDslx.Core
                 {
                     case MetaCollectionKind.Set:
                     case MetaCollectionKind.MultiSet:
-                        return "ICollection<" + collection.InnerType.CSharpImplName() + ">";
+                        return "global::System.Collections.Generic.ICollection<" + collection.InnerType.CSharpImplName() + ">";
                     case MetaCollectionKind.List:
                     case MetaCollectionKind.MultiList:
-                        return "IList<" + collection.InnerType.CSharpImplName() + ">";
+                        return "global::System.Collections.Generic.IList<" + collection.InnerType.CSharpImplName() + ">";
                     default:
                         return null;
                 }
@@ -417,68 +570,6 @@ namespace MetaDslx.Core
             return ((MetaNamedElement)@this).Name + "Impl";
         }
 
-        public static string CSharpFullImplName(this MetaType @this)
-        {
-            if (@this == null) return string.Empty;
-            MetaCollectionType collection = @this as MetaCollectionType;
-            if (collection != null)
-            {
-                switch (collection.Kind)
-                {
-                    case MetaCollectionKind.Set:
-                    case MetaCollectionKind.MultiSet:
-                        return "ICollection<" + collection.InnerType.CSharpFullImplName() + ">";
-                    case MetaCollectionKind.List:
-                    case MetaCollectionKind.MultiList:
-                        return "IList<" + collection.InnerType.CSharpFullImplName() + ">";
-                    default:
-                        return null;
-                }
-            }
-            MetaNullableType nullable = @this as MetaNullableType;
-            if (nullable != null)
-            {
-                return nullable.InnerType.CSharpFullImplName() + "?";
-            }
-            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
-            if (primitive != null)
-            {
-                return primitive.Name;
-            }
-            return @this.CSharpFullName() + "Impl";
-        }
-
-        public static string CSharpPublicName(this MetaType @this)
-        {
-            if (@this == null) return string.Empty;
-            MetaCollectionType collection = @this as MetaCollectionType;
-            if (collection != null)
-            {
-                switch (collection.Kind)
-                {
-                    case MetaCollectionKind.Set:
-                    case MetaCollectionKind.MultiSet:
-                        return "ICollection<" + collection.InnerType.CSharpPublicName() + ">";
-                    case MetaCollectionKind.List:
-                    case MetaCollectionKind.MultiList:
-                        return "IList<" + collection.InnerType.CSharpPublicName() + ">";
-                    default:
-                        return null;
-                }
-            }
-            MetaNullableType nullable = @this as MetaNullableType;
-            if (nullable != null)
-            {
-                return nullable.InnerType.CSharpPublicName() + "?";
-            }
-            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
-            if (primitive != null)
-            {
-                return primitive.Name;
-            }
-            return ((MetaNamedElement)@this).Name;
-        }
-
         public static string CSharpFullPublicName(this MetaType @this)
         {
             if (@this == null) return string.Empty;
@@ -489,10 +580,10 @@ namespace MetaDslx.Core
                 {
                     case MetaCollectionKind.Set:
                     case MetaCollectionKind.MultiSet:
-                        return "ICollection<" + collection.InnerType.CSharpFullPublicName() + ">";
+                        return "global::System.Collections.Generic.ICollection<" + collection.InnerType.CSharpFullPublicName() + ">";
                     case MetaCollectionKind.List:
                     case MetaCollectionKind.MultiList:
-                        return "IList<" + collection.InnerType.CSharpFullPublicName() + ">";
+                        return "global::System.Collections.Generic.IList<" + collection.InnerType.CSharpFullPublicName() + ">";
                     default:
                         return null;
                 }
