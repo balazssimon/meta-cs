@@ -203,7 +203,7 @@
 		MetaType ReturnType;
 	}
 
-	class MetaFunction : MetaTypedElement, MetaDeclaration
+	abstract class MetaFunction : MetaTypedElement, MetaNamedElement, MetaAnnotatedElement
 	{
 		MetaFunction()
 		{
@@ -216,6 +216,10 @@
 		readonly MetaFunctionType Type redefines MetaTypedElement.Type;
 		containment list<MetaParameter> Parameters;
 		MetaType ReturnType;
+	}
+
+	class MetaGlobalFunction : MetaFunction, MetaDeclaration
+	{
 	}
 
 	class MetaOperation : MetaFunction

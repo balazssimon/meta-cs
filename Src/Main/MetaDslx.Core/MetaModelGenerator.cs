@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelGenerator_177350550;
-    namespace __Hidden_MetaModelGenerator_177350550
+    using __Hidden_MetaModelGenerator_1471130818;
+    namespace __Hidden_MetaModelGenerator_1471130818
     {
         internal static class __Extensions
         {
@@ -2173,7 +2173,7 @@ namespace MetaDslx.Core //1:1
             return __out.ToString();
         }
 
-        public bool SameFunction(MetaFunction mfunc1, MetaFunction mfunc2) //272:1
+        public bool SameFunction(MetaGlobalFunction mfunc1, MetaGlobalFunction mfunc2) //272:1
         {
             return mfunc1.Name == mfunc2.Name && ModelContext.Current.Compiler.TypeProvider.Equals((ModelObject)mfunc1.Type, (ModelObject)mfunc2.Type); //273:2
         }
@@ -2181,161 +2181,161 @@ namespace MetaDslx.Core //1:1
         public string GenerateFunctionCall(MetaFunctionCallExpression call) //276:1
         {
             StringBuilder __out = new StringBuilder();
-            if (SameFunction((MetaFunction)call.Definition, MetaInstance.TypeOf)) //277:2
+            if (call.Definition is MetaGlobalFunction && SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.TypeOf)) //277:2
             {
                 __out.Append(GenerateTypeOf(call.Arguments[0]));
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.GetValueType)) //278:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.GetValueType)) //278:2
             {
-                __out.Append("ModelContext.Current.Compiler.TypeProvider.GetTypeOf("); //278:83
+                __out.Append("ModelContext.Current.Compiler.TypeProvider.GetTypeOf("); //278:89
                 __out.Append(GenerateCallArguments(call, ""));
-                __out.Append(")"); //278:169
+                __out.Append(")"); //278:175
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.GetReturnType)) //279:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.GetReturnType)) //279:2
             {
-                __out.Append("ModelContext.Current.Compiler.TypeProvider.GetReturnTypeOf("); //279:84
+                __out.Append("ModelContext.Current.Compiler.TypeProvider.GetReturnTypeOf("); //279:90
                 __out.Append(GenerateCallArguments(call, "(ModelObject)"));
-                __out.Append(")"); //279:189
+                __out.Append(")"); //279:195
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.CurrentType)) //280:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.CurrentType)) //280:2
             {
-                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf("); //280:82
+                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf("); //280:88
                 __out.Append(GenerateCallArguments(call, "(ModelObject)"));
-                __out.Append(")"); //280:199
+                __out.Append(")"); //280:205
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.TypeCheck)) //281:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.TypeCheck)) //281:2
             {
-                __out.Append("ModelContext.Current.Compiler.TypeProvider.TypeCheck("); //281:80
+                __out.Append("ModelContext.Current.Compiler.TypeProvider.TypeCheck("); //281:86
                 __out.Append(GenerateCallArguments(call, "(ModelObject)"));
-                __out.Append(")"); //281:179
+                __out.Append(")"); //281:185
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.Balance)) //282:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Balance)) //282:2
             {
-                __out.Append("ModelContext.Current.Compiler.TypeProvider.Balance("); //282:78
+                __out.Append("ModelContext.Current.Compiler.TypeProvider.Balance("); //282:84
                 __out.Append(GenerateCallArguments(call, "(ModelObject)"));
-                __out.Append(")"); //282:175
+                __out.Append(")"); //282:181
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.Resolve1)) //283:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Resolve1)) //283:2
             {
-                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //283:79
+                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //283:85
                 __out.Append("[]");
-                __out.Append(" { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.NameOrType, "); //283:157
+                __out.Append(" { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.NameOrType, "); //283:163
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //283:297
+                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //283:303
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.Resolve2)) //284:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Resolve2)) //284:2
             {
-                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //284:79
+                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //284:85
                 __out.Append("[]");
-                __out.Append(" { (ModelObject)"); //284:157
+                __out.Append(" { (ModelObject)"); //284:163
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }, ResolveKind.NameOrType, "); //284:212
+                __out.Append(" }, ResolveKind.NameOrType, "); //284:218
                 __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //284:279
+                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //284:285
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.ResolveType1)) //285:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveType1)) //285:2
             {
-                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //285:83
+                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //285:89
                 __out.Append("[]");
-                __out.Append(" { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Type, "); //285:161
+                __out.Append(" { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Type, "); //285:167
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //285:295
+                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //285:301
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.ResolveType2)) //286:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveType2)) //286:2
             {
-                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //286:83
+                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //286:89
                 __out.Append("[]");
-                __out.Append(" { (ModelObject)"); //286:161
+                __out.Append(" { (ModelObject)"); //286:167
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }, ResolveKind.Type, "); //286:216
+                __out.Append(" }, ResolveKind.Type, "); //286:222
                 __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //286:277
+                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //286:283
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.ResolveName1)) //287:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveName1)) //287:2
             {
-                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //287:83
+                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //287:89
                 __out.Append("[]");
-                __out.Append(" { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, "); //287:161
+                __out.Append(" { ModelContext.Current.Compiler.ResolutionProvider.GetCurrentScope(this) }, ResolveKind.Name, "); //287:167
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //287:295
+                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //287:301
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.ResolveName2)) //288:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveName2)) //288:2
             {
-                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //288:83
+                __out.Append("ModelContext.Current.Compiler.ResolutionProvider.Resolve(new ModelObject"); //288:89
                 __out.Append("[]");
-                __out.Append(" { (ModelObject)"); //288:161
+                __out.Append(" { (ModelObject)"); //288:167
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }, ResolveKind.Name, "); //288:216
+                __out.Append(" }, ResolveKind.Name, "); //288:222
                 __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //288:277
+                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //288:283
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.Bind1)) //289:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind1)) //289:2
             {
-                __out.Append("ModelContext.Current.Compiler.BindingProvider.Bind(this, new ModelObject"); //289:76
+                __out.Append("ModelContext.Current.Compiler.BindingProvider.Bind(this, new ModelObject"); //289:82
                 __out.Append("[]");
-                __out.Append(" { (ModelObject)"); //289:154
+                __out.Append(" { (ModelObject)"); //289:160
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }, new BindingInfo())"); //289:209
+                __out.Append(" }, new BindingInfo())"); //289:215
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.Bind2)) //290:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind2)) //290:2
             {
-                __out.Append("ModelContext.Current.Compiler.BindingProvider.Bind(this, "); //290:76
+                __out.Append("ModelContext.Current.Compiler.BindingProvider.Bind(this, "); //290:82
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", new BindingInfo())"); //290:172
+                __out.Append(", new BindingInfo())"); //290:178
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.Bind3)) //291:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind3)) //291:2
             {
-                __out.Append("ModelContext.Current.Compiler.BindingProvider.Bind((ModelObject)"); //291:76
+                __out.Append("ModelContext.Current.Compiler.BindingProvider.Bind((ModelObject)"); //291:82
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", new ModelObject"); //291:179
+                __out.Append(", new ModelObject"); //291:185
                 __out.Append("[]");
-                __out.Append(" { (ModelObject)"); //291:202
+                __out.Append(" { (ModelObject)"); //291:208
                 __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(" }, new BindingInfo())"); //291:257
+                __out.Append(" }, new BindingInfo())"); //291:263
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.Bind4)) //292:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind4)) //292:2
             {
-                __out.Append("ModelContext.Current.Compiler.BindingProvider.Bind((ModelObject)"); //292:76
+                __out.Append("ModelContext.Current.Compiler.BindingProvider.Bind((ModelObject)"); //292:82
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", "); //292:179
+                __out.Append(", "); //292:185
                 __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(", new BindingInfo())"); //292:220
+                __out.Append(", new BindingInfo())"); //292:226
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.SelectOfType1)) //293:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.SelectOfType1)) //293:2
             {
-                __out.Append("new object"); //293:84
+                __out.Append("new object"); //293:90
                 __out.Append("[]");
-                __out.Append(" { "); //293:100
+                __out.Append(" { "); //293:106
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }.Where(e => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(e) is "); //293:142
+                __out.Append(" }.Where(e => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(e) is "); //293:148
                 __out.Append(GetTypeName(call.Arguments[1]));
-                __out.Append(").OfType<ModelObject>().ToList()"); //293:247
+                __out.Append(").OfType<ModelObject>().ToList()"); //293:253
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.SelectOfType2)) //294:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.SelectOfType2)) //294:2
             {
-                __out.Append("("); //294:84
+                __out.Append("("); //294:90
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(").Where(e => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(e) is "); //294:124
+                __out.Append(").Where(e => ModelContext.Current.Compiler.TypeProvider.GetTypeOf(e) is "); //294:130
                 __out.Append(GetTypeName(call.Arguments[1]));
-                __out.Append(").OfType<ModelObject>().ToList()"); //294:228
+                __out.Append(").OfType<ModelObject>().ToList()"); //294:234
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.SelectOfName1)) //295:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.SelectOfName1)) //295:2
             {
-                __out.Append("new object"); //295:84
+                __out.Append("new object"); //295:90
                 __out.Append("[]");
-                __out.Append(" { "); //295:100
+                __out.Append(" { "); //295:106
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }.Where(e => ModelContext.Current.Compiler.NameProvider.GetNameOf((ModelObject)e) == "); //295:142
+                __out.Append(" }.Where(e => ModelContext.Current.Compiler.NameProvider.GetNameOf((ModelObject)e) == "); //295:148
                 __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(").OfType<ModelObject>().ToList()"); //295:267
+                __out.Append(").OfType<ModelObject>().ToList()"); //295:273
             }
-            else if (SameFunction((MetaFunction)call.Definition, MetaInstance.SelectOfName2)) //296:2
+            else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.SelectOfName2)) //296:2
             {
-                __out.Append("("); //296:84
+                __out.Append("("); //296:90
                 __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(").Where(e => ModelContext.Current.Compiler.NameProvider.GetNameOf((ModelObject)e) == "); //296:124
+                __out.Append(").Where(e => ModelContext.Current.Compiler.NameProvider.GetNameOf((ModelObject)e) == "); //296:130
                 __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(").OfType<ModelObject>().ToList()"); //296:248
+                __out.Append(").OfType<ModelObject>().ToList()"); //296:254
             }
             else //297:2
             {
@@ -4504,13 +4504,13 @@ namespace MetaDslx.Core //1:1
             return __out.ToString();
         }
 
-        public string GenerateModelFunction(MetaModel model, MetaFunction mfunc) //583:1
+        public string GenerateModelFunction(MetaModel model, MetaGlobalFunction mfunc) //583:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "public static readonly global::MetaDslx.Core.MetaFunction "; //584:1
-            string __tmp2Suffix = ";"; //584:71
+            string __tmp1Prefix = "public static readonly "; //584:1
+            string __tmp2Suffix = ";"; //584:87
             StringBuilder __tmp3 = new StringBuilder();
-            __tmp3.Append(mfunc.Name);
+            __tmp3.Append(MetaInstance.MetaGlobalFunction.CSharpFullName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
@@ -4524,8 +4524,26 @@ namespace MetaDslx.Core //1:1
                     }
                     __out.Append(__tmp1Prefix);
                     __out.Append(__tmp3Line);
+                }
+            }
+            string __tmp4Line = " "; //584:74
+            __out.Append(__tmp4Line);
+            StringBuilder __tmp5 = new StringBuilder();
+            __tmp5.Append(mfunc.Name);
+            using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
+            {
+                bool __tmp5_first = true;
+                while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                {
+                    __tmp5_first = false;
+                    string __tmp5Line = __tmp5Reader.ReadLine();
+                    if (__tmp5Line == null)
+                    {
+                        __tmp5Line = "";
+                    }
+                    __out.Append(__tmp5Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //584:72
+                    __out.AppendLine(); //584:88
                 }
             }
             return __out.ToString();
@@ -4576,11 +4594,11 @@ namespace MetaDslx.Core //1:1
             return __out.ToString();
         }
 
-        public string GenerateModelFunctionImpl(MetaModel model, MetaFunction mfunc, Dictionary<ModelObject,string> mobjToTmp) //591:1
+        public string GenerateModelFunctionImpl(MetaModel model, MetaGlobalFunction mfunc, Dictionary<ModelObject,string> mobjToTmp) //591:1
         {
             StringBuilder __out = new StringBuilder();
             string __tmp1Prefix = string.Empty; 
-            string __tmp2Suffix = ".Instance.CreateMetaFunction();"; //592:99
+            string __tmp2Suffix = "();"; //592:131
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(RegisterModelObject((ModelObject)mfunc, mobjToTmp, mfunc.Name));
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
@@ -4601,7 +4619,7 @@ namespace MetaDslx.Core //1:1
             string __tmp4Line = " = "; //592:65
             __out.Append(__tmp4Line);
             StringBuilder __tmp5 = new StringBuilder();
-            __tmp5.Append(model.CSharpFullFactoryName());
+            __tmp5.Append(MetaInstance.MetaGlobalFunction.CSharpFullFactoryMethodName());
             using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
             {
                 bool __tmp5_first = true;
@@ -4615,7 +4633,7 @@ namespace MetaDslx.Core //1:1
                     }
                     __out.Append(__tmp5Line);
                     __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //592:130
+                    __out.AppendLine(); //592:134
                 }
             }
             return __out.ToString();
@@ -5193,7 +5211,7 @@ namespace MetaDslx.Core //1:1
                 if (!Instances.Contains(mobj)) //719:3
                 {
                     string metaClassName = mobj.MMetaClass.Name; //720:4
-                    if ((metaClassName == "MetaConstant" || metaClassName == "MetaFunction" || metaClassName == "MetaEnum" || metaClassName == "MetaClass" || metaClassName == "MetaProperty") && (mobj is MetaConstant || mobj is MetaFunction || mobj is MetaEnum || mobj is MetaClass || mobj is MetaProperty)) //721:4
+                    if (mobj is MetaDeclaration || mobj is MetaProperty) //721:4
                     {
                         if (mobj is MetaProperty) //722:5
                         {

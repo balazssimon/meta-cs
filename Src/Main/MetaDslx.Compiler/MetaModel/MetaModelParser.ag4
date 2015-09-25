@@ -81,7 +81,7 @@ $NameDef(MetaConstant)
 constDeclaration : KConst $Property(Type) typeReference identifier (TAssign $Property(Value) expressionOrNewExpression)? TSemicolon;
 
 $Property(Declarations) 
-$NameDef(symbolType=MetaFunction,overload=true)
+$NameDef(symbolType=MetaGlobalFunction,overload=true)
 functionDeclaration : annotation* KExtern $Property(ReturnType) returnType identifier TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 
 $TypeUse
@@ -115,9 +115,9 @@ voidType
 	;
 
 invisibleType
-	: $PreDefSymbol(MetaDescriptor.Constants.Any) KAny
-	| $PreDefSymbol(MetaDescriptor.Constants.None) KNone
-	| $PreDefSymbol(MetaDescriptor.Constants.Error) KError
+	: $PreDefSymbol(MetaInstance.Any) KAny
+	| $PreDefSymbol(MetaInstance.None) KNone
+	| $PreDefSymbol(MetaInstance.Error) KError
 	;
 
 $TypeCtr(MetaNullableType)
