@@ -198,6 +198,7 @@ LINEBREAK : [\u0085\u2028\u2029] -> channel(WHITESPACE);
 LINE_COMMENT : '//' ~[\r\n]* -> channel(COMMENT);
 COMMENT_START : '/*' -> more, mode(MULTILINE_COMMENT), channel(COMMENT);
 
+
 mode MULTILINE_COMMENT;
 
 COMMENT_CRLF : '\r'? '\n' -> more, channel(COMMENT);

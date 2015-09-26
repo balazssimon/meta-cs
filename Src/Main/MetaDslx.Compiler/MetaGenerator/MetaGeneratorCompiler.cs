@@ -10,6 +10,11 @@ using Antlr4.Runtime.Misc;
 
 namespace MetaDslx.Compiler
 {
+    public class MetaGeneratorSyntaxKind
+    {
+        public const int TemplateOutput = 13;
+    }
+
     public class MetaGeneratorCompiler : MetaCompiler
     {
         public MetaGeneratorCompiler(string source, string fileName = null)

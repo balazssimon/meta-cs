@@ -11,7 +11,7 @@ namespace MetaDslx.Compiler
     
 using MetaDslx.Core;
 
-    internal class MetaModelParserAnnotator : MetaModelParserBaseVisitor<object>
+    public class MetaModelParserAnnotator : MetaModelParserBaseVisitor<object>
     {
         private MetaModelLexerAnnotator lexerAnnotator = new MetaModelLexerAnnotator();
         private List<object> grammarAnnotations = new List<object>();

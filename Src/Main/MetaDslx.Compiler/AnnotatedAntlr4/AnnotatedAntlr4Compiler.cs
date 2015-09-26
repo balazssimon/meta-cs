@@ -16,9 +16,10 @@ namespace MetaDslx.Compiler
 {
     public class Antlr4SyntaxKind
     {
-        public const int Action = 7;
-        public const int Options = 8;
-        public const int Tokens = 9;
+        public const int Action = 13;
+        public const int Options = 14;
+        public const int Tokens = 15;
+        public const int Annotation = 16;
     }
 
     public class AnnotatedAntlr4Compiler : MetaCompiler
@@ -790,13 +791,49 @@ namespace MetaDslx.Compiler
 
         private void GenerateAnnotatorVisitor()
         {
+            foreach (var token in currentGrammar.LexerRules)
+            {
+                foreach (var annot in token.Annotations)
+                {
+                    if (annot.Type.Name == "Syntax")
+                    {
+                        if (annot.Properties.Count(p => p.Name == "first") == 0)
+                        {
+                            annot.Properties.Add(new AnnotationProperty() { Name = "first", Value = token.Name });
+                        }
+                        if (annot.Properties.Count(p => p.Name == "last") == 0)
+                        {
+                            annot.Properties.Add(new AnnotationProperty() { Name = "last", Value = token.Name });
+                        }
+                    }
+                }
+            }
+            foreach (var mode in currentGrammar.Modes)
+            {
+                foreach (var annot in mode.Annotations)
+                {
+                    if (annot.Type.Name == "Syntax")
+                    {
+                        if (annot.Properties.Count(p => p.Name == "first") == 0)
+                        {
+                            annot.Properties.Add(new AnnotationProperty() { Name = "first", Value = mode.Name });
+                        }
+                        if (annot.Properties.Count(p => p.Name == "last") == 0)
+                        {
+                            annot.Properties.Add(new AnnotationProperty() { Name = "last", Value = mode.Name });
+                        }
+                    }
+                }
+            }
+
+
             if (this.isParser)
             {
-                WriteLine("internal class {0}Annotator : {0}BaseVisitor<object>", this.parserName);
+                WriteLine("public class {0}Annotator : {0}BaseVisitor<object>", this.parserName);
             }
             else
             {
-                WriteLine("internal class {0}Annotator", this.lexerName);
+                WriteLine("public class {0}Annotator", this.lexerName);
             }
             WriteLine("{");
             IncIndent();

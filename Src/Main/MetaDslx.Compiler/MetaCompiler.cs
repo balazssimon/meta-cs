@@ -18,12 +18,19 @@ namespace MetaDslx.Compiler
 
     public class SyntaxKind
     {
-        public const int Keyword = 1;
-        public const int Identifier = 2;
-        public const int String = 3;
-        public const int Number = 4;
-        public const int Comment = 5;
-        public const int DocComment = 6;
+        public const int Unknown = 0;
+        public const int Text = 1;
+        public const int Keyword = 2;
+        public const int Identifier = 3;
+        public const int String = 4;
+        public const int Literal = 5;
+        public const int Operator = 6;
+        public const int Delimiter = 7;
+        public const int WhiteSpace = 8;
+        public const int LineComment = 9;
+        public const int Comment = 10;
+        public const int DocComment = 11;
+        public const int Number = 12;
     }
 
     public abstract class MetaCompiler : IModelCompiler, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>

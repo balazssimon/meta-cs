@@ -198,6 +198,7 @@ $Syntax(kind=SyntaxKind.Comment)
 LINE_COMMENT : '//' ~[\r\n]* -> channel(COMMENT);
 COMMENT_START : '/*' -> more, mode(MULTILINE_COMMENT), channel(COMMENT);
 
+$Syntax(kind=SyntaxKind.Comment)
 mode MULTILINE_COMMENT;
 
 COMMENT_CRLF : '\r'? '\n' -> more, channel(COMMENT);

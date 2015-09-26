@@ -30,6 +30,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>MetaDslxKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,11 +62,13 @@
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserBaseVisitor.cs" />
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserListener.cs" />
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserVisitor.cs" />
+    <Compile Include="LanguageService\MetaLanguageServiceGenerator.cs" />
     <Compile Include="MetaCompiler.cs" />
     <Compile Include="MetaCompilerDiagnostics.cs" />
     <Compile Include="MetaCompilerException.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorCompiler.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorLexer.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorLexerAnnotator.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorParser.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorParserBaseListener.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorParserBaseVisitor.cs" />
@@ -95,10 +103,11 @@
       <TargetLanguage>CSharp</TargetLanguage>
     </Antlr4>
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.ag4" />
-    <Antlr4 Include="MetaGenerator\MetaGeneratorLexer.g4">
+    <None Include="MetaDslxKey.snk" />
+    <None Include="MetaGenerator\MetaGeneratorLexer.ag4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>MetaDslx.Compiler.MetaGenerator</CustomToolNamespace>
-    </Antlr4>
+    </None>
     <Antlr4 Include="MetaGenerator\MetaGeneratorParser.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>MetaDslx.Compiler.MetaGenerator</CustomToolNamespace>
@@ -111,6 +120,8 @@
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>MetaDslx.Compiler.AnnotatedAntlr4</CustomToolNamespace>
     </Antlr4>
+    <None Include="LanguageService\MetaLanguageServiceGenerator.mgen" />
+    <None Include="MetaGenerator\MetaGeneratorLexer.g4" />
     <None Include="MetaModel\MetaModelLexer.ag4" />
     <Antlr4 Include="MetaModel\MetaModelLexer.g4">
       <Generator>MSBuild:Compile</Generator>

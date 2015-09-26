@@ -57,6 +57,14 @@ namespace MetaDslx.TempConsole
                 //*/
                 /*
                 CompileAG4(
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaGenerator\MetaGeneratorLexer.ag4",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaGenerator\MetaGeneratorLexerAnnotator.cs",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaGenerator\MetaGeneratorLexer.g4"
+                    );
+                Console.WriteLine("----");
+                //*/
+                /*
+                CompileAG4(
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.ag4",
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexerAnnotator.cs",
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.g4"
@@ -68,18 +76,18 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.g4"
                     );
                 //*/
-                //*
-                Console.WriteLine("----");
-                CompileMeta(
-                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
-                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
-                    );
-                //*/
                 /*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.cs"
+                    );
+                //*/
+                /*
+                Console.WriteLine("----");
+                CompileMeta(
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
                 //*/
                 /*
@@ -93,6 +101,28 @@ namespace MetaDslx.TempConsole
                 }
                 //*/
                 //PrintScope("", (ModelObject)MetaDescriptor.MetaModel.GetMetaClass().Namespace.Parent);
+                /*
+                Console.WriteLine("----");
+                CompileGenerator(
+                    @"..\..\..\..\Main\MetaDslx.Compiler\LanguageService\MetaLanguageServiceGenerator.mgen",
+                    @"..\..\..\..\Main\MetaDslx.Compiler\LanguageService\MetaLanguageServiceGenerator.cs"
+                    );
+                //*/
+                /*
+                Console.WriteLine("----");
+                GenerateLanguageService(
+                    "AnnotatedAntlr4",
+                    @"..\..\..\..\Main\MetaDslx.VisualStudio\AnnotatedAntlr4LanguageService.cs",
+                    true);
+                GenerateLanguageService(
+                    "MetaGenerator",
+                    @"..\..\..\..\Main\MetaDslx.VisualStudio\MetaGeneratorLanguageService.cs",
+                    false);
+                GenerateLanguageService(
+                    "MetaModel",
+                    @"..\..\..\..\Main\MetaDslx.VisualStudio\MetaModelLanguageService.cs",
+                    false);
+                //*/
             }
             catch (Exception ex)
             {
@@ -294,6 +324,19 @@ namespace MetaDslx.TempConsole
                     writer.WriteLine(msg);
                     Console.WriteLine(msg);
                 }
+            }
+        }
+
+        private static void GenerateLanguageService(string language, string outputFileName, bool generateMultipleFiles)
+        {
+            MetaLanguageServiceGenerator generator = new MetaLanguageServiceGenerator(null);
+            generator.Properties.LanguageServiceNamespace = "MetaDslx.VisualStudio";
+            generator.Properties.LanguageClassName = language;
+            generator.Properties.LanguageFullName = "MetaDslx.Compiler." + language;
+            generator.Properties.GenerateMultipleFiles = generateMultipleFiles;
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(generator.Generate());
             }
         }
 
