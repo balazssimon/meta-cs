@@ -61,6 +61,7 @@ KTypeof : 'typeof';
 KDefault : 'default';
 
 // Tokens
+
 TSemicolon : ';';
 TColon : ':';
 TDot : '.';
@@ -305,6 +306,7 @@ TH_TAssignHat : TAssignHat -> type(TAssignHat);
 TH_TAssignLeftShift : TAssignLeftShift -> type(TAssignLeftShift);
 TH_TAssignRightShift : TAssignRightShift -> type(TAssignRightShift);
 TH_TOpenParenthesis : TOpenParenthesis {Type=TOpenParenthesis; _templateParenthesis++;};
+
 TH_TCloseParenthesis : TCloseParenthesis {Type=TCloseParenthesis; _templateParenthesis--; if(_templateParenthesis == 0) Mode(TEMPLATE_OUTPUT); };
 TH_TOpenBracket : TOpenBracket -> type(TCloseParenthesis);
 TH_TCloseBracket : TCloseBracket -> type(TCloseParenthesis);
@@ -355,6 +357,8 @@ mode TEMPLATE_OUTPUT;
 
 KEndTemplate : 'end template' ('\r'? '\n' | [\u0085\u2028\u2029]) -> mode(DEFAULT_MODE);
 
+
+TemplateLineControl : ('\\' | '^') [\u0020\u0009\u000B\u000C\u00A0\u001A]* (TemplateCrLf | TemplateLineBreak);
 
 TemplateOutput : (~[\\\^\[\r\n\u0085\u2028\u2029]+ | '\\' | '^');
 

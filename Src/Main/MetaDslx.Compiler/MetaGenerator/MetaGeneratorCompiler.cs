@@ -13,6 +13,7 @@ namespace MetaDslx.Compiler
     public class MetaGeneratorSyntaxKind
     {
         public const int TemplateOutput = 13;
+        public const int TemplateControl = 14;
     }
 
     public class MetaGeneratorCompiler : MetaCompiler
@@ -1104,24 +1105,14 @@ namespace MetaDslx.Compiler
 
         private bool ForceNewLine(MetaGeneratorParser.TemplateContentLineContext context)
         {
-            if (context.ChildCount >= 2 && context.children[context.ChildCount - 2] is MetaGeneratorParser.TemplateOutputContext
-                 && context.children[context.ChildCount - 1] is MetaGeneratorParser.TemplateLineEndContext)
-            {
-                string lineEndText = context.children[context.ChildCount - 2].GetText();
-                if (lineEndText == "^") return true;
-            }
-            return false;
+            string lineEndText = context.templateLineEnd().GetText();
+            return lineEndText.StartsWith("^");
         }
 
         private bool NoNewLine(MetaGeneratorParser.TemplateContentLineContext context)
         {
-            if (context.ChildCount >= 2 && context.children[context.ChildCount - 2] is MetaGeneratorParser.TemplateOutputContext
-                 && context.children[context.ChildCount - 1] is MetaGeneratorParser.TemplateLineEndContext)
-            {
-                string lineEndText = context.children[context.ChildCount - 2].GetText();
-                if (lineEndText == "\\") return true;
-            }
-            return false;
+            string lineEndText = context.templateLineEnd().GetText();
+            return lineEndText.StartsWith("\\");
         }
 
         public override object VisitTemplateContentLine(MetaGeneratorParser.TemplateContentLineContext context)
@@ -1129,7 +1120,6 @@ namespace MetaDslx.Compiler
             bool forceNewLine = this.ForceNewLine(context);
             bool noNewLine = this.NoNewLine(context);
             int lastIndex = context.ChildCount - 2;
-            if (forceNewLine || noNewLine) --lastIndex;
             int outputCount = 0;
             int nonWhitespaceOutputCount = 0;
             int outputExpressionCount = 0;
@@ -1329,6 +1319,13 @@ namespace MetaDslx.Compiler
             else if (context.TemplateLineBreak() != null)
             {
                 if (!context.TemplateLineBreak().GetText().StartsWith("\\"))
+                {
+                    WriteLine("{0}.AppendLine(); {1}", output, context.ToComment());
+                }
+            }
+            else if (context.TemplateLineControl() != null)
+            {
+                if (!context.TemplateLineControl().GetText().StartsWith("\\"))
                 {
                     WriteLine("{0}.AppendLine(); {1}", output, context.ToComment());
                 }

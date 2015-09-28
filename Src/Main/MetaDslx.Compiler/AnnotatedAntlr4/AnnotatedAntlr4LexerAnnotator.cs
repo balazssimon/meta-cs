@@ -136,20 +136,36 @@ namespace MetaDslx.Compiler
             annotList.Add(__tmp14);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.DOC_COMMENT, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.ARG_ACTION, annotList);
             SyntaxAnnotation __tmp15 = new SyntaxAnnotation();
-            __tmp15.Kind = SyntaxKind.Comment;
-            __tmp15.First = AnnotatedAntlr4Lexer.DOC_COMMENT;
-            __tmp15.Last = AnnotatedAntlr4Lexer.DOC_COMMENT;
+            __tmp15.Kind = Antlr4SyntaxKind.Action;
+            __tmp15.First = AnnotatedAntlr4Lexer.ARG_ACTION;
+            __tmp15.Last = AnnotatedAntlr4Lexer.ARG_ACTION;
             annotList.Add(__tmp15);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.BLOCK_COMMENT, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.UNTERMINATED_ARG_ACTION, annotList);
             SyntaxAnnotation __tmp16 = new SyntaxAnnotation();
-            __tmp16.Kind = SyntaxKind.Comment;
-            __tmp16.First = AnnotatedAntlr4Lexer.BLOCK_COMMENT;
-            __tmp16.Last = AnnotatedAntlr4Lexer.BLOCK_COMMENT;
+            __tmp16.Kind = Antlr4SyntaxKind.Action;
+            __tmp16.First = AnnotatedAntlr4Lexer.UNTERMINATED_ARG_ACTION;
+            __tmp16.Last = AnnotatedAntlr4Lexer.UNTERMINATED_ARG_ACTION;
             annotList.Add(__tmp16);
+            
+            annotList = new List<object>();
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.DOC_COMMENT, annotList);
+            SyntaxAnnotation __tmp17 = new SyntaxAnnotation();
+            __tmp17.Kind = SyntaxKind.Comment;
+            __tmp17.First = AnnotatedAntlr4Lexer.DOC_COMMENT;
+            __tmp17.Last = AnnotatedAntlr4Lexer.DOC_COMMENT;
+            annotList.Add(__tmp17);
+            
+            annotList = new List<object>();
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.BLOCK_COMMENT, annotList);
+            SyntaxAnnotation __tmp18 = new SyntaxAnnotation();
+            __tmp18.Kind = SyntaxKind.Comment;
+            __tmp18.First = AnnotatedAntlr4Lexer.BLOCK_COMMENT;
+            __tmp18.Last = AnnotatedAntlr4Lexer.BLOCK_COMMENT;
+            annotList.Add(__tmp18);
         }
         
         public object VisitTerminal(ITerminalNode node, Dictionary<object, List<object>> treeAnnotations)

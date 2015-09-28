@@ -53,9 +53,9 @@ public partial class MetaGeneratorParser : Parser {
 		CharLiteral=103, RegularStringLiteral=104, GuidLiteral=105, UTF8BOM=106, 
 		WHITESPACE=107, CRLF=108, LINEBREAK=109, LINE_COMMENT=110, COMMENT=111, 
 		DoubleQuoteVerbatimStringLiteral=112, TH_CRLF=113, TH_LINEBREAK=114, TH_TOpenParenthesis=115, 
-		TH_TCloseParenthesis=116, KEndTemplate=117, TemplateOutput=118, TemplateCrLf=119, 
-		TemplateLineBreak=120, TemplateStatementStart=121, TemplateStatementEnd=122, 
-		TS_TOpenBracket=123, TS_TCloseBracket=124, DoubleQuoteVerbatimStringLiteralStart=125;
+		TH_TCloseParenthesis=116, KEndTemplate=117, TemplateLineControl=118, TemplateOutput=119, 
+		TemplateCrLf=120, TemplateLineBreak=121, TemplateStatementStart=122, TemplateStatementEnd=123, 
+		TS_TOpenBracket=124, TS_TCloseBracket=125, DoubleQuoteVerbatimStringLiteralStart=126;
 	public const int
 		RULE_main = 0, RULE_namespaceDeclaration = 1, RULE_generatorDeclaration = 2, 
 		RULE_usingDeclaration = 3, RULE_configDeclaration = 4, RULE_configProperty = 5, 
@@ -127,7 +127,7 @@ public partial class MetaGeneratorParser : Parser {
 		"'++'", "'--'", "'::'", "'&'", "'^'", "'|'", "'&&'", "'^^'", "'||'", "'??'", 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, "'\"'", null, null, null, null, null, null, 
-		null, null, null, null, null, null, "'@\"'"
+		null, null, null, null, null, null, null, "'@\"'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "KNamespace", "KGenerator", "KUsing", "KConfiguration", "KProperties", 
@@ -150,9 +150,9 @@ public partial class MetaGeneratorParser : Parser {
 		"CharLiteral", "RegularStringLiteral", "GuidLiteral", "UTF8BOM", "WHITESPACE", 
 		"CRLF", "LINEBREAK", "LINE_COMMENT", "COMMENT", "DoubleQuoteVerbatimStringLiteral", 
 		"TH_CRLF", "TH_LINEBREAK", "TH_TOpenParenthesis", "TH_TCloseParenthesis", 
-		"KEndTemplate", "TemplateOutput", "TemplateCrLf", "TemplateLineBreak", 
-		"TemplateStatementStart", "TemplateStatementEnd", "TS_TOpenBracket", "TS_TCloseBracket", 
-		"DoubleQuoteVerbatimStringLiteralStart"
+		"KEndTemplate", "TemplateLineControl", "TemplateOutput", "TemplateCrLf", 
+		"TemplateLineBreak", "TemplateStatementStart", "TemplateStatementEnd", 
+		"TS_TOpenBracket", "TS_TCloseBracket", "DoubleQuoteVerbatimStringLiteralStart"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -3165,7 +3165,7 @@ public partial class MetaGeneratorParser : Parser {
 			State = 504;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
-			while (((((_la - 118)) & ~0x3f) == 0 && ((1L << (_la - 118)) & ((1L << (TemplateOutput - 118)) | (1L << (TemplateCrLf - 118)) | (1L << (TemplateLineBreak - 118)) | (1L << (TemplateStatementStart - 118)))) != 0)) {
+			while (((((_la - 118)) & ~0x3f) == 0 && ((1L << (_la - 118)) & ((1L << (TemplateLineControl - 118)) | (1L << (TemplateOutput - 118)) | (1L << (TemplateCrLf - 118)) | (1L << (TemplateLineBreak - 118)) | (1L << (TemplateStatementStart - 118)))) != 0)) {
 				{
 				{
 				State = 501; templateContentLine();
@@ -3317,6 +3317,7 @@ public partial class MetaGeneratorParser : Parser {
 	public partial class TemplateLineEndContext : ParserRuleContext {
 		public ITerminalNode TemplateCrLf() { return GetToken(MetaGeneratorParser.TemplateCrLf, 0); }
 		public ITerminalNode TemplateLineBreak() { return GetToken(MetaGeneratorParser.TemplateLineBreak, 0); }
+		public ITerminalNode TemplateLineControl() { return GetToken(MetaGeneratorParser.TemplateLineControl, 0); }
 		public TemplateLineEndContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -3347,7 +3348,7 @@ public partial class MetaGeneratorParser : Parser {
 			{
 			State = 518;
 			_la = TokenStream.La(1);
-			if ( !(_la==TemplateCrLf || _la==TemplateLineBreak) ) {
+			if ( !(((((_la - 118)) & ~0x3f) == 0 && ((1L << (_la - 118)) & ((1L << (TemplateLineControl - 118)) | (1L << (TemplateCrLf - 118)) | (1L << (TemplateLineBreak - 118)))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -7092,7 +7093,7 @@ public partial class MetaGeneratorParser : Parser {
 	}
 
 	public static readonly string _serializedATN =
-		"\x3\x430\xD6D1\x8206\xAD2D\x4417\xAEF1\x8D80\xAADD\x3\x7F\x35D\x4\x2\t"+
+		"\x3\x430\xD6D1\x8206\xAD2D\x4417\xAEF1\x8D80\xAADD\x3\x80\x35D\x4\x2\t"+
 		"\x2\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4\t"+
 		"\t\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10"+
 		"\t\x10\x4\x11\t\x11\x4\x12\t\x12\x4\x13\t\x13\x4\x14\t\x14\x4\x15\t\x15"+
@@ -7166,10 +7167,10 @@ public partial class MetaGeneratorParser : Parser {
 		"\x12\x14\x16\x18\x1A\x1C\x1E \"$&(*,.\x30\x32\x34\x36\x38:<>@\x42\x44"+
 		"\x46HJLNPRTVXZ\\^`\x62\x64\x66hjlnprtvxz|~\x80\x82\x84\x86\x88\x8A\x8C"+
 		"\x8E\x90\x92\x94\x96\x98\x9A\x9C\x9E\xA0\xA2\xA4\xA6\xA8\xAA\xAC\xAE\xB0"+
-		"\x2\xE\x3\x2yz\x3\x2\x1D+\x4\x2PSWX\x3\x2TV\x3\x2PQ\x3\x2KN\x3\x2GH\x3"+
-		"\x2\x36@\x3\x2WX\x3\x2./\x3\x2\x1B\x1C\x4\x2jjrr\x385\x2\xB2\x3\x2\x2"+
-		"\x2\x4\xC3\x3\x2\x2\x2\x6\xC7\x3\x2\x2\x2\b\xDA\x3\x2\x2\x2\n\xDC\x3\x2"+
-		"\x2\x2\f\xFC\x3\x2\x2\x2\xE\x100\x3\x2\x2\x2\x10\x102\x3\x2\x2\x2\x12"+
+		"\x2\xE\x4\x2xxz{\x3\x2\x1D+\x4\x2PSWX\x3\x2TV\x3\x2PQ\x3\x2KN\x3\x2GH"+
+		"\x3\x2\x36@\x3\x2WX\x3\x2./\x3\x2\x1B\x1C\x4\x2jjrr\x385\x2\xB2\x3\x2"+
+		"\x2\x2\x4\xC3\x3\x2\x2\x2\x6\xC7\x3\x2\x2\x2\b\xDA\x3\x2\x2\x2\n\xDC\x3"+
+		"\x2\x2\x2\f\xFC\x3\x2\x2\x2\xE\x100\x3\x2\x2\x2\x10\x102\x3\x2\x2\x2\x12"+
 		"\x107\x3\x2\x2\x2\x14\x110\x3\x2\x2\x2\x16\x118\x3\x2\x2\x2\x18\x121\x3"+
 		"\x2\x2\x2\x1A\x130\x3\x2\x2\x2\x1C\x132\x3\x2\x2\x2\x1E\x138\x3\x2\x2"+
 		"\x2 \x13B\x3\x2\x2\x2\"\x13D\x3\x2\x2\x2$\x14E\x3\x2\x2\x2&\x153\x3\x2"+
@@ -7307,9 +7308,9 @@ public partial class MetaGeneratorParser : Parser {
 		"\x62\x32\x2\x1FF\x1FD\x3\x2\x2\x2\x1FF\x1FE\x3\x2\x2\x2\x200\x203\x3\x2"+
 		"\x2\x2\x201\x1FF\x3\x2\x2\x2\x201\x202\x3\x2\x2\x2\x202\x204\x3\x2\x2"+
 		"\x2\x203\x201\x3\x2\x2\x2\x204\x205\x5`\x31\x2\x205]\x3\x2\x2\x2\x206"+
-		"\x207\ax\x2\x2\x207_\x3\x2\x2\x2\x208\x209\t\x2\x2\x2\x209\x61\x3\x2\x2"+
-		"\x2\x20A\x20C\a{\x2\x2\x20B\x20D\x5\x64\x33\x2\x20C\x20B\x3\x2\x2\x2\x20C"+
-		"\x20D\x3\x2\x2\x2\x20D\x20E\x3\x2\x2\x2\x20E\x20F\a|\x2\x2\x20F\x63\x3"+
+		"\x207\ay\x2\x2\x207_\x3\x2\x2\x2\x208\x209\t\x2\x2\x2\x209\x61\x3\x2\x2"+
+		"\x2\x20A\x20C\a|\x2\x2\x20B\x20D\x5\x64\x33\x2\x20C\x20B\x3\x2\x2\x2\x20C"+
+		"\x20D\x3\x2\x2\x2\x20D\x20E\x3\x2\x2\x2\x20E\x20F\a}\x2\x2\x20F\x63\x3"+
 		"\x2\x2\x2\x210\x21D\x5\x1C\xF\x2\x211\x21D\x5 \x11\x2\x212\x21D\x5$\x13"+
 		"\x2\x213\x21D\x5&\x14\x2\x214\x21D\x5(\x15\x2\x215\x21D\x5*\x16\x2\x216"+
 		"\x21D\x5.\x18\x2\x217\x21D\x5\x30\x19\x2\x218\x21D\x5\x42\"\x2\x219\x21D"+

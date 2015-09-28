@@ -116,55 +116,36 @@ namespace MetaDslx.VisualStudio
                 return instance;
             }
         }
-        private List<IVsColorableItem> colorableItems = new List<IVsColorableItem>();
-        public IList<IVsColorableItem> ColorableItems
+        private List<MetaModelLanguageColorableItem> colorableItems = new List<MetaModelLanguageColorableItem>();
+        public IList<MetaModelLanguageColorableItem> ColorableItems
         {
             get { return colorableItems; }
         }
-        protected TokenColor CreateColor(string name, COLORINDEX foreground, COLORINDEX background)
+        protected TokenColor CreateColor(string name, TokenType type, COLORINDEX foreground, COLORINDEX background)
         {
-            return CreateColor(name, foreground, background, false, false);
+            return CreateColor(name, type, foreground, background, false, false);
         }
-        protected TokenColor CreateColor(string name, COLORINDEX foreground, COLORINDEX background, bool bold, bool strikethrough)
+        protected TokenColor CreateColor(string name, TokenType type, COLORINDEX foreground, COLORINDEX background, bool bold, bool strikethrough)
         {
-            colorableItems.Add(new MetaModelLanguageColorableItem(name, foreground, background, bold, strikethrough));
+            colorableItems.Add(new MetaModelLanguageColorableItem(name, type, foreground, background, bold, strikethrough));
             return (TokenColor)colorableItems.Count;
-        }
-        protected void ColorToken(string tokenName, TokenType type, TokenColor color, TokenTriggers trigger)
-        {
-            definitions[tokenName] = new TokenDefinition(type, color, trigger);
-        }
-        protected static TokenDefinition GetDefinition(string tokenName)
-        {
-            TokenDefinition result;
-            return definitions.TryGetValue(tokenName, out result) ? result : defaultDefinition;
-        }
-        private static TokenDefinition defaultDefinition = new TokenDefinition(TokenType.Text, TokenColor.Text, TokenTriggers.None);
-        private static Dictionary<string, TokenDefinition> definitions = new Dictionary<string, TokenDefinition>();
-        protected struct TokenDefinition
-        {
-            public TokenDefinition(TokenType type, TokenColor color, TokenTriggers triggers)
-            {
-                this.TokenType = type;
-                this.TokenColor = color;
-                this.TokenTriggers = triggers;
-            }
-            public TokenType TokenType;
-            public TokenColor TokenColor;
-            public TokenTriggers TokenTriggers;
         }
     }
     public class MetaModelLanguageColorableItem : Microsoft.VisualStudio.TextManager.Interop.IVsColorableItem
     {
-        private string displayName;
-        private COLORINDEX background;
-        private COLORINDEX foreground;
         private uint fontFlags = (uint)FONTFLAGS.FF_DEFAULT;
-        public MetaModelLanguageColorableItem(string displayName, COLORINDEX foreground, COLORINDEX background, bool bold, bool strikethrough)
+        public string DisplayName { get; private set; }
+        public TokenType TokenType { get; private set; }
+        public COLORINDEX Background { get; private set; }
+        public COLORINDEX Foreground { get; private set; }
+        public uint FontFlags { get; private set; }
+        public MetaModelLanguageColorableItem(string displayName, TokenType tokenType, COLORINDEX foreground, COLORINDEX background, bool bold, bool strikethrough)
         {
-            this.displayName = displayName;
-            this.background = background;
-            this.foreground = foreground;
+            this.DisplayName = displayName;
+            this.TokenType = tokenType;
+            this.Background = background;
+            this.Foreground = foreground;
+            this.FontFlags = (uint)FONTFLAGS.FF_DEFAULT;
             if (bold)
                 this.fontFlags = this.fontFlags | (uint)FONTFLAGS.FF_BOLD;
             if (strikethrough)
@@ -181,7 +162,7 @@ namespace MetaDslx.VisualStudio
             {
                 throw new ArgumentOutOfRangeException("piForeground");
             }
-            piForeground[0] = foreground;
+            piForeground[0] = this.Foreground;
             if (null == piBackground)
             {
                 throw new ArgumentNullException("piBackground");
@@ -190,7 +171,7 @@ namespace MetaDslx.VisualStudio
             {
                 throw new ArgumentOutOfRangeException("piBackground");
             }
-            piBackground[0] = background;
+            piBackground[0] = this.Background;
             return Microsoft.VisualStudio.VSConstants.S_OK;
         }
         public int GetDefaultFontFlags(out uint pdwFontFlags)
@@ -200,7 +181,7 @@ namespace MetaDslx.VisualStudio
         }
         public int GetDisplayName(out string pbstrName)
         {
-            pbstrName = displayName;
+            pbstrName = this.DisplayName;
             return Microsoft.VisualStudio.VSConstants.S_OK;
         }
         #endregion
@@ -285,17 +266,12 @@ namespace MetaDslx.VisualStudio
                 }
                 this.LoadState(state, this.lexer);
                 IToken token = this.lexer.NextToken();
-                tokenInfo.Token = token.Type;
-                tokenInfo.Type = TokenType.Text;
-                tokenInfo.Color = TokenColor.Text;
-                tokenInfo.Trigger = TokenTriggers.None;
+                int tokenType = -1;
                 foreach (var modeAnnot in this.modeAnnotations)
                 {
                     if (this.lexer.CurrentMode >= modeAnnot.First && this.lexer.CurrentMode <= modeAnnot.Last)
                     {
-                        tokenInfo.Type = ToTokenType(modeAnnot.Kind);
-                        tokenInfo.Color = ToTokenColor(modeAnnot.Kind);
-                        tokenInfo.Trigger = TokenTriggers.None;
+                        tokenType = modeAnnot.Kind;
                         break;
                     }
                 }
@@ -303,11 +279,24 @@ namespace MetaDslx.VisualStudio
                 {
                     if (token.Type >= syntaxAnnot.First && token.Type <= syntaxAnnot.Last)
                     {
-                        tokenInfo.Type = ToTokenType(syntaxAnnot.Kind);
-                        tokenInfo.Color = ToTokenColor(syntaxAnnot.Kind);
-                        tokenInfo.Trigger = TokenTriggers.None;
+                        tokenType = syntaxAnnot.Kind;
                         break;
                     }
+                }
+                if (tokenType >= 1 && tokenType <= MetaModelLanguageConfig.Instance.ColorableItems.Count)
+                {
+                    MetaModelLanguageColorableItem colorItem = MetaModelLanguageConfig.Instance.ColorableItems[tokenType - 1];
+                    tokenInfo.Token = token.Type;
+                    tokenInfo.Type = colorItem.TokenType;
+                    tokenInfo.Color = (TokenColor)tokenType;
+                    tokenInfo.Trigger = TokenTriggers.None;
+                }
+                else
+                {
+                    tokenInfo.Token = token.Type;
+                    tokenInfo.Type = TokenType.Text;
+                    tokenInfo.Color = TokenColor.Text;
+                    tokenInfo.Trigger = TokenTriggers.None;
                 }
                 if (string.IsNullOrEmpty(token.Text) || this.currentOffset >= this.currentLine.Length)
                 {
@@ -323,14 +312,6 @@ namespace MetaDslx.VisualStudio
             {
                 return false;
             }
-        }
-        private TokenType ToTokenType(int kind)
-        {
-			return (TokenType)kind;
-        }
-        private TokenColor ToTokenColor(int kind)
-        {
-			return (TokenColor)kind;
         }
         public void SetSource(string source, int offset)
         {
@@ -461,7 +442,7 @@ namespace MetaDslx.VisualStudio
         }
         public override int GetItemCount(out int count)
         {
-            count = AnnotatedAntlr4LanguageConfig.Instance.ColorableItems.Count;
+            count = MetaModelLanguageConfig.Instance.ColorableItems.Count;
             return Microsoft.VisualStudio.VSConstants.S_OK;
         }
         #endregion
@@ -490,43 +471,39 @@ namespace MetaDslx.VisualStudio
         }
         public override AuthoringScope ParseSource(ParseRequest req)
         {
-            //MetaMofLanguageSource source = (MetaMofLanguageSource)this.GetSource(req.FileName);
-            /*switch (req.Reason)
+            MetaModelLanguageSource source = (MetaModelLanguageSource)this.GetSource(req.FileName);
+            switch (req.Reason)
             {
                 case ParseReason.Check:
                     // This is where you perform your syntax highlighting.
                     // Parse entire source as given in req.Text.
                     // Store results in the AuthoringScope object.
-                    OsloErrorReporter errorReporter = new OsloErrorReporter();
-                    dynamic program = this.codeParser.Parse(new StringReader(req.Text), errorReporter);
-                    source.ParseResult = program;
-                    foreach (var error in errorReporter.Errors)
+                    MetaModelCompiler compiler = new MetaModelCompiler(req.Text);
+                    compiler.Compile();
+                    foreach (var msg in compiler.Diagnostics.GetMessages())
                     {
                         TextSpan span = new TextSpan();
-                        span.iStartLine = error.LineNumber - 1;
-                        span.iEndLine = error.EndLineNumber - 1;
-                        span.iStartIndex = error.ColumnNumber - 1;
-                        span.iEndIndex = error.EndColumnNumber - 1;
+                        span.iStartLine = msg.TextSpan.StartLine - 1;
+                        span.iEndLine = msg.TextSpan.EndLine - 1;
+                        span.iStartIndex = msg.TextSpan.StartPosition - 1;
+                        span.iEndIndex = msg.TextSpan.EndPosition - 1;
                         Severity severity = Severity.Error;
-                        switch (error.Level)
+                        switch (msg.Severity)
                         {
-                            case ErrorLevel.DeprecationWarning:
-                                severity = Severity.Warning;
-                                break;
-                            case ErrorLevel.Error:
+                            case MetaDslx.Core.Severity.Error:
                                 severity = Severity.Error;
                                 break;
-                            case ErrorLevel.Message:
-                                severity = Severity.Hint;
-                                break;
-                            case ErrorLevel.Warning:
+                            case MetaDslx.Core.Severity.Warning:
                                 severity = Severity.Warning;
                                 break;
+                            case MetaDslx.Core.Severity.Info:
+                                severity = Severity.Hint;
+                                break;
                         }
-                        req.Sink.AddError(req.FileName, error.ToString(), span, severity);
+                        req.Sink.AddError(req.FileName, msg.Message, span, severity);
                     }
                     break;
-            }*/
+            }
             return new MetaModelLanguageAuthoringScope();
         }
     }

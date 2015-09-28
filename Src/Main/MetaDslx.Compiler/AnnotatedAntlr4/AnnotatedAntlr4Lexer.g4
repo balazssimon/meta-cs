@@ -332,10 +332,12 @@ mode ArgAction; // E.g., [int x, List<String> a[]]
         :	('"' '\\' . | ~["\\] '"')   -> more
         ;
 
+	
     ARG_ACTION
 		:   ']'                         -> popMode
 		;
 
+	
 	UNTERMINATED_ARG_ACTION // added this to return non-EOF token type here. EOF did something weird
 		:	EOF							-> popMode
 		;

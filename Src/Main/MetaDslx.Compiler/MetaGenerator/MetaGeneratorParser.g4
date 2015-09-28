@@ -82,7 +82,7 @@ templateSignature : KTemplate identifier TOpenParenthesis paramList? TCloseParen
 templateBody : templateContentLine*;
 templateContentLine : (templateOutput | templateStatementStartEnd)* templateLineEnd;
 templateOutput : TemplateOutput;
-templateLineEnd : TemplateCrLf | TemplateLineBreak;
+templateLineEnd : TemplateCrLf | TemplateLineBreak | TemplateLineControl;
 templateStatementStartEnd : TemplateStatementStart templateStatement? TemplateStatementEnd;
 
 templateStatement 

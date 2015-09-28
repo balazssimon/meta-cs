@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TextManager.Interop;
+﻿using Microsoft.VisualStudio.Package;
+using Microsoft.VisualStudio.TextManager.Interop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +19,19 @@ namespace MetaDslx.VisualStudio
 
         public MetaModelLanguageConfig()
         {
-            //CreateColor("Unknown", COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("Text", COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("Keyword", COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("Identifier", COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("String", COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("Literal", COLORINDEX.CI_MAGENTA, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("Operator", COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("Delimiter", COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("WhiteSpace", COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("LineComment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("Comment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("DocComment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK);
-            CreateColor("Number", COLORINDEX.CI_MAGENTA, COLORINDEX.CI_USERTEXT_BK);
+            //CreateColor("Unknown", TokenType.Text, COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("Text", TokenType.Text, COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("Keyword", TokenType.Keyword, COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("Identifier", TokenType.Identifier, COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("String", TokenType.String, COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("Literal", TokenType.Literal, COLORINDEX.CI_MAGENTA, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("Operator", TokenType.Operator, COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("Delimiter", TokenType.Delimiter, COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("WhiteSpace", TokenType.WhiteSpace, COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("LineComment", TokenType.LineComment, COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("Comment", TokenType.Comment, COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("DocComment", TokenType.Comment, COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK);
+            CreateColor("Number", TokenType.Literal, COLORINDEX.CI_MAGENTA, COLORINDEX.CI_USERTEXT_BK);
         }
     }
 }

@@ -80,6 +80,14 @@ namespace MetaDslx.VisualStudio
             this.RegisterLanguageService(typeof(AnnotatedAntlr4LanguageService));
         }
 
+        protected override void Initialize()
+        {
+            // Uncomment the following two lines if the additional syntax colors do not show:
+            //IVsFontAndColorCacheManager mgr = this.GetService(typeof(SVsFontAndColorCacheManager)) as IVsFontAndColorCacheManager;
+            //mgr.ClearAllCaches();
+            base.Initialize();
+        }
+
         private void RegisterLanguageService(Type languageServiceType)
         {
             ServiceCreatorCallback callback = new ServiceCreatorCallback(

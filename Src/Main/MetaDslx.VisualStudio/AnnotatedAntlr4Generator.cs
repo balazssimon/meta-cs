@@ -52,7 +52,7 @@ namespace MetaDslx.VisualStudio
             MultipleFileItem<object> antlr4GrammarInfo =
                 new MultipleFileItem<object>()
                 {
-                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4GrammarInfo, FileName = Path.ChangeExtension(this.InputFileName, ".Info.cs") }
+                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4GrammarInfo, FileName = Path.ChangeExtension(this.InputFileName, "Annotator.cs") }
                 };
             result.Add(antlr4GrammarInfo);
             return result;
