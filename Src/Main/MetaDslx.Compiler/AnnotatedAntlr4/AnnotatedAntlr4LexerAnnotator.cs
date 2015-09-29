@@ -48,124 +48,148 @@ namespace MetaDslx.Compiler
             annotList.Add(__tmp3);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.LINE_COMMENT, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.TOKEN_REF, annotList);
             SyntaxAnnotation __tmp4 = new SyntaxAnnotation();
-            __tmp4.Kind = SyntaxKind.Comment;
-            __tmp4.First = AnnotatedAntlr4Lexer.LINE_COMMENT;
-            __tmp4.Last = AnnotatedAntlr4Lexer.LINE_COMMENT;
+            __tmp4.Kind = Antlr4SyntaxKind.Token;
+            __tmp4.First = AnnotatedAntlr4Lexer.TOKEN_REF;
+            __tmp4.Last = AnnotatedAntlr4Lexer.TOKEN_REF;
             annotList.Add(__tmp4);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.OPTIONS, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.RULE_REF, annotList);
             SyntaxAnnotation __tmp5 = new SyntaxAnnotation();
-            __tmp5.Kind = Antlr4SyntaxKind.Options;
-            __tmp5.First = AnnotatedAntlr4Lexer.OPTIONS;
-            __tmp5.Last = AnnotatedAntlr4Lexer.OPTIONS;
+            __tmp5.Kind = Antlr4SyntaxKind.Rule;
+            __tmp5.First = AnnotatedAntlr4Lexer.RULE_REF;
+            __tmp5.Last = AnnotatedAntlr4Lexer.RULE_REF;
             annotList.Add(__tmp5);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.TOKENS, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.LEXER_CHAR_SET, annotList);
             SyntaxAnnotation __tmp6 = new SyntaxAnnotation();
-            __tmp6.Kind = Antlr4SyntaxKind.Tokens;
-            __tmp6.First = AnnotatedAntlr4Lexer.TOKENS;
-            __tmp6.Last = AnnotatedAntlr4Lexer.TOKENS;
+            __tmp6.Kind = SyntaxKind.Operator;
+            __tmp6.First = AnnotatedAntlr4Lexer.LEXER_CHAR_SET;
+            __tmp6.Last = AnnotatedAntlr4Lexer.LEXER_CHAR_SET;
             annotList.Add(__tmp6);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.IMPORT, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.LINE_COMMENT, annotList);
             SyntaxAnnotation __tmp7 = new SyntaxAnnotation();
-            __tmp7.First = AnnotatedAntlr4Lexer.IMPORT;
-            __tmp7.Last = AnnotatedAntlr4Lexer.NULL;
-            __tmp7.Kind = SyntaxKind.Keyword;
+            __tmp7.Kind = SyntaxKind.Comment;
+            __tmp7.First = AnnotatedAntlr4Lexer.LINE_COMMENT;
+            __tmp7.Last = AnnotatedAntlr4Lexer.LINE_COMMENT;
             annotList.Add(__tmp7);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.ID, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.OPTIONS, annotList);
             SyntaxAnnotation __tmp8 = new SyntaxAnnotation();
-            __tmp8.Kind = SyntaxKind.Identifier;
-            __tmp8.First = AnnotatedAntlr4Lexer.ID;
-            __tmp8.Last = AnnotatedAntlr4Lexer.ID;
+            __tmp8.Kind = Antlr4SyntaxKind.Options;
+            __tmp8.First = AnnotatedAntlr4Lexer.OPTIONS;
+            __tmp8.Last = AnnotatedAntlr4Lexer.OPTIONS;
             annotList.Add(__tmp8);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.INTEGER_LITERAL, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.TOKENS, annotList);
             SyntaxAnnotation __tmp9 = new SyntaxAnnotation();
-            __tmp9.Kind = SyntaxKind.Number;
-            __tmp9.First = AnnotatedAntlr4Lexer.INTEGER_LITERAL;
-            __tmp9.Last = AnnotatedAntlr4Lexer.INTEGER_LITERAL;
+            __tmp9.Kind = Antlr4SyntaxKind.Options;
+            __tmp9.First = AnnotatedAntlr4Lexer.TOKENS;
+            __tmp9.Last = AnnotatedAntlr4Lexer.TOKENS;
             annotList.Add(__tmp9);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.DECIMAL_LITERAL, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.IMPORT, annotList);
             SyntaxAnnotation __tmp10 = new SyntaxAnnotation();
-            __tmp10.Kind = SyntaxKind.Number;
-            __tmp10.First = AnnotatedAntlr4Lexer.DECIMAL_LITERAL;
-            __tmp10.Last = AnnotatedAntlr4Lexer.DECIMAL_LITERAL;
+            __tmp10.First = AnnotatedAntlr4Lexer.IMPORT;
+            __tmp10.Last = AnnotatedAntlr4Lexer.NULL;
+            __tmp10.Kind = SyntaxKind.Keyword;
             annotList.Add(__tmp10);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.SCIENTIFIC_LITERAL, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.ID, annotList);
             SyntaxAnnotation __tmp11 = new SyntaxAnnotation();
-            __tmp11.Kind = SyntaxKind.Number;
-            __tmp11.First = AnnotatedAntlr4Lexer.SCIENTIFIC_LITERAL;
-            __tmp11.Last = AnnotatedAntlr4Lexer.SCIENTIFIC_LITERAL;
+            __tmp11.Kind = SyntaxKind.Identifier;
+            __tmp11.First = AnnotatedAntlr4Lexer.ID;
+            __tmp11.Last = AnnotatedAntlr4Lexer.ID;
             annotList.Add(__tmp11);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.STRING_LITERAL, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.INTEGER_LITERAL, annotList);
             SyntaxAnnotation __tmp12 = new SyntaxAnnotation();
-            __tmp12.Kind = SyntaxKind.String;
-            __tmp12.First = AnnotatedAntlr4Lexer.STRING_LITERAL;
-            __tmp12.Last = AnnotatedAntlr4Lexer.STRING_LITERAL;
+            __tmp12.Kind = SyntaxKind.Number;
+            __tmp12.First = AnnotatedAntlr4Lexer.INTEGER_LITERAL;
+            __tmp12.Last = AnnotatedAntlr4Lexer.INTEGER_LITERAL;
             annotList.Add(__tmp12);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.UNTERMINATED_STRING_LITERAL, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.DECIMAL_LITERAL, annotList);
             SyntaxAnnotation __tmp13 = new SyntaxAnnotation();
-            __tmp13.Kind = SyntaxKind.String;
-            __tmp13.First = AnnotatedAntlr4Lexer.UNTERMINATED_STRING_LITERAL;
-            __tmp13.Last = AnnotatedAntlr4Lexer.UNTERMINATED_STRING_LITERAL;
+            __tmp13.Kind = SyntaxKind.Number;
+            __tmp13.First = AnnotatedAntlr4Lexer.DECIMAL_LITERAL;
+            __tmp13.Last = AnnotatedAntlr4Lexer.DECIMAL_LITERAL;
             annotList.Add(__tmp13);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.ACTION, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.SCIENTIFIC_LITERAL, annotList);
             SyntaxAnnotation __tmp14 = new SyntaxAnnotation();
-            __tmp14.Kind = Antlr4SyntaxKind.Action;
-            __tmp14.First = AnnotatedAntlr4Lexer.ACTION;
-            __tmp14.Last = AnnotatedAntlr4Lexer.ACTION;
+            __tmp14.Kind = SyntaxKind.Number;
+            __tmp14.First = AnnotatedAntlr4Lexer.SCIENTIFIC_LITERAL;
+            __tmp14.Last = AnnotatedAntlr4Lexer.SCIENTIFIC_LITERAL;
             annotList.Add(__tmp14);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.ARG_ACTION, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.STRING_LITERAL, annotList);
             SyntaxAnnotation __tmp15 = new SyntaxAnnotation();
-            __tmp15.Kind = Antlr4SyntaxKind.Action;
-            __tmp15.First = AnnotatedAntlr4Lexer.ARG_ACTION;
-            __tmp15.Last = AnnotatedAntlr4Lexer.ARG_ACTION;
+            __tmp15.Kind = SyntaxKind.String;
+            __tmp15.First = AnnotatedAntlr4Lexer.STRING_LITERAL;
+            __tmp15.Last = AnnotatedAntlr4Lexer.STRING_LITERAL;
             annotList.Add(__tmp15);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.UNTERMINATED_ARG_ACTION, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.UNTERMINATED_STRING_LITERAL, annotList);
             SyntaxAnnotation __tmp16 = new SyntaxAnnotation();
-            __tmp16.Kind = Antlr4SyntaxKind.Action;
-            __tmp16.First = AnnotatedAntlr4Lexer.UNTERMINATED_ARG_ACTION;
-            __tmp16.Last = AnnotatedAntlr4Lexer.UNTERMINATED_ARG_ACTION;
+            __tmp16.Kind = SyntaxKind.String;
+            __tmp16.First = AnnotatedAntlr4Lexer.UNTERMINATED_STRING_LITERAL;
+            __tmp16.Last = AnnotatedAntlr4Lexer.UNTERMINATED_STRING_LITERAL;
             annotList.Add(__tmp16);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.DOC_COMMENT, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.ACTION, annotList);
             SyntaxAnnotation __tmp17 = new SyntaxAnnotation();
-            __tmp17.Kind = SyntaxKind.Comment;
-            __tmp17.First = AnnotatedAntlr4Lexer.DOC_COMMENT;
-            __tmp17.Last = AnnotatedAntlr4Lexer.DOC_COMMENT;
+            __tmp17.Kind = Antlr4SyntaxKind.Action;
+            __tmp17.First = AnnotatedAntlr4Lexer.ACTION;
+            __tmp17.Last = AnnotatedAntlr4Lexer.ACTION;
             annotList.Add(__tmp17);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.BLOCK_COMMENT, annotList);
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.ARG_ACTION, annotList);
             SyntaxAnnotation __tmp18 = new SyntaxAnnotation();
-            __tmp18.Kind = SyntaxKind.Comment;
-            __tmp18.First = AnnotatedAntlr4Lexer.BLOCK_COMMENT;
-            __tmp18.Last = AnnotatedAntlr4Lexer.BLOCK_COMMENT;
+            __tmp18.Kind = Antlr4SyntaxKind.Action;
+            __tmp18.First = AnnotatedAntlr4Lexer.ARG_ACTION;
+            __tmp18.Last = AnnotatedAntlr4Lexer.ARG_ACTION;
             annotList.Add(__tmp18);
+            
+            annotList = new List<object>();
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.UNTERMINATED_ARG_ACTION, annotList);
+            SyntaxAnnotation __tmp19 = new SyntaxAnnotation();
+            __tmp19.Kind = Antlr4SyntaxKind.Action;
+            __tmp19.First = AnnotatedAntlr4Lexer.UNTERMINATED_ARG_ACTION;
+            __tmp19.Last = AnnotatedAntlr4Lexer.UNTERMINATED_ARG_ACTION;
+            annotList.Add(__tmp19);
+            
+            annotList = new List<object>();
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.DOC_COMMENT, annotList);
+            SyntaxAnnotation __tmp20 = new SyntaxAnnotation();
+            __tmp20.Kind = SyntaxKind.Comment;
+            __tmp20.First = AnnotatedAntlr4Lexer.DOC_COMMENT;
+            __tmp20.Last = AnnotatedAntlr4Lexer.DOC_COMMENT;
+            annotList.Add(__tmp20);
+            
+            annotList = new List<object>();
+            this.tokenAnnotations.Add(AnnotatedAntlr4Lexer.BLOCK_COMMENT, annotList);
+            SyntaxAnnotation __tmp21 = new SyntaxAnnotation();
+            __tmp21.Kind = SyntaxKind.Comment;
+            __tmp21.First = AnnotatedAntlr4Lexer.BLOCK_COMMENT;
+            __tmp21.Last = AnnotatedAntlr4Lexer.BLOCK_COMMENT;
+            annotList.Add(__tmp21);
         }
         
         public object VisitTerminal(ITerminalNode node, Dictionary<object, List<object>> treeAnnotations)

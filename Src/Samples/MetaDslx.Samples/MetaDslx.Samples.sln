@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Samples", "MetaDslx.Samples\MetaDslx.Samples.csproj", "{853C84E0-6CAD-431B-BF36-B096F64CAA31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Samples.Soal", "MetaDslx.Samples.Soal\MetaDslx.Samples.Soal.csproj", "{39BB8FA8-4DCD-49BC-8B22-7FB9D2E165DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{853C84E0-6CAD-431B-BF36-B096F64CAA31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{853C84E0-6CAD-431B-BF36-B096F64CAA31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{853C84E0-6CAD-431B-BF36-B096F64CAA31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{853C84E0-6CAD-431B-BF36-B096F64CAA31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39BB8FA8-4DCD-49BC-8B22-7FB9D2E165DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39BB8FA8-4DCD-49BC-8B22-7FB9D2E165DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39BB8FA8-4DCD-49BC-8B22-7FB9D2E165DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39BB8FA8-4DCD-49BC-8B22-7FB9D2E165DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -12,7 +12,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>MetaDslxKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -66,7 +66,7 @@
     <Compile Include="VsMultipleFileGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Key.snk" />
+    <None Include="MetaDslxKey.snk" />
     <None Include="packages.config" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
@@ -202,6 +202,27 @@
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
       <Name>MetaDslx.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MetaDslx.VisualStudio.AnnotatedAntlr4Template\MetaDslx.VisualStudio.AnnotatedAntlr4Template.csproj">
+      <Project>{09de6d64-0132-48f3-a46b-4a0e659c84ec}</Project>
+      <Name>MetaDslx.VisualStudio.AnnotatedAntlr4Template</Name>
+      <VSIXSubPath>ItemTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\MetaDslx.VisualStudio.MetaGeneratorTemplate\MetaDslx.VisualStudio.MetaGeneratorTemplate.csproj">
+      <Project>{53753507-98e0-4265-b111-1628f00c01d3}</Project>
+      <Name>MetaDslx.VisualStudio.MetaGeneratorTemplate</Name>
+      <VSIXSubPath>ItemTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\MetaDslx.VisualStudio.MetaModelTemplate\MetaDslx.VisualStudio.MetaModelTemplate.csproj">
+      <Project>{2d2331c9-f9ad-44df-a92f-d1d8b8bd55bc}</Project>
+      <Name>MetaDslx.VisualStudio.MetaModelTemplate</Name>
+      <VSIXSubPath>ItemTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

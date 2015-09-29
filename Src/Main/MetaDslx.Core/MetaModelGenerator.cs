@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelGenerator_37089296;
-    namespace __Hidden_MetaModelGenerator_37089296
+    using __Hidden_MetaModelGenerator_808576180;
+    namespace __Hidden_MetaModelGenerator_808576180
     {
         internal static class __Extensions
         {
@@ -4741,7 +4741,7 @@ namespace MetaDslx.Core //1:1
             string __tmp11Prefix = "	"; //613:1
             string __tmp12Suffix = string.Empty; 
             StringBuilder __tmp13 = new StringBuilder();
-            __tmp13.Append(GenerateModelObjectInstanceDeclaration((ModelObject)model.Namespace.Parent, mobjToTmp));
+            __tmp13.Append(GenerateModelObjectInstanceDeclaration(((ModelObject)model).GetRootNamespace(), mobjToTmp));
             using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
             {
                 bool __tmp13_first = true;
@@ -4756,7 +4756,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp11Prefix);
                     __out.Append(__tmp13Line);
                     __out.Append(__tmp12Suffix);
-                    __out.AppendLine(); //613:90
+                    __out.AppendLine(); //613:94
                 }
             }
             __out.AppendLine(); //614:1
@@ -4948,7 +4948,7 @@ namespace MetaDslx.Core //1:1
             string __tmp36Prefix = "			"; //629:1
             string __tmp37Suffix = string.Empty; 
             StringBuilder __tmp38 = new StringBuilder();
-            __tmp38.Append(GenerateModelObjectInstance((ModelObject)model.Namespace.Parent, mobjToTmp));
+            __tmp38.Append(GenerateModelObjectInstance(((ModelObject)model).GetRootNamespace(), mobjToTmp));
             using(StreamReader __tmp38Reader = new StreamReader(this.__ToStream(__tmp38.ToString())))
             {
                 bool __tmp38_first = true;
@@ -4963,14 +4963,14 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp36Prefix);
                     __out.Append(__tmp38Line);
                     __out.Append(__tmp37Suffix);
-                    __out.AppendLine(); //629:81
+                    __out.AppendLine(); //629:85
                 }
             }
             __out.AppendLine(); //630:1
             string __tmp39Prefix = "			"; //631:1
             string __tmp40Suffix = string.Empty; 
             StringBuilder __tmp41 = new StringBuilder();
-            __tmp41.Append(GenerateModelObjectInstanceInitializer((ModelObject)model.Namespace.Parent, mobjToTmp));
+            __tmp41.Append(GenerateModelObjectInstanceInitializer(((ModelObject)model).GetRootNamespace(), mobjToTmp));
             using(StreamReader __tmp41Reader = new StreamReader(this.__ToStream(__tmp41.ToString())))
             {
                 bool __tmp41_first = true;
@@ -4985,7 +4985,7 @@ namespace MetaDslx.Core //1:1
                     __out.Append(__tmp39Prefix);
                     __out.Append(__tmp41Line);
                     __out.Append(__tmp40Suffix);
-                    __out.AppendLine(); //631:92
+                    __out.AppendLine(); //631:96
                 }
             }
             __out.AppendLine(); //632:1

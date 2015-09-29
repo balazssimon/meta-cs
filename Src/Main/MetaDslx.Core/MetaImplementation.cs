@@ -506,7 +506,7 @@ namespace MetaDslx.Core
 
         public static string CSharpFullDescriptorName(this MetaDeclaration @this)
         {
-            return ((ModelObject)@this).MMetaModel.CSharpFullDescriptorName() + "." + @this.CSharpDescriptorName();
+            return @this.Model.CSharpFullDescriptorName() + "." + @this.CSharpDescriptorName();
         }
 
         public static string CSharpFullDescriptorName(this MetaProperty @this)
@@ -526,17 +526,17 @@ namespace MetaDslx.Core
 
         public static string CSharpFullInstanceName(this MetaModel @this)
         {
-            return ((ModelObject)@this).MMetaModel.CSharpFullInstancesName() + ".Meta";
+            return @this.CSharpFullInstancesName() + ".Meta";
         }
 
         public static string CSharpFullInstanceName(this MetaDeclaration @this)
         {
-            return ((ModelObject)@this).MMetaModel.CSharpFullInstancesName() + "." + @this.CSharpInstanceName();
+            return @this.Model.CSharpFullInstancesName() + "." + @this.CSharpInstanceName();
         }
 
         public static string CSharpFullInstanceName(this MetaProperty @this)
         {
-            return ((ModelObject)@this).MMetaModel.CSharpFullInstancesName() + "." + @this.CSharpInstanceName();
+            return @this.Class.Model.CSharpFullInstancesName() + "." + @this.CSharpInstanceName();
         }
 
         public static string CSharpImplName(this MetaType @this)
@@ -599,6 +599,13 @@ namespace MetaDslx.Core
                 return primitive.Name;
             }
             return @this.CSharpFullName();
+        }
+
+        public static ModelObject GetRootNamespace(this ModelObject mobj)
+        {
+            if (mobj == null) return mobj;
+            while (mobj.MParent != null && mobj.MParent is MetaNamespace) mobj = mobj.MParent;
+            return mobj;
         }
 
         public static List<string> GetAllSuperPropertyNames(this MetaClass @this)

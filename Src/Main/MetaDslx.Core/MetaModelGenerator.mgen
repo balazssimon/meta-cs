@@ -610,7 +610,7 @@ public static class [model.CSharpInstancesName()]
     [GenerateModelConstant(model, c)]
     [end loop]
 ^
-	[GenerateModelObjectInstanceDeclaration((ModelObject)model.Namespace.Parent, mobjToTmp)]
+	[GenerateModelObjectInstanceDeclaration(((ModelObject)model).GetRootNamespace(), mobjToTmp)]
 ^
 	[loop(model->Namespace->Declarations->cls:typeof(MetaClass)->prop:Properties where !HasBuiltInName((ModelObject)prop))]
 	public static readonly global::MetaDslx.Core.MetaProperty [cls.CSharpName()]_[prop.Name]Property;
@@ -626,9 +626,9 @@ public static class [model.CSharpInstancesName()]
             [GenerateModelConstantImpl(model, c, mobjToTmp)]
 			[end loop]
 ^
-			[GenerateModelObjectInstance((ModelObject)model.Namespace.Parent, mobjToTmp)]
+			[GenerateModelObjectInstance(((ModelObject)model).GetRootNamespace(), mobjToTmp)]
 ^
-			[GenerateModelObjectInstanceInitializer((ModelObject)model.Namespace.Parent, mobjToTmp)]
+			[GenerateModelObjectInstanceInitializer(((ModelObject)model).GetRootNamespace(), mobjToTmp)]
 ^
             foreach (var mo in ModelContext.Current.Model.Instances)
             {

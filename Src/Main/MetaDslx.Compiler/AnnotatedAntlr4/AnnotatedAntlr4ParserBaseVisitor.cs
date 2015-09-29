@@ -123,6 +123,16 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// <return>The visitor result.</return>
 	public virtual Result VisitTokensSpec([NotNull] AnnotatedAntlr4Parser.TokensSpecContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotatedId"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitAnnotatedId([NotNull] AnnotatedAntlr4Parser.AnnotatedIdContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.action"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>

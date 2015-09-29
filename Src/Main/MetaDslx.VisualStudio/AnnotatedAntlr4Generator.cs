@@ -40,10 +40,11 @@ namespace MetaDslx.VisualStudio
         {
             List<MultipleFileItem<object>> result = new List<MultipleFileItem<object>>();
             if (compiler == null) return result;
-            MultipleFileItem<object> antlr4Grammar =
+            string bareFileName = Path.GetFileNameWithoutExtension(this.InputFileName);
+            MultipleFileItem <object> antlr4Grammar =
                 new MultipleFileItem<object>()
                 {
-                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4, FileName = Path.ChangeExtension(this.InputFileName, ".g4") }
+                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4, FileName = bareFileName + ".g4" }
                 };
             antlr4Grammar.Properties.Add("Visitor", "True");
             antlr4Grammar.Properties.Add("Listener", "True");
@@ -52,7 +53,7 @@ namespace MetaDslx.VisualStudio
             MultipleFileItem<object> antlr4GrammarInfo =
                 new MultipleFileItem<object>()
                 {
-                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4GrammarInfo, FileName = Path.ChangeExtension(this.InputFileName, "Annotator.cs") }
+                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4GrammarInfo, FileName = bareFileName + "Annotator.cs" }
                 };
             result.Add(antlr4GrammarInfo);
             return result;

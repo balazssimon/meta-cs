@@ -83,8 +83,8 @@ namespace MetaDslx.VisualStudio
         protected override void Initialize()
         {
             // Uncomment the following two lines if the additional syntax colors do not show:
-            //IVsFontAndColorCacheManager mgr = this.GetService(typeof(SVsFontAndColorCacheManager)) as IVsFontAndColorCacheManager;
-            //mgr.ClearAllCaches();
+            IVsFontAndColorCacheManager mgr = this.GetService(typeof(SVsFontAndColorCacheManager)) as IVsFontAndColorCacheManager;
+            mgr.ClearAllCaches();
             base.Initialize();
         }
 

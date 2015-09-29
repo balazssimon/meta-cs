@@ -24,6 +24,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Antlr4.Runtime;
 using MetaDslx.Compiler;
+using System.Drawing;
+using Microsoft.VisualStudio;
 
 using VsCommands2K = Microsoft.VisualStudio.VSConstants.VSStd2KCmdID;
 
@@ -128,6 +130,7 @@ namespace [Properties.LanguageServiceNamespace]
         #endregion
     }
 
+
     public abstract class [Properties.LanguageClassName]LanguageConfigBase
     {
         private static [Properties.LanguageClassName]LanguageConfig instance = null;
@@ -149,38 +152,59 @@ namespace [Properties.LanguageServiceNamespace]
         {
             get { return colorableItems; }
         }
-        protected TokenColor CreateColor(string name, TokenType type, COLORINDEX foreground, COLORINDEX background)
+        protected TokenColor CreateColor(string name, TokenType type, Color foregroundColor)
         {
-            return CreateColor(name, type, foreground, background, false, false);
+            return CreateColor(name, type, foregroundColor, false, false);
         }
-        protected TokenColor CreateColor(string name, TokenType type, COLORINDEX foreground, COLORINDEX background, bool bold, bool strikethrough)
+        protected TokenColor CreateColor(string name, TokenType type, COLORINDEX foregroundIndex)
         {
-            colorableItems.Add(new [Properties.LanguageClassName]LanguageColorableItem(name, type, foreground, background, bold, strikethrough));
+            return CreateColor(name, type, foregroundIndex, false, false);
+        }
+        protected TokenColor CreateColor(string name, TokenType type, Color foregroundColor, bool bold, bool strikethrough)
+        {
+            colorableItems.Add(new [Properties.LanguageClassName]LanguageColorableItem(name, type, (COLORINDEX)(-1), COLORINDEX.CI_USERTEXT_BK, foregroundColor, Color.White, bold, strikethrough));
+            return (TokenColor)colorableItems.Count;
+        }
+        protected TokenColor CreateColor(string name, TokenType type, COLORINDEX foregroundIndex, bool bold, bool strikethrough)
+        {
+            colorableItems.Add(new [Properties.LanguageClassName]LanguageColorableItem(name, type, foregroundIndex, COLORINDEX.CI_USERTEXT_BK, Color.Black, Color.White, bold, strikethrough));
+            return (TokenColor)colorableItems.Count;
+        }
+        protected TokenColor CreateColor(string name, TokenType type, COLORINDEX foregroundIndex, COLORINDEX backgroundIndex, Color foregroundColor, Color backgroundColor, bool bold, bool strikethrough)
+        {
+            colorableItems.Add(new [Properties.LanguageClassName]LanguageColorableItem(name, type, foregroundIndex, backgroundIndex, foregroundColor, backgroundColor, bold, strikethrough));
             return (TokenColor)colorableItems.Count;
         }
     }
-    public class [Properties.LanguageClassName]LanguageColorableItem : Microsoft.VisualStudio.TextManager.Interop.IVsColorableItem
+    public class [Properties.LanguageClassName]LanguageColorableItem : IVsColorableItem, IVsHiColorItem
     {
-        private uint fontFlags = (uint)FONTFLAGS.FF_DEFAULT;
+        // Indicates that the returned RGB value is really an index
+        // into a predefined list of colors.
+        private const uint COLOR_INDEXED = 0x01000000;
 
         public string DisplayName { get; private set; }
         public TokenType TokenType { get; private set; }
-        public COLORINDEX Background { get; private set; }
-        public COLORINDEX Foreground { get; private set; }
+        public COLORINDEX BackgroundIndex { get; private set; }
+        public COLORINDEX ForegroundIndex { get; private set; }
+        public uint BackgroundColor { get; private set; }
+        public uint ForegroundColor { get; private set; }
         public uint FontFlags { get; private set; }
 
-        public [Properties.LanguageClassName]LanguageColorableItem(string displayName, TokenType tokenType, COLORINDEX foreground, COLORINDEX background, bool bold, bool strikethrough)
+        public [Properties.LanguageClassName]LanguageColorableItem(string displayName, TokenType tokenType, COLORINDEX foregroundIndex, COLORINDEX backgroundIndex, Color foregroundColor, Color backgroundColor, bool bold, bool strikethrough)
         {
             this.DisplayName = displayName;
             this.TokenType = tokenType;
-            this.Background = background;
-            this.Foreground = foreground;
+            this.BackgroundIndex = backgroundIndex;
+            this.ForegroundIndex = foregroundIndex;
+            this.BackgroundColor = (uint)System.Drawing.ColorTranslator.ToWin32(backgroundColor);
+            this.ForegroundColor = (uint)System.Drawing.ColorTranslator.ToWin32(foregroundColor);
             this.FontFlags = (uint)FONTFLAGS.FF_DEFAULT;
             if (bold)
-                this.fontFlags = this.fontFlags | (uint)FONTFLAGS.FF_BOLD;
+                this.FontFlags = this.FontFlags | (uint)FONTFLAGS.FF_BOLD;
             if (strikethrough)
-                this.fontFlags = this.fontFlags | (uint)FONTFLAGS.FF_STRIKETHROUGH;
+                this.FontFlags = this.FontFlags | (uint)FONTFLAGS.FF_STRIKETHROUGH;
         }
+
         #region IVsColorableItem Members
         public int GetDefaultColors(COLORINDEX["[]"] piForeground, COLORINDEX["[]"] piBackground)
         {
@@ -192,7 +216,7 @@ namespace [Properties.LanguageServiceNamespace]
             {
                 throw new ArgumentOutOfRangeException("piForeground");
             }
-            piForeground["[0]"] = this.Foreground;
+            piForeground["[0]"] = this.ForegroundIndex;
             if (null == piBackground)
             {
                 throw new ArgumentNullException("piBackground");
@@ -201,12 +225,12 @@ namespace [Properties.LanguageServiceNamespace]
             {
                 throw new ArgumentOutOfRangeException("piBackground");
             }
-            piBackground["[0]"] = this.Background;
+            piBackground["[0]"] = this.BackgroundIndex;
             return Microsoft.VisualStudio.VSConstants.S_OK;
         }
         public int GetDefaultFontFlags(out uint pdwFontFlags)
         {
-            pdwFontFlags = this.fontFlags;
+            pdwFontFlags = this.FontFlags;
             return Microsoft.VisualStudio.VSConstants.S_OK;
         }
         public int GetDisplayName(out string pbstrName)
@@ -214,8 +238,39 @@ namespace [Properties.LanguageServiceNamespace]
             pbstrName = this.DisplayName;
             return Microsoft.VisualStudio.VSConstants.S_OK;
         }
+
+        public int GetColorData(int cdElement, out uint pcrColor)
+        {
+            int retval = VSConstants.E_NOTIMPL;
+            pcrColor = 0;
+
+            switch ((__tagVSCOLORDATA)cdElement)
+            {
+                case __tagVSCOLORDATA.CD_BACKGROUND:
+                    pcrColor = this.BackgroundIndex > 0 ?
+                                   (uint)this.BackgroundIndex | COLOR_INDEXED
+                                   : this.BackgroundColor;
+                    retval = VSConstants.S_OK;
+                    break;
+
+                case __tagVSCOLORDATA.CD_FOREGROUND:
+                case __tagVSCOLORDATA.CD_LINECOLOR:
+                    pcrColor = this.ForegroundIndex > 0 ?
+                                   (uint)this.ForegroundIndex | COLOR_INDEXED
+                                   : this.ForegroundColor;
+                    retval = VSConstants.S_OK;
+                    break;
+
+                default:
+                    retval = VSConstants.E_INVALIDARG;
+                    break;
+            }
+            return retval;
+
+        }
         #endregion
     }
+
 
     ["[ComVisible(true)]"]
     ["[Guid("+Properties.LanguageClassName+"LanguageConfig."+Properties.LanguageClassName+"LanguageGeneratorServiceGuid)]"]

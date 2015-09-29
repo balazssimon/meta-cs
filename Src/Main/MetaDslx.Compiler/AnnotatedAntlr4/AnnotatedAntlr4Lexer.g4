@@ -32,8 +32,11 @@
 lexer grammar AnnotatedAntlr4Lexer;
 
 tokens {
+	
 	TOKEN_REF,
+	
 	RULE_REF,
+	
 	LEXER_CHAR_SET
 }
 

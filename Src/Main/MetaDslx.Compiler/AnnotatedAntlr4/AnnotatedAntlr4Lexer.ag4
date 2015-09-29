@@ -32,8 +32,11 @@
 lexer grammar AnnotatedAntlr4Lexer;
 
 tokens {
+	$Syntax(kind=Antlr4SyntaxKind.Token)
 	TOKEN_REF,
+	$Syntax(kind=Antlr4SyntaxKind.Rule)
 	RULE_REF,
+	$Syntax(kind=SyntaxKind.Operator)
 	LEXER_CHAR_SET
 }
 
@@ -128,7 +131,7 @@ BEGIN_ARG_ACTION
 //
 $Syntax(kind=Antlr4SyntaxKind.Options)
 OPTIONS      : 'options' [ \t\f\n\r]* '{'  ;
-$Syntax(kind=Antlr4SyntaxKind.Tokens)
+$Syntax(kind=Antlr4SyntaxKind.Options)
 TOKENS		 : 'tokens'  [ \t\f\n\r]* '{'  ;
 
 $Syntax(first=IMPORT, last=NULL, kind=SyntaxKind.Keyword)

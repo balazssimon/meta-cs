@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Antlr4.Runtime.Misc;
+using MetaDslx.Compiler.Properties;
+using System.IO;
+using System.Diagnostics;
 
 /*
  * Reserved annotations:
@@ -18,8 +22,9 @@ namespace MetaDslx.Compiler
     {
         public const int Action = 13;
         public const int Options = 14;
-        public const int Tokens = 15;
-        public const int Annotation = 16;
+        public const int Token = 15;
+        public const int Rule = 16;
+        public const int Annotation = 17;
     }
 
     public class AnnotatedAntlr4Compiler : MetaCompiler
@@ -30,8 +35,17 @@ namespace MetaDslx.Compiler
         public AnnotatedAntlr4Lexer Lexer { get; private set; }
         public AnnotatedAntlr4Parser Parser { get; private set; }
         public CommonTokenStream CommonTokenStream { get; private set; }
+
+        public string Antlr4Jar { get; private set; }
+
         public string Antlr4Source { get; private set; }
         public string GeneratedSource { get; private set; }
+        public string Antlr4LexerSource { get; private set; }
+        public string Antlr4ParserSource { get; private set; }
+        public string Antlr4ParserBaseListenerSource { get; private set; }
+        public string Antlr4ParserBaseVisitorSource { get; private set; }
+        public string Antlr4ParserListenerSource { get; private set; }
+        public string Antlr4ParserVisitorSource { get; private set; }
 
 
         public override List<object> LexerAnnotations { get; protected set; }
@@ -44,7 +58,38 @@ namespace MetaDslx.Compiler
         public AnnotatedAntlr4Compiler(string source, string fileName = null)
             : base(source, fileName)
         {
+            
+        }
 
+        private bool PrepareAntlr4()
+        {
+            try
+            {
+                string appDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                Antlr4Jar = Path.Combine(appDataDir, Resources.Antlr4JarName);
+                if (!File.Exists(Antlr4Jar))
+                {
+                    File.WriteAllBytes(Antlr4Jar, Resources.antlr_4_5_1_complete);
+                }
+                return new FileInfo(Antlr4Jar).Length == Resources.antlr_4_5_1_complete.Length;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
+
+        private void CompileAntlr4()
+        {
+            string tempDir = System.IO.Path.GetTempPath();
+            string antlr4File = Path.Combine(tempDir, "Grammar.g4");
+            File.WriteAllText(antlr4File, this.Antlr4Source);
+            ProcessStartInfo processInfo =
+                new ProcessStartInfo("java", "java -jar antlr-4.5.1-complete.jar -Dlanguage=CSharp AnnotatedAntlr4Lexer.g4 -o AnnotatedAntlr4 -listener -visitor -package MetaDslx.Compiler")
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                };
         }
 
         protected override void DoCompile()
@@ -66,6 +111,11 @@ namespace MetaDslx.Compiler
             this.LexerAnnotations = annotator.LexerAnnotations;
             this.ModeAnnotations = annotator.ModeAnnotations;
             this.TokenAnnotations = annotator.TokenAnnotations;
+
+            if (!this.Diagnostics.HasErrors() && this.PrepareAntlr4())
+            {
+                this.CompileAntlr4();
+            }
         }
     }
 
@@ -231,6 +281,23 @@ namespace MetaDslx.Compiler
             }
 
             return base.VisitGrammarSpec(context);
+        }
+
+        public override object VisitTokensSpec([NotNull] AnnotatedAntlr4Parser.TokensSpecContext context)
+        {
+            foreach (var id in context.annotatedId())
+            {
+                this.currentLexerRule = new LexerRule();
+                this.currentLexerRule.Name = id.id().GetText();
+                if (this.currentLexerRule != null)
+                {
+                    this.currentGrammar.LexerRules.Add(this.currentLexerRule);
+                    this.currentMode.LexerRules.Add(this.currentLexerRule);
+                    this.CollectAnnotations(id.annotation());
+                    this.currentLexerRule = null;
+                }
+            }
+            return null;
         }
 
         public override object VisitOption(AnnotatedAntlr4Parser.OptionContext context)

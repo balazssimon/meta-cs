@@ -85,6 +85,12 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	Result VisitTokensSpec([NotNull] AnnotatedAntlr4Parser.TokensSpecContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotatedId"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotatedId([NotNull] AnnotatedAntlr4Parser.AnnotatedIdContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.action"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

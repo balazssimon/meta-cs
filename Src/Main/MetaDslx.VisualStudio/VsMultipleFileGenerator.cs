@@ -246,18 +246,26 @@ namespace MetaDslx.VisualStudio
         {
             rgbOutputFileContents[0] = IntPtr.Zero;
             pcbOutput = 0;
+            string inputPath = Path.GetFullPath(wszInputFilePath);
             if (project == null)
             {
                 EnvDTE.DTE dte = (EnvDTE.DTE)Package.GetGlobalService(typeof(EnvDTE.DTE));
-                Array ary = (Array)dte.ActiveSolutionProjects;
-                if (ary.Length > 0)
+                EnvDTE.Projects projects = dte.Solution.Projects;
+                if (projects.Count > 0)
                 {
-                    project = (EnvDTE.Project)ary.GetValue(0);
-                    //System.Windows.Forms.MessageBox.Show(project.UniqueName);
-                }
-                else
-                {
-                    //System.Windows.Forms.MessageBox.Show(ary.Length.ToString());
+                    foreach (var prjObj in projects)
+                    {
+                        EnvDTE.Project prj = prjObj as EnvDTE.Project;
+                        if (prj != null)
+                        {
+                            string projectPath = Path.GetFullPath(Path.GetDirectoryName(prj.FullName));
+                            if (inputPath.StartsWith(projectPath))
+                            {
+                                project = prj;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
             if (project == null) return Microsoft.VisualStudio.VSConstants.S_FALSE;
@@ -432,8 +440,9 @@ namespace MetaDslx.VisualStudio
 
         public int DefaultExtension(out string pbstrDefaultExtension)
         {
-            pbstrDefaultExtension = ".txt";
-            return Microsoft.VisualStudio.VSConstants.S_OK;
+            //pbstrDefaultExtension = ".txt";
+            pbstrDefaultExtension = null;
+            return Microsoft.VisualStudio.VSConstants.S_FALSE;
         }
 
     }

@@ -142,6 +142,18 @@ public partial class AnnotatedAntlr4ParserBaseListener : IAnnotatedAntlr4ParserL
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTokensSpec([NotNull] AnnotatedAntlr4Parser.TokensSpecContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotatedId"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAnnotatedId([NotNull] AnnotatedAntlr4Parser.AnnotatedIdContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotatedId"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAnnotatedId([NotNull] AnnotatedAntlr4Parser.AnnotatedIdContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.action"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

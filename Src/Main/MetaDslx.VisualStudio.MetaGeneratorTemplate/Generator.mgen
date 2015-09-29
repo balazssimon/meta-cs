@@ -1,0 +1,6 @@
+﻿namespace $rootnamespace$;
+generator $safeitemrootname$ for object;
+
+template Generate()
+
+end template
