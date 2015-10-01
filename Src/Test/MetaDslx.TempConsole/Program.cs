@@ -76,7 +76,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.g4"
                     );
                 //*/
-                /*
+                //*
                 CompileAG4(@"c:\Temp\Meta", @"MetaModelLexer");
                 Console.WriteLine("----");
                 CompileAG4(@"c:\Temp\Meta", @"MetaModelParser");

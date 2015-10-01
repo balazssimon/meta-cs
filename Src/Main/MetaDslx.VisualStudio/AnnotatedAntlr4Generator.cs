@@ -40,14 +40,9 @@ namespace MetaDslx.VisualStudio
         public override IEnumerable<MultipleFileItem<object>> GetFileItems()
         {
             List<MultipleFileItem<object>> result = new List<MultipleFileItem<object>>();
-            if (compiler == null || compiler.Diagnostics.HasErrors()) return result;
+            if (compiler == null) return result;
             string bareFileName = Path.GetFileNameWithoutExtension(this.InputFileName);
-            MultipleFileItem<object> antlr4GrammarInfo =
-                new MultipleFileItem<object>()
-                {
-                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4GrammarInfo, FileName = bareFileName + "Annotator.cs" }
-                };
-            result.Add(antlr4GrammarInfo);
+            //if (compiler.H)
             MultipleFileItem<object> antlr4Grammar =
                 new MultipleFileItem<object>()
                 {
@@ -58,6 +53,12 @@ namespace MetaDslx.VisualStudio
             antlr4Grammar.Properties.Add("Listener", "True");
             antlr4Grammar.Properties.Add("TargetLanguage", "CSharp");
             result.Add(antlr4Grammar);
+            MultipleFileItem<object> antlr4GrammarInfo =
+                new MultipleFileItem<object>()
+                {
+                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4GrammarInfo, FileName = bareFileName + "Annotator.cs" }
+                };
+            result.Add(antlr4GrammarInfo);
             result.Add(
                 new MultipleFileItem<object>()
                 {

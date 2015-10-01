@@ -43,6 +43,8 @@ namespace MetaDslx.Compiler
         public string OutputDirectory { get; private set; }
         public bool IsLexer { get; internal set; }
         public bool IsParser { get; internal set; }
+        public bool HasAnnotatedAntlr4Errors { get; private set; }
+        public bool HasAntlr4Errors { get; private set; }
 
 
         public override List<object> LexerAnnotations { get; protected set; }
@@ -99,6 +101,49 @@ namespace MetaDslx.Compiler
             return false;
         }
 
+        private void ProcessAntlr4ErrorLine(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line)) return;
+            Core.Severity severity = Core.Severity.Info;
+            if (line.StartsWith("error"))
+            {
+                severity = Core.Severity.Error;
+            }
+            else if (line.StartsWith("warning"))
+            {
+                severity = Core.Severity.Warning;
+            }
+            int colonIndex = line.IndexOf(':');
+            if (colonIndex >= 0)
+            {
+                line = line.Substring(colonIndex + 1);
+                colonIndex = line.IndexOf(':');
+                if (colonIndex >= 0)
+                {
+                    string fileName = line.Substring(0, colonIndex).Trim();
+                    line = line.Substring(colonIndex + 1);
+                    colonIndex = line.IndexOf(':');
+                    if (colonIndex >= 0)
+                    {
+                        string lineIndexStr = line.Substring(0, colonIndex).Trim();
+                        line = line.Substring(colonIndex + 1);
+                        colonIndex = line.IndexOf(':');
+                        if (colonIndex >= 0)
+                        {
+                            string colIndexStr = line.Substring(0, colonIndex).Trim();
+                            line = line.Substring(colonIndex + 1);
+                            int lineIndex;
+                            int.TryParse(lineIndexStr, out lineIndex);
+                            int colIndex;
+                            int.TryParse(colIndexStr, out colIndex);
+                            ++colIndex;
+                            this.Diagnostics.AddMessage(severity, line, fileName, new Antlr4TextSpan(lineIndex, colIndex, lineIndex, colIndex));
+                        }
+                    }
+                }
+            }
+        }
+
         private void CompileAntlr4()
         {
             if (this.OutputDirectory == null) return;
@@ -131,26 +176,20 @@ namespace MetaDslx.Compiler
                     while (!proc.StandardError.EndOfStream)
                     {
                         string line = proc.StandardError.ReadLine();
-                        if (!string.IsNullOrWhiteSpace(line))
-                        {
-                            if (line.StartsWith("error"))
-                            {
-                                this.Diagnostics.AddError(line, this.FileName, (object)null, false);
-                            }
-                            else if (line.StartsWith("warning"))
-                            {
-                                this.Diagnostics.AddWarning(line, this.FileName, (object)null, false);
-                            }
-                            else
-                            {
-                                this.Diagnostics.AddInfo(line, this.FileName, (object)null, false);
-                            }
-                        }
+                        this.ProcessAntlr4ErrorLine(line);
                     }
-                    if (this.GenerateOutput && !this.Diagnostics.HasErrors())
+                    this.HasAntlr4Errors = this.Diagnostics.HasErrors();
+                    if (this.GenerateOutput && !this.HasAntlr4Errors)
                     {
                         this.CopyToOutput(tmpDir, bareFileName + ".cs");
                         this.CopyToOutput(tmpDir, bareFileName + ".tokens");
+                        if (this.IsParser)
+                        {
+                            this.CopyToOutput(tmpDir, bareFileName + "BaseVisitor.cs");
+                            this.CopyToOutput(tmpDir, bareFileName + "BaseListener.cs");
+                            this.CopyToOutput(tmpDir, bareFileName + "Visitor.cs");
+                            this.CopyToOutput(tmpDir, bareFileName + "Listener.cs");
+                        }
                     }
                 }
                 finally
@@ -184,7 +223,8 @@ namespace MetaDslx.Compiler
             this.ModeAnnotations = annotator.ModeAnnotations;
             this.TokenAnnotations = annotator.TokenAnnotations;
 
-            if (!this.Diagnostics.HasErrors() && this.PrepareAntlr4())
+            this.HasAnnotatedAntlr4Errors = this.Diagnostics.HasErrors();
+            if (!this.HasAnnotatedAntlr4Errors && this.PrepareAntlr4())
             {
                 this.CompileAntlr4();
             }
