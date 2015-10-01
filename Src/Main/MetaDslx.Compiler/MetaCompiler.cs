@@ -38,6 +38,7 @@ namespace MetaDslx.Compiler
         public ModelCompilerDiagnostics Diagnostics { get; private set; }
         public string FileName { get; private set; }
         public string Source { get; private set; }
+        public bool GenerateOutput { get; set; }
         public RootScope GlobalScope
         {
             get;
@@ -53,6 +54,7 @@ namespace MetaDslx.Compiler
             this.Diagnostics = new ModelCompilerDiagnostics();
             this.Source = source;
             this.FileName = fileName;
+            this.GenerateOutput = true;
             this.GlobalScope = new RootScope();
             this.Data = new MetaCompilerData(this);
             this.NameProvider = new Antlr4DefaultNameProvider();

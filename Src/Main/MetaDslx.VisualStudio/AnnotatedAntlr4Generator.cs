@@ -11,6 +11,7 @@ namespace MetaDslx.VisualStudio
 {
     internal enum AnnotatedAntlr4GeneratorItemKind
     {
+        External,
         Antlr4,
         Antlr4GrammarInfo
     }
@@ -30,7 +31,7 @@ namespace MetaDslx.VisualStudio
         {
             if (this.InputFileContents != null)
             {
-                compiler = new AnnotatedAntlr4Compiler(this.InputFileContents);
+                compiler = new AnnotatedAntlr4Compiler(this.InputFileContents, this.InputDirectory, this.InputFileName);
                 compiler.CSharpNamespace = defaultNamespace;
                 compiler.Compile();
             }
@@ -39,23 +40,72 @@ namespace MetaDslx.VisualStudio
         public override IEnumerable<MultipleFileItem<object>> GetFileItems()
         {
             List<MultipleFileItem<object>> result = new List<MultipleFileItem<object>>();
-            if (compiler == null) return result;
+            if (compiler == null || compiler.Diagnostics.HasErrors()) return result;
             string bareFileName = Path.GetFileNameWithoutExtension(this.InputFileName);
-            MultipleFileItem <object> antlr4Grammar =
-                new MultipleFileItem<object>()
-                {
-                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4, FileName = bareFileName + ".g4" }
-                };
-            antlr4Grammar.Properties.Add("Visitor", "True");
-            antlr4Grammar.Properties.Add("Listener", "True");
-            antlr4Grammar.Properties.Add("TargetLanguage", "CSharp");
-            result.Add(antlr4Grammar);
             MultipleFileItem<object> antlr4GrammarInfo =
                 new MultipleFileItem<object>()
                 {
                     Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4GrammarInfo, FileName = bareFileName + "Annotator.cs" }
                 };
             result.Add(antlr4GrammarInfo);
+            MultipleFileItem<object> antlr4Grammar =
+                new MultipleFileItem<object>()
+                {
+                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4, FileName = bareFileName + ".g4" },
+                    GeneratedExternally = true
+                };
+            antlr4Grammar.Properties.Add("Visitor", "True");
+            antlr4Grammar.Properties.Add("Listener", "True");
+            antlr4Grammar.Properties.Add("TargetLanguage", "CSharp");
+            result.Add(antlr4Grammar);
+            result.Add(
+                new MultipleFileItem<object>()
+                {
+                    Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.External, FileName = bareFileName + ".cs" },
+                    GeneratedExternally = true
+                });
+            if (compiler.IsParser)
+            {
+                result.Add(
+                    new MultipleFileItem<object>()
+                    {
+                        Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.External, FileName = bareFileName + ".tokens" },
+                        GeneratedExternally = true
+                    });
+                result.Add(
+                    new MultipleFileItem<object>()
+                    {
+                        Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.External, FileName = bareFileName + "Listener.cs" },
+                        GeneratedExternally = true
+                    });
+                result.Add(
+                    new MultipleFileItem<object>()
+                    {
+                        Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.External, FileName = bareFileName + "Visitor.cs" },
+                        GeneratedExternally = true
+                    });
+                result.Add(
+                    new MultipleFileItem<object>()
+                    {
+                        Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.External, FileName = bareFileName + "BaseListener.cs" },
+                        GeneratedExternally = true
+                    });
+                result.Add(
+                    new MultipleFileItem<object>()
+                    {
+                        Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.External, FileName = bareFileName + "BaseVisitor.cs" },
+                        GeneratedExternally = true
+                    });
+            }
+            else if (compiler.IsLexer)
+            {
+                result.Add(
+                    new MultipleFileItem<object>()
+                    {
+                        Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.External, FileName = bareFileName + ".tokens" },
+                        GeneratedExternally = true
+                    });
+            }
             return result;
         }
 

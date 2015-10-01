@@ -77,13 +77,18 @@ namespace MetaDslx.TempConsole
                     );
                 //*/
                 /*
+                CompileAG4(@"c:\Temp\Meta", @"MetaModelLexer");
+                Console.WriteLine("----");
+                CompileAG4(@"c:\Temp\Meta", @"MetaModelParser");
+                //*/
+                /*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.cs"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
@@ -130,23 +135,21 @@ namespace MetaDslx.TempConsole
             }
         }
 
-        private static void CompileAG4(string fileName, string outputFileName, string antlr4FileName)
+        private static void CompileAG4(string outputDirectory, string antlr4FileName)
         {
             string source;
+            string fileName = Path.Combine(outputDirectory, antlr4FileName + ".ag4");
             using (StreamReader reader = new StreamReader(fileName))
             {
                 source = reader.ReadToEnd();
             }
-            AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(source, fileName);
+            AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(source, outputDirectory, fileName);
             compiler.CSharpNamespace = "MetaDslx.Compiler";
             compiler.Compile();
+            string outputFileName = Path.Combine(outputDirectory, antlr4FileName + "Annotator.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
                 writer.WriteLine(compiler.GeneratedSource);
-            }
-            using (StreamWriter writer = new StreamWriter(antlr4FileName))
-            {
-                writer.WriteLine(compiler.Antlr4Source);
             }
             using (StreamWriter writer = new StreamWriter("messages_a4.txt"))
             {

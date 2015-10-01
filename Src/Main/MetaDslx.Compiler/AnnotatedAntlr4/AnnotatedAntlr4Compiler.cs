@@ -40,12 +40,9 @@ namespace MetaDslx.Compiler
 
         public string Antlr4Source { get; private set; }
         public string GeneratedSource { get; private set; }
-        public string Antlr4LexerSource { get; private set; }
-        public string Antlr4ParserSource { get; private set; }
-        public string Antlr4ParserBaseListenerSource { get; private set; }
-        public string Antlr4ParserBaseVisitorSource { get; private set; }
-        public string Antlr4ParserListenerSource { get; private set; }
-        public string Antlr4ParserVisitorSource { get; private set; }
+        public string OutputDirectory { get; private set; }
+        public bool IsLexer { get; internal set; }
+        public bool IsParser { get; internal set; }
 
 
         public override List<object> LexerAnnotations { get; protected set; }
@@ -55,10 +52,10 @@ namespace MetaDslx.Compiler
         public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
         public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
 
-        public AnnotatedAntlr4Compiler(string source, string fileName = null)
+        public AnnotatedAntlr4Compiler(string source, string outputDirectory, string fileName)
             : base(source, fileName)
         {
-            
+            this.OutputDirectory = outputDirectory;
         }
 
         private bool PrepareAntlr4()
@@ -66,30 +63,105 @@ namespace MetaDslx.Compiler
             try
             {
                 string appDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                Antlr4Jar = Path.Combine(appDataDir, Resources.Antlr4JarName);
+                string metaDslxDir = Path.Combine(appDataDir, "MetaDslx");
+                Directory.CreateDirectory(metaDslxDir);
+                Antlr4Jar = Path.Combine(metaDslxDir, Resources.Antlr4JarName);
                 if (!File.Exists(Antlr4Jar))
                 {
                     File.WriteAllBytes(Antlr4Jar, Resources.antlr_4_5_1_complete);
                 }
                 return new FileInfo(Antlr4Jar).Length == Resources.antlr_4_5_1_complete.Length;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                this.Diagnostics.AddError("Cannot create ANTLR4 jar: " + ex.Message, this.FileName, (object)null, false);
                 return false;
             }
         }
 
+        private string GetTemporaryDirectory()
+        {
+            string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(tempDirectory);
+            return tempDirectory;
+        }
+
+        private bool CopyToOutput(string tmpDir, string fileName)
+        {
+            if (this.OutputDirectory == null) return false;
+            string tmpFile = Path.Combine(tmpDir, fileName);
+            string outputFile = Path.Combine(this.OutputDirectory, fileName);
+            if (File.Exists(tmpFile))
+            {
+                File.Copy(tmpFile, outputFile, true);
+                return true;
+            }
+            return false;
+        }
+
         private void CompileAntlr4()
         {
-            string tempDir = System.IO.Path.GetTempPath();
-            string antlr4File = Path.Combine(tempDir, "Grammar.g4");
-            File.WriteAllText(antlr4File, this.Antlr4Source);
-            ProcessStartInfo processInfo =
-                new ProcessStartInfo("java", "java -jar antlr-4.5.1-complete.jar -Dlanguage=CSharp AnnotatedAntlr4Lexer.g4 -o AnnotatedAntlr4 -listener -visitor -package MetaDslx.Compiler")
+            if (this.OutputDirectory == null) return;
+            try
+            {
+                string bareFileName = Path.GetFileNameWithoutExtension(this.FileName);
+                string grammarFileName = bareFileName + ".g4";
+                string tmpDir = this.GetTemporaryDirectory();
+                try
                 {
-                    CreateNoWindow = true,
-                    UseShellExecute = false
-                };
+                    string antlr4File = Path.Combine(this.OutputDirectory, grammarFileName);
+                    File.WriteAllText(antlr4File, this.Antlr4Source);
+                    Process proc = new Process();
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.StartInfo.RedirectStandardError = true;
+                    proc.StartInfo.WorkingDirectory = this.OutputDirectory;
+                    proc.StartInfo.FileName = "java";
+                    proc.StartInfo.Arguments = "-jar \"" + this.Antlr4Jar + "\" -Dlanguage=CSharp \"" + grammarFileName + "\" -lib . -listener -visitor -package " + this.CSharpNamespace+ " -o \"" + tmpDir + "\"";
+                    proc.Start();
+                    proc.WaitForExit();
+                    using (StreamWriter writer = new StreamWriter(Path.Combine(this.OutputDirectory, bareFileName + ".stdout")))
+                    {
+                        proc.StandardOutput.BaseStream.CopyTo(writer.BaseStream);
+                    }
+                    /*using (StreamWriter writer = new StreamWriter(Path.Combine(this.OutputDirectory, bareFileName + ".stderr")))
+                    {
+                        proc.StandardError.BaseStream.CopyTo(writer.BaseStream);
+                    }*/
+                    while (!proc.StandardError.EndOfStream)
+                    {
+                        string line = proc.StandardError.ReadLine();
+                        if (!string.IsNullOrWhiteSpace(line))
+                        {
+                            if (line.StartsWith("error"))
+                            {
+                                this.Diagnostics.AddError(line, this.FileName, (object)null, false);
+                            }
+                            else if (line.StartsWith("warning"))
+                            {
+                                this.Diagnostics.AddWarning(line, this.FileName, (object)null, false);
+                            }
+                            else
+                            {
+                                this.Diagnostics.AddInfo(line, this.FileName, (object)null, false);
+                            }
+                        }
+                    }
+                    if (this.GenerateOutput && !this.Diagnostics.HasErrors())
+                    {
+                        this.CopyToOutput(tmpDir, bareFileName + ".cs");
+                        this.CopyToOutput(tmpDir, bareFileName + ".tokens");
+                    }
+                }
+                finally
+                {
+                    Directory.Delete(tmpDir, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Diagnostics.AddError("Cannot call ANTLR4: " + ex.Message, this.FileName, (object)null, false);
+            }
         }
 
         protected override void DoCompile()
@@ -166,8 +238,6 @@ namespace MetaDslx.Compiler
         private string lexerName;
         private string parserHeader;
         private string lexerHeader;
-        private bool isParser;
-        private bool isLexer;
 
         private List<AnnotationType> annotationTypes = new List<AnnotationType>();
         private List<string> dynamicAnnotations = new List<string>();
@@ -239,21 +309,21 @@ namespace MetaDslx.Compiler
             {
                 this.parserName = context.id().GetText();
                 this.lexerName = this.parserName;
-                isLexer = false;
-                isParser = true;
+                this.compiler.IsLexer = false;
+                this.compiler.IsParser = true;
             }
             else if (context.grammarType().LEXER() != null)
             {
                 this.lexerName = context.id().GetText();
-                isLexer = true;
-                isParser = false;
+                this.compiler.IsLexer = true;
+                this.compiler.IsParser = false;
             }
             else
             {
                 this.parserName = context.id().GetText();
                 this.lexerName = this.parserName;
-                isLexer = true;
-                isParser = true;
+                this.compiler.IsLexer = true;
+                this.compiler.IsParser = true;
             }
             currentGrammar = new Grammar();
             currentGrammar.Name = context.id().GetText();
@@ -688,16 +758,16 @@ namespace MetaDslx.Compiler
                 WriteLine("{");
                 IncIndent();
             }
-            if (this.isParser && !string.IsNullOrWhiteSpace(this.parserHeader))
+            if (this.compiler.IsParser && !string.IsNullOrWhiteSpace(this.parserHeader))
             {
                 WriteLine(this.parserHeader);
             }
-            else if (this.isLexer && !string.IsNullOrWhiteSpace(this.lexerHeader))
+            else if (this.compiler.IsLexer && !string.IsNullOrWhiteSpace(this.lexerHeader))
             {
                 WriteLine(this.lexerHeader);
             }
             this.GenerateAnnotatorVisitor();
-            if (this.isParser)
+            if (this.compiler.IsParser)
             {
                 this.GeneratePropertyEvaluator();
             }
@@ -894,7 +964,7 @@ namespace MetaDslx.Compiler
             }
 
 
-            if (this.isParser)
+            if (this.compiler.IsParser)
             {
                 WriteLine("public class {0}Annotator : {0}BaseVisitor<object>", this.parserName);
             }
@@ -904,27 +974,27 @@ namespace MetaDslx.Compiler
             }
             WriteLine("{");
             IncIndent();
-            if (this.isParser && !this.isLexer)
+            if (this.compiler.IsParser && !this.compiler.IsLexer)
             {
                 WriteLine("private {0}Annotator lexerAnnotator = new {0}Annotator();", this.lexerName);
             }
             WriteLine("private List<object> grammarAnnotations = new List<object>();");
-            if (this.isLexer)
+            if (this.compiler.IsLexer)
             {
                 WriteLine("private Dictionary<int, List<object>> tokenAnnotations = new Dictionary<int, List<object>>();");
                 WriteLine("private Dictionary<int, List<object>> modeAnnotations = new Dictionary<int, List<object>>();");
             }
-            if (this.isParser)
+            if (this.compiler.IsParser)
             {
                 WriteLine("private Dictionary<Type, List<object>> ruleAnnotations = new Dictionary<Type, List<object>>();");
                 WriteLine("private Dictionary<object, List<object>> treeAnnotations = new Dictionary<object, List<object>>();");
             }
 
             WriteLine();
-            if (this.isParser)
+            if (this.compiler.IsParser)
             {
                 WriteLine("public List<object> ParserAnnotations { get { return this.grammarAnnotations; } }");
-                if (this.isLexer)
+                if (this.compiler.IsLexer)
                 {
                     WriteLine("public List<object> LexerAnnotations { get { return this.grammarAnnotations; } }");
                     WriteLine("public Dictionary<int, List<object>> TokenAnnotations { get { return this.tokenAnnotations; } }");
@@ -988,7 +1058,7 @@ namespace MetaDslx.Compiler
                 }
             }
             WriteLine();
-            if (this.isParser)
+            if (this.compiler.IsParser)
             {
                 WriteLine("public {0}Annotator()", this.parserName);
             }
@@ -1005,7 +1075,7 @@ namespace MetaDslx.Compiler
                 this.GenerateAnnotationCreation(annot, tmp, true);
                 WriteLine("this.grammarAnnotations.Add({0});", tmp);
             }
-            if (this.isLexer)
+            if (this.compiler.IsLexer)
             {
                 foreach (var mode in currentGrammar.Modes)
                 {
@@ -1115,7 +1185,7 @@ namespace MetaDslx.Compiler
             DecIndent();
             WriteLine("}");
             WriteLine();
-            if (isParser)
+            if (this.compiler.IsParser)
             {
                 WriteLine("public override object VisitTerminal(ITerminalNode node)");
             }
@@ -1125,7 +1195,7 @@ namespace MetaDslx.Compiler
             }
             WriteLine("{");
             IncIndent();
-            if (this.isLexer)
+            if (this.compiler.IsLexer)
             {
                 WriteLine("IToken token = node.Symbol;");
                 WriteLine("if (token != null)");
@@ -1191,7 +1261,7 @@ namespace MetaDslx.Compiler
                 WriteLine("}");
                 DecIndent();
                 WriteLine("}");
-                if (isParser)
+                if (this.compiler.IsParser)
                 {
                     WriteLine("this.HandleSymbolType(node);");
                 }
@@ -1200,7 +1270,7 @@ namespace MetaDslx.Compiler
             else
             {
                 WriteLine("this.lexerAnnotator.VisitTerminal(node, treeAnnotations);");
-                if (isParser)
+                if (this.compiler.IsParser)
                 {
                     WriteLine("this.HandleSymbolType(node);");
                 }
@@ -1209,7 +1279,7 @@ namespace MetaDslx.Compiler
             DecIndent();
             WriteLine("}");
 
-            if (isParser)
+            if (this.compiler.IsParser)
             {
                 this.GenerateOverrideSymbolType();
                 this.GenerateAnnotatorVisitMethods();

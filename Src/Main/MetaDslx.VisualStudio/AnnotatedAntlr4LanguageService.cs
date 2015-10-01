@@ -525,7 +525,11 @@ namespace MetaDslx.VisualStudio
                     // This is where you perform your syntax highlighting.
                     // Parse entire source as given in req.Text.
                     // Store results in the AuthoringScope object.
-                    AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(req.Text);
+                    string fileName = Path.GetFileName(req.FileName);
+                    string outputDir = Path.GetDirectoryName(req.FileName);
+                    AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(req.Text, fileName, outputDir);
+                    compiler.GenerateOutput = false;
+                    compiler.CSharpNamespace = "Temp";
                     compiler.Compile();
                     foreach (var msg in compiler.Diagnostics.GetMessages())
                     {

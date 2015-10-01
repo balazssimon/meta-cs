@@ -61,6 +61,16 @@ namespace MetaDslx.Compiler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] antlr_4_5_1_complete {
+            get {
+                object obj = ResourceManager.GetObject("antlr_4_5_1_complete", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to antlr-4.5.1-complete.jar.
         /// </summary>
         internal static string Antlr4JarName {

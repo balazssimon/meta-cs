@@ -20,6 +20,7 @@ namespace MetaDslx.VisualStudio
         public string CustomTool { get; set; }
         public Dictionary<string,string> Properties { get; private set; }
         public bool EmbedResource { get; set; }
+        public bool GeneratedExternally { get; set; }
     }
 
     public abstract class SingleFileGenerator
@@ -82,10 +83,11 @@ namespace MetaDslx.VisualStudio
     {
         public MultipleFileGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
         {
-            this.InputFilePath = inputFilePath;
             if (inputFilePath != null)
             {
+                this.InputFilePath = Path.GetFullPath(inputFilePath);
                 this.InputFileName = Path.GetFileName(inputFilePath);
+                this.InputDirectory = Path.GetDirectoryName(this.InputFilePath);
             }
             this.InputFileContents = inputFileContents;
             this.DefaultNamespace = defaultNamespace;
@@ -104,6 +106,12 @@ namespace MetaDslx.VisualStudio
         }
 
         protected string InputFilePath
+        {
+            get;
+            private set;
+        }
+
+        protected string InputDirectory
         {
             get;
             private set;
@@ -313,54 +321,58 @@ namespace MetaDslx.VisualStudio
                         newFileNames.Add(fileName);
                         // fully qualify the file on the filesystem
                         string strFile = Path.Combine(wszInputFilePath.Substring(0, wszInputFilePath.LastIndexOf(Path.DirectorySeparatorChar)), fileName);
-                        // create the file
-                        FileStream fs = File.Create(strFile);
 
-                        try
+                        if (!element.GeneratedExternally)
                         {
-                            // generate our target file content
-                            byte[] data = generator.GenerateByteContent(element);
-
-                            // write it out to the stream
-                            fs.Write(data, 0, data.Length);
-
-                            fs.Close();
-
-                            // add the newly generated file to the solution, as a child of the source file...
-                            EnvDTE.ProjectItem itm = item.ProjectItems.AddFromFile(strFile);
-
-                            // embed as a resource:
-                            if (element.EmbedResource)
+                            // create the file
+                            FileStream fs = File.Create(strFile);
+                            try
                             {
-                                itm.Properties.Item("BuildAction").Value = 3;
+                                // generate our target file content
+                                byte[] data = generator.GenerateByteContent(element);
+
+                                // write it out to the stream
+                                fs.Write(data, 0, data.Length);
+
+                                fs.Close();
                             }
-
-                            // set a custom tool:
-                            if (!string.IsNullOrEmpty(element.CustomTool))
+                            catch (Exception ex)
                             {
-                                EnvDTE.Property prop = itm.Properties.Item("CustomTool");
-                                if (string.IsNullOrEmpty((string)prop.Value) || !string.Equals((string)prop.Value, element.CustomTool))
-                                {
-                                    prop.Value = element.CustomTool;
-                                }
+                                fs.Close();
+                                if (File.Exists(strFile))
+                                    File.Delete(strFile);
+                                throw ex;
                             }
-                            /*foreach (var key in element.Properties.Keys)
-                            {
-                                string value = element.Properties[key];
-                                EnvDTE.Property prop = itm.Properties.Item(key);
-                                if (prop != null && string.IsNullOrEmpty((string)prop.Value) || !string.Equals((string)prop.Value, value))
-                                {
-                                    prop.Value = value;
-                                }
-                            }*/
                         }
-                        catch (Exception ex)
+
+                        // add the newly generated file to the solution, as a child of the source file...
+                        EnvDTE.ProjectItem itm = item.ProjectItems.AddFromFile(strFile);
+
+                        // embed as a resource:
+                        if (element.EmbedResource)
                         {
-                            fs.Close();
-                            if (File.Exists(strFile))
-                                File.Delete(strFile);
-                            throw ex;
+                            itm.Properties.Item("BuildAction").Value = 3;
                         }
+
+                        // set a custom tool:
+                        if (!string.IsNullOrEmpty(element.CustomTool))
+                        {
+                            EnvDTE.Property prop = itm.Properties.Item("CustomTool");
+                            if (string.IsNullOrEmpty((string)prop.Value) || !string.Equals((string)prop.Value, element.CustomTool))
+                            {
+                                prop.Value = element.CustomTool;
+                            }
+                        }
+                        /*foreach (var key in element.Properties.Keys)
+                        {
+                            string value = element.Properties[key];
+                            EnvDTE.Property prop = itm.Properties.Item(key);
+                            if (prop != null && string.IsNullOrEmpty((string)prop.Value) || !string.Equals((string)prop.Value, value))
+                            {
+                                prop.Value = value;
+                            }
+                        }*/
+
                     }
                     catch (Exception ex)
                     {
