@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from AnnotatedAntlr4Parser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\kbpiygjo.0t4\AnnotatedAntlr4Parser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -730,24 +730,24 @@ public interface IAnnotatedAntlr4ParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitIdentifier([NotNull] AnnotatedAntlr4Parser.IdentifierContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolean"/>.
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterBoolean([NotNull] AnnotatedAntlr4Parser.BooleanContext context);
+	void EnterBoolLiteral([NotNull] AnnotatedAntlr4Parser.BoolLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolean"/>.
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitBoolean([NotNull] AnnotatedAntlr4Parser.BooleanContext context);
+	void ExitBoolLiteral([NotNull] AnnotatedAntlr4Parser.BoolLiteralContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.null"/>.
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.nullLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterNull([NotNull] AnnotatedAntlr4Parser.NullContext context);
+	void EnterNullLiteral([NotNull] AnnotatedAntlr4Parser.NullLiteralContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.null"/>.
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.nullLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitNull([NotNull] AnnotatedAntlr4Parser.NullContext context);
+	void ExitNullLiteral([NotNull] AnnotatedAntlr4Parser.NullLiteralContext context);
 }
 } // namespace MetaDslx.Compiler

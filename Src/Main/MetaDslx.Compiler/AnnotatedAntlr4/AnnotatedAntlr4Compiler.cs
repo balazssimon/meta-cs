@@ -29,6 +29,7 @@ namespace MetaDslx.Compiler
 
     public class AnnotatedAntlr4Compiler : MetaCompiler
     {
+        private Antlr4AnnotationRemover remover;
         public string CSharpNamespace { get; set; }
 
         public AnnotatedAntlr4Parser.GrammarSpecContext ParseTree { get; private set; }
@@ -136,8 +137,8 @@ namespace MetaDslx.Compiler
                             int.TryParse(lineIndexStr, out lineIndex);
                             int colIndex;
                             int.TryParse(colIndexStr, out colIndex);
-                            ++colIndex;
-                            this.Diagnostics.AddMessage(severity, line, fileName, new Antlr4TextSpan(lineIndex, colIndex, lineIndex, colIndex));
+                            Antlr4TextSpan span = remover.GetTokenSpanAt(lineIndex, colIndex);
+                            this.Diagnostics.AddMessage(severity, line, fileName, span);
                         }
                     }
                 }
@@ -154,21 +155,22 @@ namespace MetaDslx.Compiler
                 string tmpDir = this.GetTemporaryDirectory();
                 try
                 {
-                    string antlr4File = Path.Combine(this.OutputDirectory, grammarFileName);
+                    string antlr4File = Path.Combine(tmpDir, grammarFileName);
                     File.WriteAllText(antlr4File, this.Antlr4Source);
                     Process proc = new Process();
                     proc.StartInfo.UseShellExecute = false;
                     proc.StartInfo.RedirectStandardOutput = true;
                     proc.StartInfo.RedirectStandardError = true;
+                    proc.StartInfo.CreateNoWindow = true;
                     proc.StartInfo.WorkingDirectory = this.OutputDirectory;
                     proc.StartInfo.FileName = "java";
-                    proc.StartInfo.Arguments = "-jar \"" + this.Antlr4Jar + "\" -Dlanguage=CSharp \"" + grammarFileName + "\" -lib . -listener -visitor -package " + this.CSharpNamespace+ " -o \"" + tmpDir + "\"";
+                    proc.StartInfo.Arguments = "-jar \"" + this.Antlr4Jar + "\" -Dlanguage=CSharp \"" + antlr4File + "\" -lib . -listener -visitor -package " + this.CSharpNamespace+ " -o \"" + tmpDir + "\"";
                     proc.Start();
                     proc.WaitForExit();
-                    using (StreamWriter writer = new StreamWriter(Path.Combine(this.OutputDirectory, bareFileName + ".stdout")))
+                    /*using (StreamWriter writer = new StreamWriter(Path.Combine(this.OutputDirectory, bareFileName + ".stdout")))
                     {
                         proc.StandardOutput.BaseStream.CopyTo(writer.BaseStream);
-                    }
+                    }*/
                     /*using (StreamWriter writer = new StreamWriter(Path.Combine(this.OutputDirectory, bareFileName + ".stderr")))
                     {
                         proc.StandardError.BaseStream.CopyTo(writer.BaseStream);
@@ -215,8 +217,8 @@ namespace MetaDslx.Compiler
             Antlr4AnnotationVisitor av = new Antlr4AnnotationVisitor(this);
             av.Visit(this.ParseTree);
             this.GeneratedSource = av.Generate(this.CSharpNamespace);
-            Antlr4AnnotationRemover remover = new Antlr4AnnotationRemover(this.CommonTokenStream);
-            remover.Visit(this.ParseTree);
+            this.remover = new Antlr4AnnotationRemover(this.CommonTokenStream);
+            this.remover.Visit(this.ParseTree);
             this.Antlr4Source = remover.GetText();
             AnnotatedAntlr4LexerAnnotator annotator = new AnnotatedAntlr4LexerAnnotator();
             this.LexerAnnotations = annotator.LexerAnnotations;
@@ -234,33 +236,73 @@ namespace MetaDslx.Compiler
     public class Antlr4AnnotationRemover : AnnotatedAntlr4ParserBaseVisitor<object>
     {
         private TokenStreamRewriter rewriter;
+        private BufferedTokenStream tokens;
 
-        private List<Antlr4TextSpan> removedText = new List<Antlr4TextSpan>();
-
-        public Antlr4AnnotationRemover(ITokenStream tokens)
+        public Antlr4AnnotationRemover(BufferedTokenStream tokens)
         {
+            this.tokens = tokens;
             rewriter = new TokenStreamRewriter(tokens);
         }
 
         public string GetText()
         {
-            return this.rewriter.GetText();
+            return rewriter.GetText();
+        }
+
+        public Antlr4TextSpan GetTokenSpanAt(int line, int column)
+        {
+            foreach (var token in tokens.GetTokens())
+            {
+                if (token.Line == line && token.Column == column) return new Antlr4TextSpan(token);
+            }
+            return new Antlr4TextSpan(line, column + 1, line, column + 1);
+        }
+
+        private void RemoveText(ParserRuleContext context)
+        {
+            string text = this.tokens.GetText(context);
+            StringBuilder sb = new StringBuilder();
+            foreach (char ch in text)
+            {
+                if (ch == '\r' || ch == '\n')
+                {
+                    sb.Append(ch);
+                }
+                else
+                {
+                    sb.Append(' ');
+                }
+            }
+            //rewriter.Delete(context.Start, context.Stop);
+            string newText = sb.ToString();
+            rewriter.Replace(context.Start, context.Stop, newText);
+        }
+
+        public override object VisitOption([NotNull] AnnotatedAntlr4Parser.OptionContext context)
+        {
+            if (context.id().GetText() == "generateCompiler")
+            {
+                this.RemoveText(context);
+            }
+            else if (context.id().GetText() == "generateCompilerBase")
+            {
+                this.RemoveText(context);
+            }
+            return null;
         }
 
         public override object VisitAnnotation(AnnotatedAntlr4Parser.AnnotationContext context)
         {
-            removedText.Add(new Antlr4TextSpan(context));
-            rewriter.Delete(context.Start, context.Stop);
+            this.RemoveText(context);
             return null;
-            //return base.VisitAnnotation(context);
         }
 
         public override object VisitPropertiesBlock(AnnotatedAntlr4Parser.PropertiesBlockContext context)
         {
-            removedText.Add(new Antlr4TextSpan(context));
-            rewriter.Delete(context.Start, context.Stop);
+            this.RemoveText(context);
             return null;
         }
+
     }
 
     public class Antlr4AnnotationVisitor : AnnotatedAntlr4ParserBaseVisitor<object>
@@ -278,6 +320,8 @@ namespace MetaDslx.Compiler
         private string lexerName;
         private string parserHeader;
         private string lexerHeader;
+        private bool generateCompiler = true;
+        private bool generateCompilerBase = false;
 
         private List<AnnotationType> annotationTypes = new List<AnnotationType>();
         private List<string> dynamicAnnotations = new List<string>();
@@ -416,6 +460,14 @@ namespace MetaDslx.Compiler
             {
                 this.lexerName = context.optionValue().GetText();
             }
+            if (context.id().GetText() == "generateCompiler")
+            {
+                this.generateCompiler = context.optionValue().GetText() == "true";
+            }
+            if (context.id().GetText() == "generateCompilerBase")
+            {
+                this.generateCompilerBase = context.optionValue().GetText() == "true";
+            }
             return base.VisitOption(context);
         }
 
@@ -451,7 +503,10 @@ namespace MetaDslx.Compiler
         public override object VisitModeSpec(AnnotatedAntlr4Parser.ModeSpecContext context)
         {
             currentMode = new Mode();
-            currentMode.Name = context.id().GetText();
+            if (context.id() != null)
+            {
+                currentMode.Name = context.id().GetText();
+            }
             currentGrammar.Modes.Add(currentMode);
             this.CollectAnnotations(context.annotation());
             return base.VisitModeSpec(context);
@@ -810,6 +865,10 @@ namespace MetaDslx.Compiler
             if (this.compiler.IsParser)
             {
                 this.GeneratePropertyEvaluator();
+                if (this.generateCompiler || this.generateCompilerBase)
+                {
+                    this.GenerateCompiler();
+                }
             }
             if (!string.IsNullOrWhiteSpace(targetNamespace))
             {
@@ -1706,6 +1765,114 @@ namespace MetaDslx.Compiler
             WriteLine("}");
         }
 
+        private void GenerateCompiler()
+        {
+            string name = this.parserName;
+            if (name.EndsWith("Parser"))
+            {
+                name = name.Substring(0, name.Length - 6);
+            }
+            if (this.generateCompilerBase)
+            {
+                name += "CompilerBase";
+            }
+            else
+            {
+                name += "Compiler";
+            }
+            ParserRule rootRule = this.currentGrammar.ParserRules.FirstOrDefault();
+            string rootName = null;
+            string rootType = null;
+            if (rootRule != null)
+            {
+                rootType = this.ToContextType(rootRule.Name);
+                rootName = rootRule.Name;
+                if (reservedNames.Contains(rootName)) rootName = "@"+rootName;
+                rootName += "()";
+            }
+            else
+            {
+                rootName = string.Empty;
+            }
+            if (this.generateCompilerBase)
+            {
+                WriteLine("public abstract class {0} : MetaCompiler", name);
+            }
+            else
+            {
+                WriteLine("public class {0} : MetaCompiler", name);
+            }
+            WriteLine("{");
+            IncIndent();
+            WriteLine("public {0}(string source, string fileName = null)", name);
+            IncIndent();
+            WriteLine(": base(source, fileName)");
+            DecIndent();
+            WriteLine("{");
+            WriteLine("}");
+            WriteLine();
+            WriteLine("protected override void DoCompile()");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("AntlrInputStream inputStream = new AntlrInputStream(this.Source);");
+            WriteLine("this.Lexer = new {0}(inputStream);", this.lexerName);
+            WriteLine("this.Lexer.AddErrorListener(this);");
+            WriteLine("CommonTokenStream commonTokenStream = new CommonTokenStream(this.Lexer);");
+            WriteLine("this.Parser = new {0}(commonTokenStream);", this.parserName);
+            WriteLine("this.Parser.AddErrorListener(this);");
+            WriteLine("this.ParseTree = this.Parser.{0};", rootName);
+            WriteLine("{0}Annotator annotator = new {0}Annotator();", this.parserName);
+            WriteLine("annotator.Visit(this.ParseTree);");
+            WriteLine("this.LexerAnnotations = annotator.LexerAnnotations;");
+            WriteLine("this.ParserAnnotations = annotator.ParserAnnotations;");
+            WriteLine("this.ModeAnnotations = annotator.ModeAnnotations;");
+            WriteLine("this.TokenAnnotations = annotator.TokenAnnotations;");
+            WriteLine("this.RuleAnnotations = annotator.RuleAnnotations;");
+            WriteLine("this.TreeAnnotations = annotator.TreeAnnotations;");
+            WriteLine("MetaCompilerDefinitionPhase definitionPhase = new MetaCompilerDefinitionPhase(this);");
+            WriteLine("definitionPhase.VisitNode(this.ParseTree);");
+            WriteLine("MetaCompilerMergePhase mergePhase = new MetaCompilerMergePhase(this);");
+            WriteLine("mergePhase.VisitNode(this.ParseTree);");
+            WriteLine("MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);");
+            WriteLine("referencePhase.VisitNode(this.ParseTree);");
+            WriteLine("{0}PropertyEvaluator propertyEvaluator = new {0}PropertyEvaluator(this);", this.parserName);
+            WriteLine("propertyEvaluator.Visit(this.ParseTree);");
+            WriteLine();
+            WriteLine("foreach (var symbol in this.Data.GetSymbols())");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("symbol.MEvalLazyValues();");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("foreach (var symbol in this.Data.GetSymbols())");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("if (symbol.MHasUninitializedValue())");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("this.Diagnostics.AddError(\"The symbol '\" + symbol + \"' has uninitialized lazy values.\", this.FileName, new TextSpan(), true);");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
+            WriteLine();
+            WriteLine("public "+ rootType + " ParseTree { get; private set; }");
+            WriteLine("public "+ this.lexerName + " Lexer { get; private set; }");
+            WriteLine("public "+ this.parserName + " Parser { get; private set; }");
+            WriteLine("public CommonTokenStream CommonTokenStream { get; private set; }");
+            WriteLine();
+            WriteLine("public override List<object> LexerAnnotations { get; protected set; }");
+            WriteLine("public override List<object> ParserAnnotations { get; protected set; }");
+            WriteLine("public override Dictionary<int, List<object>> ModeAnnotations { get; protected set; }");
+            WriteLine("public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }");
+            WriteLine("public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }");
+            WriteLine("public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }");
+            DecIndent();
+            WriteLine("}");
+        }
+
         public class AnnotationType
         {
             public AnnotationType()
@@ -1785,87 +1952,6 @@ namespace MetaDslx.Compiler
         }
         public class ParserRuleElement
         {
-            private static readonly string[] reservedNames = 
-            { 
-                "abstract", 
-                "as", 
-                "base", 
-                "bool", 
-                "break", 
-                "byte", 
-                "case", 
-                "catch", 
-                "char", 
-                "checked", 
-                "class", 
-                "const", 
-                "continue", 
-                "decimal", 
-                "default", 
-                "delegate", 
-                "do", 
-                "double", 
-                "else", 
-                "enum", 
-                "event", 
-                "explicit", 
-                "extern", 
-                "false", 
-                "finally", 
-                "fixed", 
-                "float", 
-                "for", 
-                "foreach", 
-                "goto", 
-                "if", 
-                "implicit", 
-                "in", 
-                "int", 
-                "interface", 
-                "internal", 
-                "is", 
-                "lock", 
-                "long", 
-                "namespace", 
-                "new", 
-                "null", 
-                "object", 
-                "operator", 
-                "out", 
-                "override", 
-                "params", 
-                "private", 
-                "protected", 
-                "public", 
-                "readonly", 
-                "ref", 
-                "return", 
-                "sbyte", 
-                "sealed", 
-                "short", 
-                "sizeof", 
-                "stackalloc", 
-                "static", 
-                "string", 
-                "struct", 
-                "switch", 
-                "this", 
-                "throw", 
-                "true", 
-                "try", 
-                "typeof", 
-                "uint", 
-                "ulong", 
-                "unchecked", 
-                "unsafe", 
-                "ushort", 
-                "using", 
-                "virtual", 
-                "void", 
-                "volatile", 
-                "while", 
-            };
-
             public ParserRuleElement()
             {
                 this.Annotations = new List<Annotation>();
@@ -1879,7 +1965,7 @@ namespace MetaDslx.Compiler
             public string GetAccessorName()
             {
                 string prefix = string.Empty;
-                if (ParserRuleElement.reservedNames.Contains(this.Name)) prefix = "@";
+                if (reservedNames.Contains(this.Name)) prefix = "@";
                 if (this.Name != this.Type)
                 {
                     return prefix + this.Name;
@@ -2319,6 +2405,89 @@ namespace MetaDslx.Compiler
                 return null;
             }
         }
+
+        private static readonly string[] reservedNames =
+        {
+                "abstract",
+                "as",
+                "base",
+                "bool",
+                "break",
+                "byte",
+                "case",
+                "catch",
+                "char",
+                "checked",
+                "class",
+                "const",
+                "continue",
+                "decimal",
+                "default",
+                "delegate",
+                "do",
+                "double",
+                "else",
+                "enum",
+                "event",
+                "explicit",
+                "extern",
+                "false",
+                "finally",
+                "fixed",
+                "float",
+                "for",
+                "foreach",
+                "goto",
+                "if",
+                "implicit",
+                "in",
+                "int",
+                "interface",
+                "internal",
+                "is",
+                "lock",
+                "long",
+                "namespace",
+                "new",
+                "null",
+                "object",
+                "operator",
+                "out",
+                "override",
+                "params",
+                "private",
+                "protected",
+                "public",
+                "readonly",
+                "ref",
+                "return",
+                "sbyte",
+                "sealed",
+                "short",
+                "sizeof",
+                "stackalloc",
+                "static",
+                "string",
+                "struct",
+                "switch",
+                "this",
+                "throw",
+                "true",
+                "try",
+                "typeof",
+                "uint",
+                "ulong",
+                "unchecked",
+                "unsafe",
+                "ushort",
+                "using",
+                "virtual",
+                "void",
+                "volatile",
+                "while",
+            };
+
+
     }
 
 }

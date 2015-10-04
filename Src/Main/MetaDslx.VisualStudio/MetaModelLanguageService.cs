@@ -526,6 +526,7 @@ namespace MetaDslx.VisualStudio
                     // Parse entire source as given in req.Text.
                     // Store results in the AuthoringScope object.
                     MetaModelCompiler compiler = new MetaModelCompiler(req.Text);
+                    compiler.GenerateOutput = false;
                     compiler.Compile();
                     foreach (var msg in compiler.Diagnostics.GetMessages())
                     {

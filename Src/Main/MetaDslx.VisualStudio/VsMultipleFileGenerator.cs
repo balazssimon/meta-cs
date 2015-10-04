@@ -93,31 +93,31 @@ namespace MetaDslx.VisualStudio
             this.DefaultNamespace = defaultNamespace;
         }
 
-        protected string InputFileContents
+        public string InputFileContents
         {
             get;
             private set;
         }
 
-        protected string InputFileName
+        public string InputFileName
         {
             get;
             private set;
         }
 
-        protected string InputFilePath
+        public string InputFilePath
         {
             get;
             private set;
         }
 
-        protected string InputDirectory
+        public string InputDirectory
         {
             get;
             private set;
         }
 
-        protected string DefaultNamespace
+        public string DefaultNamespace
         {
             get;
             private set;
@@ -142,7 +142,6 @@ namespace MetaDslx.VisualStudio
             memory.Read(contents, 0, contents.Length);
             return contents;
         }
-        public abstract byte[] GenerateSummaryContent();
     }
 
     public abstract class VsSingleFileGenerator : IVsSingleFileGenerator, IObjectWithSite
@@ -310,6 +309,17 @@ namespace MetaDslx.VisualStudio
                 else
                     throw new ApplicationException("Unable to retrieve Visual Studio ProjectItem");
 
+                string defaultFileName = generator.InputFileName;
+                string defaultExt = null;
+                if (this.DefaultExtension(out defaultExt) == Microsoft.VisualStudio.VSConstants.S_OK)
+                {
+                    defaultFileName = Path.ChangeExtension(defaultFileName, defaultExt);
+                }
+                else
+                {
+                    defaultFileName = Path.GetFileNameWithoutExtension(defaultFileName);
+                }
+
                 // now we can start our work, iterate across all the 'elements' in our source file 
                 foreach (MultipleFileItem<T> element in generator.GetFileItems())
                 {
@@ -324,55 +334,79 @@ namespace MetaDslx.VisualStudio
 
                         if (!element.GeneratedExternally)
                         {
-                            // create the file
-                            FileStream fs = File.Create(strFile);
-                            try
+                            if (fileName == defaultFileName)
                             {
                                 // generate our target file content
                                 byte[] data = generator.GenerateByteContent(element);
-
-                                // write it out to the stream
-                                fs.Write(data, 0, data.Length);
-
-                                fs.Close();
+                                if (data == null)
+                                {
+                                    rgbOutputFileContents[0] = IntPtr.Zero;
+                                    pcbOutput = 0;
+                                }
+                                else
+                                {
+                                    // return our summary data, so that Visual Studio may write it to disk.
+                                    rgbOutputFileContents[0] = Marshal.AllocCoTaskMem(data.Length);
+                                    Marshal.Copy(data, 0, rgbOutputFileContents[0], data.Length);
+                                    pcbOutput = (uint)data.Length;
+                                }
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                fs.Close();
-                                if (File.Exists(strFile))
-                                    File.Delete(strFile);
-                                throw ex;
+                                // create the file
+                                FileStream fs = File.Create(strFile);
+                                try
+                                {
+                                    // generate our target file content
+                                    byte[] data = generator.GenerateByteContent(element);
+
+                                    // write it out to the stream
+                                    fs.Write(data, 0, data.Length);
+
+                                    fs.Close();
+                                }
+                                catch (Exception ex)
+                                {
+                                    fs.Close();
+                                    if (File.Exists(strFile))
+                                    {
+                                        File.Delete(strFile);
+                                    }
+                                    throw ex;
+                                }
                             }
                         }
-
+                        
                         // add the newly generated file to the solution, as a child of the source file...
-                        EnvDTE.ProjectItem itm = item.ProjectItems.AddFromFile(strFile);
-
-                        // embed as a resource:
-                        if (element.EmbedResource)
+                        if (File.Exists(strFile) && fileName != defaultFileName)
                         {
-                            itm.Properties.Item("BuildAction").Value = 3;
-                        }
+                            EnvDTE.ProjectItem itm = item.ProjectItems.AddFromFile(strFile);
 
-                        // set a custom tool:
-                        if (!string.IsNullOrEmpty(element.CustomTool))
-                        {
-                            EnvDTE.Property prop = itm.Properties.Item("CustomTool");
-                            if (string.IsNullOrEmpty((string)prop.Value) || !string.Equals((string)prop.Value, element.CustomTool))
+                            // embed as a resource:
+                            if (element.EmbedResource)
                             {
-                                prop.Value = element.CustomTool;
+                                itm.Properties.Item("BuildAction").Value = 3;
                             }
-                        }
-                        /*foreach (var key in element.Properties.Keys)
-                        {
-                            string value = element.Properties[key];
-                            EnvDTE.Property prop = itm.Properties.Item(key);
-                            if (prop != null && string.IsNullOrEmpty((string)prop.Value) || !string.Equals((string)prop.Value, value))
-                            {
-                                prop.Value = value;
-                            }
-                        }*/
 
+                            // set a custom tool:
+                            if (!string.IsNullOrEmpty(element.CustomTool))
+                            {
+                                EnvDTE.Property prop = itm.Properties.Item("CustomTool");
+                                if (string.IsNullOrEmpty((string)prop.Value) || !string.Equals((string)prop.Value, element.CustomTool))
+                                {
+                                    prop.Value = element.CustomTool;
+                                }
+                            }
+                            /*foreach (var key in element.Properties.Keys)
+                            {
+                                string value = element.Properties[key];
+                                EnvDTE.Property prop = itm.Properties.Item(key);
+                                if (prop != null && string.IsNullOrEmpty((string)prop.Value) || !string.Equals((string)prop.Value, value))
+                                {
+                                    prop.Value = value;
+                                }
+                            }*/
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -383,27 +417,9 @@ namespace MetaDslx.VisualStudio
                 // perform some clean-up, making sure we delete any old (stale) target-files
                 foreach (EnvDTE.ProjectItem childItem in item.ProjectItems)
                 {
-                    string defaultExt;
-                    this.DefaultExtension(out defaultExt);
-                    if ((childItem.Name != Path.ChangeExtension(wszInputFilePath, defaultExt)) && !newFileNames.Contains(childItem.Name))
+                    if ((childItem.Name != defaultFileName) && !newFileNames.Contains(childItem.Name))
                         // then delete it
                         childItem.Delete();
-                }
-
-                // generate our summary content for our 'single' file
-                byte[] summaryData = generator.GenerateSummaryContent();
-
-                if (summaryData == null)
-                {
-                    rgbOutputFileContents[0] = IntPtr.Zero;
-                    pcbOutput = 0;
-                }
-                else
-                {
-                    // return our summary data, so that Visual Studio may write it to disk.
-                    rgbOutputFileContents[0] = Marshal.AllocCoTaskMem(summaryData.Length);
-                    Marshal.Copy(summaryData, 0, rgbOutputFileContents[0], summaryData.Length);
-                    pcbOutput = (uint)summaryData.Length;
                 }
             }
             catch (Exception ex)
@@ -450,11 +466,19 @@ namespace MetaDslx.VisualStudio
         #endregion
 
 
+        public abstract string GetDefaultFileExtension();
+
         public int DefaultExtension(out string pbstrDefaultExtension)
         {
-            //pbstrDefaultExtension = ".txt";
-            pbstrDefaultExtension = null;
-            return Microsoft.VisualStudio.VSConstants.S_FALSE;
+            pbstrDefaultExtension = this.GetDefaultFileExtension();
+            if (!string.IsNullOrWhiteSpace(pbstrDefaultExtension))
+            {
+                return Microsoft.VisualStudio.VSConstants.S_OK;
+            }
+            else
+            {
+                return Microsoft.VisualStudio.VSConstants.S_FALSE;
+            }
         }
 
     }

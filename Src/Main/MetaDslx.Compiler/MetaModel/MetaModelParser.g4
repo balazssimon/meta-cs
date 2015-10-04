@@ -3,6 +3,7 @@ parser grammar MetaModelParser;
 options
 {
     tokenVocab = MetaModelLexer; 
+	
 }
 
 @header {

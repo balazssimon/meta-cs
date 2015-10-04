@@ -243,6 +243,11 @@ namespace MetaDslx.VisualStudio
             // which is a subclass of MultipleFileGenerator<object>
 			return new AnnotatedAntlr4Generator(inputFilePath, inputFileContents, defaultNamespace);
 		}
+
+        public override string GetDefaultFileExtension()
+        {
+            return AnnotatedAntlr4Generator.DefaultExtension;
+        }
     }
     public class AnnotatedAntlr4LanguageScanner : IScanner
     {
@@ -527,7 +532,7 @@ namespace MetaDslx.VisualStudio
                     // Store results in the AuthoringScope object.
                     string fileName = Path.GetFileName(req.FileName);
                     string outputDir = Path.GetDirectoryName(req.FileName);
-                    AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(req.Text, fileName, outputDir);
+                    AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(req.Text, outputDir, fileName);
                     compiler.GenerateOutput = false;
                     compiler.CSharpNamespace = "Temp";
                     compiler.Compile();

@@ -37,22 +37,27 @@ namespace MetaDslx.VisualStudio
             }
         }
 
+        public static string DefaultExtension
+        {
+            get { return ".g4"; }
+        }
+
         public override IEnumerable<MultipleFileItem<object>> GetFileItems()
         {
             List<MultipleFileItem<object>> result = new List<MultipleFileItem<object>>();
             if (compiler == null) return result;
+            if (compiler.HasAnnotatedAntlr4Errors) return result;
             string bareFileName = Path.GetFileNameWithoutExtension(this.InputFileName);
-            //if (compiler.H)
             MultipleFileItem<object> antlr4Grammar =
                 new MultipleFileItem<object>()
                 {
                     Info = new AnnotatedAntlr4GeneratorItem() { Kind = AnnotatedAntlr4GeneratorItemKind.Antlr4, FileName = bareFileName + ".g4" },
-                    GeneratedExternally = true
                 };
             antlr4Grammar.Properties.Add("Visitor", "True");
             antlr4Grammar.Properties.Add("Listener", "True");
             antlr4Grammar.Properties.Add("TargetLanguage", "CSharp");
             result.Add(antlr4Grammar);
+            if (compiler.HasAntlr4Errors) return result;
             MultipleFileItem<object> antlr4GrammarInfo =
                 new MultipleFileItem<object>()
                 {
@@ -118,11 +123,6 @@ namespace MetaDslx.VisualStudio
                 return item.FileName;
             }
             return null;
-        }
-
-        public override byte[] GenerateSummaryContent()
-        {
-            return new byte[0];
         }
 
         public override string GenerateStringContent(MultipleFileItem<object> element)

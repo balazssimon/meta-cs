@@ -34,16 +34,20 @@ namespace MetaDslx.Compiler
             this.ParseTree = this.Parser.main();
             MetaModelParserAnnotator annotator = new MetaModelParserAnnotator();
             annotator.Visit(this.ParseTree);
-            StringBuilder sb = new StringBuilder();
-            var ul = new MetaGenCSharpUsingVisitor(sb);
-            ul.Visit(this.ParseTree);
-            ul.Close();
-            var cl = new MetaGenCSharpClassVisitor(sb);
-            cl.Loops = ul.Loops;
-            cl.HasLoops = ul.HasLoops;
-            cl.Visit(this.ParseTree);
-            cl.Close();
-            this.GeneratedSource = sb.ToString();
+
+            if (this.GenerateOutput)
+            {
+                StringBuilder sb = new StringBuilder();
+                var ul = new MetaGenCSharpUsingVisitor(sb);
+                ul.Visit(this.ParseTree);
+                ul.Close();
+                var cl = new MetaGenCSharpClassVisitor(sb);
+                cl.Loops = ul.Loops;
+                cl.HasLoops = ul.HasLoops;
+                cl.Visit(this.ParseTree);
+                cl.Close();
+                this.GeneratedSource = sb.ToString();
+            }
         }
 
         public MetaGeneratorParser.MainContext ParseTree { get; private set; }

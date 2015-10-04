@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from AnnotatedAntlr4Parser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\kbpiygjo.0t4\AnnotatedAntlr4Parser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -874,29 +874,29 @@ public partial class AnnotatedAntlr4ParserBaseListener : IAnnotatedAntlr4ParserL
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIdentifier([NotNull] AnnotatedAntlr4Parser.IdentifierContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolean"/>.
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolLiteral"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBoolean([NotNull] AnnotatedAntlr4Parser.BooleanContext context) { }
+	public virtual void EnterBoolLiteral([NotNull] AnnotatedAntlr4Parser.BoolLiteralContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolean"/>.
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolLiteral"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBoolean([NotNull] AnnotatedAntlr4Parser.BooleanContext context) { }
+	public virtual void ExitBoolLiteral([NotNull] AnnotatedAntlr4Parser.BoolLiteralContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.@null"/>.
+	/// Enter a parse tree produced by <see cref="AnnotatedAntlr4Parser.nullLiteral"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNull([NotNull] AnnotatedAntlr4Parser.NullContext context) { }
+	public virtual void EnterNullLiteral([NotNull] AnnotatedAntlr4Parser.NullLiteralContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.@null"/>.
+	/// Exit a parse tree produced by <see cref="AnnotatedAntlr4Parser.nullLiteral"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNull([NotNull] AnnotatedAntlr4Parser.NullContext context) { }
+	public virtual void ExitNullLiteral([NotNull] AnnotatedAntlr4Parser.NullLiteralContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

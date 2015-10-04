@@ -48,35 +48,21 @@ namespace MetaDslx.TempConsole
             try
             {
                 /*
-                CompileAG4(
-                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4Lexer.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4LexerAnnotator.cs",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4\AnnotatedAntlr4Lexer.g4"
-                    );
+                CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4", @"AnnotatedAntlr4Lexer");
+                CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4", @"AnnotatedAntlr4Parser");
                 Console.WriteLine("----");
                 //*/
                 /*
-                CompileAG4(
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaGenerator\MetaGeneratorLexer.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaGenerator\MetaGeneratorLexerAnnotator.cs",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaGenerator\MetaGeneratorLexer.g4"
-                    );
+                CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\MetaGenerator", @"MetaGeneratorLexer");
+                CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\MetaGenerator", @"MetaGeneratorParser");
                 Console.WriteLine("----");
                 //*/
                 /*
-                CompileAG4(
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexerAnnotator.cs",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelLexer.g4"
-                    );
+                CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\MetaModel", @"MetaModelLexer");
+                CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\MetaModel", @"MetaModelParser");
                 Console.WriteLine("----");
-                CompileAG4(
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.ag4",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParserAnnotator.cs",
-                    @"..\..\..\..\Main\MetaDslx.Compiler\MetaModel\MetaModelParser.g4"
-                    );
                 //*/
-                //*
+                /*
                 CompileAG4(@"c:\Temp\Meta", @"MetaModelLexer");
                 Console.WriteLine("----");
                 CompileAG4(@"c:\Temp\Meta", @"MetaModelParser");
@@ -150,6 +136,11 @@ namespace MetaDslx.TempConsole
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
                 writer.WriteLine(compiler.GeneratedSource);
+            }
+            string g4outputFileName = Path.Combine(outputDirectory, antlr4FileName + ".g4");
+            using (StreamWriter writer = new StreamWriter(g4outputFileName))
+            {
+                writer.WriteLine(compiler.Antlr4Source);
             }
             using (StreamWriter writer = new StreamWriter("messages_a4.txt"))
             {

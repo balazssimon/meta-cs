@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from AnnotatedAntlr4Parser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\kbpiygjo.0t4\AnnotatedAntlr4Parser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -451,16 +451,16 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	Result VisitIdentifier([NotNull] AnnotatedAntlr4Parser.IdentifierContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolean"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitBoolean([NotNull] AnnotatedAntlr4Parser.BooleanContext context);
+	Result VisitBoolLiteral([NotNull] AnnotatedAntlr4Parser.BoolLiteralContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.null"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.nullLiteral"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitNull([NotNull] AnnotatedAntlr4Parser.NullContext context);
+	Result VisitNullLiteral([NotNull] AnnotatedAntlr4Parser.NullLiteralContext context);
 }
 } // namespace MetaDslx.Compiler

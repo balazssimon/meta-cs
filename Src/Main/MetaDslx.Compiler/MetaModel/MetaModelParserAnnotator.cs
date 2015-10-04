@@ -3910,5 +3910,63 @@ using MetaDslx.Core;
             return this.VisitChildren(context);
         }
     }
+    public abstract class MetaModelCompilerBase : MetaCompiler
+    {
+        public MetaModelCompilerBase(string source, string fileName = null)
+            : base(source, fileName)
+        {
+        }
+        
+        protected override void DoCompile()
+        {
+            AntlrInputStream inputStream = new AntlrInputStream(this.Source);
+            this.Lexer = new MetaModelLexer(inputStream);
+            this.Lexer.AddErrorListener(this);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(this.Lexer);
+            this.Parser = new MetaModelParser(commonTokenStream);
+            this.Parser.AddErrorListener(this);
+            this.ParseTree = this.Parser.main();
+            MetaModelParserAnnotator annotator = new MetaModelParserAnnotator();
+            annotator.Visit(this.ParseTree);
+            this.LexerAnnotations = annotator.LexerAnnotations;
+            this.ParserAnnotations = annotator.ParserAnnotations;
+            this.ModeAnnotations = annotator.ModeAnnotations;
+            this.TokenAnnotations = annotator.TokenAnnotations;
+            this.RuleAnnotations = annotator.RuleAnnotations;
+            this.TreeAnnotations = annotator.TreeAnnotations;
+            MetaCompilerDefinitionPhase definitionPhase = new MetaCompilerDefinitionPhase(this);
+            definitionPhase.VisitNode(this.ParseTree);
+            MetaCompilerMergePhase mergePhase = new MetaCompilerMergePhase(this);
+            mergePhase.VisitNode(this.ParseTree);
+            MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);
+            referencePhase.VisitNode(this.ParseTree);
+            MetaModelParserPropertyEvaluator propertyEvaluator = new MetaModelParserPropertyEvaluator(this);
+            propertyEvaluator.Visit(this.ParseTree);
+            
+            foreach (var symbol in this.Data.GetSymbols())
+            {
+                symbol.MEvalLazyValues();
+            }
+            foreach (var symbol in this.Data.GetSymbols())
+            {
+                if (symbol.MHasUninitializedValue())
+                {
+                    this.Diagnostics.AddError("The symbol '" + symbol + "' has uninitialized lazy values.", this.FileName, new TextSpan(), true);
+                }
+            }
+        }
+        
+        public MetaModelParser.MainContext ParseTree { get; private set; }
+        public MetaModelLexer Lexer { get; private set; }
+        public MetaModelParser Parser { get; private set; }
+        public CommonTokenStream CommonTokenStream { get; private set; }
+        
+        public override List<object> LexerAnnotations { get; protected set; }
+        public override List<object> ParserAnnotations { get; protected set; }
+        public override Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
+        public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
+        public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
+        public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
+    }
 }
 

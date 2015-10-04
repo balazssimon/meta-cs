@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from AnnotatedAntlr4Parser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\kbpiygjo.0t4\AnnotatedAntlr4Parser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -733,7 +733,7 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// <return>The visitor result.</return>
 	public virtual Result VisitIdentifier([NotNull] AnnotatedAntlr4Parser.IdentifierContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolean"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -741,9 +741,9 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitBoolean([NotNull] AnnotatedAntlr4Parser.BooleanContext context) { return VisitChildren(context); }
+	public virtual Result VisitBoolLiteral([NotNull] AnnotatedAntlr4Parser.BoolLiteralContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.@null"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.nullLiteral"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -751,6 +751,6 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitNull([NotNull] AnnotatedAntlr4Parser.NullContext context) { return VisitChildren(context); }
+	public virtual Result VisitNullLiteral([NotNull] AnnotatedAntlr4Parser.NullLiteralContext context) { return VisitChildren(context); }
 }
 } // namespace MetaDslx.Compiler
