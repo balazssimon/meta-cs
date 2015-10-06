@@ -1,0 +1,11 @@
+﻿parser grammar SoalParser;
+
+options {
+	tokenVocab=SoalLexer;
+	generateCompiler=true;
+	generateCompilerBase=false;
+}
+
+main : namespace*;
+
+namespace : KNamespace;
