@@ -6,6 +6,98 @@ options {
 	generateCompilerBase=false;
 }
 
-main : namespace*;
+main : namespaceDeclaration*;
 
-namespace : KNamespace;
+$QualifiedName
+qualifiedName : identifier (TDot identifier)*;
+identifierList : identifier (TComma identifier)*;
+qualifiedNameList : qualifiedName (TComma qualifiedName)*;
+
+$NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
+namespaceDeclaration: KNamespace qualifiedName TOpenBrace declaration* TCloseBrace;
+
+$Property(Declarations)
+declaration : structDeclaration | exceptionDeclaration;
+
+$TypeDef(Struct)
+structDeclaration : KStruct identifier TOpenBrace propertyDeclaration* TCloseBrace;
+
+$TypeDef(Exception)
+exceptionDeclaration : KException identifier TOpenBrace propertyDeclaration* TCloseBrace;
+
+$Property(Properties)
+$NameDef(Property)
+propertyDeclaration : $Property(Type) typeReference identifier TSemicolon;
+
+
+$TypeUse
+returnType : typeReference | voidType;
+
+$TypeUse
+typeReference 
+	: arrayType
+	| simpleType
+	;
+
+$TypeUse
+simpleType : primitiveType | objectType | nullableType | qualifiedName;
+
+$Name
+objectType 
+	: KObject 
+	| KString
+	;
+$Name
+primitiveType 
+	: KInt 
+	| KLong 
+	| KFloat 
+	| KDouble 
+	| KByte 
+	| KBool
+	;
+$Name
+voidType 
+	: KVoid
+	;
+
+$TypeCtr(NullableType)
+nullableType : $Property(InnerType) primitiveType TQuestion;
+
+$TypeCtr(ArrayType)
+arrayType : $Property(InnerType) simpleType TOpenBracket TCloseBracket;
+
+
+// Identifiers
+$Name
+$Identifier
+identifier 
+	: IdentifierNormal 
+	| IdentifierVerbatim;
+
+// Literals
+literal 
+    : $Value nullLiteral
+	| $Value booleanLiteral
+	| $Value integerLiteral
+	| $Value decimalLiteral
+	| $Value scientificLiteral
+    | $Value stringLiteral
+	;
+
+// Null literal
+nullLiteral : KNull;
+
+// Boolean literals
+booleanLiteral : KTrue | KFalse;
+
+// Number literals
+integerLiteral : IntegerLiteral;
+decimalLiteral : DecimalLiteral;
+scientificLiteral : ScientificLiteral;
+
+// String literals
+stringLiteral 
+	: RegularStringLiteral 
+	| SingleQuoteVerbatimStringLiteral 
+	| DoubleQuoteVerbatimStringLiteral;

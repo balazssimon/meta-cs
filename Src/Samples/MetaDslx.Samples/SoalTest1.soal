@@ -1,0 +1,17 @@
+﻿namespace Ns1.Ns2
+{
+	exception E1
+	{
+		string Message;
+	}
+
+	struct S1
+	{
+		S2 P2;
+	}
+
+	struct S2
+	{
+		S1 P1;
+	}
+}

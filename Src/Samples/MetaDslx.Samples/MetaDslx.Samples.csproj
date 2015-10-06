@@ -41,6 +41,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="MetaDslx.Compiler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7c14c8817c721b1e, processorArchitecture=MSIL" />
+    <Reference Include="MetaDslx.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7c14c8817c721b1e, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -48,6 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="SoalTest1.soal" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MetaDslx.Soal\MetaDslx.Soal.csproj">
+      <Project>{baace3cc-f257-49d1-9832-e07db36df2be}</Project>
+      <Name>MetaDslx.Soal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

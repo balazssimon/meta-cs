@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\jhdydweb.p1x\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\qgadigol.4qr\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -37,10 +37,148 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMain([NotNull] SoalParser.MainContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SoalParser.namespace"/>.
+	/// Visit a parse tree produced by <see cref="SoalParser.qualifiedName"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitNamespace([NotNull] SoalParser.NamespaceContext context);
+	Result VisitQualifiedName([NotNull] SoalParser.QualifiedNameContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.identifierList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIdentifierList([NotNull] SoalParser.IdentifierListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.qualifiedNameList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitQualifiedNameList([NotNull] SoalParser.QualifiedNameListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.namespaceDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNamespaceDeclaration([NotNull] SoalParser.NamespaceDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.declaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDeclaration([NotNull] SoalParser.DeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.structDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructDeclaration([NotNull] SoalParser.StructDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.exceptionDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExceptionDeclaration([NotNull] SoalParser.ExceptionDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.propertyDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPropertyDeclaration([NotNull] SoalParser.PropertyDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.returnType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReturnType([NotNull] SoalParser.ReturnTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.typeReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTypeReference([NotNull] SoalParser.TypeReferenceContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.simpleType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSimpleType([NotNull] SoalParser.SimpleTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.objectType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitObjectType([NotNull] SoalParser.ObjectTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.primitiveType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrimitiveType([NotNull] SoalParser.PrimitiveTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.voidType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVoidType([NotNull] SoalParser.VoidTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.nullableType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNullableType([NotNull] SoalParser.NullableTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.arrayType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArrayType([NotNull] SoalParser.ArrayTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.identifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIdentifier([NotNull] SoalParser.IdentifierContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.literal"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteral([NotNull] SoalParser.LiteralContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.nullLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNullLiteral([NotNull] SoalParser.NullLiteralContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.booleanLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBooleanLiteral([NotNull] SoalParser.BooleanLiteralContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.integerLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIntegerLiteral([NotNull] SoalParser.IntegerLiteralContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.decimalLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDecimalLiteral([NotNull] SoalParser.DecimalLiteralContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.scientificLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitScientificLiteral([NotNull] SoalParser.ScientificLiteralContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.stringLiteral"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStringLiteral([NotNull] SoalParser.StringLiteralContext context);
 }
 } // namespace MetaDslx.Soal
