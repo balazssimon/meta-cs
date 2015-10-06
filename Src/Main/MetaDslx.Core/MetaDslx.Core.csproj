@@ -45,8 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MetaImplementation.cs" />
-    <Compile Include="MetaModel.cs" />
-    <Compile Include="MetaModelGenerator.cs" />
+    <Compile Include="MetaModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModel.mm</DependentUpon>
+    </Compile>
+    <Compile Include="MetaModelGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelGenerator.mgen</DependentUpon>
+    </Compile>
     <Compile Include="ModelCollection.cs" />
     <Compile Include="ModelCompiler.cs" />
     <Compile Include="ModelContext.cs" />
@@ -61,8 +69,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="MetaDslxKey.snk" />
-    <None Include="MetaModel.mm" />
-    <None Include="MetaModelGenerator.mgen" />
+    <None Include="MetaModel.mm">
+      <Generator>MetaModelGenerator</Generator>
+      <LastGenOutput>MetaModel.cs</LastGenOutput>
+    </None>
+    <None Include="MetaModelGenerator.mgen">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>MetaModelGenerator.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

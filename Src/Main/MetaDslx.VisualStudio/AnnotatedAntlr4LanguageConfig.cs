@@ -11,9 +11,11 @@ namespace MetaDslx.VisualStudio
 {
     public class AnnotatedAntlr4LanguageConfig : AnnotatedAntlr4LanguageConfigBase
     {
-        public const string AnnotatedAntlr4LanguageGeneratorServiceGuid = "604FED65-A175-4908-A8AD-EC3A5AD0B481";
+        public const string AnnotatedAntlr4GeneratorServiceGuid = "604FED65-A175-4908-A8AD-EC3A5AD0B481";
         public const string AnnotatedAntlr4LanguageServiceGuid = "6DF75AF7-1A22-4905-8315-94DB5CEB368A";
+        public const string GeneratorName = "AnnotatedAntlr4Generator";
         public const string LanguageName = "Annotated ANTLR4";
+        public const string GeneratorServiceName = "C# Code Generator for MetaDslx Annotated Antlr4";
         public const string LanguageServiceName = "Annotated ANTLR4 Language Service";
         public const string FilterList = "Annotated ANTLR4 Files (*.ag4)\n*.ag4";
         public const string FileExtension = ".ag4";

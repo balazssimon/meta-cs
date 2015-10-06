@@ -15,7 +15,10 @@ using Antlr4.Runtime;
 using MetaDslx.Compiler;
 using System.Drawing;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
+
 using VsCommands2K = Microsoft.VisualStudio.VSConstants.VSStd2KCmdID;
+
 namespace MetaDslx.VisualStudio
 {
     public class AnnotatedAntlr4LanguageAuthoringScope : AuthoringScope
@@ -234,8 +237,11 @@ namespace MetaDslx.VisualStudio
         #endregion
     }
     [ComVisible(true)]
-    [Guid(AnnotatedAntlr4LanguageConfig.AnnotatedAntlr4LanguageGeneratorServiceGuid)]
-    public class AnnotatedAntlr4LanguageGeneratorService : VsMultipleFileGenerator<object>
+    [Guid(AnnotatedAntlr4LanguageConfig.AnnotatedAntlr4GeneratorServiceGuid)]
+    [ProvideObject(typeof(AnnotatedAntlr4GeneratorService), RegisterUsing = RegistrationMethod.CodeBase)]
+    [CodeGeneratorRegistration(typeof(AnnotatedAntlr4GeneratorService), AnnotatedAntlr4LanguageConfig.GeneratorName, "{fae04ec1-301f-11d3-bf4b-00c04f79efbc}", GeneratorRegKeyName = AnnotatedAntlr4LanguageConfig.FileExtension)]
+    [CodeGeneratorRegistration(typeof(AnnotatedAntlr4GeneratorService), AnnotatedAntlr4LanguageConfig.GeneratorServiceName, "{fae04ec1-301f-11d3-bf4b-00c04f79efbc}", GeneratorRegKeyName = AnnotatedAntlr4LanguageConfig.GeneratorName, GeneratesDesignTimeSource = true)]
+    public class AnnotatedAntlr4GeneratorService : VsMultipleFileGenerator<object>
     {
         protected override MultipleFileGenerator<object> CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
 		{
@@ -534,7 +540,6 @@ namespace MetaDslx.VisualStudio
                     string outputDir = Path.GetDirectoryName(req.FileName);
                     AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(req.Text, outputDir, fileName);
                     compiler.GenerateOutput = false;
-                    compiler.CSharpNamespace = "Temp";
                     compiler.Compile();
                     foreach (var msg in compiler.Diagnostics.GetMessages())
                     {

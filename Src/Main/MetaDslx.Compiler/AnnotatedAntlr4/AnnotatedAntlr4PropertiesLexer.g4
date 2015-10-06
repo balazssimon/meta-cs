@@ -1,4 +1,4 @@
-/** A lexer grammar for ANTLR v4 annotated grammar properties */
+﻿/** A lexer grammar for ANTLR v4 annotated grammar properties */
 lexer grammar AnnotatedAntlr4PropertiesLexer;
 
 DOC_COMMENT_START

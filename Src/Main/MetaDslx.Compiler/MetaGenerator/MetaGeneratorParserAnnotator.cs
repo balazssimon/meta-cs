@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -1470,63 +1470,4 @@ namespace MetaDslx.Compiler
             return this.VisitChildren(context);
         }
     }
-    public class MetaGeneratorCompiler : MetaCompiler
-    {
-        public MetaGeneratorCompiler(string source, string fileName = null)
-            : base(source, fileName)
-        {
-        }
-        
-        protected override void DoCompile()
-        {
-            AntlrInputStream inputStream = new AntlrInputStream(this.Source);
-            this.Lexer = new MetaGeneratorLexer(inputStream);
-            this.Lexer.AddErrorListener(this);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(this.Lexer);
-            this.Parser = new MetaGeneratorParser(commonTokenStream);
-            this.Parser.AddErrorListener(this);
-            this.ParseTree = this.Parser.main();
-            MetaGeneratorParserAnnotator annotator = new MetaGeneratorParserAnnotator();
-            annotator.Visit(this.ParseTree);
-            this.LexerAnnotations = annotator.LexerAnnotations;
-            this.ParserAnnotations = annotator.ParserAnnotations;
-            this.ModeAnnotations = annotator.ModeAnnotations;
-            this.TokenAnnotations = annotator.TokenAnnotations;
-            this.RuleAnnotations = annotator.RuleAnnotations;
-            this.TreeAnnotations = annotator.TreeAnnotations;
-            MetaCompilerDefinitionPhase definitionPhase = new MetaCompilerDefinitionPhase(this);
-            definitionPhase.VisitNode(this.ParseTree);
-            MetaCompilerMergePhase mergePhase = new MetaCompilerMergePhase(this);
-            mergePhase.VisitNode(this.ParseTree);
-            MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);
-            referencePhase.VisitNode(this.ParseTree);
-            MetaGeneratorParserPropertyEvaluator propertyEvaluator = new MetaGeneratorParserPropertyEvaluator(this);
-            propertyEvaluator.Visit(this.ParseTree);
-            
-            foreach (var symbol in this.Data.GetSymbols())
-            {
-                symbol.MEvalLazyValues();
-            }
-            foreach (var symbol in this.Data.GetSymbols())
-            {
-                if (symbol.MHasUninitializedValue())
-                {
-                    this.Diagnostics.AddError("The symbol '" + symbol + "' has uninitialized lazy values.", this.FileName, new TextSpan(), true);
-                }
-            }
-        }
-        
-        public MetaGeneratorParser.MainContext ParseTree { get; private set; }
-        public MetaGeneratorLexer Lexer { get; private set; }
-        public MetaGeneratorParser Parser { get; private set; }
-        public CommonTokenStream CommonTokenStream { get; private set; }
-        
-        public override List<object> LexerAnnotations { get; protected set; }
-        public override List<object> ParserAnnotations { get; protected set; }
-        public override Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
-        public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
-        public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
-        public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
-    }
 }
-

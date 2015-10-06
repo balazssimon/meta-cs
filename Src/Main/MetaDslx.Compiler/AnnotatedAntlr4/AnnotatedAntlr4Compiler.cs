@@ -30,7 +30,6 @@ namespace MetaDslx.Compiler
     public class AnnotatedAntlr4Compiler : MetaCompiler
     {
         private Antlr4AnnotationRemover remover;
-        public string CSharpNamespace { get; set; }
 
         public AnnotatedAntlr4Parser.GrammarSpecContext ParseTree { get; private set; }
         public AnnotatedAntlr4Lexer Lexer { get; private set; }
@@ -41,7 +40,6 @@ namespace MetaDslx.Compiler
 
         public string Antlr4Source { get; private set; }
         public string GeneratedSource { get; private set; }
-        public string OutputDirectory { get; private set; }
         public bool IsLexer { get; internal set; }
         public bool IsParser { get; internal set; }
         public bool HasAnnotatedAntlr4Errors { get; private set; }
@@ -56,9 +54,8 @@ namespace MetaDslx.Compiler
         public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
 
         public AnnotatedAntlr4Compiler(string source, string outputDirectory, string fileName)
-            : base(source, fileName)
+            : base(source, outputDirectory, fileName)
         {
-            this.OutputDirectory = outputDirectory;
         }
 
         private bool PrepareAntlr4()
@@ -164,7 +161,14 @@ namespace MetaDslx.Compiler
                     proc.StartInfo.CreateNoWindow = true;
                     proc.StartInfo.WorkingDirectory = this.OutputDirectory;
                     proc.StartInfo.FileName = "java";
-                    proc.StartInfo.Arguments = "-jar \"" + this.Antlr4Jar + "\" -Dlanguage=CSharp \"" + antlr4File + "\" -lib . -listener -visitor -package " + this.CSharpNamespace+ " -o \"" + tmpDir + "\"";
+                    if (this.DefaultNamespace != null)
+                    {
+                        proc.StartInfo.Arguments = "-jar \"" + this.Antlr4Jar + "\" -Dlanguage=CSharp \"" + antlr4File + "\" -lib . -listener -visitor -package " + this.DefaultNamespace + " -o \"" + tmpDir + "\"";
+                    }
+                    else
+                    {
+                        proc.StartInfo.Arguments = "-jar \"" + this.Antlr4Jar + "\" -Dlanguage=CSharp \"" + antlr4File + "\" -lib . -listener -visitor -o \"" + tmpDir + "\"";
+                    }
                     proc.Start();
                     proc.WaitForExit();
                     /*using (StreamWriter writer = new StreamWriter(Path.Combine(this.OutputDirectory, bareFileName + ".stdout")))
@@ -216,7 +220,7 @@ namespace MetaDslx.Compiler
             this.ParseTree = this.Parser.grammarSpec();
             Antlr4AnnotationVisitor av = new Antlr4AnnotationVisitor(this);
             av.Visit(this.ParseTree);
-            this.GeneratedSource = av.Generate(this.CSharpNamespace);
+            this.GeneratedSource = av.Generate(this.DefaultNamespace);
             this.remover = new Antlr4AnnotationRemover(this.CommonTokenStream);
             this.remover.Visit(this.ParseTree);
             this.Antlr4Source = remover.GetText();
@@ -1804,9 +1808,9 @@ namespace MetaDslx.Compiler
             }
             WriteLine("{");
             IncIndent();
-            WriteLine("public {0}(string source, string fileName = null)", name);
+            WriteLine("public {0}(string source, string outputDirectory, string fileName)", name);
             IncIndent();
-            WriteLine(": base(source, fileName)");
+            WriteLine(": base(source, outputDirectory, fileName)");
             DecIndent();
             WriteLine("{");
             WriteLine("}");

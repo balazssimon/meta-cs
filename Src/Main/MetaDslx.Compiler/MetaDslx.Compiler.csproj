@@ -49,43 +49,113 @@
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4Compiler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4LexerAnnotator.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserAnnotator.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserBaseListener.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserBaseVisitor.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserListener.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserVisitor.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserBaseListener.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserBaseVisitor.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserListener.cs" />
-    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserVisitor.cs" />
-    <Compile Include="LanguageService\MetaLanguageServiceGenerator.cs" />
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.cs">
+      <DependentUpon>AnnotatedAntlr4Lexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4LexerAnnotator.cs">
+      <DependentUpon>AnnotatedAntlr4Lexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.cs">
+      <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserAnnotator.cs">
+      <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserBaseListener.cs">
+      <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserBaseVisitor.cs">
+      <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserListener.cs">
+      <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4ParserVisitor.cs">
+      <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.cs">
+      <DependentUpon>AnnotatedAntlr4PropertiesLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexerAnnotator.cs">
+      <DependentUpon>AnnotatedAntlr4PropertiesLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.cs">
+      <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserAnnotator.cs">
+      <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserBaseListener.cs">
+      <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserBaseVisitor.cs">
+      <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserListener.cs">
+      <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserVisitor.cs">
+      <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="LanguageService\MetaLanguageServiceGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaLanguageServiceGenerator.mgen</DependentUpon>
+    </Compile>
     <Compile Include="MetaCompiler.cs" />
     <Compile Include="MetaCompilerDiagnostics.cs" />
     <Compile Include="MetaCompilerException.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorCompiler.cs" />
-    <Compile Include="MetaGenerator\MetaGeneratorLexer.cs" />
-    <Compile Include="MetaGenerator\MetaGeneratorLexerAnnotator.cs" />
-    <Compile Include="MetaGenerator\MetaGeneratorParser.cs" />
-    <Compile Include="MetaGenerator\MetaGeneratorParserBaseListener.cs" />
-    <Compile Include="MetaGenerator\MetaGeneratorParserBaseVisitor.cs" />
-    <Compile Include="MetaGenerator\MetaGeneratorParserListener.cs" />
-    <Compile Include="MetaGenerator\MetaGeneratorParserVisitor.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorLexer.cs">
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaGenerator\MetaGeneratorLexerAnnotator.cs">
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaGenerator\MetaGeneratorParser.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaGenerator\MetaGeneratorParserAnnotator.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaGenerator\MetaGeneratorParserBaseListener.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaGenerator\MetaGeneratorParserBaseVisitor.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaGenerator\MetaGeneratorParserListener.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaGenerator\MetaGeneratorParserVisitor.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
     <Compile Include="MetaModel\MetaModelCompiler.cs" />
-    <Compile Include="MetaModel\MetaModelLexer.cs" />
-    <Compile Include="MetaModel\MetaModelLexerAnnotator.cs" />
-    <Compile Include="MetaModel\MetaModelParser.cs" />
-    <Compile Include="MetaModel\MetaModelParserAnnotator.cs" />
-    <Compile Include="MetaModel\MetaModelParserBaseListener.cs" />
-    <Compile Include="MetaModel\MetaModelParserBaseVisitor.cs" />
-    <Compile Include="MetaModel\MetaModelParserListener.cs" />
-    <Compile Include="MetaModel\MetaModelParserProperties.cs" />
-    <Compile Include="MetaModel\MetaModelParserVisitor.cs" />
     <Compile Include="MetaCompilerProviders.cs" />
+    <Compile Include="MetaModel\MetaModelLexer.cs">
+      <DependentUpon>MetaModelLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaModel\MetaModelLexerAnnotator.cs">
+      <DependentUpon>MetaModelLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaModel\MetaModelParser.cs">
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaModel\MetaModelParserAnnotator.cs">
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaModel\MetaModelParserBaseListener.cs">
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaModel\MetaModelParserBaseVisitor.cs">
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaModel\MetaModelParserListener.cs">
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="MetaModel\MetaModelParserVisitor.cs">
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -94,50 +164,110 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr4 Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.g4">
-      <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
-      <Listener>True</Listener>
-      <Visitor>True</Visitor>
-      <TargetLanguage>CSharp</TargetLanguage>
-    </Antlr4>
-    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.ag4">
-      <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
-      <Listener>True</Listener>
-      <Visitor>True</Visitor>
-      <TargetLanguage>CSharp</TargetLanguage>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnnotatedAntlr4Lexer.ag4</DependentUpon>
     </None>
-    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.ag4" />
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.tokens">
+      <DependentUpon>AnnotatedAntlr4Lexer.ag4</DependentUpon>
+    </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <Listener>True</Listener>
+      <Visitor>True</Visitor>
+      <TargetLanguage>CSharp</TargetLanguage>
+      <LastGenOutput>AnnotatedAntlr4Parser.g4</LastGenOutput>
+    </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>AnnotatedAntlr4Lexer.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+    </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
+    </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.tokens">
+      <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
+    </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnnotatedAntlr4PropertiesLexer.ag4</DependentUpon>
+    </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.tokens">
+      <DependentUpon>AnnotatedAntlr4PropertiesLexer.ag4</DependentUpon>
+    </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
+    </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.tokens">
+      <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
+    </None>
     <None Include="MetaDslxKey.snk" />
     <None Include="MetaGenerator\MetaGeneratorLexer.ag4">
-      <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>MetaDslx.Compiler.MetaGenerator</CustomToolNamespace>
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <LastGenOutput>MetaGeneratorLexer.g4</LastGenOutput>
+    </None>
+    <None Include="MetaGenerator\MetaGeneratorLexer.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
+    </None>
+    <None Include="MetaGenerator\MetaGeneratorLexer.tokens">
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
     </None>
     <None Include="MetaGenerator\MetaGeneratorParser.ag4">
-      <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>MetaDslx.Compiler.MetaGenerator</CustomToolNamespace>
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <LastGenOutput>MetaGeneratorParser.g4</LastGenOutput>
     </None>
-    <Antlr4 Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.g4">
-      <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>MetaDslx.Compiler.AnnotatedAntlr4</CustomToolNamespace>
-    </Antlr4>
-    <Antlr4 Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.g4">
-      <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>MetaDslx.Compiler.AnnotatedAntlr4</CustomToolNamespace>
-    </Antlr4>
-    <None Include="LanguageService\MetaLanguageServiceGenerator.mgen" />
-    <None Include="MetaGenerator\MetaGeneratorLexer.g4" />
-    <None Include="MetaModel\MetaModelLexer.ag4" />
-    <Antlr4 Include="MetaModel\MetaModelLexer.g4">
-      <Generator>MSBuild:Compile</Generator>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
       <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
-    </Antlr4>
-    <None Include="MetaModel\MetaModelParser.ag4" />
-    <Antlr4 Include="MetaModel\MetaModelParser.g4">
-      <Generator>MSBuild:Compile</Generator>
+      <LastGenOutput>AnnotatedAntlr4PropertiesLexer.g4</LastGenOutput>
+    </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
       <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
-    </Antlr4>
+      <LastGenOutput>AnnotatedAntlr4PropertiesParser.g4</LastGenOutput>
+    </None>
+    <None Include="LanguageService\MetaLanguageServiceGenerator.mgen">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>MetaLanguageServiceGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="MetaGenerator\MetaGeneratorParser.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </None>
+    <None Include="MetaGenerator\MetaGeneratorParser.tokens">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </None>
+    <None Include="MetaModel\MetaModelLexer.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>MetaModelLexer.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+    </None>
+    <None Include="MetaModel\MetaModelLexer.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelLexer.ag4</DependentUpon>
+    </None>
+    <None Include="MetaModel\MetaModelLexer.tokens">
+      <DependentUpon>MetaModelLexer.ag4</DependentUpon>
+    </None>
+    <None Include="MetaModel\MetaModelParser.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>MetaModelParser.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">
@@ -153,6 +283,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="MetaModel\MetaModelParser.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </None>
+    <None Include="MetaModel\MetaModelParser.tokens">
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </None>
     <None Include="Resources\antlr-4.5.1-complete.jar" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

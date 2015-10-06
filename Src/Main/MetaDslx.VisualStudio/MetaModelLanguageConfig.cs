@@ -10,9 +10,11 @@ namespace MetaDslx.VisualStudio
 {
     public class MetaModelLanguageConfig : MetaModelLanguageConfigBase
     {
-        public const string MetaModelLanguageGeneratorServiceGuid = "8A0D4F37-718F-4361-AB2A-8E340236932F";
+        public const string MetaModelGeneratorServiceGuid = "8A0D4F37-718F-4361-AB2A-8E340236932F";
         public const string MetaModelLanguageServiceGuid = "A70928D1-FD5C-4B59-9363-EB539618BF59";
+        public const string GeneratorName = "MetaModelGenerator";
         public const string LanguageName = "MetaDslx MetaModel";
+        public const string GeneratorServiceName = "C# Code Generator for MetaDslx Metamodel";
         public const string LanguageServiceName = "MetaDslx MetaModel Language Service";
         public const string FilterList = "MetaDslx MetaModel Files (*.mm)\n*.mm";
         public const string FileExtension = ".mm";

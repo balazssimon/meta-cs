@@ -1,6 +1,7 @@
 ﻿using MetaDslx.Compiler;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace MetaDslx.VisualStudio
 {
     public class MetaGeneratorGenerator : SingleFileGenerator
     {
+        public const string DefaultExtension = ".cs";
+
         private MetaGeneratorCompiler compiler;
 
         public MetaGeneratorGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
@@ -16,14 +19,9 @@ namespace MetaDslx.VisualStudio
         {
             if (this.InputFileContents != null)
             {
-                compiler = new MetaGeneratorCompiler(this.InputFileContents);
+                compiler = new MetaGeneratorCompiler(this.InputFileContents, this.InputDirectory, this.InputFileName);
                 compiler.Compile();
             }
-        }
-
-        public override string GetFileExtension()
-        {
-            return ".cs";
         }
 
         public override string GenerateStringContent()

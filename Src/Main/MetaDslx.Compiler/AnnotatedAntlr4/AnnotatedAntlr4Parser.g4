@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD license"]
  *  Copyright (c) 2013 Terence Parr
  *  Copyright (c) 2013 Sam Harwell
@@ -34,7 +34,7 @@ parser grammar AnnotatedAntlr4Parser;
 
 options {
 	tokenVocab=AnnotatedAntlr4Lexer;
-	
+	                       
 }
 
 // The main entry point for parsing a v4 grammar.
@@ -411,5 +411,4 @@ identifier : TOKEN_REF | RULE_REF | ID;
 boolLiteral : TRUE | FALSE;
 
 nullLiteral : NULL;
-
 

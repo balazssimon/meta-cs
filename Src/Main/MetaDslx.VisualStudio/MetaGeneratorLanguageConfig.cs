@@ -10,9 +10,11 @@ namespace MetaDslx.VisualStudio
 {
     public class MetaGeneratorLanguageConfig : MetaGeneratorLanguageConfigBase
     {
-        public const string MetaGeneratorLanguageGeneratorServiceGuid = "46F65E7B-4C31-43B1-B69C-E4FE342075DF";
+        public const string MetaGeneratorGeneratorServiceGuid = "46F65E7B-4C31-43B1-B69C-E4FE342075DF";
         public const string MetaGeneratorLanguageServiceGuid = "AA7BBD61-A873-4DE6-8CDC-7D7B7A5B23AE";
+        public const string GeneratorName = "MetaGenerator";
         public const string LanguageName = "MetaDslx Generator";
+        public const string GeneratorServiceName = "C# Code Generator for MetaDslx Generator";
         public const string LanguageServiceName = "MetaDslx Generator Language Service";
         public const string FilterList = "MetaDslx Generator Files (*.mgen)\n*.mgen";
         public const string FileExtension = ".mgen";

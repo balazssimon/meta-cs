@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -2187,7 +2187,7 @@ namespace MetaDslx.Core
     
 	public static class MetaInstance
 	{
-	    internal static global::MetaDslx.Core.Model model;
+	    private static global::MetaDslx.Core.Model model;
 	
 	    public static global::MetaDslx.Core.Model Model
 	    {
@@ -23691,4 +23691,3 @@ namespace MetaDslx.Core
     }
     
 }
-

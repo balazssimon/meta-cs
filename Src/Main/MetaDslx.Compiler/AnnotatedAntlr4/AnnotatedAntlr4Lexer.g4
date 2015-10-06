@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD license"]
  *  Copyright (c) 2014 Terence Parr
  *  Copyright (c) 2014 Sam Harwell
@@ -32,11 +32,11 @@
 lexer grammar AnnotatedAntlr4Lexer;
 
 tokens {
-	
+	                                    
 	TOKEN_REF,
-	
+	                                   
 	RULE_REF,
-	
+	                                 
 	LEXER_CHAR_SET
 }
 
@@ -107,16 +107,16 @@ tokens {
 	}
 }
 
-
+                                   
 DOC_COMMENT_START
 	:	'/**' -> more, mode(DOC_COMMENT_MODE), channel(HIDDEN)
 	;
 
-
+                                
 COMMENT_START : '/*' -> more, mode(BLOCK_COMMENT_MODE), channel(HIDDEN)
 	;
 
-
+                                
 LINE_COMMENT
 	:	'//' ~[\r\n]*  -> channel(HIDDEN)
 	;
@@ -129,12 +129,12 @@ BEGIN_ARG_ACTION
 // their option block, as this is teh easiest way to parse it separate
 // to an ACTION block, despite it usingthe same {} delimiters.
 //
-
+                                      
 OPTIONS      : 'options' [ \t\f\n\r]* '{'  ;
-
+                                      
 TOKENS		 : 'tokens'  [ \t\f\n\r]* '{'  ;
 
-
+                                                         
 IMPORT       : 'import'               ;
 FRAGMENT     : 'fragment'             ;
 LEXER        : 'lexer'                ;
@@ -181,7 +181,7 @@ LBRACKET     : '['                    ;
 RBRACKET     : ']'                    ;
 
 /** Allow unicode rule/token names */
-
+                                   
 ID	:	NameStartChar NameChar*;
 
 fragment
@@ -211,13 +211,13 @@ NameStartChar
 	|   '\uFDF0'..'\uFFFD'
 	; // ignores | ['\u10000-'\uEFFFF] ;
 
-
+                               
 INTEGER_LITERAL : DecimalDigits | Hexadecimal;
 
-
+                               
 DECIMAL_LITERAL : DecimalDigit+ '.' DecimalDigit+;
 
-
+                               
 SCIENTIFIC_LITERAL : DECIMAL_LITERAL [eE] Sign? DecimalDigit+;
 fragment DecimalDigits : DecimalDigit+;
 fragment DecimalDigit : [0-9];
@@ -229,12 +229,12 @@ fragment HexDigit : [0-9a-fA-F];
 // multi-character string. All literals are single quote delimited and
 // may contain unicode escape sequences of the form \uxxxx, where x
 // is a valid hexadecimal number (as per Java basically).
-
+                               
 STRING_LITERAL
 	:  '\'' (ESC_SEQ | ~['\r\n\\])* '\''
 	;
 
-
+                               
 UNTERMINATED_STRING_LITERAL
 	:  '\'' (ESC_SEQ | ~['\r\n\\])*
 	;
@@ -272,7 +272,7 @@ WS  :	[ \t\r\n\f]+ -> channel(HIDDEN)	;
 // that they are delimited by ' or " and so consume these
 // in their own alts so as not to inadvertantly match {}.
 
-
+                                     
 ACTION
 	:	'{'
 		(	ACTION
@@ -316,7 +316,7 @@ ERRCHAR
 	:	.	-> channel(HIDDEN)
 	;
 
-
+                                     
 mode ArgAction; // E.g., [int x, List<String> a[]]
 
 	NESTED_ARG_ACTION
@@ -335,12 +335,12 @@ mode ArgAction; // E.g., [int x, List<String> a[]]
         :	('"' '\\' . | ~["\\] '"')   -> more
         ;
 
-	
+	                                     
     ARG_ACTION
 		:   ']'                         -> popMode
 		;
 
-	
+	                                     
 	UNTERMINATED_ARG_ACTION // added this to return non-EOF token type here. EOF did something weird
 		:	EOF							-> popMode
 		;
@@ -368,23 +368,22 @@ mode LexerCharSet;
 		:	EOF							-> popMode
 		;
 
-
+                                   
 mode DOC_COMMENT_MODE;
 
 	DOC_COMMENT_CRLF : '\r'? '\n' -> more, channel(HIDDEN);
 	DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(HIDDEN);
 	DOC_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(HIDDEN);
-	
+	                                
 	DOC_COMMENT : '*/' -> mode(DEFAULT_MODE), channel(HIDDEN);
 	DOC_COMMENT_STAR : '*' -> more, channel(HIDDEN);
 
-
+                                
 mode BLOCK_COMMENT_MODE;
 
 	BLOCK_COMMENT_CRLF : '\r'? '\n' -> more, channel(HIDDEN);
 	BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(HIDDEN);
 	BLOCK_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(HIDDEN);
-	
+	                                
 	BLOCK_COMMENT : '*/' -> mode(DEFAULT_MODE), channel(HIDDEN);
 	BLOCK_COMMENT_STAR : '*' -> more, channel(HIDDEN);
-

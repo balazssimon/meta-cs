@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelGenerator_1886657636;
-    namespace __Hidden_MetaModelGenerator_1886657636
+    using __Hidden_MetaModelGenerator_872755558;
+    namespace __Hidden_MetaModelGenerator_872755558
     {
         internal static class __Extensions
         {
@@ -7932,4 +7932,3 @@ namespace MetaDslx.Core //1:1
 
     }
 }
-

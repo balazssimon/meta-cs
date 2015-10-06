@@ -9,6 +9,8 @@ namespace MetaDslx.VisualStudio
 {
     public class MetaModelGenerator : SingleFileGenerator
     {
+        public const string DefaultExtension = ".cs";
+
         private MetaModelCompiler compiler;
 
         public MetaModelGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
@@ -16,14 +18,9 @@ namespace MetaDslx.VisualStudio
         {
             if (this.InputFileContents != null)
             {
-                compiler = new MetaModelCompiler(this.InputFileContents);
+                compiler = new MetaModelCompiler(this.InputFileContents, this.InputDirectory, this.InputFileName);
                 compiler.Compile();
             }
-        }
-
-        public override string GetFileExtension()
-        {
-            return ".cs";
         }
 
         public override string GenerateStringContent()

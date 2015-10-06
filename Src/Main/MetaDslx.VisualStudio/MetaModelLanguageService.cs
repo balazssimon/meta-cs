@@ -15,7 +15,10 @@ using Antlr4.Runtime;
 using MetaDslx.Compiler;
 using System.Drawing;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
+
 using VsCommands2K = Microsoft.VisualStudio.VSConstants.VSStd2KCmdID;
+
 namespace MetaDslx.VisualStudio
 {
     public class MetaModelLanguageAuthoringScope : AuthoringScope
@@ -234,8 +237,11 @@ namespace MetaDslx.VisualStudio
         #endregion
     }
     [ComVisible(true)]
-    [Guid(MetaModelLanguageConfig.MetaModelLanguageGeneratorServiceGuid)]
-    public class MetaModelLanguageGeneratorService : VsSingleFileGenerator
+    [Guid(MetaModelLanguageConfig.MetaModelGeneratorServiceGuid)]
+    [ProvideObject(typeof(MetaModelGeneratorService), RegisterUsing = RegistrationMethod.CodeBase)]
+    [CodeGeneratorRegistration(typeof(MetaModelGeneratorService), MetaModelLanguageConfig.GeneratorName, "{fae04ec1-301f-11d3-bf4b-00c04f79efbc}", GeneratorRegKeyName = MetaModelLanguageConfig.FileExtension)]
+    [CodeGeneratorRegistration(typeof(MetaModelGeneratorService), MetaModelLanguageConfig.GeneratorServiceName, "{fae04ec1-301f-11d3-bf4b-00c04f79efbc}", GeneratorRegKeyName = MetaModelLanguageConfig.GeneratorName, GeneratesDesignTimeSource = true)]
+    public class MetaModelGeneratorService : VsSingleFileGenerator
     {
         protected override SingleFileGenerator CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
 		{
@@ -243,6 +249,11 @@ namespace MetaDslx.VisualStudio
             // which is a subclass of SingleFileGenerator
 			return new MetaModelGenerator(inputFilePath, inputFileContents, defaultNamespace);
 		}
+
+        public override string GetDefaultFileExtension()
+        {
+            return MetaModelGenerator.DefaultExtension;
+        }
     }
     public class MetaModelLanguageScanner : IScanner
     {
@@ -525,7 +536,9 @@ namespace MetaDslx.VisualStudio
                     // This is where you perform your syntax highlighting.
                     // Parse entire source as given in req.Text.
                     // Store results in the AuthoringScope object.
-                    MetaModelCompiler compiler = new MetaModelCompiler(req.Text);
+                    string fileName = Path.GetFileName(req.FileName);
+                    string outputDir = Path.GetDirectoryName(req.FileName);
+                    MetaModelCompiler compiler = new MetaModelCompiler(req.Text, outputDir, fileName);
                     compiler.GenerateOutput = false;
                     compiler.Compile();
                     foreach (var msg in compiler.Diagnostics.GetMessages())

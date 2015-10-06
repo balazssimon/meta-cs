@@ -31,35 +31,41 @@ namespace MetaDslx.VisualStudio
             if (inputFilePath != null)
             {
                 this.InputFileName = Path.GetFileName(inputFilePath);
+                this.InputDirectory = Path.GetDirectoryName(inputFilePath);
             }
             this.InputFileContents = inputFileContents;
             this.DefaultNamespace = defaultNamespace;
         }
 
-        protected string InputFileContents
+        public string InputFileContents
         {
             get;
             private set;
         }
 
-        protected string InputFileName
+        public string InputFileName
         {
             get;
             private set;
         }
 
-        protected string InputFilePath
+        public string InputDirectory
         {
             get;
             private set;
         }
 
-        protected string DefaultNamespace
+        public string InputFilePath
         {
             get;
             private set;
         }
-        public abstract string GetFileExtension();
+
+        public string DefaultNamespace
+        {
+            get;
+            private set;
+        }
         public virtual string GenerateStringContent()
         {
             return "";
@@ -147,15 +153,22 @@ namespace MetaDslx.VisualStudio
     public abstract class VsSingleFileGenerator : IVsSingleFileGenerator, IObjectWithSite
     {
         private object site;
-        #region IVsSingleFileGenerator Members
-        public int DefaultExtension(out string pbstrDefaultExtension)
-        {
-            SingleFileGenerator generator = this.CreateGenerator(null, null, null);
-            pbstrDefaultExtension = generator.GetFileExtension();
-            return Microsoft.VisualStudio.VSConstants.S_OK;
-        }
 
         protected abstract SingleFileGenerator CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace);
+        public abstract string GetDefaultFileExtension();
+
+        public int DefaultExtension(out string pbstrDefaultExtension)
+        {
+            pbstrDefaultExtension = this.GetDefaultFileExtension();
+            if (!string.IsNullOrWhiteSpace(pbstrDefaultExtension))
+            {
+                return Microsoft.VisualStudio.VSConstants.S_OK;
+            }
+            else
+            {
+                return Microsoft.VisualStudio.VSConstants.S_FALSE;
+            }
+        }
 
         public int Generate(string wszInputFilePath, string bstrInputFileContents, string wszDefaultNamespace, IntPtr[] rgbOutputFileContents, out uint pcbOutput, IVsGeneratorProgress pGenerateProgress)
         {
@@ -176,7 +189,7 @@ namespace MetaDslx.VisualStudio
             }
             return Microsoft.VisualStudio.VSConstants.E_FAIL;
         }
-        #endregion
+
         #region IObjectWithSite Members
         public void GetSite(ref Guid riid, out IntPtr ppvSite)
         {
@@ -207,6 +220,7 @@ namespace MetaDslx.VisualStudio
             this.site = pUnkSite;
         }
         #endregion
+
     }
 
     public abstract class VsMultipleFileGenerator<T> : IVsSingleFileGenerator, IObjectWithSite

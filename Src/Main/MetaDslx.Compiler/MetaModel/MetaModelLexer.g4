@@ -1,7 +1,7 @@
-lexer grammar MetaModelLexer;
+﻿lexer grammar MetaModelLexer;
 
 // Keywords
-
+                                                              
 KNamespace : 'namespace';
 KUsing : 'using';
 KMetamodel : 'metamodel';
@@ -95,7 +95,7 @@ THatAssign : '^=';
 TBarAssign : '|=';
 
 //IdentifierGeneral : IdentifierGeneralBegin IdentifierGeneralCharacter*;
-
+                                   
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;
 IdentifierVerbatim : '@' IdentifierBegin IdentifierCharacter*;
 //IdentifierVerbatimStart : '@[' -> more, mode(VERBATIM_IDENTIFIER);
@@ -106,11 +106,11 @@ fragment IdentifierVerbatimEscape : '\\\\' | '\\]';
 fragment IdentifierGeneralBegin : [a-zA-Z_];
 fragment IdentifierGeneralCharacter : [a-zA-Z0-9_];
 
-
+                               
 IntegerLiteral : DecimalDigits | Hexadecimal;
-
+                               
 DecimalLiteral : DecimalDigit+ '.' DecimalDigit+;
-
+                               
 ScientificLiteral : DecimalLiteral [eE] Sign? DecimalDigit+;
 fragment DecimalDigits : DecimalDigit+;
 fragment DecimalDigit : [0-9];
@@ -118,13 +118,13 @@ fragment Sign : '+' | '-';
 fragment Hexadecimal : ('0x'|'0X') HexDigit*;
 fragment HexDigit : [0-9a-fA-F];
 
-
+                               
 DateTimeOffsetLiteral : DateLiteral 'T' TimeLiteral TimeZone;
-
+                               
 DateTimeLiteral : DateLiteral 'T' TimeLiteral;
-
+                               
 DateLiteral : Sign? DateYear '-' DateMonth '-' DateDay;
-
+                               
 TimeLiteral : TimeHourMinute ':' TimeSecond;
 fragment DateDay
     : '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10'
@@ -151,7 +151,7 @@ fragment TimeMinute: ['0'-'5'] DecimalDigit;
 fragment TimeSecond: ['0'-'5'] DecimalDigit TimeSecondDecimalPart?;
 fragment TimeSecondDecimalPart: '.' DecimalDigits;
 
-
+                               
 RegularStringLiteral
     : '"' DoubleQuoteTextCharacter* '"'
     | '\'' SingleQuoteTextCharacter* '\'';
@@ -181,7 +181,7 @@ fragment CharacterEscapeUnicode
     : '\\u' HexDigit HexDigit HexDigit HexDigit
     | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit;
 
-
+                               
 GuidLiteral : '#[' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
                    HexDigit '-' HexDigit HexDigit HexDigit HexDigit '-'
                    HexDigit HexDigit HexDigit HexDigit '-'
@@ -194,17 +194,17 @@ UTF8BOM : [\u00EF][\u00BB][\u00BF] -> channel(WHITESPACE);
 WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> channel(WHITESPACE);
 CRLF : '\r'? '\n' -> channel(WHITESPACE);
 LINEBREAK : [\u0085\u2028\u2029] -> channel(WHITESPACE);
-
+                                
 LINE_COMMENT : '//' ~[\r\n]* -> channel(COMMENT);
 COMMENT_START : '/*' -> more, mode(MULTILINE_COMMENT), channel(COMMENT);
 
-
+                                
 mode MULTILINE_COMMENT;
 
 COMMENT_CRLF : '\r'? '\n' -> more, channel(COMMENT);
 COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(COMMENT);
 COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(COMMENT);
-
+                                
 COMMENT : '*/' -> mode(DEFAULT_MODE), channel(COMMENT);
 COMMENT_STAR : '*' -> more, channel(COMMENT);
 
@@ -224,4 +224,3 @@ mode VERBATIM_IDENTIFIER;
 IdentifierVerbatimText : IdentifierVerbatimCharacter -> more;
 IdentifierVerbatim : ']' -> mode(DEFAULT_MODE);
 */
-

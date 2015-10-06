@@ -183,8 +183,10 @@ namespace MetaDslx.Compiler
     public abstract class MetaCompiler : IModelCompiler, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
     {
         public ModelCompilerDiagnostics Diagnostics { get; private set; }
+        public string OutputDirectory { get; private set; }
         public string FileName { get; private set; }
         public string Source { get; private set; }
+        public string DefaultNamespace { get; set; }
         public bool GenerateOutput { get; set; }
         public RootScope GlobalScope
         {
@@ -196,11 +198,12 @@ namespace MetaDslx.Compiler
         public IResolutionProvider ResolutionProvider { get; set; }
         public IBindingProvider BindingProvider { get; set; }
 
-        public MetaCompiler(string source, string fileName = null)
+        public MetaCompiler(string source, string outputDirectory, string fileName)
         {
             this.Diagnostics = new ModelCompilerDiagnostics();
             this.Source = source;
             this.FileName = fileName;
+            this.OutputDirectory = outputDirectory;
             this.GenerateOutput = true;
             this.GlobalScope = new RootScope();
             this.Data = new MetaCompilerData(this);

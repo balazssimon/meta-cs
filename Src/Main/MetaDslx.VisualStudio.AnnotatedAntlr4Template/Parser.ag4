@@ -1,1 +1,8 @@
 ﻿parser grammar $safeitemname$;
+
+options {
+	tokenVocab=$safeitemname$Lexer;
+	generateCompiler=true;
+	generateCompilerBase=false;
+}
+

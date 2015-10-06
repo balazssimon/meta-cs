@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -3912,8 +3912,8 @@ using MetaDslx.Core;
     }
     public abstract class MetaModelCompilerBase : MetaCompiler
     {
-        public MetaModelCompilerBase(string source, string fileName = null)
-            : base(source, fileName)
+        public MetaModelCompilerBase(string source, string outputDirectory, string fileName)
+            : base(source, outputDirectory, fileName)
         {
         }
         
@@ -3969,4 +3969,3 @@ using MetaDslx.Core;
         public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
     }
 }
-

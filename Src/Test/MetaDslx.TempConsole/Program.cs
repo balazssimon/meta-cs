@@ -99,7 +99,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Compiler\LanguageService\MetaLanguageServiceGenerator.cs"
                     );
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 GenerateLanguageService(
                     "AnnotatedAntlr4",
@@ -130,7 +130,7 @@ namespace MetaDslx.TempConsole
                 source = reader.ReadToEnd();
             }
             AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(source, outputDirectory, fileName);
-            compiler.CSharpNamespace = "MetaDslx.Compiler";
+            compiler.DefaultNamespace = "MetaDslx.Compiler";
             compiler.Compile();
             string outputFileName = Path.Combine(outputDirectory, antlr4FileName + "Annotator.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))
@@ -179,7 +179,7 @@ namespace MetaDslx.TempConsole
                 {
                     source = reader.ReadToEnd();
                 }
-                MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
+                MetaModelCompiler compiler = new MetaModelCompiler(source, ".", fileName);
                 compiler.Compile();
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
@@ -305,7 +305,7 @@ namespace MetaDslx.TempConsole
             {
                 source = reader.ReadToEnd();
             }
-            MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(source, fileName);
+            MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(source, ".", fileName);
             compiler.Compile();
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {

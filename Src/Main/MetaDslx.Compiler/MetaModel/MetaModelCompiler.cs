@@ -12,8 +12,8 @@ namespace MetaDslx.Compiler
 
     public class MetaModelCompiler : MetaModelCompilerBase
     {
-        public MetaModelCompiler(string source, string fileName = null)
-            : base(source, fileName)
+        public MetaModelCompiler(string source, string outputDirectory, string fileName)
+            : base(source, outputDirectory, fileName)
         {
         }
 

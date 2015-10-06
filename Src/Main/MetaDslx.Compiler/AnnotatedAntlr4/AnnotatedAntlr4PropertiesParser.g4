@@ -1,8 +1,9 @@
-/** A parser grammar for ANTLR v4 annotated grammar properties */
+﻿/** A parser grammar for ANTLR v4 annotated grammar properties */
 parser grammar AnnotatedAntlr4PropertiesParser;
 
 options {
 	tokenVocab=AnnotatedAntlr4PropertiesLexer;
+	                       
 }
 
 // The main entry point for parsing a v4 grammar.
@@ -36,8 +37,8 @@ functionCall
 	;
 
 literal 
-	: null
-	| boolean
+	: nullLiteral
+	| booleanLiteral
     | INTEGER_LITERAL
 	| SCIENTIFIC_LITERAL 
     | STRING_LITERAL
@@ -45,7 +46,7 @@ literal
 
 identifier : ID;
 
-boolean : TRUE | FALSE;
+booleanLiteral : TRUE | FALSE;
 
-null : NULL;
+nullLiteral : NULL;
 

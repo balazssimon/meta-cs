@@ -18,8 +18,8 @@ namespace MetaDslx.Compiler
 
     public class MetaGeneratorCompiler : MetaCompiler
     {
-        public MetaGeneratorCompiler(string source, string fileName = null)
-            : base(source, fileName)
+        public MetaGeneratorCompiler(string source, string outputDirectory, string fileName)
+            : base(source, outputDirectory, fileName)
         {
         }
 

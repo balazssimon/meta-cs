@@ -49,9 +49,9 @@ namespace MetaDslx.VisualStudio
     [ProvideLanguageExtension(typeof(AnnotatedAntlr4LanguageService), AnnotatedAntlr4LanguageConfig.FileExtension)]
     [ProvideLanguageServiceAttribute(typeof(AnnotatedAntlr4LanguageService), AnnotatedAntlr4LanguageConfig.LanguageName, 1,
         RequestStockColors = false, EnableCommenting = true)]
-    [ProvideObject(typeof(AnnotatedAntlr4LanguageGeneratorService))]
-    [ProvideObject(typeof(MetaGeneratorLanguageGeneratorService))]
-    [ProvideObject(typeof(MetaModelLanguageGeneratorService))]
+    [ProvideObject(typeof(AnnotatedAntlr4GeneratorService))]
+    [ProvideObject(typeof(MetaGeneratorGeneratorService))]
+    [ProvideObject(typeof(MetaModelGeneratorService))]
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(MetaDslxLanguagePackage.PackageGuidString)]

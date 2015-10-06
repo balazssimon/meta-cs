@@ -32,7 +32,7 @@ namespace MetaDslx.VisualStudio
             if (this.InputFileContents != null)
             {
                 compiler = new AnnotatedAntlr4Compiler(this.InputFileContents, this.InputDirectory, this.InputFileName);
-                compiler.CSharpNamespace = defaultNamespace;
+                compiler.DefaultNamespace = defaultNamespace;
                 compiler.Compile();
             }
         }

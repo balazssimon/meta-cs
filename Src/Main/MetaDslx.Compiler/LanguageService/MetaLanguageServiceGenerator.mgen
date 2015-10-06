@@ -26,9 +26,10 @@ using Antlr4.Runtime;
 using MetaDslx.Compiler;
 using System.Drawing;
 using Microsoft.VisualStudio;
-
+using Microsoft.VisualStudio.Shell;
+^
 using VsCommands2K = Microsoft.VisualStudio.VSConstants.VSStd2KCmdID;
-
+^
 namespace [Properties.LanguageServiceNamespace]
 {
     public class [Properties.LanguageClassName]LanguageAuthoringScope : AuthoringScope
@@ -273,9 +274,12 @@ namespace [Properties.LanguageServiceNamespace]
 
 
     ["[ComVisible(true)]"]
-    ["[Guid("+Properties.LanguageClassName+"LanguageConfig."+Properties.LanguageClassName+"LanguageGeneratorServiceGuid)]"]
+    ["[Guid("+Properties.LanguageClassName+"LanguageConfig."+Properties.LanguageClassName+"GeneratorServiceGuid)]"]
+    ["[ProvideObject(typeof("+Properties.LanguageClassName+"GeneratorService), RegisterUsing = RegistrationMethod.CodeBase)]"]
+    ["[CodeGeneratorRegistration(typeof("+Properties.LanguageClassName+"GeneratorService), "+Properties.LanguageClassName+"LanguageConfig.GeneratorName, \"{fae04ec1-301f-11d3-bf4b-00c04f79efbc}\", GeneratorRegKeyName = "+Properties.LanguageClassName+"LanguageConfig.FileExtension)]"]
+    ["[CodeGeneratorRegistration(typeof("+Properties.LanguageClassName+"GeneratorService), "+Properties.LanguageClassName+"LanguageConfig.GeneratorServiceName, \"{fae04ec1-301f-11d3-bf4b-00c04f79efbc}\", GeneratorRegKeyName = "+Properties.LanguageClassName+"LanguageConfig.GeneratorName, GeneratesDesignTimeSource = true)]"]
 	[if (Properties.GenerateMultipleFiles)]
-    public class [Properties.LanguageClassName]LanguageGeneratorService : VsMultipleFileGenerator<object>
+    public class [Properties.LanguageClassName]GeneratorService : VsMultipleFileGenerator<object>
     {
         protected override MultipleFileGenerator<object> CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
 		{
@@ -283,9 +287,14 @@ namespace [Properties.LanguageServiceNamespace]
             // which is a subclass of MultipleFileGenerator<object>
 			return new [Properties.LanguageClassName]Generator(inputFilePath, inputFileContents, defaultNamespace);
 		}
+^
+        public override string GetDefaultFileExtension()
+        {
+            return [Properties.LanguageClassName]Generator.DefaultExtension;
+        }
     }
 	[else]
-    public class [Properties.LanguageClassName]LanguageGeneratorService : VsSingleFileGenerator
+    public class [Properties.LanguageClassName]GeneratorService : VsSingleFileGenerator
     {
         protected override SingleFileGenerator CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
 		{
@@ -293,6 +302,11 @@ namespace [Properties.LanguageServiceNamespace]
             // which is a subclass of SingleFileGenerator
 			return new [Properties.LanguageClassName]Generator(inputFilePath, inputFileContents, defaultNamespace);
 		}
+^
+        public override string GetDefaultFileExtension()
+        {
+            return [Properties.LanguageClassName]Generator.DefaultExtension;
+        }
     }
 	[end if]
 
@@ -604,7 +618,10 @@ namespace [Properties.LanguageServiceNamespace]
                     // This is where you perform your syntax highlighting.
                     // Parse entire source as given in req.Text.
                     // Store results in the AuthoringScope object.
-                    [Properties.LanguageClassName]Compiler compiler = new [Properties.LanguageClassName]Compiler(req.Text);
+                    string fileName = Path.GetFileName(req.FileName);
+                    string outputDir = Path.GetDirectoryName(req.FileName);
+                    [Properties.LanguageClassName]Compiler compiler = new [Properties.LanguageClassName]Compiler(req.Text, outputDir, fileName);
+                    compiler.GenerateOutput = false;
                     compiler.Compile();
                     foreach (var msg in compiler.Diagnostics.GetMessages())
                     {
