@@ -82,6 +82,12 @@
     </None>
     <None Include="Parser.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>Parser.g4</LastGenOutput>
+    </None>
+    <None Include="Parser.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Parser.ag4</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

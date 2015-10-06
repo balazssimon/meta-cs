@@ -848,6 +848,8 @@ namespace MetaDslx.Compiler
             WriteLine("using System.Linq;");
             WriteLine("using System.Text;");
             WriteLine("using System.Threading.Tasks;");
+            WriteLine("using MetaDslx.Core;");
+            WriteLine("using MetaDslx.Compiler;");
             WriteLine("using Antlr4.Runtime;");
             WriteLine("using Antlr4.Runtime.Tree;");
             WriteLine("");

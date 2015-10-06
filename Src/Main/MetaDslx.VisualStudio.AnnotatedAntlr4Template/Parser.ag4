@@ -1,7 +1,7 @@
 ﻿parser grammar $safeitemname$;
 
 options {
-	tokenVocab=$safeitemname$Lexer;
+	tokenVocab=$fileinputname$Lexer;
 	generateCompiler=true;
 	generateCompilerBase=false;
 }
