@@ -48,6 +48,11 @@ namespace MetaDslx.TempConsole
             try
             {
                 /*
+                CompileAG4(@"..\..\..\..\Samples\MetaDslx.Soal", @"SoalLexer");
+                CompileAG4(@"..\..\..\..\Samples\MetaDslx.Soal", @"SoalParser");
+                Console.WriteLine("----");
+                //*/
+                /*
                 CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4", @"AnnotatedAntlr4Lexer");
                 CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4", @"AnnotatedAntlr4Parser");
                 Console.WriteLine("----");
@@ -99,7 +104,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Compiler\LanguageService\MetaLanguageServiceGenerator.cs"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 GenerateLanguageService(
                     "AnnotatedAntlr4",

@@ -130,11 +130,26 @@ namespace MetaDslx.Compiler
                         {
                             string colIndexStr = line.Substring(0, colonIndex).Trim();
                             line = line.Substring(colonIndex + 1);
+                            if (string.IsNullOrWhiteSpace(lineIndexStr)) lineIndexStr = "0";
+                            if (string.IsNullOrWhiteSpace(colIndexStr)) colIndexStr = "0";
                             int lineIndex;
                             int.TryParse(lineIndexStr, out lineIndex);
                             int colIndex;
                             int.TryParse(colIndexStr, out colIndex);
-                            Antlr4TextSpan span = remover.GetTokenSpanAt(lineIndex, colIndex);
+                            if (lineIndex < 1)
+                            {
+                                lineIndex = 1;
+                                colIndex = 0;
+                            }
+                            Antlr4TextSpan span = null;
+                            if (remover != null)
+                            {
+                                span = remover.GetTokenSpanAt(lineIndex, colIndex);
+                            }
+                            else
+                            {
+                                span = new Antlr4TextSpan(lineIndex, colIndex + 1, lineIndex, colIndex + 1);
+                            }
                             this.Diagnostics.AddMessage(severity, line, fileName, span);
                         }
                     }
