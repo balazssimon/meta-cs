@@ -3,7 +3,7 @@
 options {
 	tokenVocab=SoalLexer;
 	generateCompiler=true;
-	generateCompilerBase=false;
+	generateCompilerBase=true;
 }
 
 main : namespaceDeclaration*;
@@ -17,19 +17,91 @@ $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: KNamespace qualifiedName TOpenBrace declaration* TCloseBrace;
 
 $Property(Declarations)
-declaration : structDeclaration | exceptionDeclaration;
+declaration : structDeclaration | exceptionDeclaration | interfaceDeclaration | bindingDeclaration | endpointDeclaration;
+
+
+// Structs and exceptions
 
 $TypeDef(Struct)
-structDeclaration : KStruct identifier TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : KStruct identifier (TColon $Property(BaseType) $TypeUse(Struct) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $TypeDef(Exception)
-exceptionDeclaration : KException identifier TOpenBrace propertyDeclaration* TCloseBrace;
+exceptionDeclaration : KException identifier (TColon $Property(BaseType) $TypeUse(Exception) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $Property(Properties)
 $NameDef(Property)
 propertyDeclaration : $Property(Type) typeReference identifier TSemicolon;
 
 
+// Interface
+
+$TypeDef(Interface)
+interfaceDeclaration : KInterface identifier TOpenBrace operationDeclaration* TCloseBrace;
+
+$Property(Operations)
+$NameDef(Operation)
+operationDeclaration : (returnType|onewayType) identifier TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Exception) qualifiedNameList)? TSemicolon;
+
+parameterList : parameter (',' parameter)*;
+
+$Property(Parameters)
+$NameDef(Parameter)
+parameter : $Property(Type) typeReference identifier;
+
+
+// Binding
+
+$NameDef(Binding)
+bindingDeclaration : KBinding identifier TOpenBrace bindingLayers? TCloseBrace;
+
+bindingLayers : transportLayer encodingLayer+ protocolLayer*;
+
+$Property(Transport)
+$Symbol
+transportLayer : KTransport transportLayerKind TSemicolon;
+
+transportLayerKind :
+	$SymbolType(name='HTTP',symbolType=HttpTransportBindingElement) 
+	$SymbolType(name='REST',symbolType=RestTransportBindingElement) 
+	$SymbolType(name='WebSocket',symbolType=WebSocketTransportBindingElement) 
+	identifier;
+
+$Property(Encodings)
+$Symbol
+encodingLayer : KEncoding encodingLayerKind TSemicolon;
+
+encodingLayerKind : 
+	$SymbolType(name='SOAP',symbolType=SoapEncodingBindingElement) 
+	$SymbolType(name='XML',symbolType=XmlEncodingBindingElement) 
+	$SymbolType(name='JSON',symbolType=JsonEncodingBindingElement) 
+	identifier;
+
+$Property(Protocols)
+$Symbol
+protocolLayer : KProtocol protocolLayerKind TSemicolon;
+
+protocolLayerKind : 
+	$SymbolType(name='WsAddressing',symbolType=WsAddressingBindingElement) 
+	identifier;
+
+// Endpoint:
+
+$NameDef(Endpoint)
+endpointDeclaration : KEndpoint identifier TColon $Property(Interface) $TypeUse(Interface) qualifiedName TOpenBrace endpointProperties? TCloseBrace;
+
+endpointProperties : endpointProperty+;
+
+endpointProperty
+	: endpointBindingProperty
+	| endpointAddressProperty
+	;
+
+endpointBindingProperty : KBinding $Property(Binding) $NameUse(Binding) qualifiedName TSemicolon;
+endpointAddressProperty : KAddress $Property(Address) $Value stringLiteral TSemicolon;
+
+// Types
+
+$Property(ReturnType)
 $TypeUse
 returnType : typeReference | voidType;
 
@@ -59,6 +131,11 @@ primitiveType
 $Name
 voidType 
 	: KVoid
+	;
+$Property(name=IsOneway,value=true)
+$Property(name=ReturnType,value=SoalInstance.Void)
+onewayType
+	: KOneway
 	;
 
 $TypeCtr(NullableType)

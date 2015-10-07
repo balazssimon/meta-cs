@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\qgadigol.4qr\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\sb\AppData\Local\Temp\upnawxce.5cx\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -120,6 +120,176 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitPropertyDeclaration([NotNull] SoalParser.PropertyDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.interfaceDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInterfaceDeclaration([NotNull] SoalParser.InterfaceDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.interfaceDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInterfaceDeclaration([NotNull] SoalParser.InterfaceDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.operationDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOperationDeclaration([NotNull] SoalParser.OperationDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.operationDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOperationDeclaration([NotNull] SoalParser.OperationDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.parameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParameterList([NotNull] SoalParser.ParameterListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.parameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParameterList([NotNull] SoalParser.ParameterListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.parameter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParameter([NotNull] SoalParser.ParameterContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.parameter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParameter([NotNull] SoalParser.ParameterContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.bindingDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBindingDeclaration([NotNull] SoalParser.BindingDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.bindingDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBindingDeclaration([NotNull] SoalParser.BindingDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.bindingLayers"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBindingLayers([NotNull] SoalParser.BindingLayersContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.bindingLayers"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBindingLayers([NotNull] SoalParser.BindingLayersContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.transportLayer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTransportLayer([NotNull] SoalParser.TransportLayerContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.transportLayer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTransportLayer([NotNull] SoalParser.TransportLayerContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.transportLayerKind"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTransportLayerKind([NotNull] SoalParser.TransportLayerKindContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.transportLayerKind"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTransportLayerKind([NotNull] SoalParser.TransportLayerKindContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.encodingLayer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEncodingLayer([NotNull] SoalParser.EncodingLayerContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.encodingLayer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEncodingLayer([NotNull] SoalParser.EncodingLayerContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.encodingLayerKind"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEncodingLayerKind([NotNull] SoalParser.EncodingLayerKindContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.encodingLayerKind"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEncodingLayerKind([NotNull] SoalParser.EncodingLayerKindContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.protocolLayer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterProtocolLayer([NotNull] SoalParser.ProtocolLayerContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.protocolLayer"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitProtocolLayer([NotNull] SoalParser.ProtocolLayerContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.protocolLayerKind"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterProtocolLayerKind([NotNull] SoalParser.ProtocolLayerKindContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.protocolLayerKind"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitProtocolLayerKind([NotNull] SoalParser.ProtocolLayerKindContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.endpointDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEndpointDeclaration([NotNull] SoalParser.EndpointDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.endpointDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEndpointDeclaration([NotNull] SoalParser.EndpointDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.endpointProperties"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEndpointProperties([NotNull] SoalParser.EndpointPropertiesContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.endpointProperties"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEndpointProperties([NotNull] SoalParser.EndpointPropertiesContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.endpointProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEndpointProperty([NotNull] SoalParser.EndpointPropertyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.endpointProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEndpointProperty([NotNull] SoalParser.EndpointPropertyContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.endpointBindingProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEndpointBindingProperty([NotNull] SoalParser.EndpointBindingPropertyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.endpointBindingProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEndpointBindingProperty([NotNull] SoalParser.EndpointBindingPropertyContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.endpointAddressProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEndpointAddressProperty([NotNull] SoalParser.EndpointAddressPropertyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.endpointAddressProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEndpointAddressProperty([NotNull] SoalParser.EndpointAddressPropertyContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.returnType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -179,6 +349,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitVoidType([NotNull] SoalParser.VoidTypeContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.onewayType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOnewayType([NotNull] SoalParser.OnewayTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.onewayType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOnewayType([NotNull] SoalParser.OnewayTypeContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.nullableType"/>.
 	/// </summary>

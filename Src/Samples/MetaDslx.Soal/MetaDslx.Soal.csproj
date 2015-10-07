@@ -49,6 +49,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Soal.mm</DependentUpon>
     </Compile>
+    <Compile Include="SoalCompiler.cs" />
     <Compile Include="SoalImplementation.cs" />
     <Compile Include="SoalLexer.cs">
       <DependentUpon>SoalLexer.ag4</DependentUpon>

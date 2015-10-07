@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,7 @@ using MetaDslx.Compiler;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 
-namespace MetaDslx.Compiler
+namespace MetaDslx.Soal
 {
     public class SoalLexerAnnotator
     {
@@ -184,17 +184,7 @@ namespace MetaDslx.Compiler
             if (token != null)
             {
                 List<object> annotList = null;
-                List<object> staticAnnotList = null;
-                if (this.tokenAnnotations.TryGetValue(token.Type, out staticAnnotList))
-                {
-                    annotList = new List<object>(staticAnnotList);
-                }
-                switch (token.Type)
-                {
-                    default:
-                        break;
-                }
-                if (annotList != null)
+                if (this.tokenAnnotations.TryGetValue(token.Type, out annotList))
                 {
                     List<object> treeAnnotList = null;
                     if (!treeAnnotations.TryGetValue(node, out treeAnnotList))
@@ -209,4 +199,3 @@ namespace MetaDslx.Compiler
         }
     }
 }
-

@@ -1,4 +1,4 @@
-lexer grammar SoalLexer;
+﻿lexer grammar SoalLexer;
 
                                                                  
 KNamespace : 'namespace';
@@ -12,6 +12,7 @@ KTransport : 'transport';
 KEncoding : 'encoding';
 KProtocol : 'protocol';
 KEndpoint : 'endpoint';
+KAddress : 'address';
 
 KNull : 'null';
 KTrue : 'true';
@@ -205,4 +206,3 @@ mode SINGLEQUOTE_VERBATIM_STRING;
 SingleQuoteVerbatimStringText : SingleQuoteTextVerbatimCharacter -> more;
                                
 SingleQuoteVerbatimStringLiteral : '"' -> mode(DEFAULT_MODE);
-

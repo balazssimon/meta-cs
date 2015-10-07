@@ -22,7 +22,7 @@ namespace MetaDslx.Samples
                 }
                 SoalCompiler compiler = new SoalCompiler(source, ".", fileName);
                 compiler.Compile();
-                foreach (var msg in compiler.Diagnostics.GetMessages())
+                foreach (var msg in compiler.Diagnostics.GetMessages(true))
                 {
                     Console.WriteLine(msg);
                 }

@@ -105,14 +105,16 @@
 
 	class Struct : StructuredType
 	{
+		Struct BaseType;
 	}
 
 	class Exception : StructuredType
 	{
+		Exception BaseType;
 	}
 
 	[Scope]
-	class Interface : Declaration
+	class Interface : SoalType, Declaration
 	{
 		[ScopeEntry]
 		containment list<Operation> Operations;
@@ -121,6 +123,7 @@
 	class Operation : NamedElement
 	{
 		Interface Parent;
+		bool IsOneway;
 		SoalType ReturnType;
 		containment list<Parameter> Parameters;
 		list<Exception> Exceptions;
@@ -138,7 +141,7 @@
 	class Binding : Declaration
 	{
 		TransportBindingElement Transport;
-		EncodingBindingElement Encoding;
+		list<EncodingBindingElement> Encodings;
 		list<ProtocolBindingElement> Protocols;
 	}
 
@@ -165,10 +168,20 @@
 	{
 	}
 
-	class HttpProtocolBindingElement : ProtocolBindingElement
+
+	class HttpTransportBindingElement : TransportBindingElement
 	{
 	}
 
+	class RestTransportBindingElement : TransportBindingElement
+	{
+	}
+
+	class WebSocketTransportBindingElement : TransportBindingElement
+	{
+	}
+
+	
 	enum SoapVersion
 	{
 		Soap11,
@@ -181,6 +194,15 @@
 		bool MtomEnabled;
 	}
 
+	class XmlEncodingBindingElement : EncodingBindingElement
+	{
+	}
+
+	class JsonEncodingBindingElement : EncodingBindingElement
+	{
+	}
+
+	
 	abstract class WsProtocolBindingElement : ProtocolBindingElement
 	{
 	}
@@ -188,4 +210,5 @@
 	class WsAddressingBindingElement : WsProtocolBindingElement
 	{
 	}
+
 }

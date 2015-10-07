@@ -12,6 +12,7 @@ KTransport : 'transport';
 KEncoding : 'encoding';
 KProtocol : 'protocol';
 KEndpoint : 'endpoint';
+KAddress : 'address';
 
 KNull : 'null';
 KTrue : 'true';

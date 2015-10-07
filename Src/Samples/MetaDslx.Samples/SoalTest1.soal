@@ -1,17 +1,38 @@
-﻿namespace Ns1.Ns2
+﻿namespace CalculatorNs
 {
-	exception E1
+	exception MathFault
 	{
-		string Message;
+		int ErrorCode;
+		string ErrorMessage;
 	}
 
-	struct S1
+	struct Complex
 	{
-		S2 P2;
+		double Re;
+		double Im;
 	}
 
-	struct S2
+	interface ICalculator
 	{
-		S1 P1;
+		double Add(double left, double right);
+		double Subtract(double left, double right);
+		double Multiply(double left, double right);
+		double Divide(double left, double right) throws MathFault;
+		Complex ComplexAdd(Complex left, Complex right);
+		void Hello(string message);
+		oneway HelloOneway(string msg);
+	}
+
+	binding SoapHttp
+	{
+		transport HTTP;
+		encoding SOAP;
+		protocol WsAddressing;
+	}
+
+	endpoint Calculator : ICalculator
+	{
+		binding SoapHttp;
+		address "http://localhost/Calculator";
 	}
 }
