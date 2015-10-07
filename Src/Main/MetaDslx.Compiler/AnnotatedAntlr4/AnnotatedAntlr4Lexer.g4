@@ -1,4 +1,4 @@
-﻿/*
+/*
  * [The "BSD license"]
  *  Copyright (c) 2014 Terence Parr
  *  Copyright (c) 2014 Sam Harwell
@@ -387,3 +387,4 @@ mode BLOCK_COMMENT_MODE;
 	                                
 	BLOCK_COMMENT : '*/' -> mode(DEFAULT_MODE), channel(HIDDEN);
 	BLOCK_COMMENT_STAR : '*' -> more, channel(HIDDEN);
+

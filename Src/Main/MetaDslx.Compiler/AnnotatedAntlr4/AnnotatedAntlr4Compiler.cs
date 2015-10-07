@@ -10,12 +10,6 @@ using MetaDslx.Compiler.Properties;
 using System.IO;
 using System.Diagnostics;
 
-/*
- * Reserved annotations:
- *  @DynamicAnnotations on grammar
- *  @Value
- */
-
 namespace MetaDslx.Compiler
 {
     public class Antlr4SyntaxKind
@@ -343,7 +337,6 @@ namespace MetaDslx.Compiler
         private bool generateCompilerBase = false;
 
         private List<AnnotationType> annotationTypes = new List<AnnotationType>();
-        private List<string> dynamicAnnotations = new List<string>();
         private Grammar currentGrammar;
         private Mode currentMode;
         private LexerRule currentLexerRule;
@@ -434,25 +427,6 @@ namespace MetaDslx.Compiler
             currentMode.Name = "DEFAULT_MODE";
             currentGrammar.Modes.Add(currentMode);
             this.CollectAnnotations(context.annotation());
-
-            this.dynamicAnnotations.Add("TypeDef");
-            this.dynamicAnnotations.Add("NameDef");
-            this.dynamicAnnotations.Add("TypeCtr");
-            this.dynamicAnnotations.Add("NameCtr");
-            this.dynamicAnnotations.Add("TypeUse");
-            this.dynamicAnnotations.Add("NameUse");
-            this.dynamicAnnotations.Add("Property");
-            this.dynamicAnnotations.Add("Symbol");
-            this.dynamicAnnotations.Add("Scope");
-            this.dynamicAnnotations.Add("Value");
-            foreach (var annot in currentGrammar.Annotations)
-            {
-                if (annot.Type.Name == "DynamicAnnotations")
-                {
-                    // TODO
-                }
-            }
-
             return base.VisitGrammarSpec(context);
         }
 
@@ -765,10 +739,7 @@ namespace MetaDslx.Compiler
                 annotationType.Name = name;
                 this.annotationTypes.Add(annotationType);
             }
-            if (this.dynamicAnnotations.Contains(name))
-            {
-                annotationType.IsDynamic = true;
-            }
+            annotationType.IsDynamic = this.compiler.IsParser;
             return annotationType;
         }
 
@@ -1322,7 +1293,7 @@ namespace MetaDslx.Compiler
                 WriteLine("{");
                 IncIndent();
                 WriteLine("List<object> annotList = null;");
-                if (this.dynamicAnnotations.Count > 0)
+                /*if (this.dynamicAnnotations.Count > 0)
                 {
                     WriteLine("List<object> staticAnnotList = null;");
                     WriteLine("if (this.tokenAnnotations.TryGetValue(token.Type, out staticAnnotList))");
@@ -1363,9 +1334,9 @@ namespace MetaDslx.Compiler
                     WriteLine("if (annotList != null)");
                 }
                 else
-                {
+                {*/
                     WriteLine("if (this.tokenAnnotations.TryGetValue(token.Type, out annotList))");
-                }
+                //}
                 WriteLine("{");
                 IncIndent();
                 WriteLine("List<object> treeAnnotList = null;");
