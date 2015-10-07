@@ -31,8 +31,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr4.Runtime, Version=4.5.1.0, Culture=neutral, PublicKeyToken=e78b2c5abd1fcb3f, processorArchitecture=MSIL" />
-    <Reference Include="MetaDslx.Compiler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7c14c8817c721b1e, processorArchitecture=MSIL" />
-    <Reference Include="MetaDslx.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7c14c8817c721b1e, processorArchitecture=MSIL" />
+    <Reference Include="MetaDslx.Compiler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7c14c8817c721b1e, processorArchitecture=MSIL">
+      <HintPath>..\..\Main\MetaDslx.Compiler\bin\Debug\MetaDslx.Compiler.dll</HintPath>
+    </Reference>
+    <Reference Include="MetaDslx.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7c14c8817c721b1e, processorArchitecture=MSIL">
+      <HintPath>..\..\Main\MetaDslx.Core\bin\Debug\MetaDslx.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -84,6 +88,7 @@
     <None Include="SoalLexer.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>SoalLexer.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Soal</CustomToolNamespace>
     </None>
     <None Include="SoalLexer.g4">
       <AutoGen>True</AutoGen>
@@ -96,6 +101,7 @@
     <None Include="SoalParser.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>SoalParser.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Soal</CustomToolNamespace>
     </None>
     <None Include="SoalParser.g4">
       <AutoGen>True</AutoGen>

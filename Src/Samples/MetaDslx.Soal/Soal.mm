@@ -91,8 +91,10 @@
 
 	association EnumLiteral.Enum with Enum.EnumLiterals;
 
+	[Scope]
 	abstract class StructuredType : SoalType, Declaration
 	{
+		[ScopeEntry]
 		containment list<Property> Properties;
 	}
 
@@ -105,16 +107,28 @@
 
 	class Struct : StructuredType
 	{
+		[InheritedScope]
 		Struct BaseType;
 	}
 
 	class Exception : StructuredType
 	{
+		[InheritedScope]
 		Exception BaseType;
 	}
 
 	[Scope]
-	class Interface : SoalType, Declaration
+	abstract class InterfaceDeclaration : SoalType, Declaration
+	{
+	}
+
+	class Database : InterfaceDeclaration
+	{
+		[ScopeEntry]
+		list<Struct> Entities;
+	}
+
+	class Interface : InterfaceDeclaration
 	{
 		[ScopeEntry]
 		containment list<Operation> Operations;
@@ -138,11 +152,66 @@
 
 	association Operation.Parameters with Parameter.Operation;
 
+	[Scope]
+	class Component : Declaration, StructuredType
+	{
+		[InheritedScope]
+		Component BaseComponent;
+		bool IsAbstract;
+		[ScopeEntry]
+		containment list<Service> Services;
+		[ScopeEntry]
+		containment list<Reference> References;
+		[ScopeEntry]
+		containment list<Property> Properties;
+		containment Implementation Implementation;
+	}
+
+	class Composite : Component
+	{
+		[ScopeEntry]
+		list<Component> Components;
+		containment list<Wire> Wires;
+	}
+
+	class Wire
+	{
+		Service Service;
+		Reference Reference;
+	}
+
+	class ComponentInterface
+	{
+		ComponentInterface()
+		{
+			// this.Name = this.OptionalName != "" ? this.OptionalName : this.Interface.Name;
+		}
+
+		[Name]
+		derived string Name;
+		string OptionalName;
+		InterfaceDeclaration Interface;
+		Binding Binding;
+	}
+
+	class Service : ComponentInterface
+	{
+	}
+
+	class Reference : ComponentInterface
+	{
+	}
+
+	class Implementation : NamedElement
+	{
+	}
+
+
 	class Binding : Declaration
 	{
-		TransportBindingElement Transport;
-		list<EncodingBindingElement> Encodings;
-		list<ProtocolBindingElement> Protocols;
+		containment TransportBindingElement Transport;
+		containment list<EncodingBindingElement> Encodings;
+		containment list<ProtocolBindingElement> Protocols;
 	}
 
 	class Endpoint : Declaration

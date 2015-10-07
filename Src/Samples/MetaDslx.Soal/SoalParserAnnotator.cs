@@ -266,7 +266,7 @@ namespace MetaDslx.Soal
             return base.VisitPropertyDeclaration(context);
         }
         
-        public override object VisitInterfaceDeclaration(SoalParser.InterfaceDeclarationContext context)
+        public override object VisitDatabaseDeclaration(SoalParser.DatabaseDeclarationContext context)
         {
             List<object> treeAnnotList = null;
             if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
@@ -275,8 +275,51 @@ namespace MetaDslx.Soal
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
             TypeDefAnnotation __tmp13 = new TypeDefAnnotation();
-            __tmp13.SymbolType = typeof(Interface);
+            __tmp13.SymbolType = typeof(Database);
             treeAnnotList.Add(__tmp13);
+            this.HandleSymbolType(context);
+            return base.VisitDatabaseDeclaration(context);
+        }
+        
+        public override object VisitEntityDeclaration(SoalParser.EntityDeclarationContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            PropertyAnnotation __tmp14 = new PropertyAnnotation();
+            __tmp14.Name = "Entities";
+            treeAnnotList.Add(__tmp14);
+            List<object> elemAnnotList = null;
+            if (context.qualifiedName() != null)
+            {
+                object elem = context.qualifiedName();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                TypeUseAnnotation __tmp15 = new TypeUseAnnotation();
+                __tmp15.SymbolTypes.Add(typeof(Struct));
+                elemAnnotList.Add(__tmp15);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitEntityDeclaration(context);
+        }
+        
+        public override object VisitInterfaceDeclaration(SoalParser.InterfaceDeclarationContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            TypeDefAnnotation __tmp16 = new TypeDefAnnotation();
+            __tmp16.SymbolType = typeof(Interface);
+            treeAnnotList.Add(__tmp16);
             this.HandleSymbolType(context);
             return base.VisitInterfaceDeclaration(context);
         }
@@ -289,12 +332,12 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp14 = new PropertyAnnotation();
-            __tmp14.Name = "Operations";
-            treeAnnotList.Add(__tmp14);
-            NameDefAnnotation __tmp15 = new NameDefAnnotation();
-            __tmp15.SymbolType = typeof(Operation);
-            treeAnnotList.Add(__tmp15);
+            PropertyAnnotation __tmp17 = new PropertyAnnotation();
+            __tmp17.Name = "Operations";
+            treeAnnotList.Add(__tmp17);
+            NameDefAnnotation __tmp18 = new NameDefAnnotation();
+            __tmp18.SymbolType = typeof(Operation);
+            treeAnnotList.Add(__tmp18);
             List<object> elemAnnotList = null;
             if (context.qualifiedNameList() != null)
             {
@@ -304,12 +347,12 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp16 = new PropertyAnnotation();
-                __tmp16.Name = "Exceptions";
-                elemAnnotList.Add(__tmp16);
-                TypeUseAnnotation __tmp17 = new TypeUseAnnotation();
-                __tmp17.SymbolTypes.Add(typeof(Exception));
-                elemAnnotList.Add(__tmp17);
+                PropertyAnnotation __tmp19 = new PropertyAnnotation();
+                __tmp19.Name = "Exceptions";
+                elemAnnotList.Add(__tmp19);
+                TypeUseAnnotation __tmp20 = new TypeUseAnnotation();
+                __tmp20.SymbolTypes.Add(typeof(Exception));
+                elemAnnotList.Add(__tmp20);
             }
             this.HandleSymbolType(context);
             return base.VisitOperationDeclaration(context);
@@ -329,12 +372,12 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp18 = new PropertyAnnotation();
-            __tmp18.Name = "Parameters";
-            treeAnnotList.Add(__tmp18);
-            NameDefAnnotation __tmp19 = new NameDefAnnotation();
-            __tmp19.SymbolType = typeof(Parameter);
-            treeAnnotList.Add(__tmp19);
+            PropertyAnnotation __tmp21 = new PropertyAnnotation();
+            __tmp21.Name = "Parameters";
+            treeAnnotList.Add(__tmp21);
+            NameDefAnnotation __tmp22 = new NameDefAnnotation();
+            __tmp22.SymbolType = typeof(Parameter);
+            treeAnnotList.Add(__tmp22);
             List<object> elemAnnotList = null;
             if (context.typeReference() != null)
             {
@@ -344,12 +387,355 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp20 = new PropertyAnnotation();
-                __tmp20.Name = "Type";
-                elemAnnotList.Add(__tmp20);
+                PropertyAnnotation __tmp23 = new PropertyAnnotation();
+                __tmp23.Name = "Type";
+                elemAnnotList.Add(__tmp23);
             }
             this.HandleSymbolType(context);
             return base.VisitParameter(context);
+        }
+        
+        public override object VisitComponentDeclaration(SoalParser.ComponentDeclarationContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            TypeDefAnnotation __tmp24 = new TypeDefAnnotation();
+            __tmp24.SymbolType = typeof(Component);
+            treeAnnotList.Add(__tmp24);
+            List<object> elemAnnotList = null;
+            if (context.KAbstract() != null)
+            {
+                object elem = context.KAbstract();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp25 = new PropertyAnnotation();
+                __tmp25.Name = "IsAbstract";
+                __tmp25.Value = true;
+                elemAnnotList.Add(__tmp25);
+            }
+            if (context.qualifiedName() != null)
+            {
+                object elem = context.qualifiedName();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp26 = new PropertyAnnotation();
+                __tmp26.Name = "BaseComponent";
+                elemAnnotList.Add(__tmp26);
+                TypeUseAnnotation __tmp27 = new TypeUseAnnotation();
+                __tmp27.SymbolTypes.Add(typeof(Component));
+                elemAnnotList.Add(__tmp27);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitComponentDeclaration(context);
+        }
+        
+        public override object VisitComponentElements(SoalParser.ComponentElementsContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitComponentElements(context);
+        }
+        
+        public override object VisitComponentElement(SoalParser.ComponentElementContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitComponentElement(context);
+        }
+        
+        public override object VisitComponentService(SoalParser.ComponentServiceContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            PropertyAnnotation __tmp28 = new PropertyAnnotation();
+            __tmp28.Name = "Services";
+            treeAnnotList.Add(__tmp28);
+            SymbolAnnotation __tmp29 = new SymbolAnnotation();
+            __tmp29.SymbolType = typeof(Service);
+            treeAnnotList.Add(__tmp29);
+            List<object> elemAnnotList = null;
+            if (context.qualifiedName() != null)
+            {
+                object elem = context.qualifiedName();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp30 = new PropertyAnnotation();
+                __tmp30.Name = "Interface";
+                elemAnnotList.Add(__tmp30);
+                TypeUseAnnotation __tmp31 = new TypeUseAnnotation();
+                __tmp31.SymbolTypes.Add(typeof(InterfaceDeclaration));
+                elemAnnotList.Add(__tmp31);
+            }
+            if (context.identifier() != null)
+            {
+                object elem = context.identifier();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp32 = new PropertyAnnotation();
+                __tmp32.Name = "OptionalName";
+                elemAnnotList.Add(__tmp32);
+                ValueAnnotation __tmp33 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp33);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitComponentService(context);
+        }
+        
+        public override object VisitComponentReference(SoalParser.ComponentReferenceContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            PropertyAnnotation __tmp34 = new PropertyAnnotation();
+            __tmp34.Name = "References";
+            treeAnnotList.Add(__tmp34);
+            SymbolAnnotation __tmp35 = new SymbolAnnotation();
+            __tmp35.SymbolType = typeof(Reference);
+            treeAnnotList.Add(__tmp35);
+            List<object> elemAnnotList = null;
+            if (context.qualifiedName() != null)
+            {
+                object elem = context.qualifiedName();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp36 = new PropertyAnnotation();
+                __tmp36.Name = "Interface";
+                elemAnnotList.Add(__tmp36);
+                TypeUseAnnotation __tmp37 = new TypeUseAnnotation();
+                __tmp37.SymbolTypes.Add(typeof(InterfaceDeclaration));
+                elemAnnotList.Add(__tmp37);
+            }
+            if (context.identifier() != null)
+            {
+                object elem = context.identifier();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp38 = new PropertyAnnotation();
+                __tmp38.Name = "OptionalName";
+                elemAnnotList.Add(__tmp38);
+                ValueAnnotation __tmp39 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp39);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitComponentReference(context);
+        }
+        
+        public override object VisitComponentServiceOrReferenceBody(SoalParser.ComponentServiceOrReferenceBodyContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitComponentServiceOrReferenceBody(context);
+        }
+        
+        public override object VisitComponentServiceOrReferenceElement(SoalParser.ComponentServiceOrReferenceElementContext context)
+        {
+            List<object> elemAnnotList = null;
+            if (context.qualifiedName() != null)
+            {
+                object elem = context.qualifiedName();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp40 = new PropertyAnnotation();
+                __tmp40.Name = "Binding";
+                elemAnnotList.Add(__tmp40);
+                NameUseAnnotation __tmp41 = new NameUseAnnotation();
+                __tmp41.SymbolTypes.Add(typeof(Binding));
+                elemAnnotList.Add(__tmp41);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitComponentServiceOrReferenceElement(context);
+        }
+        
+        public override object VisitComponentProperty(SoalParser.ComponentPropertyContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            PropertyAnnotation __tmp42 = new PropertyAnnotation();
+            __tmp42.Name = "Properties";
+            treeAnnotList.Add(__tmp42);
+            NameDefAnnotation __tmp43 = new NameDefAnnotation();
+            __tmp43.SymbolType = typeof(Property);
+            treeAnnotList.Add(__tmp43);
+            this.HandleSymbolType(context);
+            return base.VisitComponentProperty(context);
+        }
+        
+        public override object VisitComponentImplementation(SoalParser.ComponentImplementationContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            PropertyAnnotation __tmp44 = new PropertyAnnotation();
+            __tmp44.Name = "Implementation";
+            treeAnnotList.Add(__tmp44);
+            NameDefAnnotation __tmp45 = new NameDefAnnotation();
+            __tmp45.SymbolType = typeof(Implementation);
+            treeAnnotList.Add(__tmp45);
+            this.HandleSymbolType(context);
+            return base.VisitComponentImplementation(context);
+        }
+        
+        public override object VisitCompositeDeclaration(SoalParser.CompositeDeclarationContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            TypeDefAnnotation __tmp46 = new TypeDefAnnotation();
+            __tmp46.SymbolType = typeof(Composite);
+            treeAnnotList.Add(__tmp46);
+            List<object> elemAnnotList = null;
+            if (context.qualifiedName() != null)
+            {
+                object elem = context.qualifiedName();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp47 = new PropertyAnnotation();
+                __tmp47.Name = "BaseComponent";
+                elemAnnotList.Add(__tmp47);
+                TypeUseAnnotation __tmp48 = new TypeUseAnnotation();
+                __tmp48.SymbolTypes.Add(typeof(Component));
+                elemAnnotList.Add(__tmp48);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitCompositeDeclaration(context);
+        }
+        
+        public override object VisitCompositeElements(SoalParser.CompositeElementsContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitCompositeElements(context);
+        }
+        
+        public override object VisitCompositeElement(SoalParser.CompositeElementContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitCompositeElement(context);
+        }
+        
+        public override object VisitCompositeComponent(SoalParser.CompositeComponentContext context)
+        {
+            List<object> elemAnnotList = null;
+            if (context.qualifiedName() != null)
+            {
+                object elem = context.qualifiedName();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp49 = new PropertyAnnotation();
+                __tmp49.Name = "Components";
+                elemAnnotList.Add(__tmp49);
+                TypeUseAnnotation __tmp50 = new TypeUseAnnotation();
+                __tmp50.SymbolTypes.Add(typeof(Component));
+                elemAnnotList.Add(__tmp50);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitCompositeComponent(context);
+        }
+        
+        public override object VisitCompositeWire(SoalParser.CompositeWireContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            PropertyAnnotation __tmp51 = new PropertyAnnotation();
+            __tmp51.Name = "Wires";
+            treeAnnotList.Add(__tmp51);
+            SymbolAnnotation __tmp52 = new SymbolAnnotation();
+            __tmp52.SymbolType = typeof(Wire);
+            treeAnnotList.Add(__tmp52);
+            this.HandleSymbolType(context);
+            return base.VisitCompositeWire(context);
+        }
+        
+        public override object VisitWireService(SoalParser.WireServiceContext context)
+        {
+            List<object> elemAnnotList = null;
+            if (context.qualifiedName() != null)
+            {
+                object elem = context.qualifiedName();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp53 = new PropertyAnnotation();
+                __tmp53.Name = "Service";
+                elemAnnotList.Add(__tmp53);
+                NameUseAnnotation __tmp54 = new NameUseAnnotation();
+                __tmp54.SymbolTypes.Add(typeof(Service));
+                elemAnnotList.Add(__tmp54);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitWireService(context);
+        }
+        
+        public override object VisitWireReference(SoalParser.WireReferenceContext context)
+        {
+            List<object> elemAnnotList = null;
+            if (context.qualifiedName() != null)
+            {
+                object elem = context.qualifiedName();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp55 = new PropertyAnnotation();
+                __tmp55.Name = "Reference";
+                elemAnnotList.Add(__tmp55);
+                NameUseAnnotation __tmp56 = new NameUseAnnotation();
+                __tmp56.SymbolTypes.Add(typeof(Reference));
+                elemAnnotList.Add(__tmp56);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitWireReference(context);
         }
         
         public override object VisitBindingDeclaration(SoalParser.BindingDeclarationContext context)
@@ -360,9 +746,9 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp21 = new NameDefAnnotation();
-            __tmp21.SymbolType = typeof(Binding);
-            treeAnnotList.Add(__tmp21);
+            NameDefAnnotation __tmp57 = new NameDefAnnotation();
+            __tmp57.SymbolType = typeof(Binding);
+            treeAnnotList.Add(__tmp57);
             this.HandleSymbolType(context);
             return base.VisitBindingDeclaration(context);
         }
@@ -381,11 +767,11 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp22 = new PropertyAnnotation();
-            __tmp22.Name = "Transport";
-            treeAnnotList.Add(__tmp22);
-            SymbolAnnotation __tmp23 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp23);
+            PropertyAnnotation __tmp58 = new PropertyAnnotation();
+            __tmp58.Name = "Transport";
+            treeAnnotList.Add(__tmp58);
+            SymbolAnnotation __tmp59 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp59);
             this.HandleSymbolType(context);
             return base.VisitTransportLayer(context);
         }
@@ -401,18 +787,18 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                SymbolTypeAnnotation __tmp24 = new SymbolTypeAnnotation();
-                __tmp24.Name = "HTTP";
-                __tmp24.SymbolType = typeof(HttpTransportBindingElement);
-                elemAnnotList.Add(__tmp24);
-                SymbolTypeAnnotation __tmp25 = new SymbolTypeAnnotation();
-                __tmp25.Name = "REST";
-                __tmp25.SymbolType = typeof(RestTransportBindingElement);
-                elemAnnotList.Add(__tmp25);
-                SymbolTypeAnnotation __tmp26 = new SymbolTypeAnnotation();
-                __tmp26.Name = "WebSocket";
-                __tmp26.SymbolType = typeof(WebSocketTransportBindingElement);
-                elemAnnotList.Add(__tmp26);
+                SymbolTypeAnnotation __tmp60 = new SymbolTypeAnnotation();
+                __tmp60.Name = "HTTP";
+                __tmp60.SymbolType = typeof(HttpTransportBindingElement);
+                elemAnnotList.Add(__tmp60);
+                SymbolTypeAnnotation __tmp61 = new SymbolTypeAnnotation();
+                __tmp61.Name = "REST";
+                __tmp61.SymbolType = typeof(RestTransportBindingElement);
+                elemAnnotList.Add(__tmp61);
+                SymbolTypeAnnotation __tmp62 = new SymbolTypeAnnotation();
+                __tmp62.Name = "WebSocket";
+                __tmp62.SymbolType = typeof(WebSocketTransportBindingElement);
+                elemAnnotList.Add(__tmp62);
             }
             this.HandleSymbolType(context);
             return base.VisitTransportLayerKind(context);
@@ -426,11 +812,11 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp27 = new PropertyAnnotation();
-            __tmp27.Name = "Encodings";
-            treeAnnotList.Add(__tmp27);
-            SymbolAnnotation __tmp28 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp28);
+            PropertyAnnotation __tmp63 = new PropertyAnnotation();
+            __tmp63.Name = "Encodings";
+            treeAnnotList.Add(__tmp63);
+            SymbolAnnotation __tmp64 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp64);
             this.HandleSymbolType(context);
             return base.VisitEncodingLayer(context);
         }
@@ -446,18 +832,18 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                SymbolTypeAnnotation __tmp29 = new SymbolTypeAnnotation();
-                __tmp29.Name = "SOAP";
-                __tmp29.SymbolType = typeof(SoapEncodingBindingElement);
-                elemAnnotList.Add(__tmp29);
-                SymbolTypeAnnotation __tmp30 = new SymbolTypeAnnotation();
-                __tmp30.Name = "XML";
-                __tmp30.SymbolType = typeof(XmlEncodingBindingElement);
-                elemAnnotList.Add(__tmp30);
-                SymbolTypeAnnotation __tmp31 = new SymbolTypeAnnotation();
-                __tmp31.Name = "JSON";
-                __tmp31.SymbolType = typeof(JsonEncodingBindingElement);
-                elemAnnotList.Add(__tmp31);
+                SymbolTypeAnnotation __tmp65 = new SymbolTypeAnnotation();
+                __tmp65.Name = "SOAP";
+                __tmp65.SymbolType = typeof(SoapEncodingBindingElement);
+                elemAnnotList.Add(__tmp65);
+                SymbolTypeAnnotation __tmp66 = new SymbolTypeAnnotation();
+                __tmp66.Name = "XML";
+                __tmp66.SymbolType = typeof(XmlEncodingBindingElement);
+                elemAnnotList.Add(__tmp66);
+                SymbolTypeAnnotation __tmp67 = new SymbolTypeAnnotation();
+                __tmp67.Name = "JSON";
+                __tmp67.SymbolType = typeof(JsonEncodingBindingElement);
+                elemAnnotList.Add(__tmp67);
             }
             this.HandleSymbolType(context);
             return base.VisitEncodingLayerKind(context);
@@ -471,11 +857,11 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp32 = new PropertyAnnotation();
-            __tmp32.Name = "Protocols";
-            treeAnnotList.Add(__tmp32);
-            SymbolAnnotation __tmp33 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp33);
+            PropertyAnnotation __tmp68 = new PropertyAnnotation();
+            __tmp68.Name = "Protocols";
+            treeAnnotList.Add(__tmp68);
+            SymbolAnnotation __tmp69 = new SymbolAnnotation();
+            treeAnnotList.Add(__tmp69);
             this.HandleSymbolType(context);
             return base.VisitProtocolLayer(context);
         }
@@ -491,10 +877,10 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                SymbolTypeAnnotation __tmp34 = new SymbolTypeAnnotation();
-                __tmp34.Name = "WsAddressing";
-                __tmp34.SymbolType = typeof(WsAddressingBindingElement);
-                elemAnnotList.Add(__tmp34);
+                SymbolTypeAnnotation __tmp70 = new SymbolTypeAnnotation();
+                __tmp70.Name = "WsAddressing";
+                __tmp70.SymbolType = typeof(WsAddressingBindingElement);
+                elemAnnotList.Add(__tmp70);
             }
             this.HandleSymbolType(context);
             return base.VisitProtocolLayerKind(context);
@@ -508,9 +894,9 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameDefAnnotation __tmp35 = new NameDefAnnotation();
-            __tmp35.SymbolType = typeof(Endpoint);
-            treeAnnotList.Add(__tmp35);
+            NameDefAnnotation __tmp71 = new NameDefAnnotation();
+            __tmp71.SymbolType = typeof(Endpoint);
+            treeAnnotList.Add(__tmp71);
             List<object> elemAnnotList = null;
             if (context.qualifiedName() != null)
             {
@@ -520,12 +906,12 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp36 = new PropertyAnnotation();
-                __tmp36.Name = "Interface";
-                elemAnnotList.Add(__tmp36);
-                TypeUseAnnotation __tmp37 = new TypeUseAnnotation();
-                __tmp37.SymbolTypes.Add(typeof(Interface));
-                elemAnnotList.Add(__tmp37);
+                PropertyAnnotation __tmp72 = new PropertyAnnotation();
+                __tmp72.Name = "Interface";
+                elemAnnotList.Add(__tmp72);
+                TypeUseAnnotation __tmp73 = new TypeUseAnnotation();
+                __tmp73.SymbolTypes.Add(typeof(Interface));
+                elemAnnotList.Add(__tmp73);
             }
             this.HandleSymbolType(context);
             return base.VisitEndpointDeclaration(context);
@@ -554,12 +940,12 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp38 = new PropertyAnnotation();
-                __tmp38.Name = "Binding";
-                elemAnnotList.Add(__tmp38);
-                NameUseAnnotation __tmp39 = new NameUseAnnotation();
-                __tmp39.SymbolTypes.Add(typeof(Binding));
-                elemAnnotList.Add(__tmp39);
+                PropertyAnnotation __tmp74 = new PropertyAnnotation();
+                __tmp74.Name = "Binding";
+                elemAnnotList.Add(__tmp74);
+                NameUseAnnotation __tmp75 = new NameUseAnnotation();
+                __tmp75.SymbolTypes.Add(typeof(Binding));
+                elemAnnotList.Add(__tmp75);
             }
             this.HandleSymbolType(context);
             return base.VisitEndpointBindingProperty(context);
@@ -576,11 +962,11 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp40 = new PropertyAnnotation();
-                __tmp40.Name = "Address";
-                elemAnnotList.Add(__tmp40);
-                ValueAnnotation __tmp41 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp41);
+                PropertyAnnotation __tmp76 = new PropertyAnnotation();
+                __tmp76.Name = "Address";
+                elemAnnotList.Add(__tmp76);
+                ValueAnnotation __tmp77 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp77);
             }
             this.HandleSymbolType(context);
             return base.VisitEndpointAddressProperty(context);
@@ -594,11 +980,11 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp42 = new PropertyAnnotation();
-            __tmp42.Name = "ReturnType";
-            treeAnnotList.Add(__tmp42);
-            TypeUseAnnotation __tmp43 = new TypeUseAnnotation();
-            treeAnnotList.Add(__tmp43);
+            PropertyAnnotation __tmp78 = new PropertyAnnotation();
+            __tmp78.Name = "ReturnType";
+            treeAnnotList.Add(__tmp78);
+            TypeUseAnnotation __tmp79 = new TypeUseAnnotation();
+            treeAnnotList.Add(__tmp79);
             this.HandleSymbolType(context);
             return base.VisitReturnType(context);
         }
@@ -611,8 +997,8 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            TypeUseAnnotation __tmp44 = new TypeUseAnnotation();
-            treeAnnotList.Add(__tmp44);
+            TypeUseAnnotation __tmp80 = new TypeUseAnnotation();
+            treeAnnotList.Add(__tmp80);
             this.HandleSymbolType(context);
             return base.VisitTypeReference(context);
         }
@@ -625,8 +1011,8 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            TypeUseAnnotation __tmp45 = new TypeUseAnnotation();
-            treeAnnotList.Add(__tmp45);
+            TypeUseAnnotation __tmp81 = new TypeUseAnnotation();
+            treeAnnotList.Add(__tmp81);
             this.HandleSymbolType(context);
             return base.VisitSimpleType(context);
         }
@@ -639,8 +1025,8 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameAnnotation __tmp46 = new NameAnnotation();
-            treeAnnotList.Add(__tmp46);
+            NameAnnotation __tmp82 = new NameAnnotation();
+            treeAnnotList.Add(__tmp82);
             this.HandleSymbolType(context);
             return base.VisitObjectType(context);
         }
@@ -653,8 +1039,8 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameAnnotation __tmp47 = new NameAnnotation();
-            treeAnnotList.Add(__tmp47);
+            NameAnnotation __tmp83 = new NameAnnotation();
+            treeAnnotList.Add(__tmp83);
             this.HandleSymbolType(context);
             return base.VisitPrimitiveType(context);
         }
@@ -667,8 +1053,8 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameAnnotation __tmp48 = new NameAnnotation();
-            treeAnnotList.Add(__tmp48);
+            NameAnnotation __tmp84 = new NameAnnotation();
+            treeAnnotList.Add(__tmp84);
             this.HandleSymbolType(context);
             return base.VisitVoidType(context);
         }
@@ -681,14 +1067,14 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp49 = new PropertyAnnotation();
-            __tmp49.Name = "IsOneway";
-            __tmp49.Value = true;
-            treeAnnotList.Add(__tmp49);
-            PropertyAnnotation __tmp50 = new PropertyAnnotation();
-            __tmp50.Name = "ReturnType";
-            __tmp50.Value = SoalInstance.Void;
-            treeAnnotList.Add(__tmp50);
+            PropertyAnnotation __tmp85 = new PropertyAnnotation();
+            __tmp85.Name = "IsOneway";
+            __tmp85.Value = true;
+            treeAnnotList.Add(__tmp85);
+            PropertyAnnotation __tmp86 = new PropertyAnnotation();
+            __tmp86.Name = "ReturnType";
+            __tmp86.Value = SoalInstance.Void;
+            treeAnnotList.Add(__tmp86);
             this.HandleSymbolType(context);
             return base.VisitOnewayType(context);
         }
@@ -701,9 +1087,9 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            TypeCtrAnnotation __tmp51 = new TypeCtrAnnotation();
-            __tmp51.SymbolType = typeof(NullableType);
-            treeAnnotList.Add(__tmp51);
+            TypeCtrAnnotation __tmp87 = new TypeCtrAnnotation();
+            __tmp87.SymbolType = typeof(NullableType);
+            treeAnnotList.Add(__tmp87);
             List<object> elemAnnotList = null;
             if (context.primitiveType() != null)
             {
@@ -713,9 +1099,9 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp52 = new PropertyAnnotation();
-                __tmp52.Name = "InnerType";
-                elemAnnotList.Add(__tmp52);
+                PropertyAnnotation __tmp88 = new PropertyAnnotation();
+                __tmp88.Name = "InnerType";
+                elemAnnotList.Add(__tmp88);
             }
             this.HandleSymbolType(context);
             return base.VisitNullableType(context);
@@ -729,9 +1115,9 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            TypeCtrAnnotation __tmp53 = new TypeCtrAnnotation();
-            __tmp53.SymbolType = typeof(ArrayType);
-            treeAnnotList.Add(__tmp53);
+            TypeCtrAnnotation __tmp89 = new TypeCtrAnnotation();
+            __tmp89.SymbolType = typeof(ArrayType);
+            treeAnnotList.Add(__tmp89);
             List<object> elemAnnotList = null;
             if (context.simpleType() != null)
             {
@@ -741,9 +1127,9 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp54 = new PropertyAnnotation();
-                __tmp54.Name = "InnerType";
-                elemAnnotList.Add(__tmp54);
+                PropertyAnnotation __tmp90 = new PropertyAnnotation();
+                __tmp90.Name = "InnerType";
+                elemAnnotList.Add(__tmp90);
             }
             this.HandleSymbolType(context);
             return base.VisitArrayType(context);
@@ -757,10 +1143,10 @@ namespace MetaDslx.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            NameAnnotation __tmp55 = new NameAnnotation();
-            treeAnnotList.Add(__tmp55);
-            IdentifierAnnotation __tmp56 = new IdentifierAnnotation();
-            treeAnnotList.Add(__tmp56);
+            NameAnnotation __tmp91 = new NameAnnotation();
+            treeAnnotList.Add(__tmp91);
+            IdentifierAnnotation __tmp92 = new IdentifierAnnotation();
+            treeAnnotList.Add(__tmp92);
             this.HandleSymbolType(context);
             return base.VisitIdentifier(context);
         }
@@ -776,8 +1162,8 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp57 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp57);
+                ValueAnnotation __tmp93 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp93);
             }
             if (context.booleanLiteral() != null)
             {
@@ -787,8 +1173,8 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp58 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp58);
+                ValueAnnotation __tmp94 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp94);
             }
             if (context.integerLiteral() != null)
             {
@@ -798,8 +1184,8 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp59 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp59);
+                ValueAnnotation __tmp95 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp95);
             }
             if (context.decimalLiteral() != null)
             {
@@ -809,8 +1195,8 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp60 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp60);
+                ValueAnnotation __tmp96 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp96);
             }
             if (context.scientificLiteral() != null)
             {
@@ -820,8 +1206,8 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp61 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp61);
+                ValueAnnotation __tmp97 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp97);
             }
             if (context.stringLiteral() != null)
             {
@@ -831,8 +1217,8 @@ namespace MetaDslx.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                ValueAnnotation __tmp62 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp62);
+                ValueAnnotation __tmp98 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp98);
             }
             this.HandleSymbolType(context);
             return base.VisitLiteral(context);
@@ -927,6 +1313,16 @@ namespace MetaDslx.Soal
             return this.VisitChildren(context);
         }
         
+        public virtual object VisitDatabaseDeclaration(SoalParser.DatabaseDeclarationContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitEntityDeclaration(SoalParser.EntityDeclarationContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
         public virtual object VisitInterfaceDeclaration(SoalParser.InterfaceDeclarationContext context)
         {
             return this.VisitChildren(context);
@@ -943,6 +1339,86 @@ namespace MetaDslx.Soal
         }
         
         public virtual object VisitParameter(SoalParser.ParameterContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitComponentDeclaration(SoalParser.ComponentDeclarationContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitComponentElements(SoalParser.ComponentElementsContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitComponentElement(SoalParser.ComponentElementContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitComponentService(SoalParser.ComponentServiceContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitComponentReference(SoalParser.ComponentReferenceContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitComponentServiceOrReferenceBody(SoalParser.ComponentServiceOrReferenceBodyContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitComponentServiceOrReferenceElement(SoalParser.ComponentServiceOrReferenceElementContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitComponentProperty(SoalParser.ComponentPropertyContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitComponentImplementation(SoalParser.ComponentImplementationContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitCompositeDeclaration(SoalParser.CompositeDeclarationContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitCompositeElements(SoalParser.CompositeElementsContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitCompositeElement(SoalParser.CompositeElementContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitCompositeComponent(SoalParser.CompositeComponentContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitCompositeWire(SoalParser.CompositeWireContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitWireService(SoalParser.WireServiceContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitWireReference(SoalParser.WireReferenceContext context)
         {
             return this.VisitChildren(context);
         }

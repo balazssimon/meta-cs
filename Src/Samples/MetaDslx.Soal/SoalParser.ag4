@@ -17,7 +17,7 @@ $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: KNamespace qualifiedName TOpenBrace declaration* TCloseBrace;
 
 $Property(Declarations)
-declaration : structDeclaration | exceptionDeclaration | interfaceDeclaration | bindingDeclaration | endpointDeclaration;
+declaration : structDeclaration | exceptionDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration;
 
 
 // Structs and exceptions
@@ -31,6 +31,15 @@ exceptionDeclaration : KException identifier (TColon $Property(BaseType) $TypeUs
 $Property(Properties)
 $NameDef(Property)
 propertyDeclaration : $Property(Type) typeReference identifier TSemicolon;
+
+
+// Database
+
+$TypeDef(Database)
+databaseDeclaration : KDatabase identifier TOpenBrace entityDeclaration* TCloseBrace;
+
+$Property(Entities)
+entityDeclaration : KEntity $TypeUse(Struct) qualifiedName TSemicolon;
 
 
 // Interface
@@ -48,6 +57,65 @@ $Property(Parameters)
 $NameDef(Parameter)
 parameter : $Property(Type) typeReference identifier;
 
+
+// Component
+
+$TypeDef(Component)
+componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent identifier (TColon $Property(BaseComponent) $TypeUse(Component) qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+
+componentElements : componentElement+;
+
+componentElement
+	: componentService
+	| componentReference
+	| componentProperty
+	| componentImplementation
+	;
+
+$Property(Services)
+$Symbol(Service)
+componentService : KService $Property(Interface) $TypeUse(InterfaceDeclaration) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
+$Property(References)
+$Symbol(Reference)
+componentReference : KReference $Property(Interface) $TypeUse(InterfaceDeclaration) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
+
+componentServiceOrReferenceBody 
+	: TSemicolon
+	| TOpenBrace componentServiceOrReferenceElement* TCloseBrace;
+
+componentServiceOrReferenceElement
+	: KBinding $Property(Binding) $NameUse(Binding) qualifiedName TSemicolon;
+
+$Property(Properties)
+$NameDef(Property)
+componentProperty : typeReference identifier TSemicolon;
+
+$Property(Implementation)
+$NameDef(Implementation)
+componentImplementation : KImplementation identifier TSemicolon;
+
+
+$TypeDef(Composite)
+compositeDeclaration : KComposite identifier (TColon $Property(BaseComponent) $TypeUse(Component) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+
+compositeElements : compositeElement+;
+
+compositeElement
+	: componentService
+	| componentReference
+	| componentProperty
+	| compositeComponent
+	| compositeWire
+	;
+
+compositeComponent : KComponent $Property(Components) $TypeUse(Component) qualifiedName TSemicolon;
+
+$Property(Wires)
+$Symbol(Wire)
+compositeWire : KWire wireService KTo wireReference TSemicolon;
+
+wireService : $Property(Service) $NameUse(Service) qualifiedName;
+wireReference : $Property(Reference) $NameUse(Reference) qualifiedName;
 
 // Binding
 

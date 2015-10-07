@@ -52,7 +52,7 @@ namespace MetaDslx.Soal
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.KNamespace, annotList);
             SyntaxAnnotation __tmp4 = new SyntaxAnnotation();
-            __tmp4.Kind = SyntaxKind.Identifier;
+            __tmp4.Kind = SyntaxKind.Keyword;
             __tmp4.First = SoalLexer.KNamespace;
             __tmp4.Last = SoalLexer.KVoid;
             annotList.Add(__tmp4);

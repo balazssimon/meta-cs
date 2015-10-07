@@ -1,5 +1,6 @@
 ﻿using MetaDslx.Compiler;
 using MetaDslx.Core;
+using MetaDslx.Soal;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,6 +52,34 @@ namespace MetaDslx.TempConsole
                 CompileAG4(@"..\..\..\..\Samples\MetaDslx.Soal", @"SoalLexer");
                 CompileAG4(@"..\..\..\..\Samples\MetaDslx.Soal", @"SoalParser");
                 Console.WriteLine("----");
+                //*/
+                //*
+                string source = "";
+                string fileName = @"SoalTest1.soal";
+                using (StreamReader reader = new StreamReader(@"..\..\" + fileName))
+                {
+                    source = reader.ReadToEnd();
+                }
+                SoalCompiler compiler = new SoalCompiler(source, ".", fileName);
+                compiler.Compile();
+                foreach (var msg in compiler.Diagnostics.GetMessages(true))
+                {
+                    Console.WriteLine(msg);
+                }
+                Console.WriteLine("----");
+                foreach (var symbol in compiler.Data.GetSymbols())
+                {
+                    Declaration decl = symbol as Declaration;
+                    if (decl != null)
+                    {
+                        Console.WriteLine(decl.Name);
+                    }
+                    Property prop = symbol as Property;
+                    if (prop != null)
+                    {
+                        Console.WriteLine("{0}: {1}", prop.Name, prop.Type);
+                    }
+                }
                 //*/
                 /*
                 CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\AnnotatedAntlr4", @"AnnotatedAntlr4Lexer");
@@ -120,7 +149,7 @@ namespace MetaDslx.TempConsole
                     false);
                 //*/
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Console.WriteLine(ex);
             }

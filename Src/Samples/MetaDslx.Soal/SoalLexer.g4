@@ -1,6 +1,6 @@
 ﻿lexer grammar SoalLexer;
 
-                                                                 
+                                                              
 KNamespace : 'namespace';
 KException : 'exception';
 KStruct : 'struct';
@@ -13,6 +13,16 @@ KEncoding : 'encoding';
 KProtocol : 'protocol';
 KEndpoint : 'endpoint';
 KAddress : 'address';
+KDatabase : 'database';
+KEntity : 'entity';
+KAbstract : 'abstract';
+KComponent : 'component';
+KComposite : 'composite';
+KReference : 'reference';
+KService : 'service';
+KWire : 'wire';
+KTo : 'to';
+KImplementation : 'implementation';
 
 KNull : 'null';
 KTrue : 'true';

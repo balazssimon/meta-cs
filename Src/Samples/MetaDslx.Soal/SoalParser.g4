@@ -17,7 +17,7 @@ qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 namespaceDeclaration: KNamespace qualifiedName TOpenBrace declaration* TCloseBrace;
 
                        
-declaration : structDeclaration | exceptionDeclaration | interfaceDeclaration | bindingDeclaration | endpointDeclaration;
+declaration : structDeclaration | exceptionDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration;
 
 
 // Structs and exceptions
@@ -31,6 +31,15 @@ exceptionDeclaration : KException identifier (TColon                            
                      
                   
 propertyDeclaration :                 typeReference identifier TSemicolon;
+
+
+// Database
+
+                  
+databaseDeclaration : KDatabase identifier TOpenBrace entityDeclaration* TCloseBrace;
+
+                   
+entityDeclaration : KEntity                  qualifiedName TSemicolon;
 
 
 // Interface
@@ -48,6 +57,65 @@ parameterList : parameter (',' parameter)*;
                    
 parameter :                 typeReference identifier;
 
+
+// Component
+
+                   
+componentDeclaration :                                       KAbstract? KComponent identifier (TColon                                              qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+
+componentElements : componentElement+;
+
+componentElement
+	: componentService
+	| componentReference
+	| componentProperty
+	| componentImplementation
+	;
+
+                   
+                
+componentService : KService                                                     qualifiedName                                identifier? componentServiceOrReferenceBody;
+                     
+                  
+componentReference : KReference                                                     qualifiedName                                identifier? componentServiceOrReferenceBody;
+
+componentServiceOrReferenceBody 
+	: TSemicolon
+	| TOpenBrace componentServiceOrReferenceElement* TCloseBrace;
+
+componentServiceOrReferenceElement
+	: KBinding                                      qualifiedName TSemicolon;
+
+                     
+                  
+componentProperty : typeReference identifier TSemicolon;
+
+                         
+                        
+componentImplementation : KImplementation identifier TSemicolon;
+
+
+                   
+compositeDeclaration : KComposite identifier (TColon                                              qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+
+compositeElements : compositeElement+;
+
+compositeElement
+	: componentService
+	| componentReference
+	| componentProperty
+	| compositeComponent
+	| compositeWire
+	;
+
+compositeComponent : KComponent                                           qualifiedName TSemicolon;
+
+                
+             
+compositeWire : KWire wireService KTo wireReference TSemicolon;
+
+wireService :                                      qualifiedName;
+wireReference :                                          qualifiedName;
 
 // Binding
 

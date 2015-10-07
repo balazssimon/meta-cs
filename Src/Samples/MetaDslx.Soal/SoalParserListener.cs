@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\sb\AppData\Local\Temp\upnawxce.5cx\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\Balazs\AppData\Local\Temp\2d2vts43.gh0\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -120,6 +120,26 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitPropertyDeclaration([NotNull] SoalParser.PropertyDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.databaseDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDatabaseDeclaration([NotNull] SoalParser.DatabaseDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.databaseDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDatabaseDeclaration([NotNull] SoalParser.DatabaseDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.entityDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEntityDeclaration([NotNull] SoalParser.EntityDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.entityDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEntityDeclaration([NotNull] SoalParser.EntityDeclarationContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.interfaceDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -159,6 +179,166 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitParameter([NotNull] SoalParser.ParameterContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentDeclaration([NotNull] SoalParser.ComponentDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentDeclaration([NotNull] SoalParser.ComponentDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentElements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentElements([NotNull] SoalParser.ComponentElementsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentElements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentElements([NotNull] SoalParser.ComponentElementsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentElement([NotNull] SoalParser.ComponentElementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentElement([NotNull] SoalParser.ComponentElementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentService"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentService([NotNull] SoalParser.ComponentServiceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentService"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentService([NotNull] SoalParser.ComponentServiceContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentReference([NotNull] SoalParser.ComponentReferenceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentReference([NotNull] SoalParser.ComponentReferenceContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentServiceOrReferenceBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentServiceOrReferenceBody([NotNull] SoalParser.ComponentServiceOrReferenceBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentServiceOrReferenceBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentServiceOrReferenceBody([NotNull] SoalParser.ComponentServiceOrReferenceBodyContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentServiceOrReferenceElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentServiceOrReferenceElement([NotNull] SoalParser.ComponentServiceOrReferenceElementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentServiceOrReferenceElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentServiceOrReferenceElement([NotNull] SoalParser.ComponentServiceOrReferenceElementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentProperty([NotNull] SoalParser.ComponentPropertyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentProperty([NotNull] SoalParser.ComponentPropertyContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentImplementation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentImplementation([NotNull] SoalParser.ComponentImplementationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentImplementation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentImplementation([NotNull] SoalParser.ComponentImplementationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.compositeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCompositeDeclaration([NotNull] SoalParser.CompositeDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.compositeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCompositeDeclaration([NotNull] SoalParser.CompositeDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.compositeElements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCompositeElements([NotNull] SoalParser.CompositeElementsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.compositeElements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCompositeElements([NotNull] SoalParser.CompositeElementsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.compositeElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCompositeElement([NotNull] SoalParser.CompositeElementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.compositeElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCompositeElement([NotNull] SoalParser.CompositeElementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.compositeComponent"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCompositeComponent([NotNull] SoalParser.CompositeComponentContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.compositeComponent"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCompositeComponent([NotNull] SoalParser.CompositeComponentContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.compositeWire"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCompositeWire([NotNull] SoalParser.CompositeWireContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.compositeWire"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCompositeWire([NotNull] SoalParser.CompositeWireContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.wireService"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWireService([NotNull] SoalParser.WireServiceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.wireService"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWireService([NotNull] SoalParser.WireServiceContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.wireReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWireReference([NotNull] SoalParser.WireReferenceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.wireReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWireReference([NotNull] SoalParser.WireReferenceContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.bindingDeclaration"/>.
 	/// </summary>

@@ -8,5 +8,9 @@ namespace MetaDslx.Soal
 {
     internal class SoalImplementation : SoalImplementationBase
     {
+        public override string ComponentInterface_Name(ComponentInterface @this)
+        {
+            return @this.OptionalName != null ? @this.OptionalName : @this.Interface.Name;
+        }
     }
 }

@@ -52,15 +52,28 @@
 		reference ICalculator;
 	}
 
+	component CalcComp5
+	{
+		service ICalculator;
+	}
+
+	component CalcComp6
+	{
+		reference ICalculator;
+	}
+
 	composite Composite1 
 	{
 		service ICalculator CS;
 		reference ICalculator CR;
 		component CalcComp1;
 		component CalcComp2;
-		wire CS to CalcComp1.CalcS;
-		wire CalcComp1.CalcR to CalcComp2.ICalculator;
-		wire CalcComp2.ICalculator to CR;
+		component CalcComp5;
+		component CalcComp6;
+		//wire CS to CalcComp1.CalcS;
+		//wire CalcComp1.CalcR to CalcComp2.ICalculator;
+		//wire CalcComp2.ICalculator to CR;
+		wire CalcComp5.ICalculator to CalcComp6.ICalculator;
 	}
 
 	binding SoapHttp
