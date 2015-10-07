@@ -12,6 +12,7 @@ namespace MetaDslx.Core
         private Dictionary<ModelProperty, WeakReference<object>> defaultValues;
         private Dictionary<ModelProperty, object> values;
         private Dictionary<ModelProperty, Lazy<object>> initializers;
+        private Dictionary<ModelProperty, Func<object>> derivedValues;
         private Dictionary<ModelProperty, Dictionary<ModelProperty, Lazy<object>>> childInitializers;
 
         public ModelObject()
@@ -32,6 +33,7 @@ namespace MetaDslx.Core
             this.MetaID = Guid.NewGuid().ToString();
             this.values = new Dictionary<ModelProperty, object>();
             this.initializers = new Dictionary<ModelProperty, Lazy<object>>();
+            this.derivedValues = new Dictionary<ModelProperty, Func<object>>();
             this.childInitializers = new Dictionary<ModelProperty, Dictionary<ModelProperty, Lazy<object>>>();
         }
 
@@ -136,6 +138,11 @@ namespace MetaDslx.Core
             this.initializers.Remove(property);
         }
 
+        public void MDerivedSet(ModelProperty property, Func<object> value)
+        {
+            this.derivedValues[property] = value;
+        }
+
         public void MLazySet(ModelProperty property, Lazy<object> value)
         {
             object oldValue;
@@ -225,6 +232,7 @@ namespace MetaDslx.Core
             else
             {
                 Lazy<object> initializer;
+                Func<object> derived;
                 if (this.initializers.TryGetValue(property, out initializer))
                 {
                     value = initializer.Value;
@@ -234,6 +242,10 @@ namespace MetaDslx.Core
                         this.MAdd(property, value);
                     }
                     return value;
+                }
+                else if (this.derivedValues.TryGetValue(property, out derived))
+                {
+                    return derived.Invoke();
                 }
             }
             return null;

@@ -208,21 +208,12 @@ template GeneratePropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
 ^
 [prop.Type.CSharpFullPublicName()] [prop.Class.CSharpFullName()].[prop.Name]
 {
-	[if(prop.Kind == MetaPropertyKind.Derived)]
-		[MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop)]
-		[if (synInit == null)]
-    get { return [model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this); }
-		[else]
-    get { return [GenerateExpression(synInit.Value)]; }
-		[end if]
-	[else]
     get 
     {
         object result = this.MGet([prop.CSharpFullDescriptorName()]); 
         if (result != null) return ([prop.Type.CSharpFullPublicName()])result;
         else return default([prop.Type.CSharpFullPublicName()]);
     }
-	[end if]
 	[if((prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) && !(prop.Type is MetaCollectionType))]
     set { this.MSet([prop.CSharpFullDescriptorName()], value); }
 	[end if]
@@ -455,7 +446,7 @@ public [cls.CSharpImplName()]()
 				[if (ModelContext.Current.Compiler.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType)]
     this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
 				[else]
-    this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
+    this.MDerivedSet([prop.CSharpFullDescriptorName()], () => [GenerateExpression(synInit.Value)]);
 				[end if]
 			[end if]
 		[else]
@@ -464,12 +455,16 @@ public [cls.CSharpImplName()]()
     this.MSet([prop.CSharpFullDescriptorName()], new [prop.Type.CSharpName()]([GetCollectionConstructorParams(prop)]));
 				[else if (prop.Kind == MetaPropertyKind.Lazy)]
     this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [prop.Class.Model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this)));
+				[else if (prop.Kind == MetaPropertyKind.Derived)]
+    this.MDerivedSet([prop.CSharpFullDescriptorName()], () => [prop.Class.Model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this));
 				[else if (prop.Kind == MetaPropertyKind.Readonly)]
     // Init [prop.CSharpFullDescriptorName()] in [prop.Class.Model.CSharpFullImplementationName()].[cls.CSharpName()]_[cls.CSharpName()]
 				[end if]
 			[else]
 				[if(prop.Kind == MetaPropertyKind.Lazy)]
     this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this)));
+				[else if (prop.Kind == MetaPropertyKind.Derived)]
+    this.MDerivedSet([prop.CSharpFullDescriptorName()], () => [model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this));
 				[else if (prop.Kind == MetaPropertyKind.Readonly)]
     // Init [prop.CSharpFullDescriptorName()] in [model.CSharpFullImplementationName()].[cls.CSharpName()]_[cls.CSharpName()]
 				[end if]
