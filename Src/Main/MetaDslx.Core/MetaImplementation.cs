@@ -178,6 +178,10 @@ namespace MetaDslx.Core
         {
             this.MSet(RootScope.BuiltInEntriesProperty, new ModelList<ModelObject>(this, RootScope.BuiltInEntriesProperty));
             this.MSet(RootScope.EntriesProperty, new ModelList<ModelObject>(this, RootScope.EntriesProperty));
+        }
+
+        public void AddMetaBuiltInEntries()
+        {
             foreach (var type in MetaBuiltInTypes.Types)
             {
                 this.BuiltInEntries.Add((ModelObject)type);

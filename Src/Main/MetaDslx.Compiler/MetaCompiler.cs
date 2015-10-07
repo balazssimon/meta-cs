@@ -33,7 +33,7 @@ namespace MetaDslx.Compiler
         public const int Number = 12;
     }
 
-    public class SymbolTypedAnnotation
+    public abstract class SymbolTypedAnnotation
     {
         public Type SymbolType { get; set; }
         public bool OverrideSymbolType { get; set; }
@@ -131,6 +131,14 @@ namespace MetaDslx.Compiler
 
     public class ValueAnnotation
     {
+        private string name;
+        public string Name
+        {
+            get { return this.name; }
+            set { this.name = value; this.HasName = true; }
+        }
+        public bool HasName { get; set; }
+
         private object value;
         public object Value
         {
@@ -142,6 +150,14 @@ namespace MetaDslx.Compiler
 
     public class PreDefSymbolAnnotation
     {
+        private string name;
+        public string Name
+        {
+            get { return this.name; }
+            set { this.name = value; this.HasName = true; }
+        }
+        public bool HasName { get; set; }
+
         private object value;
         public object Value
         {
@@ -158,6 +174,14 @@ namespace MetaDslx.Compiler
 
     public class SymbolTypeAnnotation
     {
+        private string name;
+        public string Name
+        {
+            get { return this.name; }
+            set { this.name = value; this.HasName = true; }
+        }
+        public bool HasName { get; set; }
+
         public Type SymbolType { get; set; }
     }
 
@@ -183,7 +207,7 @@ namespace MetaDslx.Compiler
     public abstract class MetaCompiler : IModelCompiler, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
     {
         public ModelCompilerDiagnostics Diagnostics { get; private set; }
-        public string OutputDirectory { get; private set; }
+        public string OutputDirectory { get; set; }
         public string FileName { get; private set; }
         public string Source { get; private set; }
         public string DefaultNamespace { get; set; }
@@ -191,12 +215,12 @@ namespace MetaDslx.Compiler
         public RootScope GlobalScope
         {
             get;
-            private set;
+            protected set;
         }
-        public INameProvider NameProvider { get; set; }
-        public ITypeProvider TypeProvider { get; set; }
-        public IResolutionProvider ResolutionProvider { get; set; }
-        public IBindingProvider BindingProvider { get; set; }
+        public INameProvider NameProvider { get; protected set; }
+        public ITypeProvider TypeProvider { get; protected set; }
+        public IResolutionProvider ResolutionProvider { get; protected set; }
+        public IBindingProvider BindingProvider { get; protected set; }
 
         public MetaCompiler(string source, string outputDirectory, string fileName)
         {
@@ -1063,14 +1087,33 @@ namespace MetaDslx.Compiler
             PreDefSymbolAnnotation pdsa = this.GetAnnotationFor<PreDefSymbolAnnotation>(node);
             if (pdsa != null && pdsa.HasValue)
             {
-                ModelObject symbol = pdsa.Value as ModelObject;
-                if (symbol != null)
+                if (pdsa.HasName)
                 {
-                    this.RegisterSymbol(node, symbol);
+                    string name = this.Compiler.NameProvider.GetName(node);
+                    if (pdsa.Name == name)
+                    {
+                        ModelObject symbol = pdsa.Value as ModelObject;
+                        if (symbol != null)
+                        {
+                            this.RegisterSymbol(node, symbol);
+                        }
+                        else
+                        {
+                            this.Compiler.Diagnostics.AddError("The predefined symbol must be a ModelObject.", this.Compiler.FileName, node, true);
+                        }
+                    }
                 }
                 else
                 {
-                    this.Compiler.Diagnostics.AddError("The predefined symbol must be a ModelObject.", this.Compiler.FileName, node, true);
+                    ModelObject symbol = pdsa.Value as ModelObject;
+                    if (symbol != null)
+                    {
+                        this.RegisterSymbol(node, symbol);
+                    }
+                    else
+                    {
+                        this.Compiler.Diagnostics.AddError("The predefined symbol must be a ModelObject.", this.Compiler.FileName, node, true);
+                    }
                 }
             }
         }
@@ -1544,14 +1587,33 @@ namespace MetaDslx.Compiler
                     ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
                     if (va != null)
                     {
-                        if (va.HasValue)
+                        if (va.HasName)
                         {
-                            this.SetProperty(node, this.ActiveSymbol, pa, va.Value);
+                            string name = this.Compiler.NameProvider.GetName(node);
+                            if (va.Name == name)
+                            {
+                                if (va.HasValue)
+                                {
+                                    this.SetProperty(node, this.ActiveSymbol, pa, va.Value);
+                                }
+                                else
+                                {
+                                    object value = this.Compiler.NameProvider.GetValue(node);
+                                    this.SetProperty(node, this.ActiveSymbol, pa, value);
+                                }
+                            }
                         }
                         else
                         {
-                            object value = this.Compiler.NameProvider.GetValue(node);
-                            this.SetProperty(node, this.ActiveSymbol, pa, value);
+                            if (va.HasValue)
+                            {
+                                this.SetProperty(node, this.ActiveSymbol, pa, va.Value);
+                            }
+                            else
+                            {
+                                object value = this.Compiler.NameProvider.GetValue(node);
+                                this.SetProperty(node, this.ActiveSymbol, pa, value);
+                            }
                         }
                     }
                     else

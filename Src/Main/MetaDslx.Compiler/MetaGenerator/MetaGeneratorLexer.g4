@@ -1,4 +1,4 @@
-﻿/*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -485,3 +485,4 @@ TemplateStatement_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(C
 
 TemplateStatement_COMMENT : '*/' -> mode(TEMPLATE_STATEMENT), channel(COMMENT), type(COMMENT);
 TemplateStatement_COMMENT_STAR : '*' -> more, channel(COMMENT);
+

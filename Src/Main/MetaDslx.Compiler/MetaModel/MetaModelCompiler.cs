@@ -15,6 +15,7 @@ namespace MetaDslx.Compiler
         public MetaModelCompiler(string source, string outputDirectory, string fileName)
             : base(source, outputDirectory, fileName)
         {
+            this.GlobalScope.AddMetaBuiltInEntries();
         }
 
         protected override void DoCompile()

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using MetaDslx.Core;
 
 namespace MetaDslx.Compiler
 {
@@ -45,7 +46,27 @@ namespace MetaDslx.Compiler
                     SymbolTypeAnnotation sta = treeAnnot as SymbolTypeAnnotation;
                     if (sta != null)
                     {
-                        this.OverrideSymbolType(node, sta.SymbolType);
+                        if (sta.HasName)
+                        {
+                            ModelContext ctx = ModelContext.Current;
+                            if (ctx != null)
+                            {
+                                IModelCompiler compiler = ModelContext.Current.Compiler;
+                                string name = compiler.NameProvider.GetName(node);
+                                if (sta.Name == name)
+                                {
+                                    this.OverrideSymbolType(node, sta.SymbolType);
+                                }
+                            }
+                            else
+                            {
+                                throw new InvalidOperationException("ModelContext is missing. Define a ModelContextScope.");
+                            }
+                        }
+                        else
+                        {
+                            this.OverrideSymbolType(node, sta.SymbolType);
+                        }
                     }
                 }
                 treeAnnotList.RemoveAll(a => a is SymbolTypeAnnotation);
