@@ -115,14 +115,15 @@ namespace MetaDslx.Core
             else return object.ReferenceEquals(defaultValue, currentValue);
         }
 
-        public bool MHasValue(ModelProperty property)
+        public bool MIsValueCreated(ModelProperty property)
         {
-            return this.values.ContainsKey(property);
+            return this.values.ContainsKey(property) || this.derivedValues.ContainsKey(property);
         }
 
         public bool MIsSet(ModelProperty property)
         {
-            return this.values.ContainsKey(property) || this.initializers.ContainsKey(property);
+            return this.values.ContainsKey(property) || this.initializers.ContainsKey(property)
+                || this.derivedValues.ContainsKey(property);
         }
 
         public void MUnSet(ModelProperty property)
@@ -227,7 +228,7 @@ namespace MetaDslx.Core
             }
         }
 
-        public object MGet(ModelProperty property)
+        public object MGet(ModelProperty property, bool evalLazyValue = true)
         {
             object value;
             if (this.values.TryGetValue(property, out value))
@@ -238,7 +239,7 @@ namespace MetaDslx.Core
             {
                 Lazy<object> initializer;
                 Func<object> derived;
-                if (this.initializers.TryGetValue(property, out initializer))
+                if (evalLazyValue && this.initializers.TryGetValue(property, out initializer))
                 {
                     value = initializer.Value;
                     this.values[property] = value;

@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio.MetaG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio.AnnotatedAntlr4Template", "Main\MetaDslx.VisualStudio.AnnotatedAntlr4Template\MetaDslx.VisualStudio.AnnotatedAntlr4Template.csproj", "{09DE6D64-0132-48F3-A46B-4A0E659C84EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Soal", "Samples\MetaDslx.Soal\MetaDslx.Soal.csproj", "{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
