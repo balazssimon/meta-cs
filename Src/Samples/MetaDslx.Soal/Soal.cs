@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -599,11 +599,11 @@ namespace MetaDslx.Soal
         
             
             public static readonly ModelProperty ServiceProperty =
-                ModelProperty.Register("Service", typeof(global::MetaDslx.Soal.Service), typeof(global::MetaDslx.Soal.Wire), typeof(global::MetaDslx.Soal.SoalDescriptor.Wire), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Wire_ServiceProperty));
+                ModelProperty.Register("Service", typeof(global::MetaDslx.Soal.ComponentInterface), typeof(global::MetaDslx.Soal.Wire), typeof(global::MetaDslx.Soal.SoalDescriptor.Wire), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Wire_ServiceProperty));
             
             
             public static readonly ModelProperty ReferenceProperty =
-                ModelProperty.Register("Reference", typeof(global::MetaDslx.Soal.Reference), typeof(global::MetaDslx.Soal.Wire), typeof(global::MetaDslx.Soal.SoalDescriptor.Wire), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Wire_ReferenceProperty));
+                ModelProperty.Register("Reference", typeof(global::MetaDslx.Soal.ComponentInterface), typeof(global::MetaDslx.Soal.Wire), typeof(global::MetaDslx.Soal.SoalDescriptor.Wire), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.Wire_ReferenceProperty));
             
         }
         
@@ -623,14 +623,6 @@ namespace MetaDslx.Soal
                 get { return global::MetaDslx.Soal.SoalInstance.ComponentInterface; }
             }
         
-            
-            public static readonly ModelProperty InterfaceProperty =
-                ModelProperty.Register("Interface", typeof(global::MetaDslx.Soal.InterfaceDeclaration), typeof(global::MetaDslx.Soal.ComponentInterface), typeof(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.ComponentInterface_InterfaceProperty));
-            
-            
-            public static readonly ModelProperty BindingProperty =
-                ModelProperty.Register("Binding", typeof(global::MetaDslx.Soal.Binding), typeof(global::MetaDslx.Soal.ComponentInterface), typeof(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.ComponentInterface_BindingProperty));
-            
             [Name]
             [ReadonlyAttribute]
             public static readonly ModelProperty NameProperty =
@@ -639,6 +631,14 @@ namespace MetaDslx.Soal
             
             public static readonly ModelProperty OptionalNameProperty =
                 ModelProperty.Register("OptionalName", typeof(string), typeof(global::MetaDslx.Soal.ComponentInterface), typeof(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.ComponentInterface_OptionalNameProperty));
+            
+            
+            public static readonly ModelProperty InterfaceProperty =
+                ModelProperty.Register("Interface", typeof(global::MetaDslx.Soal.InterfaceDeclaration), typeof(global::MetaDslx.Soal.ComponentInterface), typeof(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.ComponentInterface_InterfaceProperty));
+            
+            
+            public static readonly ModelProperty BindingProperty =
+                ModelProperty.Register("Binding", typeof(global::MetaDslx.Soal.Binding), typeof(global::MetaDslx.Soal.ComponentInterface), typeof(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Soal.SoalInstance.ComponentInterface_BindingProperty));
             
         }
         
@@ -1162,10 +1162,10 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaProperty Composite_WiresProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Wire_ServiceProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Wire_ReferenceProperty;
-		public static readonly global::MetaDslx.Core.MetaProperty ComponentInterface_InterfaceProperty;
-		public static readonly global::MetaDslx.Core.MetaProperty ComponentInterface_BindingProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty ComponentInterface_NameProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty ComponentInterface_OptionalNameProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty ComponentInterface_InterfaceProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty ComponentInterface_BindingProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Binding_TransportProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Binding_EncodingsProperty;
 		public static readonly global::MetaDslx.Core.MetaProperty Binding_ProtocolsProperty;
@@ -1319,11 +1319,11 @@ namespace MetaDslx.Soal
 				Wire_ReferenceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				ComponentInterface = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				global::MetaDslx.Core.MetaConstructor tmp70 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstructor();
-				ComponentInterface_InterfaceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
-				ComponentInterface_BindingProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				ComponentInterface_NameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				global::MetaDslx.Core.MetaAnnotation tmp71 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaAnnotation();
 				ComponentInterface_OptionalNameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				ComponentInterface_InterfaceProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				ComponentInterface_BindingProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				Service = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				Reference = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				Implementation = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
@@ -2932,7 +2932,7 @@ namespace MetaDslx.Soal
 				((ModelObject)Wire_ServiceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
 				((ModelObject)Wire_ServiceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Wire));
 				((ModelObject)Wire_ServiceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)Wire_ServiceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Service));
+				((ModelObject)Wire_ServiceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => ComponentInterface));
 				((ModelObject)Wire_ServiceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
 				((ModelObject)Wire_ServiceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null));
 				
@@ -2946,15 +2946,15 @@ namespace MetaDslx.Soal
 				((ModelObject)Wire_ReferenceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
 				((ModelObject)Wire_ReferenceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Wire));
 				((ModelObject)Wire_ReferenceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)Wire_ReferenceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Reference));
+				((ModelObject)Wire_ReferenceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => ComponentInterface));
 				((ModelObject)Wire_ReferenceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
 				((ModelObject)Wire_ReferenceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null));
 				
 				
-				((ModelObject)ComponentInterface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => ComponentInterface_InterfaceProperty));
-				((ModelObject)ComponentInterface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => ComponentInterface_BindingProperty));
 				((ModelObject)ComponentInterface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => ComponentInterface_NameProperty));
 				((ModelObject)ComponentInterface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => ComponentInterface_OptionalNameProperty));
+				((ModelObject)ComponentInterface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => ComponentInterface_InterfaceProperty));
+				((ModelObject)ComponentInterface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => ComponentInterface_BindingProperty));
 				
 				((ModelObject)ComponentInterface).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)ComponentInterface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ComponentInterface"));
@@ -2970,34 +2970,6 @@ namespace MetaDslx.Soal
 				((ModelObject)tmp70).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ComponentInterface"));
 				((ModelObject)tmp70).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty);
 				((ModelObject)tmp70).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty, new Lazy<object>(() => ComponentInterface));
-				
-				
-				
-				
-				
-				
-				((ModelObject)ComponentInterface_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)ComponentInterface_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Interface"));
-				((ModelObject)ComponentInterface_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)ComponentInterface_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => ComponentInterface));
-				((ModelObject)ComponentInterface_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)ComponentInterface_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => InterfaceDeclaration));
-				((ModelObject)ComponentInterface_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)ComponentInterface_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null));
-				
-				
-				
-				
-				
-				
-				((ModelObject)ComponentInterface_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)ComponentInterface_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Binding"));
-				((ModelObject)ComponentInterface_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)ComponentInterface_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => ComponentInterface));
-				((ModelObject)ComponentInterface_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)ComponentInterface_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Binding));
-				((ModelObject)ComponentInterface_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)ComponentInterface_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null));
 				((ModelObject)ComponentInterface_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp71));
 				
 				
@@ -3029,6 +3001,34 @@ namespace MetaDslx.Soal
 				((ModelObject)ComponentInterface_OptionalNameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	));
 				((ModelObject)ComponentInterface_OptionalNameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
 				((ModelObject)ComponentInterface_OptionalNameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null));
+				
+				
+				
+				
+				
+				
+				((ModelObject)ComponentInterface_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)ComponentInterface_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Interface"));
+				((ModelObject)ComponentInterface_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)ComponentInterface_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => ComponentInterface));
+				((ModelObject)ComponentInterface_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)ComponentInterface_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => InterfaceDeclaration));
+				((ModelObject)ComponentInterface_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)ComponentInterface_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null));
+				
+				
+				
+				
+				
+				
+				((ModelObject)ComponentInterface_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)ComponentInterface_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Binding"));
+				((ModelObject)ComponentInterface_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)ComponentInterface_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => ComponentInterface));
+				((ModelObject)ComponentInterface_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)ComponentInterface_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Binding));
+				((ModelObject)ComponentInterface_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)ComponentInterface_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null));
 				
 				((ModelObject)Service).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => ComponentInterface));
 				
@@ -4816,8 +4816,8 @@ namespace MetaDslx.Soal
     
     public interface Wire
     {
-        global::MetaDslx.Soal.Service Service { get; set; }
-        global::MetaDslx.Soal.Reference Reference { get; set; }
+        global::MetaDslx.Soal.ComponentInterface Service { get; set; }
+        global::MetaDslx.Soal.ComponentInterface Reference { get; set; }
     
     }
     
@@ -4844,24 +4844,24 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        global::MetaDslx.Soal.Service global::MetaDslx.Soal.Wire.Service
+        global::MetaDslx.Soal.ComponentInterface global::MetaDslx.Soal.Wire.Service
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Wire.ServiceProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Service)result;
-                else return default(global::MetaDslx.Soal.Service);
+                if (result != null) return (global::MetaDslx.Soal.ComponentInterface)result;
+                else return default(global::MetaDslx.Soal.ComponentInterface);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Wire.ServiceProperty, value); }
         }
         
-        global::MetaDslx.Soal.Reference global::MetaDslx.Soal.Wire.Reference
+        global::MetaDslx.Soal.ComponentInterface global::MetaDslx.Soal.Wire.Reference
         {
             get 
             {
                 object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Wire.ReferenceProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Reference)result;
-                else return default(global::MetaDslx.Soal.Reference);
+                if (result != null) return (global::MetaDslx.Soal.ComponentInterface)result;
+                else return default(global::MetaDslx.Soal.ComponentInterface);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Wire.ReferenceProperty, value); }
         }
@@ -4870,10 +4870,10 @@ namespace MetaDslx.Soal
     
     public interface ComponentInterface
     {
-        global::MetaDslx.Soal.InterfaceDeclaration Interface { get; set; }
-        global::MetaDslx.Soal.Binding Binding { get; set; }
         string Name { get; }
         string OptionalName { get; set; }
+        global::MetaDslx.Soal.InterfaceDeclaration Interface { get; set; }
+        global::MetaDslx.Soal.Binding Binding { get; set; }
     
     }
     
@@ -4901,6 +4901,27 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
+        string global::MetaDslx.Soal.ComponentInterface.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+        }
+        
+        string global::MetaDslx.Soal.ComponentInterface.OptionalName
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty, value); }
+        }
+        
         global::MetaDslx.Soal.InterfaceDeclaration global::MetaDslx.Soal.ComponentInterface.Interface
         {
             get 
@@ -4921,27 +4942,6 @@ namespace MetaDslx.Soal
                 else return default(global::MetaDslx.Soal.Binding);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.BindingProperty, value); }
-        }
-        
-        string global::MetaDslx.Soal.ComponentInterface.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-        }
-        
-        string global::MetaDslx.Soal.ComponentInterface.OptionalName
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty, value); }
         }
     }
     
@@ -4975,6 +4975,27 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
+        string global::MetaDslx.Soal.ComponentInterface.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+        }
+        
+        string global::MetaDslx.Soal.ComponentInterface.OptionalName
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty, value); }
+        }
+        
         global::MetaDslx.Soal.InterfaceDeclaration global::MetaDslx.Soal.ComponentInterface.Interface
         {
             get 
@@ -4995,27 +5016,6 @@ namespace MetaDslx.Soal
                 else return default(global::MetaDslx.Soal.Binding);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.BindingProperty, value); }
-        }
-        
-        string global::MetaDslx.Soal.ComponentInterface.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-        }
-        
-        string global::MetaDslx.Soal.ComponentInterface.OptionalName
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty, value); }
         }
     }
     
@@ -5049,6 +5049,27 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
+        string global::MetaDslx.Soal.ComponentInterface.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+        }
+        
+        string global::MetaDslx.Soal.ComponentInterface.OptionalName
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty, value); }
+        }
+        
         global::MetaDslx.Soal.InterfaceDeclaration global::MetaDslx.Soal.ComponentInterface.Interface
         {
             get 
@@ -5069,27 +5090,6 @@ namespace MetaDslx.Soal
                 else return default(global::MetaDslx.Soal.Binding);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.BindingProperty, value); }
-        }
-        
-        string global::MetaDslx.Soal.ComponentInterface.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-        }
-        
-        string global::MetaDslx.Soal.ComponentInterface.OptionalName
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.ComponentInterface.OptionalNameProperty, value); }
         }
     }
     
@@ -6651,4 +6651,3 @@ namespace MetaDslx.Soal
     }
     
 }
-

@@ -176,8 +176,8 @@
 
 	class Wire
 	{
-		Service Service;
-		Reference Reference;
+		ComponentInterface Service;
+		ComponentInterface Reference;
 	}
 
 	class ComponentInterface
@@ -187,11 +187,11 @@
 			// this.Name = this.OptionalName != "" ? this.OptionalName : this.Interface.Name;
 		}
 
-		InterfaceDeclaration Interface;
-		Binding Binding;
 		[Name]
 		derived string Name;
 		string OptionalName;
+		InterfaceDeclaration Interface;
+		Binding Binding;
 	}
 
 	class Service : ComponentInterface

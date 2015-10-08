@@ -1,4 +1,4 @@
-parser grammar SoalParser;
+﻿parser grammar SoalParser;
 
 options {
 	tokenVocab=SoalLexer;
@@ -246,4 +246,3 @@ stringLiteral
 	: RegularStringLiteral 
 	| SingleQuoteVerbatimStringLiteral 
 	| DoubleQuoteVerbatimStringLiteral;
-

@@ -11,7 +11,7 @@ namespace MetaDslx.Soal
     {
         public override string ComponentInterface_Name(ComponentInterface @this)
         {
-            if (((ModelObject)@this).MHasValue(SoalDescriptor.ComponentInterface.InterfaceProperty))
+            if (((ModelObject)@this).MIsValueCreated(SoalDescriptor.ComponentInterface.InterfaceProperty))
             {
                 return @this.OptionalName != null ? @this.OptionalName : @this.Interface.Name;
             }

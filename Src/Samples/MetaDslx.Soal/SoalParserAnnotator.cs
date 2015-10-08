@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -1632,4 +1632,3 @@ namespace MetaDslx.Soal
         public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
     }
 }
-
