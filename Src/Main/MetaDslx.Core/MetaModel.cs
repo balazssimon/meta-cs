@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11421,6 +11421,7 @@ namespace MetaDslx.Core
         public MetaDeclarationImpl() 
         {
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new global::MetaDslx.Core.ModelList<MetaAnnotation>(this, global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty));
+            this.MDerivedSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelProperty, () => ((MetaDeclaration)this).Namespace.MetaModel);
             global::MetaDslx.Core.MetaImplementationProvider.Implementation.MetaDeclaration_MetaDeclaration(this);
             this.MMakeDefault();
         }
@@ -11459,7 +11460,12 @@ namespace MetaDslx.Core
         
         global::MetaDslx.Core.MetaModel global::MetaDslx.Core.MetaDeclaration.Model
         {
-            get { return ((MetaDeclaration)this).Namespace.MetaModel; }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelProperty); 
+                if (result != null) return (global::MetaDslx.Core.MetaModel)result;
+                else return default(global::MetaDslx.Core.MetaModel);
+            }
         }
     }
     
@@ -11704,6 +11710,7 @@ namespace MetaDslx.Core
         public MetaEnumImpl() 
         {
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new global::MetaDslx.Core.ModelList<MetaAnnotation>(this, global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty));
+            this.MDerivedSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelProperty, () => ((MetaDeclaration)this).Namespace.MetaModel);
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaEnum.EnumLiteralsProperty, new global::MetaDslx.Core.ModelList<MetaEnumLiteral>(this, global::MetaDslx.Core.MetaDescriptor.MetaEnum.EnumLiteralsProperty));
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaEnum.OperationsProperty, new global::MetaDslx.Core.ModelList<MetaOperation>(this, global::MetaDslx.Core.MetaDescriptor.MetaEnum.OperationsProperty));
             global::MetaDslx.Core.MetaImplementationProvider.Implementation.MetaEnum_MetaEnum(this);
@@ -11744,7 +11751,12 @@ namespace MetaDslx.Core
         
         global::MetaDslx.Core.MetaModel global::MetaDslx.Core.MetaDeclaration.Model
         {
-            get { return ((MetaDeclaration)this).Namespace.MetaModel; }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelProperty); 
+                if (result != null) return (global::MetaDslx.Core.MetaModel)result;
+                else return default(global::MetaDslx.Core.MetaModel);
+            }
         }
         
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaEnumLiteral> global::MetaDslx.Core.MetaEnum.EnumLiterals
@@ -11867,6 +11879,7 @@ namespace MetaDslx.Core
         public MetaClassImpl() 
         {
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new global::MetaDslx.Core.ModelList<MetaAnnotation>(this, global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty));
+            this.MDerivedSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelProperty, () => ((MetaDeclaration)this).Namespace.MetaModel);
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new global::MetaDslx.Core.ModelList<MetaClass>(this, global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty));
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new global::MetaDslx.Core.ModelList<MetaProperty>(this, global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty));
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.OperationsProperty, new global::MetaDslx.Core.ModelList<MetaOperation>(this, global::MetaDslx.Core.MetaDescriptor.MetaClass.OperationsProperty));
@@ -11908,7 +11921,12 @@ namespace MetaDslx.Core
         
         global::MetaDslx.Core.MetaModel global::MetaDslx.Core.MetaDeclaration.Model
         {
-            get { return ((MetaDeclaration)this).Namespace.MetaModel; }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelProperty); 
+                if (result != null) return (global::MetaDslx.Core.MetaModel)result;
+                else return default(global::MetaDslx.Core.MetaModel);
+            }
         }
         
         bool global::MetaDslx.Core.MetaClass.IsAbstract
@@ -12161,6 +12179,7 @@ namespace MetaDslx.Core
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new global::MetaDslx.Core.ModelList<MetaAnnotation>(this, global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty));
             // Init global::MetaDslx.Core.MetaDescriptor.MetaFunction.TypeProperty in global::MetaDslx.Core.MetaImplementationProvider.Implementation.MetaGlobalFunction_MetaGlobalFunction
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaFunction.ParametersProperty, new global::MetaDslx.Core.ModelList<MetaParameter>(this, global::MetaDslx.Core.MetaDescriptor.MetaFunction.ParametersProperty));
+            this.MDerivedSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelProperty, () => ((MetaDeclaration)this).Namespace.MetaModel);
             global::MetaDslx.Core.MetaImplementationProvider.Implementation.MetaGlobalFunction_MetaGlobalFunction(this);
             if (!this.MIsSet(global::MetaDslx.Core.MetaDescriptor.MetaFunction.TypeProperty)) throw new ModelException("Readonly property Meta.MetaFunction.TypeProperty was not set in MetaGlobalFunction_MetaGlobalFunction().");
             this.MMakeDefault();
@@ -12242,7 +12261,12 @@ namespace MetaDslx.Core
         
         global::MetaDslx.Core.MetaModel global::MetaDslx.Core.MetaDeclaration.Model
         {
-            get { return ((MetaDeclaration)this).Namespace.MetaModel; }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelProperty); 
+                if (result != null) return (global::MetaDslx.Core.MetaModel)result;
+                else return default(global::MetaDslx.Core.MetaModel);
+            }
         }
     }
     
@@ -12382,6 +12406,7 @@ namespace MetaDslx.Core
         public MetaConstantImpl() 
         {
             this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new global::MetaDslx.Core.ModelList<MetaAnnotation>(this, global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty));
+            this.MDerivedSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelProperty, () => ((MetaDeclaration)this).Namespace.MetaModel);
             this.MLazySetChild(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => ((MetaConstant)this).Type));
             global::MetaDslx.Core.MetaImplementationProvider.Implementation.MetaConstant_MetaConstant(this);
             this.MMakeDefault();
@@ -12432,7 +12457,12 @@ namespace MetaDslx.Core
         
         global::MetaDslx.Core.MetaModel global::MetaDslx.Core.MetaDeclaration.Model
         {
-            get { return ((MetaDeclaration)this).Namespace.MetaModel; }
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelProperty); 
+                if (result != null) return (global::MetaDslx.Core.MetaModel)result;
+                else return default(global::MetaDslx.Core.MetaModel);
+            }
         }
         
         global::MetaDslx.Core.MetaExpression global::MetaDslx.Core.MetaConstant.Value
@@ -23691,3 +23721,4 @@ namespace MetaDslx.Core
     }
     
 }
+

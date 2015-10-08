@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetaDslx.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,14 @@ namespace MetaDslx.Soal
     {
         public override string ComponentInterface_Name(ComponentInterface @this)
         {
-            return @this.OptionalName != null ? @this.OptionalName : @this.Interface.Name;
+            if (((ModelObject)@this).MHasValue(SoalDescriptor.ComponentInterface.InterfaceProperty))
+            {
+                return @this.OptionalName != null ? @this.OptionalName : @this.Interface.Name;
+            }
+            else
+            {
+                return @this.OptionalName ?? string.Empty;
+            }
         }
     }
 }

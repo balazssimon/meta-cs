@@ -1,4 +1,4 @@
-﻿lexer grammar SoalLexer;
+lexer grammar SoalLexer;
 
                                                               
 KNamespace : 'namespace';
@@ -216,3 +216,4 @@ mode SINGLEQUOTE_VERBATIM_STRING;
 SingleQuoteVerbatimStringText : SingleQuoteTextVerbatimCharacter -> more;
                                
 SingleQuoteVerbatimStringLiteral : '"' -> mode(DEFAULT_MODE);
+

@@ -446,8 +446,10 @@ public [cls.CSharpImplName()]()
 				[if (ModelContext.Current.Compiler.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType)]
     this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
 				[else]
-    this.MDerivedSet([prop.CSharpFullDescriptorName()], () => [GenerateExpression(synInit.Value)]);
+    this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
 				[end if]
+			[else]
+    this.MDerivedSet([prop.CSharpFullDescriptorName()], () => [GenerateExpression(synInit.Value)]);
 			[end if]
 		[else]
 			[if(prop.Type is MetaCollectionType)]

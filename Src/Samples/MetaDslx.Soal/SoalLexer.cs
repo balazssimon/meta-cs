@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\Balazs\AppData\Local\Temp\4lkcu1ll.a1l\SoalLexer.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\3mwsciio.u4c\SoalLexer.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162

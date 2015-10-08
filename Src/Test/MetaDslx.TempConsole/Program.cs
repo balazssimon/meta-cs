@@ -53,6 +53,13 @@ namespace MetaDslx.TempConsole
                 CompileAG4(@"..\..\..\..\Samples\MetaDslx.Soal", @"SoalParser");
                 Console.WriteLine("----");
                 //*/
+                /*
+                Console.WriteLine("----");
+                CompileMeta(
+                    @"..\..\..\..\Samples\MetaDslx.Soal\Soal.mm",
+                    @"..\..\..\..\Samples\MetaDslx.Soal\Soal.cs"
+                    );
+                //*/
                 //*
                 string source = "";
                 string fileName = @"SoalTest1.soal";
@@ -78,6 +85,12 @@ namespace MetaDslx.TempConsole
                     if (prop != null)
                     {
                         Console.WriteLine("{0}: {1}", prop.Name, prop.Type);
+                    }
+                    Wire wire = symbol as Wire;
+                    if (wire != null)
+                    {
+                        Console.WriteLine(wire.Service);
+                        Console.WriteLine(wire.Reference);
                     }
                 }
                 //*/
@@ -164,7 +177,8 @@ namespace MetaDslx.TempConsole
                 source = reader.ReadToEnd();
             }
             AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(source, outputDirectory, fileName);
-            compiler.DefaultNamespace = "MetaDslx.Compiler";
+            //compiler.DefaultNamespace = "MetaDslx.Compiler";
+            compiler.DefaultNamespace = "MetaDslx.Soal";
             compiler.Compile();
             string outputFileName = Path.Combine(outputDirectory, antlr4FileName + "Annotator.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))

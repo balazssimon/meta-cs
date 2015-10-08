@@ -115,6 +115,11 @@ namespace MetaDslx.Core
             else return object.ReferenceEquals(defaultValue, currentValue);
         }
 
+        public bool MHasValue(ModelProperty property)
+        {
+            return this.values.ContainsKey(property);
+        }
+
         public bool MIsSet(ModelProperty property)
         {
             return this.values.ContainsKey(property) || this.initializers.ContainsKey(property);

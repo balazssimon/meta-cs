@@ -187,11 +187,11 @@
 			// this.Name = this.OptionalName != "" ? this.OptionalName : this.Interface.Name;
 		}
 
+		InterfaceDeclaration Interface;
+		Binding Binding;
 		[Name]
 		derived string Name;
 		string OptionalName;
-		InterfaceDeclaration Interface;
-		Binding Binding;
 	}
 
 	class Service : ComponentInterface
