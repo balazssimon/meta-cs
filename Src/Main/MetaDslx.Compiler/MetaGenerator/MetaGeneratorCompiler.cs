@@ -375,7 +375,8 @@ namespace MetaDslx.Compiler
                 instancesType = context.typeReference().GetText();
             }
             WriteLine("private {0} Instances; {1}", instancesType, context.ToComment());
-            WriteLine("public {0}({1} instances) {2}", name, instancesType, context.ToComment());
+            AppendLine();
+            WriteLine("public {0}() {1}", name, context.ToComment());
             WriteLine("{");
             IncIndent();
             var config = ((MetaGeneratorParser.MainContext)context.Parent).configDeclaration();
@@ -385,6 +386,12 @@ namespace MetaDslx.Compiler
                 if (config.identifier() != null) propertiesName = config.identifier().GetText();
                 WriteLine("this.{0} = new __{0}();", propertiesName);
             }
+            DecIndent();
+            WriteLine("}");
+            AppendLine();
+            WriteLine("public {0}({1} instances) : this() {2}", name, instancesType, context.ToComment());
+            WriteLine("{");
+            IncIndent();
             WriteLine("this.Instances = instances;");
             DecIndent();
             WriteLine("}");

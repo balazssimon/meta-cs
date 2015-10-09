@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelGenerator_531869194;
-    namespace __Hidden_MetaModelGenerator_531869194
+    using __Hidden_MetaModelGenerator_518218842;
+    namespace __Hidden_MetaModelGenerator_518218842
     {
         internal static class __Extensions
         {
@@ -23,7 +23,12 @@ namespace MetaDslx.Core //1:1
     public class MetaModelGenerator //2:1
     {
         private IEnumerable<ModelObject> Instances; //2:1
-        public MetaModelGenerator(IEnumerable<ModelObject> instances) //2:1
+
+        public MetaModelGenerator() //2:1
+        {
+        }
+
+        public MetaModelGenerator(IEnumerable<ModelObject> instances) : this() //2:1
         {
             this.Instances = instances;
         }
@@ -8041,3 +8046,4 @@ namespace MetaDslx.Core //1:1
 
     }
 }
+

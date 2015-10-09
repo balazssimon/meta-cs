@@ -61,7 +61,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Samples\MetaDslx.Soal\Soal.cs"
                     );
                 //*/
-                //*
+                /*
                 string source = "";
                 string fileName = @"SoalTest1.soal";
                 using (StreamReader reader = new StreamReader(@"..\..\" + fileName))
