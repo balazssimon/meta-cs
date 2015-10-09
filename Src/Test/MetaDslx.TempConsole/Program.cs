@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.TempConsole
 {
+
     /*
     public class A
     {
@@ -125,7 +126,7 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
-                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel.cs"
                     );
                 //*/
                 /*

@@ -23,6 +23,8 @@ KService : 'service';
 KWire : 'wire';
 KTo : 'to';
 KImplementation : 'implementation';
+KLanguage : 'language';
+KAssembly : 'assembly';
 
 KNull : 'null';
 KTrue : 'true';

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.Core;
 ^
@@ -199,7 +200,7 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 	[end if]
 [end if]
 public static readonly ModelProperty [prop.Name]Property =
-    ModelProperty.Register("[prop.Name]", typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Class.CSharpFullName()]), typeof([prop.Class.Model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()]), new Lazy<global::MetaDslx.Core.MetaProperty>(() => [prop.Class.Model.CSharpFullName()]Instance.[prop.Class.CSharpName()]_[prop.Name]Property));
+    ModelProperty.Register("[prop.Name]", typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Class.CSharpFullName()]), typeof([prop.Class.Model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()]), new Lazy<global::MetaDslx.Core.MetaProperty>(() => [prop.Class.Model.CSharpFullName()]Instance.[prop.Class.CSharpName()]_[prop.Name]Property, LazyThreadSafetyMode.ExecutionAndPublication));
 [end if]
 ^
 end template
@@ -342,7 +343,7 @@ template GenerateNewPropertyInitializers(MetaNewExpression expr)
 [if (hasloop(expr->pi:PropertyInitializers))]
 new List<ModelPropertyInitializer>() {\
 [loop(expr->pi:PropertyInitializers; string delim = ""; delim = ", ")]
-[delim]new ModelPropertyInitializer([pi.Property.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(pi.Value)]))\
+[delim]new ModelPropertyInitializer([pi.Property.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(pi.Value)], LazyThreadSafetyMode.ExecutionAndPublication))\
 [end loop]
 }\
 [end if]
@@ -444,9 +445,9 @@ public [cls.CSharpImplName()]()
 		[if (synInit != null)]
 			[if (prop.Kind != MetaPropertyKind.Derived)]
 				[if (ModelContext.Current.Compiler.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType)]
-    this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
+    this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(synInit.Value)], LazyThreadSafetyMode.ExecutionAndPublication));
 				[else]
-    this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(synInit.Value)]));
+    this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(synInit.Value)], LazyThreadSafetyMode.ExecutionAndPublication));
 				[end if]
 			[else]
     this.MDerivedSet([prop.CSharpFullDescriptorName()], () => [GenerateExpression(synInit.Value)]);
@@ -456,7 +457,7 @@ public [cls.CSharpImplName()]()
 				[if (prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment)]
     this.MSet([prop.CSharpFullDescriptorName()], new [prop.Type.CSharpName()]([GetCollectionConstructorParams(prop)]));
 				[else if (prop.Kind == MetaPropertyKind.Lazy)]
-    this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [prop.Class.Model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this)));
+    this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [prop.Class.Model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this), LazyThreadSafetyMode.ExecutionAndPublication));
 				[else if (prop.Kind == MetaPropertyKind.Derived)]
     this.MDerivedSet([prop.CSharpFullDescriptorName()], () => [prop.Class.Model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this));
 				[else if (prop.Kind == MetaPropertyKind.Readonly)]
@@ -464,7 +465,7 @@ public [cls.CSharpImplName()]()
 				[end if]
 			[else]
 				[if(prop.Kind == MetaPropertyKind.Lazy)]
-    this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this)));
+    this.MLazySet([prop.CSharpFullDescriptorName()], new Lazy<object>(() => [model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this), LazyThreadSafetyMode.ExecutionAndPublication));
 				[else if (prop.Kind == MetaPropertyKind.Derived)]
     this.MDerivedSet([prop.CSharpFullDescriptorName()], () => [model.CSharpFullImplementationName()].[prop.Class.CSharpName()]_[prop.Name](this));
 				[else if (prop.Kind == MetaPropertyKind.Readonly)]
@@ -475,7 +476,7 @@ public [cls.CSharpImplName()]()
 	[end loop]
 	[loop(cls->sup:GetAllSuperClasses(true)->Constructor->Initializers->init:typeof(MetaInheritedPropertyInitializer))]
 		[if (init.Object != null && init.Property != null)]
-    this.MLazySetChild([init.Object.CSharpFullDescriptorName()], [init.Property.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(init.Value)]));
+    this.MLazySetChild([init.Object.CSharpFullDescriptorName()], [init.Property.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(init.Value)], LazyThreadSafetyMode.ExecutionAndPublication));
 		[end if]
 	[end loop]
     [cls.Model.CSharpFullImplementationName()].[cls.CSharpName()]_[cls.CSharpName()](this);
@@ -773,28 +774,28 @@ template GenerateModelObjectPropertyValue(ModelObject mobj, ModelProperty prop, 
 [end if]
 [ModelObject moValue = value as ModelObject]
 [if (value == null)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => null));
+((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 [else if (value is string)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => "[value]"));
+((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => "[value]", LazyThreadSafetyMode.ExecutionAndPublication));
 [else if (value is bool)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [value.ToString().ToLower()]));
+((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [value.ToString().ToLower()], LazyThreadSafetyMode.ExecutionAndPublication));
 [else if (value.GetType().IsPrimitive)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [value.ToString()]));
+((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [value.ToString()], LazyThreadSafetyMode.ExecutionAndPublication));
 [else if (MetaBuiltInTypes.Types.Contains(value))]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [GenerateTypeOf(value)]));
+((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [GenerateTypeOf(value)], LazyThreadSafetyMode.ExecutionAndPublication));
 [else if (value is MetaPrimitiveType)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [GenerateTypeOf(value)]));
+((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [GenerateTypeOf(value)], LazyThreadSafetyMode.ExecutionAndPublication));
 [else if (value is Enum)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [GetEnumValueOf(value)]));
+((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [GetEnumValueOf(value)], LazyThreadSafetyMode.ExecutionAndPublication));
 [else if (moValue != null)]
 	[if (mobjToTmp.ContainsKey(moValue))]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [mobjToTmp[moValue]]));
+((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [mobjToTmp[moValue]], LazyThreadSafetyMode.ExecutionAndPublication));
 	[else]
 [GenerateModelObjectInstance(moValue, mobjToTmp)]
 [GenerateModelObjectInstanceInitializer(moValue, mobjToTmp)]
 		[if (mobjToTmp.ContainsKey(moValue))]
 			[string tmpValueName = mobjToTmp[moValue]]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [tmpValueName]));
+((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [tmpValueName], LazyThreadSafetyMode.ExecutionAndPublication));
 		[else]
 // NOT FOUND: [moValue]
 		[end if]

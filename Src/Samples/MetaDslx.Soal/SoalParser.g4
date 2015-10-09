@@ -1,4 +1,4 @@
-﻿parser grammar SoalParser;
+parser grammar SoalParser;
 
 options {
 	tokenVocab=SoalLexer;
@@ -61,7 +61,7 @@ parameter :                 typeReference identifier;
 // Component
 
                    
-componentDeclaration :                                       KAbstract? KComponent identifier (TColon                                              qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+componentDeclaration :                                       KAbstract? KComponent identifier (TColon                                                                                          qualifiedName)? TOpenBrace componentElements? TCloseBrace;
 
 componentElements : componentElement+;
 
@@ -70,6 +70,7 @@ componentElement
 	| componentReference
 	| componentProperty
 	| componentImplementation
+	| componentLanguage
 	;
 
                    
@@ -94,9 +95,12 @@ componentProperty : typeReference identifier TSemicolon;
                         
 componentImplementation : KImplementation identifier TSemicolon;
 
-
                    
-compositeDeclaration : KComposite identifier (TColon                                              qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+                  
+componentLanguage : KLanguage identifier TSemicolon;
+
+        
+compositeDeclaration : (                      KAssembly |                        KComposite) identifier (TColon                                                                                                       qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
 compositeElements : compositeElement+;
 
@@ -104,6 +108,8 @@ compositeElement
 	: componentService
 	| componentReference
 	| componentProperty
+	| componentImplementation
+	| componentLanguage
 	| compositeComponent
 	| compositeWire
 	;
@@ -246,3 +252,4 @@ stringLiteral
 	: RegularStringLiteral 
 	| SingleQuoteVerbatimStringLiteral 
 	| DoubleQuoteVerbatimStringLiteral;
+

@@ -61,7 +61,7 @@ parameter : $Property(Type) typeReference identifier;
 // Component
 
 $TypeDef(Component)
-componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent identifier (TColon $Property(BaseComponent) $TypeUse(Component) qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent identifier (TColon $Property(BaseComponent) $TypeUse(symbolType=Component,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace componentElements? TCloseBrace;
 
 componentElements : componentElement+;
 
@@ -70,6 +70,7 @@ componentElement
 	| componentReference
 	| componentProperty
 	| componentImplementation
+	| componentLanguage
 	;
 
 $Property(Services)
@@ -94,9 +95,12 @@ $Property(Implementation)
 $NameDef(Implementation)
 componentImplementation : KImplementation identifier TSemicolon;
 
+$Property(Language)
+$NameDef(Language)
+componentLanguage : KLanguage identifier TSemicolon;
 
-$TypeDef(Composite)
-compositeDeclaration : KComposite identifier (TColon $Property(BaseComponent) $TypeUse(Component) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+$TypeDef
+compositeDeclaration : ($SymbolType(Assembly) KAssembly | $SymbolType(Composite) KComposite) identifier (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
 compositeElements : compositeElement+;
 
@@ -104,6 +108,8 @@ compositeElement
 	: componentService
 	| componentReference
 	| componentProperty
+	| componentImplementation
+	| componentLanguage
 	| compositeComponent
 	| compositeWire
 	;

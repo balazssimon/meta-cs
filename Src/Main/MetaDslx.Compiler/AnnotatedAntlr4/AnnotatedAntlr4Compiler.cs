@@ -1697,9 +1697,9 @@ namespace MetaDslx.Compiler
                         {
                             WriteLine("{0}.{1} = typeof({2});", variableName, propName, prop.Value);
                         }
-                        else if (prop.Name == "symbolTypes" && (annot.Type.Name == "TypeUse" || annot.Type.Name == "NameUse"))
+                        else if ((prop.Name == "symbolType" || prop.Name == "symbolTypes") && (annot.Type.Name == "TypeUse" || annot.Type.Name == "NameUse"))
                         {
-                            WriteLine("{0}.{1}.Add(typeof({2}));", variableName, propName, prop.Value);
+                            WriteLine("{0}.SymbolTypes.Add(typeof({2}));", variableName, propName, prop.Value);
                         }
                         else if (prop.Name == "nestingProperty" && (annot.Type.Name == "NameDef"))
                         {

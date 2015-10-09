@@ -873,7 +873,7 @@ namespace MetaDslx.Core
                 }
                 if (parentScopes.Count > 0)
                 {
-                    result.AddRange(this.Resolve(parentScopes, kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, flags));
+                    result.AddRange(this.Resolve(parentScopes, kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, ResolveFlags.All));
                 }
             }
             return result;
@@ -887,7 +887,14 @@ namespace MetaDslx.Core
                 {
                     if (prop.Annotations.Any(a => a is NameAttribute))
                     {
-                        return entry.MGet(prop);
+                        if (entry.MIsValueCreated(prop))
+                        {
+                            return entry.MGet(prop);
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                 }
             }

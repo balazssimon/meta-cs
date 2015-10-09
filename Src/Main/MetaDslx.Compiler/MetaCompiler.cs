@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler
@@ -63,8 +64,10 @@ namespace MetaDslx.Compiler
         public NameUseAnnotation()
         {
             this.SymbolTypes = new List<Type>();
+            this.ResolveFlags = ResolveFlags.All;
         }
         public List<Type> SymbolTypes { get; set; }
+        public ResolveFlags ResolveFlags { get; set; }
     }
 
     public class TypeUseAnnotation
@@ -72,8 +75,10 @@ namespace MetaDslx.Compiler
         public TypeUseAnnotation()
         {
             this.SymbolTypes = new List<Type>();
+            this.ResolveFlags = ResolveFlags.All;
         }
         public List<Type> SymbolTypes { get; set; }
+        public ResolveFlags ResolveFlags { get; set; }
     }
 
     public class TypeCtrAnnotation : SymbolTypedAnnotation
@@ -92,11 +97,6 @@ namespace MetaDslx.Compiler
 
     public class ScopeAnnotation : SymbolTypedAnnotation
     {
-    }
-
-    public class InheritScopeAnnotation
-    {
-
     }
 
     public class IdentifierAnnotation
@@ -1504,10 +1504,11 @@ namespace MetaDslx.Compiler
                     Func<ModelObject> lazySymbol =
                         () =>
                             this.Compiler.BindingProvider.Bind(null,
-                            this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Type, nameStrings, new ResolutionInfo() { Node = node }, ResolveFlags.All),
+                            this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Type, nameStrings, new ResolutionInfo() { Node = node }, tua.ResolveFlags),
                             new BindingInfo() { Node = node });
-                    this.SetLazyProperty(node, activeSymbol, activeProperty, new Lazy<object>(lazySymbol, false));
-                    this.Data.RegisterLazySymbol(node, new Lazy<object>(lazySymbol, false));
+                    Lazy<object> lazyValue = new Lazy<object>(lazySymbol, LazyThreadSafetyMode.ExecutionAndPublication);
+                    this.SetLazyProperty(node, activeSymbol, activeProperty, lazyValue);
+                    this.Data.RegisterLazySymbol(node, lazyValue);
                 }
                 if (nua != null)
                 {
@@ -1519,10 +1520,11 @@ namespace MetaDslx.Compiler
                     Func<ModelObject> lazySymbol =
                         () =>
                             this.Compiler.BindingProvider.Bind(null,
-                            this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Name, nameStrings, new ResolutionInfo() { Node = node }, ResolveFlags.All),
+                            this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Name, nameStrings, new ResolutionInfo() { Node = node }, nua.ResolveFlags),
                             new BindingInfo() { Node = node });
-                    this.SetLazyProperty(node, activeSymbol, activeProperty, new Lazy<object>(lazySymbol, false));
-                    this.Data.RegisterLazySymbol(node, new Lazy<object>(lazySymbol, false));
+                    Lazy<object> lazyValue = new Lazy<object>(lazySymbol, LazyThreadSafetyMode.ExecutionAndPublication);
+                    this.SetLazyProperty(node, activeSymbol, activeProperty, lazyValue);
+                    this.Data.RegisterLazySymbol(node, lazyValue);
                 }
             }
         }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\ovbvlgtq.gff\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\vqyxwqgx.cuz\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -35,23 +35,23 @@ public partial class SoalParser : Parser {
 		KNamespace=1, KException=2, KStruct=3, KInterface=4, KThrows=5, KOneway=6, 
 		KBinding=7, KTransport=8, KEncoding=9, KProtocol=10, KEndpoint=11, KAddress=12, 
 		KDatabase=13, KEntity=14, KAbstract=15, KComponent=16, KComposite=17, 
-		KReference=18, KService=19, KWire=20, KTo=21, KImplementation=22, KNull=23, 
-		KTrue=24, KFalse=25, KDateTime=26, KTimeSpan=27, KObject=28, KString=29, 
-		KInt=30, KLong=31, KFloat=32, KDouble=33, KByte=34, KBool=35, KAny=36, 
-		KVoid=37, TSemicolon=38, TColon=39, TDot=40, TComma=41, TAssign=42, TOpenParen=43, 
-		TCloseParen=44, TOpenBracket=45, TCloseBracket=46, TOpenBrace=47, TCloseBrace=48, 
-		TLessThan=49, TGreaterThan=50, TQuestion=51, TQuestionQuestion=52, TAmpersand=53, 
-		THat=54, TBar=55, TAndAlso=56, TOrElse=57, TPlusPlus=58, TMinusMinus=59, 
-		TPlus=60, TMinus=61, TTilde=62, TExclamation=63, TSlash=64, TAsterisk=65, 
-		TPercent=66, TLessThanOrEqual=67, TGreaterThanOrEqual=68, TEqual=69, TNotEqual=70, 
-		TAsteriskAssign=71, TSlashAssign=72, TPercentAssign=73, TPlusAssign=74, 
-		TMinusAssign=75, TLeftShiftAssign=76, TRightShiftAssign=77, TAmpersandAssign=78, 
-		THatAssign=79, TBarAssign=80, IdentifierNormal=81, IdentifierVerbatim=82, 
-		IntegerLiteral=83, DecimalLiteral=84, ScientificLiteral=85, DateTimeOffsetLiteral=86, 
-		DateTimeLiteral=87, DateLiteral=88, TimeLiteral=89, RegularStringLiteral=90, 
-		GuidLiteral=91, UTF8BOM=92, WHITESPACE=93, CRLF=94, LINEBREAK=95, LINE_COMMENT=96, 
-		COMMENT=97, DoubleQuoteVerbatimStringLiteral=98, SingleQuoteVerbatimStringLiteral=99, 
-		DoubleQuoteVerbatimStringLiteralStart=100;
+		KReference=18, KService=19, KWire=20, KTo=21, KImplementation=22, KLanguage=23, 
+		KAssembly=24, KNull=25, KTrue=26, KFalse=27, KDateTime=28, KTimeSpan=29, 
+		KObject=30, KString=31, KInt=32, KLong=33, KFloat=34, KDouble=35, KByte=36, 
+		KBool=37, KAny=38, KVoid=39, TSemicolon=40, TColon=41, TDot=42, TComma=43, 
+		TAssign=44, TOpenParen=45, TCloseParen=46, TOpenBracket=47, TCloseBracket=48, 
+		TOpenBrace=49, TCloseBrace=50, TLessThan=51, TGreaterThan=52, TQuestion=53, 
+		TQuestionQuestion=54, TAmpersand=55, THat=56, TBar=57, TAndAlso=58, TOrElse=59, 
+		TPlusPlus=60, TMinusMinus=61, TPlus=62, TMinus=63, TTilde=64, TExclamation=65, 
+		TSlash=66, TAsterisk=67, TPercent=68, TLessThanOrEqual=69, TGreaterThanOrEqual=70, 
+		TEqual=71, TNotEqual=72, TAsteriskAssign=73, TSlashAssign=74, TPercentAssign=75, 
+		TPlusAssign=76, TMinusAssign=77, TLeftShiftAssign=78, TRightShiftAssign=79, 
+		TAmpersandAssign=80, THatAssign=81, TBarAssign=82, IdentifierNormal=83, 
+		IdentifierVerbatim=84, IntegerLiteral=85, DecimalLiteral=86, ScientificLiteral=87, 
+		DateTimeOffsetLiteral=88, DateTimeLiteral=89, DateLiteral=90, TimeLiteral=91, 
+		RegularStringLiteral=92, GuidLiteral=93, UTF8BOM=94, WHITESPACE=95, CRLF=96, 
+		LINEBREAK=97, LINE_COMMENT=98, COMMENT=99, DoubleQuoteVerbatimStringLiteral=100, 
+		SingleQuoteVerbatimStringLiteral=101, DoubleQuoteVerbatimStringLiteralStart=102;
 	public const int
 		RULE_main = 0, RULE_qualifiedName = 1, RULE_identifierList = 2, RULE_qualifiedNameList = 3, 
 		RULE_namespaceDeclaration = 4, RULE_declaration = 5, RULE_structDeclaration = 6, 
@@ -61,18 +61,18 @@ public partial class SoalParser : Parser {
 		RULE_componentElements = 16, RULE_componentElement = 17, RULE_componentService = 18, 
 		RULE_componentReference = 19, RULE_componentServiceOrReferenceBody = 20, 
 		RULE_componentServiceOrReferenceElement = 21, RULE_componentProperty = 22, 
-		RULE_componentImplementation = 23, RULE_compositeDeclaration = 24, RULE_compositeElements = 25, 
-		RULE_compositeElement = 26, RULE_compositeComponent = 27, RULE_compositeWire = 28, 
-		RULE_wireService = 29, RULE_wireReference = 30, RULE_bindingDeclaration = 31, 
-		RULE_bindingLayers = 32, RULE_transportLayer = 33, RULE_transportLayerKind = 34, 
-		RULE_encodingLayer = 35, RULE_encodingLayerKind = 36, RULE_protocolLayer = 37, 
-		RULE_protocolLayerKind = 38, RULE_endpointDeclaration = 39, RULE_endpointProperties = 40, 
-		RULE_endpointProperty = 41, RULE_endpointBindingProperty = 42, RULE_endpointAddressProperty = 43, 
-		RULE_returnType = 44, RULE_typeReference = 45, RULE_simpleType = 46, RULE_objectType = 47, 
-		RULE_primitiveType = 48, RULE_voidType = 49, RULE_onewayType = 50, RULE_nullableType = 51, 
-		RULE_arrayType = 52, RULE_identifier = 53, RULE_literal = 54, RULE_nullLiteral = 55, 
-		RULE_booleanLiteral = 56, RULE_integerLiteral = 57, RULE_decimalLiteral = 58, 
-		RULE_scientificLiteral = 59, RULE_stringLiteral = 60;
+		RULE_componentImplementation = 23, RULE_componentLanguage = 24, RULE_compositeDeclaration = 25, 
+		RULE_compositeElements = 26, RULE_compositeElement = 27, RULE_compositeComponent = 28, 
+		RULE_compositeWire = 29, RULE_wireService = 30, RULE_wireReference = 31, 
+		RULE_bindingDeclaration = 32, RULE_bindingLayers = 33, RULE_transportLayer = 34, 
+		RULE_transportLayerKind = 35, RULE_encodingLayer = 36, RULE_encodingLayerKind = 37, 
+		RULE_protocolLayer = 38, RULE_protocolLayerKind = 39, RULE_endpointDeclaration = 40, 
+		RULE_endpointProperties = 41, RULE_endpointProperty = 42, RULE_endpointBindingProperty = 43, 
+		RULE_endpointAddressProperty = 44, RULE_returnType = 45, RULE_typeReference = 46, 
+		RULE_simpleType = 47, RULE_objectType = 48, RULE_primitiveType = 49, RULE_voidType = 50, 
+		RULE_onewayType = 51, RULE_nullableType = 52, RULE_arrayType = 53, RULE_identifier = 54, 
+		RULE_literal = 55, RULE_nullLiteral = 56, RULE_booleanLiteral = 57, RULE_integerLiteral = 58, 
+		RULE_decimalLiteral = 59, RULE_scientificLiteral = 60, RULE_stringLiteral = 61;
 	public static readonly string[] ruleNames = {
 		"main", "qualifiedName", "identifierList", "qualifiedNameList", "namespaceDeclaration", 
 		"declaration", "structDeclaration", "exceptionDeclaration", "propertyDeclaration", 
@@ -80,52 +80,52 @@ public partial class SoalParser : Parser {
 		"parameterList", "parameter", "componentDeclaration", "componentElements", 
 		"componentElement", "componentService", "componentReference", "componentServiceOrReferenceBody", 
 		"componentServiceOrReferenceElement", "componentProperty", "componentImplementation", 
-		"compositeDeclaration", "compositeElements", "compositeElement", "compositeComponent", 
-		"compositeWire", "wireService", "wireReference", "bindingDeclaration", 
-		"bindingLayers", "transportLayer", "transportLayerKind", "encodingLayer", 
-		"encodingLayerKind", "protocolLayer", "protocolLayerKind", "endpointDeclaration", 
-		"endpointProperties", "endpointProperty", "endpointBindingProperty", "endpointAddressProperty", 
-		"returnType", "typeReference", "simpleType", "objectType", "primitiveType", 
-		"voidType", "onewayType", "nullableType", "arrayType", "identifier", "literal", 
-		"nullLiteral", "booleanLiteral", "integerLiteral", "decimalLiteral", "scientificLiteral", 
-		"stringLiteral"
+		"componentLanguage", "compositeDeclaration", "compositeElements", "compositeElement", 
+		"compositeComponent", "compositeWire", "wireService", "wireReference", 
+		"bindingDeclaration", "bindingLayers", "transportLayer", "transportLayerKind", 
+		"encodingLayer", "encodingLayerKind", "protocolLayer", "protocolLayerKind", 
+		"endpointDeclaration", "endpointProperties", "endpointProperty", "endpointBindingProperty", 
+		"endpointAddressProperty", "returnType", "typeReference", "simpleType", 
+		"objectType", "primitiveType", "voidType", "onewayType", "nullableType", 
+		"arrayType", "identifier", "literal", "nullLiteral", "booleanLiteral", 
+		"integerLiteral", "decimalLiteral", "scientificLiteral", "stringLiteral"
 	};
 
 	private static readonly string[] _LiteralNames = {
 		null, "'namespace'", "'exception'", "'struct'", "'interface'", "'throws'", 
 		"'oneway'", "'binding'", "'transport'", "'encoding'", "'protocol'", "'endpoint'", 
 		"'address'", "'database'", "'entity'", "'abstract'", "'component'", "'composite'", 
-		"'reference'", "'service'", "'wire'", "'to'", "'implementation'", "'null'", 
-		"'true'", "'false'", "'DateTime'", "'TimeSpan'", "'object'", "'string'", 
-		"'int'", "'long'", "'float'", "'double'", "'byte'", "'bool'", "'any'", 
-		"'void'", "';'", "':'", "'.'", "','", "'='", "'('", "')'", "'['", "']'", 
-		"'{'", "'}'", "'<'", "'>'", "'?'", "'??'", "'&'", "'^'", "'|'", "'&&'", 
-		"'||'", "'++'", "'--'", "'+'", "'-'", "'~'", "'!'", "'/'", null, "'%'", 
-		"'<='", "'>='", "'=='", "'!='", "'*='", "'/='", "'%='", "'+='", "'-='", 
-		"'<<='", "'>>='", "'&='", "'^='", "'|='", null, null, null, null, null, 
+		"'reference'", "'service'", "'wire'", "'to'", "'implementation'", "'language'", 
+		"'assembly'", "'null'", "'true'", "'false'", "'DateTime'", "'TimeSpan'", 
+		"'object'", "'string'", "'int'", "'long'", "'float'", "'double'", "'byte'", 
+		"'bool'", "'any'", "'void'", "';'", "':'", "'.'", "','", "'='", "'('", 
+		"')'", "'['", "']'", "'{'", "'}'", "'<'", "'>'", "'?'", "'??'", "'&'", 
+		"'^'", "'|'", "'&&'", "'||'", "'++'", "'--'", "'+'", "'-'", "'~'", "'!'", 
+		"'/'", null, "'%'", "'<='", "'>='", "'=='", "'!='", "'*='", "'/='", "'%='", 
+		"'+='", "'-='", "'<<='", "'>>='", "'&='", "'^='", "'|='", null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, "'@\"'"
+		null, null, null, null, null, "'@\"'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "KNamespace", "KException", "KStruct", "KInterface", "KThrows", 
 		"KOneway", "KBinding", "KTransport", "KEncoding", "KProtocol", "KEndpoint", 
 		"KAddress", "KDatabase", "KEntity", "KAbstract", "KComponent", "KComposite", 
-		"KReference", "KService", "KWire", "KTo", "KImplementation", "KNull", 
-		"KTrue", "KFalse", "KDateTime", "KTimeSpan", "KObject", "KString", "KInt", 
-		"KLong", "KFloat", "KDouble", "KByte", "KBool", "KAny", "KVoid", "TSemicolon", 
-		"TColon", "TDot", "TComma", "TAssign", "TOpenParen", "TCloseParen", "TOpenBracket", 
-		"TCloseBracket", "TOpenBrace", "TCloseBrace", "TLessThan", "TGreaterThan", 
-		"TQuestion", "TQuestionQuestion", "TAmpersand", "THat", "TBar", "TAndAlso", 
-		"TOrElse", "TPlusPlus", "TMinusMinus", "TPlus", "TMinus", "TTilde", "TExclamation", 
-		"TSlash", "TAsterisk", "TPercent", "TLessThanOrEqual", "TGreaterThanOrEqual", 
-		"TEqual", "TNotEqual", "TAsteriskAssign", "TSlashAssign", "TPercentAssign", 
-		"TPlusAssign", "TMinusAssign", "TLeftShiftAssign", "TRightShiftAssign", 
-		"TAmpersandAssign", "THatAssign", "TBarAssign", "IdentifierNormal", "IdentifierVerbatim", 
-		"IntegerLiteral", "DecimalLiteral", "ScientificLiteral", "DateTimeOffsetLiteral", 
-		"DateTimeLiteral", "DateLiteral", "TimeLiteral", "RegularStringLiteral", 
-		"GuidLiteral", "UTF8BOM", "WHITESPACE", "CRLF", "LINEBREAK", "LINE_COMMENT", 
-		"COMMENT", "DoubleQuoteVerbatimStringLiteral", "SingleQuoteVerbatimStringLiteral", 
-		"DoubleQuoteVerbatimStringLiteralStart"
+		"KReference", "KService", "KWire", "KTo", "KImplementation", "KLanguage", 
+		"KAssembly", "KNull", "KTrue", "KFalse", "KDateTime", "KTimeSpan", "KObject", 
+		"KString", "KInt", "KLong", "KFloat", "KDouble", "KByte", "KBool", "KAny", 
+		"KVoid", "TSemicolon", "TColon", "TDot", "TComma", "TAssign", "TOpenParen", 
+		"TCloseParen", "TOpenBracket", "TCloseBracket", "TOpenBrace", "TCloseBrace", 
+		"TLessThan", "TGreaterThan", "TQuestion", "TQuestionQuestion", "TAmpersand", 
+		"THat", "TBar", "TAndAlso", "TOrElse", "TPlusPlus", "TMinusMinus", "TPlus", 
+		"TMinus", "TTilde", "TExclamation", "TSlash", "TAsterisk", "TPercent", 
+		"TLessThanOrEqual", "TGreaterThanOrEqual", "TEqual", "TNotEqual", "TAsteriskAssign", 
+		"TSlashAssign", "TPercentAssign", "TPlusAssign", "TMinusAssign", "TLeftShiftAssign", 
+		"TRightShiftAssign", "TAmpersandAssign", "THatAssign", "TBarAssign", "IdentifierNormal", 
+		"IdentifierVerbatim", "IntegerLiteral", "DecimalLiteral", "ScientificLiteral", 
+		"DateTimeOffsetLiteral", "DateTimeLiteral", "DateLiteral", "TimeLiteral", 
+		"RegularStringLiteral", "GuidLiteral", "UTF8BOM", "WHITESPACE", "CRLF", 
+		"LINEBREAK", "LINE_COMMENT", "COMMENT", "DoubleQuoteVerbatimStringLiteral", 
+		"SingleQuoteVerbatimStringLiteral", "DoubleQuoteVerbatimStringLiteralStart"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -184,16 +184,16 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 125;
+			State = 127;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==KNamespace) {
 				{
 				{
-				State = 122; namespaceDeclaration();
+				State = 124; namespaceDeclaration();
 				}
 				}
-				State = 127;
+				State = 129;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -249,18 +249,18 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 128; identifier();
-			State = 133;
+			State = 130; identifier();
+			State = 135;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==TDot) {
 				{
 				{
-				State = 129; Match(TDot);
-				State = 130; identifier();
+				State = 131; Match(TDot);
+				State = 132; identifier();
 				}
 				}
-				State = 135;
+				State = 137;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -316,18 +316,18 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 136; identifier();
-			State = 141;
+			State = 138; identifier();
+			State = 143;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 137; Match(TComma);
-				State = 138; identifier();
+				State = 139; Match(TComma);
+				State = 140; identifier();
 				}
 				}
-				State = 143;
+				State = 145;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -383,18 +383,18 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 144; qualifiedName();
-			State = 149;
+			State = 146; qualifiedName();
+			State = 151;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 145; Match(TComma);
-				State = 146; qualifiedName();
+				State = 147; Match(TComma);
+				State = 148; qualifiedName();
 				}
 				}
-				State = 151;
+				State = 153;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -452,23 +452,23 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 152; Match(KNamespace);
-			State = 153; qualifiedName();
-			State = 154; Match(TOpenBrace);
-			State = 158;
+			State = 154; Match(KNamespace);
+			State = 155; qualifiedName();
+			State = 156; Match(TOpenBrace);
+			State = 160;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KException) | (1L << KStruct) | (1L << KInterface) | (1L << KBinding) | (1L << KEndpoint) | (1L << KDatabase) | (1L << KAbstract) | (1L << KComponent) | (1L << KComposite))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KException) | (1L << KStruct) | (1L << KInterface) | (1L << KBinding) | (1L << KEndpoint) | (1L << KDatabase) | (1L << KAbstract) | (1L << KComponent) | (1L << KComposite) | (1L << KAssembly))) != 0)) {
 				{
 				{
-				State = 155; declaration();
+				State = 157; declaration();
 				}
 				}
-				State = 160;
+				State = 162;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 161; Match(TCloseBrace);
+			State = 163; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -532,55 +532,56 @@ public partial class SoalParser : Parser {
 		DeclarationContext _localctx = new DeclarationContext(Context, State);
 		EnterRule(_localctx, 10, RULE_declaration);
 		try {
-			State = 171;
+			State = 173;
 			switch (TokenStream.La(1)) {
 			case KStruct:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 163; structDeclaration();
+				State = 165; structDeclaration();
 				}
 				break;
 			case KException:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 164; exceptionDeclaration();
+				State = 166; exceptionDeclaration();
 				}
 				break;
 			case KDatabase:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 165; databaseDeclaration();
+				State = 167; databaseDeclaration();
 				}
 				break;
 			case KInterface:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 166; interfaceDeclaration();
+				State = 168; interfaceDeclaration();
 				}
 				break;
 			case KAbstract:
 			case KComponent:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 167; componentDeclaration();
+				State = 169; componentDeclaration();
 				}
 				break;
 			case KComposite:
+			case KAssembly:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 168; compositeDeclaration();
+				State = 170; compositeDeclaration();
 				}
 				break;
 			case KBinding:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 169; bindingDeclaration();
+				State = 171; bindingDeclaration();
 				}
 				break;
 			case KEndpoint:
 				EnterOuterAlt(_localctx, 8);
 				{
-				State = 170; endpointDeclaration();
+				State = 172; endpointDeclaration();
 				}
 				break;
 			default:
@@ -643,32 +644,32 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 173; Match(KStruct);
-			State = 174; identifier();
-			State = 177;
+			State = 175; Match(KStruct);
+			State = 176; identifier();
+			State = 179;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
-				State = 175; Match(TColon);
-				State = 176; qualifiedName();
+				State = 177; Match(TColon);
+				State = 178; qualifiedName();
 				}
 			}
 
-			State = 179; Match(TOpenBrace);
-			State = 183;
+			State = 181; Match(TOpenBrace);
+			State = 185;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
-			while (((((_la - 28)) & ~0x3f) == 0 && ((1L << (_la - 28)) & ((1L << (KObject - 28)) | (1L << (KString - 28)) | (1L << (KInt - 28)) | (1L << (KLong - 28)) | (1L << (KFloat - 28)) | (1L << (KDouble - 28)) | (1L << (KByte - 28)) | (1L << (KBool - 28)) | (1L << (IdentifierNormal - 28)) | (1L << (IdentifierVerbatim - 28)))) != 0)) {
+			while (((((_la - 30)) & ~0x3f) == 0 && ((1L << (_la - 30)) & ((1L << (KObject - 30)) | (1L << (KString - 30)) | (1L << (KInt - 30)) | (1L << (KLong - 30)) | (1L << (KFloat - 30)) | (1L << (KDouble - 30)) | (1L << (KByte - 30)) | (1L << (KBool - 30)) | (1L << (IdentifierNormal - 30)) | (1L << (IdentifierVerbatim - 30)))) != 0)) {
 				{
 				{
-				State = 180; propertyDeclaration();
+				State = 182; propertyDeclaration();
 				}
 				}
-				State = 185;
+				State = 187;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 186; Match(TCloseBrace);
+			State = 188; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -727,32 +728,32 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 188; Match(KException);
-			State = 189; identifier();
-			State = 192;
+			State = 190; Match(KException);
+			State = 191; identifier();
+			State = 194;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
-				State = 190; Match(TColon);
-				State = 191; qualifiedName();
+				State = 192; Match(TColon);
+				State = 193; qualifiedName();
 				}
 			}
 
-			State = 194; Match(TOpenBrace);
-			State = 198;
+			State = 196; Match(TOpenBrace);
+			State = 200;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
-			while (((((_la - 28)) & ~0x3f) == 0 && ((1L << (_la - 28)) & ((1L << (KObject - 28)) | (1L << (KString - 28)) | (1L << (KInt - 28)) | (1L << (KLong - 28)) | (1L << (KFloat - 28)) | (1L << (KDouble - 28)) | (1L << (KByte - 28)) | (1L << (KBool - 28)) | (1L << (IdentifierNormal - 28)) | (1L << (IdentifierVerbatim - 28)))) != 0)) {
+			while (((((_la - 30)) & ~0x3f) == 0 && ((1L << (_la - 30)) & ((1L << (KObject - 30)) | (1L << (KString - 30)) | (1L << (KInt - 30)) | (1L << (KLong - 30)) | (1L << (KFloat - 30)) | (1L << (KDouble - 30)) | (1L << (KByte - 30)) | (1L << (KBool - 30)) | (1L << (IdentifierNormal - 30)) | (1L << (IdentifierVerbatim - 30)))) != 0)) {
 				{
 				{
-				State = 195; propertyDeclaration();
+				State = 197; propertyDeclaration();
 				}
 				}
-				State = 200;
+				State = 202;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 201; Match(TCloseBrace);
+			State = 203; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -801,9 +802,9 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 203; typeReference();
-			State = 204; identifier();
-			State = 205; Match(TSemicolon);
+			State = 205; typeReference();
+			State = 206; identifier();
+			State = 207; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -858,23 +859,23 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 207; Match(KDatabase);
-			State = 208; identifier();
-			State = 209; Match(TOpenBrace);
-			State = 213;
+			State = 209; Match(KDatabase);
+			State = 210; identifier();
+			State = 211; Match(TOpenBrace);
+			State = 215;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==KEntity) {
 				{
 				{
-				State = 210; entityDeclaration();
+				State = 212; entityDeclaration();
 				}
 				}
-				State = 215;
+				State = 217;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 216; Match(TCloseBrace);
+			State = 218; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -921,9 +922,9 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 218; Match(KEntity);
-			State = 219; qualifiedName();
-			State = 220; Match(TSemicolon);
+			State = 220; Match(KEntity);
+			State = 221; qualifiedName();
+			State = 222; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -978,23 +979,23 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 222; Match(KInterface);
-			State = 223; identifier();
-			State = 224; Match(TOpenBrace);
-			State = 228;
+			State = 224; Match(KInterface);
+			State = 225; identifier();
+			State = 226; Match(TOpenBrace);
+			State = 230;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KOneway) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KVoid))) != 0) || _la==IdentifierNormal || _la==IdentifierVerbatim) {
 				{
 				{
-				State = 225; operationDeclaration();
+				State = 227; operationDeclaration();
 				}
 				}
-				State = 230;
+				State = 232;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 231; Match(TCloseBrace);
+			State = 233; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1056,7 +1057,7 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 235;
+			State = 237;
 			switch (TokenStream.La(1)) {
 			case KObject:
 			case KString:
@@ -1070,38 +1071,38 @@ public partial class SoalParser : Parser {
 			case IdentifierNormal:
 			case IdentifierVerbatim:
 				{
-				State = 233; returnType();
+				State = 235; returnType();
 				}
 				break;
 			case KOneway:
 				{
-				State = 234; onewayType();
+				State = 236; onewayType();
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
-			State = 237; identifier();
-			State = 238; Match(TOpenParen);
-			State = 240;
+			State = 239; identifier();
+			State = 240; Match(TOpenParen);
+			State = 242;
 			_la = TokenStream.La(1);
-			if (((((_la - 28)) & ~0x3f) == 0 && ((1L << (_la - 28)) & ((1L << (KObject - 28)) | (1L << (KString - 28)) | (1L << (KInt - 28)) | (1L << (KLong - 28)) | (1L << (KFloat - 28)) | (1L << (KDouble - 28)) | (1L << (KByte - 28)) | (1L << (KBool - 28)) | (1L << (IdentifierNormal - 28)) | (1L << (IdentifierVerbatim - 28)))) != 0)) {
+			if (((((_la - 30)) & ~0x3f) == 0 && ((1L << (_la - 30)) & ((1L << (KObject - 30)) | (1L << (KString - 30)) | (1L << (KInt - 30)) | (1L << (KLong - 30)) | (1L << (KFloat - 30)) | (1L << (KDouble - 30)) | (1L << (KByte - 30)) | (1L << (KBool - 30)) | (1L << (IdentifierNormal - 30)) | (1L << (IdentifierVerbatim - 30)))) != 0)) {
 				{
-				State = 239; parameterList();
+				State = 241; parameterList();
 				}
 			}
 
-			State = 242; Match(TCloseParen);
-			State = 245;
+			State = 244; Match(TCloseParen);
+			State = 247;
 			_la = TokenStream.La(1);
 			if (_la==KThrows) {
 				{
-				State = 243; Match(KThrows);
-				State = 244; qualifiedNameList();
+				State = 245; Match(KThrows);
+				State = 246; qualifiedNameList();
 				}
 			}
 
-			State = 247; Match(TSemicolon);
+			State = 249; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1150,18 +1151,18 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 249; parameter();
-			State = 254;
+			State = 251; parameter();
+			State = 256;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 250; Match(TComma);
-				State = 251; parameter();
+				State = 252; Match(TComma);
+				State = 253; parameter();
 				}
 				}
-				State = 256;
+				State = 258;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -1212,8 +1213,8 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 257; typeReference();
-			State = 258; identifier();
+			State = 259; typeReference();
+			State = 260; identifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1270,35 +1271,35 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 261;
+			State = 263;
 			_la = TokenStream.La(1);
 			if (_la==KAbstract) {
 				{
-				State = 260; Match(KAbstract);
+				State = 262; Match(KAbstract);
 				}
 			}
 
-			State = 263; Match(KComponent);
-			State = 264; identifier();
-			State = 267;
+			State = 265; Match(KComponent);
+			State = 266; identifier();
+			State = 269;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
-				State = 265; Match(TColon);
-				State = 266; qualifiedName();
+				State = 267; Match(TColon);
+				State = 268; qualifiedName();
 				}
 			}
 
-			State = 269; Match(TOpenBrace);
-			State = 271;
+			State = 271; Match(TOpenBrace);
+			State = 273;
 			_la = TokenStream.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KReference) | (1L << KService) | (1L << KImplementation) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || _la==IdentifierNormal || _la==IdentifierVerbatim) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KReference) | (1L << KService) | (1L << KImplementation) | (1L << KLanguage) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || _la==IdentifierNormal || _la==IdentifierVerbatim) {
 				{
-				State = 270; componentElements();
+				State = 272; componentElements();
 				}
 			}
 
-			State = 273; Match(TCloseBrace);
+			State = 275; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1347,19 +1348,19 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 276;
+			State = 278;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 275; componentElement();
+				State = 277; componentElement();
 				}
 				}
-				State = 278;
+				State = 280;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KReference) | (1L << KService) | (1L << KImplementation) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || _la==IdentifierNormal || _la==IdentifierVerbatim );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KReference) | (1L << KService) | (1L << KImplementation) | (1L << KLanguage) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || _la==IdentifierNormal || _la==IdentifierVerbatim );
 			}
 		}
 		catch (RecognitionException re) {
@@ -1386,6 +1387,9 @@ public partial class SoalParser : Parser {
 		public ComponentImplementationContext componentImplementation() {
 			return GetRuleContext<ComponentImplementationContext>(0);
 		}
+		public ComponentLanguageContext componentLanguage() {
+			return GetRuleContext<ComponentLanguageContext>(0);
+		}
 		public ComponentElementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -1411,18 +1415,18 @@ public partial class SoalParser : Parser {
 		ComponentElementContext _localctx = new ComponentElementContext(Context, State);
 		EnterRule(_localctx, 34, RULE_componentElement);
 		try {
-			State = 284;
+			State = 287;
 			switch (TokenStream.La(1)) {
 			case KService:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 280; componentService();
+				State = 282; componentService();
 				}
 				break;
 			case KReference:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 281; componentReference();
+				State = 283; componentReference();
 				}
 				break;
 			case KObject:
@@ -1437,13 +1441,19 @@ public partial class SoalParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 282; componentProperty();
+				State = 284; componentProperty();
 				}
 				break;
 			case KImplementation:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 283; componentImplementation();
+				State = 285; componentImplementation();
+				}
+				break;
+			case KLanguage:
+				EnterOuterAlt(_localctx, 5);
+				{
+				State = 286; componentLanguage();
 				}
 				break;
 			default:
@@ -1500,17 +1510,17 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 286; Match(KService);
-			State = 287; qualifiedName();
-			State = 289;
+			State = 289; Match(KService);
+			State = 290; qualifiedName();
+			State = 292;
 			_la = TokenStream.La(1);
 			if (_la==IdentifierNormal || _la==IdentifierVerbatim) {
 				{
-				State = 288; identifier();
+				State = 291; identifier();
 				}
 			}
 
-			State = 291; componentServiceOrReferenceBody();
+			State = 294; componentServiceOrReferenceBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1563,17 +1573,17 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 293; Match(KReference);
-			State = 294; qualifiedName();
-			State = 296;
+			State = 296; Match(KReference);
+			State = 297; qualifiedName();
+			State = 299;
 			_la = TokenStream.La(1);
 			if (_la==IdentifierNormal || _la==IdentifierVerbatim) {
 				{
-				State = 295; identifier();
+				State = 298; identifier();
 				}
 			}
 
-			State = 298; componentServiceOrReferenceBody();
+			State = 301; componentServiceOrReferenceBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1623,32 +1633,32 @@ public partial class SoalParser : Parser {
 		EnterRule(_localctx, 40, RULE_componentServiceOrReferenceBody);
 		int _la;
 		try {
-			State = 309;
+			State = 312;
 			switch (TokenStream.La(1)) {
 			case TSemicolon:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 300; Match(TSemicolon);
+				State = 303; Match(TSemicolon);
 				}
 				break;
 			case TOpenBrace:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 301; Match(TOpenBrace);
-				State = 305;
+				State = 304; Match(TOpenBrace);
+				State = 308;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 				while (_la==KBinding) {
 					{
 					{
-					State = 302; componentServiceOrReferenceElement();
+					State = 305; componentServiceOrReferenceElement();
 					}
 					}
-					State = 307;
+					State = 310;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.La(1);
 				}
-				State = 308; Match(TCloseBrace);
+				State = 311; Match(TCloseBrace);
 				}
 				break;
 			default:
@@ -1699,9 +1709,9 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 311; Match(KBinding);
-			State = 312; qualifiedName();
-			State = 313; Match(TSemicolon);
+			State = 314; Match(KBinding);
+			State = 315; qualifiedName();
+			State = 316; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1750,9 +1760,9 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 315; typeReference();
-			State = 316; identifier();
-			State = 317; Match(TSemicolon);
+			State = 318; typeReference();
+			State = 319; identifier();
+			State = 320; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1799,9 +1809,58 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 319; Match(KImplementation);
-			State = 320; identifier();
-			State = 321; Match(TSemicolon);
+			State = 322; Match(KImplementation);
+			State = 323; identifier();
+			State = 324; Match(TSemicolon);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class ComponentLanguageContext : ParserRuleContext {
+		public ITerminalNode KLanguage() { return GetToken(SoalParser.KLanguage, 0); }
+		public IdentifierContext identifier() {
+			return GetRuleContext<IdentifierContext>(0);
+		}
+		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
+		public ComponentLanguageContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_componentLanguage; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterComponentLanguage(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitComponentLanguage(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitComponentLanguage(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public ComponentLanguageContext componentLanguage() {
+		ComponentLanguageContext _localctx = new ComponentLanguageContext(Context, State);
+		EnterRule(_localctx, 48, RULE_componentLanguage);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 326; Match(KLanguage);
+			State = 327; identifier();
+			State = 328; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1816,12 +1875,13 @@ public partial class SoalParser : Parser {
 	}
 
 	public partial class CompositeDeclarationContext : ParserRuleContext {
-		public ITerminalNode KComposite() { return GetToken(SoalParser.KComposite, 0); }
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
 		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
 		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public ITerminalNode KAssembly() { return GetToken(SoalParser.KAssembly, 0); }
+		public ITerminalNode KComposite() { return GetToken(SoalParser.KComposite, 0); }
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
@@ -1852,32 +1912,39 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public CompositeDeclarationContext compositeDeclaration() {
 		CompositeDeclarationContext _localctx = new CompositeDeclarationContext(Context, State);
-		EnterRule(_localctx, 48, RULE_compositeDeclaration);
+		EnterRule(_localctx, 50, RULE_compositeDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 323; Match(KComposite);
-			State = 324; identifier();
-			State = 327;
+			State = 330;
+			_la = TokenStream.La(1);
+			if ( !(_la==KComposite || _la==KAssembly) ) {
+			ErrorHandler.RecoverInline(this);
+			}
+			else {
+			    Consume();
+			}
+			State = 331; identifier();
+			State = 334;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
-				State = 325; Match(TColon);
-				State = 326; qualifiedName();
+				State = 332; Match(TColon);
+				State = 333; qualifiedName();
 				}
 			}
 
-			State = 329; Match(TOpenBrace);
-			State = 331;
+			State = 336; Match(TOpenBrace);
+			State = 338;
 			_la = TokenStream.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KComponent) | (1L << KReference) | (1L << KService) | (1L << KWire) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || _la==IdentifierNormal || _la==IdentifierVerbatim) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KComponent) | (1L << KReference) | (1L << KService) | (1L << KWire) | (1L << KImplementation) | (1L << KLanguage) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || _la==IdentifierNormal || _la==IdentifierVerbatim) {
 				{
-				State = 330; compositeElements();
+				State = 337; compositeElements();
 				}
 			}
 
-			State = 333; Match(TCloseBrace);
+			State = 340; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1921,24 +1988,24 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public CompositeElementsContext compositeElements() {
 		CompositeElementsContext _localctx = new CompositeElementsContext(Context, State);
-		EnterRule(_localctx, 50, RULE_compositeElements);
+		EnterRule(_localctx, 52, RULE_compositeElements);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 336;
+			State = 343;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 335; compositeElement();
+				State = 342; compositeElement();
 				}
 				}
-				State = 338;
+				State = 345;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KComponent) | (1L << KReference) | (1L << KService) | (1L << KWire) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || _la==IdentifierNormal || _la==IdentifierVerbatim );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KComponent) | (1L << KReference) | (1L << KService) | (1L << KWire) | (1L << KImplementation) | (1L << KLanguage) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || _la==IdentifierNormal || _la==IdentifierVerbatim );
 			}
 		}
 		catch (RecognitionException re) {
@@ -1961,6 +2028,12 @@ public partial class SoalParser : Parser {
 		}
 		public ComponentPropertyContext componentProperty() {
 			return GetRuleContext<ComponentPropertyContext>(0);
+		}
+		public ComponentImplementationContext componentImplementation() {
+			return GetRuleContext<ComponentImplementationContext>(0);
+		}
+		public ComponentLanguageContext componentLanguage() {
+			return GetRuleContext<ComponentLanguageContext>(0);
 		}
 		public CompositeComponentContext compositeComponent() {
 			return GetRuleContext<CompositeComponentContext>(0);
@@ -1991,20 +2064,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public CompositeElementContext compositeElement() {
 		CompositeElementContext _localctx = new CompositeElementContext(Context, State);
-		EnterRule(_localctx, 52, RULE_compositeElement);
+		EnterRule(_localctx, 54, RULE_compositeElement);
 		try {
-			State = 345;
+			State = 354;
 			switch (TokenStream.La(1)) {
 			case KService:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 340; componentService();
+				State = 347; componentService();
 				}
 				break;
 			case KReference:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 341; componentReference();
+				State = 348; componentReference();
 				}
 				break;
 			case KObject:
@@ -2019,19 +2092,31 @@ public partial class SoalParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 342; componentProperty();
+				State = 349; componentProperty();
+				}
+				break;
+			case KImplementation:
+				EnterOuterAlt(_localctx, 4);
+				{
+				State = 350; componentImplementation();
+				}
+				break;
+			case KLanguage:
+				EnterOuterAlt(_localctx, 5);
+				{
+				State = 351; componentLanguage();
 				}
 				break;
 			case KComponent:
-				EnterOuterAlt(_localctx, 4);
+				EnterOuterAlt(_localctx, 6);
 				{
-				State = 343; compositeComponent();
+				State = 352; compositeComponent();
 				}
 				break;
 			case KWire:
-				EnterOuterAlt(_localctx, 5);
+				EnterOuterAlt(_localctx, 7);
 				{
-				State = 344; compositeWire();
+				State = 353; compositeWire();
 				}
 				break;
 			default:
@@ -2078,13 +2163,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public CompositeComponentContext compositeComponent() {
 		CompositeComponentContext _localctx = new CompositeComponentContext(Context, State);
-		EnterRule(_localctx, 54, RULE_compositeComponent);
+		EnterRule(_localctx, 56, RULE_compositeComponent);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 347; Match(KComponent);
-			State = 348; qualifiedName();
-			State = 349; Match(TSemicolon);
+			State = 356; Match(KComponent);
+			State = 357; qualifiedName();
+			State = 358; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2131,15 +2216,15 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public CompositeWireContext compositeWire() {
 		CompositeWireContext _localctx = new CompositeWireContext(Context, State);
-		EnterRule(_localctx, 56, RULE_compositeWire);
+		EnterRule(_localctx, 58, RULE_compositeWire);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 351; Match(KWire);
-			State = 352; wireService();
-			State = 353; Match(KTo);
-			State = 354; wireReference();
-			State = 355; Match(TSemicolon);
+			State = 360; Match(KWire);
+			State = 361; wireService();
+			State = 362; Match(KTo);
+			State = 363; wireReference();
+			State = 364; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2180,11 +2265,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public WireServiceContext wireService() {
 		WireServiceContext _localctx = new WireServiceContext(Context, State);
-		EnterRule(_localctx, 58, RULE_wireService);
+		EnterRule(_localctx, 60, RULE_wireService);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 357; qualifiedName();
+			State = 366; qualifiedName();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2225,11 +2310,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public WireReferenceContext wireReference() {
 		WireReferenceContext _localctx = new WireReferenceContext(Context, State);
-		EnterRule(_localctx, 60, RULE_wireReference);
+		EnterRule(_localctx, 62, RULE_wireReference);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 359; qualifiedName();
+			State = 368; qualifiedName();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2276,23 +2361,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public BindingDeclarationContext bindingDeclaration() {
 		BindingDeclarationContext _localctx = new BindingDeclarationContext(Context, State);
-		EnterRule(_localctx, 62, RULE_bindingDeclaration);
+		EnterRule(_localctx, 64, RULE_bindingDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 361; Match(KBinding);
-			State = 362; identifier();
-			State = 363; Match(TOpenBrace);
-			State = 365;
+			State = 370; Match(KBinding);
+			State = 371; identifier();
+			State = 372; Match(TOpenBrace);
+			State = 374;
 			_la = TokenStream.La(1);
 			if (_la==KTransport) {
 				{
-				State = 364; bindingLayers();
+				State = 373; bindingLayers();
 				}
 			}
 
-			State = 367; Match(TCloseBrace);
+			State = 376; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2345,35 +2430,35 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public BindingLayersContext bindingLayers() {
 		BindingLayersContext _localctx = new BindingLayersContext(Context, State);
-		EnterRule(_localctx, 64, RULE_bindingLayers);
+		EnterRule(_localctx, 66, RULE_bindingLayers);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 369; transportLayer();
-			State = 371;
+			State = 378; transportLayer();
+			State = 380;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 370; encodingLayer();
+				State = 379; encodingLayer();
 				}
 				}
-				State = 373;
+				State = 382;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			} while ( _la==KEncoding );
-			State = 378;
+			State = 387;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==KProtocol) {
 				{
 				{
-				State = 375; protocolLayer();
+				State = 384; protocolLayer();
 				}
 				}
-				State = 380;
+				State = 389;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -2419,13 +2504,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public TransportLayerContext transportLayer() {
 		TransportLayerContext _localctx = new TransportLayerContext(Context, State);
-		EnterRule(_localctx, 66, RULE_transportLayer);
+		EnterRule(_localctx, 68, RULE_transportLayer);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 381; Match(KTransport);
-			State = 382; transportLayerKind();
-			State = 383; Match(TSemicolon);
+			State = 390; Match(KTransport);
+			State = 391; transportLayerKind();
+			State = 392; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2466,11 +2551,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public TransportLayerKindContext transportLayerKind() {
 		TransportLayerKindContext _localctx = new TransportLayerKindContext(Context, State);
-		EnterRule(_localctx, 68, RULE_transportLayerKind);
+		EnterRule(_localctx, 70, RULE_transportLayerKind);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 385; identifier();
+			State = 394; identifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2513,13 +2598,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EncodingLayerContext encodingLayer() {
 		EncodingLayerContext _localctx = new EncodingLayerContext(Context, State);
-		EnterRule(_localctx, 70, RULE_encodingLayer);
+		EnterRule(_localctx, 72, RULE_encodingLayer);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 387; Match(KEncoding);
-			State = 388; encodingLayerKind();
-			State = 389; Match(TSemicolon);
+			State = 396; Match(KEncoding);
+			State = 397; encodingLayerKind();
+			State = 398; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2560,11 +2645,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EncodingLayerKindContext encodingLayerKind() {
 		EncodingLayerKindContext _localctx = new EncodingLayerKindContext(Context, State);
-		EnterRule(_localctx, 72, RULE_encodingLayerKind);
+		EnterRule(_localctx, 74, RULE_encodingLayerKind);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 391; identifier();
+			State = 400; identifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2607,13 +2692,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ProtocolLayerContext protocolLayer() {
 		ProtocolLayerContext _localctx = new ProtocolLayerContext(Context, State);
-		EnterRule(_localctx, 74, RULE_protocolLayer);
+		EnterRule(_localctx, 76, RULE_protocolLayer);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 393; Match(KProtocol);
-			State = 394; protocolLayerKind();
-			State = 395; Match(TSemicolon);
+			State = 402; Match(KProtocol);
+			State = 403; protocolLayerKind();
+			State = 404; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2654,11 +2739,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ProtocolLayerKindContext protocolLayerKind() {
 		ProtocolLayerKindContext _localctx = new ProtocolLayerKindContext(Context, State);
-		EnterRule(_localctx, 76, RULE_protocolLayerKind);
+		EnterRule(_localctx, 78, RULE_protocolLayerKind);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 397; identifier();
+			State = 406; identifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2709,25 +2794,25 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EndpointDeclarationContext endpointDeclaration() {
 		EndpointDeclarationContext _localctx = new EndpointDeclarationContext(Context, State);
-		EnterRule(_localctx, 78, RULE_endpointDeclaration);
+		EnterRule(_localctx, 80, RULE_endpointDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 399; Match(KEndpoint);
-			State = 400; identifier();
-			State = 401; Match(TColon);
-			State = 402; qualifiedName();
-			State = 403; Match(TOpenBrace);
-			State = 405;
+			State = 408; Match(KEndpoint);
+			State = 409; identifier();
+			State = 410; Match(TColon);
+			State = 411; qualifiedName();
+			State = 412; Match(TOpenBrace);
+			State = 414;
 			_la = TokenStream.La(1);
 			if (_la==KBinding || _la==KAddress) {
 				{
-				State = 404; endpointProperties();
+				State = 413; endpointProperties();
 				}
 			}
 
-			State = 407; Match(TCloseBrace);
+			State = 416; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2771,21 +2856,21 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EndpointPropertiesContext endpointProperties() {
 		EndpointPropertiesContext _localctx = new EndpointPropertiesContext(Context, State);
-		EnterRule(_localctx, 80, RULE_endpointProperties);
+		EnterRule(_localctx, 82, RULE_endpointProperties);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 410;
+			State = 419;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 409; endpointProperty();
+				State = 418; endpointProperty();
 				}
 				}
-				State = 412;
+				State = 421;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			} while ( _la==KBinding || _la==KAddress );
@@ -2832,20 +2917,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EndpointPropertyContext endpointProperty() {
 		EndpointPropertyContext _localctx = new EndpointPropertyContext(Context, State);
-		EnterRule(_localctx, 82, RULE_endpointProperty);
+		EnterRule(_localctx, 84, RULE_endpointProperty);
 		try {
-			State = 416;
+			State = 425;
 			switch (TokenStream.La(1)) {
 			case KBinding:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 414; endpointBindingProperty();
+				State = 423; endpointBindingProperty();
 				}
 				break;
 			case KAddress:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 415; endpointAddressProperty();
+				State = 424; endpointAddressProperty();
 				}
 				break;
 			default:
@@ -2892,13 +2977,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EndpointBindingPropertyContext endpointBindingProperty() {
 		EndpointBindingPropertyContext _localctx = new EndpointBindingPropertyContext(Context, State);
-		EnterRule(_localctx, 84, RULE_endpointBindingProperty);
+		EnterRule(_localctx, 86, RULE_endpointBindingProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 418; Match(KBinding);
-			State = 419; qualifiedName();
-			State = 420; Match(TSemicolon);
+			State = 427; Match(KBinding);
+			State = 428; qualifiedName();
+			State = 429; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2941,13 +3026,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EndpointAddressPropertyContext endpointAddressProperty() {
 		EndpointAddressPropertyContext _localctx = new EndpointAddressPropertyContext(Context, State);
-		EnterRule(_localctx, 86, RULE_endpointAddressProperty);
+		EnterRule(_localctx, 88, RULE_endpointAddressProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 422; Match(KAddress);
-			State = 423; stringLiteral();
-			State = 424; Match(TSemicolon);
+			State = 431; Match(KAddress);
+			State = 432; stringLiteral();
+			State = 433; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2991,9 +3076,9 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ReturnTypeContext returnType() {
 		ReturnTypeContext _localctx = new ReturnTypeContext(Context, State);
-		EnterRule(_localctx, 88, RULE_returnType);
+		EnterRule(_localctx, 90, RULE_returnType);
 		try {
-			State = 428;
+			State = 437;
 			switch (TokenStream.La(1)) {
 			case KObject:
 			case KString:
@@ -3007,13 +3092,13 @@ public partial class SoalParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 426; typeReference();
+				State = 435; typeReference();
 				}
 				break;
 			case KVoid:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 427; voidType();
+				State = 436; voidType();
 				}
 				break;
 			default:
@@ -3061,20 +3146,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public TypeReferenceContext typeReference() {
 		TypeReferenceContext _localctx = new TypeReferenceContext(Context, State);
-		EnterRule(_localctx, 90, RULE_typeReference);
+		EnterRule(_localctx, 92, RULE_typeReference);
 		try {
-			State = 432;
+			State = 441;
 			switch ( Interpreter.AdaptivePredict(TokenStream,36,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 430; arrayType();
+				State = 439; arrayType();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 431; simpleType();
+				State = 440; simpleType();
 				}
 				break;
 			}
@@ -3126,32 +3211,32 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public SimpleTypeContext simpleType() {
 		SimpleTypeContext _localctx = new SimpleTypeContext(Context, State);
-		EnterRule(_localctx, 92, RULE_simpleType);
+		EnterRule(_localctx, 94, RULE_simpleType);
 		try {
-			State = 438;
+			State = 447;
 			switch ( Interpreter.AdaptivePredict(TokenStream,37,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 434; primitiveType();
+				State = 443; primitiveType();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 435; objectType();
+				State = 444; objectType();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 436; nullableType();
+				State = 445; nullableType();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 437; qualifiedName();
+				State = 446; qualifiedName();
 				}
 				break;
 			}
@@ -3193,12 +3278,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ObjectTypeContext objectType() {
 		ObjectTypeContext _localctx = new ObjectTypeContext(Context, State);
-		EnterRule(_localctx, 94, RULE_objectType);
+		EnterRule(_localctx, 96, RULE_objectType);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 440;
+			State = 449;
 			_la = TokenStream.La(1);
 			if ( !(_la==KObject || _la==KString) ) {
 			ErrorHandler.RecoverInline(this);
@@ -3249,12 +3334,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public PrimitiveTypeContext primitiveType() {
 		PrimitiveTypeContext _localctx = new PrimitiveTypeContext(Context, State);
-		EnterRule(_localctx, 96, RULE_primitiveType);
+		EnterRule(_localctx, 98, RULE_primitiveType);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 442;
+			State = 451;
 			_la = TokenStream.La(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -3300,11 +3385,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public VoidTypeContext voidType() {
 		VoidTypeContext _localctx = new VoidTypeContext(Context, State);
-		EnterRule(_localctx, 98, RULE_voidType);
+		EnterRule(_localctx, 100, RULE_voidType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 444; Match(KVoid);
+			State = 453; Match(KVoid);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3343,11 +3428,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public OnewayTypeContext onewayType() {
 		OnewayTypeContext _localctx = new OnewayTypeContext(Context, State);
-		EnterRule(_localctx, 100, RULE_onewayType);
+		EnterRule(_localctx, 102, RULE_onewayType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 446; Match(KOneway);
+			State = 455; Match(KOneway);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3389,12 +3474,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public NullableTypeContext nullableType() {
 		NullableTypeContext _localctx = new NullableTypeContext(Context, State);
-		EnterRule(_localctx, 102, RULE_nullableType);
+		EnterRule(_localctx, 104, RULE_nullableType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 448; primitiveType();
-			State = 449; Match(TQuestion);
+			State = 457; primitiveType();
+			State = 458; Match(TQuestion);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3437,13 +3522,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ArrayTypeContext arrayType() {
 		ArrayTypeContext _localctx = new ArrayTypeContext(Context, State);
-		EnterRule(_localctx, 104, RULE_arrayType);
+		EnterRule(_localctx, 106, RULE_arrayType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 451; simpleType();
-			State = 452; Match(TOpenBracket);
-			State = 453; Match(TCloseBracket);
+			State = 460; simpleType();
+			State = 461; Match(TOpenBracket);
+			State = 462; Match(TCloseBracket);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3483,12 +3568,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public IdentifierContext identifier() {
 		IdentifierContext _localctx = new IdentifierContext(Context, State);
-		EnterRule(_localctx, 106, RULE_identifier);
+		EnterRule(_localctx, 108, RULE_identifier);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 455;
+			State = 464;
 			_la = TokenStream.La(1);
 			if ( !(_la==IdentifierNormal || _la==IdentifierVerbatim) ) {
 			ErrorHandler.RecoverInline(this);
@@ -3551,39 +3636,39 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public LiteralContext literal() {
 		LiteralContext _localctx = new LiteralContext(Context, State);
-		EnterRule(_localctx, 108, RULE_literal);
+		EnterRule(_localctx, 110, RULE_literal);
 		try {
-			State = 463;
+			State = 472;
 			switch (TokenStream.La(1)) {
 			case KNull:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 457; nullLiteral();
+				State = 466; nullLiteral();
 				}
 				break;
 			case KTrue:
 			case KFalse:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 458; booleanLiteral();
+				State = 467; booleanLiteral();
 				}
 				break;
 			case IntegerLiteral:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 459; integerLiteral();
+				State = 468; integerLiteral();
 				}
 				break;
 			case DecimalLiteral:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 460; decimalLiteral();
+				State = 469; decimalLiteral();
 				}
 				break;
 			case ScientificLiteral:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 461; scientificLiteral();
+				State = 470; scientificLiteral();
 				}
 				break;
 			case RegularStringLiteral:
@@ -3591,7 +3676,7 @@ public partial class SoalParser : Parser {
 			case SingleQuoteVerbatimStringLiteral:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 462; stringLiteral();
+				State = 471; stringLiteral();
 				}
 				break;
 			default:
@@ -3634,11 +3719,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public NullLiteralContext nullLiteral() {
 		NullLiteralContext _localctx = new NullLiteralContext(Context, State);
-		EnterRule(_localctx, 110, RULE_nullLiteral);
+		EnterRule(_localctx, 112, RULE_nullLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 465; Match(KNull);
+			State = 474; Match(KNull);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3678,12 +3763,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public BooleanLiteralContext booleanLiteral() {
 		BooleanLiteralContext _localctx = new BooleanLiteralContext(Context, State);
-		EnterRule(_localctx, 112, RULE_booleanLiteral);
+		EnterRule(_localctx, 114, RULE_booleanLiteral);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 467;
+			State = 476;
 			_la = TokenStream.La(1);
 			if ( !(_la==KTrue || _la==KFalse) ) {
 			ErrorHandler.RecoverInline(this);
@@ -3729,11 +3814,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public IntegerLiteralContext integerLiteral() {
 		IntegerLiteralContext _localctx = new IntegerLiteralContext(Context, State);
-		EnterRule(_localctx, 114, RULE_integerLiteral);
+		EnterRule(_localctx, 116, RULE_integerLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 469; Match(IntegerLiteral);
+			State = 478; Match(IntegerLiteral);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3772,11 +3857,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public DecimalLiteralContext decimalLiteral() {
 		DecimalLiteralContext _localctx = new DecimalLiteralContext(Context, State);
-		EnterRule(_localctx, 116, RULE_decimalLiteral);
+		EnterRule(_localctx, 118, RULE_decimalLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 471; Match(DecimalLiteral);
+			State = 480; Match(DecimalLiteral);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3815,11 +3900,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ScientificLiteralContext scientificLiteral() {
 		ScientificLiteralContext _localctx = new ScientificLiteralContext(Context, State);
-		EnterRule(_localctx, 118, RULE_scientificLiteral);
+		EnterRule(_localctx, 120, RULE_scientificLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 473; Match(ScientificLiteral);
+			State = 482; Match(ScientificLiteral);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3860,14 +3945,14 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public StringLiteralContext stringLiteral() {
 		StringLiteralContext _localctx = new StringLiteralContext(Context, State);
-		EnterRule(_localctx, 120, RULE_stringLiteral);
+		EnterRule(_localctx, 122, RULE_stringLiteral);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 475;
+			State = 484;
 			_la = TokenStream.La(1);
-			if ( !(((((_la - 90)) & ~0x3f) == 0 && ((1L << (_la - 90)) & ((1L << (RegularStringLiteral - 90)) | (1L << (DoubleQuoteVerbatimStringLiteral - 90)) | (1L << (SingleQuoteVerbatimStringLiteral - 90)))) != 0)) ) {
+			if ( !(((((_la - 92)) & ~0x3f) == 0 && ((1L << (_la - 92)) & ((1L << (RegularStringLiteral - 92)) | (1L << (DoubleQuoteVerbatimStringLiteral - 92)) | (1L << (SingleQuoteVerbatimStringLiteral - 92)))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -3887,189 +3972,193 @@ public partial class SoalParser : Parser {
 	}
 
 	public static readonly string _serializedATN =
-		"\x3\x430\xD6D1\x8206\xAD2D\x4417\xAEF1\x8D80\xAADD\x3\x66\x1E0\x4\x2\t"+
-		"\x2\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4\t"+
-		"\t\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10"+
-		"\t\x10\x4\x11\t\x11\x4\x12\t\x12\x4\x13\t\x13\x4\x14\t\x14\x4\x15\t\x15"+
+		"\x3\x430\xD6D1\x8206\xAD2D\x4417\xAEF1\x8D80\xAADD\x3h\x1E9\x4\x2\t\x2"+
+		"\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4\t\t"+
+		"\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10\t"+
+		"\x10\x4\x11\t\x11\x4\x12\t\x12\x4\x13\t\x13\x4\x14\t\x14\x4\x15\t\x15"+
 		"\x4\x16\t\x16\x4\x17\t\x17\x4\x18\t\x18\x4\x19\t\x19\x4\x1A\t\x1A\x4\x1B"+
 		"\t\x1B\x4\x1C\t\x1C\x4\x1D\t\x1D\x4\x1E\t\x1E\x4\x1F\t\x1F\x4 \t \x4!"+
 		"\t!\x4\"\t\"\x4#\t#\x4$\t$\x4%\t%\x4&\t&\x4\'\t\'\x4(\t(\x4)\t)\x4*\t"+
 		"*\x4+\t+\x4,\t,\x4-\t-\x4.\t.\x4/\t/\x4\x30\t\x30\x4\x31\t\x31\x4\x32"+
 		"\t\x32\x4\x33\t\x33\x4\x34\t\x34\x4\x35\t\x35\x4\x36\t\x36\x4\x37\t\x37"+
-		"\x4\x38\t\x38\x4\x39\t\x39\x4:\t:\x4;\t;\x4<\t<\x4=\t=\x4>\t>\x3\x2\a"+
-		"\x2~\n\x2\f\x2\xE\x2\x81\v\x2\x3\x3\x3\x3\x3\x3\a\x3\x86\n\x3\f\x3\xE"+
-		"\x3\x89\v\x3\x3\x4\x3\x4\x3\x4\a\x4\x8E\n\x4\f\x4\xE\x4\x91\v\x4\x3\x5"+
-		"\x3\x5\x3\x5\a\x5\x96\n\x5\f\x5\xE\x5\x99\v\x5\x3\x6\x3\x6\x3\x6\x3\x6"+
-		"\a\x6\x9F\n\x6\f\x6\xE\x6\xA2\v\x6\x3\x6\x3\x6\x3\a\x3\a\x3\a\x3\a\x3"+
-		"\a\x3\a\x3\a\x3\a\x5\a\xAE\n\a\x3\b\x3\b\x3\b\x3\b\x5\b\xB4\n\b\x3\b\x3"+
-		"\b\a\b\xB8\n\b\f\b\xE\b\xBB\v\b\x3\b\x3\b\x3\t\x3\t\x3\t\x3\t\x5\t\xC3"+
-		"\n\t\x3\t\x3\t\a\t\xC7\n\t\f\t\xE\t\xCA\v\t\x3\t\x3\t\x3\n\x3\n\x3\n\x3"+
-		"\n\x3\v\x3\v\x3\v\x3\v\a\v\xD6\n\v\f\v\xE\v\xD9\v\v\x3\v\x3\v\x3\f\x3"+
-		"\f\x3\f\x3\f\x3\r\x3\r\x3\r\x3\r\a\r\xE5\n\r\f\r\xE\r\xE8\v\r\x3\r\x3"+
-		"\r\x3\xE\x3\xE\x5\xE\xEE\n\xE\x3\xE\x3\xE\x3\xE\x5\xE\xF3\n\xE\x3\xE\x3"+
-		"\xE\x3\xE\x5\xE\xF8\n\xE\x3\xE\x3\xE\x3\xF\x3\xF\x3\xF\a\xF\xFF\n\xF\f"+
-		"\xF\xE\xF\x102\v\xF\x3\x10\x3\x10\x3\x10\x3\x11\x5\x11\x108\n\x11\x3\x11"+
-		"\x3\x11\x3\x11\x3\x11\x5\x11\x10E\n\x11\x3\x11\x3\x11\x5\x11\x112\n\x11"+
-		"\x3\x11\x3\x11\x3\x12\x6\x12\x117\n\x12\r\x12\xE\x12\x118\x3\x13\x3\x13"+
-		"\x3\x13\x3\x13\x5\x13\x11F\n\x13\x3\x14\x3\x14\x3\x14\x5\x14\x124\n\x14"+
-		"\x3\x14\x3\x14\x3\x15\x3\x15\x3\x15\x5\x15\x12B\n\x15\x3\x15\x3\x15\x3"+
-		"\x16\x3\x16\x3\x16\a\x16\x132\n\x16\f\x16\xE\x16\x135\v\x16\x3\x16\x5"+
-		"\x16\x138\n\x16\x3\x17\x3\x17\x3\x17\x3\x17\x3\x18\x3\x18\x3\x18\x3\x18"+
-		"\x3\x19\x3\x19\x3\x19\x3\x19\x3\x1A\x3\x1A\x3\x1A\x3\x1A\x5\x1A\x14A\n"+
-		"\x1A\x3\x1A\x3\x1A\x5\x1A\x14E\n\x1A\x3\x1A\x3\x1A\x3\x1B\x6\x1B\x153"+
-		"\n\x1B\r\x1B\xE\x1B\x154\x3\x1C\x3\x1C\x3\x1C\x3\x1C\x3\x1C\x5\x1C\x15C"+
-		"\n\x1C\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1E\x3\x1E\x3\x1E\x3\x1E\x3\x1E"+
-		"\x3\x1E\x3\x1F\x3\x1F\x3 \x3 \x3!\x3!\x3!\x3!\x5!\x170\n!\x3!\x3!\x3\""+
-		"\x3\"\x6\"\x176\n\"\r\"\xE\"\x177\x3\"\a\"\x17B\n\"\f\"\xE\"\x17E\v\""+
-		"\x3#\x3#\x3#\x3#\x3$\x3$\x3%\x3%\x3%\x3%\x3&\x3&\x3\'\x3\'\x3\'\x3\'\x3"+
-		"(\x3(\x3)\x3)\x3)\x3)\x3)\x3)\x5)\x198\n)\x3)\x3)\x3*\x6*\x19D\n*\r*\xE"+
-		"*\x19E\x3+\x3+\x5+\x1A3\n+\x3,\x3,\x3,\x3,\x3-\x3-\x3-\x3-\x3.\x3.\x5"+
-		".\x1AF\n.\x3/\x3/\x5/\x1B3\n/\x3\x30\x3\x30\x3\x30\x3\x30\x5\x30\x1B9"+
-		"\n\x30\x3\x31\x3\x31\x3\x32\x3\x32\x3\x33\x3\x33\x3\x34\x3\x34\x3\x35"+
-		"\x3\x35\x3\x35\x3\x36\x3\x36\x3\x36\x3\x36\x3\x37\x3\x37\x3\x38\x3\x38"+
-		"\x3\x38\x3\x38\x3\x38\x3\x38\x5\x38\x1D2\n\x38\x3\x39\x3\x39\x3:\x3:\x3"+
-		";\x3;\x3<\x3<\x3=\x3=\x3>\x3>\x3>\x2\x2?\x2\x4\x6\b\n\f\xE\x10\x12\x14"+
-		"\x16\x18\x1A\x1C\x1E \"$&(*,.\x30\x32\x34\x36\x38:<>@\x42\x44\x46HJLN"+
-		"PRTVXZ\\^`\x62\x64\x66hjlnprtvxz\x2\a\x3\x2\x1E\x1F\x3\x2 %\x3\x2ST\x3"+
-		"\x2\x1A\x1B\x4\x2\\\\\x64\x65\x1DA\x2\x7F\x3\x2\x2\x2\x4\x82\x3\x2\x2"+
-		"\x2\x6\x8A\x3\x2\x2\x2\b\x92\x3\x2\x2\x2\n\x9A\x3\x2\x2\x2\f\xAD\x3\x2"+
-		"\x2\x2\xE\xAF\x3\x2\x2\x2\x10\xBE\x3\x2\x2\x2\x12\xCD\x3\x2\x2\x2\x14"+
-		"\xD1\x3\x2\x2\x2\x16\xDC\x3\x2\x2\x2\x18\xE0\x3\x2\x2\x2\x1A\xED\x3\x2"+
-		"\x2\x2\x1C\xFB\x3\x2\x2\x2\x1E\x103\x3\x2\x2\x2 \x107\x3\x2\x2\x2\"\x116"+
-		"\x3\x2\x2\x2$\x11E\x3\x2\x2\x2&\x120\x3\x2\x2\x2(\x127\x3\x2\x2\x2*\x137"+
-		"\x3\x2\x2\x2,\x139\x3\x2\x2\x2.\x13D\x3\x2\x2\x2\x30\x141\x3\x2\x2\x2"+
-		"\x32\x145\x3\x2\x2\x2\x34\x152\x3\x2\x2\x2\x36\x15B\x3\x2\x2\x2\x38\x15D"+
-		"\x3\x2\x2\x2:\x161\x3\x2\x2\x2<\x167\x3\x2\x2\x2>\x169\x3\x2\x2\x2@\x16B"+
-		"\x3\x2\x2\x2\x42\x173\x3\x2\x2\x2\x44\x17F\x3\x2\x2\x2\x46\x183\x3\x2"+
-		"\x2\x2H\x185\x3\x2\x2\x2J\x189\x3\x2\x2\x2L\x18B\x3\x2\x2\x2N\x18F\x3"+
-		"\x2\x2\x2P\x191\x3\x2\x2\x2R\x19C\x3\x2\x2\x2T\x1A2\x3\x2\x2\x2V\x1A4"+
-		"\x3\x2\x2\x2X\x1A8\x3\x2\x2\x2Z\x1AE\x3\x2\x2\x2\\\x1B2\x3\x2\x2\x2^\x1B8"+
-		"\x3\x2\x2\x2`\x1BA\x3\x2\x2\x2\x62\x1BC\x3\x2\x2\x2\x64\x1BE\x3\x2\x2"+
-		"\x2\x66\x1C0\x3\x2\x2\x2h\x1C2\x3\x2\x2\x2j\x1C5\x3\x2\x2\x2l\x1C9\x3"+
-		"\x2\x2\x2n\x1D1\x3\x2\x2\x2p\x1D3\x3\x2\x2\x2r\x1D5\x3\x2\x2\x2t\x1D7"+
-		"\x3\x2\x2\x2v\x1D9\x3\x2\x2\x2x\x1DB\x3\x2\x2\x2z\x1DD\x3\x2\x2\x2|~\x5"+
-		"\n\x6\x2}|\x3\x2\x2\x2~\x81\x3\x2\x2\x2\x7F}\x3\x2\x2\x2\x7F\x80\x3\x2"+
-		"\x2\x2\x80\x3\x3\x2\x2\x2\x81\x7F\x3\x2\x2\x2\x82\x87\x5l\x37\x2\x83\x84"+
-		"\a*\x2\x2\x84\x86\x5l\x37\x2\x85\x83\x3\x2\x2\x2\x86\x89\x3\x2\x2\x2\x87"+
-		"\x85\x3\x2\x2\x2\x87\x88\x3\x2\x2\x2\x88\x5\x3\x2\x2\x2\x89\x87\x3\x2"+
-		"\x2\x2\x8A\x8F\x5l\x37\x2\x8B\x8C\a+\x2\x2\x8C\x8E\x5l\x37\x2\x8D\x8B"+
-		"\x3\x2\x2\x2\x8E\x91\x3\x2\x2\x2\x8F\x8D\x3\x2\x2\x2\x8F\x90\x3\x2\x2"+
-		"\x2\x90\a\x3\x2\x2\x2\x91\x8F\x3\x2\x2\x2\x92\x97\x5\x4\x3\x2\x93\x94"+
-		"\a+\x2\x2\x94\x96\x5\x4\x3\x2\x95\x93\x3\x2\x2\x2\x96\x99\x3\x2\x2\x2"+
-		"\x97\x95\x3\x2\x2\x2\x97\x98\x3\x2\x2\x2\x98\t\x3\x2\x2\x2\x99\x97\x3"+
-		"\x2\x2\x2\x9A\x9B\a\x3\x2\x2\x9B\x9C\x5\x4\x3\x2\x9C\xA0\a\x31\x2\x2\x9D"+
-		"\x9F\x5\f\a\x2\x9E\x9D\x3\x2\x2\x2\x9F\xA2\x3\x2\x2\x2\xA0\x9E\x3\x2\x2"+
-		"\x2\xA0\xA1\x3\x2\x2\x2\xA1\xA3\x3\x2\x2\x2\xA2\xA0\x3\x2\x2\x2\xA3\xA4"+
-		"\a\x32\x2\x2\xA4\v\x3\x2\x2\x2\xA5\xAE\x5\xE\b\x2\xA6\xAE\x5\x10\t\x2"+
-		"\xA7\xAE\x5\x14\v\x2\xA8\xAE\x5\x18\r\x2\xA9\xAE\x5 \x11\x2\xAA\xAE\x5"+
-		"\x32\x1A\x2\xAB\xAE\x5@!\x2\xAC\xAE\x5P)\x2\xAD\xA5\x3\x2\x2\x2\xAD\xA6"+
-		"\x3\x2\x2\x2\xAD\xA7\x3\x2\x2\x2\xAD\xA8\x3\x2\x2\x2\xAD\xA9\x3\x2\x2"+
-		"\x2\xAD\xAA\x3\x2\x2\x2\xAD\xAB\x3\x2\x2\x2\xAD\xAC\x3\x2\x2\x2\xAE\r"+
-		"\x3\x2\x2\x2\xAF\xB0\a\x5\x2\x2\xB0\xB3\x5l\x37\x2\xB1\xB2\a)\x2\x2\xB2"+
-		"\xB4\x5\x4\x3\x2\xB3\xB1\x3\x2\x2\x2\xB3\xB4\x3\x2\x2\x2\xB4\xB5\x3\x2"+
-		"\x2\x2\xB5\xB9\a\x31\x2\x2\xB6\xB8\x5\x12\n\x2\xB7\xB6\x3\x2\x2\x2\xB8"+
-		"\xBB\x3\x2\x2\x2\xB9\xB7\x3\x2\x2\x2\xB9\xBA\x3\x2\x2\x2\xBA\xBC\x3\x2"+
-		"\x2\x2\xBB\xB9\x3\x2\x2\x2\xBC\xBD\a\x32\x2\x2\xBD\xF\x3\x2\x2\x2\xBE"+
-		"\xBF\a\x4\x2\x2\xBF\xC2\x5l\x37\x2\xC0\xC1\a)\x2\x2\xC1\xC3\x5\x4\x3\x2"+
-		"\xC2\xC0\x3\x2\x2\x2\xC2\xC3\x3\x2\x2\x2\xC3\xC4\x3\x2\x2\x2\xC4\xC8\a"+
-		"\x31\x2\x2\xC5\xC7\x5\x12\n\x2\xC6\xC5\x3\x2\x2\x2\xC7\xCA\x3\x2\x2\x2"+
-		"\xC8\xC6\x3\x2\x2\x2\xC8\xC9\x3\x2\x2\x2\xC9\xCB\x3\x2\x2\x2\xCA\xC8\x3"+
-		"\x2\x2\x2\xCB\xCC\a\x32\x2\x2\xCC\x11\x3\x2\x2\x2\xCD\xCE\x5\\/\x2\xCE"+
-		"\xCF\x5l\x37\x2\xCF\xD0\a(\x2\x2\xD0\x13\x3\x2\x2\x2\xD1\xD2\a\xF\x2\x2"+
-		"\xD2\xD3\x5l\x37\x2\xD3\xD7\a\x31\x2\x2\xD4\xD6\x5\x16\f\x2\xD5\xD4\x3"+
-		"\x2\x2\x2\xD6\xD9\x3\x2\x2\x2\xD7\xD5\x3\x2\x2\x2\xD7\xD8\x3\x2\x2\x2"+
-		"\xD8\xDA\x3\x2\x2\x2\xD9\xD7\x3\x2\x2\x2\xDA\xDB\a\x32\x2\x2\xDB\x15\x3"+
-		"\x2\x2\x2\xDC\xDD\a\x10\x2\x2\xDD\xDE\x5\x4\x3\x2\xDE\xDF\a(\x2\x2\xDF"+
-		"\x17\x3\x2\x2\x2\xE0\xE1\a\x6\x2\x2\xE1\xE2\x5l\x37\x2\xE2\xE6\a\x31\x2"+
-		"\x2\xE3\xE5\x5\x1A\xE\x2\xE4\xE3\x3\x2\x2\x2\xE5\xE8\x3\x2\x2\x2\xE6\xE4"+
-		"\x3\x2\x2\x2\xE6\xE7\x3\x2\x2\x2\xE7\xE9\x3\x2\x2\x2\xE8\xE6\x3\x2\x2"+
-		"\x2\xE9\xEA\a\x32\x2\x2\xEA\x19\x3\x2\x2\x2\xEB\xEE\x5Z.\x2\xEC\xEE\x5"+
-		"\x66\x34\x2\xED\xEB\x3\x2\x2\x2\xED\xEC\x3\x2\x2\x2\xEE\xEF\x3\x2\x2\x2"+
-		"\xEF\xF0\x5l\x37\x2\xF0\xF2\a-\x2\x2\xF1\xF3\x5\x1C\xF\x2\xF2\xF1\x3\x2"+
-		"\x2\x2\xF2\xF3\x3\x2\x2\x2\xF3\xF4\x3\x2\x2\x2\xF4\xF7\a.\x2\x2\xF5\xF6"+
-		"\a\a\x2\x2\xF6\xF8\x5\b\x5\x2\xF7\xF5\x3\x2\x2\x2\xF7\xF8\x3\x2\x2\x2"+
-		"\xF8\xF9\x3\x2\x2\x2\xF9\xFA\a(\x2\x2\xFA\x1B\x3\x2\x2\x2\xFB\x100\x5"+
-		"\x1E\x10\x2\xFC\xFD\a+\x2\x2\xFD\xFF\x5\x1E\x10\x2\xFE\xFC\x3\x2\x2\x2"+
-		"\xFF\x102\x3\x2\x2\x2\x100\xFE\x3\x2\x2\x2\x100\x101\x3\x2\x2\x2\x101"+
-		"\x1D\x3\x2\x2\x2\x102\x100\x3\x2\x2\x2\x103\x104\x5\\/\x2\x104\x105\x5"+
-		"l\x37\x2\x105\x1F\x3\x2\x2\x2\x106\x108\a\x11\x2\x2\x107\x106\x3\x2\x2"+
-		"\x2\x107\x108\x3\x2\x2\x2\x108\x109\x3\x2\x2\x2\x109\x10A\a\x12\x2\x2"+
-		"\x10A\x10D\x5l\x37\x2\x10B\x10C\a)\x2\x2\x10C\x10E\x5\x4\x3\x2\x10D\x10B"+
-		"\x3\x2\x2\x2\x10D\x10E\x3\x2\x2\x2\x10E\x10F\x3\x2\x2\x2\x10F\x111\a\x31"+
-		"\x2\x2\x110\x112\x5\"\x12\x2\x111\x110\x3\x2\x2\x2\x111\x112\x3\x2\x2"+
-		"\x2\x112\x113\x3\x2\x2\x2\x113\x114\a\x32\x2\x2\x114!\x3\x2\x2\x2\x115"+
-		"\x117\x5$\x13\x2\x116\x115\x3\x2\x2\x2\x117\x118\x3\x2\x2\x2\x118\x116"+
-		"\x3\x2\x2\x2\x118\x119\x3\x2\x2\x2\x119#\x3\x2\x2\x2\x11A\x11F\x5&\x14"+
-		"\x2\x11B\x11F\x5(\x15\x2\x11C\x11F\x5.\x18\x2\x11D\x11F\x5\x30\x19\x2"+
-		"\x11E\x11A\x3\x2\x2\x2\x11E\x11B\x3\x2\x2\x2\x11E\x11C\x3\x2\x2\x2\x11E"+
-		"\x11D\x3\x2\x2\x2\x11F%\x3\x2\x2\x2\x120\x121\a\x15\x2\x2\x121\x123\x5"+
-		"\x4\x3\x2\x122\x124\x5l\x37\x2\x123\x122\x3\x2\x2\x2\x123\x124\x3\x2\x2"+
-		"\x2\x124\x125\x3\x2\x2\x2\x125\x126\x5*\x16\x2\x126\'\x3\x2\x2\x2\x127"+
-		"\x128\a\x14\x2\x2\x128\x12A\x5\x4\x3\x2\x129\x12B\x5l\x37\x2\x12A\x129"+
-		"\x3\x2\x2\x2\x12A\x12B\x3\x2\x2\x2\x12B\x12C\x3\x2\x2\x2\x12C\x12D\x5"+
-		"*\x16\x2\x12D)\x3\x2\x2\x2\x12E\x138\a(\x2\x2\x12F\x133\a\x31\x2\x2\x130"+
-		"\x132\x5,\x17\x2\x131\x130\x3\x2\x2\x2\x132\x135\x3\x2\x2\x2\x133\x131"+
-		"\x3\x2\x2\x2\x133\x134\x3\x2\x2\x2\x134\x136\x3\x2\x2\x2\x135\x133\x3"+
-		"\x2\x2\x2\x136\x138\a\x32\x2\x2\x137\x12E\x3\x2\x2\x2\x137\x12F\x3\x2"+
-		"\x2\x2\x138+\x3\x2\x2\x2\x139\x13A\a\t\x2\x2\x13A\x13B\x5\x4\x3\x2\x13B"+
-		"\x13C\a(\x2\x2\x13C-\x3\x2\x2\x2\x13D\x13E\x5\\/\x2\x13E\x13F\x5l\x37"+
-		"\x2\x13F\x140\a(\x2\x2\x140/\x3\x2\x2\x2\x141\x142\a\x18\x2\x2\x142\x143"+
-		"\x5l\x37\x2\x143\x144\a(\x2\x2\x144\x31\x3\x2\x2\x2\x145\x146\a\x13\x2"+
-		"\x2\x146\x149\x5l\x37\x2\x147\x148\a)\x2\x2\x148\x14A\x5\x4\x3\x2\x149"+
-		"\x147\x3\x2\x2\x2\x149\x14A\x3\x2\x2\x2\x14A\x14B\x3\x2\x2\x2\x14B\x14D"+
-		"\a\x31\x2\x2\x14C\x14E\x5\x34\x1B\x2\x14D\x14C\x3\x2\x2\x2\x14D\x14E\x3"+
-		"\x2\x2\x2\x14E\x14F\x3\x2\x2\x2\x14F\x150\a\x32\x2\x2\x150\x33\x3\x2\x2"+
-		"\x2\x151\x153\x5\x36\x1C\x2\x152\x151\x3\x2\x2\x2\x153\x154\x3\x2\x2\x2"+
-		"\x154\x152\x3\x2\x2\x2\x154\x155\x3\x2\x2\x2\x155\x35\x3\x2\x2\x2\x156"+
-		"\x15C\x5&\x14\x2\x157\x15C\x5(\x15\x2\x158\x15C\x5.\x18\x2\x159\x15C\x5"+
-		"\x38\x1D\x2\x15A\x15C\x5:\x1E\x2\x15B\x156\x3\x2\x2\x2\x15B\x157\x3\x2"+
-		"\x2\x2\x15B\x158\x3\x2\x2\x2\x15B\x159\x3\x2\x2\x2\x15B\x15A\x3\x2\x2"+
-		"\x2\x15C\x37\x3\x2\x2\x2\x15D\x15E\a\x12\x2\x2\x15E\x15F\x5\x4\x3\x2\x15F"+
-		"\x160\a(\x2\x2\x160\x39\x3\x2\x2\x2\x161\x162\a\x16\x2\x2\x162\x163\x5"+
-		"<\x1F\x2\x163\x164\a\x17\x2\x2\x164\x165\x5> \x2\x165\x166\a(\x2\x2\x166"+
-		";\x3\x2\x2\x2\x167\x168\x5\x4\x3\x2\x168=\x3\x2\x2\x2\x169\x16A\x5\x4"+
-		"\x3\x2\x16A?\x3\x2\x2\x2\x16B\x16C\a\t\x2\x2\x16C\x16D\x5l\x37\x2\x16D"+
-		"\x16F\a\x31\x2\x2\x16E\x170\x5\x42\"\x2\x16F\x16E\x3\x2\x2\x2\x16F\x170"+
-		"\x3\x2\x2\x2\x170\x171\x3\x2\x2\x2\x171\x172\a\x32\x2\x2\x172\x41\x3\x2"+
-		"\x2\x2\x173\x175\x5\x44#\x2\x174\x176\x5H%\x2\x175\x174\x3\x2\x2\x2\x176"+
-		"\x177\x3\x2\x2\x2\x177\x175\x3\x2\x2\x2\x177\x178\x3\x2\x2\x2\x178\x17C"+
-		"\x3\x2\x2\x2\x179\x17B\x5L\'\x2\x17A\x179\x3\x2\x2\x2\x17B\x17E\x3\x2"+
-		"\x2\x2\x17C\x17A\x3\x2\x2\x2\x17C\x17D\x3\x2\x2\x2\x17D\x43\x3\x2\x2\x2"+
-		"\x17E\x17C\x3\x2\x2\x2\x17F\x180\a\n\x2\x2\x180\x181\x5\x46$\x2\x181\x182"+
-		"\a(\x2\x2\x182\x45\x3\x2\x2\x2\x183\x184\x5l\x37\x2\x184G\x3\x2\x2\x2"+
-		"\x185\x186\a\v\x2\x2\x186\x187\x5J&\x2\x187\x188\a(\x2\x2\x188I\x3\x2"+
-		"\x2\x2\x189\x18A\x5l\x37\x2\x18AK\x3\x2\x2\x2\x18B\x18C\a\f\x2\x2\x18C"+
-		"\x18D\x5N(\x2\x18D\x18E\a(\x2\x2\x18EM\x3\x2\x2\x2\x18F\x190\x5l\x37\x2"+
-		"\x190O\x3\x2\x2\x2\x191\x192\a\r\x2\x2\x192\x193\x5l\x37\x2\x193\x194"+
-		"\a)\x2\x2\x194\x195\x5\x4\x3\x2\x195\x197\a\x31\x2\x2\x196\x198\x5R*\x2"+
-		"\x197\x196\x3\x2\x2\x2\x197\x198\x3\x2\x2\x2\x198\x199\x3\x2\x2\x2\x199"+
-		"\x19A\a\x32\x2\x2\x19AQ\x3\x2\x2\x2\x19B\x19D\x5T+\x2\x19C\x19B\x3\x2"+
-		"\x2\x2\x19D\x19E\x3\x2\x2\x2\x19E\x19C\x3\x2\x2\x2\x19E\x19F\x3\x2\x2"+
-		"\x2\x19FS\x3\x2\x2\x2\x1A0\x1A3\x5V,\x2\x1A1\x1A3\x5X-\x2\x1A2\x1A0\x3"+
-		"\x2\x2\x2\x1A2\x1A1\x3\x2\x2\x2\x1A3U\x3\x2\x2\x2\x1A4\x1A5\a\t\x2\x2"+
-		"\x1A5\x1A6\x5\x4\x3\x2\x1A6\x1A7\a(\x2\x2\x1A7W\x3\x2\x2\x2\x1A8\x1A9"+
-		"\a\xE\x2\x2\x1A9\x1AA\x5z>\x2\x1AA\x1AB\a(\x2\x2\x1ABY\x3\x2\x2\x2\x1AC"+
-		"\x1AF\x5\\/\x2\x1AD\x1AF\x5\x64\x33\x2\x1AE\x1AC\x3\x2\x2\x2\x1AE\x1AD"+
-		"\x3\x2\x2\x2\x1AF[\x3\x2\x2\x2\x1B0\x1B3\x5j\x36\x2\x1B1\x1B3\x5^\x30"+
-		"\x2\x1B2\x1B0\x3\x2\x2\x2\x1B2\x1B1\x3\x2\x2\x2\x1B3]\x3\x2\x2\x2\x1B4"+
-		"\x1B9\x5\x62\x32\x2\x1B5\x1B9\x5`\x31\x2\x1B6\x1B9\x5h\x35\x2\x1B7\x1B9"+
-		"\x5\x4\x3\x2\x1B8\x1B4\x3\x2\x2\x2\x1B8\x1B5\x3\x2\x2\x2\x1B8\x1B6\x3"+
-		"\x2\x2\x2\x1B8\x1B7\x3\x2\x2\x2\x1B9_\x3\x2\x2\x2\x1BA\x1BB\t\x2\x2\x2"+
-		"\x1BB\x61\x3\x2\x2\x2\x1BC\x1BD\t\x3\x2\x2\x1BD\x63\x3\x2\x2\x2\x1BE\x1BF"+
-		"\a\'\x2\x2\x1BF\x65\x3\x2\x2\x2\x1C0\x1C1\a\b\x2\x2\x1C1g\x3\x2\x2\x2"+
-		"\x1C2\x1C3\x5\x62\x32\x2\x1C3\x1C4\a\x35\x2\x2\x1C4i\x3\x2\x2\x2\x1C5"+
-		"\x1C6\x5^\x30\x2\x1C6\x1C7\a/\x2\x2\x1C7\x1C8\a\x30\x2\x2\x1C8k\x3\x2"+
-		"\x2\x2\x1C9\x1CA\t\x4\x2\x2\x1CAm\x3\x2\x2\x2\x1CB\x1D2\x5p\x39\x2\x1CC"+
-		"\x1D2\x5r:\x2\x1CD\x1D2\x5t;\x2\x1CE\x1D2\x5v<\x2\x1CF\x1D2\x5x=\x2\x1D0"+
-		"\x1D2\x5z>\x2\x1D1\x1CB\x3\x2\x2\x2\x1D1\x1CC\x3\x2\x2\x2\x1D1\x1CD\x3"+
-		"\x2\x2\x2\x1D1\x1CE\x3\x2\x2\x2\x1D1\x1CF\x3\x2\x2\x2\x1D1\x1D0\x3\x2"+
-		"\x2\x2\x1D2o\x3\x2\x2\x2\x1D3\x1D4\a\x19\x2\x2\x1D4q\x3\x2\x2\x2\x1D5"+
-		"\x1D6\t\x5\x2\x2\x1D6s\x3\x2\x2\x2\x1D7\x1D8\aU\x2\x2\x1D8u\x3\x2\x2\x2"+
-		"\x1D9\x1DA\aV\x2\x2\x1DAw\x3\x2\x2\x2\x1DB\x1DC\aW\x2\x2\x1DCy\x3\x2\x2"+
-		"\x2\x1DD\x1DE\t\x6\x2\x2\x1DE{\x3\x2\x2\x2)\x7F\x87\x8F\x97\xA0\xAD\xB3"+
-		"\xB9\xC2\xC8\xD7\xE6\xED\xF2\xF7\x100\x107\x10D\x111\x118\x11E\x123\x12A"+
-		"\x133\x137\x149\x14D\x154\x15B\x16F\x177\x17C\x197\x19E\x1A2\x1AE\x1B2"+
-		"\x1B8\x1D1";
+		"\x4\x38\t\x38\x4\x39\t\x39\x4:\t:\x4;\t;\x4<\t<\x4=\t=\x4>\t>\x4?\t?\x3"+
+		"\x2\a\x2\x80\n\x2\f\x2\xE\x2\x83\v\x2\x3\x3\x3\x3\x3\x3\a\x3\x88\n\x3"+
+		"\f\x3\xE\x3\x8B\v\x3\x3\x4\x3\x4\x3\x4\a\x4\x90\n\x4\f\x4\xE\x4\x93\v"+
+		"\x4\x3\x5\x3\x5\x3\x5\a\x5\x98\n\x5\f\x5\xE\x5\x9B\v\x5\x3\x6\x3\x6\x3"+
+		"\x6\x3\x6\a\x6\xA1\n\x6\f\x6\xE\x6\xA4\v\x6\x3\x6\x3\x6\x3\a\x3\a\x3\a"+
+		"\x3\a\x3\a\x3\a\x3\a\x3\a\x5\a\xB0\n\a\x3\b\x3\b\x3\b\x3\b\x5\b\xB6\n"+
+		"\b\x3\b\x3\b\a\b\xBA\n\b\f\b\xE\b\xBD\v\b\x3\b\x3\b\x3\t\x3\t\x3\t\x3"+
+		"\t\x5\t\xC5\n\t\x3\t\x3\t\a\t\xC9\n\t\f\t\xE\t\xCC\v\t\x3\t\x3\t\x3\n"+
+		"\x3\n\x3\n\x3\n\x3\v\x3\v\x3\v\x3\v\a\v\xD8\n\v\f\v\xE\v\xDB\v\v\x3\v"+
+		"\x3\v\x3\f\x3\f\x3\f\x3\f\x3\r\x3\r\x3\r\x3\r\a\r\xE7\n\r\f\r\xE\r\xEA"+
+		"\v\r\x3\r\x3\r\x3\xE\x3\xE\x5\xE\xF0\n\xE\x3\xE\x3\xE\x3\xE\x5\xE\xF5"+
+		"\n\xE\x3\xE\x3\xE\x3\xE\x5\xE\xFA\n\xE\x3\xE\x3\xE\x3\xF\x3\xF\x3\xF\a"+
+		"\xF\x101\n\xF\f\xF\xE\xF\x104\v\xF\x3\x10\x3\x10\x3\x10\x3\x11\x5\x11"+
+		"\x10A\n\x11\x3\x11\x3\x11\x3\x11\x3\x11\x5\x11\x110\n\x11\x3\x11\x3\x11"+
+		"\x5\x11\x114\n\x11\x3\x11\x3\x11\x3\x12\x6\x12\x119\n\x12\r\x12\xE\x12"+
+		"\x11A\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x5\x13\x122\n\x13\x3\x14\x3\x14"+
+		"\x3\x14\x5\x14\x127\n\x14\x3\x14\x3\x14\x3\x15\x3\x15\x3\x15\x5\x15\x12E"+
+		"\n\x15\x3\x15\x3\x15\x3\x16\x3\x16\x3\x16\a\x16\x135\n\x16\f\x16\xE\x16"+
+		"\x138\v\x16\x3\x16\x5\x16\x13B\n\x16\x3\x17\x3\x17\x3\x17\x3\x17\x3\x18"+
+		"\x3\x18\x3\x18\x3\x18\x3\x19\x3\x19\x3\x19\x3\x19\x3\x1A\x3\x1A\x3\x1A"+
+		"\x3\x1A\x3\x1B\x3\x1B\x3\x1B\x3\x1B\x5\x1B\x151\n\x1B\x3\x1B\x3\x1B\x5"+
+		"\x1B\x155\n\x1B\x3\x1B\x3\x1B\x3\x1C\x6\x1C\x15A\n\x1C\r\x1C\xE\x1C\x15B"+
+		"\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x3\x1D\x5\x1D\x165\n\x1D\x3"+
+		"\x1E\x3\x1E\x3\x1E\x3\x1E\x3\x1F\x3\x1F\x3\x1F\x3\x1F\x3\x1F\x3\x1F\x3"+
+		" \x3 \x3!\x3!\x3\"\x3\"\x3\"\x3\"\x5\"\x179\n\"\x3\"\x3\"\x3#\x3#\x6#"+
+		"\x17F\n#\r#\xE#\x180\x3#\a#\x184\n#\f#\xE#\x187\v#\x3$\x3$\x3$\x3$\x3"+
+		"%\x3%\x3&\x3&\x3&\x3&\x3\'\x3\'\x3(\x3(\x3(\x3(\x3)\x3)\x3*\x3*\x3*\x3"+
+		"*\x3*\x3*\x5*\x1A1\n*\x3*\x3*\x3+\x6+\x1A6\n+\r+\xE+\x1A7\x3,\x3,\x5,"+
+		"\x1AC\n,\x3-\x3-\x3-\x3-\x3.\x3.\x3.\x3.\x3/\x3/\x5/\x1B8\n/\x3\x30\x3"+
+		"\x30\x5\x30\x1BC\n\x30\x3\x31\x3\x31\x3\x31\x3\x31\x5\x31\x1C2\n\x31\x3"+
+		"\x32\x3\x32\x3\x33\x3\x33\x3\x34\x3\x34\x3\x35\x3\x35\x3\x36\x3\x36\x3"+
+		"\x36\x3\x37\x3\x37\x3\x37\x3\x37\x3\x38\x3\x38\x3\x39\x3\x39\x3\x39\x3"+
+		"\x39\x3\x39\x3\x39\x5\x39\x1DB\n\x39\x3:\x3:\x3;\x3;\x3<\x3<\x3=\x3=\x3"+
+		">\x3>\x3?\x3?\x3?\x2\x2@\x2\x4\x6\b\n\f\xE\x10\x12\x14\x16\x18\x1A\x1C"+
+		"\x1E \"$&(*,.\x30\x32\x34\x36\x38:<>@\x42\x44\x46HJLNPRTVXZ\\^`\x62\x64"+
+		"\x66hjlnprtvxz|\x2\b\x4\x2\x13\x13\x1A\x1A\x3\x2 !\x3\x2\"\'\x3\x2UV\x3"+
+		"\x2\x1C\x1D\x4\x2^^\x66g\x1E5\x2\x81\x3\x2\x2\x2\x4\x84\x3\x2\x2\x2\x6"+
+		"\x8C\x3\x2\x2\x2\b\x94\x3\x2\x2\x2\n\x9C\x3\x2\x2\x2\f\xAF\x3\x2\x2\x2"+
+		"\xE\xB1\x3\x2\x2\x2\x10\xC0\x3\x2\x2\x2\x12\xCF\x3\x2\x2\x2\x14\xD3\x3"+
+		"\x2\x2\x2\x16\xDE\x3\x2\x2\x2\x18\xE2\x3\x2\x2\x2\x1A\xEF\x3\x2\x2\x2"+
+		"\x1C\xFD\x3\x2\x2\x2\x1E\x105\x3\x2\x2\x2 \x109\x3\x2\x2\x2\"\x118\x3"+
+		"\x2\x2\x2$\x121\x3\x2\x2\x2&\x123\x3\x2\x2\x2(\x12A\x3\x2\x2\x2*\x13A"+
+		"\x3\x2\x2\x2,\x13C\x3\x2\x2\x2.\x140\x3\x2\x2\x2\x30\x144\x3\x2\x2\x2"+
+		"\x32\x148\x3\x2\x2\x2\x34\x14C\x3\x2\x2\x2\x36\x159\x3\x2\x2\x2\x38\x164"+
+		"\x3\x2\x2\x2:\x166\x3\x2\x2\x2<\x16A\x3\x2\x2\x2>\x170\x3\x2\x2\x2@\x172"+
+		"\x3\x2\x2\x2\x42\x174\x3\x2\x2\x2\x44\x17C\x3\x2\x2\x2\x46\x188\x3\x2"+
+		"\x2\x2H\x18C\x3\x2\x2\x2J\x18E\x3\x2\x2\x2L\x192\x3\x2\x2\x2N\x194\x3"+
+		"\x2\x2\x2P\x198\x3\x2\x2\x2R\x19A\x3\x2\x2\x2T\x1A5\x3\x2\x2\x2V\x1AB"+
+		"\x3\x2\x2\x2X\x1AD\x3\x2\x2\x2Z\x1B1\x3\x2\x2\x2\\\x1B7\x3\x2\x2\x2^\x1BB"+
+		"\x3\x2\x2\x2`\x1C1\x3\x2\x2\x2\x62\x1C3\x3\x2\x2\x2\x64\x1C5\x3\x2\x2"+
+		"\x2\x66\x1C7\x3\x2\x2\x2h\x1C9\x3\x2\x2\x2j\x1CB\x3\x2\x2\x2l\x1CE\x3"+
+		"\x2\x2\x2n\x1D2\x3\x2\x2\x2p\x1DA\x3\x2\x2\x2r\x1DC\x3\x2\x2\x2t\x1DE"+
+		"\x3\x2\x2\x2v\x1E0\x3\x2\x2\x2x\x1E2\x3\x2\x2\x2z\x1E4\x3\x2\x2\x2|\x1E6"+
+		"\x3\x2\x2\x2~\x80\x5\n\x6\x2\x7F~\x3\x2\x2\x2\x80\x83\x3\x2\x2\x2\x81"+
+		"\x7F\x3\x2\x2\x2\x81\x82\x3\x2\x2\x2\x82\x3\x3\x2\x2\x2\x83\x81\x3\x2"+
+		"\x2\x2\x84\x89\x5n\x38\x2\x85\x86\a,\x2\x2\x86\x88\x5n\x38\x2\x87\x85"+
+		"\x3\x2\x2\x2\x88\x8B\x3\x2\x2\x2\x89\x87\x3\x2\x2\x2\x89\x8A\x3\x2\x2"+
+		"\x2\x8A\x5\x3\x2\x2\x2\x8B\x89\x3\x2\x2\x2\x8C\x91\x5n\x38\x2\x8D\x8E"+
+		"\a-\x2\x2\x8E\x90\x5n\x38\x2\x8F\x8D\x3\x2\x2\x2\x90\x93\x3\x2\x2\x2\x91"+
+		"\x8F\x3\x2\x2\x2\x91\x92\x3\x2\x2\x2\x92\a\x3\x2\x2\x2\x93\x91\x3\x2\x2"+
+		"\x2\x94\x99\x5\x4\x3\x2\x95\x96\a-\x2\x2\x96\x98\x5\x4\x3\x2\x97\x95\x3"+
+		"\x2\x2\x2\x98\x9B\x3\x2\x2\x2\x99\x97\x3\x2\x2\x2\x99\x9A\x3\x2\x2\x2"+
+		"\x9A\t\x3\x2\x2\x2\x9B\x99\x3\x2\x2\x2\x9C\x9D\a\x3\x2\x2\x9D\x9E\x5\x4"+
+		"\x3\x2\x9E\xA2\a\x33\x2\x2\x9F\xA1\x5\f\a\x2\xA0\x9F\x3\x2\x2\x2\xA1\xA4"+
+		"\x3\x2\x2\x2\xA2\xA0\x3\x2\x2\x2\xA2\xA3\x3\x2\x2\x2\xA3\xA5\x3\x2\x2"+
+		"\x2\xA4\xA2\x3\x2\x2\x2\xA5\xA6\a\x34\x2\x2\xA6\v\x3\x2\x2\x2\xA7\xB0"+
+		"\x5\xE\b\x2\xA8\xB0\x5\x10\t\x2\xA9\xB0\x5\x14\v\x2\xAA\xB0\x5\x18\r\x2"+
+		"\xAB\xB0\x5 \x11\x2\xAC\xB0\x5\x34\x1B\x2\xAD\xB0\x5\x42\"\x2\xAE\xB0"+
+		"\x5R*\x2\xAF\xA7\x3\x2\x2\x2\xAF\xA8\x3\x2\x2\x2\xAF\xA9\x3\x2\x2\x2\xAF"+
+		"\xAA\x3\x2\x2\x2\xAF\xAB\x3\x2\x2\x2\xAF\xAC\x3\x2\x2\x2\xAF\xAD\x3\x2"+
+		"\x2\x2\xAF\xAE\x3\x2\x2\x2\xB0\r\x3\x2\x2\x2\xB1\xB2\a\x5\x2\x2\xB2\xB5"+
+		"\x5n\x38\x2\xB3\xB4\a+\x2\x2\xB4\xB6\x5\x4\x3\x2\xB5\xB3\x3\x2\x2\x2\xB5"+
+		"\xB6\x3\x2\x2\x2\xB6\xB7\x3\x2\x2\x2\xB7\xBB\a\x33\x2\x2\xB8\xBA\x5\x12"+
+		"\n\x2\xB9\xB8\x3\x2\x2\x2\xBA\xBD\x3\x2\x2\x2\xBB\xB9\x3\x2\x2\x2\xBB"+
+		"\xBC\x3\x2\x2\x2\xBC\xBE\x3\x2\x2\x2\xBD\xBB\x3\x2\x2\x2\xBE\xBF\a\x34"+
+		"\x2\x2\xBF\xF\x3\x2\x2\x2\xC0\xC1\a\x4\x2\x2\xC1\xC4\x5n\x38\x2\xC2\xC3"+
+		"\a+\x2\x2\xC3\xC5\x5\x4\x3\x2\xC4\xC2\x3\x2\x2\x2\xC4\xC5\x3\x2\x2\x2"+
+		"\xC5\xC6\x3\x2\x2\x2\xC6\xCA\a\x33\x2\x2\xC7\xC9\x5\x12\n\x2\xC8\xC7\x3"+
+		"\x2\x2\x2\xC9\xCC\x3\x2\x2\x2\xCA\xC8\x3\x2\x2\x2\xCA\xCB\x3\x2\x2\x2"+
+		"\xCB\xCD\x3\x2\x2\x2\xCC\xCA\x3\x2\x2\x2\xCD\xCE\a\x34\x2\x2\xCE\x11\x3"+
+		"\x2\x2\x2\xCF\xD0\x5^\x30\x2\xD0\xD1\x5n\x38\x2\xD1\xD2\a*\x2\x2\xD2\x13"+
+		"\x3\x2\x2\x2\xD3\xD4\a\xF\x2\x2\xD4\xD5\x5n\x38\x2\xD5\xD9\a\x33\x2\x2"+
+		"\xD6\xD8\x5\x16\f\x2\xD7\xD6\x3\x2\x2\x2\xD8\xDB\x3\x2\x2\x2\xD9\xD7\x3"+
+		"\x2\x2\x2\xD9\xDA\x3\x2\x2\x2\xDA\xDC\x3\x2\x2\x2\xDB\xD9\x3\x2\x2\x2"+
+		"\xDC\xDD\a\x34\x2\x2\xDD\x15\x3\x2\x2\x2\xDE\xDF\a\x10\x2\x2\xDF\xE0\x5"+
+		"\x4\x3\x2\xE0\xE1\a*\x2\x2\xE1\x17\x3\x2\x2\x2\xE2\xE3\a\x6\x2\x2\xE3"+
+		"\xE4\x5n\x38\x2\xE4\xE8\a\x33\x2\x2\xE5\xE7\x5\x1A\xE\x2\xE6\xE5\x3\x2"+
+		"\x2\x2\xE7\xEA\x3\x2\x2\x2\xE8\xE6\x3\x2\x2\x2\xE8\xE9\x3\x2\x2\x2\xE9"+
+		"\xEB\x3\x2\x2\x2\xEA\xE8\x3\x2\x2\x2\xEB\xEC\a\x34\x2\x2\xEC\x19\x3\x2"+
+		"\x2\x2\xED\xF0\x5\\/\x2\xEE\xF0\x5h\x35\x2\xEF\xED\x3\x2\x2\x2\xEF\xEE"+
+		"\x3\x2\x2\x2\xF0\xF1\x3\x2\x2\x2\xF1\xF2\x5n\x38\x2\xF2\xF4\a/\x2\x2\xF3"+
+		"\xF5\x5\x1C\xF\x2\xF4\xF3\x3\x2\x2\x2\xF4\xF5\x3\x2\x2\x2\xF5\xF6\x3\x2"+
+		"\x2\x2\xF6\xF9\a\x30\x2\x2\xF7\xF8\a\a\x2\x2\xF8\xFA\x5\b\x5\x2\xF9\xF7"+
+		"\x3\x2\x2\x2\xF9\xFA\x3\x2\x2\x2\xFA\xFB\x3\x2\x2\x2\xFB\xFC\a*\x2\x2"+
+		"\xFC\x1B\x3\x2\x2\x2\xFD\x102\x5\x1E\x10\x2\xFE\xFF\a-\x2\x2\xFF\x101"+
+		"\x5\x1E\x10\x2\x100\xFE\x3\x2\x2\x2\x101\x104\x3\x2\x2\x2\x102\x100\x3"+
+		"\x2\x2\x2\x102\x103\x3\x2\x2\x2\x103\x1D\x3\x2\x2\x2\x104\x102\x3\x2\x2"+
+		"\x2\x105\x106\x5^\x30\x2\x106\x107\x5n\x38\x2\x107\x1F\x3\x2\x2\x2\x108"+
+		"\x10A\a\x11\x2\x2\x109\x108\x3\x2\x2\x2\x109\x10A\x3\x2\x2\x2\x10A\x10B"+
+		"\x3\x2\x2\x2\x10B\x10C\a\x12\x2\x2\x10C\x10F\x5n\x38\x2\x10D\x10E\a+\x2"+
+		"\x2\x10E\x110\x5\x4\x3\x2\x10F\x10D\x3\x2\x2\x2\x10F\x110\x3\x2\x2\x2"+
+		"\x110\x111\x3\x2\x2\x2\x111\x113\a\x33\x2\x2\x112\x114\x5\"\x12\x2\x113"+
+		"\x112\x3\x2\x2\x2\x113\x114\x3\x2\x2\x2\x114\x115\x3\x2\x2\x2\x115\x116"+
+		"\a\x34\x2\x2\x116!\x3\x2\x2\x2\x117\x119\x5$\x13\x2\x118\x117\x3\x2\x2"+
+		"\x2\x119\x11A\x3\x2\x2\x2\x11A\x118\x3\x2\x2\x2\x11A\x11B\x3\x2\x2\x2"+
+		"\x11B#\x3\x2\x2\x2\x11C\x122\x5&\x14\x2\x11D\x122\x5(\x15\x2\x11E\x122"+
+		"\x5.\x18\x2\x11F\x122\x5\x30\x19\x2\x120\x122\x5\x32\x1A\x2\x121\x11C"+
+		"\x3\x2\x2\x2\x121\x11D\x3\x2\x2\x2\x121\x11E\x3\x2\x2\x2\x121\x11F\x3"+
+		"\x2\x2\x2\x121\x120\x3\x2\x2\x2\x122%\x3\x2\x2\x2\x123\x124\a\x15\x2\x2"+
+		"\x124\x126\x5\x4\x3\x2\x125\x127\x5n\x38\x2\x126\x125\x3\x2\x2\x2\x126"+
+		"\x127\x3\x2\x2\x2\x127\x128\x3\x2\x2\x2\x128\x129\x5*\x16\x2\x129\'\x3"+
+		"\x2\x2\x2\x12A\x12B\a\x14\x2\x2\x12B\x12D\x5\x4\x3\x2\x12C\x12E\x5n\x38"+
+		"\x2\x12D\x12C\x3\x2\x2\x2\x12D\x12E\x3\x2\x2\x2\x12E\x12F\x3\x2\x2\x2"+
+		"\x12F\x130\x5*\x16\x2\x130)\x3\x2\x2\x2\x131\x13B\a*\x2\x2\x132\x136\a"+
+		"\x33\x2\x2\x133\x135\x5,\x17\x2\x134\x133\x3\x2\x2\x2\x135\x138\x3\x2"+
+		"\x2\x2\x136\x134\x3\x2\x2\x2\x136\x137\x3\x2\x2\x2\x137\x139\x3\x2\x2"+
+		"\x2\x138\x136\x3\x2\x2\x2\x139\x13B\a\x34\x2\x2\x13A\x131\x3\x2\x2\x2"+
+		"\x13A\x132\x3\x2\x2\x2\x13B+\x3\x2\x2\x2\x13C\x13D\a\t\x2\x2\x13D\x13E"+
+		"\x5\x4\x3\x2\x13E\x13F\a*\x2\x2\x13F-\x3\x2\x2\x2\x140\x141\x5^\x30\x2"+
+		"\x141\x142\x5n\x38\x2\x142\x143\a*\x2\x2\x143/\x3\x2\x2\x2\x144\x145\a"+
+		"\x18\x2\x2\x145\x146\x5n\x38\x2\x146\x147\a*\x2\x2\x147\x31\x3\x2\x2\x2"+
+		"\x148\x149\a\x19\x2\x2\x149\x14A\x5n\x38\x2\x14A\x14B\a*\x2\x2\x14B\x33"+
+		"\x3\x2\x2\x2\x14C\x14D\t\x2\x2\x2\x14D\x150\x5n\x38\x2\x14E\x14F\a+\x2"+
+		"\x2\x14F\x151\x5\x4\x3\x2\x150\x14E\x3\x2\x2\x2\x150\x151\x3\x2\x2\x2"+
+		"\x151\x152\x3\x2\x2\x2\x152\x154\a\x33\x2\x2\x153\x155\x5\x36\x1C\x2\x154"+
+		"\x153\x3\x2\x2\x2\x154\x155\x3\x2\x2\x2\x155\x156\x3\x2\x2\x2\x156\x157"+
+		"\a\x34\x2\x2\x157\x35\x3\x2\x2\x2\x158\x15A\x5\x38\x1D\x2\x159\x158\x3"+
+		"\x2\x2\x2\x15A\x15B\x3\x2\x2\x2\x15B\x159\x3\x2\x2\x2\x15B\x15C\x3\x2"+
+		"\x2\x2\x15C\x37\x3\x2\x2\x2\x15D\x165\x5&\x14\x2\x15E\x165\x5(\x15\x2"+
+		"\x15F\x165\x5.\x18\x2\x160\x165\x5\x30\x19\x2\x161\x165\x5\x32\x1A\x2"+
+		"\x162\x165\x5:\x1E\x2\x163\x165\x5<\x1F\x2\x164\x15D\x3\x2\x2\x2\x164"+
+		"\x15E\x3\x2\x2\x2\x164\x15F\x3\x2\x2\x2\x164\x160\x3\x2\x2\x2\x164\x161"+
+		"\x3\x2\x2\x2\x164\x162\x3\x2\x2\x2\x164\x163\x3\x2\x2\x2\x165\x39\x3\x2"+
+		"\x2\x2\x166\x167\a\x12\x2\x2\x167\x168\x5\x4\x3\x2\x168\x169\a*\x2\x2"+
+		"\x169;\x3\x2\x2\x2\x16A\x16B\a\x16\x2\x2\x16B\x16C\x5> \x2\x16C\x16D\a"+
+		"\x17\x2\x2\x16D\x16E\x5@!\x2\x16E\x16F\a*\x2\x2\x16F=\x3\x2\x2\x2\x170"+
+		"\x171\x5\x4\x3\x2\x171?\x3\x2\x2\x2\x172\x173\x5\x4\x3\x2\x173\x41\x3"+
+		"\x2\x2\x2\x174\x175\a\t\x2\x2\x175\x176\x5n\x38\x2\x176\x178\a\x33\x2"+
+		"\x2\x177\x179\x5\x44#\x2\x178\x177\x3\x2\x2\x2\x178\x179\x3\x2\x2\x2\x179"+
+		"\x17A\x3\x2\x2\x2\x17A\x17B\a\x34\x2\x2\x17B\x43\x3\x2\x2\x2\x17C\x17E"+
+		"\x5\x46$\x2\x17D\x17F\x5J&\x2\x17E\x17D\x3\x2\x2\x2\x17F\x180\x3\x2\x2"+
+		"\x2\x180\x17E\x3\x2\x2\x2\x180\x181\x3\x2\x2\x2\x181\x185\x3\x2\x2\x2"+
+		"\x182\x184\x5N(\x2\x183\x182\x3\x2\x2\x2\x184\x187\x3\x2\x2\x2\x185\x183"+
+		"\x3\x2\x2\x2\x185\x186\x3\x2\x2\x2\x186\x45\x3\x2\x2\x2\x187\x185\x3\x2"+
+		"\x2\x2\x188\x189\a\n\x2\x2\x189\x18A\x5H%\x2\x18A\x18B\a*\x2\x2\x18BG"+
+		"\x3\x2\x2\x2\x18C\x18D\x5n\x38\x2\x18DI\x3\x2\x2\x2\x18E\x18F\a\v\x2\x2"+
+		"\x18F\x190\x5L\'\x2\x190\x191\a*\x2\x2\x191K\x3\x2\x2\x2\x192\x193\x5"+
+		"n\x38\x2\x193M\x3\x2\x2\x2\x194\x195\a\f\x2\x2\x195\x196\x5P)\x2\x196"+
+		"\x197\a*\x2\x2\x197O\x3\x2\x2\x2\x198\x199\x5n\x38\x2\x199Q\x3\x2\x2\x2"+
+		"\x19A\x19B\a\r\x2\x2\x19B\x19C\x5n\x38\x2\x19C\x19D\a+\x2\x2\x19D\x19E"+
+		"\x5\x4\x3\x2\x19E\x1A0\a\x33\x2\x2\x19F\x1A1\x5T+\x2\x1A0\x19F\x3\x2\x2"+
+		"\x2\x1A0\x1A1\x3\x2\x2\x2\x1A1\x1A2\x3\x2\x2\x2\x1A2\x1A3\a\x34\x2\x2"+
+		"\x1A3S\x3\x2\x2\x2\x1A4\x1A6\x5V,\x2\x1A5\x1A4\x3\x2\x2\x2\x1A6\x1A7\x3"+
+		"\x2\x2\x2\x1A7\x1A5\x3\x2\x2\x2\x1A7\x1A8\x3\x2\x2\x2\x1A8U\x3\x2\x2\x2"+
+		"\x1A9\x1AC\x5X-\x2\x1AA\x1AC\x5Z.\x2\x1AB\x1A9\x3\x2\x2\x2\x1AB\x1AA\x3"+
+		"\x2\x2\x2\x1ACW\x3\x2\x2\x2\x1AD\x1AE\a\t\x2\x2\x1AE\x1AF\x5\x4\x3\x2"+
+		"\x1AF\x1B0\a*\x2\x2\x1B0Y\x3\x2\x2\x2\x1B1\x1B2\a\xE\x2\x2\x1B2\x1B3\x5"+
+		"|?\x2\x1B3\x1B4\a*\x2\x2\x1B4[\x3\x2\x2\x2\x1B5\x1B8\x5^\x30\x2\x1B6\x1B8"+
+		"\x5\x66\x34\x2\x1B7\x1B5\x3\x2\x2\x2\x1B7\x1B6\x3\x2\x2\x2\x1B8]\x3\x2"+
+		"\x2\x2\x1B9\x1BC\x5l\x37\x2\x1BA\x1BC\x5`\x31\x2\x1BB\x1B9\x3\x2\x2\x2"+
+		"\x1BB\x1BA\x3\x2\x2\x2\x1BC_\x3\x2\x2\x2\x1BD\x1C2\x5\x64\x33\x2\x1BE"+
+		"\x1C2\x5\x62\x32\x2\x1BF\x1C2\x5j\x36\x2\x1C0\x1C2\x5\x4\x3\x2\x1C1\x1BD"+
+		"\x3\x2\x2\x2\x1C1\x1BE\x3\x2\x2\x2\x1C1\x1BF\x3\x2\x2\x2\x1C1\x1C0\x3"+
+		"\x2\x2\x2\x1C2\x61\x3\x2\x2\x2\x1C3\x1C4\t\x3\x2\x2\x1C4\x63\x3\x2\x2"+
+		"\x2\x1C5\x1C6\t\x4\x2\x2\x1C6\x65\x3\x2\x2\x2\x1C7\x1C8\a)\x2\x2\x1C8"+
+		"g\x3\x2\x2\x2\x1C9\x1CA\a\b\x2\x2\x1CAi\x3\x2\x2\x2\x1CB\x1CC\x5\x64\x33"+
+		"\x2\x1CC\x1CD\a\x37\x2\x2\x1CDk\x3\x2\x2\x2\x1CE\x1CF\x5`\x31\x2\x1CF"+
+		"\x1D0\a\x31\x2\x2\x1D0\x1D1\a\x32\x2\x2\x1D1m\x3\x2\x2\x2\x1D2\x1D3\t"+
+		"\x5\x2\x2\x1D3o\x3\x2\x2\x2\x1D4\x1DB\x5r:\x2\x1D5\x1DB\x5t;\x2\x1D6\x1DB"+
+		"\x5v<\x2\x1D7\x1DB\x5x=\x2\x1D8\x1DB\x5z>\x2\x1D9\x1DB\x5|?\x2\x1DA\x1D4"+
+		"\x3\x2\x2\x2\x1DA\x1D5\x3\x2\x2\x2\x1DA\x1D6\x3\x2\x2\x2\x1DA\x1D7\x3"+
+		"\x2\x2\x2\x1DA\x1D8\x3\x2\x2\x2\x1DA\x1D9\x3\x2\x2\x2\x1DBq\x3\x2\x2\x2"+
+		"\x1DC\x1DD\a\x1B\x2\x2\x1DDs\x3\x2\x2\x2\x1DE\x1DF\t\x6\x2\x2\x1DFu\x3"+
+		"\x2\x2\x2\x1E0\x1E1\aW\x2\x2\x1E1w\x3\x2\x2\x2\x1E2\x1E3\aX\x2\x2\x1E3"+
+		"y\x3\x2\x2\x2\x1E4\x1E5\aY\x2\x2\x1E5{\x3\x2\x2\x2\x1E6\x1E7\t\a\x2\x2"+
+		"\x1E7}\x3\x2\x2\x2)\x81\x89\x91\x99\xA2\xAF\xB5\xBB\xC4\xCA\xD9\xE8\xEF"+
+		"\xF4\xF9\x102\x109\x10F\x113\x11A\x121\x126\x12D\x136\x13A\x150\x154\x15B"+
+		"\x164\x178\x180\x185\x1A0\x1A7\x1AB\x1B7\x1BB\x1C1\x1DA";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }

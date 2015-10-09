@@ -52,9 +52,9 @@ enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
 $Property(Declarations) 
 $TypeDef(MetaClass)
-classDeclaration : annotation* $Property(name=IsAbstract,value=true) KAbstract? KClass identifier (TColon $Property(SuperClasses) $InheritScope classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+classDeclaration : annotation* $Property(name=IsAbstract,value=true) KAbstract? KClass identifier (TColon $Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor : $TypeUse(MetaClass) qualifiedName;
+classAncestor : $TypeUse(symbolType=MetaClass,resolveFlags=ResolveFlags.Parent) qualifiedName;
 classMemberDeclaration 
 	: $Property(Properties) fieldDeclaration 
 	| $Property(Operations) operationDeclaration

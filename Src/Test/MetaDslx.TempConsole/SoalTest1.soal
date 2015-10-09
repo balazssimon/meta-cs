@@ -52,30 +52,35 @@
 		reference ICalculator;
 	}
 
-	component CalcComp5
-	{
-		service ICalculator;
-	}
-
-	component CalcComp6
-	{
-		reference ICalculator;
-	}
-
 	composite Composite1 
 	{
 		service ICalculator CS;
 		reference ICalculator CR;
 		component CalcComp1;
 		component CalcComp2;
-		component CalcComp5;
-		component CalcComp6;
 		wire CS to CalcComp1.CalcS;
 		wire CalcComp1.CalcR to CalcComp2.ICalculator;
 		wire CalcComp2.ICalculator to CR;
-		wire CalcComp5.ICalculator to CalcComp6.ICalculator;
 	}
 
+	assembly Assembly1 : Composite1
+	{
+		implementation AspNet;
+		language CSharp;
+	}
+
+	assembly Assembly2 : Assembly3
+	{
+		implementation AspNet;
+		language CSharp;
+	}
+
+	assembly Assembly3 : Assembly2
+	{
+		implementation AspNet;
+		language CSharp;
+	}	
+	
 	binding SoapHttp
 	{
 		transport HTTP;

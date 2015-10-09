@@ -1,4 +1,4 @@
-﻿lexer grammar SoalLexer;
+lexer grammar SoalLexer;
 
                                                               
 KNamespace : 'namespace';
@@ -23,6 +23,8 @@ KService : 'service';
 KWire : 'wire';
 KTo : 'to';
 KImplementation : 'implementation';
+KLanguage : 'language';
+KAssembly : 'assembly';
 
 KNull : 'null';
 KTrue : 'true';
@@ -216,3 +218,4 @@ mode SINGLEQUOTE_VERBATIM_STRING;
 SingleQuoteVerbatimStringText : SingleQuoteTextVerbatimCharacter -> more;
                                
 SingleQuoteVerbatimStringLiteral : '"' -> mode(DEFAULT_MODE);
+

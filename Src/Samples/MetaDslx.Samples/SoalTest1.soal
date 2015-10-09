@@ -63,6 +63,12 @@
 		wire CalcComp2.ICalculator to CR;
 	}
 
+	assembly Assembly1 : Composite1
+	{
+		implementation AspNet;
+		language CSharp;
+	}
+
 	binding SoapHttp
 	{
 		transport HTTP;

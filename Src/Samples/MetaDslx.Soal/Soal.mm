@@ -165,6 +165,7 @@
 		[ScopeEntry]
 		containment list<Property> Properties;
 		containment Implementation Implementation;
+		containment Language Language;
 	}
 
 	class Composite : Component
@@ -172,6 +173,10 @@
 		[ScopeEntry]
 		list<Component> Components;
 		containment list<Wire> Wires;
+	}
+
+	class Assembly : Composite
+	{
 	}
 
 	class Wire
@@ -206,6 +211,10 @@
 	{
 	}
 
+	class Language : NamedElement
+	{
+	}
+	
 
 	class Binding : Declaration
 	{

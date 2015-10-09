@@ -1,4 +1,4 @@
-parser grammar MetaModelParser;
+﻿parser grammar MetaModelParser;
 
 options
 {
@@ -52,9 +52,9 @@ enumMemberDeclaration :                       operationDeclaration;
 
                         
                    
-classDeclaration : annotation*                                       KAbstract? KClass identifier (TColon                                       classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
+classDeclaration : annotation*                                       KAbstract? KClass identifier (TColon                         classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor :                     qualifiedName;
+classAncestor :                                                                 qualifiedName;
 classMemberDeclaration 
 	:                       fieldDeclaration 
 	|                       operationDeclaration
@@ -331,4 +331,3 @@ $TypeParam
 genericTypeParam : identifier;
 
 */
-

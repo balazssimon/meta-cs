@@ -241,7 +241,26 @@ namespace MetaDslx.Core
                 Func<object> derived;
                 if (evalLazyValue && this.initializers.TryGetValue(property, out initializer))
                 {
-                    value = initializer.Value;
+                    try
+                    {
+                        value = initializer.Value;
+                    }
+                    catch(InvalidOperationException ex)
+                    {
+                        if (ex.Message != null && ex.Message.Contains("ValueFactory"))
+                        {
+                            ModelContext ctx = ModelContext.Current;
+                            if (ctx != null)
+                            {
+                                ctx.Compiler.Diagnostics.AddWarning("The property '" + property + "' of '"+this+"' was accessed in a circular dependency.", ctx.Compiler.FileName, this, true);
+                            }
+                            return null;
+                        }
+                        else
+                        {
+                            throw ex;
+                        }
+                    }
                     this.values[property] = value;
                     if (!(value is ModelCollection))
                     {

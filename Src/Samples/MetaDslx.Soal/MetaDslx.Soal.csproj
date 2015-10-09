@@ -31,8 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr4.Runtime, Version=4.5.1.0, Culture=neutral, PublicKeyToken=e78b2c5abd1fcb3f, processorArchitecture=MSIL" />
-    <Reference Include="MetaDslx.Core" />
-    <Reference Include="MetaDslx.Compiler" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -107,6 +105,16 @@
     <None Include="SoalParser.tokens">
       <DependentUpon>SoalParser.ag4</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Main\MetaDslx.Compiler\MetaDslx.Compiler.csproj">
+      <Project>{5c030a11-fe5c-4454-a324-deb0128fdc97}</Project>
+      <Name>MetaDslx.Compiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj">
+      <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
+      <Name>MetaDslx.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

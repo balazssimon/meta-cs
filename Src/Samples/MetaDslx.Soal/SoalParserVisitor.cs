@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\ovbvlgtq.gff\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\vqyxwqgx.cuz\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -174,6 +174,12 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitComponentImplementation([NotNull] SoalParser.ComponentImplementationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.componentLanguage"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitComponentLanguage([NotNull] SoalParser.ComponentLanguageContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.compositeDeclaration"/>.
 	/// </summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.Core
 {
@@ -226,28 +227,28 @@ namespace MetaDslx.Core
             base.MetaFunction_MetaFunction(@this);
             MetaFunctionType type = MetaFactory.Instance.CreateMetaFunctionType();
             ((ModelObject)type).MUnSet(MetaDescriptor.MetaFunctionType.ParameterTypesProperty);
-            ((ModelObject)type).MLazySet(MetaDescriptor.MetaFunctionType.ParameterTypesProperty, new Lazy<object>(() => new ModelMultiList<MetaType>((ModelObject)type, MetaDescriptor.MetaFunctionType.ParameterTypesProperty, @this.Parameters.Select(p => new Lazy<object>(() => p.Type))), false));
-            ((ModelObject)type).MLazySet(MetaDescriptor.MetaFunctionType.ReturnTypeProperty, new Lazy<object>(() => @this.ReturnType));
+            ((ModelObject)type).MLazySet(MetaDescriptor.MetaFunctionType.ParameterTypesProperty, new Lazy<object>(() => new ModelMultiList<MetaType>((ModelObject)type, MetaDescriptor.MetaFunctionType.ParameterTypesProperty, @this.Parameters.Select(p => new Lazy<object>(() => p.Type))), LazyThreadSafetyMode.PublicationOnly));
+            ((ModelObject)type).MLazySet(MetaDescriptor.MetaFunctionType.ReturnTypeProperty, new Lazy<object>(() => @this.ReturnType, LazyThreadSafetyMode.PublicationOnly));
             ((ModelObject)@this).MSet(MetaDescriptor.MetaFunction.TypeProperty, type);
         }
 
         public override void MetaUnaryExpression_MetaUnaryExpression(MetaUnaryExpression @this)
         {
             base.MetaUnaryExpression_MetaUnaryExpression(@this);
-            ((ModelObject)@this).MLazyAdd(MetaDescriptor.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Expression));
+            ((ModelObject)@this).MLazyAdd(MetaDescriptor.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Expression, LazyThreadSafetyMode.PublicationOnly));
         }
 
         public override void MetaBinaryExpression_MetaBinaryExpression(MetaBinaryExpression @this)
         {
             base.MetaBinaryExpression_MetaBinaryExpression(@this);
-            ((ModelObject)@this).MLazyAdd(MetaDescriptor.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Left));
-            ((ModelObject)@this).MLazyAdd(MetaDescriptor.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Right));
+            ((ModelObject)@this).MLazyAdd(MetaDescriptor.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Left, LazyThreadSafetyMode.PublicationOnly));
+            ((ModelObject)@this).MLazyAdd(MetaDescriptor.MetaBoundExpression.ArgumentsProperty, new Lazy<object>(() => @this.Right, LazyThreadSafetyMode.PublicationOnly));
         }
 
         public override void MetaNewCollectionExpression_MetaNewCollectionExpression(MetaNewCollectionExpression @this)
         {
             base.MetaNewCollectionExpression_MetaNewCollectionExpression(@this);
-            ((ModelObject)@this).MLazySetChild(MetaDescriptor.MetaNewCollectionExpression.ValuesProperty, MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => @this.TypeReference.InnerType));
+            ((ModelObject)@this).MLazySetChild(MetaDescriptor.MetaNewCollectionExpression.ValuesProperty, MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => @this.TypeReference.InnerType, LazyThreadSafetyMode.PublicationOnly));
         }
 
         public override IList<MetaOperation> MetaClass_GetAllOperations(MetaClass @this)
