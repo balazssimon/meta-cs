@@ -148,6 +148,26 @@ namespace MetaDslx.Compiler
         public bool HasValue { get; set; }
     }
 
+    public enum EnumValueCase
+    {
+        Exact,
+        Ignore,
+        Upper,
+        Lower,
+        Pascal,
+        Camel
+    }
+
+    public class EnumValueAnnotation
+    {
+        public EnumValueAnnotation()
+        {
+            this.Case = EnumValueCase.Exact;
+        }
+        public Type EnumType { get; set; }
+        public EnumValueCase Case { get; set; }
+    }
+
     public class PreDefSymbolAnnotation
     {
         private string name;
@@ -1504,7 +1524,9 @@ namespace MetaDslx.Compiler
                     Func<ModelObject> lazySymbol =
                         () =>
                             this.Compiler.BindingProvider.Bind(null,
-                            this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Type, nameStrings, new ResolutionInfo() { Node = node }, tua.ResolveFlags),
+                            this.FilterByTypes(
+                                this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Type, nameStrings, new ResolutionInfo() { Node = node }, tua.ResolveFlags),
+                                tua.SymbolTypes),
                             new BindingInfo() { Node = node });
                     Lazy<object> lazyValue = new Lazy<object>(lazySymbol, LazyThreadSafetyMode.ExecutionAndPublication);
                     this.SetLazyProperty(node, activeSymbol, activeProperty, lazyValue);
@@ -1520,13 +1542,38 @@ namespace MetaDslx.Compiler
                     Func<ModelObject> lazySymbol =
                         () =>
                             this.Compiler.BindingProvider.Bind(null,
-                            this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Name, nameStrings, new ResolutionInfo() { Node = node }, nua.ResolveFlags),
+                            this.FilterByTypes(
+                                this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Name, nameStrings, new ResolutionInfo() { Node = node }, nua.ResolveFlags),
+                                nua.SymbolTypes),
                             new BindingInfo() { Node = node });
                     Lazy<object> lazyValue = new Lazy<object>(lazySymbol, LazyThreadSafetyMode.ExecutionAndPublication);
                     this.SetLazyProperty(node, activeSymbol, activeProperty, lazyValue);
                     this.Data.RegisterLazySymbol(node, lazyValue);
                 }
             }
+        }
+
+        private IEnumerable<ModelObject> FilterByTypes(IEnumerable<ModelObject> mobjs, List<Type> types)
+        {
+            if (types.Count == 0) return mobjs;
+            List<ModelObject> result = new List<ModelObject>();
+            foreach (var mobj in mobjs)
+            {
+                bool valid = false;
+                foreach (var type in types)
+                {
+                    if (type.IsAssignableFrom(mobj.GetType()))
+                    {
+                        valid = true;
+                        break;
+                    }
+                }
+                if (valid)
+                {
+                    result.Add(mobj);
+                }
+            }
+            return result;
         }
 
         protected virtual void HandlePropertyValues(IParseTree node)
@@ -1586,6 +1633,7 @@ namespace MetaDslx.Compiler
                 }
                 if (pa != null)
                 {
+                    EnumValueAnnotation eva = this.GetAnnotationFor<EnumValueAnnotation>(node);
                     ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
                     if (va != null)
                     {
@@ -1615,6 +1663,67 @@ namespace MetaDslx.Compiler
                             {
                                 object value = this.Compiler.NameProvider.GetValue(node);
                                 this.SetProperty(node, this.ActiveSymbol, pa, value);
+                            }
+                        }
+                    }
+                    else if (eva != null)
+                    {
+                        string name = this.Compiler.NameProvider.GetName(node);
+                        object value = null;
+                        if (name != null)
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            foreach (var enumValue in Enum.GetValues(eva.EnumType))
+                            {
+                                string enumName = enumValue.ToString();
+                                if (sb.Length > 0) sb.Append(", ");
+                                sb.Append("'");
+                                switch (eva.Case)
+                                {
+                                    case EnumValueCase.Exact:
+                                        if (name == enumName) value = enumValue;
+                                        sb.Append(enumName);
+                                        break;
+                                    case EnumValueCase.Ignore:
+                                        if (string.Equals(name, enumName, StringComparison.OrdinalIgnoreCase)) value = enumValue;
+                                        sb.Append(enumName);
+                                        break;
+                                    case EnumValueCase.Upper:
+                                        string upperName = enumName.ToUpper();
+                                        if (name == upperName) value = enumValue;
+                                        sb.Append(upperName);
+                                        break;
+                                    case EnumValueCase.Lower:
+                                        string lowerName = enumName.ToLower();
+                                        if (name == lowerName) value = enumValue;
+                                        sb.Append(lowerName);
+                                        break;
+                                    case EnumValueCase.Pascal:
+                                        string pascalName = enumName.Substring(0, 1).ToUpper() + enumName.Substring(1);
+                                        if (name == pascalName) value = enumValue;
+                                        sb.Append(pascalName);
+                                        break;
+                                    case EnumValueCase.Camel:
+                                        string camelName = enumName.Substring(0, 1).ToLower() + enumName.Substring(1);
+                                        if (name == camelName) value = enumValue;
+                                        sb.Append(camelName);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                sb.Append("'");
+                                if (value != null)
+                                {
+                                    break;
+                                }
+                            }
+                            if (value != null)
+                            {
+                                this.SetProperty(node, this.ActiveSymbol, pa, value);
+                            }
+                            else
+                            {
+                                this.Compiler.Diagnostics.AddError("Invalid name '" + name + "'. Valid names are: " + sb.ToString(), this.Compiler.FileName, node, false);
                             }
                         }
                     }

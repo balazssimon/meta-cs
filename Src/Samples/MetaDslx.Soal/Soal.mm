@@ -117,21 +117,23 @@
 		Exception BaseType;
 	}
 
+	class Entity : StructuredType
+	{
+		[InheritedScope]
+		Entity BaseType;
+	}
+
 	[Scope]
-	abstract class InterfaceDeclaration : SoalType, Declaration
-	{
-	}
-
-	class Database : InterfaceDeclaration
-	{
-		[ScopeEntry]
-		list<Struct> Entities;
-	}
-
-	class Interface : InterfaceDeclaration
+	class Interface : SoalType, Declaration
 	{
 		[ScopeEntry]
 		containment list<Operation> Operations;
+	}
+
+	class Database : Interface
+	{
+		[ScopeEntry]
+		list<Entity> Entities;
 	}
 
 	class Operation : NamedElement
@@ -181,13 +183,13 @@
 
 	class Wire
 	{
-		ComponentInterface Service;
-		ComponentInterface Reference;
+		InterfaceReference Source;
+		InterfaceReference Target;
 	}
 
-	class ComponentInterface
+	class InterfaceReference
 	{
-		ComponentInterface()
+		InterfaceReference()
 		{
 			// this.Name = this.OptionalName != "" ? this.OptionalName : this.Interface.Name;
 		}
@@ -195,15 +197,15 @@
 		[Name]
 		derived string Name;
 		string OptionalName;
-		InterfaceDeclaration Interface;
+		Interface Interface;
 		Binding Binding;
 	}
 
-	class Service : ComponentInterface
+	class Service : InterfaceReference
 	{
 	}
 
-	class Reference : ComponentInterface
+	class Reference : InterfaceReference
 	{
 	}
 
@@ -215,6 +217,22 @@
 	{
 	}
 	
+	class Deployment : Declaration
+	{
+		containment list<Environment> Environments;
+		containment list<Wire> Wires;
+	}
+
+	class Environment : NamedElement
+	{
+		containment Runtime Runtime;
+		list<Database> Databases;
+		list<Assembly> Assemblies;
+	}
+
+	class Runtime : NamedElement
+	{
+	}
 
 	class Binding : Declaration
 	{

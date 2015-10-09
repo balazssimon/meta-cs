@@ -12,9 +12,22 @@
 		double Im;
 	}
 
+	entity Entity2
+	{
+		int Id;
+	}
+
+	entity Entity1 : Entity2
+	{
+		string Name;
+	}
+
 	database ComplexDB
 	{
-		entity Complex;
+		entity Entity1;
+		entity Entity2;
+
+		Complex FindComplex(int id);
 	}
 
 	interface ICalculator
@@ -80,6 +93,22 @@
 		implementation AspNet;
 		language CSharp;
 	}	
+
+	deployment Deployment1
+	{
+		environment Env1
+		{
+			runtime MySQL;
+			database ComplexDB;
+		}
+		environment IIS
+		{
+			runtime IIS;
+			assembly Assembly2;
+			assembly Assembly3;
+		}
+		wire CalcComp1.CalcR to CalcComp2.ICalculator;
+	}
 	
 	binding SoapHttp
 	{

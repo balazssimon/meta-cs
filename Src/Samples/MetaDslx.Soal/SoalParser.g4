@@ -1,4 +1,4 @@
-parser grammar SoalParser;
+﻿parser grammar SoalParser;
 
 options {
 	tokenVocab=SoalLexer;
@@ -17,16 +17,19 @@ qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 namespaceDeclaration: KNamespace qualifiedName TOpenBrace declaration* TCloseBrace;
 
                        
-declaration : structDeclaration | exceptionDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration;
+declaration : structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
 
 
 // Structs and exceptions
 
                 
-structDeclaration : KStruct identifier (TColon                                      qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : KStruct identifier (TColon                                                                                  qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
                    
-exceptionDeclaration : KException identifier (TColon                                         qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+exceptionDeclaration : KException identifier (TColon                                                                                     qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+
+                
+entityDeclaration : KEntity identifier (TColon                                                                                  qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
                      
                   
@@ -36,10 +39,10 @@ propertyDeclaration :                 typeReference identifier TSemicolon;
 // Database
 
                   
-databaseDeclaration : KDatabase identifier TOpenBrace entityDeclaration* TCloseBrace;
+databaseDeclaration : KDatabase identifier TOpenBrace entityReference* operationDeclaration* TCloseBrace;
 
                    
-entityDeclaration : KEntity                  qualifiedName TSemicolon;
+entityReference : KEntity                  qualifiedName TSemicolon;
 
 
 // Interface
@@ -75,10 +78,10 @@ componentElement
 
                    
                 
-componentService : KService                                                     qualifiedName                                identifier? componentServiceOrReferenceBody;
+componentService : KService                                          qualifiedName                                identifier? componentServiceOrReferenceBody;
                      
                   
-componentReference : KReference                                                     qualifiedName                                identifier? componentServiceOrReferenceBody;
+componentReference : KReference                                          qualifiedName                                identifier? componentServiceOrReferenceBody;
 
 componentServiceOrReferenceBody 
 	: TSemicolon
@@ -118,10 +121,39 @@ compositeComponent : KComponent                                           qualif
 
                 
              
-compositeWire : KWire wireService KTo wireReference TSemicolon;
+compositeWire : KWire wireSource KTo wireTarget TSemicolon;
 
-wireService :                                      qualifiedName;
-wireReference :                                          qualifiedName;
+wireSource :                                                qualifiedName;
+wireTarget :                                                qualifiedName;
+
+                    
+deploymentDeclaration : KDeployment identifier TOpenBrace deploymentElements? TCloseBrace;
+
+deploymentElements : deploymentElement+;
+
+deploymentElement
+	: environmentDeclaration
+	| compositeWire
+	;
+
+                       
+                     
+environmentDeclaration : KEnvironment identifier TOpenBrace runtimeDeclaration runtimeReference* TCloseBrace;
+
+                  
+                 
+runtimeDeclaration : KRuntime identifier TSemicolon;
+
+runtimeReference
+	: assemblyReference
+	| databaseReference
+	;
+
+                     
+assemblyReference : KAssembly                    qualifiedName TSemicolon;
+
+                    
+databaseReference : KDatabase                    qualifiedName TSemicolon;
 
 // Binding
 
@@ -252,4 +284,3 @@ stringLiteral
 	: RegularStringLiteral 
 	| SingleQuoteVerbatimStringLiteral 
 	| DoubleQuoteVerbatimStringLiteral;
-

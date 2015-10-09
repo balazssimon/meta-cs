@@ -25,6 +25,9 @@ KTo : 'to';
 KImplementation : 'implementation';
 KLanguage : 'language';
 KAssembly : 'assembly';
+KDeployment : 'deployment';
+KEnvironment : 'environment';
+KRuntime : 'runtime';
 
 KNull : 'null';
 KTrue : 'true';

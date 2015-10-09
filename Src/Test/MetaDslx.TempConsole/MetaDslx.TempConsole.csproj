@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="SoalTest1.soal" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.Compiler\MetaDslx.Compiler.csproj">

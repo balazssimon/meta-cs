@@ -9,9 +9,9 @@ namespace MetaDslx.Soal
 {
     internal class SoalImplementation : SoalImplementationBase
     {
-        public override string ComponentInterface_Name(ComponentInterface @this)
+        public override string InterfaceReference_Name(InterfaceReference @this)
         {
-            if (((ModelObject)@this).MIsValueCreated(SoalDescriptor.ComponentInterface.InterfaceProperty))
+            if (((ModelObject)@this).MIsValueCreated(SoalDescriptor.InterfaceReference.InterfaceProperty))
             {
                 return @this.OptionalName != null ? @this.OptionalName : @this.Interface.Name;
             }

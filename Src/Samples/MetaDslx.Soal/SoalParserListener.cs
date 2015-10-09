@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\vqyxwqgx.cuz\SoalParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\lxcm2qwt.thm\SoalParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -110,6 +110,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitExceptionDeclaration([NotNull] SoalParser.ExceptionDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.entityDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEntityDeclaration([NotNull] SoalParser.EntityDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.entityDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEntityDeclaration([NotNull] SoalParser.EntityDeclarationContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.propertyDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -130,15 +140,15 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitDatabaseDeclaration([NotNull] SoalParser.DatabaseDeclarationContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.entityDeclaration"/>.
+	/// Enter a parse tree produced by <see cref="SoalParser.entityReference"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterEntityDeclaration([NotNull] SoalParser.EntityDeclarationContext context);
+	void EnterEntityReference([NotNull] SoalParser.EntityReferenceContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.entityDeclaration"/>.
+	/// Exit a parse tree produced by <see cref="SoalParser.entityReference"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitEntityDeclaration([NotNull] SoalParser.EntityDeclarationContext context);
+	void ExitEntityReference([NotNull] SoalParser.EntityReferenceContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.interfaceDeclaration"/>.
 	/// </summary>
@@ -330,25 +340,105 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCompositeWire([NotNull] SoalParser.CompositeWireContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.wireService"/>.
+	/// Enter a parse tree produced by <see cref="SoalParser.wireSource"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterWireService([NotNull] SoalParser.WireServiceContext context);
+	void EnterWireSource([NotNull] SoalParser.WireSourceContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.wireService"/>.
+	/// Exit a parse tree produced by <see cref="SoalParser.wireSource"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitWireService([NotNull] SoalParser.WireServiceContext context);
+	void ExitWireSource([NotNull] SoalParser.WireSourceContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.wireReference"/>.
+	/// Enter a parse tree produced by <see cref="SoalParser.wireTarget"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterWireReference([NotNull] SoalParser.WireReferenceContext context);
+	void EnterWireTarget([NotNull] SoalParser.WireTargetContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.wireReference"/>.
+	/// Exit a parse tree produced by <see cref="SoalParser.wireTarget"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitWireReference([NotNull] SoalParser.WireReferenceContext context);
+	void ExitWireTarget([NotNull] SoalParser.WireTargetContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.deploymentDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDeploymentDeclaration([NotNull] SoalParser.DeploymentDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.deploymentDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDeploymentDeclaration([NotNull] SoalParser.DeploymentDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.deploymentElements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDeploymentElements([NotNull] SoalParser.DeploymentElementsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.deploymentElements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDeploymentElements([NotNull] SoalParser.DeploymentElementsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.deploymentElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDeploymentElement([NotNull] SoalParser.DeploymentElementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.deploymentElement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDeploymentElement([NotNull] SoalParser.DeploymentElementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.environmentDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEnvironmentDeclaration([NotNull] SoalParser.EnvironmentDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.environmentDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEnvironmentDeclaration([NotNull] SoalParser.EnvironmentDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.runtimeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRuntimeDeclaration([NotNull] SoalParser.RuntimeDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.runtimeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRuntimeDeclaration([NotNull] SoalParser.RuntimeDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.runtimeReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRuntimeReference([NotNull] SoalParser.RuntimeReferenceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.runtimeReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRuntimeReference([NotNull] SoalParser.RuntimeReferenceContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.assemblyReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssemblyReference([NotNull] SoalParser.AssemblyReferenceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.assemblyReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssemblyReference([NotNull] SoalParser.AssemblyReferenceContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.databaseReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDatabaseReference([NotNull] SoalParser.DatabaseReferenceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.databaseReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDatabaseReference([NotNull] SoalParser.DatabaseReferenceContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.bindingDeclaration"/>.
 	/// </summary>

@@ -17,16 +17,19 @@ $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: KNamespace qualifiedName TOpenBrace declaration* TCloseBrace;
 
 $Property(Declarations)
-declaration : structDeclaration | exceptionDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration;
+declaration : structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
 
 
 // Structs and exceptions
 
 $TypeDef(Struct)
-structDeclaration : KStruct identifier (TColon $Property(BaseType) $TypeUse(Struct) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : KStruct identifier (TColon $Property(BaseType) $TypeUse(symbolType=Struct,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $TypeDef(Exception)
-exceptionDeclaration : KException identifier (TColon $Property(BaseType) $TypeUse(Exception) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+exceptionDeclaration : KException identifier (TColon $Property(BaseType) $TypeUse(symbolType=Exception,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+
+$TypeDef(Entity)
+entityDeclaration : KEntity identifier (TColon $Property(BaseType) $TypeUse(symbolType=Entity,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $Property(Properties)
 $NameDef(Property)
@@ -36,10 +39,10 @@ propertyDeclaration : $Property(Type) typeReference identifier TSemicolon;
 // Database
 
 $TypeDef(Database)
-databaseDeclaration : KDatabase identifier TOpenBrace entityDeclaration* TCloseBrace;
+databaseDeclaration : KDatabase identifier TOpenBrace entityReference* operationDeclaration* TCloseBrace;
 
 $Property(Entities)
-entityDeclaration : KEntity $TypeUse(Struct) qualifiedName TSemicolon;
+entityReference : KEntity $TypeUse(Entity) qualifiedName TSemicolon;
 
 
 // Interface
@@ -75,10 +78,10 @@ componentElement
 
 $Property(Services)
 $Symbol(Service)
-componentService : KService $Property(Interface) $TypeUse(InterfaceDeclaration) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
+componentService : KService $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
 $Property(References)
 $Symbol(Reference)
-componentReference : KReference $Property(Interface) $TypeUse(InterfaceDeclaration) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
+componentReference : KReference $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
 
 componentServiceOrReferenceBody 
 	: TSemicolon
@@ -118,10 +121,39 @@ compositeComponent : KComponent $Property(Components) $TypeUse(Component) qualif
 
 $Property(Wires)
 $Symbol(Wire)
-compositeWire : KWire wireService KTo wireReference TSemicolon;
+compositeWire : KWire wireSource KTo wireTarget TSemicolon;
 
-wireService : $Property(Service) $NameUse(Service) qualifiedName;
-wireReference : $Property(Reference) $NameUse(Reference) qualifiedName;
+wireSource : $Property(Source) $NameUse(InterfaceReference) qualifiedName;
+wireTarget : $Property(Target) $NameUse(InterfaceReference) qualifiedName;
+
+$NameDef(Deployment)
+deploymentDeclaration : KDeployment identifier TOpenBrace deploymentElements? TCloseBrace;
+
+deploymentElements : deploymentElement+;
+
+deploymentElement
+	: environmentDeclaration
+	| compositeWire
+	;
+
+$Property(Environments)
+$NameDef(Environment)
+environmentDeclaration : KEnvironment identifier TOpenBrace runtimeDeclaration runtimeReference* TCloseBrace;
+
+$Property(Runtime)
+$NameDef(Runtime)
+runtimeDeclaration : KRuntime identifier TSemicolon;
+
+runtimeReference
+	: assemblyReference
+	| databaseReference
+	;
+
+$Property(Assemblies)
+assemblyReference : KAssembly $TypeUse(Assembly) qualifiedName TSemicolon;
+
+$Property(Databases)
+databaseReference : KDatabase $TypeUse(Database) qualifiedName TSemicolon;
 
 // Binding
 

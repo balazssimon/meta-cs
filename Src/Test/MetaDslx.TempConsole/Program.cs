@@ -90,8 +90,8 @@ namespace MetaDslx.TempConsole
                     Wire wire = symbol as Wire;
                     if (wire != null)
                     {
-                        Console.WriteLine(wire.Service);
-                        Console.WriteLine(wire.Reference);
+                        Console.WriteLine(wire.Source);
+                        Console.WriteLine(wire.Target);
                     }
                 }
                 //*/

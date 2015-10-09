@@ -1653,6 +1653,10 @@ namespace MetaDslx.Compiler
                     {
                         WriteLine("{0}.Name = \"{1}\";", variableName, annotValue);
                     }
+                    else if (annot.Type.Name == "EnumValue")
+                    {
+                        WriteLine("{0}.EnumType = typeof({1});", variableName, annotValue);
+                    }
                     else if (annot.Type.Name == "Value" || annot.Type.Name == "PreDefSymbol")
                     {
                         WriteLine("{0}.Value = {1};", variableName, annotValue);
