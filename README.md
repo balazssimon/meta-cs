@@ -13,7 +13,7 @@ MetaDslx supports the following features:
 The MetaDslx framework requires Visual Studio 2015 and .NET Framework 4.5.2.
 
 Installation steps:
-1. Extract the MetaDslx-v0.1-alpha.zip file and make sure that the GAC_DIR environment variable in the *.bat files point to the correct location of the .NET tools directory.
+1. Extract the MetaDslx-v0.1-alpha.zip file and make sure that the **GAC_DIR** environment variable in the batch files point to the correct location of the .NET tools directory.
 2. Run install64.bat on 64-bit systems, or install32.bat on 32-bit systems.
 3. Download the **antlr-csharp-runtime-4.5.1.zip** from the [http://www.antlr.org/download.html](ANTLR4 web site).
 4. Extract the ZIP and install the Antlr4.Runtime.dll to the GAC, as the batch files do for the MetaDslx libraries.
