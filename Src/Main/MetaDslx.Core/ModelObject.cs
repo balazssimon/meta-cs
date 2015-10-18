@@ -5,7 +5,12 @@ using System.Text;
 
 namespace MetaDslx.Core
 {
-    public abstract class ModelObject
+    public interface IModelObject
+    {
+
+    }
+
+    public abstract class ModelObject 
     {
         private ModelProperty nameProperty = null;
 

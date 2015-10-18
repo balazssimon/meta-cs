@@ -30,6 +30,7 @@ namespace MetaDslx.Core
         private bool isContainment = false;
         private System.Type itemType = null;
         private bool isCollection = false;
+        private bool isModelObject = false;
         private Lazy<MetaProperty> metaProperty = null;
 
         protected ModelProperty(string name, System.Type type, System.Type owningType, string declaredName, System.Type declaringType, Lazy<MetaProperty> metaProperty)
@@ -144,6 +145,15 @@ namespace MetaDslx.Core
             }
         }
 
+        public bool IsModelObject
+        {
+            get
+            {
+                if (!this.initialized) this.Init();
+                return this.isModelObject;
+            }
+        }
+
         public System.Type ItemType
         {
             get
@@ -169,7 +179,12 @@ namespace MetaDslx.Core
                     {
                         this.isCollection = true;
                         this.itemType = lastGenericArgument;
+                        this.isModelObject = typeof(IModelObject).IsAssignableFrom(this.itemType);
                     }
+                }
+                else
+                {
+                    this.isModelObject = typeof(IModelObject).IsAssignableFrom(this.Type);
                 }
                 foreach (var attribute in info.GetCustomAttributes(typeof(OppositeAttribute), true))
                 {

@@ -55,6 +55,7 @@ function string GetAncestors(MetaClass cls)
 	loop(cls->super:SuperClasses; string delim = " : "; delim = ", ")
 		result += delim+super.CSharpFullName();
 	end loop
+	if (result == "") result = "global::MetaDslx.Core.IModelObject";
 	return result;
 end function
 
