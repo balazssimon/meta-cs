@@ -226,7 +226,7 @@ namespace MetaDslx.Core.Test
 
         [OppositeAttribute(typeof(PetX), "Owner")]
         public static readonly ModelProperty PetsProperty =
-            ModelProperty.Register("Pets", typeof(ICollection<IPetX>), typeof(PersonX));
+            ModelProperty.Register("Pets", typeof(ICollection<IPetX>), typeof(IPersonX), typeof(PersonX));
 
         public ICollection<IPetX> Pets
         {
@@ -244,7 +244,7 @@ namespace MetaDslx.Core.Test
 
         [OppositeAttribute(typeof(DogX), "Friend")]
         public static readonly ModelProperty DogsProperty =
-            ModelProperty.Register("Dogs", typeof(ICollection<IDogX>), typeof(StudentX));
+            ModelProperty.Register("Dogs", typeof(ICollection<IDogX>), typeof(IStudentX), typeof(StudentX));
 
         public ICollection<IDogX> Dogs
         {
@@ -265,7 +265,7 @@ namespace MetaDslx.Core.Test
 
         [OppositeAttribute(typeof(PersonX), "Pets")]
         public static readonly ModelProperty OwnerProperty =
-            ModelProperty.Register("Owner", typeof(IPersonX), typeof(PetX));
+            ModelProperty.Register("Owner", typeof(IPersonX), typeof(IPetX), typeof(PetX));
 
         public IPersonX Owner
         {
@@ -282,7 +282,7 @@ namespace MetaDslx.Core.Test
 
         [OppositeAttribute(typeof(StudentX), "Dogs")]
         public static readonly ModelProperty FriendProperty =
-            ModelProperty.Register("Friend", typeof(IStudentX), typeof(DogX));
+            ModelProperty.Register("Friend", typeof(IStudentX), typeof(IDogX), typeof(DogX));
 
         public IStudentX Friend
         {

@@ -12,15 +12,15 @@ namespace MetaDslx.Core.Immutable
     {
         private static object StaticModelLock = new object();
         private static int ModelCounter;
+
         internal int ModelNumber { get; private set; }
+        internal ImmutableModel OldModel { get; private set; }
+        internal ImmutableArray<ImmutableEntry> Entries { get; set; }
+        internal ImmutableDictionary<int, ImmutableModel> Models { get; set; }
 
-        private ImmutableModel oldModel;
-        internal ImmutableArray<ImmutableEntry> Entries { get; private set; }
-        internal ImmutableDictionary<int, ImmutableModel> Models { get; private set; }
-
-        private ImmutableModel()
+        internal ImmutableModel()
         {
-            this.oldModel = null;
+            this.OldModel = null;
             this.Entries = ImmutableArray<ImmutableEntry>.Empty;
             this.Models = ImmutableDictionary<int, ImmutableModel>.Empty;
             lock (ImmutableModel.StaticModelLock)
@@ -30,26 +30,102 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        private ImmutableModel(ImmutableModel oldModel)
+        internal ImmutableModel(ImmutableModel oldModel)
         {
-            this.oldModel = oldModel;
-            this.ModelNumber = this.oldModel.ModelNumber;
+            this.OldModel = oldModel;
+            this.ModelNumber = this.OldModel.ModelNumber;
             this.Entries = oldModel.Entries;
             this.Models = oldModel.Models;
         }
 
-        private ImmutableModel(ImmutableModel oldModel, ImmutableArray<ImmutableEntry> entries)
+        internal ImmutableModel GetModel(ImmutableModel model)
         {
-            this.oldModel = oldModel;
-            this.ModelNumber = this.oldModel.ModelNumber;
+            if (model == null) return null;
+            int number = model.ModelNumber;
+            if (model.ModelNumber == this.ModelNumber) return this;
+            ImmutableModel newModel = null;
+            if (this.Models.TryGetValue(number, out newModel))
+            {
+                return newModel;
+            }
+            else
+            {
+                return model;
+            }
+        }
+
+        internal ImmutableEntry GetEntry(int index)
+        {
+            ImmutableEntry entry = ImmutableEntry.Empty;
+            if (index >= 0 && index < this.Entries.Length)
+            {
+                entry = this.Entries[index];
+                if (entry.Object != null)
+                {
+                    return entry;
+                }
+                else if (this.OldModel != null)
+                {
+                    return this.OldModel.GetEntry(index);
+                }
+                throw new InvalidOperationException("Invalid entry.");
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("Invalid entry index.");
+            }
+        }
+
+        public ImmutableObject GetObject(IImmutableObjectBuilder builder)
+        {
+            if (builder == null || builder.MObject == null) return null;
+            if (builder.MObject.Model.ModelNumber != this.ModelNumber)
+            {
+                return this.GetModel(builder.MObject.Model).GetObject(builder);
+            }
+            else
+            {
+                return this.GetEntry(builder.MObject.Index).Object;
+            }
+        }
+
+        public object Get(ImmutableObject obj, ModelProperty property)
+        {
+            if (obj.Model != null && obj.Index >= 0)
+            {
+                ImmutableModel model = this.GetModel(obj.Model);
+                ImmutableEntry entry = model.GetEntry(obj.Index);
+                if (entry.Object != null)
+                {
+                    object value = null;
+                    if (entry.PropertyValues.TryGetValue(property, out value))
+                    {
+                        IImmutableModelCollection coll = value as IImmutableModelCollection;
+                        if (coll != null)
+                        {
+                            return coll.ToArray(model);
+                        }
+                        return value;
+                    }
+                }
+                return null;
+            }
+            return null;
+        }
+
+        /*
+        internal ImmutableModel(ImmutableModel oldModel, ImmutableArray<ImmutableEntry> entries)
+        {
+            this.OldModel = oldModel;
+            this.ModelNumber = this.OldModel.ModelNumber;
             this.Entries = entries;
             this.Models = oldModel.Models;
         }
 
-        private ImmutableModel(ImmutableModel oldModel, ImmutableDictionary<int, ImmutableModel> models)
+        internal ImmutableModel(ImmutableModel oldModel, ImmutableDictionary<int, ImmutableModel> models)
         {
-            this.oldModel = oldModel;
-            this.ModelNumber = this.oldModel.ModelNumber;
+            this.OldModel = oldModel;
+            this.ModelNumber = this.OldModel.ModelNumber;
             this.Entries = oldModel.Entries;
             this.Models = models;
         }
@@ -57,19 +133,6 @@ namespace MetaDslx.Core.Immutable
         public int ObjectCount
         {
             get { return this.Entries.Length; }
-        }
-
-        public ImmutableObject GetObject(ImmutableObject.Builder builder)
-        {
-            if (builder == null || builder.MObject == null) return null;
-            if (builder.MObject.MModel.ModelNumber != this.ModelNumber)
-            {
-                return this.GetModel(builder.MObject.MModel).GetObject(builder);
-            }
-            else
-            {
-                return this.GetEntry(builder.MObject.Index).Object;
-            }
         }
 
         public ImmutableModel With(ImmutableModel model)
@@ -296,8 +359,11 @@ namespace MetaDslx.Core.Immutable
             {
                 if (value == oldValue)
                 {
-                    result = this.SetOriginalValue(oldEntry, property, null, ref newModel);
-                    removed = value != null;
+                    if (oldValue != null)
+                    {
+                        result = this.SetOriginalValue(oldEntry, property, null, ref newModel);
+                        removed = value != null;
+                    }
                 }
             }
             if (removed)
@@ -336,9 +402,9 @@ namespace MetaDslx.Core.Immutable
                 {
                     return entry;
                 }
-                else if (this.oldModel != null)
+                else if (this.OldModel != null)
                 {
-                    return this.oldModel.GetEntry(index);
+                    return this.OldModel.GetEntry(index);
                 }
                 throw new InvalidOperationException("Invalid entry.");
             }
@@ -413,7 +479,7 @@ namespace MetaDslx.Core.Immutable
                 throw new IndexOutOfRangeException("Invalid entry index.");
             }
         }
-
+        */
         public Builder ToBuilder()
         {
             return new Builder(this);
@@ -426,26 +492,28 @@ namespace MetaDslx.Core.Immutable
 
         public sealed class Builder
         {
-            public ImmutableModel Model { get; private set; }
+            internal ImmutableModel OldModel { get; private set; }
+            internal ImmutableModel NewModel { get; private set; }
             private List<ImmutableEntry.Builder> changedEntries;
             private Dictionary<int, ImmutableModel.Builder> changedModels;
 
             internal Builder(ImmutableModel model)
             {
-                this.Model = model;
+                this.OldModel = model;
+                this.NewModel = new ImmutableModel(this.OldModel);
             }
 
             public int ObjectCount
             {
-                get { return this.changedEntries == null ? this.Model.Entries.Length : this.changedEntries.Count; }
+                get { return this.changedEntries == null ? this.OldModel.Entries.Length : this.changedEntries.Count; }
             }
 
             private void RequireChangedEntries()
             {
                 if (this.changedEntries == null)
                 {
-                    this.changedEntries = new List<ImmutableEntry.Builder>(Model.Entries.Length);
-                    for (int i = 0; i < Model.Entries.Length; i++)
+                    this.changedEntries = new List<ImmutableEntry.Builder>(OldModel.Entries.Length);
+                    for (int i = 0; i < OldModel.Entries.Length; i++)
                     {
                         this.changedEntries.Add(null);
                     }
@@ -465,15 +533,15 @@ namespace MetaDslx.Core.Immutable
                 this.RequireChangedEntries();
                 if (this.changedEntries[index] == null)
                 {
-                    this.changedEntries[index] = this.Model.Entries[index].ToBuilder(this);
+                    this.changedEntries[index] = this.OldModel.Entries[index].ToBuilder(this);
                 }
                 return this.changedEntries[index];
             }
 
-            public ImmutableModel.Builder GetModel(ImmutableModel model)
+            public ImmutableModel.Builder GetModelBuilder(ImmutableModel model)
             {
                 if (model == null) return null;
-                if (model.ModelNumber == this.Model.ModelNumber) return this;
+                if (model.ModelNumber == this.OldModel.ModelNumber) return this;
                 this.RequireChangedModels();
                 ImmutableModel.Builder modelBuilder = null;
                 if (!this.changedModels.TryGetValue(model.ModelNumber, out modelBuilder))
@@ -484,22 +552,41 @@ namespace MetaDslx.Core.Immutable
                 return modelBuilder;
             }
 
-            public ImmutableObject.Builder GetObject(ImmutableObject obj)
+            public ImmutableModel GetNewModel(ImmutableModel model)
             {
-                if (obj.MModel.ModelNumber == this.Model.ModelNumber)
+                if (model == null) return null;
+                if (model.ModelNumber == this.OldModel.ModelNumber) return this.NewModel;
+                this.RequireChangedModels();
+                ImmutableModel.Builder modelBuilder = null;
+                if (!this.changedModels.TryGetValue(model.ModelNumber, out modelBuilder))
                 {
-                    return this.GetEntry(obj.Index).Object;
+                    modelBuilder = model.ToBuilder();
+                    this.changedModels.Add(model.ModelNumber, modelBuilder);
+                }
+                return modelBuilder.NewModel;
+            }
+
+            private IImmutableObjectBuilder GetObject(int index)
+            {
+                return this.GetEntry(index).Object;
+            }
+
+            public IImmutableObjectBuilder GetObject(ImmutableObject obj)
+            {
+                if (obj.Model.ModelNumber == this.OldModel.ModelNumber)
+                {
+                    return this.GetObject(obj.Index);
                 }
                 else
                 {
-                    return this.GetModel(obj.MModel).GetObject(obj);
+                    return this.GetModelBuilder(obj.Model).GetObject(obj);
                 }
             }
 
             internal ImmutableModel WithNewObject(ImmutableObject obj)
             {
-                if (obj == null) return this.Model;
-                if (obj.MModel != this.Model)
+                if (obj == null) return this.NewModel;
+                if (obj.Model != this.NewModel)
                 {
                     throw new ArgumentException("The new object has the wrong model.", nameof(obj));
                 }
@@ -516,18 +603,18 @@ namespace MetaDslx.Core.Immutable
                 {
                     throw new ArgumentException("The new object has the wrong index.", nameof(obj));
                 }
-                return this.Model;
+                return this.NewModel;
             }
 
             public ImmutableModel.Builder With(ImmutableModel model)
             {
                 if (model == null) return null;
-                if (model.ModelNumber == this.Model.ModelNumber) return this;
+                if (model.ModelNumber == this.OldModel.ModelNumber) return this;
                 this.RequireChangedModels();
                 ImmutableModel.Builder modelBuilder = null;
                 if (this.changedModels.TryGetValue(model.ModelNumber, out modelBuilder))
                 {
-                    if (!object.ReferenceEquals(modelBuilder.Model, model))
+                    if (!object.ReferenceEquals(modelBuilder.OldModel, model))
                     {
                         throw new ArgumentException("The builder already contains a builder for another version of the model.", nameof(model));
                     }
@@ -540,61 +627,44 @@ namespace MetaDslx.Core.Immutable
                 return modelBuilder;
             }
 
-            public void With(ImmutableObject.Builder builder, ModelProperty property, object value)
-            {
-                if (builder == null || builder.MObject == null) return;
-                if (property == null) return;
-                if (builder.MModelBuilder != this)
-                {
-                    throw new ArgumentException("The object should be changed through it's own model builder.", nameof(Model));
-                }
-                this.Add(builder, property, value, true);
-            }
-
-            public void Without(ImmutableObject.Builder builder, ModelProperty property, object value)
-            {
-                if (builder == null || builder.MObject == null) return;
-                if (property == null) return;
-                if (builder.MModelBuilder != this)
-                {
-                    throw new ArgumentException("The object should be changed through it's own model builder.", nameof(Model));
-                }
-                this.Remove(builder, property, value, true);
-            }
-
-            public object Get(ImmutableObject.Builder builder, ModelProperty property)
+            public object Get(IImmutableObjectBuilder builder, ModelProperty property)
             {
                 if (builder == null || builder.MObject == null || builder.MModelBuilder == null) return null;
                 if (builder.MModelBuilder != this)
                 {
                     return builder.MModelBuilder.Get(builder, property);
                 }
-                object valueBuilder = null;
                 int index = builder.MObject.Index;
+                return this.Get(index, property);
+            }
+
+            public object Get(int index, ModelProperty property)
+            {
+                object valueBuilder = null;
                 var entryBuilder = this.GetEntry(index);
-                if (entryBuilder.ChangedPropertyValues.TryGetValue(property, out valueBuilder))
+                if (entryBuilder.PropertyValues.TryGetValue(property, out valueBuilder))
                 {
                     return valueBuilder;
                 }
-                else if (index >= 0 && index < this.Model.Entries.Length)
+                else if (index >= 0 && index < this.OldModel.Entries.Length)
                 {
                     object value = null;
-                    ImmutableEntry oldEntry = this.Model.Entries[index];
+                    ImmutableEntry oldEntry = this.OldModel.Entries[index];
                     if (oldEntry.PropertyValues.TryGetValue(property, out value))
                     {
                         if (value == null) return null;
                         ImmutableObject obj = value as ImmutableObject;
                         if (obj != null)
                         {
-                            valueBuilder = obj.ToBuilder(this.GetModel(obj.MModel));
-                            entryBuilder.ChangedPropertyValues.Add(property, valueBuilder);
+                            valueBuilder = obj.ToBuilder(this.GetModelBuilder(obj.Model));
+                            entryBuilder.PropertyValues.Add(property, valueBuilder);
                             return valueBuilder;
                         }
                         IImmutableModelCollection coll = value as IImmutableModelCollection;
                         if (coll != null)
                         {
                             valueBuilder = coll.ToBuilder(entryBuilder, property);
-                            entryBuilder.ChangedPropertyValues.Add(property, valueBuilder);
+                            entryBuilder.PropertyValues.Add(property, valueBuilder);
                             return valueBuilder;
                         }
                         return value;
@@ -607,73 +677,330 @@ namespace MetaDslx.Core.Immutable
                 return null;
             }
 
-            public void Set(ImmutableObject.Builder builder, ModelProperty property, object value)
+            public void Set(IImmutableObjectBuilder builder, ModelProperty property, object newValue)
             {
-
+                if (builder == null || builder.MObject == null || builder.MModelBuilder == null) return;
+                if (builder.MModelBuilder != this)
+                {
+                    builder.MModelBuilder.Set(builder, property, newValue);
+                    return;
+                }
+                int index = builder.MObject.Index;
+                this.Set(index, property, newValue);
             }
 
-            internal void Add(ImmutableObject.Builder builder, ModelProperty property, object value, bool firstCall)
+            public void Set(int index, ModelProperty property, object newValue)
             {
-
+                object oldValue = null;
+                var entryBuilder = this.GetEntry(index);
+                if (entryBuilder.PropertyValues.TryGetValue(property, out oldValue))
+                {
+                    if (newValue == oldValue) return;
+                    if (oldValue is IImmutableModelCollectionBuilder || newValue is IImmutableModelCollectionBuilder)
+                    {
+                        throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
+                    }
+                    else if (property.IsReadonly)
+                    {
+                        throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a readonly property '" + property.ToString() + "'.");
+                    }
+                }
+                if (newValue is IImmutableModelCollectionBuilder)
+                {
+                    entryBuilder.PropertyValues[property] = newValue;
+                }
+                else
+                {
+                    this.Add(index, property, newValue, true);
+                }
             }
 
-            internal void Remove(ImmutableObject.Builder builder, ModelProperty property, object value, bool firstCall)
+            private bool SetOriginalValue(int index, ModelProperty property, object value)
             {
+                object oldValue = null;
+                var entryBuilder = this.GetEntry(index);
+                if (entryBuilder.PropertyValues.TryGetValue(property, out oldValue))
+                {
+                    if (value == oldValue) return false;
+                }
+                entryBuilder.PropertyValues[property] = value;
+                return true;
+            }
 
+            internal bool Add(IImmutableObjectBuilder builder, ModelProperty property, object value, bool firstCall = true)
+            {
+                if (builder == null || builder.MObject == null || builder.MModelBuilder == null) return false;
+                if (builder.MModelBuilder != this)
+                {
+                    return builder.MModelBuilder.Add(builder, property, value);
+                }
+                return this.Add(builder.MObject.Index, property, value, firstCall);
+            }
+
+            private bool Add(int index, ModelProperty property, object value, bool firstCall)
+            {
+                bool result = false;
+                bool added = false;
+                object oldValue = this.Get(index, property);
+                IImmutableModelCollectionBuilder collection = oldValue as IImmutableModelCollectionBuilder;
+                if (collection != null)
+                {
+                    IImmutableObjectBuilder valueBuilder = value as IImmutableObjectBuilder;
+                    object itemValue = valueBuilder != null ? valueBuilder.MObject : value;
+                    if (value != null && collection.Add(itemValue, false))
+                    {
+                        added = true;
+                    }
+                    else if (value != null && firstCall)
+                    {
+                        added = true;
+                    }
+                }
+                else
+                {
+                    if (value != oldValue)
+                    {
+                        if (oldValue != null)
+                        {
+                            this.Remove(index, property, oldValue, false);
+                        }
+                        result = this.SetOriginalValue(index, property, value);
+                        added = value != null;
+                    }
+                    else
+                    {
+                        added = value != null && firstCall;
+                    }
+                }
+                if (added)
+                {
+                    List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
+                    if (cachedOppositeProperties.Count > 0)
+                    {
+                        IImmutableObjectBuilder oppositeObject = value as IImmutableObjectBuilder;
+                        if (oppositeObject != null)
+                        {
+                            object thisObject = this.GetObject(index);
+                            List<ModelProperty> allOppositeProperies = oppositeObject.MObject.MGetAllProperties().ToList();
+                            foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
+                            {
+                                if (allOppositeProperies.Contains(oppositeProperty))
+                                {
+                                    result |= this.Add(oppositeObject, oppositeProperty, thisObject, false);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            throw new ModelException("Error adding the current object " + this.GetType().Name + "." + property.Name + " to the opposite object. The current object must be a descendant of " + typeof(IImmutableObjectBuilder) + ".");
+                        }
+                    }
+                }
+                return result;
+            }
+
+            internal bool Remove(IImmutableObjectBuilder builder, ModelProperty property, object value, bool firstCall = true)
+            {
+                if (builder == null || builder.MObject == null || builder.MModelBuilder == null) return false;
+                if (builder.MModelBuilder != this)
+                {
+                    return builder.MModelBuilder.Add(builder, property, value);
+                }
+                return this.Remove(builder.MObject.Index, property, value, firstCall);
+            }
+
+            private bool Remove(int index, ModelProperty property, object value, bool firstCall)
+            {
+                bool result = false;
+                bool removed = false;
+                object oldValue = this.Get(index, property);
+                IImmutableModelCollectionBuilder collection = oldValue as IImmutableModelCollectionBuilder;
+                if (collection != null)
+                {
+                    IImmutableObjectBuilder valueBuilder = value as IImmutableObjectBuilder;
+                    object itemValue = valueBuilder != null ? valueBuilder.MObject : value;
+                    if (value != null && collection.Remove(itemValue, false))
+                    {
+                        removed = true;
+                    }
+                    else if (value != null && firstCall)
+                    {
+                        removed = true;
+                    }
+                }
+                else
+                {
+                    if (value == oldValue)
+                    {
+                        if (oldValue != null)
+                        {
+                            result = this.SetOriginalValue(index, property, null);
+                            removed = value != null;
+                        }
+                    }
+                }
+                if (removed)
+                {
+                    List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
+                    if (cachedOppositeProperties.Count > 0)
+                    {
+                        IImmutableObjectBuilder oppositeObject = value as IImmutableObjectBuilder;
+                        if (oppositeObject != null)
+                        {
+                            object thisObject = this.GetObject(index);
+                            List<ModelProperty> allOppositeProperies = oppositeObject.MObject.MGetAllProperties().ToList();
+                            foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
+                            {
+                                if (allOppositeProperies.Contains(oppositeProperty))
+                                {
+                                    result |= this.Remove(oppositeObject, oppositeProperty, thisObject, false);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            throw new ModelException("Error adding the current object " + this.GetType().Name + "." + property.Name + " to the opposite object. The current object must be a descendant of " + typeof(IImmutableObjectBuilder) + ".");
+                        }
+                    }
+                }
+                return result;
             }
 
             public ImmutableModel ToImmutable()
             {
-                return this.Model;
+                ImmutableModel result = this.NewModel;
+                ImmutableList<ImmutableEntry>.Builder entriesBuilder = ImmutableList<ImmutableEntry>.Empty.ToBuilder();
+                ImmutableDictionary<int, ImmutableModel>.Builder modelsBuilder = this.OldModel.Models.ToBuilder();
+                for (int i = 0; i < this.changedEntries.Count; i++)
+                {
+                    ImmutableEntry.Builder entryBuilder = this.changedEntries[i];
+                    if (entryBuilder != null)
+                    {
+                        ImmutableObject obj = entryBuilder.Object.ToImmutable();
+                        ImmutableDictionary<ModelProperty, object>.Builder propertyValues = ImmutableDictionary<ModelProperty, object>.Empty.ToBuilder(); 
+                        if (i < this.OldModel.Entries.Length)
+                        {
+                            propertyValues = this.OldModel.Entries[i].PropertyValues.ToBuilder();
+                        }
+                        foreach (var propValue in entryBuilder.PropertyValues)
+                        {
+                            object value = propValue.Value;
+                            IImmutableObjectBuilder objBuilder = value as IImmutableObjectBuilder;
+                            if (objBuilder != null)
+                            {
+                                value = objBuilder.ToImmutable();
+                            }
+                            else
+                            {
+                                IImmutableModelCollectionBuilder collBuilder = value as IImmutableModelCollectionBuilder;
+                                if (collBuilder != null)
+                                {
+                                    value = collBuilder.ToImmutable();
+                                }
+                            }
+                            propertyValues[propValue.Key] = value;
+                        }
+                        ImmutableEntry entry = new ImmutableEntry(obj, propertyValues.ToImmutable());
+                        entriesBuilder.Add(entry);
+                    }
+                    else
+                    {
+                        ImmutableObject obj = this.OldModel.Entries[i].Object.MWithModel(result);
+                        ImmutableEntry entry = new ImmutableEntry(obj, this.OldModel.Entries[i].PropertyValues);
+                        entriesBuilder.Add(entry);
+                    }
+                }
+                result.Entries = entriesBuilder.ToImmutableArray();
+                // TODO:
+                /*
+                foreach (var modelIndex in this.changedModels.Keys)
+                {
+                    modelsBuilder[modelIndex] = this.changedModels[modelIndex].ToImmutable();
+                }
+                */
+                return result;
             }
         }
     }
 
+    public interface IImmutableObjectBuilder
+    {
+        ImmutableModel.Builder MModelBuilder { get; }
+        ImmutableObject MObject { get; }
+        ImmutableObject ToImmutable();
+    }
 
     public abstract class ImmutableObject
     {
+        protected ImmutableObject(ImmutableModel model, ImmutableObject oldObject)
+        {
+            this.Index = oldObject.Index;
+            this.model = model;
+        }
+
         protected ImmutableObject(ref ImmutableModel model)
         {
-            this.MetaID = Guid.NewGuid().ToString();
-            this.Index = model.ObjectCount;
-            this.model = model;
-            this.model = model.WithNewObject(this);
+            ImmutableModel newModel = new ImmutableModel(model);
+            newModel.Entries = model.Entries.Add(new ImmutableEntry(this));
+            model = newModel;
         }
 
         protected ImmutableObject(ImmutableModel.Builder modelBuilder)
         {
-            this.MetaID = Guid.NewGuid().ToString();
             this.Index = modelBuilder.ObjectCount;
-            this.model = modelBuilder.Model;
+            this.model = modelBuilder.NewModel;
             this.model = modelBuilder.WithNewObject(this);
         }
 
         private ImmutableModel model;
-
-        public string MetaID { get; private set; }
         internal int Index { get; private set; }
-        public ImmutableModel MModel
+
+        internal ImmutableModel Model
         {
             get
             {
                 return this.model;
             }
         }
+
+        public ImmutableModel MModel
+        {
+            get
+            {
+                return this.model.GetModel(this.model);
+            }
+        }
         
         public IEnumerable<ModelProperty> MGetAllProperties()
         {
-            return new ModelProperty[0];
+            return ModelProperty.GetAllPropertiesForType(this.GetType());
         }
-        internal Builder ToBuilder(ImmutableModel.Builder modelBuilder)
+
+        public abstract ImmutableObject MWithModel(ImmutableModel model);
+
+        internal IImmutableObjectBuilder ToBuilder(ImmutableModel.Builder modelBuilder)
         {
             return this.CreateBuilder(modelBuilder);
         }
-        protected abstract Builder CreateBuilder(ImmutableModel.Builder modelBuilder);
 
-        public class Builder
+        protected abstract IImmutableObjectBuilder CreateBuilder(ImmutableModel.Builder modelBuilder);
+
+        public override bool Equals(object obj)
         {
-            internal ImmutableModel.Builder MModelBuilder { get; private set; }
-            internal ImmutableObject MObject { get; private set; }
+            ImmutableObject rhs = obj as ImmutableObject;
+            if (rhs == null) return false;
+            return this.Model.ModelNumber == rhs.Model.ModelNumber && this.Index == rhs.Index;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Model.ModelNumber ^ this.Index;
+        }
+
+        public abstract class Builder : IImmutableObjectBuilder
+        {
+            public ImmutableModel.Builder MModelBuilder { get; private set; }
+            public ImmutableObject MObject { get; private set; }
 
             public Builder(ImmutableModel.Builder modelBuilder, ImmutableObject obj)
             {
@@ -683,12 +1010,12 @@ namespace MetaDslx.Core.Immutable
 
             public void MAdd(ModelProperty property, object value)
             {
-                this.MModelBuilder.Add(this, property, value, true);
+                this.MModelBuilder.Add(this, property, value);
             }
 
             public void MRemove(ModelProperty property, object value)
             {
-                this.MModelBuilder.Remove(this, property, value, true);
+                this.MModelBuilder.Remove(this, property, value);
             }
 
             public object MGet(ModelProperty property)
@@ -699,6 +1026,22 @@ namespace MetaDslx.Core.Immutable
             public void MSet(ModelProperty property, object value)
             {
                 this.MModelBuilder.Set(this, property, value);
+            }
+
+            public abstract ImmutableObject ToImmutable();
+
+            public override bool Equals(object obj)
+            {
+                ImmutableObject io = obj as ImmutableObject;
+                if (io != null) return io.Equals(this.MObject);
+                Builder builder = obj as Builder;
+                if (builder != null) return this.MObject.Equals(builder.MObject);
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return this.MObject.GetHashCode();
             }
         }
     }
@@ -713,8 +1056,9 @@ namespace MetaDslx.Core.Immutable
 
     internal interface IImmutableModelCollectionBuilder
     {
-        void Add(object value);
-        void Remove(object value);
+        bool Add(object value, bool firstCall);
+        bool Remove(object value, bool firstCall);
+        IImmutableModelCollection ToImmutable();
     }
 
     public sealed class ImmutableModelList<T> : IImmutableModelCollection, IImmutableList<T>
@@ -879,17 +1223,55 @@ namespace MetaDslx.Core.Immutable
                 get { return this.items.Count; }
             }
 
-            public void Add(object value)
+            public void Add(T value)
             {
-                ImmutableObject.Builder obj = this.EntryBuilder.Object;
-                obj.MModelBuilder.Add(obj, this.Property, value, true);
+                ((IImmutableModelCollectionBuilder)this).Add(value, true);
             }
 
-            public void Remove(object value)
+            public void Remove(T value)
             {
-                ImmutableObject.Builder obj = this.EntryBuilder.Object;
-                obj.MModelBuilder.Remove(obj, this.Property, value, true);
+                ((IImmutableModelCollectionBuilder)this).Remove(value, true);
             }
+
+            bool IImmutableModelCollectionBuilder.Add(object value, bool firstCall)
+            {
+                IImmutableObjectBuilder builder = value as IImmutableObjectBuilder;
+                if (builder != null)
+                {
+                    value = builder.MObject;
+                }
+                if (!this.items.Contains(value))
+                {
+                    this.items.Add((T)value);
+                    if (firstCall)
+                    {
+                        IImmutableObjectBuilder obj = this.EntryBuilder.Object;
+                        obj.MModelBuilder.Add(obj, this.Property, value);
+                    }
+                    return true;
+                }
+                return false;
+            }
+
+            bool IImmutableModelCollectionBuilder.Remove(object value, bool firstCall)
+            {
+                if (this.items.Remove((T)value))
+                {
+                    if (firstCall)
+                    {
+                        IImmutableObjectBuilder obj = this.EntryBuilder.Object;
+                        obj.MModelBuilder.Remove(obj, this.Property, value);
+                    }
+                    return true;
+                }
+                return false;
+            }
+
+            IImmutableModelCollection IImmutableModelCollectionBuilder.ToImmutable()
+            {
+                return new ImmutableModelList<T>(this.items.ToImmutable());
+            }
+
         }
     }
 
@@ -922,19 +1304,7 @@ namespace MetaDslx.Core.Immutable
                 if (index >= 0 && index < this.List.Count)
                 {
                     ImmutableObject item = this.List[index] as ImmutableObject;
-                    ImmutableModel model = item.MModel;
-                    if (model.ModelNumber == this.Model.ModelNumber)
-                    {
-                        model = this.Model;
-                    }
-                    else if (this.Model.Models != ImmutableDictionary<int, ImmutableModel>.Empty)
-                    {
-                        ImmutableModel newModel = null;
-                        if (this.Model.Models.TryGetValue(item.MModel.ModelNumber, out newModel))
-                        {
-                            model = newModel;
-                        }
-                    }
+                    ImmutableModel model = this.Model.GetModel(item.Model);
                     return model.GetEntry(item.Index).Object as T;
                 }
                 else
@@ -1019,13 +1389,13 @@ namespace MetaDslx.Core.Immutable
 
         public sealed class Builder
         {
-            internal ImmutableObject.Builder Object { get; set; }
-            internal ImmutableDictionary<ModelProperty, object>.Builder ChangedPropertyValues { get; set; }
+            internal IImmutableObjectBuilder Object { get; set; }
+            internal ImmutableDictionary<ModelProperty, object>.Builder PropertyValues { get; set; }
 
             internal Builder(ImmutableModel.Builder modelBuilder, ImmutableEntry entry)
             {
                 this.Object = entry.Object.ToBuilder(modelBuilder);
-                this.ChangedPropertyValues = entry.PropertyValues.ToBuilder();
+                this.PropertyValues = ImmutableDictionary<ModelProperty, object>.Empty.ToBuilder();
             }
         }
     }

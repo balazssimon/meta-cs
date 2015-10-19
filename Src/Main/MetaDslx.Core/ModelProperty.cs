@@ -359,6 +359,10 @@ namespace MetaDslx.Core
             {
                 result.UnionWith(propertyList.Values);
             }
+            if (owningType.BaseType != null && owningType.BaseType != typeof(ModelObject))
+            {
+                result.UnionWith(ModelProperty.GetAllPropertiesForType(owningType.BaseType));
+            }
             foreach (var super in owningType.GetInterfaces())
             {
                 result.UnionWith(ModelProperty.GetAllPropertiesForType(super));
