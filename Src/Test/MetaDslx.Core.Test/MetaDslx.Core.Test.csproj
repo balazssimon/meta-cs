@@ -45,7 +45,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -58,6 +60,8 @@
     <Compile Include="OneToManyPropertyTest.cs" />
     <Compile Include="ManyToManyPropertyTest.cs" />
     <Compile Include="CrossInheritancePropertyTest.cs" />
+    <Compile Include="ImmutableTestModel.cs" />
+    <Compile Include="ImmutableMetaModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj">

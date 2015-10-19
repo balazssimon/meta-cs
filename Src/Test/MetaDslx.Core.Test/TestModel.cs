@@ -151,6 +151,7 @@ namespace MetaDslx.Core.Test
             this.MSet(Student.DogsProperty, new ModelSet<Dog>(this, Student.DogsProperty));
         }
 
+        [RedefinesAttribute(typeof(Person), "Pets")]
         [OppositeAttribute(typeof(Dog), "Friend")]
         public static readonly ModelProperty DogsProperty =
             ModelProperty.Register("Dogs", typeof(ModelSet<Dog>), typeof(Student));
@@ -184,6 +185,7 @@ namespace MetaDslx.Core.Test
         {
         }
 
+        [RedefinesAttribute(typeof(Pet), "Owner")]
         [OppositeAttribute(typeof(Student), "Dogs")]
         public static readonly ModelProperty FriendProperty =
             ModelProperty.Register("Friend", typeof(Student), typeof(Dog));
