@@ -73,9 +73,16 @@ namespace MetaDslx.Core
                 object item = this.items[index];
                 this.items[index] = null;
                 this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
-                item = value;
-                this.items[index] = value;
-                this.Owner.MOnAddValue(this.OwnerProperty, item, true);
+                if (this.items.Contains(value))
+                {
+                    this.items.RemoveAt(index);
+                }
+                else
+                {
+                    item = value;
+                    this.items[index] = value;
+                    this.Owner.MOnAddValue(this.OwnerProperty, item, true);
+                }
             }
         }
 

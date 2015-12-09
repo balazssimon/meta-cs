@@ -131,7 +131,7 @@ namespace MetaDslx.Core
             object oldValue;
             if (this.values.TryGetValue(property, out oldValue))
             {
-                if (oldValue is ModelCollection)
+                if (property.IsCollection && oldValue is ModelCollection)
                 {
                     ((ModelCollection)oldValue).Clear();
                 }
@@ -154,7 +154,7 @@ namespace MetaDslx.Core
             object oldValue;
             if (this.values.TryGetValue(property, out oldValue))
             {
-                if (oldValue is ModelCollection)
+                if (property.IsCollection)
                 {
                     throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
                 }
@@ -209,7 +209,7 @@ namespace MetaDslx.Core
             if (this.values.TryGetValue(property, out oldValue))
             {
                 if (newValue == oldValue) return;
-                if (oldValue is ModelCollection || newValue is ModelCollection)
+                if (property.IsCollection)
                 {
                     throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
                 }
@@ -494,10 +494,10 @@ namespace MetaDslx.Core
             {
                 if (property.IsContainment)
                 {
-                    ModelObject mofObjectValue = value as ModelObject;
-                    if (mofObjectValue != null)
+                    ModelObject modelObjectValue = value as ModelObject;
+                    if (modelObjectValue != null)
                     {
-                        mofObjectValue.MParent = null;
+                        modelObjectValue.MParent = null;
                     }
                 }
 
@@ -555,23 +555,6 @@ namespace MetaDslx.Core
             }
         }
 
-        public override string ToString()
-        {
-            string typeName = this.GetType().Name;
-            if (typeName.EndsWith("Impl")) typeName = typeName.Substring(0, typeName.Length - 4);
-            string name = this.MetaID;
-            if (this.nameProperty != null)
-            {
-                object nameValue = this.MGet(this.nameProperty);
-                if (nameValue != null)
-                {
-                    name = nameValue.ToString();
-                    return typeName + "(" + name + ")"; 
-                }
-            }
-            return typeName + "[" + name + "]";
-        }
-
         private ModelObject parent;
         private HashSet<ModelObject> children = new HashSet<ModelObject>();
 
@@ -611,6 +594,23 @@ namespace MetaDslx.Core
             }
         }
 
+        public override string ToString()
+        {
+            string typeName = this.GetType().Name;
+            if (typeName.EndsWith("Impl")) typeName = typeName.Substring(0, typeName.Length - 4);
+            string name = this.MetaID;
+            if (this.nameProperty != null)
+            {
+                object nameValue = this.MGet(this.nameProperty);
+                if (nameValue != null)
+                {
+                    name = nameValue.ToString();
+                    return typeName + "(" + name + ")";
+                }
+            }
+            return typeName + "[" + name + "]";
+        }
+
         private HashSet<ModelObject> FindAllObjectsByID(string ID)
         {
             HashSet<ModelObject> result = new HashSet<ModelObject>();
@@ -624,6 +624,11 @@ namespace MetaDslx.Core
                 result.UnionWith(childResults);
             }
             return result;
+        }
+
+        public HashSet<ModelObject> MFindAllObjectsByID(string ID)
+        {
+            return this.FindAllObjectsByID(ID);
         }
 
         public ModelObject MFindObjectByID(string ID)

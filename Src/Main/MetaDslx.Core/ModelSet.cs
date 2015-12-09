@@ -157,7 +157,7 @@ namespace MetaDslx.Core
         {
             if (ownerProperty.OppositeProperties.Count() > 0)
             {
-                throw new InvalidOperationException("Multi sets cannot have opposite properties.");
+                throw new ModelException("Multi sets cannot have opposite properties.");
             }
             this.items = new List<T>();
         }
@@ -167,7 +167,7 @@ namespace MetaDslx.Core
         {
             if (ownerProperty.OppositeProperties.Count() > 0)
             {
-                throw new InvalidOperationException("Multi sets cannot have opposite properties.");
+                throw new ModelException("Multi sets cannot have opposite properties.");
             }
             this.items = new List<T>();
             foreach (var value in values)

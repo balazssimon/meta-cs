@@ -10,7 +10,6 @@ namespace MetaDslx.Core
 {
     public class ModelProperty
     {
-        private static readonly PropertyCache emptyPropertyCache = new PropertyCache();
         private static Dictionary<System.Type, Dictionary<string, ModelProperty>> declaredProperties;
         private static Dictionary<System.Type, Dictionary<string, ModelProperty>> properties;
         private static Dictionary<System.Type, PropertyCache> cachedProperties;
@@ -282,31 +281,6 @@ namespace MetaDslx.Core
             return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", owningType, null));
         }
 
-        public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName)
-        {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, owningType, null));
-        }
-
-        public static ModelProperty Register(string name, System.Type type, System.Type owningType, System.Type declaringType)
-        {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", declaringType, null));
-        }
-
-        public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName, System.Type declaringType)
-        {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, declaringType, null));
-        }
-
-        public static ModelProperty Register(string name, System.Type type, System.Type owningType, Lazy<MetaProperty> metaProperty)
-        {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", owningType, metaProperty));
-        }
-
-        public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName, Lazy<MetaProperty> metaProperty)
-        {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, owningType, metaProperty));
-        }
-
         public static ModelProperty Register(string name, System.Type type, System.Type owningType, System.Type declaringType, Lazy<MetaProperty> metaProperty)
         {
             return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", declaringType, metaProperty));
@@ -353,7 +327,7 @@ namespace MetaDslx.Core
                 }
                 foreach (var super in type.GetInterfaces())
                 {
-                    allProperties.UnionWith(ModelProperty.GetAllPropertiesForType(super));
+                    allProperties.UnionWith(ModelProperty.GetCachedProperties(super).AllProperties);
                 }
                 propertyCache.AllProperties.AddRange(allProperties);
             }
