@@ -276,9 +276,9 @@ namespace MetaDslx.Core
             return null;
         }
 
-        public IEnumerable<ModelProperty> MGetAllProperties()
+        public ISet<ModelProperty> MGetAllProperties()
         {
-            HashSet<ModelProperty> result = new HashSet<ModelProperty>();
+            HashSet<ModelProperty> result = new HashSet<ModelProperty>(ModelProperty.GetAllPropertiesForType(this.GetType()));
             foreach (ModelProperty prop in this.values.Keys)
             {
                 result.Add(prop);
@@ -287,8 +287,6 @@ namespace MetaDslx.Core
             {
                 result.Add(prop);
             }
-            Type type = this.GetType();
-            result.UnionWith(ModelProperty.GetAllPropertiesForType(type));
             return result;
         }
 
@@ -414,8 +412,8 @@ namespace MetaDslx.Core
                     }
                 }
 
-                List<ModelProperty> allProperies = this.MGetAllProperties().ToList();
-                List<ModelProperty> cachedSubsettedProperties = property.SubsettedProperties.ToList();
+                var allProperies = this.MGetAllProperties();
+                var cachedSubsettedProperties = property.SubsettedProperties;
                 foreach (ModelProperty subsettedProperty in cachedSubsettedProperties)
                 {
                     if (allProperies.Contains(subsettedProperty))
@@ -425,7 +423,7 @@ namespace MetaDslx.Core
                 }
                 if (addRemoveDir != AddRemoveDirection.Redefined)
                 {
-                    List<ModelProperty> cachedRedefiningProperties = property.RedefiningProperties.ToList();
+                    var cachedRedefiningProperties = property.RedefiningProperties;
                     foreach (ModelProperty redefiningProperty in cachedRedefiningProperties)
                     {
                         if (allProperies.Contains(redefiningProperty))
@@ -436,7 +434,7 @@ namespace MetaDslx.Core
                 }
                 if (addRemoveDir != AddRemoveDirection.Redefining)
                 {
-                    List<ModelProperty> cachedRedefinedProperties = property.RedefinedProperties.ToList();
+                    var cachedRedefinedProperties = property.RedefinedProperties;
                     foreach (ModelProperty redefinedProperty in cachedRedefinedProperties)
                     {
                         if (allProperies.Contains(redefinedProperty))
@@ -445,13 +443,13 @@ namespace MetaDslx.Core
                         }
                     }
                 }
-                List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
-                if (cachedOppositeProperties.Count > 0)
+                var cachedOppositeProperties = property.OppositeProperties;
+                if (cachedOppositeProperties.Any())
                 {
                     ModelObject oppositeObject = value as ModelObject;
                     if (oppositeObject != null)
                     {
-                        List<ModelProperty> allOppositeProperies = oppositeObject.MGetAllProperties().ToList();
+                        var allOppositeProperies = oppositeObject.MGetAllProperties();
                         foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
                         {
                             if (allOppositeProperies.Contains(oppositeProperty))
@@ -462,7 +460,7 @@ namespace MetaDslx.Core
                     }
                     else
                     {
-                        throw new ModelException("Error adding the current object " + this.GetType().Name + "." + property.Name + " to the opposite object. The current object must be a descendant of " + typeof(ModelObject) + ".");
+                        throw new ModelException("Error adding the current object " + this.GetType().Name + "." + property.Name + " to the opposite object. The current value must be a descendant of " + typeof(ModelObject) + ".");
                     }
                 }
             }
@@ -502,38 +500,56 @@ namespace MetaDslx.Core
                         mofObjectValue.MParent = null;
                     }
                 }
-                List<ModelProperty> cachedSubsettingProperties = property.SubsettingProperties.ToList();
+
+                var allProperies = this.MGetAllProperties();
+                var cachedSubsettingProperties = property.SubsettingProperties;
                 foreach (ModelProperty subsettingProperty in cachedSubsettingProperties)
                 {
-                    this.MOnRemoveValue(subsettingProperty, value, true);
+                    if (allProperies.Contains(subsettingProperty))
+                    {
+                        this.MOnRemoveValue(subsettingProperty, value, true);
+                    }
                 }
                 if (addRemoveDir != AddRemoveDirection.Redefined)
                 {
-                    List<ModelProperty> cachedRedefiningProperties = property.RedefiningProperties.ToList();
+                    var cachedRedefiningProperties = property.RedefiningProperties;
                     foreach (ModelProperty redefiningProperty in cachedRedefiningProperties)
                     {
-                        this.MOnRemoveValue(redefiningProperty, value, true, AddRemoveDirection.Redefining);
+                        if (allProperies.Contains(redefiningProperty))
+                        {
+                            this.MOnRemoveValue(redefiningProperty, value, true, AddRemoveDirection.Redefining);
+                        }
                     }
                 }
                 if (addRemoveDir != AddRemoveDirection.Redefining)
                 {
-                    List<ModelProperty> cachedRedefinedProperties = property.RedefinedProperties.ToList();
+                    var cachedRedefinedProperties = property.RedefinedProperties;
                     foreach (ModelProperty redefinedProperty in cachedRedefinedProperties)
                     {
-                        this.MOnRemoveValue(redefinedProperty, value, true, AddRemoveDirection.Redefined);
+                        if (allProperies.Contains(redefinedProperty))
+                        {
+                            this.MOnRemoveValue(redefinedProperty, value, true, AddRemoveDirection.Redefined);
+                        }
                     }
                 }
-                List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
-                foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
+                var cachedOppositeProperties = property.OppositeProperties;
+                if (cachedOppositeProperties.Any())
                 {
                     ModelObject oppositeObject = value as ModelObject;
                     if (oppositeObject != null)
                     {
-                        oppositeObject.MOnRemoveValue(oppositeProperty, this, false);
+                        var allOppositeProperies = oppositeObject.MGetAllProperties();
+                        foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
+                        {
+                            if (allOppositeProperies.Contains(oppositeProperty))
+                            {
+                                oppositeObject.MOnRemoveValue(oppositeProperty, this, false);
+                            }
+                        }
                     }
                     else
                     {
-                        throw new ModelException("Error removing value of " + this.GetType().Name + "." + property.Name + ": the value of the opposite property "+oppositeProperty+" must be a descendant of " + typeof(ModelObject) + ".");
+                        throw new ModelException("Error removing value of " + this.GetType().Name + "." + property.Name + " from the opposite object. The current value must be a descendant of " + typeof(ModelObject) + ".");
                     }
                 }
             }
