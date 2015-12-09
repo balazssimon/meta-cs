@@ -45,6 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImmutableMetaModelGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
+    </Compile>
     <Compile Include="Immutable\ImmutableModel.cs" />
     <Compile Include="MetaImplementation.cs" />
     <Compile Include="MetaModel.cs">
@@ -70,6 +75,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ImmutableMetaModelGenerator.mgen">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
+    </None>
     <None Include="MetaDslxKey.snk" />
     <None Include="MetaModel.mm">
       <Generator>MetaModelGenerator</Generator>

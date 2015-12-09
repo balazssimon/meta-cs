@@ -309,6 +309,14 @@ namespace MetaDslx.Core
 
     internal static class MetaModelExtensions
     {
+        private const string ImmutablePrefix = "Immutable";
+
+        private static string GetPrefix(bool immutable)
+        {
+            if (immutable) return ImmutablePrefix;
+            else return string.Empty;
+        }
+
         public static bool HasSameMetaModel(this ModelObject @this, ModelObject mobj)
         {
             if (@this == null || @this.MMetaModel == null) return false;
@@ -316,12 +324,13 @@ namespace MetaDslx.Core
             return @this.MMetaModel == mobj.MMetaModel;
         }
 
-        public static string CSharpName(this MetaNamespace @this)
+        public static string CSharpName(this MetaNamespace @this, bool immutable = false)
         {
             if (@this == null) return string.Empty;
             string result = @this.Name;
+            if (immutable) result += "." + ImmutablePrefix;
             MetaNamespace parent = ((ModelObject)@this).MParent as MetaNamespace;
-            while(parent != null)
+            while (parent != null)
             {
                 result = parent.Name + "." + result;
                 parent = ((ModelObject)parent).MParent as MetaNamespace;
@@ -329,49 +338,68 @@ namespace MetaDslx.Core
             return result;
         }
 
-        public static string CSharpName(this MetaModel @this)
+        public static string CSharpName(this MetaModel @this, bool immutable = false)
         {
             if (@this == null) return string.Empty;
-            return @this.Name;
+            return GetPrefix(immutable) + @this.Name;
         }
 
-        public static string CSharpFullName(this MetaModel @this)
+        public static string CSharpFullName(this MetaModel @this, bool immutable = false)
         {
             if (@this == null) return string.Empty;
-            string nsName = @this.Namespace.CSharpName();
-            if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + "." + @this.Name;
-            else return "global::" + @this.Name;
+            string nsName = @this.Namespace.CSharpName(immutable);
+            if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + "." + GetPrefix(immutable) + @this.Name;
+            else return "global::" + GetPrefix(immutable) + @this.Name;
         }
 
-        public static string CSharpName(this MetaType @this)
+        public static string CSharpName(this MetaType @this, bool immutable = false)
         {
             if (@this == null) return string.Empty;
             MetaCollectionType collection = @this as MetaCollectionType;
             if (collection != null)
             {
                 string innerName = null;
-                if (((ModelObject)collection.InnerType).HasSameMetaModel((ModelObject)@this)) innerName = collection.InnerType.CSharpName();
-                else innerName = collection.InnerType.CSharpFullName();
-                switch (collection.Kind)
+                if (((ModelObject)collection.InnerType).HasSameMetaModel((ModelObject)@this)) innerName = collection.InnerType.CSharpName(immutable);
+                else innerName = collection.InnerType.CSharpFullName(immutable);
+                if (immutable)
                 {
-                    case MetaCollectionKind.Set:
-                        return "global::MetaDslx.Core.ModelSet<" + innerName + ">";
-                    case MetaCollectionKind.List:
-                        return "global::MetaDslx.Core.ModelList<" + innerName + ">";
-                    case MetaCollectionKind.MultiSet:
-                        return "global::MetaDslx.Core.ModelMultiSet<" + innerName + ">";
-                    case MetaCollectionKind.MultiList:
-                        return "global::MetaDslx.Core.ModelMultiList<" + innerName + ">";
-                    default:
-                        return null;
+                    switch (collection.Kind)
+                    {
+                        case MetaCollectionKind.Set:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelSet<" + innerName + ">";
+                        case MetaCollectionKind.List:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + innerName + ">";
+                        case MetaCollectionKind.MultiSet:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelMultiSet<" + innerName + ">";
+                        case MetaCollectionKind.MultiList:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelMultiList<" + innerName + ">";
+                        default:
+                            return null;
+                    }
+                }
+                else
+                {
+                    switch (collection.Kind)
+                    {
+                        case MetaCollectionKind.Set:
+                            return "global::MetaDslx.Core.ModelSet<" + innerName + ">";
+                        case MetaCollectionKind.List:
+                            return "global::MetaDslx.Core.ModelList<" + innerName + ">";
+                        case MetaCollectionKind.MultiSet:
+                            return "global::MetaDslx.Core.ModelMultiSet<" + innerName + ">";
+                        case MetaCollectionKind.MultiList:
+                            return "global::MetaDslx.Core.ModelMultiList<" + innerName + ">";
+                        default:
+                            return null;
+                    }
                 }
             }
             MetaNullableType nullable = @this as MetaNullableType;
             if (nullable != null)
             {
                 string innerName = null;
-                if (((ModelObject)nullable.InnerType).HasSameMetaModel((ModelObject)@this)) innerName = nullable.InnerType.CSharpName();
-                else innerName = nullable.InnerType.CSharpFullName();
+                if (((ModelObject)nullable.InnerType).HasSameMetaModel((ModelObject)@this)) innerName = nullable.InnerType.CSharpName(immutable);
+                else innerName = nullable.InnerType.CSharpFullName(immutable);
                 return innerName + "?";
             }
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
@@ -379,34 +407,53 @@ namespace MetaDslx.Core
             {
                 return primitive.Name;
             }
-            return ((MetaNamedElement)@this).Name;
+            return GetPrefix(immutable) + ((MetaNamedElement)@this).Name;
         }
 
-        public static string CSharpFullName(this MetaType @this)
+        public static string CSharpFullName(this MetaType @this, bool immutable = false)
         {
             if (@this == null) return string.Empty;
             MetaCollectionType collection = @this as MetaCollectionType;
             if (collection != null)
             {
-                string innerName = collection.InnerType.CSharpFullName();
-                switch (collection.Kind)
+                string innerName = collection.InnerType.CSharpFullName(immutable);
+                if (immutable)
                 {
-                    case MetaCollectionKind.Set:
-                        return "global::MetaDslx.Core.ModelSet<" + innerName + ">";
-                    case MetaCollectionKind.List:
-                        return "global::MetaDslx.Core.ModelList<" + innerName + ">";
-                    case MetaCollectionKind.MultiSet:
-                        return "global::MetaDslx.Core.ModelMultiSet<" + innerName + ">";
-                    case MetaCollectionKind.MultiList:
-                        return "global::MetaDslx.Core.ModelMultiList<" + innerName + ">";
-                    default:
-                        return null;
+                    switch (collection.Kind)
+                    {
+                        case MetaCollectionKind.Set:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelSet<" + innerName + ">";
+                        case MetaCollectionKind.List:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + innerName + ">";
+                        case MetaCollectionKind.MultiSet:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelMultiSet<" + innerName + ">";
+                        case MetaCollectionKind.MultiList:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelMultiList<" + innerName + ">";
+                        default:
+                            return null;
+                    }
+                }
+                else
+                {
+                    switch (collection.Kind)
+                    {
+                        case MetaCollectionKind.Set:
+                            return "global::MetaDslx.Core.ModelSet<" + innerName + ">";
+                        case MetaCollectionKind.List:
+                            return "global::MetaDslx.Core.ModelList<" + innerName + ">";
+                        case MetaCollectionKind.MultiSet:
+                            return "global::MetaDslx.Core.ModelMultiSet<" + innerName + ">";
+                        case MetaCollectionKind.MultiList:
+                            return "global::MetaDslx.Core.ModelMultiList<" + innerName + ">";
+                        default:
+                            return null;
+                    }
                 }
             }
             MetaNullableType nullable = @this as MetaNullableType;
             if (nullable != null)
             {
-                string innerName = nullable.InnerType.CSharpFullName();
+                string innerName = nullable.InnerType.CSharpFullName(immutable);
                 return innerName + "?";
             }
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
@@ -418,13 +465,13 @@ namespace MetaDslx.Core
             string nsName = string.Empty;
             if (decl != null)
             {
-                nsName = decl.Namespace.CSharpName();
-                if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + "." + @this.CSharpName();
-                else return @this.CSharpName();
+                nsName = decl.Namespace.CSharpName(immutable);
+                if (!string.IsNullOrEmpty(nsName)) return "global::" + nsName + "." + @this.CSharpName(immutable);
+                else return @this.CSharpName(immutable);
             }
             else
             {
-                return @this.CSharpName();
+                return GetPrefix(immutable) + @this.CSharpName();
             }
         }
 
@@ -448,14 +495,14 @@ namespace MetaDslx.Core
             return @this.CSharpFullName() + "Instance";
         }
 
-        public static string CSharpFactoryName(this MetaModel @this)
+        public static string CSharpFactoryName(this MetaModel @this, bool immutable = false)
         {
-            return @this.CSharpName() + "Factory";
+            return GetPrefix(immutable) + @this.CSharpName() + "Factory";
         }
 
-        public static string CSharpFullFactoryName(this MetaModel @this)
+        public static string CSharpFullFactoryName(this MetaModel @this, bool immutable = false)
         {
-            return @this.CSharpFullName() + "Factory";
+            return GetPrefix(immutable) + @this.CSharpFullName() + "Factory";
         }
 
         public static string CSharpFullImplementationName(this MetaModel @this)
@@ -494,9 +541,9 @@ namespace MetaDslx.Core
             return @this.Name;
         }
 
-        public static string CSharpFullFactoryMethodName(this MetaClass @this)
+        public static string CSharpFullFactoryMethodName(this MetaClass @this, bool immutable = false)
         {
-            return @this.Model.CSharpFullFactoryName() + ".Instance.Create" + @this.CSharpName();
+            return @this.Model.CSharpFullFactoryName(immutable) + ".Instance.Create" + @this.CSharpName();
         }
 
         public static string CSharpDescriptorName(this MetaDeclaration @this)
@@ -544,66 +591,92 @@ namespace MetaDslx.Core
             return @this.Class.Model.CSharpFullInstancesName() + "." + @this.CSharpInstanceName();
         }
 
-        public static string CSharpImplName(this MetaType @this)
+        public static string CSharpImplName(this MetaType @this, bool immutable = false)
         {
             if (@this == null) return string.Empty;
             MetaCollectionType collection = @this as MetaCollectionType;
             if (collection != null)
             {
-                switch (collection.Kind)
+                if (immutable)
                 {
-                    case MetaCollectionKind.Set:
-                    case MetaCollectionKind.MultiSet:
-                        return "global::System.Collections.Generic.ICollection<" + collection.InnerType.CSharpImplName() + ">";
-                    case MetaCollectionKind.List:
-                    case MetaCollectionKind.MultiList:
-                        return "global::System.Collections.Generic.IList<" + collection.InnerType.CSharpImplName() + ">";
-                    default:
-                        return null;
+                    switch (collection.Kind)
+                    {
+                        case MetaCollectionKind.Set:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelSet<" + collection.InnerType.CSharpImplName(immutable) + ">";
+                        case MetaCollectionKind.MultiSet:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelMultiSet<" + collection.InnerType.CSharpImplName(immutable) + ">";
+                        case MetaCollectionKind.List:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + collection.InnerType.CSharpImplName(immutable) + ">";
+                        case MetaCollectionKind.MultiList:
+                            return "global::MetaDslx.Core.Immutable.ImmutableModelMultiList<" + collection.InnerType.CSharpImplName(immutable) + ">";
+                        default:
+                            return null;
+                    }
+                }
+                else
+                {
+                    switch (collection.Kind)
+                    {
+                        case MetaCollectionKind.Set:
+                        case MetaCollectionKind.MultiSet:
+                            return "global::System.Collections.Generic.ICollection<" + collection.InnerType.CSharpImplName(immutable) + ">";
+                        case MetaCollectionKind.List:
+                        case MetaCollectionKind.MultiList:
+                            return "global::System.Collections.Generic.IList<" + collection.InnerType.CSharpImplName(immutable) + ">";
+                        default:
+                            return null;
+                    }
                 }
             }
             MetaNullableType nullable = @this as MetaNullableType;
             if (nullable != null)
             {
-                return nullable.InnerType.CSharpImplName() + "?";
+                return nullable.InnerType.CSharpImplName(immutable) + "?";
             }
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
                 return primitive.Name;
             }
-            return ((MetaNamedElement)@this).Name + "Impl";
+            return GetPrefix(immutable) + ((MetaNamedElement)@this).Name + "Impl";
         }
 
-        public static string CSharpFullPublicName(this MetaType @this)
+        public static string CSharpFullPublicName(this MetaType @this, bool immutable = false)
         {
             if (@this == null) return string.Empty;
             MetaCollectionType collection = @this as MetaCollectionType;
             if (collection != null)
             {
-                switch (collection.Kind)
+                if (immutable)
                 {
-                    case MetaCollectionKind.Set:
-                    case MetaCollectionKind.MultiSet:
-                        return "global::System.Collections.Generic.ICollection<" + collection.InnerType.CSharpFullPublicName() + ">";
-                    case MetaCollectionKind.List:
-                    case MetaCollectionKind.MultiList:
-                        return "global::System.Collections.Generic.IList<" + collection.InnerType.CSharpFullPublicName() + ">";
-                    default:
-                        return null;
+                    return "global::MetaDslx.Core.Immutable.ImmutableModelArray<" + collection.InnerType.CSharpFullPublicName(immutable) + ">";
+                }
+                else
+                {
+                    switch (collection.Kind)
+                    {
+                        case MetaCollectionKind.Set:
+                        case MetaCollectionKind.MultiSet:
+                            return "global::System.Collections.Generic.ICollection<" + collection.InnerType.CSharpFullPublicName(immutable) + ">";
+                        case MetaCollectionKind.List:
+                        case MetaCollectionKind.MultiList:
+                            return "global::System.Collections.Generic.IList<" + collection.InnerType.CSharpFullPublicName(immutable) + ">";
+                        default:
+                            return null;
+                    }
                 }
             }
             MetaNullableType nullable = @this as MetaNullableType;
             if (nullable != null)
             {
-                return nullable.InnerType.CSharpFullPublicName() + "?";
+                return nullable.InnerType.CSharpFullPublicName(immutable) + "?";
             }
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
                 return primitive.Name;
             }
-            return @this.CSharpFullName();
+            return @this.CSharpFullName(immutable);
         }
 
         public static ModelObject GetRootNamespace(this ModelObject mobj)
