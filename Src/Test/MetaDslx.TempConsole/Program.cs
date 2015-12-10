@@ -126,7 +126,14 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
-                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel.cs"
+                    );
+                //*/
+                //*
+                CompileMeta(
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel.java",
+                    true
                     );
                 //*/
                 /*
@@ -212,8 +219,16 @@ namespace MetaDslx.TempConsole
                 }
             }
         }
-        
-        private static void CompileMeta(string fileName, string outputFileName)
+
+        private static void SaveToFile(string fileName, string source)
+        {
+            using (StreamWriter writer = new StreamWriter(fileName))
+            {
+                writer.WriteLine(source);
+            }
+        }
+
+        private static void CompileMeta(string fileName, string outputFileName, bool javaOutput = false)
         {
             //Meta.MetaTypedElement.StaticInit();
             //Console.WriteLine(Meta.MetaTypedElement.TypeProperty);
@@ -232,7 +247,32 @@ namespace MetaDslx.TempConsole
                 compiler.Compile();
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
-                    writer.WriteLine(compiler.GeneratedSource);
+                    if (javaOutput)
+                    {
+                        MetaModelJavaGenerator mmjg = new MetaModelJavaGenerator(model.Instances);
+                        string javaSource = mmjg.Generate();
+                        writer.WriteLine(javaSource);
+                        string javaDir = @"k:\VersionControl\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
+                        MetaModel mm = (MetaModel)model.Instances.FirstOrDefault(obj => obj is MetaModel);
+                        SaveToFile(javaDir + mm.Name + "Descriptor.java", mmjg.GenerateMetaModelDescriptor(mm));
+                        SaveToFile(javaDir + mm.Name + "Instance.java", mmjg.GenerateMetaModelInstance(mm));
+                        foreach (var enm in mm.Namespace.Declarations.OfType<MetaEnum>())
+                        {
+                            SaveToFile(javaDir + enm.Name + ".java", mmjg.GenerateEnum(enm));
+                        }
+                        foreach (var cls in mm.Namespace.Declarations.OfType<MetaClass>())
+                        {
+                            SaveToFile(javaDir + cls.Name + ".java", mmjg.GenerateInterface(cls));
+                            SaveToFile(javaDir + cls.Name + "Impl.java", mmjg.GenerateInterfaceImpl(mm, cls));
+                        }
+                        SaveToFile(javaDir + mm.Name + "Factory.java", mmjg.GenerateFactory(mm));
+                        SaveToFile(javaDir + mm.Name + "ImplementationProvider.java", mmjg.GenerateImplementationProvider(mm));
+                        SaveToFile(javaDir + mm.Name + "ImplementationBase.java", mmjg.GenerateImplementationBase(mm));
+                    }
+                    else
+                    {
+                        writer.WriteLine(compiler.GeneratedSource);
+                    }
                 }
                 //PrintScope("", compiler.GlobalScope);
                 Console.WriteLine("=");

@@ -254,6 +254,10 @@ namespace MetaDslx.Core
         public override IList<MetaOperation> MetaClass_GetAllOperations(MetaClass @this)
         {
             List<MetaOperation> result = new List<MetaOperation>();
+            foreach (var oper in @this.Operations)
+            {
+                result.Add(oper);
+            }
             foreach (var cls in @this.GetAllSuperClasses())
             {
                 foreach (var oper in cls.Operations)
@@ -261,26 +265,22 @@ namespace MetaDslx.Core
                     result.Add(oper);
                 }
             }
-            foreach (var oper in @this.Operations)
-            {
-                result.Add(oper);
-            }
             return result;
         }
 
         public override IList<MetaProperty> MetaClass_GetAllProperties(MetaClass @this)
         {
             List<MetaProperty> result = new List<MetaProperty>();
+            foreach (var prop in @this.Properties)
+            {
+                result.Add(prop);
+            }
             foreach (var cls in @this.GetAllSuperClasses())
             {
                 foreach (var prop in cls.Properties)
                 {
                     result.Add(prop);
                 }
-            }
-            foreach (var prop in @this.Properties)
-            {
-                result.Add(prop);
             }
             return result;
         }
@@ -291,16 +291,16 @@ namespace MetaDslx.Core
             foreach (var super in @this.SuperClasses)
             {
                 ICollection<MetaClass> allSupers = super.GetAllSuperClasses();
+                if (!result.Contains(super))
+                {
+                    result.Add(super);
+                }
                 foreach (var superSuper in allSupers)
                 {
                     if (!result.Contains(superSuper))
                     {
                         result.Add(superSuper);
                     }
-                }
-                if (!result.Contains(super))
-                {
-                    result.Add(super);
                 }
             }
             return result;
@@ -309,6 +309,40 @@ namespace MetaDslx.Core
 
     internal static class MetaModelExtensions
     {
+        public static IList<MetaProperty> GetAllImplementedProperties(this MetaClass @this)
+        {
+            IList<MetaProperty> props = @this.GetAllProperties();
+            int i = props.Count - 1;
+            while (i >= 0)
+            {
+                string name = props[i].Name;
+                MetaProperty prop = props.First(p => p.Name == name);
+                if (prop != props[i])
+                {
+                    props.RemoveAt(i);
+                }
+                --i;
+            }
+            return props;
+        }
+
+        public static IList<MetaOperation> GetAllImplementedOperations(this MetaClass @this)
+        {
+            IList<MetaOperation> ops = @this.GetAllOperations();
+            int i = ops.Count - 1;
+            while (i >= 0)
+            {
+                string name = ops[i].Name;
+                MetaOperation op = ops.First(o => o.Name == name);
+                if (op != ops[i])
+                {
+                    ops.RemoveAt(i);
+                }
+                --i;
+            }
+            return ops;
+        }
+
         public static bool HasSameMetaModel(this ModelObject @this, ModelObject mobj)
         {
             if (@this == null || @this.MMetaModel == null) return false;
@@ -646,6 +680,12 @@ namespace MetaDslx.Core
 
     internal static class MetaModelJavaExtensions
     {
+        public static string ToCamelCase(this string name)
+        {
+            if (string.IsNullOrEmpty(name)) return name;
+            else return name[0].ToString().ToLower() + name.Substring(1);
+        }
+
         public static string JavaName(this MetaNamespace @this)
         {
             return @this.CSharpName().ToLower();
@@ -750,7 +790,7 @@ namespace MetaDslx.Core
                 case "bool": return "false";
                 case "void": return "";
             }
-            return null;
+            return "null";
         }
 
         public static string JavaDefaultValue(this MetaType @this)
@@ -759,7 +799,7 @@ namespace MetaDslx.Core
             MetaCollectionType collection = @this as MetaCollectionType;
             if (collection != null)
             {
-                return "new " + @this.JavaFullName() + "()";
+                return "null";
             }
             MetaNullableType nullable = @this as MetaNullableType;
             if (nullable != null)
@@ -916,7 +956,7 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                return primitive.Name;
+                return primitive.ToJavaType();
             }
             return ((MetaNamedElement)@this).Name + "Impl";
         }
@@ -956,7 +996,7 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                return primitive.Name;
+                return primitive.ToJavaType();
             }
             return @this.JavaFullName();
         }
@@ -993,7 +1033,7 @@ namespace MetaDslx.Core
 
         public static string JavaFullImplementationName(this MetaModel @this)
         {
-            return @this.JavaFullName() + "ImplementationProvider.Implementation";
+            return @this.JavaFullName() + "ImplementationProvider.implementation()";
         }
 
         public static string GetJavaValue(this MetaExpression @this)
@@ -1058,6 +1098,26 @@ namespace MetaDslx.Core
         public static string JavaFullInstanceName(this MetaProperty @this)
         {
             return @this.Class.Model.JavaFullInstancesName() + "." + @this.JavaInstanceName();
+        }
+
+        public static string JavaFullDeclaredName(this ModelProperty property)
+        {
+            string nsName = property.DeclaringType.Namespace;
+            string localName = property.DeclaringType.FullName.Substring(nsName.Length + 1).Replace("+", ".");
+            return nsName.ToLower() + "." + localName + "." + property.DeclaredName;
+        }
+
+        public static string JavaEnumValueOf(this object enm)
+        {
+            string nsName = enm.GetType().Namespace;
+            string localName = enm.GetType().FullName.Substring(nsName.Length + 1).Replace("+", ".");
+            return nsName.ToLower() + "." + localName + "." + enm.ToString();
+        }
+
+        public static string SafeJavaName(this string name)
+        {
+            if (name == "getClass") return "getClass_";
+            return name;
         }
     }
 }
