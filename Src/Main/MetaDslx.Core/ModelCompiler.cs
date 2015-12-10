@@ -54,7 +54,7 @@ namespace MetaDslx.Core
         string GetName(object node);
         string GetNameOf(ModelObject symbol);
         object GetValue(object node);
-        IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject node);
+        IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject symbol);
         TextSpan GetTreeNodeTextSpan(object node);
     }
 
@@ -71,9 +71,9 @@ namespace MetaDslx.Core
 
     public interface IResolutionProvider
     {
-        ModelObject GetParentScope(ModelObject obj);
-        ModelObject GetCurrentScope(ModelObject obj);
-        ModelObject GetCurrentTypeScopeOf(ModelObject obj);
+        ModelObject GetParentScope(ModelObject symbol);
+        ModelObject GetCurrentScope(ModelObject symbol);
+        ModelObject GetCurrentTypeScopeOf(ModelObject symbol);
         IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, List<string> qualifiedName, ResolutionInfo info, ResolveFlags flags);
         IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, string name, ResolutionInfo info, ResolveFlags flags);
     }
@@ -106,11 +106,11 @@ namespace MetaDslx.Core
 
     public class DiagnosticMessage : IComparable<DiagnosticMessage>, IEquatable<DiagnosticMessage>
     {
-        public string FileName { get; set; }
-        public TextSpan TextSpan { get; set; }
-        public string Message { get; set; }
-        public Severity Severity { get; set; }
-        public bool IsLog { get; set; }
+        public string FileName { get; internal set; }
+        public TextSpan TextSpan { get; internal set; }
+        public string Message { get; internal set; }
+        public Severity Severity { get; internal set; }
+        public bool IsLog { get; internal set; }
 
         public int CompareTo(DiagnosticMessage other)
         {
@@ -214,6 +214,11 @@ namespace MetaDslx.Core
         private bool hasWarnings = false;
         private List<DiagnosticMessage> sortedMessages;
 
+        public ModelCompilerDiagnostics()
+        {
+            this.messages = new List<DiagnosticMessage>();
+        }
+
         public bool HasErrors()
         {
             return this.hasErrors;
@@ -241,11 +246,6 @@ namespace MetaDslx.Core
         {
             this.GetMessages(includeLog);
             return this.sortedMessages.Where(m => (m.Severity | severity) == m.Severity && (!m.IsLog || includeLog));
-        }
-
-        public ModelCompilerDiagnostics()
-        {
-            this.messages = new List<DiagnosticMessage>();
         }
 
         public void AddMessage(Severity severity, string message, string fileName, ModelObject symbol, bool isLog = false)

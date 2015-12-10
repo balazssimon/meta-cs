@@ -321,7 +321,7 @@ namespace MetaDslx.Core
             if (@this == null) return string.Empty;
             string result = @this.Name;
             MetaNamespace parent = ((ModelObject)@this).MParent as MetaNamespace;
-            while(parent != null)
+            while (parent != null)
             {
                 result = parent.Name + "." + result;
                 parent = ((ModelObject)parent).MParent as MetaNamespace;
@@ -642,5 +642,422 @@ namespace MetaDslx.Core
             return result;
         }
 
+    }
+
+    internal static class MetaModelJavaExtensions
+    {
+        public static string JavaName(this MetaNamespace @this)
+        {
+            return @this.CSharpName().ToLower();
+        }
+
+        public static string JavaName(this MetaModel @this)
+        {
+            if (@this == null) return string.Empty;
+            return @this.Name;
+        }
+
+        public static string JavaFullName(this MetaModel @this)
+        {
+            if (@this == null) return string.Empty;
+            string nsName = @this.Namespace.JavaName();
+            if (!string.IsNullOrEmpty(nsName)) return nsName + "." + @this.Name;
+            else return @this.Name;
+        }
+
+        public static string JavaName(this MetaType @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaCollectionType collection = @this as MetaCollectionType;
+            if (collection != null)
+            {
+                string innerName = null;
+                if (((ModelObject)collection.InnerType).HasSameMetaModel((ModelObject)@this)) innerName = collection.InnerType.JavaName();
+                else innerName = collection.InnerType.JavaFullName();
+                switch (collection.Kind)
+                {
+                    case MetaCollectionKind.Set:
+                        return "metadslx.core.ModelSet<" + innerName + ">";
+                    case MetaCollectionKind.List:
+                        return "metadslx.core.ModelList<" + innerName + ">";
+                    case MetaCollectionKind.MultiSet:
+                        return "metadslx.core.ModelMultiSet<" + innerName + ">";
+                    case MetaCollectionKind.MultiList:
+                        return "metadslx.core.ModelMultiList<" + innerName + ">";
+                    default:
+                        return null;
+                }
+            }
+            MetaNullableType nullable = @this as MetaNullableType;
+            if (nullable != null)
+            {
+                string innerName = null;
+                if (nullable.InnerType is MetaPrimitiveType)
+                {
+                    innerName = ((MetaPrimitiveType)nullable.InnerType).ToJavaNullableType();
+                }
+                else
+                {
+                    if (((ModelObject)nullable.InnerType).HasSameMetaModel((ModelObject)@this)) innerName = nullable.InnerType.JavaName();
+                    else innerName = nullable.InnerType.JavaFullName();
+                }
+                return innerName;
+            }
+            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.ToJavaType();
+            }
+            return ((MetaNamedElement)@this).Name;
+        }
+
+        public static string ToJavaType(this MetaPrimitiveType @this)
+        {
+            if (@this.Name == "bool") return "boolean";
+            if (@this.Name == "object") return "Object";
+            if (@this.Name == "string") return "String";
+            else return @this.Name;
+        }
+
+        public static string ToJavaNullableType(this MetaPrimitiveType @this)
+        {
+            switch (@this.Name)
+            {
+                case "object": return "Object";
+                case "string": return "String";
+                case "int": return "Integer";
+                case "long": return "Long";
+                case "float": return "Float";
+                case "double": return "Double";
+                case "byte": return "Byte";
+                case "bool": return "Boolean";
+                case "void": return "Void";
+            }
+            return null;
+        }
+
+        public static string JavaDefaultValue(this MetaPrimitiveType @this)
+        {
+            switch (@this.Name)
+            {
+                case "object": return "null";
+                case "string": return "null";
+                case "int": return "0";
+                case "long": return "0";
+                case "float": return "0";
+                case "double": return "0";
+                case "byte": return "0";
+                case "bool": return "false";
+                case "void": return "";
+            }
+            return null;
+        }
+
+        public static string JavaDefaultValue(this MetaType @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaCollectionType collection = @this as MetaCollectionType;
+            if (collection != null)
+            {
+                return "new " + @this.JavaFullName() + "()";
+            }
+            MetaNullableType nullable = @this as MetaNullableType;
+            if (nullable != null)
+            {
+                return "null";
+            }
+            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.JavaDefaultValue();
+            }
+            return "null";
+        }
+
+        public static string JavaNonGenericFullName(this MetaType @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaCollectionType collection = @this as MetaCollectionType;
+            if (collection != null)
+            {
+                switch (collection.Kind)
+                {
+                    case MetaCollectionKind.Set:
+                        return "metadslx.core.ModelSet";
+                    case MetaCollectionKind.List:
+                        return "metadslx.core.ModelList";
+                    case MetaCollectionKind.MultiSet:
+                        return "metadslx.core.ModelMultiSet";
+                    case MetaCollectionKind.MultiList:
+                        return "metadslx.core.ModelMultiList";
+                    default:
+                        return null;
+                }
+            }
+            MetaNullableType nullable = @this as MetaNullableType;
+            if (nullable != null)
+            {
+                string innerName = null;
+                if (nullable.InnerType is MetaPrimitiveType)
+                {
+                    innerName = ((MetaPrimitiveType)nullable.InnerType).ToJavaNullableType();
+                }
+                else
+                {
+                    innerName = nullable.InnerType.JavaNonGenericFullName();
+                }
+                return innerName;
+            }
+            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.ToJavaType();
+            }
+            MetaDeclaration decl = @this as MetaDeclaration;
+            string nsName = string.Empty;
+            if (decl != null)
+            {
+                nsName = decl.Namespace.JavaName();
+                if (!string.IsNullOrEmpty(nsName)) return nsName + "." + @this.JavaName();
+                else return @this.JavaName();
+            }
+            else
+            {
+                return @this.JavaName();
+            }
+        }
+
+        public static string JavaFullName(this MetaType @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaCollectionType collection = @this as MetaCollectionType;
+            if (collection != null)
+            {
+                string innerName = collection.InnerType.JavaFullName();
+                switch (collection.Kind)
+                {
+                    case MetaCollectionKind.Set:
+                        return "metadslx.core.ModelSet<" + innerName + ">";
+                    case MetaCollectionKind.List:
+                        return "metadslx.core.ModelList<" + innerName + ">";
+                    case MetaCollectionKind.MultiSet:
+                        return "metadslx.core.ModelMultiSet<" + innerName + ">";
+                    case MetaCollectionKind.MultiList:
+                        return "metadslx.core.ModelMultiList<" + innerName + ">";
+                    default:
+                        return null;
+                }
+            }
+            MetaNullableType nullable = @this as MetaNullableType;
+            if (nullable != null)
+            {
+                string innerName = null;
+                if (nullable.InnerType is MetaPrimitiveType)
+                {
+                    innerName = ((MetaPrimitiveType)nullable.InnerType).ToJavaNullableType();
+                }
+                else
+                {
+                    innerName = nullable.InnerType.JavaFullName();
+                }
+                return innerName;
+            }
+            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.ToJavaType();
+            }
+            MetaDeclaration decl = @this as MetaDeclaration;
+            string nsName = string.Empty;
+            if (decl != null)
+            {
+                nsName = decl.Namespace.JavaName();
+                if (!string.IsNullOrEmpty(nsName)) return nsName + "." + @this.JavaName();
+                else return @this.JavaName();
+            }
+            else
+            {
+                return @this.JavaName();
+            }
+        }
+
+        public static string JavaImplName(this MetaType @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaCollectionType collection = @this as MetaCollectionType;
+            if (collection != null)
+            {
+                switch (collection.Kind)
+                {
+                    case MetaCollectionKind.Set:
+                    case MetaCollectionKind.MultiSet:
+                        return "java.util.Collection<" + collection.InnerType.JavaImplName() + ">";
+                    case MetaCollectionKind.List:
+                    case MetaCollectionKind.MultiList:
+                        return "java.util.List<" + collection.InnerType.JavaImplName() + ">";
+                    default:
+                        return null;
+                }
+            }
+            MetaNullableType nullable = @this as MetaNullableType;
+            if (nullable != null)
+            {
+                string innerName = null;
+                if (nullable.InnerType is MetaPrimitiveType)
+                {
+                    innerName = ((MetaPrimitiveType)nullable.InnerType).ToJavaNullableType();
+                }
+                else
+                {
+                    innerName = nullable.InnerType.JavaImplName();
+                }
+                return innerName;
+            }
+            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.Name;
+            }
+            return ((MetaNamedElement)@this).Name + "Impl";
+        }
+
+        public static string JavaFullPublicName(this MetaType @this)
+        {
+            if (@this == null) return string.Empty;
+            MetaCollectionType collection = @this as MetaCollectionType;
+            if (collection != null)
+            {
+                switch (collection.Kind)
+                {
+                    case MetaCollectionKind.Set:
+                    case MetaCollectionKind.MultiSet:
+                        return "java.util.Collection<" + collection.InnerType.JavaFullPublicName() + ">";
+                    case MetaCollectionKind.List:
+                    case MetaCollectionKind.MultiList:
+                        return "java.util.List<" + collection.InnerType.JavaFullPublicName() + ">";
+                    default:
+                        return null;
+                }
+            }
+            MetaNullableType nullable = @this as MetaNullableType;
+            if (nullable != null)
+            {
+                string innerName = null;
+                if (nullable.InnerType is MetaPrimitiveType)
+                {
+                    innerName = ((MetaPrimitiveType)nullable.InnerType).ToJavaNullableType();
+                }
+                else
+                {
+                    innerName = nullable.InnerType.JavaFullPublicName();
+                }
+                return innerName;
+            }
+            MetaPrimitiveType primitive = @this as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.Name;
+            }
+            return @this.JavaFullName();
+        }
+
+        public static string JavaDescriptorName(this MetaModel @this)
+        {
+            return @this.JavaName() + "Descriptor";
+        }
+
+        public static string JavaFullDescriptorName(this MetaModel @this)
+        {
+            return @this.JavaFullName() + "Descriptor";
+        }
+
+        public static string JavaInstancesName(this MetaModel @this)
+        {
+            return @this.JavaName() + "Instance";
+        }
+
+        public static string JavaFullInstancesName(this MetaModel @this)
+        {
+            return @this.JavaFullName() + "Instance";
+        }
+
+        public static string JavaFactoryName(this MetaModel @this)
+        {
+            return @this.JavaName() + "Factory";
+        }
+
+        public static string JavaFullFactoryName(this MetaModel @this)
+        {
+            return @this.JavaFullName() + "Factory";
+        }
+
+        public static string JavaFullImplementationName(this MetaModel @this)
+        {
+            return @this.JavaFullName() + "ImplementationProvider.Implementation";
+        }
+
+        public static string GetJavaValue(this MetaExpression @this)
+        {
+            MetaConstantExpression mce = @this as MetaConstantExpression;
+            if (mce != null)
+            {
+                if (mce.Value != null) return mce.Value.ToString();
+                else return string.Empty;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public static string JavaFullFactoryMethodName(this MetaClass @this)
+        {
+            return @this.Model.JavaFullFactoryName() + ".instance().create" + @this.JavaName();
+        }
+
+        public static string JavaDescriptorName(this MetaDeclaration @this)
+        {
+            return @this.BuiltInName();
+        }
+
+        public static string JavaDescriptorName(this MetaProperty @this)
+        {
+            return @this.Name + "Property";
+        }
+
+        public static string JavaFullDescriptorName(this MetaDeclaration @this)
+        {
+            return @this.Model.JavaFullDescriptorName() + "." + @this.JavaDescriptorName();
+        }
+
+        public static string JavaFullDescriptorName(this MetaProperty @this)
+        {
+            return @this.Class.JavaFullDescriptorName() + "." + @this.JavaDescriptorName();
+        }
+
+        public static string JavaInstanceName(this MetaDeclaration @this)
+        {
+            return @this.BuiltInName();
+        }
+
+        public static string JavaInstanceName(this MetaProperty @this)
+        {
+            return @this.Class.JavaName() + "_" + @this.Name + "Property";
+        }
+
+        public static string JavaFullInstanceName(this MetaModel @this)
+        {
+            return @this.JavaFullInstancesName() + ".Meta";
+        }
+
+        public static string JavaFullInstanceName(this MetaDeclaration @this)
+        {
+            return @this.Model.JavaFullInstancesName() + "." + @this.JavaInstanceName();
+        }
+
+        public static string JavaFullInstanceName(this MetaProperty @this)
+        {
+            return @this.Class.Model.JavaFullInstancesName() + "." + @this.JavaInstanceName();
+        }
     }
 }
