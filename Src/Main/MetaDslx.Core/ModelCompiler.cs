@@ -364,7 +364,7 @@ namespace MetaDslx.Core
         public string GetNameOf(ModelObject symbol)
         {
             if (symbol == null) return null;
-            foreach (var prop in symbol.MGetAllProperties())
+            foreach (var prop in symbol.MGetProperties())
             {
                 if (prop.IsMetaName())
                 {
@@ -883,7 +883,7 @@ namespace MetaDslx.Core
         {
             if (entry != null)
             {
-                foreach (var prop in entry.MGetAllProperties())
+                foreach (var prop in entry.MGetProperties())
                 {
                     if (prop.Annotations.Any(a => a is NameAttribute))
                     {

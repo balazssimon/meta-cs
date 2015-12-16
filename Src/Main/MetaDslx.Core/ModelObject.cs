@@ -275,6 +275,26 @@ namespace MetaDslx.Core
             return null;
         }
 
+        public ISet<ModelProperty> MGetProperties()
+        {
+            HashSet<ModelProperty> result = new HashSet<ModelProperty>(ModelProperty.GetPropertiesForType(this.GetType()));
+            foreach (ModelProperty prop in this.values.Keys)
+            {
+                if (!result.Any(p => p.Name == prop.Name))
+                {
+                    result.Add(prop);
+                }
+            }
+            foreach (ModelProperty prop in this.initializers.Keys)
+            {
+                if (!result.Any(p => p.Name == prop.Name))
+                {
+                    result.Add(prop);
+                }
+            }
+            return result;
+        }
+
         public ISet<ModelProperty> MGetAllProperties()
         {
             HashSet<ModelProperty> result = new HashSet<ModelProperty>(ModelProperty.GetAllPropertiesForType(this.GetType()));
@@ -291,7 +311,11 @@ namespace MetaDslx.Core
 
         public ModelProperty MFindProperty(string name)
         {
-            return this.SelectSingleProperty(this.MFindProperties(name));
+            var results =
+                from p in this.MGetProperties()
+                where p.Name == name
+                select p;
+            return this.SelectSingleProperty(results);
         }
 
         public IEnumerable<ModelProperty> MFindProperties(string name)

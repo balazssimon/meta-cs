@@ -319,15 +319,31 @@ namespace MetaDslx.Core
                 propertyCache = new PropertyCache();
                 ModelProperty.cachedProperties.Add(type, propertyCache);
                 HashSet<ModelProperty> allProperties = new HashSet<ModelProperty>();
+                HashSet<ModelProperty> distinctProperties = new HashSet<ModelProperty>();
                 Dictionary<string, ModelProperty> propertyList;
                 if (ModelProperty.properties.TryGetValue(type, out propertyList))
                 {
-                    propertyCache.Properties.AddRange(propertyList.Values);
+                    propertyCache.DeclaredProperties.AddRange(propertyList.Values);
                     allProperties.UnionWith(propertyList.Values);
+                    foreach (var prop in propertyList.Values)
+                    {
+                        if (!propertyCache.Properties.Any(p => p.Name == prop.Name))
+                        {
+                            propertyCache.Properties.Add(prop);
+                        }
+                    }
                 }
                 foreach (var super in type.GetInterfaces())
                 {
-                    allProperties.UnionWith(ModelProperty.GetCachedProperties(super).AllProperties);
+                    var superProperties = ModelProperty.GetCachedProperties(super).AllProperties;
+                    allProperties.UnionWith(superProperties);
+                    foreach (var prop in superProperties)
+                    {
+                        if (!propertyCache.Properties.Any(p => p.Name == prop.Name))
+                        {
+                            propertyCache.Properties.Add(prop);
+                        }
+                    }
                 }
                 propertyCache.AllProperties.AddRange(allProperties);
             }
@@ -365,6 +381,11 @@ namespace MetaDslx.Core
         public static IEnumerable<ModelProperty> GetPropertiesForType(System.Type owningType)
         {
             return ModelProperty.GetCachedProperties(owningType).Properties;
+        }
+
+        public static IEnumerable<ModelProperty> GetDeclaredPropertiesForType(System.Type owningType)
+        {
+            return ModelProperty.GetCachedProperties(owningType).DeclaredProperties;
         }
 
         public static IEnumerable<ModelProperty> GetAllPropertiesForType(System.Type owningType)
@@ -408,9 +429,11 @@ namespace MetaDslx.Core
             public PropertyCache()
             {
                 this.Properties = new List<ModelProperty>();
+                this.DeclaredProperties = new List<ModelProperty>();
                 this.AllProperties = new List<ModelProperty>();
             }
 
+            public List<ModelProperty> DeclaredProperties { get; private set; }
             public List<ModelProperty> Properties { get; private set; }
             public List<ModelProperty> AllProperties { get; private set; }
         }

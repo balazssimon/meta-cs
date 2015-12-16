@@ -123,7 +123,7 @@ namespace MetaDslx.Core
             {
                 elem.Add(new XAttribute(xmi + "id", mo.MetaID));
             }
-            foreach (var prop in mo.MGetAllProperties())
+            foreach (var prop in mo.MGetProperties())
             {
                 if (!prop.IsCollection && !prop.IsReadonly)
                 {

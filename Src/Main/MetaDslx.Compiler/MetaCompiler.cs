@@ -1018,7 +1018,7 @@ namespace MetaDslx.Compiler
         {
             if (symbol == null) return false;
             bool success = false;
-            foreach (var prop in symbol.MGetAllProperties())
+            foreach (var prop in symbol.MGetProperties())
             {
                 if (prop.Annotations.Any(a => a is NameAttribute))
                 {
@@ -1038,7 +1038,7 @@ namespace MetaDslx.Compiler
             if (symbol == null) return false;
             int counter = 0;
             object result = null;
-            foreach (var prop in symbol.MGetAllProperties())
+            foreach (var prop in symbol.MGetProperties())
             {
                 if (prop.Annotations.Any(a => a is NameAttribute))
                 {
