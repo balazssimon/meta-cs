@@ -93,7 +93,7 @@
 
 	class MetaAnnotationProperty : MetaNamedElement
 	{
-		MetaExpression Value;
+		containment MetaExpression Value;
 
 		MetaAnnotationProperty()
 		{
@@ -234,7 +234,7 @@
 			Value.ExpectedType = Type;
 		}
 
-		MetaExpression Value;
+		containment MetaExpression Value;
 	}
 
 	class MetaConstructor : MetaNamedElement, MetaAnnotatedElement

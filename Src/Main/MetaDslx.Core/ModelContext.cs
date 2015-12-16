@@ -19,7 +19,7 @@ namespace MetaDslx.Core
             }
         }
 
-        public IEnumerable<ModelObject> InstancesCopy
+        public List<ModelObject> InstancesCopy
         {
             get
             {

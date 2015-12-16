@@ -215,6 +215,10 @@ namespace MetaDslx.Core
             return false;
         }
 
+        public override IEnumerator<object> MGetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
     }
 
     public class ModelMultiList<T> : ModelCollection, IList<T>
@@ -424,6 +428,11 @@ namespace MetaDslx.Core
                 }
             }
             return false;
+        }
+
+        public override IEnumerator<object> MGetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

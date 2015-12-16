@@ -144,6 +144,10 @@ namespace MetaDslx.Core
 
         #endregion
 
+        public override IEnumerator<object> MGetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
     }
 
 
@@ -300,6 +304,10 @@ namespace MetaDslx.Core
 
         #endregion
 
+        public override IEnumerator<object> MGetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
     }
 
 }

@@ -245,6 +245,7 @@ namespace MetaDslx.TempConsole
                 }
                 MetaModelCompiler compiler = new MetaModelCompiler(source, ".", fileName);
                 compiler.Compile();
+                ModelExchange.SaveToFile("MetaModel.xmi", model);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     if (javaOutput)

@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace MetaDslx.Core
 {
-    public abstract class ModelCollection
+    public abstract class ModelCollection : IEnumerable<object>
     {
         private List<Lazy<object>> lazyItems;
 
@@ -72,5 +72,17 @@ namespace MetaDslx.Core
         public abstract void Clear();
         public abstract bool MAdd(object value, bool firstCall);
         public abstract bool MRemove(object value, bool firstCall);
+
+        public abstract IEnumerator<object> MGetEnumerator();
+
+        public IEnumerator<object> GetEnumerator()
+        {
+            return this.MGetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
     }
 }
