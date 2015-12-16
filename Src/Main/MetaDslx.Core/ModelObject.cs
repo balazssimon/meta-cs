@@ -24,10 +24,9 @@ namespace MetaDslx.Core
         {
             if (addToModelContext)
             {
-                ModelContext ctx = ModelContext.Current;
-                if (ctx != null)
+                if (ModelContext.HasContext())
                 {
-                    ctx.Model.AddInstance(this);
+                    ModelContext.Current.AddInstance(this);
                 }
             }
             this.MetaID = Guid.NewGuid().ToString();
@@ -249,10 +248,10 @@ namespace MetaDslx.Core
                     {
                         if (ex.Message != null && ex.Message.Contains("ValueFactory"))
                         {
-                            ModelContext ctx = ModelContext.Current;
-                            if (ctx != null)
+                            IModelCompiler compiler = ModelCompilerContext.Current;
+                            if (compiler != null)
                             {
-                                ctx.Compiler.Diagnostics.AddWarning("The property '" + property + "' of '"+this+"' was accessed in a circular dependency.", ctx.Compiler.FileName, this, true);
+                                compiler.Diagnostics.AddWarning("The property '" + property + "' of '"+this+"' was accessed in a circular dependency.", compiler.FileName, this, true);
                             }
                             return null;
                         }

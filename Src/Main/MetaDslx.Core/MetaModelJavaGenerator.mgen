@@ -237,7 +237,7 @@ end function
 template GenerateExpression(MetaExpression expr)
 [switch (expr)]
 [type as MetaBracketExpression:]([GenerateExpression(expr.Expression)])\
-[type as MetaThisExpression:](([((MetaType)ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)expr)).JavaName()])this)\
+[type as MetaThisExpression:](([((MetaType)ModelCompilerContext.Current.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)expr)).JavaName()])this)\
 [type as MetaNullExpression:]null\
 [type as MetaTypeAsExpression:]metadslx.core.ModelUtils.as([expr.TypeReference.JavaName()].class,[GenerateExpression(expr.Expression)])\
 [type as MetaTypeCastExpression:]([expr.TypeReference.JavaName()])[GenerateExpression(expr.Expression)]\
@@ -258,14 +258,14 @@ end template
 
 template GenerateIdentifierExpression(MetaIdentifierExpression expr)
 [if (expr.Definition is MetaProperty)]
-(([((MetaType)ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)expr)).JavaName()])this).get[expr.Name]()\
+(([((MetaType)ModelCompilerContext.Current.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)expr)).JavaName()])this).get[expr.Name]()\
 [else]
 [expr.Name]\
 [end if]
 end template
 
 function bool SameFunction(MetaGlobalFunction mfunc1, MetaGlobalFunction mfunc2)
-	return mfunc1.Name == mfunc2.Name && ModelContext.Current.Compiler.TypeProvider.Equals((ModelObject)mfunc1.Type, (ModelObject)mfunc2.Type);
+	return mfunc1.Name == mfunc2.Name && ModelCompilerContext.Current.TypeProvider.Equals((ModelObject)mfunc1.Type, (ModelObject)mfunc2.Type);
 end function
 
 template GenerateFunctionCall(MetaFunctionCallExpression call)
@@ -446,7 +446,7 @@ public [cls.JavaImplName()]() {
 		[MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop)]
 		[if (synInit != null)]
 			[if (prop.Kind != MetaPropertyKind.Derived)]
-				[if (ModelContext.Current.Compiler.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType)]
+				[if (ModelCompilerContext.Current.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType)]
     this.mLazySet([prop.JavaFullDescriptorName()], metadslx.core.Lazy.create(() -> [GenerateExpression(synInit.Value)], true));
 				[else]
     this.mLazySet([prop.JavaFullDescriptorName()], metadslx.core.Lazy.create(() -> [GenerateExpression(synInit.Value)], true));

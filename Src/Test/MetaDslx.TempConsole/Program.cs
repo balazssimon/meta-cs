@@ -279,7 +279,7 @@ namespace MetaDslx.TempConsole
 
                 using (StreamWriter writer = new StreamWriter("symbols.txt"))
                 {
-                    foreach (var symbol in ModelContext.Current.Model.Instances)
+                    foreach (var symbol in ModelContext.Current.Instances)
                     {
                         ModelObject mo = symbol as ModelObject;
                         if (mo != null)

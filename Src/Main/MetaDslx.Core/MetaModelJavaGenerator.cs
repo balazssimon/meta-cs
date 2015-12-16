@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelJavaGenerator_2063924855;
-    namespace __Hidden_MetaModelJavaGenerator_2063924855
+    using __Hidden_MetaModelJavaGenerator_1860972450;
+    namespace __Hidden_MetaModelJavaGenerator_1860972450
     {
         internal static class __Extensions
         {
@@ -2163,8 +2163,8 @@ namespace MetaDslx.Core //1:1
             else if (expr is MetaThisExpression) //240:2
             {
                 __out.Append("(("); //240:30
-                __out.Append(((MetaType)ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)((MetaThisExpression)expr))).JavaName());
-                __out.Append(")this)"); //240:146
+                __out.Append(((MetaType)ModelCompilerContext.Current.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)((MetaThisExpression)expr))).JavaName());
+                __out.Append(")this)"); //240:145
             }
             else if (expr is MetaNullExpression) //241:2
             {
@@ -2257,9 +2257,9 @@ namespace MetaDslx.Core //1:1
             if (expr.Definition is MetaProperty) //260:2
             {
                 string __tmp1Prefix = "(("; //261:1
-                string __tmp2Suffix = "()"; //261:138
+                string __tmp2Suffix = "()"; //261:137
                 StringBuilder __tmp3 = new StringBuilder();
-                __tmp3.Append(((MetaType)ModelContext.Current.Compiler.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)expr)).JavaName());
+                __tmp3.Append(((MetaType)ModelCompilerContext.Current.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)expr)).JavaName());
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
                 {
                     bool __tmp3_first = true;
@@ -2275,7 +2275,7 @@ namespace MetaDslx.Core //1:1
                         __out.Append(__tmp3Line);
                     }
                 }
-                string __tmp4Line = ")this).get"; //261:117
+                string __tmp4Line = ")this).get"; //261:116
                 __out.Append(__tmp4Line);
                 StringBuilder __tmp5 = new StringBuilder();
                 __tmp5.Append(expr.Name);
@@ -2323,7 +2323,7 @@ namespace MetaDslx.Core //1:1
 
         public bool SameFunction(MetaGlobalFunction mfunc1, MetaGlobalFunction mfunc2) //267:1
         {
-            return mfunc1.Name == mfunc2.Name && ModelContext.Current.Compiler.TypeProvider.Equals((ModelObject)mfunc1.Type, (ModelObject)mfunc2.Type); //268:2
+            return mfunc1.Name == mfunc2.Name && ModelCompilerContext.Current.TypeProvider.Equals((ModelObject)mfunc1.Type, (ModelObject)mfunc2.Type); //268:2
         }
 
         public string GenerateFunctionCall(MetaFunctionCallExpression call) //271:1
@@ -3335,7 +3335,7 @@ namespace MetaDslx.Core //1:1
                 {
                     if (prop.Kind != MetaPropertyKind.Derived) //448:5
                     {
-                        if (ModelContext.Current.Compiler.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType) //449:6
+                        if (ModelCompilerContext.Current.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType) //449:6
                         {
                             string __tmp5Prefix = "    this.mLazySet("; //450:1
                             string __tmp6Suffix = ", true));"; //450:119

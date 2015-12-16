@@ -19,6 +19,14 @@ namespace MetaDslx.Core
             }
         }
 
+        public IEnumerable<ModelObject> InstancesCopy
+        {
+            get
+            {
+                return this.instances.ToList();
+            }
+        }
+
         public void AddInstance(ModelObject obj)
         {
             this.instances.Add(obj);
@@ -28,6 +36,19 @@ namespace MetaDslx.Core
         {
             this.instances.Remove(obj);
         }
+
+        public void EvalLazyValues()
+        {
+            int oldCount = -1;
+            while (oldCount != this.instances.Count)
+            {
+                oldCount = this.instances.Count;
+                foreach (var mo in this.InstancesCopy)
+                {
+                    mo.MEvalLazyValues();
+                }
+            }
+        }
     }
 
     public class ModelContext
@@ -35,15 +56,13 @@ namespace MetaDslx.Core
         internal static Dictionary<Thread, List<ModelContext>> contextStacks = new Dictionary<Thread, List<ModelContext>>();
 
         private Model model;
-        private IModelCompiler compiler;
 
-        internal ModelContext(Model model, IModelCompiler compiler)
+        internal ModelContext(Model model)
         {
             this.model = model;
-            this.compiler = compiler;
         }
 
-        public static ModelContext Current
+        public static Model Current
         {
             get
             {
@@ -54,7 +73,7 @@ namespace MetaDslx.Core
                     {
                         if (contextStack.Count > 0)
                         {
-                            return contextStack[contextStack.Count - 1];
+                            return contextStack[contextStack.Count - 1].model;
                         }
                     }
                 }
@@ -62,26 +81,105 @@ namespace MetaDslx.Core
             }
         }
 
-        public Model Model
+        public static bool HasContext()
         {
-            get { return this.model; }
+            lock (ModelContext.contextStacks)
+            {
+                List<ModelContext> contextStack = null;
+                if (ModelContext.contextStacks.TryGetValue(Thread.CurrentThread, out contextStack))
+                {
+                    return contextStack.Count > 0;
+                }
+            }
+            return false;
         }
 
-        public IModelCompiler Compiler
+        public static void RequireContext()
         {
-            get { return this.compiler; }
+            lock (ModelContext.contextStacks)
+            {
+                List<ModelContext> contextStack = null;
+                if (ModelContext.contextStacks.TryGetValue(Thread.CurrentThread, out contextStack))
+                {
+                    if (contextStack.Count <= 0)
+                    {
+                        throw new ModelException("ModelContext is missing. Try running this operation within a ModelContextScope.");
+                    }
+                }
+            }
+        }
+    }
+
+    public class ModelCompilerContext
+    {
+        internal static Dictionary<Thread, List<ModelCompilerContext>> contextStacks = new Dictionary<Thread, List<ModelCompilerContext>>();
+
+        private static DefaultModelCompiler defaultCompiler = new DefaultModelCompiler();
+
+        private IModelCompiler compiler;
+
+        internal ModelCompilerContext(IModelCompiler compiler)
+        {
+            this.compiler = compiler;
+        }
+
+        public static IModelCompiler Current
+        {
+            get
+            {
+                lock (ModelCompilerContext.contextStacks)
+                {
+                    List<ModelCompilerContext> contextStack = null;
+                    if (ModelCompilerContext.contextStacks.TryGetValue(Thread.CurrentThread, out contextStack))
+                    {
+                        if (contextStack.Count > 0)
+                        {
+                            return contextStack[contextStack.Count - 1].compiler;
+                        }
+                        else
+                        {
+                            return ModelCompilerContext.defaultCompiler;
+                        }
+                    }
+                }
+                return ModelCompilerContext.defaultCompiler;
+            }
+        }
+
+        public static bool HasContext()
+        {
+            lock (ModelCompilerContext.contextStacks)
+            {
+                List<ModelCompilerContext> contextStack = null;
+                if (ModelCompilerContext.contextStacks.TryGetValue(Thread.CurrentThread, out contextStack))
+                {
+                    return contextStack.Count > 0;
+                }
+            }
+            return false;
+        }
+
+        public static void RequireContext()
+        {
+            lock (ModelCompilerContext.contextStacks)
+            {
+                List<ModelCompilerContext> contextStack = null;
+                if (ModelCompilerContext.contextStacks.TryGetValue(Thread.CurrentThread, out contextStack))
+                {
+                    if (contextStack.Count <= 0)
+                    {
+                        throw new ModelException("ModelCompilerContext is missing. Try running this operation within a ModelCompilerContextScope.");
+                    }
+                }
+            }
         }
     }
 
     public class ModelContextScope : IDisposable
     {
-        public ModelContextScope(Model model, IModelCompiler compiler = null)
+        public ModelContextScope(Model model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
-            if (compiler == null)
-            {
-                compiler = new DefaultModelCompiler();
-            }
             lock (ModelContext.contextStacks)
             {
                 List<ModelContext> contextStack = null;
@@ -90,29 +188,7 @@ namespace MetaDslx.Core
                     contextStack = new List<ModelContext>();
                     ModelContext.contextStacks.Add(Thread.CurrentThread, contextStack);
                 }
-                contextStack.Add(new ModelContext(model, compiler));
-            }
-        }
-
-        public ModelContextScope(IModelCompiler compiler)
-        {
-            if (compiler == null) throw new ArgumentNullException(nameof(compiler));
-            lock (ModelContext.contextStacks)
-            {
-                List<ModelContext> contextStack = null;
-                if (!ModelContext.contextStacks.TryGetValue(Thread.CurrentThread, out contextStack))
-                {
-                    contextStack = new List<ModelContext>();
-                    ModelContext.contextStacks.Add(Thread.CurrentThread, contextStack);
-                }
-                if (contextStack.Count == 0)
-                {
-                    contextStack.Add(new ModelContext(new Model(), compiler));
-                }
-                else
-                {
-                    contextStack.Add(new ModelContext(contextStack[contextStack.Count-1].Model, compiler));
-                }
+                contextStack.Add(new ModelContext(model));
             }
         }
 
@@ -122,6 +198,40 @@ namespace MetaDslx.Core
             {
                 List<ModelContext> contextStack = null;
                 if (ModelContext.contextStacks.TryGetValue(Thread.CurrentThread, out contextStack))
+                {
+                    if (contextStack.Count > 0)
+                    {
+                        contextStack.RemoveAt(contextStack.Count - 1);
+                    }
+                }
+            }
+        }
+    }
+
+
+    public class ModelCompilerContextScope : IDisposable
+    {
+        public ModelCompilerContextScope(IModelCompiler compiler)
+        {
+            if (compiler == null) throw new ArgumentNullException(nameof(compiler));
+            lock (ModelCompilerContext.contextStacks)
+            {
+                List<ModelCompilerContext> contextStack = null;
+                if (!ModelCompilerContext.contextStacks.TryGetValue(Thread.CurrentThread, out contextStack))
+                {
+                    contextStack = new List<ModelCompilerContext>();
+                    ModelCompilerContext.contextStacks.Add(Thread.CurrentThread, contextStack);
+                }
+                contextStack.Add(new ModelCompilerContext(compiler));
+            }
+        }
+
+        public void Dispose()
+        {
+            lock (ModelCompilerContext.contextStacks)
+            {
+                List<ModelCompilerContext> contextStack = null;
+                if (ModelCompilerContext.contextStacks.TryGetValue(Thread.CurrentThread, out contextStack))
                 {
                     if (contextStack.Count > 0)
                     {

@@ -250,10 +250,10 @@ namespace MetaDslx.Core
 
         public void AddMessage(Severity severity, string message, string fileName, ModelObject symbol, bool isLog = false)
         {
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
+            IModelCompiler compiler = ModelCompilerContext.Current;
+            if (compiler != null)
             {
-                foreach (var textSpan in ctx.Compiler.NameProvider.GetSymbolTextSpans(symbol))
+                foreach (var textSpan in compiler.NameProvider.GetSymbolTextSpans(symbol))
                 {
                     this.AddMessage(severity, message, fileName, textSpan, isLog);
                 }
@@ -267,10 +267,10 @@ namespace MetaDslx.Core
         public void AddMessage(Severity severity, string message, string fileName, object node, bool isLog = false)
         {
             TextSpan textSpan = null;
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
+            IModelCompiler compiler = ModelCompilerContext.Current;
+            if (compiler != null)
             {
-                textSpan = ctx.Compiler.NameProvider.GetTreeNodeTextSpan(node);
+                textSpan = compiler.NameProvider.GetTreeNodeTextSpan(node);
             }
             else
             {
@@ -706,8 +706,8 @@ namespace MetaDslx.Core
             bool result = this.IsAssignableFrom((ModelObject)expr.ExpectedType, (ModelObject)expr.Type);
             if (!result)
             {
-                ModelContext ctx = ModelContext.Current;
-                if (ctx != null)
+                IModelCompiler compiler = ModelCompilerContext.Current;
+                if (compiler != null)
                 {
                     if (expr.ExpectedType == MetaInstance.None)
                     {
@@ -715,15 +715,15 @@ namespace MetaDslx.Core
                     }
                     else  if (expr.ExpectedType == null)
                     {
-                        ctx.Compiler.Diagnostics.AddError("The expression has no expected type.", ctx.Compiler.FileName, symbol);
+                        compiler.Diagnostics.AddError("The expression has no expected type.", compiler.FileName, symbol);
                     }
                     else if (expr.Type == null)
                     {
-                        ctx.Compiler.Diagnostics.AddError("The expression has no type.", ctx.Compiler.FileName, symbol);
+                        compiler.Diagnostics.AddError("The expression has no type.", compiler.FileName, symbol);
                     }
                     else
                     {
-                        ctx.Compiler.Diagnostics.AddError("'" + expr.ExpectedType + "' type expected, but expression has type '" + expr.Type + "'.", ctx.Compiler.FileName, symbol);
+                        compiler.Diagnostics.AddError("'" + expr.ExpectedType + "' type expected, but expression has type '" + expr.Type + "'.", compiler.FileName, symbol);
                     }
                 }
             }
@@ -735,11 +735,11 @@ namespace MetaDslx.Core
     {
         public virtual ModelObject GetParentScope(ModelObject obj)
         {
-            ModelContext ctx = ModelContext.Current;
+            IModelCompiler compiler = ModelCompilerContext.Current;
             ModelObject result = null;
-            if (ctx != null)
+            if (compiler != null)
             {
-                result = ModelContext.Current.Compiler.GlobalScope;
+                result = compiler.GlobalScope;
             }
             if (obj != null)
             {
@@ -758,11 +758,11 @@ namespace MetaDslx.Core
 
         public virtual ModelObject GetCurrentScope(ModelObject obj)
         {
-            ModelContext ctx = ModelContext.Current;
+            IModelCompiler compiler = ModelCompilerContext.Current;
             ModelObject result = null;
-            if (ctx != null)
+            if (compiler != null)
             {
-                result = ModelContext.Current.Compiler.GlobalScope;
+                result = compiler.GlobalScope;
             }
             while (obj != null && !obj.IsMetaScope())
             {
@@ -777,11 +777,11 @@ namespace MetaDslx.Core
 
         public virtual ModelObject GetCurrentTypeScopeOf(ModelObject obj)
         {
-            ModelContext ctx = ModelContext.Current;
+            IModelCompiler compiler = ModelCompilerContext.Current;
             ModelObject result = null;
-            if (ctx != null)
+            if (compiler != null)
             {
-                result = ModelContext.Current.Compiler.GlobalScope;
+                result = compiler.GlobalScope;
             }
             while (obj != null && !obj.IsMetaScope() && !obj.IsMetaType())
             {
@@ -1010,7 +1010,7 @@ namespace MetaDslx.Core
         protected virtual void SelectBestAlternative(List<ModelObject> alternativeList, MetaFunctionCallExpression call)
         {
             if (alternativeList.Count <= 1) return;
-            ModelContext ctx = ModelContext.Current;
+            IModelCompiler compiler = ModelCompilerContext.Current;
             for (int i = 0; i < alternativeList.Count; i++)
             {
                 ModelObject alternative = alternativeList[i];
@@ -1026,7 +1026,7 @@ namespace MetaDslx.Core
                         {
                             MetaType paramType = ft.ParameterTypes[j];
                             MetaType argType = call.Arguments[j].Type;
-                            if (!ctx.Compiler.TypeProvider.IsAssignableFrom((ModelObject)paramType, (ModelObject)argType))
+                            if (!compiler.TypeProvider.IsAssignableFrom((ModelObject)paramType, (ModelObject)argType))
                             {
                                 goodAlternative = false;
                             }
@@ -1055,7 +1055,7 @@ namespace MetaDslx.Core
                         {
                             MetaType paramType = ft.ParameterTypes[j];
                             MetaType argType = call.Arguments[j].Type;
-                            if (!ctx.Compiler.TypeProvider.Equals((ModelObject)paramType, (ModelObject)argType))
+                            if (!compiler.TypeProvider.Equals((ModelObject)paramType, (ModelObject)argType))
                             {
                                 goodAlternative = false;
                             }
@@ -1072,7 +1072,7 @@ namespace MetaDslx.Core
 
         public virtual ModelObject Bind(ModelObject context, IEnumerable<ModelObject> alternatives, BindingInfo info)
         {
-            ModelContext ctx = ModelContext.Current;
+            IModelCompiler compiler = ModelCompilerContext.Current;
             List<ModelObject> alternativeList = alternatives.ToList();
             MetaFunctionCallExpression fce = context as MetaFunctionCallExpression;
             if (fce != null)
@@ -1096,15 +1096,15 @@ namespace MetaDslx.Core
             }
             if (alternativeList.Count == 0)
             {
-                if (ctx != null)
+                if (compiler != null)
                 {
                     if (info.Node != null)
                     {
-                        ctx.Compiler.Diagnostics.AddError("Cannot resolve name or type.", ctx.Compiler.FileName, info.Node);
+                        compiler.Diagnostics.AddError("Cannot resolve name or type.", compiler.FileName, info.Node);
                     }
                     else
                     {
-                        ctx.Compiler.Diagnostics.AddError("Cannot resolve name or type.", ctx.Compiler.FileName, context);
+                        compiler.Diagnostics.AddError("Cannot resolve name or type.", compiler.FileName, context);
                     }
                 }
                 return null;
@@ -1122,15 +1122,15 @@ namespace MetaDslx.Core
                 }
                 if (mustHaveUniqueDefinition)
                 {
-                    if (ctx != null)
+                    if (compiler != null)
                     {
                         if (info.Node != null)
                         {
-                            ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, info.Node);
+                            compiler.Diagnostics.AddError("Ambiguous name or type.", compiler.FileName, info.Node);
                         }
                         else
                         {
-                            ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, context);
+                            compiler.Diagnostics.AddError("Ambiguous name or type.", compiler.FileName, context);
                         }
                     }
                 }
@@ -1155,7 +1155,7 @@ namespace MetaDslx.Core
                         }
                         else
                         {
-                            ctx.Compiler.Diagnostics.AddError("The number of formal and actual parameters are different.", ctx.Compiler.FileName, context);
+                            compiler.Diagnostics.AddError("The number of formal and actual parameters are different.", compiler.FileName, context);
                         }
                     }
                 }

@@ -64,6 +64,7 @@
     <Compile Include="ModelCompiler.cs" />
     <Compile Include="ModelContext.cs" />
     <Compile Include="ModelException.cs" />
+    <Compile Include="ModelExchange.cs" />
     <Compile Include="ModelFactory.cs" />
     <Compile Include="ModelList.cs" />
     <Compile Include="ModelObject.cs" />

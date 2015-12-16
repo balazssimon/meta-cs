@@ -49,19 +49,12 @@ namespace MetaDslx.Soal
                     {
                         if (sta.HasName)
                         {
-                            ModelContext ctx = ModelContext.Current;
-                            if (ctx != null)
+                            ModelCompilerContext.RequireContext();
+                            IModelCompiler compiler = ModelCompilerContext.Current;
+                            string name = compiler.NameProvider.GetName(node);
+                            if (sta.Name == name)
                             {
-                                IModelCompiler compiler = ModelContext.Current.Compiler;
-                                string name = compiler.NameProvider.GetName(node);
-                                if (sta.Name == name)
-                                {
-                                    this.OverrideSymbolType(node, sta.SymbolType);
-                                }
-                            }
-                            else
-                            {
-                                throw new InvalidOperationException("ModelContext is missing. Define a ModelContextScope.");
+                                this.OverrideSymbolType(node, sta.SymbolType);
                             }
                         }
                         else

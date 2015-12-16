@@ -259,9 +259,24 @@ namespace MetaDslx.Compiler
 
         public void Compile()
         {
-            using (new ModelContextScope(this))
+            using (new ModelCompilerContextScope(this))
             {
-                this.DoCompile();
+                ModelContextScope scope = null;
+                try
+                {
+                    if (!ModelContext.HasContext())
+                    {
+                        scope = new ModelContextScope(new Model());
+                    }
+                    this.DoCompile();
+                }
+                finally
+                {
+                    if (scope != null)
+                    {
+                        scope.Dispose();
+                    }
+                }
             }
         }
 
@@ -1352,11 +1367,11 @@ namespace MetaDslx.Compiler
                     this.SymbolStack[i] = newSymbol;
                 }
             }
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
+            Model model = ModelContext.Current;
+            if (model != null)
             {
-                ctx.Model.RemoveInstance(oldSymbol);
-                ctx.Model.AddInstance(newSymbol);
+                model.RemoveInstance(oldSymbol);
+                model.AddInstance(newSymbol);
             }
         }
 
