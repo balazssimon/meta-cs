@@ -578,21 +578,13 @@ template GenerateModelConstant(MetaModel model, MetaConstant mconst)
 public static readonly [mconst.Type.CSharpFullName()] [mconst.Name];
 end template
 
-template GenerateModelFunction(MetaModel model, MetaGlobalFunction mfunc)
-public static readonly [MetaInstance.MetaGlobalFunction.CSharpFullName()] [mfunc.Name];
-end template
-
 template GenerateModelConstantImpl(MetaModel model, MetaConstant mconst, Dictionary<ModelObject, string> mobjToTmp)
 [mconst.Name] = [GenerateExpression(mconst.Value)];
 end template
 
-template GenerateModelFunctionImpl(MetaModel model, MetaGlobalFunction mfunc, Dictionary<ModelObject, string> mobjToTmp)
-[RegisterModelObject((ModelObject)mfunc, mobjToTmp, mfunc.Name)] = [MetaInstance.MetaGlobalFunction.CSharpFullFactoryMethodName()]();
-end template
-
 
 template GenerateMetaModelInstance(MetaModel model)
-[Dictionary<ModelObject, string> mobjToTmp = new Dictionary<ModelObject, string>()]
+[Dictionary<ModelObject, string> mobjToName = model.GetNamedModelObjects()]
 public static class [model.CSharpInstancesName()]
 {
     private static global::MetaDslx.Core.Model model;
@@ -608,11 +600,9 @@ public static class [model.CSharpInstancesName()]
     [GenerateModelConstant(model, c)]
     [end loop]
 ^
-	[GenerateModelObjectInstanceDeclaration(((ModelObject)model).GetRootNamespace(), mobjToTmp)]
-^
-	[loop(model->Namespace->Declarations->cls:typeof(MetaClass)->prop:Properties where !HasBuiltInName((ModelObject)prop))]
-	public static readonly global::MetaDslx.Core.MetaProperty [cls.CSharpName()]_[prop.Name]Property;
-	[end loop]
+    [loop(mobj:Instances)]
+	[GenerateModelObjectInstanceDeclaration(mobj, mobjToName)]
+    [end loop]
 ^
     static [model.CSharpInstancesName()]()
     {
@@ -621,12 +611,16 @@ public static class [model.CSharpInstancesName()]
    		using (new ModelContextScope([model.CSharpInstancesName()].model))
 		{
 		    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
-            [GenerateModelConstantImpl(model, c, mobjToTmp)]
+            [GenerateModelConstantImpl(model, c, mobjToName)]
 			[end loop]
 ^
-			[GenerateModelObjectInstance(((ModelObject)model).GetRootNamespace(), mobjToTmp)]
+			[loop(mobj:Instances)]
+			[GenerateModelObjectInstance(mobj, mobjToName)]
+			[end loop]
 ^
-			[GenerateModelObjectInstanceInitializer(((ModelObject)model).GetRootNamespace(), mobjToTmp)]
+			[loop(mobj:Instances)]
+			[GenerateModelObjectInstanceInitializer(mobj, mobjToName)]
+			[end loop]
 ^
             [model.CSharpInstancesName()].model.EvalLazyValues();
 		}
@@ -634,29 +628,87 @@ public static class [model.CSharpInstancesName()]
 }
 end template
 
-function string RegisterModelObject(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp, string name)
-	if (!mobjToTmp.ContainsKey(mobj))
-		string tmpName = name;
-		mobjToTmp.Add(mobj, tmpName);
-		return tmpName;
-	else
-		return mobjToTmp[mobj];
-	end if
-end function
 
-function bool HasBuiltInName(ModelObject mobj)
-	MetaAnnotatedElement mannot = mobj as MetaAnnotatedElement;
-	if (mannot != null && !(mobj is MetaConstant))
-		loop(mannot->a:Annotations->p:Properties where a.Name == "BuiltInName" && p.Name == "Name")
-			return true;
-		end loop
-	end if
-	MetaDeclaration mdecl = mobj as MetaDeclaration;
-	if (mdecl != null && !(mdecl is MetaOperation) && !(mdecl is MetaConstant))
-		return true;
-	end if
-	return false;
-end function
+template GenerateModelObjectInstanceDeclaration(ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
+[if (mobj != null && mobj.MMetaClass != null)]
+	[if (mobjToName.ContainsKey(mobj))]
+		[string name = mobjToName[mobj]]
+		[if (name.StartsWith("__"))]
+private static readonly global::MetaDslx.Core.[mobj.MMetaClass.CSharpName()] [name];
+		[else]
+public static readonly global::MetaDslx.Core.[mobj.MMetaClass.CSharpName()] [name];
+		[end if]
+	[end if]
+[end if]
+end template
+
+
+template GenerateModelObjectInstance(ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
+[if (mobj != null && mobj.MMetaClass != null)]
+	[if (mobjToName.ContainsKey(mobj))]
+		[string name = mobjToName[mobj]]
+[name] = global::MetaDslx.Core.MetaFactory.Instance.Create[mobj.MMetaClass.CSharpName()]();
+		[if (mobj is MetaModel)]
+Meta = [name];
+		[end if]
+	[end if]
+[end if]
+end template
+
+
+template GenerateModelObjectInstanceInitializer(ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
+[if (mobj != null && mobj.MMetaClass != null)]
+	[if (mobjToName.ContainsKey(mobj))]
+		[loop(mobj->prop:MGetAllProperties())]
+			[if (prop.MetaProperty != null && prop.MetaProperty.Kind != MetaPropertyKind.Derived)]
+				[object propValue = mobj.MGet(prop)]
+[GenerateModelObjectPropertyValue(mobj, prop, propValue, mobjToName)]
+			[end if]
+		[end loop]
+	[end if]
+[end if]
+end template
+
+
+template GenerateModelObjectPropertyValue(ModelObject mobj, ModelProperty prop, object value, Dictionary<ModelObject, string> mobjToName)
+[string name = mobjToName[mobj]]
+[string propDeclName = "global::"+prop.DeclaringType.FullName.Replace("+",".")+"."+prop.DeclaredName]
+[if (!prop.IsCollection)]
+((ModelObject)[name]).MUnSet([propDeclName]);
+[end if]
+[ModelObject moValue = value as ModelObject]
+[if (value == null)]
+((ModelObject)[name]).MLazyAdd([propDeclName], new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+[else if (value is string)]
+((ModelObject)[name]).MLazyAdd([propDeclName], new Lazy<object>(() => "[value]", LazyThreadSafetyMode.ExecutionAndPublication));
+[else if (value is bool)]
+((ModelObject)[name]).MLazyAdd([propDeclName], new Lazy<object>(() => [value.ToString().ToLower()], LazyThreadSafetyMode.ExecutionAndPublication));
+[else if (value.GetType().IsPrimitive)]
+((ModelObject)[name]).MLazyAdd([propDeclName], new Lazy<object>(() => [value.ToString()], LazyThreadSafetyMode.ExecutionAndPublication));
+[else if (MetaBuiltInTypes.Types.Contains(value))]
+((ModelObject)[name]).MLazyAdd([propDeclName], new Lazy<object>(() => [GenerateTypeOf(value)], LazyThreadSafetyMode.ExecutionAndPublication));
+[else if (value is MetaPrimitiveType)]
+((ModelObject)[name]).MLazyAdd([propDeclName], new Lazy<object>(() => [GenerateTypeOf(value)], LazyThreadSafetyMode.ExecutionAndPublication));
+[else if (value is Enum)]
+((ModelObject)[name]).MLazyAdd([propDeclName], new Lazy<object>(() => [GetEnumValueOf(value)], LazyThreadSafetyMode.ExecutionAndPublication));
+[else if (moValue != null)]
+	[if (mobjToName.ContainsKey(moValue))]
+((ModelObject)[name]).MLazyAdd([propDeclName], new Lazy<object>(() => [mobjToName[moValue]], LazyThreadSafetyMode.ExecutionAndPublication));
+	[else]
+// Omitted since not part of the model: [name].[propDeclName] = [moValue]
+	[end if]
+[else]
+	[IEnumerable<object> mc = (value as ModelCollection) as IEnumerable<object>]
+	[if (mc != null)]
+		[loop(cvalue:mc)]
+[GenerateModelObjectPropertyValue(mobj, prop, cvalue, mobjToName)]
+		[end loop]
+	[else]
+// Invalid property value type: [name].[propDeclName] = [value.GetType()]
+	[end if]
+[end if]
+end template
+
 
 function string GetInstanceName(ModelObject mobj)
 	MetaAnnotatedElement mannot = mobj as MetaAnnotatedElement;
@@ -676,138 +728,7 @@ function string GetInstanceName(ModelObject mobj)
 	return null;
 end function
 
-function string RegisterModelObject(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
-	if (!mobjToTmp.ContainsKey(mobj))
-		string name = GetInstanceName(mobj);
-		if (name == null)
-			name = "tmp"+NextCounter();
-		end if
-		mobjToTmp.Add(mobj, name);
-		return name;
-	else
-		return null;
-	end if
-end function
 
-template GenerateModelObjectInstanceDeclaration(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
-[if (mobj != null && mobj.MMetaClass != null)]
-	[if (!Instances.Contains(mobj))]
-	[else]
-		[if (HasBuiltInName(mobj))]
-			[string tmpName = RegisterModelObject(mobj, mobjToTmp)]
-			[if (tmpName != null)]
-				[if (tmpName.StartsWith("tmp"))]
-				[else]
-public static readonly global::MetaDslx.Core.[mobj.MMetaClass.CSharpName()] [tmpName];
-				[end if]
-			[end if]
-		[end if]
-		[loop(mobj->child:MChildren)]
-[GenerateModelObjectInstanceDeclaration(child, mobjToTmp)]
-		[end loop]
-	[end if]
-[end if]
-end template
-
-template GenerateModelObjectInstance(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
-[if (mobj != null && mobj.MMetaClass != null)]
-	[if (!Instances.Contains(mobj))]
-		[string metaClassName = mobj.MMetaClass.Name]
-		[if (mobj is MetaDeclaration || mobj is MetaProperty)]
-			[if (mobj is MetaProperty)]
-[string tmpName = RegisterModelObject(mobj, mobjToTmp, ((MetaProperty)mobj).CSharpInstanceName())]
-			[else]
-[string tmpName = RegisterModelObject(mobj, mobjToTmp, ((MetaDeclaration)mobj).CSharpInstanceName())]
-			[end if]
-		[else]
-// OMITTED: [metaClassName]
-		[end if]
-	[else]
-		[string tmpName = null]
-		[if (mobjToTmp.ContainsKey(mobj))]
-			[tmpName = mobjToTmp[mobj]]
-		[else]
-			[tmpName = RegisterModelObject(mobj, mobjToTmp)]
-		[end if]
-		[if (tmpName != null)]
-			[if (tmpName.StartsWith("tmp"))]
-global::MetaDslx.Core.[mobj.MMetaClass.CSharpName()] [tmpName] = global::MetaDslx.Core.MetaFactory.Instance.Create[mobj.MMetaClass.CSharpName()]();
-			[else]
-[tmpName] = global::MetaDslx.Core.MetaFactory.Instance.Create[mobj.MMetaClass.CSharpName()]();
-			[end if]
-			[if (mobj is MetaModel)]
-Meta = [tmpName];
-			[end if]
-			[loop(mobj->child:MChildren)]
-[GenerateModelObjectInstance(child, mobjToTmp)]
-			[end loop]
-		[end if]
-	[end if]
-[end if]
-end template
-
-template GenerateModelObjectInstanceInitializer(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
-[if (mobj != null && mobj.MMetaClass != null)]
-	[if (!Instances.Contains(mobj))]
-	[else]
-		[loop(mobj->prop:MGetAllProperties())]
-			[if (prop.MetaProperty != null && prop.MetaProperty.Kind != MetaPropertyKind.Derived)]
-				[object propValue = mobj.MGet(prop)]
-[GenerateModelObjectPropertyValue(mobj, prop, propValue, mobjToTmp)]
-			[end if]
-		[end loop]
-		[loop(mobj->child:MChildren)]
-[GenerateModelObjectInstanceInitializer(child, mobjToTmp)]
-		[end loop]
-	[end if]
-[end if]
-end template
-
-template GenerateModelObjectPropertyValue(ModelObject mobj, ModelProperty prop, object value, Dictionary<ModelObject, string> mobjToTmp)
-[string tmpName = mobjToTmp[mobj]]
-[string propDeclName = "global::"+prop.DeclaringType.FullName.Replace("+",".")+"."+prop.DeclaredName]
-[if (!prop.IsCollection)]
-((ModelObject)[tmpName]).MUnSet([propDeclName]);
-[end if]
-[ModelObject moValue = value as ModelObject]
-[if (value == null)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-[else if (value is string)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => "[value]", LazyThreadSafetyMode.ExecutionAndPublication));
-[else if (value is bool)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [value.ToString().ToLower()], LazyThreadSafetyMode.ExecutionAndPublication));
-[else if (value.GetType().IsPrimitive)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [value.ToString()], LazyThreadSafetyMode.ExecutionAndPublication));
-[else if (MetaBuiltInTypes.Types.Contains(value))]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [GenerateTypeOf(value)], LazyThreadSafetyMode.ExecutionAndPublication));
-[else if (value is MetaPrimitiveType)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [GenerateTypeOf(value)], LazyThreadSafetyMode.ExecutionAndPublication));
-[else if (value is Enum)]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [GetEnumValueOf(value)], LazyThreadSafetyMode.ExecutionAndPublication));
-[else if (moValue != null)]
-	[if (mobjToTmp.ContainsKey(moValue))]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [mobjToTmp[moValue]], LazyThreadSafetyMode.ExecutionAndPublication));
-	[else]
-[GenerateModelObjectInstance(moValue, mobjToTmp)]
-[GenerateModelObjectInstanceInitializer(moValue, mobjToTmp)]
-		[if (mobjToTmp.ContainsKey(moValue))]
-			[string tmpValueName = mobjToTmp[moValue]]
-((ModelObject)[tmpName]).MLazyAdd([propDeclName], new Lazy<object>(() => [tmpValueName], LazyThreadSafetyMode.ExecutionAndPublication));
-		[else]
-// NOT FOUND: [moValue]
-		[end if]
-	[end if]
-[else]
-	[IEnumerable<object> mc = (value as ModelCollection) as IEnumerable<object>]
-	[if (mc != null)]
-		[loop(cvalue:mc)]
-[GenerateModelObjectPropertyValue(mobj, prop, cvalue, mobjToTmp)]
-		[end loop]
-	[else]
-// [propDeclName] = [value.GetType()]
-	[end if]
-[end if]
-end template
 
 function string GetEnumValueOf(object enm)
 	return "global::"+enm.GetType().FullName.Replace("+",".")+"."+enm.ToString();

@@ -19,7 +19,7 @@ namespace MetaDslx.Core
             }
         }
 
-        public List<ModelObject> InstancesCopy
+        public List<ModelObject> CachedInstances
         {
             get
             {
@@ -30,11 +30,20 @@ namespace MetaDslx.Core
         public void AddInstance(ModelObject obj)
         {
             this.instances.Add(obj);
+            if (obj.MModel != null && obj.MModel != this)
+            {
+                throw new ModelException("The object "+obj+" is already contained by another model.");
+            }
+            else
+            {
+                obj.MModel = this;
+            }
         }
 
         public void RemoveInstance(ModelObject obj)
         {
             this.instances.Remove(obj);
+            obj.MModel = null;
         }
 
         public void EvalLazyValues()
@@ -43,7 +52,7 @@ namespace MetaDslx.Core
             while (oldCount != this.instances.Count)
             {
                 oldCount = this.instances.Count;
-                foreach (var mo in this.InstancesCopy)
+                foreach (var mo in this.CachedInstances)
                 {
                     mo.MEvalLazyValues();
                 }

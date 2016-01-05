@@ -1169,13 +1169,16 @@ namespace MetaDslx.Core
     {
         public DefaultModelCompiler()
         {
-            this.Diagnostics = new ModelCompilerDiagnostics();
-            this.GlobalScope = new RootScope();
-            this.GlobalScope.AddMetaBuiltInEntries();
-            this.NameProvider = new DefaultNameProvider();
-            this.TypeProvider = new DefaultTypeProvider();
-            this.ResolutionProvider = new DefaultResolutionProvider();
-            this.BindingProvider = new DefaultBindingProvider();
+            //using (new ModelCompilerContextScope(this))
+            {
+                this.Diagnostics = new ModelCompilerDiagnostics();
+                this.GlobalScope = new RootScope();
+                //this.GlobalScope.AddMetaBuiltInEntries();
+                this.NameProvider = new DefaultNameProvider();
+                this.TypeProvider = new DefaultTypeProvider();
+                this.ResolutionProvider = new DefaultResolutionProvider();
+                this.BindingProvider = new DefaultBindingProvider();
+            }
         }
 
         public virtual ModelCompilerDiagnostics Diagnostics { get; protected set; }

@@ -74,7 +74,7 @@ namespace MetaDslx.Core
             Dictionary<MetaModel, XNamespace> metaModels = new Dictionary<MetaModel, XNamespace>();
             Dictionary<MetaModel, string> prefixes = new Dictionary<MetaModel, string>();
 
-            List<ModelObject> instances = model.InstancesCopy;
+            List<ModelObject> instances = model.CachedInstances;
             foreach (var mo in instances)
             {
                 if (mo.MMetaClass != null && mo.MMetaClass.Model != null)

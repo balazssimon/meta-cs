@@ -350,6 +350,41 @@ namespace MetaDslx.Core
             return @this.MMetaModel == mobj.MMetaModel;
         }
 
+        public static Dictionary<ModelObject, string> GetNamedModelObjects(this MetaModel model)
+        {
+            return ((ModelObject)model).MModel.GetNamedModelObjects();
+        }
+
+        public static Dictionary<ModelObject, string> GetNamedModelObjects(this Model model)
+        {
+            Dictionary<ModelObject, string> result = new Dictionary<ModelObject, string>();
+            int tmpCounter = 0;
+            foreach (var item in model.Instances)
+            {
+                string name = null;
+                MetaProperty prop = item as MetaProperty;
+                if (prop != null)
+                {
+                    name = prop.Class.BuiltInName() + "_" + prop.Name + "Property";
+                }
+                else
+                {
+                    MetaDeclaration decl = item as MetaDeclaration;
+                    if (decl != null && !(decl is MetaConstant))
+                    {
+                        name = decl.BuiltInName();
+                    }
+                }
+                if (name == null)
+                {
+                    ++tmpCounter;
+                    name = "__tmp" + tmpCounter;
+                }
+                result.Add(item, name);
+            }
+            return result;
+        }
+
         public static string CSharpName(this MetaNamespace @this)
         {
             if (@this == null) return string.Empty;

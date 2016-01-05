@@ -46,6 +46,8 @@ namespace MetaDslx.Core
             get { return null; }
         }
 
+        public Model MModel { get; internal set; }
+
         public void MEvalLazyValues()
         {
             List<ModelProperty> properties = this.initializers.Keys.ToList();
