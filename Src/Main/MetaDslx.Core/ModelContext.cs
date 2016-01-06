@@ -29,13 +29,13 @@ namespace MetaDslx.Core
 
         public void AddInstance(ModelObject obj)
         {
-            this.instances.Add(obj);
             if (obj.MModel != null && obj.MModel != this)
             {
                 throw new ModelException("The object "+obj+" is already contained by another model.");
             }
             else
             {
+                this.instances.Add(obj);
                 obj.MModel = this;
             }
         }

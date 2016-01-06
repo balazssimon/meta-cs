@@ -570,24 +570,17 @@ template GenerateModelConstant(MetaModel model, MetaConstant mconst)
 public static final [mconst.Type.JavaFullName()] [mconst.Name];
 end template
 
-template GenerateModelFunction(MetaModel model, MetaGlobalFunction mfunc)
-public static final [MetaInstance.MetaGlobalFunction.JavaFullName()] [mfunc.Name];
-end template
-
 template GenerateModelConstantImpl(MetaModel model, MetaConstant mconst, Dictionary<ModelObject, string> mobjToTmp)
 [mconst.Name] = [GenerateExpression(mconst.Value)];
 end template
 
-template GenerateModelFunctionImpl(MetaModel model, MetaGlobalFunction mfunc, Dictionary<ModelObject, string> mobjToTmp)
-[RegisterModelObject((ModelObject)mfunc, mobjToTmp, mfunc.Name)] = [MetaInstance.MetaGlobalFunction.JavaFullFactoryMethodName()]();
-end template
-
 
 template GenerateMetaModelInstance(MetaModel model)
-[Dictionary<ModelObject, string> mobjToTmp = new Dictionary<ModelObject, string>()]
+[Dictionary<ModelObject, string> mobjToName = model.GetNamedModelObjects()]
 package [model.Namespace.JavaName()];
 ^
-public final class [model.JavaInstancesName()] {
+public final class [model.CSharpInstancesName()]
+{
     private static metadslx.core.Model model;
 ^
     public static metadslx.core.Model model() {
@@ -600,283 +593,111 @@ public final class [model.JavaInstancesName()] {
     [GenerateModelConstant(model, c)]
     [end loop]
 ^
-	[GenerateModelObjectInstanceDeclaration(((ModelObject)model).GetRootNamespace(), mobjToTmp)]
+    [loop(mobj:Instances)]
+	[GenerateModelObjectInstanceDeclaration(mobj, mobjToName)]
+    [end loop]
 ^
     static {
 		[model.JavaDescriptorName()].staticInit();
 		[model.JavaInstancesName()].model = new metadslx.core.Model();
    		try (metadslx.core.ModelContextScope _scope = new metadslx.core.ModelContextScope([model.JavaInstancesName()].model)) {
 		    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
-            [GenerateModelConstantImpl(model, c, mobjToTmp)]
+            [GenerateModelConstantImpl(model, c, mobjToName)]
 			[end loop]
 ^
-			[GenerateModelObjectInstance(((ModelObject)model).GetRootNamespace(), mobjToTmp)]
+			[loop(mobj:Instances)]
+			[GenerateModelObjectInstance(mobj, mobjToName)]
+			[end loop]
 ^
-			initializeInstances();
+			[loop(mobj:Instances)]
+			[GenerateModelObjectInstanceInitializer(mobj, mobjToName)]
+			[end loop]
 ^
-            for (ModelObject mo: metadslx.core.ModelContext.current().instances()) {
-                mo.mEvalLazyValues();
-            }
+            [model.JavaInstancesName()].model.evalLazyValues();
 		}
     }
-^
-	private static void initializeInstances() {
-		[GenerateModelObjectInstanceInitializer(((ModelObject)model).GetRootNamespace(), mobjToTmp)]
-	}
 }
 end template
 
-function string RegisterModelObject(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp, string name)
-	if (!mobjToTmp.ContainsKey(mobj))
-		string tmpName = name;
-		mobjToTmp.Add(mobj, tmpName);
-		return tmpName;
-	else
-		return mobjToTmp[mobj];
-	end if
-end function
 
-function bool HasBuiltInName(ModelObject mobj)
-	MetaAnnotatedElement mannot = mobj as MetaAnnotatedElement;
-	if (mannot != null && !(mobj is MetaConstant))
-		loop(mannot->a:Annotations->p:Properties where a.Name == "BuiltInName" && p.Name == "Name")
-			return true;
-		end loop
-	end if
-	MetaDeclaration mdecl = mobj as MetaDeclaration;
-	if (mdecl != null && !(mdecl is MetaOperation) && !(mdecl is MetaConstant))
-		return true;
-	end if
-	return false;
-end function
-
-function string GetInstanceName(ModelObject mobj)
-	MetaAnnotatedElement mannot = mobj as MetaAnnotatedElement;
-	if (mannot != null && !(mobj is MetaConstant))
-		loop(mannot->a:Annotations->p:Properties where a.Name == "BuiltInName" && p.Name == "Name")
-			return GetJavaIdentifier(p.Value);
-		end loop
-	end if
-	MetaDeclaration mdecl = mobj as MetaDeclaration;
-	if (mdecl != null && !(mdecl is MetaOperation) && !(mobj is MetaConstant))
-		return mdecl.JavaInstanceName();
-	end if
-	MetaProperty mprop = mobj as MetaProperty;
-	if (mprop != null)
-		return mprop.JavaInstanceName();
-	end if
-	return null;
-end function
-
-function string RegisterModelObject(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
-	if (!mobjToTmp.ContainsKey(mobj))
-		string name = GetInstanceName(mobj);
-		if (name == null)
-			name = "tmp"+NextCounter();
-		end if
-		mobjToTmp.Add(mobj, name);
-		return name;
-	else
-		return null;
-	end if
-end function
-
-template GenerateModelObjectInstanceDeclaration(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
+template GenerateModelObjectInstanceDeclaration(ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
 [if (mobj != null && mobj.MMetaClass != null)]
-	[if (!Instances.Contains(mobj))]
-	[else]
-		[if (true/*HasBuiltInName(mobj)*/)]
-			[string tmpName = RegisterModelObject(mobj, mobjToTmp)]
-			[if (tmpName != null)]
-				[if (tmpName.StartsWith("tmp"))]
-private static final metadslx.core.[mobj.MMetaClass.JavaName()] [tmpName];
-				[else]
-public static final metadslx.core.[mobj.MMetaClass.JavaName()] [tmpName];
-				[end if]
-			[end if]
+	[if (mobjToName.ContainsKey(mobj))]
+		[string name = mobjToName[mobj]]
+		[if (name.StartsWith("__"))]
+private static final metadslx.core.[mobj.MMetaClass.JavaName()] [name];
+		[else]
+public static final metadslx.core.[mobj.MMetaClass.JavaName()] [name];
 		[end if]
+	[end if]
+[end if]
+end template
+
+
+template GenerateModelObjectInstance(ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
+[if (mobj != null && mobj.MMetaClass != null)]
+	[if (mobjToName.ContainsKey(mobj))]
+		[string name = mobjToName[mobj]]
+[name] = metadslx.core.MetaFactory.instance().create[mobj.MMetaClass.CSharpName()]();
+		[if (mobj is MetaModel)]
+Meta = [name];
+		[end if]
+	[end if]
+[end if]
+end template
+
+
+template GenerateModelObjectInstanceInitializer(ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
+[if (mobj != null && mobj.MMetaClass != null)]
+	[if (mobjToName.ContainsKey(mobj))]
 		[loop(mobj->prop:MGetAllProperties())]
 			[if (prop.MetaProperty != null && prop.MetaProperty.Kind != MetaPropertyKind.Derived)]
 				[object propValue = mobj.MGet(prop)]
-[GenerateModelObjectPropertyValueDeclaration(mobj, prop, propValue, mobjToTmp)]
+[GenerateModelObjectPropertyValue(mobj, prop, propValue, mobjToName)]
 			[end if]
-		[end loop]
-		[loop(mobj->child:MChildren)]
-[GenerateModelObjectInstanceDeclaration(child, mobjToTmp)]
 		[end loop]
 	[end if]
 [end if]
 end template
 
-template GenerateModelObjectInstance(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
-[if (mobj != null && mobj.MMetaClass != null)]
-	[if (!Instances.Contains(mobj))]
-		[string metaClassName = mobj.MMetaClass.Name]
-		[if (mobj is MetaDeclaration || mobj is MetaProperty)]
-			[if (mobj is MetaProperty)]
-[string tmpName = RegisterModelObject(mobj, mobjToTmp, ((MetaProperty)mobj).JavaInstanceName())]
-			[else]
-[string tmpName = RegisterModelObject(mobj, mobjToTmp, ((MetaDeclaration)mobj).JavaInstanceName())]
-			[end if]
-		[else]
-// OMITTED: [metaClassName]
-		[end if]
-	[else]
-		[string tmpName = null]
-		[if (mobjToTmp.ContainsKey(mobj))]
-			[tmpName = mobjToTmp[mobj]]
-		[else]
-			[tmpName = RegisterModelObject(mobj, mobjToTmp)]
-metadslx.core.[mobj.MMetaClass.JavaName()] \
-		[end if]
-		[if (tmpName != null)]
-			[if (tmpName.StartsWith("tmp"))]
-[tmpName] = metadslx.core.MetaFactory.instance().create[mobj.MMetaClass.JavaName()]();
-			[else]
-[tmpName] = metadslx.core.MetaFactory.instance().create[mobj.MMetaClass.JavaName()]();
-			[end if]
-			[if (mobj is MetaModel)]
-Meta = [tmpName];
-			[end if]
-			[loop(mobj->prop:MGetAllProperties())]
-				[if (prop.MetaProperty != null && prop.MetaProperty.Kind != MetaPropertyKind.Derived)]
-					[object propValue = mobj.MGet(prop)]
-[GenerateModelObjectPropertyValueInstance(mobj, prop, propValue, mobjToTmp)]
-				[end if]
-			[end loop]
-			[loop(mobj->child:MChildren)]
-[GenerateModelObjectInstance(child, mobjToTmp)]
-			[end loop]
-		[end if]
-	[end if]
-[end if]
-end template
 
-template GenerateModelObjectInstanceInitializer(ModelObject mobj, Dictionary<ModelObject, string> mobjToTmp)
-[if (mobj != null && mobj.MMetaClass != null)]
-	[if (!Instances.Contains(mobj))]
-	[else]
-		[loop(mobj->prop:MGetAllProperties())]
-			[if (prop.MetaProperty != null && prop.MetaProperty.Kind != MetaPropertyKind.Derived)]
-				[object propValue = mobj.MGet(prop)]
-[GenerateModelObjectPropertyValue(mobj, prop, propValue, mobjToTmp)]
-			[end if]
-		[end loop]
-		[loop(mobj->child:MChildren)]
-[GenerateModelObjectInstanceInitializer(child, mobjToTmp)]
-		[end loop]
-	[end if]
-[end if]
-end template
-
-template GenerateModelObjectPropertyValue(ModelObject mobj, ModelProperty prop, object value, Dictionary<ModelObject, string> mobjToTmp)
-[string tmpName = mobjToTmp[mobj]]
+template GenerateModelObjectPropertyValue(ModelObject mobj, ModelProperty prop, object value, Dictionary<ModelObject, string> mobjToName)
+[string name = mobjToName[mobj]]
 [string propDeclName = prop.JavaFullDeclaredName()]
 [if (!prop.IsCollection)]
-((metadslx.core.ModelObject)[tmpName]).mUnSet([propDeclName]);
+((metadslx.core.ModelObject)[name]).mUnSet([propDeclName]);
 [end if]
 [ModelObject moValue = value as ModelObject]
 [if (value == null)]
-((metadslx.core.ModelObject)[tmpName]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> null, true));
+((metadslx.core.ModelObject)[name]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> null, true));
 [else if (value is string)]
-((metadslx.core.ModelObject)[tmpName]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> "[value]", true));
+((metadslx.core.ModelObject)[name]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> "[value]", true));
 [else if (value is bool)]
-((metadslx.core.ModelObject)[tmpName]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [value.ToString().ToLower()], true));
+((metadslx.core.ModelObject)[name]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [value.ToString().ToLower()], true));
 [else if (value.GetType().IsPrimitive)]
-((metadslx.core.ModelObject)[tmpName]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [value.ToString()], true));
+((metadslx.core.ModelObject)[name]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [value.ToString()], true));
 [else if (MetaBuiltInTypes.Types.Contains(value))]
-((metadslx.core.ModelObject)[tmpName]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [GenerateTypeOf(value)], true));
+((metadslx.core.ModelObject)[name]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [GenerateTypeOf(value)], true));
 [else if (value is MetaPrimitiveType)]
-((metadslx.core.ModelObject)[tmpName]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [GenerateTypeOf(value)], true));
+((metadslx.core.ModelObject)[name]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [GenerateTypeOf(value)], true));
 [else if (value is Enum)]
-((metadslx.core.ModelObject)[tmpName]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [value.JavaEnumValueOf()], true));
+((metadslx.core.ModelObject)[name]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [value.JavaEnumValueOf()], true));
 [else if (moValue != null)]
-	[if (mobjToTmp.ContainsKey(moValue))]
-((metadslx.core.ModelObject)[tmpName]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [mobjToTmp[moValue]], true));
+	[if (mobjToName.ContainsKey(moValue))]
+((metadslx.core.ModelObject)[name]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [mobjToName[moValue]], true));
 	[else]
-[GenerateModelObjectInstanceInitializer(moValue, mobjToTmp)]
-		[if (mobjToTmp.ContainsKey(moValue))]
-			[string tmpValueName = mobjToTmp[moValue]]
-((metadslx.core.ModelObject)[tmpName]).mLazyAdd([propDeclName], metadslx.core.Lazy.create(() -> [tmpValueName], true));
-		[else]
-// NOT FOUND: [moValue]
-		[end if]
+// Omitted since not part of the model: [name].[propDeclName] = [moValue]
 	[end if]
 [else]
 	[IEnumerable<object> mc = (value as ModelCollection) as IEnumerable<object>]
 	[if (mc != null)]
 		[loop(cvalue:mc)]
-[GenerateModelObjectPropertyValue(mobj, prop, cvalue, mobjToTmp)]
+[GenerateModelObjectPropertyValue(mobj, prop, cvalue, mobjToName)]
 		[end loop]
 	[else]
-// [propDeclName] = [value.GetType()]
+// Invalid property value type: [name].[propDeclName] = [value.GetType()]
 	[end if]
 [end if]
-end template
-
-template GenerateModelObjectPropertyValueDeclaration(ModelObject mobj, ModelProperty prop, object value, Dictionary<ModelObject, string> mobjToTmp)
-[string tmpName = mobjToTmp[mobj]]
-[string propDeclName = prop.JavaFullDeclaredName()]
-[ModelObject moValue = value as ModelObject]
-[if (value == null)]
-[else if (value is string)]
-[else if (value is bool)]
-[else if (value.GetType().IsPrimitive)]
-[else if (MetaBuiltInTypes.Types.Contains(value))]
-[else if (value is MetaPrimitiveType)]
-[else if (value is Enum)]
-[else if (moValue != null)]
-	[if (mobjToTmp.ContainsKey(moValue))]
-	[else]
-[GenerateModelObjectInstanceDeclaration(moValue, mobjToTmp)]
-	[end if]
-[else]
-	[IEnumerable<object> mc = (value as ModelCollection) as IEnumerable<object>]
-	[if (mc != null)]
-		[loop(cvalue:mc)]
-[GenerateModelObjectPropertyValueDeclaration(mobj, prop, cvalue, mobjToTmp)]
-		[end loop]
-	[end if]
-[end if]
-end template
-
-template GenerateModelObjectPropertyValueInstance(ModelObject mobj, ModelProperty prop, object value, Dictionary<ModelObject, string> mobjToTmp)
-[string tmpName = mobjToTmp[mobj]]
-[string propDeclName = prop.JavaFullDeclaredName()]
-[ModelObject moValue = value as ModelObject]
-[if (value == null)]
-[else if (value is string)]
-[else if (value is bool)]
-[else if (value.GetType().IsPrimitive)]
-[else if (MetaBuiltInTypes.Types.Contains(value))]
-[else if (value is MetaPrimitiveType)]
-[else if (value is Enum)]
-[else if (moValue != null)]
-	[if (mobjToTmp.ContainsKey(moValue))]
-	[else]
-[GenerateModelObjectInstance(moValue, mobjToTmp)]
-	[end if]
-[else]
-	[IEnumerable<object> mc = (value as ModelCollection) as IEnumerable<object>]
-	[if (mc != null)]
-		[loop(cvalue:mc)]
-[GenerateModelObjectPropertyValueInstance(mobj, prop, cvalue, mobjToTmp)]
-		[end loop]
-	[end if]
-[end if]
-end template
-template GenerateClassMetaInstance(MetaClass cls)
-[cls.JavaName()] = metadslx.core.MetaFactory.instance().createMetaClass();
-end template
-
-template GenerateClassMetaInstanceInitializer(MetaClass cls)
-[cls.JavaName()].setName("[cls.JavaName()]");
-[if (cls.IsAbstract)]
-[cls.JavaName()].setIsAbstract(true);
-[end if]
-[loop(cls->sup:SuperClasses)]
-[cls.JavaName()].getSuperClasses().add([sup.JavaFullInstanceName()]);
-[end loop]
 end template
 
 
