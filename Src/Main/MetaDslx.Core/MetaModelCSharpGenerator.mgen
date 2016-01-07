@@ -479,7 +479,7 @@ public [cls.CSharpImplName()]()
     this.MLazySetChild([init.Object.CSharpFullDescriptorName()], [init.Property.CSharpFullDescriptorName()], new Lazy<object>(() => [GenerateExpression(init.Value)], LazyThreadSafetyMode.ExecutionAndPublication));
 		[end if]
 	[end loop]
-    [cls.Model.CSharpFullImplementationName()].[cls.CSharpName()]_[cls.CSharpName()](this);
+    [cls.Model.CSharpFullImplementationName()].[cls.CSharpName()](this);
     [loop(cls->prop:GetAllProperties())]
 		[if (prop.Kind == MetaPropertyKind.Readonly)]
     if (!this.MIsSet([prop.CSharpFullDescriptorName()])) throw new ModelException("Readonly property [model.CSharpName()].[prop.Class.CSharpName()].[prop.Name]Property was not set in [cls.CSharpName()]_[cls.CSharpName()]().");
@@ -797,10 +797,10 @@ internal abstract class [model.Name]ImplementationBase
 	[end if]
 	[end loop]
     /// </summary>
-    public virtual void [cls.CSharpName()]_[cls.CSharpName()]([cls.CSharpName()] @this)
+    public virtual void [cls.CSharpName()]([cls.CSharpName()] @this)
     {
 		[loop(cls->sup:SuperClasses)]
-        this.[sup.CSharpName()]_[sup.CSharpName()](@this);
+        this.[sup.CSharpName()](@this);
 		[end loop]
     }
     [loop(cls->prop:Properties)]

@@ -195,8 +195,10 @@
 		list<MetaClass> GetAllSuperClasses();
 		list<MetaProperty> GetAllProperties();
 		list<MetaOperation> GetAllOperations();
+		list<MetaProperty> GetAllImplementedProperties();
+		list<MetaOperation> GetAllImplementedOperations();
 	}
-
+	
 	class MetaFunctionType : MetaType
 	{
 		multi_list<MetaType> ParameterTypes;
