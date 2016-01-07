@@ -23,7 +23,7 @@ namespace MetaDslx.Compiler
             base.DoCompile();
             if (this.GenerateOutput && !this.Diagnostics.HasErrors())
             {
-                MetaModelGenerator generator = new MetaModelGenerator(ModelContext.Current.Instances);
+                MetaModelCSharpGenerator generator = new MetaModelCSharpGenerator(ModelContext.Current.Instances);
                 this.GeneratedSource = generator.Generate();
             }
         }

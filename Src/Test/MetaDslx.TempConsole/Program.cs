@@ -115,14 +115,14 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine("----");
                 CompileAG4(@"c:\Temp\Meta", @"MetaModelParser");
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileGenerator(
-                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
-                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.cs"
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelCSharpGenerator.mgen",
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelCSharpGenerator.cs"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",

@@ -50,7 +50,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MetaModel.mm</DependentUpon>
     </Compile>
-    <Compile Include="MetaModelGenerator.cs" />
+    <Compile Include="MetaModelCSharpGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelCSharpGenerator.mgen</DependentUpon>
+    </Compile>
     <Compile Include="MetaModelJavaGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -75,8 +79,9 @@
       <Generator>MetaModelGenerator</Generator>
       <LastGenOutput>MetaModel.cs</LastGenOutput>
     </None>
-    <None Include="MetaModelGenerator.mgen">
+    <None Include="MetaModelCSharpGenerator.mgen">
       <Generator>MetaGenerator</Generator>
+      <LastGenOutput>MetaModelCSharpGenerator.cs</LastGenOutput>
     </None>
     <None Include="MetaModelJavaGenerator.mgen">
       <Generator>MetaGenerator</Generator>

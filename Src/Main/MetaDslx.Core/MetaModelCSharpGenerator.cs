@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelGenerator_762035492;
-    namespace __Hidden_MetaModelGenerator_762035492
+    using __Hidden_MetaModelCSharpGenerator_122625229;
+    namespace __Hidden_MetaModelCSharpGenerator_122625229
     {
         internal static class __Extensions
         {
@@ -20,15 +20,15 @@ namespace MetaDslx.Core //1:1
         }
     }
 
-    public class MetaModelGenerator //2:1
+    public class MetaModelCSharpGenerator //2:1
     {
         private IEnumerable<ModelObject> Instances; //2:1
 
-        public MetaModelGenerator() //2:1
+        public MetaModelCSharpGenerator() //2:1
         {
         }
 
-        public MetaModelGenerator(IEnumerable<ModelObject> instances) : this() //2:1
+        public MetaModelCSharpGenerator(IEnumerable<ModelObject> instances) : this() //2:1
         {
             this.Instances = instances;
         }

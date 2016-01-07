@@ -1,5 +1,5 @@
 ﻿namespace MetaDslx.Core;
-generator MetaModelGenerator for IEnumerable<ModelObject>;
+generator MetaModelCSharpGenerator for IEnumerable<ModelObject>;
 
 template Generate()
 using System;
