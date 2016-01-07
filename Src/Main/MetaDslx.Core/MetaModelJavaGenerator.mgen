@@ -1,11 +1,22 @@
 ﻿namespace MetaDslx.Core;
 generator MetaModelJavaGenerator for IEnumerable<ModelObject>;
 
+properties Properties
+	int LineCount = 0;
+	int FunctionCount = 0;
+end properties
+
 template Generate()
 	[loop(Instances->mm:typeof(MetaModel))]
 [GenerateMetamodel(mm)]
 	[end loop]
 end template
+
+function string ResetCounters()
+	Properties.LineCount = 0;
+	Properties.FunctionCount = 0;
+	return "";
+end function
 
 template GenerateMetamodel(MetaModel model)
 [GenerateMetaModelDescriptor(model)]
@@ -577,6 +588,7 @@ end template
 
 template GenerateMetaModelInstance(MetaModel model)
 [Dictionary<ModelObject, string> mobjToName = model.GetNamedModelObjects()]
+[ResetCounters()]\
 package [model.Namespace.JavaName()];
 ^
 public final class [model.CSharpInstancesName()]
@@ -609,13 +621,23 @@ public final class [model.CSharpInstancesName()]
 			[GenerateModelObjectInstance(mobj, mobjToName)]
 			[end loop]
 ^
-			[loop(mobj:Instances)]
-			[GenerateModelObjectInstanceInitializer(mobj, mobjToName)]
-			[end loop]
+			init();
 ^
             [model.JavaInstancesName()].model.evalLazyValues();
 		}
     }
+^
+	private static void init0() {
+	[loop(mobj:Instances)]
+	[GenerateModelObjectInstanceInitializer(mobj, mobjToName)]
+	[end loop]
+	}
+^
+	private static void init() {
+	[loop(i:Enumerable.Range(0, Properties.FunctionCount))]
+		init[i]();
+	[end loop]
+	}
 }
 end template
 
@@ -653,7 +675,11 @@ template GenerateModelObjectInstanceInitializer(ModelObject mobj, Dictionary<Mod
 		[loop(mobj->prop:MGetAllProperties())]
 			[if (prop.MetaProperty != null && prop.MetaProperty.Kind != MetaPropertyKind.Derived)]
 				[object propValue = mobj.MGet(prop)]
-[GenerateModelObjectPropertyValue(mobj, prop, propValue, mobjToName)]
+				[if ((++Properties.LineCount) % 1000 == 0)]
+}
+private static void init[++Properties.FunctionCount]() {
+				[end if]
+	[GenerateModelObjectPropertyValue(mobj, prop, propValue, mobjToName)]
 			[end if]
 		[end loop]
 	[end if]
@@ -692,7 +718,9 @@ template GenerateModelObjectPropertyValue(ModelObject mobj, ModelProperty prop, 
 	[IEnumerable<object> mc = (value as ModelCollection) as IEnumerable<object>]
 	[if (mc != null)]
 		[loop(cvalue:mc)]
+			[if (!mobj.ContainedBySingleOpposite(prop, (ModelObject)cvalue))]
 [GenerateModelObjectPropertyValue(mobj, prop, cvalue, mobjToName)]
+			[end if]
 		[end loop]
 	[else]
 // Invalid property value type: [name].[propDeclName] = [value.GetType()]

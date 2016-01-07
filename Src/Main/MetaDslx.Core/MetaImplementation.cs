@@ -711,6 +711,19 @@ namespace MetaDslx.Core
             return result;
         }
 
+        public static bool ContainedBySingleOpposite(this ModelObject mobj, ModelProperty mobjProperty, ModelObject value)
+        {
+            foreach (var op in mobjProperty.OppositeProperties)
+            {
+                if (!op.IsCollection)
+                {
+                    object ov = value.MGet(op);
+                    if (ov == mobj) return true;
+                }
+            }
+            return false;
+        }
+
     }
 
     internal static class MetaModelJavaExtensions
