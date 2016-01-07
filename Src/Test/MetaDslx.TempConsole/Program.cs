@@ -129,7 +129,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel0.cs"
                     );
                 //*/
-                /*
+                //*
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.java",
@@ -253,7 +253,8 @@ namespace MetaDslx.TempConsole
                         MetaModelJavaGenerator mmjg = new MetaModelJavaGenerator(model.Instances);
                         string javaSource = mmjg.Generate();
                         writer.WriteLine(javaSource);
-                        string javaDir = @"k:\VersionControl\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
+                        //string javaDir = @"k:\VersionControl\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
+                        string javaDir = @"c:\Users\Balazs\Documents\git\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
                         MetaModel mm = (MetaModel)model.Instances.FirstOrDefault(obj => obj is MetaModel);
                         SaveToFile(javaDir + mm.Name + "Descriptor.java", mmjg.GenerateMetaModelDescriptor(mm));
                         SaveToFile(javaDir + mm.Name + "Instance.java", mmjg.GenerateMetaModelInstance(mm));
