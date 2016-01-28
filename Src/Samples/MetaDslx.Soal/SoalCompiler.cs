@@ -9,8 +9,8 @@ namespace MetaDslx.Soal
 {
     public class SoalCompiler : SoalCompilerBase
     {
-        public SoalCompiler(string source, string outputDirectory, string fileName)
-            : base(source, outputDirectory, fileName)
+        public SoalCompiler(string source, string fileName)
+            : base(source, fileName)
         {
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.Object);
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.String);
@@ -24,5 +24,6 @@ namespace MetaDslx.Soal
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.DateTime);
             this.GlobalScope.BuiltInEntries.Add((ModelObject)SoalInstance.TimeSpan);
         }
+
     }
 }

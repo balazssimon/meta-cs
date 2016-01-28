@@ -18,8 +18,8 @@ namespace MetaDslx.Compiler
 
     public class MetaGeneratorCompiler : MetaCompiler
     {
-        public MetaGeneratorCompiler(string source, string outputDirectory, string fileName)
-            : base(source, outputDirectory, fileName)
+        public MetaGeneratorCompiler(string source, string fileName)
+            : base(source, fileName)
         {
         }
 
@@ -34,20 +34,6 @@ namespace MetaDslx.Compiler
             this.ParseTree = this.Parser.main();
             MetaModelParserAnnotator annotator = new MetaModelParserAnnotator();
             annotator.Visit(this.ParseTree);
-
-            if (this.GenerateOutput)
-            {
-                StringBuilder sb = new StringBuilder();
-                var ul = new MetaGenCSharpUsingVisitor(sb);
-                ul.Visit(this.ParseTree);
-                ul.Close();
-                var cl = new MetaGenCSharpClassVisitor(sb);
-                cl.Loops = ul.Loops;
-                cl.HasLoops = ul.HasLoops;
-                cl.Visit(this.ParseTree);
-                cl.Close();
-                this.GeneratedSource = sb.ToString();
-            }
         }
 
         public MetaGeneratorParser.MainContext ParseTree { get; private set; }
@@ -62,6 +48,32 @@ namespace MetaDslx.Compiler
         public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
         public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
         public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
+    }
+
+    public class MetaGeneratorGenerator
+    {
+        public MetaGeneratorParser.MainContext ParseTree { get; private set; }
+        public string GeneratedSource { get; private set; }
+
+        public MetaGeneratorGenerator(MetaGeneratorParser.MainContext parseTree)
+        {
+            this.ParseTree = parseTree;
+        }
+
+        public string Generate()
+        {
+            StringBuilder sb = new StringBuilder();
+            var ul = new MetaGenCSharpUsingVisitor(sb);
+            ul.Visit(this.ParseTree);
+            ul.Close();
+            var cl = new MetaGenCSharpClassVisitor(sb);
+            cl.Loops = ul.Loops;
+            cl.HasLoops = ul.HasLoops;
+            cl.Visit(this.ParseTree);
+            cl.Close();
+            this.GeneratedSource = sb.ToString();
+            return this.GeneratedSource;
+        }
     }
 
     internal class LoopInfo

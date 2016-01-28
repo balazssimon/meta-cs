@@ -227,29 +227,23 @@ namespace MetaDslx.Compiler
     public abstract class MetaCompiler : IModelCompiler, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
     {
         public ModelCompilerDiagnostics Diagnostics { get; private set; }
-        public string OutputDirectory { get; set; }
         public string FileName { get; private set; }
         public string Source { get; private set; }
         public string DefaultNamespace { get; set; }
-        public bool GenerateOutput { get; set; }
-        public RootScope GlobalScope
-        {
-            get;
-            protected set;
-        }
+        public RootScope GlobalScope { get; protected set; }
+        public Model Model { get; protected set; }
         public INameProvider NameProvider { get; protected set; }
         public ITypeProvider TypeProvider { get; protected set; }
         public IResolutionProvider ResolutionProvider { get; protected set; }
         public IBindingProvider BindingProvider { get; protected set; }
 
-        public MetaCompiler(string source, string outputDirectory, string fileName)
+        public MetaCompiler(string source, string fileName)
         {
             this.Diagnostics = new ModelCompilerDiagnostics();
             this.Source = source;
             this.FileName = fileName;
-            this.OutputDirectory = outputDirectory;
-            this.GenerateOutput = true;
             this.GlobalScope = new RootScope();
+            this.Model = new Model();
             this.Data = new MetaCompilerData(this);
             this.NameProvider = new Antlr4DefaultNameProvider();
             this.TypeProvider = new DefaultTypeProvider();
@@ -259,24 +253,10 @@ namespace MetaDslx.Compiler
 
         public void Compile()
         {
+            using (new ModelContextScope(this.Model))
             using (new ModelCompilerContextScope(this))
             {
-                ModelContextScope scope = null;
-                try
-                {
-                    if (!ModelContext.HasContext())
-                    {
-                        scope = new ModelContextScope(new Model());
-                    }
-                    this.DoCompile();
-                }
-                finally
-                {
-                    if (scope != null)
-                    {
-                        scope.Dispose();
-                    }
-                }
+                this.DoCompile();
             }
         }
 

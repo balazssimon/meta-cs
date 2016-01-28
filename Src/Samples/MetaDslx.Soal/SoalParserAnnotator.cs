@@ -1821,8 +1821,8 @@ namespace MetaDslx.Soal
     }
     public abstract class SoalCompilerBase : MetaCompiler
     {
-        public SoalCompilerBase(string source, string outputDirectory, string fileName)
-            : base(source, outputDirectory, fileName)
+        public SoalCompilerBase(string source, string fileName)
+            : base(source, fileName)
         {
         }
         

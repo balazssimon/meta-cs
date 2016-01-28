@@ -122,14 +122,14 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelCSharpGenerator.cs"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel1.cs"
                     );
                 //*/
-                /*
+                //*
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.java",
@@ -243,37 +243,41 @@ namespace MetaDslx.TempConsole
                 {
                     source = reader.ReadToEnd();
                 }
-                MetaModelCompiler compiler = new MetaModelCompiler(source, ".", fileName);
+                MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
                 compiler.Compile();
-                ModelExchange.SaveToFile("MetaModel.xmi", model);
-                using (StreamWriter writer = new StreamWriter(outputFileName))
+                if (!compiler.Diagnostics.HasErrors())
                 {
-                    if (javaOutput)
+                    ModelExchange.SaveToFile("MetaModel.xmi", model);
+                    using (StreamWriter writer = new StreamWriter(outputFileName))
                     {
-                        MetaModelJavaGenerator mmjg = new MetaModelJavaGenerator(model.Instances);
-                        string javaSource = mmjg.Generate();
-                        writer.WriteLine(javaSource);
-                        //string javaDir = @"k:\VersionControl\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
-                        string javaDir = @"c:\Users\Balazs\Documents\git\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
-                        MetaModel mm = (MetaModel)model.Instances.FirstOrDefault(obj => obj is MetaModel);
-                        SaveToFile(javaDir + mm.Name + "Descriptor.java", mmjg.GenerateMetaModelDescriptor(mm));
-                        SaveToFile(javaDir + mm.Name + "Instance.java", mmjg.GenerateMetaModelInstance(mm));
-                        foreach (var enm in mm.Namespace.Declarations.OfType<MetaEnum>())
+                        if (javaOutput)
                         {
-                            SaveToFile(javaDir + enm.Name + ".java", mmjg.GenerateEnum(enm));
+                            MetaModelJavaGenerator mmjg = new MetaModelJavaGenerator(model.Instances);
+                            string javaSource = mmjg.Generate();
+                            writer.WriteLine(javaSource);
+                            string javaDir = @"k:\VersionControl\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
+                            //string javaDir = @"c:\Users\Balazs\Documents\git\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
+                            MetaModel mm = (MetaModel)model.Instances.FirstOrDefault(obj => obj is MetaModel);
+                            SaveToFile(javaDir + mm.Name + "Descriptor.java", mmjg.GenerateMetaModelDescriptor(mm));
+                            SaveToFile(javaDir + mm.Name + "Instance.java", mmjg.GenerateMetaModelInstance(mm));
+                            foreach (var enm in mm.Namespace.Declarations.OfType<MetaEnum>())
+                            {
+                                SaveToFile(javaDir + enm.Name + ".java", mmjg.GenerateEnum(enm));
+                            }
+                            foreach (var cls in mm.Namespace.Declarations.OfType<MetaClass>())
+                            {
+                                SaveToFile(javaDir + cls.Name + ".java", mmjg.GenerateInterface(cls));
+                                SaveToFile(javaDir + cls.Name + "Impl.java", mmjg.GenerateInterfaceImpl(mm, cls));
+                            }
+                            SaveToFile(javaDir + mm.Name + "Factory.java", mmjg.GenerateFactory(mm));
+                            SaveToFile(javaDir + mm.Name + "ImplementationProvider.java", mmjg.GenerateImplementationProvider(mm));
+                            SaveToFile(javaDir + mm.Name + "ImplementationBase.java", mmjg.GenerateImplementationBase(mm));
                         }
-                        foreach (var cls in mm.Namespace.Declarations.OfType<MetaClass>())
+                        else
                         {
-                            SaveToFile(javaDir + cls.Name + ".java", mmjg.GenerateInterface(cls));
-                            SaveToFile(javaDir + cls.Name + "Impl.java", mmjg.GenerateInterfaceImpl(mm, cls));
+                            MetaModelCSharpGenerator generator = new MetaModelCSharpGenerator(ModelContext.Current.Instances);
+                            writer.WriteLine(generator.Generate());
                         }
-                        SaveToFile(javaDir + mm.Name + "Factory.java", mmjg.GenerateFactory(mm));
-                        SaveToFile(javaDir + mm.Name + "ImplementationProvider.java", mmjg.GenerateImplementationProvider(mm));
-                        SaveToFile(javaDir + mm.Name + "ImplementationBase.java", mmjg.GenerateImplementationBase(mm));
-                    }
-                    else
-                    {
-                        writer.WriteLine(compiler.GeneratedSource);
                     }
                 }
                 //PrintScope("", compiler.GlobalScope);
@@ -396,7 +400,7 @@ namespace MetaDslx.TempConsole
             {
                 source = reader.ReadToEnd();
             }
-            MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(source, ".", fileName);
+            MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(source, fileName);
             compiler.Compile();
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {

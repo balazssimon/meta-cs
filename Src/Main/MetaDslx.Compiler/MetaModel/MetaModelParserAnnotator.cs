@@ -3713,8 +3713,8 @@ using MetaDslx.Core;
     }
     public abstract class MetaModelCompilerBase : MetaCompiler
     {
-        public MetaModelCompilerBase(string source, string outputDirectory, string fileName)
-            : base(source, outputDirectory, fileName)
+        public MetaModelCompilerBase(string source, string fileName)
+            : base(source, fileName)
         {
         }
         

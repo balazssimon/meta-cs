@@ -89,6 +89,7 @@ namespace MetaDslx.Core
         string FileName { get; }
         string Source { get; }
         RootScope GlobalScope { get; }
+        Model Model { get; }
         INameProvider NameProvider { get; }
         ITypeProvider TypeProvider { get; }
         IResolutionProvider ResolutionProvider { get; }
@@ -1169,22 +1170,20 @@ namespace MetaDslx.Core
     {
         public DefaultModelCompiler()
         {
-            //using (new ModelCompilerContextScope(this))
-            {
-                this.Diagnostics = new ModelCompilerDiagnostics();
-                this.GlobalScope = new RootScope();
-                //this.GlobalScope.AddMetaBuiltInEntries();
-                this.NameProvider = new DefaultNameProvider();
-                this.TypeProvider = new DefaultTypeProvider();
-                this.ResolutionProvider = new DefaultResolutionProvider();
-                this.BindingProvider = new DefaultBindingProvider();
-            }
+            this.Diagnostics = new ModelCompilerDiagnostics();
+            this.GlobalScope = new RootScope();
+            this.Model = new Model();
+            this.NameProvider = new DefaultNameProvider();
+            this.TypeProvider = new DefaultTypeProvider();
+            this.ResolutionProvider = new DefaultResolutionProvider();
+            this.BindingProvider = new DefaultBindingProvider();
         }
 
         public virtual ModelCompilerDiagnostics Diagnostics { get; protected set; }
         public virtual string FileName { get; protected set; }
         public virtual string Source { get; protected set; }
         public virtual RootScope GlobalScope { get; protected set; }
+        public virtual Model Model { get; protected set; }
         public virtual INameProvider NameProvider { get; protected set; }
         public virtual ITypeProvider TypeProvider { get; protected set; }
         public virtual IResolutionProvider ResolutionProvider { get; protected set; }

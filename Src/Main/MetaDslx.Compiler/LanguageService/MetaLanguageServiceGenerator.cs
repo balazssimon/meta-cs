@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler //1:1
 {
-    using __Hidden_MetaLanguageServiceGenerator_1131747271;
-    namespace __Hidden_MetaLanguageServiceGenerator_1131747271
+    using __Hidden_MetaLanguageServiceGenerator_1849299576;
+    namespace __Hidden_MetaLanguageServiceGenerator_1849299576
     {
         internal static class __Extensions
         {
@@ -23,9 +23,14 @@ namespace MetaDslx.Compiler //1:1
     public class MetaLanguageServiceGenerator //2:1
     {
         private object Instances; //2:1
-        public MetaLanguageServiceGenerator(object instances) //2:1
+
+        public MetaLanguageServiceGenerator() //2:1
         {
             this.Properties = new __Properties();
+        }
+
+        public MetaLanguageServiceGenerator(object instances) : this() //2:1
+        {
             this.Instances = instances;
         }
 
@@ -2674,7 +2679,7 @@ namespace MetaDslx.Compiler //1:1
             __out.Append("                    string outputDir = Path.GetDirectoryName(req.FileName);"); //622:1
             __out.AppendLine(); //622:76
             string __tmp229Prefix = "                    "; //623:1
-            string __tmp230Suffix = "Compiler(req.Text, outputDir, fileName);"; //623:105
+            string __tmp230Suffix = "Compiler(req.Text, fileName);"; //623:105
             StringBuilder __tmp231 = new StringBuilder();
             __tmp231.Append(Properties.LanguageClassName);
             using(StreamReader __tmp231Reader = new StreamReader(this.__ToStream(__tmp231.ToString())))
@@ -2709,63 +2714,61 @@ namespace MetaDslx.Compiler //1:1
                     }
                     __out.Append(__tmp233Line);
                     __out.Append(__tmp230Suffix);
-                    __out.AppendLine(); //623:145
+                    __out.AppendLine(); //623:134
                 }
             }
-            __out.Append("                    compiler.GenerateOutput = false;"); //624:1
-            __out.AppendLine(); //624:53
-            __out.Append("                    compiler.Compile();"); //625:1
-            __out.AppendLine(); //625:40
-            __out.Append("                    foreach (var msg in compiler.Diagnostics.GetMessages())"); //626:1
-            __out.AppendLine(); //626:76
-            __out.Append("                    {"); //627:1
-            __out.AppendLine(); //627:22
-            __out.Append("                        TextSpan span = new TextSpan();"); //628:1
-            __out.AppendLine(); //628:56
-            __out.Append("                        span.iStartLine = msg.TextSpan.StartLine - 1;"); //629:1
-            __out.AppendLine(); //629:70
-            __out.Append("                        span.iEndLine = msg.TextSpan.EndLine - 1;"); //630:1
-            __out.AppendLine(); //630:66
-            __out.Append("                        span.iStartIndex = msg.TextSpan.StartPosition - 1;"); //631:1
-            __out.AppendLine(); //631:75
-            __out.Append("                        span.iEndIndex = msg.TextSpan.EndPosition - 1;"); //632:1
-            __out.AppendLine(); //632:71
-            __out.Append("                        Severity severity = Severity.Error;"); //633:1
-            __out.AppendLine(); //633:60
-            __out.Append("                        switch (msg.Severity)"); //634:1
-            __out.AppendLine(); //634:46
-            __out.Append("                        {"); //635:1
-            __out.AppendLine(); //635:26
-            __out.Append("                            case MetaDslx.Core.Severity.Error:"); //636:1
-            __out.AppendLine(); //636:63
-            __out.Append("                                severity = Severity.Error;"); //637:1
-            __out.AppendLine(); //637:59
-            __out.Append("                                break;"); //638:1
-            __out.AppendLine(); //638:39
-            __out.Append("                            case MetaDslx.Core.Severity.Warning:"); //639:1
-            __out.AppendLine(); //639:65
-            __out.Append("                                severity = Severity.Warning;"); //640:1
-            __out.AppendLine(); //640:61
-            __out.Append("                                break;"); //641:1
-            __out.AppendLine(); //641:39
-            __out.Append("                            case MetaDslx.Core.Severity.Info:"); //642:1
-            __out.AppendLine(); //642:62
-            __out.Append("                                severity = Severity.Hint;"); //643:1
-            __out.AppendLine(); //643:58
-            __out.Append("                                break;"); //644:1
-            __out.AppendLine(); //644:39
-            __out.Append("                        }"); //645:1
-            __out.AppendLine(); //645:26
-            __out.Append("                        req.Sink.AddError(req.FileName, msg.Message, span, severity);"); //646:1
-            __out.AppendLine(); //646:86
-            __out.Append("                    }"); //647:1
-            __out.AppendLine(); //647:22
-            __out.Append("                    break;"); //648:1
-            __out.AppendLine(); //648:27
-            __out.Append("            }"); //649:1
-            __out.AppendLine(); //649:14
-            string __tmp234Prefix = "            return new "; //650:1
-            string __tmp235Suffix = "LanguageAuthoringScope();"; //650:54
+            __out.Append("                    compiler.Compile();"); //624:1
+            __out.AppendLine(); //624:40
+            __out.Append("                    foreach (var msg in compiler.Diagnostics.GetMessages())"); //625:1
+            __out.AppendLine(); //625:76
+            __out.Append("                    {"); //626:1
+            __out.AppendLine(); //626:22
+            __out.Append("                        TextSpan span = new TextSpan();"); //627:1
+            __out.AppendLine(); //627:56
+            __out.Append("                        span.iStartLine = msg.TextSpan.StartLine - 1;"); //628:1
+            __out.AppendLine(); //628:70
+            __out.Append("                        span.iEndLine = msg.TextSpan.EndLine - 1;"); //629:1
+            __out.AppendLine(); //629:66
+            __out.Append("                        span.iStartIndex = msg.TextSpan.StartPosition - 1;"); //630:1
+            __out.AppendLine(); //630:75
+            __out.Append("                        span.iEndIndex = msg.TextSpan.EndPosition - 1;"); //631:1
+            __out.AppendLine(); //631:71
+            __out.Append("                        Severity severity = Severity.Error;"); //632:1
+            __out.AppendLine(); //632:60
+            __out.Append("                        switch (msg.Severity)"); //633:1
+            __out.AppendLine(); //633:46
+            __out.Append("                        {"); //634:1
+            __out.AppendLine(); //634:26
+            __out.Append("                            case MetaDslx.Core.Severity.Error:"); //635:1
+            __out.AppendLine(); //635:63
+            __out.Append("                                severity = Severity.Error;"); //636:1
+            __out.AppendLine(); //636:59
+            __out.Append("                                break;"); //637:1
+            __out.AppendLine(); //637:39
+            __out.Append("                            case MetaDslx.Core.Severity.Warning:"); //638:1
+            __out.AppendLine(); //638:65
+            __out.Append("                                severity = Severity.Warning;"); //639:1
+            __out.AppendLine(); //639:61
+            __out.Append("                                break;"); //640:1
+            __out.AppendLine(); //640:39
+            __out.Append("                            case MetaDslx.Core.Severity.Info:"); //641:1
+            __out.AppendLine(); //641:62
+            __out.Append("                                severity = Severity.Hint;"); //642:1
+            __out.AppendLine(); //642:58
+            __out.Append("                                break;"); //643:1
+            __out.AppendLine(); //643:39
+            __out.Append("                        }"); //644:1
+            __out.AppendLine(); //644:26
+            __out.Append("                        req.Sink.AddError(req.FileName, msg.Message, span, severity);"); //645:1
+            __out.AppendLine(); //645:86
+            __out.Append("                    }"); //646:1
+            __out.AppendLine(); //646:22
+            __out.Append("                    break;"); //647:1
+            __out.AppendLine(); //647:27
+            __out.Append("            }"); //648:1
+            __out.AppendLine(); //648:14
+            string __tmp234Prefix = "            return new "; //649:1
+            string __tmp235Suffix = "LanguageAuthoringScope();"; //649:54
             StringBuilder __tmp236 = new StringBuilder();
             __tmp236.Append(Properties.LanguageClassName);
             using(StreamReader __tmp236Reader = new StreamReader(this.__ToStream(__tmp236.ToString())))
@@ -2782,15 +2785,15 @@ namespace MetaDslx.Compiler //1:1
                     __out.Append(__tmp234Prefix);
                     __out.Append(__tmp236Line);
                     __out.Append(__tmp235Suffix);
-                    __out.AppendLine(); //650:79
+                    __out.AppendLine(); //649:79
                 }
             }
-            __out.Append("        }"); //651:1
-            __out.AppendLine(); //651:10
-            __out.Append("    }"); //652:1
-            __out.AppendLine(); //652:6
-            string __tmp237Prefix = "	public class "; //654:1
-            string __tmp238Suffix = "LanguageSource : Microsoft.VisualStudio.Package.Source"; //654:45
+            __out.Append("        }"); //650:1
+            __out.AppendLine(); //650:10
+            __out.Append("    }"); //651:1
+            __out.AppendLine(); //651:6
+            string __tmp237Prefix = "	public class "; //653:1
+            string __tmp238Suffix = "LanguageSource : Microsoft.VisualStudio.Package.Source"; //653:45
             StringBuilder __tmp239 = new StringBuilder();
             __tmp239.Append(Properties.LanguageClassName);
             using(StreamReader __tmp239Reader = new StreamReader(this.__ToStream(__tmp239.ToString())))
@@ -2807,13 +2810,13 @@ namespace MetaDslx.Compiler //1:1
                     __out.Append(__tmp237Prefix);
                     __out.Append(__tmp239Line);
                     __out.Append(__tmp238Suffix);
-                    __out.AppendLine(); //654:99
+                    __out.AppendLine(); //653:99
                 }
             }
-            __out.Append("    {"); //655:1
-            __out.AppendLine(); //655:6
-            string __tmp240Prefix = "        public "; //656:1
-            string __tmp241Suffix = "LanguageSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer)"; //656:46
+            __out.Append("    {"); //654:1
+            __out.AppendLine(); //654:6
+            string __tmp240Prefix = "        public "; //655:1
+            string __tmp241Suffix = "LanguageSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer)"; //655:46
             StringBuilder __tmp242 = new StringBuilder();
             __tmp242.Append(Properties.LanguageClassName);
             using(StreamReader __tmp242Reader = new StreamReader(this.__ToStream(__tmp242.ToString())))
@@ -2830,19 +2833,19 @@ namespace MetaDslx.Compiler //1:1
                     __out.Append(__tmp240Prefix);
                     __out.Append(__tmp242Line);
                     __out.Append(__tmp241Suffix);
-                    __out.AppendLine(); //656:130
+                    __out.AppendLine(); //655:130
                 }
             }
-            __out.Append("            : base(service, textLines, colorizer)"); //657:1
-            __out.AppendLine(); //657:50
-            __out.Append("        {"); //658:1
-            __out.AppendLine(); //658:10
-            __out.Append("        }"); //660:1
-            __out.AppendLine(); //660:10
-            __out.Append("    }"); //661:1
-            __out.AppendLine(); //661:6
-            string __tmp243Prefix = "    public class "; //663:1
-            string __tmp244Suffix = "LanguageViewFilter : ViewFilter"; //663:48
+            __out.Append("            : base(service, textLines, colorizer)"); //656:1
+            __out.AppendLine(); //656:50
+            __out.Append("        {"); //657:1
+            __out.AppendLine(); //657:10
+            __out.Append("        }"); //659:1
+            __out.AppendLine(); //659:10
+            __out.Append("    }"); //660:1
+            __out.AppendLine(); //660:6
+            string __tmp243Prefix = "    public class "; //662:1
+            string __tmp244Suffix = "LanguageViewFilter : ViewFilter"; //662:48
             StringBuilder __tmp245 = new StringBuilder();
             __tmp245.Append(Properties.LanguageClassName);
             using(StreamReader __tmp245Reader = new StreamReader(this.__ToStream(__tmp245.ToString())))
@@ -2859,13 +2862,13 @@ namespace MetaDslx.Compiler //1:1
                     __out.Append(__tmp243Prefix);
                     __out.Append(__tmp245Line);
                     __out.Append(__tmp244Suffix);
-                    __out.AppendLine(); //663:79
+                    __out.AppendLine(); //662:79
                 }
             }
-            __out.Append("    {"); //664:1
-            __out.AppendLine(); //664:6
-            string __tmp246Prefix = "        public "; //665:1
-            string __tmp247Suffix = "LanguageViewFilter(CodeWindowManager mgr, IVsTextView view)"; //665:46
+            __out.Append("    {"); //663:1
+            __out.AppendLine(); //663:6
+            string __tmp246Prefix = "        public "; //664:1
+            string __tmp247Suffix = "LanguageViewFilter(CodeWindowManager mgr, IVsTextView view)"; //664:46
             StringBuilder __tmp248 = new StringBuilder();
             __tmp248.Append(Properties.LanguageClassName);
             using(StreamReader __tmp248Reader = new StreamReader(this.__ToStream(__tmp248.ToString())))
@@ -2882,59 +2885,59 @@ namespace MetaDslx.Compiler //1:1
                     __out.Append(__tmp246Prefix);
                     __out.Append(__tmp248Line);
                     __out.Append(__tmp247Suffix);
-                    __out.AppendLine(); //665:105
+                    __out.AppendLine(); //664:105
                 }
             }
-            __out.Append("            : base(mgr, view)"); //666:1
-            __out.AppendLine(); //666:30
-            __out.Append("        {"); //667:1
-            __out.AppendLine(); //667:10
-            __out.Append("        }"); //669:1
-            __out.AppendLine(); //669:10
-            __out.Append("        public override void HandlePostExec(ref Guid guidCmdGroup, uint nCmdId, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut, bool bufferWasChanged)"); //671:1
-            __out.AppendLine(); //671:150
-            __out.Append("        {"); //672:1
-            __out.AppendLine(); //672:10
-            __out.Append("            if (guidCmdGroup == typeof(VsCommands2K).GUID)"); //673:1
-            __out.AppendLine(); //673:59
-            __out.Append("            {"); //674:1
-            __out.AppendLine(); //674:14
-            __out.Append("                VsCommands2K cmd = (VsCommands2K)nCmdId;"); //675:1
-            __out.AppendLine(); //675:57
-            __out.Append("                switch (cmd)"); //676:1
-            __out.AppendLine(); //676:29
-            __out.Append("                {"); //677:1
-            __out.AppendLine(); //677:18
-            __out.Append("                    case VsCommands2K.UP:"); //678:1
-            __out.AppendLine(); //678:42
-            __out.Append("                    case VsCommands2K.UP_EXT:"); //679:1
-            __out.AppendLine(); //679:46
-            __out.Append("                    case VsCommands2K.UP_EXT_COL:"); //680:1
-            __out.AppendLine(); //680:50
-            __out.Append("                    case VsCommands2K.DOWN:"); //681:1
-            __out.AppendLine(); //681:44
-            __out.Append("                    case VsCommands2K.DOWN_EXT:"); //682:1
-            __out.AppendLine(); //682:48
-            __out.Append("                    case VsCommands2K.DOWN_EXT_COL:"); //683:1
-            __out.AppendLine(); //683:52
-            __out.Append("                        Source.OnCommand(TextView, cmd, '"); //684:1
-            __out.Append("\\"); //684:58
-            __out.Append("0');"); //684:59
-            __out.AppendLine(); //684:63
-            __out.Append("                        return;"); //685:1
-            __out.AppendLine(); //685:32
-            __out.Append("                }"); //686:1
-            __out.AppendLine(); //686:18
-            __out.Append("            }"); //687:1
-            __out.AppendLine(); //687:14
-            __out.Append("            base.HandlePostExec(ref guidCmdGroup, nCmdId, nCmdexecopt, pvaIn, pvaOut, bufferWasChanged);"); //688:1
-            __out.AppendLine(); //688:105
-            __out.Append("        }"); //689:1
-            __out.AppendLine(); //689:10
-            __out.Append("    }"); //690:1
-            __out.AppendLine(); //690:6
-            __out.Append("}"); //692:1
-            __out.AppendLine(); //692:2
+            __out.Append("            : base(mgr, view)"); //665:1
+            __out.AppendLine(); //665:30
+            __out.Append("        {"); //666:1
+            __out.AppendLine(); //666:10
+            __out.Append("        }"); //668:1
+            __out.AppendLine(); //668:10
+            __out.Append("        public override void HandlePostExec(ref Guid guidCmdGroup, uint nCmdId, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut, bool bufferWasChanged)"); //670:1
+            __out.AppendLine(); //670:150
+            __out.Append("        {"); //671:1
+            __out.AppendLine(); //671:10
+            __out.Append("            if (guidCmdGroup == typeof(VsCommands2K).GUID)"); //672:1
+            __out.AppendLine(); //672:59
+            __out.Append("            {"); //673:1
+            __out.AppendLine(); //673:14
+            __out.Append("                VsCommands2K cmd = (VsCommands2K)nCmdId;"); //674:1
+            __out.AppendLine(); //674:57
+            __out.Append("                switch (cmd)"); //675:1
+            __out.AppendLine(); //675:29
+            __out.Append("                {"); //676:1
+            __out.AppendLine(); //676:18
+            __out.Append("                    case VsCommands2K.UP:"); //677:1
+            __out.AppendLine(); //677:42
+            __out.Append("                    case VsCommands2K.UP_EXT:"); //678:1
+            __out.AppendLine(); //678:46
+            __out.Append("                    case VsCommands2K.UP_EXT_COL:"); //679:1
+            __out.AppendLine(); //679:50
+            __out.Append("                    case VsCommands2K.DOWN:"); //680:1
+            __out.AppendLine(); //680:44
+            __out.Append("                    case VsCommands2K.DOWN_EXT:"); //681:1
+            __out.AppendLine(); //681:48
+            __out.Append("                    case VsCommands2K.DOWN_EXT_COL:"); //682:1
+            __out.AppendLine(); //682:52
+            __out.Append("                        Source.OnCommand(TextView, cmd, '"); //683:1
+            __out.Append("\\"); //683:58
+            __out.Append("0');"); //683:59
+            __out.AppendLine(); //683:63
+            __out.Append("                        return;"); //684:1
+            __out.AppendLine(); //684:32
+            __out.Append("                }"); //685:1
+            __out.AppendLine(); //685:18
+            __out.Append("            }"); //686:1
+            __out.AppendLine(); //686:14
+            __out.Append("            base.HandlePostExec(ref guidCmdGroup, nCmdId, nCmdexecopt, pvaIn, pvaOut, bufferWasChanged);"); //687:1
+            __out.AppendLine(); //687:105
+            __out.Append("        }"); //688:1
+            __out.AppendLine(); //688:10
+            __out.Append("    }"); //689:1
+            __out.AppendLine(); //689:6
+            __out.Append("}"); //691:1
+            __out.AppendLine(); //691:2
             return __out.ToString();
         }
 

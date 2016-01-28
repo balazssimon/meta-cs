@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler;
+using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +19,22 @@ namespace MetaDslx.VisualStudio
         {
             if (this.InputFileContents != null)
             {
-                compiler = new MetaModelCompiler(this.InputFileContents, this.InputDirectory, this.InputFileName);
+                compiler = new MetaModelCompiler(this.InputFileContents, this.InputFileName);
                 compiler.Compile();
             }
         }
 
         public override string GenerateStringContent()
         {
-            if (compiler == null) return string.Empty;
-            else return compiler.GeneratedSource;
+            if (compiler == null)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                MetaModelCSharpGenerator generator = new MetaModelCSharpGenerator(compiler.Model.CachedInstances);
+                return generator.Generate();
+            }
         }
     }
     

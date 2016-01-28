@@ -32,6 +32,8 @@ namespace MetaDslx.Compiler
 
         public string Antlr4Jar { get; private set; }
 
+        public bool GenerateOutput { get; set; }
+        public string OutputDirectory { get; private set; }
         public string Antlr4Source { get; private set; }
         public string GeneratedSource { get; private set; }
         public bool IsLexer { get; internal set; }
@@ -48,8 +50,10 @@ namespace MetaDslx.Compiler
         public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
 
         public AnnotatedAntlr4Compiler(string source, string outputDirectory, string fileName)
-            : base(source, outputDirectory, fileName)
+            : base(source, fileName)
         {
+            this.GenerateOutput = true;
+            this.OutputDirectory = outputDirectory;
         }
 
         private bool PrepareAntlr4()
@@ -1819,9 +1823,9 @@ namespace MetaDslx.Compiler
             }
             WriteLine("{");
             IncIndent();
-            WriteLine("public {0}(string source, string outputDirectory, string fileName)", name);
+            WriteLine("public {0}(string source, string fileName)", name);
             IncIndent();
-            WriteLine(": base(source, outputDirectory, fileName)");
+            WriteLine(": base(source, fileName)");
             DecIndent();
             WriteLine("{");
             WriteLine("}");

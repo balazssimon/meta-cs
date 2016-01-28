@@ -19,15 +19,22 @@ namespace MetaDslx.VisualStudio
         {
             if (this.InputFileContents != null)
             {
-                compiler = new MetaGeneratorCompiler(this.InputFileContents, this.InputDirectory, this.InputFileName);
+                compiler = new MetaGeneratorCompiler(this.InputFileContents, this.InputFileName);
                 compiler.Compile();
             }
         }
 
         public override string GenerateStringContent()
         {
-            if (compiler == null) return string.Empty;
-            else return compiler.GeneratedSource;
+            if (compiler == null)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                MetaDslx.Compiler.MetaGeneratorGenerator generator = new Compiler.MetaGeneratorGenerator(compiler.ParseTree);
+                return generator.Generate();
+            }
         }
     }
 }
