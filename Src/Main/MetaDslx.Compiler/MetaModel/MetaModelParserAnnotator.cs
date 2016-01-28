@@ -433,7 +433,7 @@ using MetaDslx.Core;
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
                 TypeUseAnnotation __tmp25 = new TypeUseAnnotation();
-                //__tmp25.SymbolType = node;
+                __tmp25.SymbolTypes.Add(typeof(MetaClass));
                 __tmp25.ResolveFlags = ResolveFlags.Parent;
                 elemAnnotList.Add(__tmp25);
             }

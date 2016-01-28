@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.Core;
+using MetaDslx.Compiler;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 
@@ -45,7 +47,20 @@ namespace MetaDslx.Compiler
                     SymbolTypeAnnotation sta = treeAnnot as SymbolTypeAnnotation;
                     if (sta != null)
                     {
-                        this.OverrideSymbolType(node, sta.SymbolType);
+                        if (sta.HasName)
+                        {
+                            ModelCompilerContext.RequireContext();
+                            IModelCompiler compiler = ModelCompilerContext.Current;
+                            string name = compiler.NameProvider.GetName(node);
+                            if (sta.Name == name)
+                            {
+                                this.OverrideSymbolType(node, sta.SymbolType);
+                            }
+                        }
+                        else
+                        {
+                            this.OverrideSymbolType(node, sta.SymbolType);
+                        }
                     }
                 }
                 treeAnnotList.RemoveAll(a => a is SymbolTypeAnnotation);

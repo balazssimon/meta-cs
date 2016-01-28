@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,7 +49,7 @@ namespace MetaDslx.Compiler
                     {
                         if (sta.HasName)
                         {
-                            ModelContext.RequireContext();
+                            ModelCompilerContext.RequireContext();
                             IModelCompiler compiler = ModelCompilerContext.Current;
                             string name = compiler.NameProvider.GetName(node);
                             if (sta.Name == name)
@@ -1486,4 +1486,3 @@ namespace MetaDslx.Compiler
         }
     }
 }
-
