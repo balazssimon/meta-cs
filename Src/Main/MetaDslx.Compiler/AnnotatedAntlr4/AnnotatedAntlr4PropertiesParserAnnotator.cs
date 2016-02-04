@@ -79,7 +79,7 @@ namespace MetaDslx.Compiler
                 {
                     foreach (var treeAnnot in treeAnnotList)
                     {
-                        SymbolTypedAnnotation sta = treeAnnot as SymbolTypedAnnotation;
+                        SymbolBasedAnnotation sta = treeAnnot as SymbolBasedAnnotation;
                         if (sta != null)
                         {
                             set = true;

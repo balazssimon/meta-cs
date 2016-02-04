@@ -34,13 +34,13 @@ namespace MetaDslx.Compiler
         public const int Number = 12;
     }
 
-    public abstract class SymbolTypedAnnotation
+    public abstract class SymbolBasedAnnotation
     {
         public Type SymbolType { get; set; }
         public bool OverrideSymbolType { get; set; }
     }
 
-    public class TypeDefAnnotation : SymbolTypedAnnotation
+    public class TypeDefAnnotation : SymbolBasedAnnotation
     {
         public TypeDefAnnotation()
         {
@@ -51,7 +51,7 @@ namespace MetaDslx.Compiler
         public bool Scope { get; set; }
     }
 
-    public class NameDefAnnotation : SymbolTypedAnnotation
+    public class NameDefAnnotation : SymbolBasedAnnotation
     {
         public string NestingProperty { get; set; }
         public bool Merge { get; set; }
@@ -81,21 +81,21 @@ namespace MetaDslx.Compiler
         public ResolveFlags ResolveFlags { get; set; }
     }
 
-    public class TypeCtrAnnotation : SymbolTypedAnnotation
+    public class TypeCtrAnnotation : SymbolBasedAnnotation
     {
         public TypeCtrAnnotation()
         {
         }
     }
 
-    public class NameCtrAnnotation : SymbolTypedAnnotation
+    public class NameCtrAnnotation : SymbolBasedAnnotation
     {
         public NameCtrAnnotation()
         {
         }
     }
 
-    public class ScopeAnnotation : SymbolTypedAnnotation
+    public class ScopeAnnotation : SymbolBasedAnnotation
     {
     }
 
@@ -194,7 +194,7 @@ namespace MetaDslx.Compiler
         public bool HasValue { get; set; }
     }
 
-    public class SymbolAnnotation : SymbolTypedAnnotation
+    public class SymbolAnnotation : SymbolBasedAnnotation
     {
         public bool NoScope { get; set; }
     }
@@ -230,6 +230,41 @@ namespace MetaDslx.Compiler
         }
         public bool HasValue { get; set; }
     }
+
+    public enum TriviaKind
+    {
+        Any,
+        Leading,
+        Trailing
+    }
+
+    public class TriviaAnnotation
+    {
+        private Type symbolType;
+        public Type SymbolType
+        {
+            get { return this.symbolType; }
+            set { this.symbolType = value; this.HasSymbolType = true; }
+        }
+        public bool HasSymbolType { get; set; }
+
+        private string property;
+        public string Property
+        {
+            get { return this.property; }
+            set { this.property = value; this.HasProperty = true; }
+        }
+        public bool HasProperty { get; set; }
+        private TriviaKind kind;
+        public TriviaKind Kind
+        {
+            get { return this.kind; }
+            set { this.kind = value; this.HasKind = true; }
+        }
+        public bool HasKind { get; set; }
+    }
+
+
 
     public interface IAntlr4Compiler : IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
     {

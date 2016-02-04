@@ -1684,6 +1684,10 @@ namespace MetaDslx.Compiler
                     {
                         WriteLine("{0}.Name = \"{1}\";", variableName, annotValue);
                     }
+                    else if (annot.Type.Name == "Trivia")
+                    {
+                        WriteLine("{0}.Property = \"{1}\";", variableName, annotValue);
+                    }
                     else if (annot.Type.Name == "EnumValue")
                     {
                         WriteLine("{0}.EnumType = typeof({1});", variableName, annotValue);
@@ -1728,7 +1732,7 @@ namespace MetaDslx.Compiler
                 {
                     if (prop.Value != null)
                     {
-                        if (prop.Name == "symbolType" && (annot.Type.Name == "Symbol" || annot.Type.Name == "SymbolType" || annot.Type.Name == "TypeCtr" || annot.Type.Name == "TypeDef" || annot.Type.Name == "NameCtr" || annot.Type.Name == "NameDef"))
+                        if (prop.Name == "symbolType" && (annot.Type.Name == "Symbol" || annot.Type.Name == "SymbolType" || annot.Type.Name == "TypeCtr" || annot.Type.Name == "TypeDef" || annot.Type.Name == "NameCtr" || annot.Type.Name == "NameDef" || annot.Type.Name == "Trivia"))
                         {
                             WriteLine("{0}.{1} = typeof({2});", variableName, propName, prop.Value);
                         }
@@ -1743,6 +1747,14 @@ namespace MetaDslx.Compiler
                         else if (prop.Name == "name" && (annot.Type.Name == "Property"))
                         {
                             WriteLine("{0}.{1} = \"{2}\";", variableName, propName, prop.Value);
+                        }
+                        else if (prop.Name == "property" && (annot.Type.Name == "Trivia"))
+                        {
+                            WriteLine("{0}.{1} = \"{2}\";", variableName, propName, prop.Value);
+                        }
+                        else if (prop.Name == "kind" && (annot.Type.Name == "Trivia"))
+                        {
+                            WriteLine("{0}.{1} = {2};", variableName, propName, prop.Value);
                         }
                         else if (prop.Name == "value" && (annot.Type.Name == "Value"))
                         {
