@@ -97,6 +97,42 @@ namespace MetaDslx.Compiler
             return false;
         }
 
+        private bool CopyParserToOutput(string tmpDir, string fileName)
+        {
+            if (this.OutputDirectory == null) return false;
+            string tmpFile = Path.Combine(tmpDir, fileName);
+            string outputFile = Path.Combine(this.OutputDirectory, fileName);
+            if (this.IsParser)
+            {
+                using (StreamReader reader = new StreamReader(tmpFile))
+                using (StreamWriter writer = new StreamWriter(outputFile))
+                {
+                    string line;
+                    while(!reader.EndOfStream)
+                    {
+                        line = reader.ReadLine();
+                        if (line != null)
+                        {
+                            if (line.Contains("public partial class"))
+                            {
+                                line.Replace("Context : ParserRuleContext {", "Context : AnnotatedParserRuleContext {");
+                            }
+                            writer.WriteLine(line);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (File.Exists(tmpFile))
+                {
+                    File.Copy(tmpFile, outputFile, true);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void ProcessAntlr4ErrorLine(string line)
         {
             if (string.IsNullOrWhiteSpace(line)) return;
@@ -200,7 +236,7 @@ namespace MetaDslx.Compiler
                     this.HasAntlr4Errors = this.Diagnostics.HasErrors();
                     if (this.GenerateOutput && !this.HasAntlr4Errors)
                     {
-                        this.CopyToOutput(tmpDir, bareFileName + ".cs");
+                        this.CopyParserToOutput(tmpDir, bareFileName + ".cs");
                         this.CopyToOutput(tmpDir, bareFileName + ".tokens");
                         if (this.IsParser)
                         {
@@ -842,6 +878,9 @@ namespace MetaDslx.Compiler
             WriteLine("using MetaDslx.Compiler;");
             WriteLine("using Antlr4.Runtime;");
             WriteLine("using Antlr4.Runtime.Tree;");
+            WriteLine("");
+            WriteLine("// The variable '...' is assigned but its value is never used");
+            WriteLine("#pragma warning disable 0219");
             WriteLine("");
             if (!string.IsNullOrWhiteSpace(targetNamespace))
             {

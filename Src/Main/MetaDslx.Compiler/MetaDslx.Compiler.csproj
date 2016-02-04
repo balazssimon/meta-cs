@@ -97,6 +97,7 @@
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserVisitor.cs">
       <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
     </Compile>
+    <Compile Include="AnnotatedAntlr4\AnnotatedParserRuleContext.cs" />
     <Compile Include="LanguageService\MetaLanguageServiceGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

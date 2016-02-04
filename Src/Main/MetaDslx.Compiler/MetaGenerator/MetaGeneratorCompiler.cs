@@ -1262,7 +1262,8 @@ namespace MetaDslx.Compiler
                             WriteLine("if ({0}Line == null)", tmp);
                             WriteLine("{");
                             IncIndent();
-                            WriteLine("{0}Line = {1};", tmp, "\"\"");
+                            WriteLine("if (string.IsNullOrEmpty({0}) && string.IsNullOrEmpty({1})) break;", prefix, suffix);
+                            WriteLine("else {0}Line = {1};", tmp, "\"\"");
                             DecIndent();
                             WriteLine("}");
                         }
