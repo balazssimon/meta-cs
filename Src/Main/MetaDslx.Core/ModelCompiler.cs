@@ -50,6 +50,12 @@ namespace MetaDslx.Core
         public object Node { get; set; }
     }
 
+    public interface ITriviaProvider
+    {
+        string GetLeadingTrivia(object node);
+        string GetTrailingTrivia(object node);
+    }
+
     public interface INameProvider
     {
         string GetName(object node);
@@ -91,6 +97,7 @@ namespace MetaDslx.Core
         string Source { get; }
         RootScope GlobalScope { get; }
         Model Model { get; }
+        ITriviaProvider TriviaProvider { get; }
         INameProvider NameProvider { get; }
         ITypeProvider TypeProvider { get; }
         IResolutionProvider ResolutionProvider { get; }
@@ -346,6 +353,19 @@ namespace MetaDslx.Core
         public void AddInfo(string message, string fileName, TextSpan textSpan, bool isLog = false)
         {
             this.AddMessage(Severity.Info, message, fileName, textSpan, isLog);
+        }
+    }
+
+    public class DefaultTriviaProvider : ITriviaProvider
+    {
+        public virtual string GetLeadingTrivia(object node)
+        {
+            return null;
+        }
+
+        public virtual string GetTrailingTrivia(object node)
+        {
+            return null;
         }
     }
 
@@ -1221,6 +1241,7 @@ namespace MetaDslx.Core
             this.Diagnostics = new ModelCompilerDiagnostics();
             this.GlobalScope = new RootScope();
             this.Model = new Model();
+            this.TriviaProvider = new DefaultTriviaProvider();
             this.NameProvider = new DefaultNameProvider();
             this.TypeProvider = new DefaultTypeProvider();
             this.ResolutionProvider = new DefaultResolutionProvider();
@@ -1232,6 +1253,7 @@ namespace MetaDslx.Core
         public virtual string Source { get; protected set; }
         public virtual RootScope GlobalScope { get; protected set; }
         public virtual Model Model { get; protected set; }
+        public virtual ITriviaProvider TriviaProvider { get; protected set; }
         public virtual INameProvider NameProvider { get; protected set; }
         public virtual ITypeProvider TypeProvider { get; protected set; }
         public virtual IResolutionProvider ResolutionProvider { get; protected set; }

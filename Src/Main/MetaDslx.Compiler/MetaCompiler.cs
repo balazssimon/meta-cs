@@ -231,7 +231,12 @@ namespace MetaDslx.Compiler
         public bool HasValue { get; set; }
     }
 
-    public abstract class MetaCompiler : IModelCompiler, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
+    public interface IAntlr4Compiler : IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
+    {
+        CommonTokenStream CommonTokenStream { get; }
+    }
+
+    public abstract class MetaCompiler : IModelCompiler, IAntlr4Compiler
     {
         public ModelCompilerDiagnostics Diagnostics { get; private set; }
         public string FileName { get; private set; }
@@ -239,6 +244,7 @@ namespace MetaDslx.Compiler
         public string DefaultNamespace { get; set; }
         public RootScope GlobalScope { get; protected set; }
         public Model Model { get; protected set; }
+        public ITriviaProvider TriviaProvider { get; protected set; }
         public INameProvider NameProvider { get; protected set; }
         public ITypeProvider TypeProvider { get; protected set; }
         public IResolutionProvider ResolutionProvider { get; protected set; }
@@ -252,6 +258,7 @@ namespace MetaDslx.Compiler
             this.GlobalScope = new RootScope();
             this.Model = new Model();
             this.Data = new MetaCompilerData(this);
+            this.TriviaProvider = new Antlr4DefaultTriviaProvider(this);
             this.NameProvider = new Antlr4DefaultNameProvider();
             this.TypeProvider = new DefaultTypeProvider();
             this.ResolutionProvider = new DefaultResolutionProvider();
@@ -295,6 +302,7 @@ namespace MetaDslx.Compiler
         }
 
         public MetaCompilerData Data { get; protected set; }
+        public CommonTokenStream CommonTokenStream { get; protected set; }
         public abstract List<object> LexerAnnotations { get; protected set; }
         public abstract List<object> ParserAnnotations { get; protected set; }
         public abstract Dictionary<int, List<object>> ModeAnnotations { get; protected set; }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\mnzz0rt4.ooj\AnnotatedAntlr4Lexer.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\mjxheepm.p3x\AnnotatedAntlr4Lexer.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -82,7 +82,6 @@ public partial class AnnotatedAntlr4Lexer : Lexer {
 		 *  between [..arg actions..] and [charsets]. Char sets can only occur in
 		 *  lexical rules and arg actions cannot occur.
 		 */
-		 
 	    private static int INVALID_TYPE = -1;
 
 	    private int _currentRuleType = INVALID_TYPE;

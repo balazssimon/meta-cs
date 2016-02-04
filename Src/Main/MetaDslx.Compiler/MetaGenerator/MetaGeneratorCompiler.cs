@@ -28,8 +28,8 @@ namespace MetaDslx.Compiler
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = new MetaGeneratorLexer(inputStream);
             this.Lexer.AddErrorListener(this);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(this.Lexer);
-            this.Parser = new MetaGeneratorParser(commonTokenStream);
+            this.CommonTokenStream = new CommonTokenStream(this.Lexer);
+            this.Parser = new MetaGeneratorParser(this.CommonTokenStream);
             this.Parser.AddErrorListener(this);
             this.ParseTree = this.Parser.main();
             MetaModelParserAnnotator annotator = new MetaModelParserAnnotator();
@@ -39,7 +39,6 @@ namespace MetaDslx.Compiler
         public MetaGeneratorParser.MainContext ParseTree { get; private set; }
         public MetaGeneratorLexer Lexer { get; private set; }
         public MetaGeneratorParser Parser { get; private set; }
-        public CommonTokenStream CommonTokenStream { get; private set; }
         public string GeneratedSource { get; private set; }
 
         public override List<object> LexerAnnotations { get; protected set; }

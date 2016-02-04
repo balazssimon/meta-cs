@@ -28,7 +28,6 @@ namespace MetaDslx.Compiler
         public AnnotatedAntlr4Parser.GrammarSpecContext ParseTree { get; private set; }
         public AnnotatedAntlr4Lexer Lexer { get; private set; }
         public AnnotatedAntlr4Parser Parser { get; private set; }
-        public CommonTokenStream CommonTokenStream { get; private set; }
 
         public string Antlr4Jar { get; private set; }
 
@@ -1875,8 +1874,8 @@ namespace MetaDslx.Compiler
             WriteLine("AntlrInputStream inputStream = new AntlrInputStream(this.Source);");
             WriteLine("this.Lexer = new {0}(inputStream);", this.lexerName);
             WriteLine("this.Lexer.AddErrorListener(this);");
-            WriteLine("CommonTokenStream commonTokenStream = new CommonTokenStream(this.Lexer);");
-            WriteLine("this.Parser = new {0}(commonTokenStream);", this.parserName);
+            WriteLine("this.CommonTokenStream = new CommonTokenStream(this.Lexer);");
+            WriteLine("this.Parser = new {0}(this.CommonTokenStream);", this.parserName);
             WriteLine("this.Parser.AddErrorListener(this);");
             WriteLine("this.ParseTree = this.Parser.{0};", rootName);
             WriteLine("{0}Annotator annotator = new {0}Annotator();", this.parserName);
@@ -1919,7 +1918,6 @@ namespace MetaDslx.Compiler
             WriteLine("public "+ rootType + " ParseTree { get; private set; }");
             WriteLine("public "+ this.lexerName + " Lexer { get; private set; }");
             WriteLine("public "+ this.parserName + " Parser { get; private set; }");
-            WriteLine("public CommonTokenStream CommonTokenStream { get; private set; }");
             WriteLine();
             WriteLine("public override List<object> LexerAnnotations { get; protected set; }");
             WriteLine("public override List<object> ParserAnnotations { get; protected set; }");

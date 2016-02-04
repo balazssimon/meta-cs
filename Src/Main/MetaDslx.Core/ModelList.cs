@@ -166,7 +166,7 @@ namespace MetaDslx.Core
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator()
+        public new IEnumerator<T> GetEnumerator()
         {
             this.MFlushLazyItems();
             return this.items.GetEnumerator();
@@ -378,7 +378,7 @@ namespace MetaDslx.Core
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator()
+        public new IEnumerator<T> GetEnumerator()
         {
             this.MFlushLazyItems();
             return this.items.GetEnumerator();

@@ -1,9 +1,8 @@
 ﻿namespace MetaDslx.Core
 {
+	metamodel Meta(Uri="http://metadslx.core/1.0"); 
 
-	metamodel Meta(Uri="http://metadslx.core/1.0");
-
-	const MetaPrimitiveType Object = new MetaPrimitiveType() { Name = "object" };
+	const MetaPrimitiveType Object = new MetaPrimitiveType() { Name = "object" }; 
 	const MetaPrimitiveType String = new MetaPrimitiveType() { Name = "string" };
 	const MetaPrimitiveType Int = new MetaPrimitiveType() { Name = "int" };
 	const MetaPrimitiveType Long = new MetaPrimitiveType() { Name = "long" };

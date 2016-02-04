@@ -55,7 +55,6 @@ tokens {
 	 *  between [..arg actions..] and [charsets]. Char sets can only occur in
 	 *  lexical rules and arg actions cannot occur.
 	 */
-	 
     private static int INVALID_TYPE = -1;
 
     private int _currentRuleType = INVALID_TYPE;

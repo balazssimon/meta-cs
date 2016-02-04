@@ -293,6 +293,18 @@ namespace MetaDslx.TempConsole
                         {
                             writer.WriteLine(mo);
                             Console.WriteLine(mo);
+                            string leading = compiler.TriviaProvider.GetLeadingTrivia(mo);
+                            string trailing = compiler.TriviaProvider.GetTrailingTrivia(mo);
+                            if (!string.IsNullOrWhiteSpace(leading))
+                            {
+                                writer.WriteLine("  Leading trivia: "+leading);
+                                Console.WriteLine("  Leading trivia: "+ leading);
+                            }
+                            if (!string.IsNullOrWhiteSpace(trailing))
+                            {
+                                writer.WriteLine("  Trailing trivia: "+ trailing);
+                                Console.WriteLine("  Trailing trivia: "+trailing);
+                            }
                             writer.WriteLine("  Parent=" + mo.MParent);
                             Console.WriteLine("  Parent=" + mo.MParent);
                             ModelProperty mp;

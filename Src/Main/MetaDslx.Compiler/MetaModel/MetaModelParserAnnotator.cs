@@ -3801,8 +3801,8 @@ using MetaDslx.Core;
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = new MetaModelLexer(inputStream);
             this.Lexer.AddErrorListener(this);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(this.Lexer);
-            this.Parser = new MetaModelParser(commonTokenStream);
+            this.CommonTokenStream = new CommonTokenStream(this.Lexer);
+            this.Parser = new MetaModelParser(this.CommonTokenStream);
             this.Parser.AddErrorListener(this);
             this.ParseTree = this.Parser.main();
             MetaModelParserAnnotator annotator = new MetaModelParserAnnotator();
@@ -3838,7 +3838,6 @@ using MetaDslx.Core;
         public MetaModelParser.MainContext ParseTree { get; private set; }
         public MetaModelLexer Lexer { get; private set; }
         public MetaModelParser Parser { get; private set; }
-        public CommonTokenStream CommonTokenStream { get; private set; }
         
         public override List<object> LexerAnnotations { get; protected set; }
         public override List<object> ParserAnnotations { get; protected set; }

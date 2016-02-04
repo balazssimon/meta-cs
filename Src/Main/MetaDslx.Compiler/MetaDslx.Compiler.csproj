@@ -46,6 +46,7 @@
     <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4Channels.cs" />
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4Compiler.cs">
       <SubType>Code</SubType>
     </Compile>

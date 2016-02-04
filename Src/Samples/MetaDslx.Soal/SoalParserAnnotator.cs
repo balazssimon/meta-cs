@@ -1831,8 +1831,8 @@ namespace MetaDslx.Soal
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = new SoalLexer(inputStream);
             this.Lexer.AddErrorListener(this);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(this.Lexer);
-            this.Parser = new SoalParser(commonTokenStream);
+            this.CommonTokenStream = new CommonTokenStream(this.Lexer);
+            this.Parser = new SoalParser(this.CommonTokenStream);
             this.Parser.AddErrorListener(this);
             this.ParseTree = this.Parser.main();
             SoalParserAnnotator annotator = new SoalParserAnnotator();
@@ -1868,7 +1868,6 @@ namespace MetaDslx.Soal
         public SoalParser.MainContext ParseTree { get; private set; }
         public SoalLexer Lexer { get; private set; }
         public SoalParser Parser { get; private set; }
-        public CommonTokenStream CommonTokenStream { get; private set; }
         
         public override List<object> LexerAnnotations { get; protected set; }
         public override List<object> ParserAnnotations { get; protected set; }
