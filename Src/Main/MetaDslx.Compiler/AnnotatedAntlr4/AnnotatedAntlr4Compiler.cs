@@ -1485,7 +1485,7 @@ namespace MetaDslx.Compiler
             WriteLine("foreach (var treeAnnot in treeAnnotList)");
             WriteLine("{");
             IncIndent();
-            WriteLine("SymbolTypedAnnotation sta = treeAnnot as SymbolTypedAnnotation;");
+            WriteLine("SymbolBasedAnnotation sta = treeAnnot as SymbolBasedAnnotation;");
             WriteLine("if (sta != null)");
             WriteLine("{");
             IncIndent();

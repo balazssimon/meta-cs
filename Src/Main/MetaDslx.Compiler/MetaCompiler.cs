@@ -320,7 +320,7 @@ namespace MetaDslx.Compiler
             }
             else
             {
-                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(line, charPositionInLine+1, line, charPositionInLine+1));
+                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(line, charPositionInLine + 1, line, charPositionInLine + 1));
             }
         }
 
@@ -332,7 +332,7 @@ namespace MetaDslx.Compiler
             }
             else
             {
-                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(line, charPositionInLine+1, line, charPositionInLine+1));
+                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(line, charPositionInLine + 1, line, charPositionInLine + 1));
             }
         }
 
@@ -1536,6 +1536,7 @@ namespace MetaDslx.Compiler
         {
             this.HandleNames(node);
             this.HandlePropertyValues(node);
+            this.HandleTrivia(node);
             base.HandleNode(node);
         }
 
@@ -1778,6 +1779,48 @@ namespace MetaDslx.Compiler
                         if (symbol != null)
                         {
                             this.SetProperty(node, this.ParentSymbol, pa, symbol);
+                        }
+                    }
+                }
+            }
+        }
+
+        protected virtual void HandleTrivia(IParseTree node)
+        {
+            IEnumerable<TriviaAnnotation> tas = this.GetAnnotationsFor<TriviaAnnotation>(node);
+            foreach (var ta in tas)
+            {
+                if (ta.Property != null)
+                {
+                    ModelObject symbol = this.CurrentSymbol;
+                    if (symbol != null)
+                    {
+                        ModelProperty prop = symbol.MFindProperty(ta.Property);
+                        if (prop != null)
+                        {
+                            string trivia = null;
+                            switch (ta.Kind)
+                            {
+                                case TriviaKind.Any:
+                                    trivia = this.Compiler.TriviaProvider.GetLeadingTrivia(symbol);
+                                    if (trivia == null)
+                                    {
+                                        trivia = this.Compiler.TriviaProvider.GetTrailingTrivia(symbol);
+                                    }
+                                    break;
+                                case TriviaKind.Leading:
+                                    trivia = this.Compiler.TriviaProvider.GetLeadingTrivia(symbol);
+                                    break;
+                                case TriviaKind.Trailing:
+                                    trivia = this.Compiler.TriviaProvider.GetTrailingTrivia(symbol);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (!string.IsNullOrWhiteSpace(trivia))
+                            {
+                                symbol.MAdd(prop, trivia);
+                            }
                         }
                     }
                 }

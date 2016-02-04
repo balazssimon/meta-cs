@@ -62,13 +62,20 @@
 	[BuiltInName(Name="SelectOfName2")]
 	extern list<ModelObject> select_of_name(list<ModelObject> symbols, string name);
 		
-
+	/*
+	Represents an annotated element.
+	*/
 	abstract class MetaAnnotatedElement
 	{
 		containment list<MetaAnnotation> Annotations;
 	}
 
-	abstract class MetaNamedElement
+	abstract class MetaDocumentedElement
+	{
+		string Documentation;
+	}
+
+	abstract class MetaNamedElement : MetaDocumentedElement
 	{
 		[Name]
 		string Name;

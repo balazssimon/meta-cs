@@ -14,6 +14,7 @@ namespace MetaDslx.Core
         static MetaDescriptor()
         {
             MetaAnnotatedElement.StaticInit();
+            MetaDocumentedElement.StaticInit();
             MetaNamedElement.StaticInit();
             MetaTypedElement.StaticInit();
             MetaType.StaticInit();
@@ -135,6 +136,28 @@ namespace MetaDslx.Core
             [ContainmentAttribute]
             public static readonly ModelProperty AnnotationsProperty =
                 ModelProperty.Register("Annotations", typeof(global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation>), typeof(global::MetaDslx.Core.MetaAnnotatedElement), typeof(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaAnnotatedElement_AnnotationsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+            
+        }
+        
+        public static class MetaDocumentedElement
+        {
+            internal static void StaticInit()
+            {
+            }
+        
+            static MetaDocumentedElement()
+            {
+                global::MetaDslx.Core.MetaDescriptor.StaticInit();
+            }
+        
+            public static global::MetaDslx.Core.MetaClass MetaClass
+            {
+                get { return global::MetaDslx.Core.MetaInstance.MetaDocumentedElement; }
+            }
+        
+            
+            public static readonly ModelProperty DocumentationProperty =
+                ModelProperty.Register("Documentation", typeof(string), typeof(global::MetaDslx.Core.MetaDocumentedElement), typeof(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaDocumentedElement_DocumentationProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
         }
         
@@ -2420,6 +2443,8 @@ namespace MetaDslx.Core
 		public static readonly global::MetaDslx.Core.MetaClass MetaAnnotatedElement;
 		private static readonly global::MetaDslx.Core.MetaCollectionType __tmp184;
 		public static readonly global::MetaDslx.Core.MetaProperty MetaAnnotatedElement_AnnotationsProperty;
+		public static readonly global::MetaDslx.Core.MetaClass MetaDocumentedElement;
+		public static readonly global::MetaDslx.Core.MetaProperty MetaDocumentedElement_DocumentationProperty;
 		public static readonly global::MetaDslx.Core.MetaClass MetaNamedElement;
 		private static readonly global::MetaDslx.Core.MetaAnnotation __tmp185;
 		public static readonly global::MetaDslx.Core.MetaProperty MetaNamedElement_NameProperty;
@@ -3208,6 +3233,8 @@ namespace MetaDslx.Core
 				MetaAnnotatedElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				__tmp184 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaCollectionType();
 				MetaAnnotatedElement_AnnotationsProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
+				MetaDocumentedElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
+				MetaDocumentedElement_DocumentationProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
 				MetaNamedElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				__tmp185 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaAnnotation();
 				MetaNamedElement_NameProperty = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaProperty();
@@ -3819,6 +3846,7 @@ namespace MetaDslx.Core
 				((ModelObject)__tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.DeclarationsProperty, new Lazy<object>(() => SelectOfName1, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.DeclarationsProperty, new Lazy<object>(() => SelectOfName2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.DeclarationsProperty, new Lazy<object>(() => MetaAnnotatedElement, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)__tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.DeclarationsProperty, new Lazy<object>(() => MetaDocumentedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.DeclarationsProperty, new Lazy<object>(() => MetaNamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.DeclarationsProperty, new Lazy<object>(() => MetaTypedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.DeclarationsProperty, new Lazy<object>(() => MetaType, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -5315,9 +5343,35 @@ namespace MetaDslx.Core
 				((ModelObject)MetaAnnotatedElement_AnnotationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)MetaAnnotatedElement_AnnotationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => __tmp184, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)MetaDocumentedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)MetaDocumentedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)MetaDocumentedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => MetaDocumentedElement_DocumentationProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)MetaDocumentedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
+				((ModelObject)MetaDocumentedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)MetaDocumentedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)MetaDocumentedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => __tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)MetaDocumentedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)MetaDocumentedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "MetaDocumentedElement", LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)MetaDocumentedElement_DocumentationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)MetaDocumentedElement_DocumentationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)MetaDocumentedElement_DocumentationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)MetaDocumentedElement_DocumentationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => MetaDocumentedElement, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				
+				
+				
+				
+				((ModelObject)MetaDocumentedElement_DocumentationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)MetaDocumentedElement_DocumentationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Documentation", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)MetaDocumentedElement_DocumentationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)MetaDocumentedElement_DocumentationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)MetaNamedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
 				((ModelObject)MetaNamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)MetaNamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => MetaDocumentedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)MetaNamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => MetaNamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)MetaNamedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
@@ -11361,7 +11415,49 @@ namespace MetaDslx.Core
     }
     
     
-    public interface MetaNamedElement
+    public interface MetaDocumentedElement
+    {
+        string Documentation { get; set; }
+    
+    }
+    
+    internal class MetaDocumentedElementImpl : ModelObject, global::MetaDslx.Core.MetaDocumentedElement
+    {
+        static MetaDocumentedElementImpl()
+        {
+            global::MetaDslx.Core.MetaDescriptor.StaticInit();
+        }
+    
+        public override global::MetaDslx.Core.MetaModel MMetaModel
+        {
+            get { return global::MetaDslx.Core.MetaInstance.Meta; }
+        }
+    
+        public override global::MetaDslx.Core.MetaClass MMetaClass
+        {
+            get { return global::MetaDslx.Core.MetaInstance.MetaDocumentedElement; }
+        }
+    
+        public MetaDocumentedElementImpl() 
+        {
+            global::MetaDslx.Core.MetaImplementationProvider.Implementation.MetaDocumentedElement(this);
+            this.MMakeDefault();
+        }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+        }
+    }
+    
+    
+    public interface MetaNamedElement : global::MetaDslx.Core.MetaDocumentedElement
     {
         string Name { get; set; }
     
@@ -11399,6 +11495,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
     }
     
@@ -11525,6 +11632,17 @@ namespace MetaDslx.Core
             }
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+        }
     }
     
     
@@ -11578,6 +11696,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
     }
     
@@ -11682,6 +11811,17 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
         
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+        }
+        
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> global::MetaDslx.Core.MetaAnnotatedElement.Annotations
         {
             get 
@@ -11758,6 +11898,17 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
         
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+        }
+        
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> global::MetaDslx.Core.MetaAnnotatedElement.Annotations
         {
             get 
@@ -11832,6 +11983,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
         
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> global::MetaDslx.Core.MetaAnnotatedElement.Annotations
@@ -11980,6 +12142,17 @@ namespace MetaDslx.Core
             }
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+        }
     }
     
     [Scope]
@@ -12069,6 +12242,17 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
         
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+        }
+        
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> global::MetaDslx.Core.MetaAnnotatedElement.Annotations
         {
             get 
@@ -12131,6 +12315,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
         
         global::MetaDslx.Core.MetaType global::MetaDslx.Core.MetaTypedElement.Type
@@ -12271,6 +12466,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
         
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> global::MetaDslx.Core.MetaAnnotatedElement.Annotations
@@ -12452,6 +12658,17 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
         
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+        }
+        
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> global::MetaDslx.Core.MetaAnnotatedElement.Annotations
         {
             get 
@@ -12548,6 +12765,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
         
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> global::MetaDslx.Core.MetaAnnotatedElement.Annotations
@@ -12680,6 +12908,17 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
         
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+        }
+        
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> global::MetaDslx.Core.MetaAnnotatedElement.Annotations
         {
             get 
@@ -12778,6 +13017,17 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
         
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+        }
+        
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> global::MetaDslx.Core.MetaAnnotatedElement.Annotations
         {
             get 
@@ -12854,6 +13104,17 @@ namespace MetaDslx.Core
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
         
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+        }
+        
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> global::MetaDslx.Core.MetaAnnotatedElement.Annotations
         {
             get 
@@ -12916,6 +13177,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
         
         global::MetaDslx.Core.MetaType global::MetaDslx.Core.MetaTypedElement.Type
@@ -13063,6 +13335,17 @@ namespace MetaDslx.Core
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        string global::MetaDslx.Core.MetaDocumentedElement.Documentation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
         
         global::MetaDslx.Core.MetaType global::MetaDslx.Core.MetaTypedElement.Type
@@ -22898,10 +23181,20 @@ namespace MetaDslx.Core
         }
     
         /// <summary>
+    	/// Implements the constructor: MetaDocumentedElement()
+        /// </summary>
+        public virtual void MetaDocumentedElement(MetaDocumentedElement @this)
+        {
+        }
+    
+        /// <summary>
     	/// Implements the constructor: MetaNamedElement()
+    	/// Direct superclasses: global::MetaDslx.Core.MetaDocumentedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaDocumentedElement
         /// </summary>
         public virtual void MetaNamedElement(MetaNamedElement @this)
         {
+            this.MetaDocumentedElement(@this);
         }
     
         /// <summary>
@@ -22921,7 +23214,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaAnnotation()
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement
         /// </summary>
         public virtual void MetaAnnotation(MetaAnnotation @this)
         {
@@ -22931,7 +23224,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaAnnotationProperty()
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement
         /// </summary>
         public virtual void MetaAnnotationProperty(MetaAnnotationProperty @this)
         {
@@ -22941,7 +23234,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaNamespace()
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// </summary>
         public virtual void MetaNamespace(MetaNamespace @this)
         {
@@ -22952,7 +23245,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaDeclaration()
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// </summary>
         public virtual void MetaDeclaration(MetaDeclaration @this)
         {
@@ -22963,7 +23256,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaModel()
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// </summary>
         public virtual void MetaModel(MetaModel @this)
         {
@@ -22994,7 +23287,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaPrimitiveType()
     	/// Direct superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaNamedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaNamedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement
         /// </summary>
         public virtual void MetaPrimitiveType(MetaPrimitiveType @this)
         {
@@ -23005,7 +23298,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaEnum()
     	/// Direct superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaDeclaration
-    	/// All superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaDeclaration, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaDeclaration, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// </summary>
         public virtual void MetaEnum(MetaEnum @this)
         {
@@ -23016,7 +23309,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaEnumLiteral()
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaTypedElement
         /// </summary>
         public virtual void MetaEnumLiteral(MetaEnumLiteral @this)
         {
@@ -23027,7 +23320,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaClass()
     	/// Direct superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaDeclaration
-    	/// All superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaDeclaration, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaDeclaration, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// </summary>
         public virtual void MetaClass(MetaClass @this)
         {
@@ -23088,7 +23381,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaFunction()
     	/// Direct superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// Initializes the following readonly properties:
         ///    MetaFunction.Type
         /// </summary>
@@ -23102,7 +23395,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaGlobalFunction()
     	/// Direct superclasses: global::MetaDslx.Core.MetaFunction, global::MetaDslx.Core.MetaDeclaration
-    	/// All superclasses: global::MetaDslx.Core.MetaFunction, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement, global::MetaDslx.Core.MetaDeclaration
+    	/// All superclasses: global::MetaDslx.Core.MetaFunction, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaAnnotatedElement, global::MetaDslx.Core.MetaDeclaration
         /// Initializes the following readonly properties:
         ///    MetaFunction.Type
         /// </summary>
@@ -23115,7 +23408,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaOperation()
     	/// Direct superclasses: global::MetaDslx.Core.MetaFunction
-    	/// All superclasses: global::MetaDslx.Core.MetaFunction, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaFunction, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// Initializes the following readonly properties:
         ///    MetaFunction.Type
         /// </summary>
@@ -23127,7 +23420,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaConstant()
     	/// Direct superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaDeclaration
-    	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaDeclaration, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaDeclaration, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// </summary>
         public virtual void MetaConstant(MetaConstant @this)
         {
@@ -23138,7 +23431,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaConstructor()
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// </summary>
         public virtual void MetaConstructor(MetaConstructor @this)
         {
@@ -23149,7 +23442,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaParameter()
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaAnnotatedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// </summary>
         public virtual void MetaParameter(MetaParameter @this)
         {
@@ -23161,7 +23454,7 @@ namespace MetaDslx.Core
         /// <summary>
     	/// Implements the constructor: MetaProperty()
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaAnnotatedElement
-    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaAnnotatedElement
+    	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaDocumentedElement, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// </summary>
         public virtual void MetaProperty(MetaProperty @this)
         {

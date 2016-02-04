@@ -29,10 +29,12 @@ annotationParam : $Property(Name) $Value identifier TAssign $Property(Value) exp
 
 
 $NameDef(symbolType=MetaNamespace,nestingProperty=Namespaces,merge=true)
+$Trivia(Documentation)
 namespaceDeclaration: annotation* KNamespace qualifiedName TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
 $Property(MetaModel)
 $NameDef(MetaModel)
+$Trivia(Documentation)
 metamodelDeclaration: annotation* KMetamodel identifier (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
 
 metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
@@ -44,14 +46,17 @@ declaration : enumDeclaration | classDeclaration | associationDeclaration | cons
 
 $Property(Declarations) 
 $TypeDef(MetaEnum)
+$Trivia(Documentation)
 enumDeclaration : annotation* KEnum identifier TOpenBrace $Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
 $NameDef(MetaEnumLiteral)
+$Trivia(Documentation)
 enumValue : annotation* identifier;
 enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
 $Property(Declarations) 
 $TypeDef(MetaClass)
+$Trivia(Documentation)
 classDeclaration : annotation* $Property(name=IsAbstract,value=true) KAbstract? KClass identifier (TColon $Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor : $TypeUse(symbolType=MetaClass,resolveFlags=ResolveFlags.Parent) qualifiedName;
@@ -62,6 +67,7 @@ classMemberDeclaration
 	;
 
 $NameDef(MetaProperty)
+$Trivia(Documentation)
 fieldDeclaration : annotation* $Property(Kind) fieldModifier? $Property(Type) typeReference identifier (redefinitions | subsettings)? TSemicolon;
 fieldModifier 
 	: $Value(MetaPropertyKind.Containment) KContainment 
@@ -79,10 +85,12 @@ nameUseList : $NameUse(MetaProperty) qualifiedName (TComma qualifiedName)*;
 
 $Property(Declarations) 
 $NameDef(MetaConstant)
+$Trivia(Documentation)
 constDeclaration : KConst $Property(Type) typeReference identifier (TAssign $Property(Value) expressionOrNewExpression)? TSemicolon;
 
 $Property(Declarations) 
 $NameDef(symbolType=MetaGlobalFunction,overload=true)
+$Trivia(Documentation)
 functionDeclaration : annotation* KExtern $Property(ReturnType) returnType identifier TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 
 $TypeUse
@@ -134,13 +142,16 @@ collectionKind
 	;
 
 $NameDef(MetaOperation)
+$Trivia(Documentation)
 operationDeclaration : annotation* KStatic? $Property(ReturnType) returnType identifier TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
 $NameDef(MetaParameter)
+$Trivia(Documentation)
 parameter : annotation* $Property(Type) typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
 
 $NameDef(MetaConstructor)
+$Trivia(Documentation)
 constructorDeclaration : annotation* identifier TOpenParen TCloseParen TOpenBrace $Property(Initializers) initializerDeclaration* TCloseBrace;
 
 initializerDeclaration 
