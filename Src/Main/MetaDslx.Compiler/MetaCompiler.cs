@@ -146,6 +146,13 @@ namespace MetaDslx.Compiler
             set { this.value = value; this.HasValue = true; }
         }
         public bool HasValue { get; set; }
+        private Type type;
+        public Type Type
+        {
+            get { return this.type; }
+            set { this.type = value; this.HasType = true; }
+        }
+        public bool HasType { get; set; }
     }
 
     public enum EnumValueCase
@@ -1643,7 +1650,7 @@ namespace MetaDslx.Compiler
                                 }
                                 else
                                 {
-                                    object value = this.Compiler.NameProvider.GetValue(node);
+                                    object value = this.Compiler.NameProvider.GetValue(node, va.Type);
                                     this.SetProperty(node, this.ActiveSymbol, pa, value);
                                 }
                             }
@@ -1656,7 +1663,7 @@ namespace MetaDslx.Compiler
                             }
                             else
                             {
-                                object value = this.Compiler.NameProvider.GetValue(node);
+                                object value = this.Compiler.NameProvider.GetValue(node, va.Type);
                                 this.SetProperty(node, this.ActiveSymbol, pa, value);
                             }
                         }

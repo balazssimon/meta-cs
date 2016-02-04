@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,7 +54,7 @@ namespace MetaDslx.Core
     {
         string GetName(object node);
         string GetNameOf(ModelObject symbol);
-        object GetValue(object node);
+        object GetValue(object node, Type type);
         IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject symbol);
         TextSpan GetTreeNodeTextSpan(object node);
     }
@@ -356,10 +357,57 @@ namespace MetaDslx.Core
             return node.ToString();
         }
 
-        public virtual object GetValue(object node)
+        public virtual object GetValue(object node, Type type)
         {
             if (node == null) return null;
-            return node.ToString();
+            string value = node.ToString();
+            if (type == null)
+            {
+                if (value == "null") return null;
+                bool boolValue;
+                if (bool.TryParse(value, out boolValue))
+                {
+                    return boolValue;
+                }
+                int intValue;
+                if (int.TryParse(value, out intValue))
+                {
+                    return intValue;
+                }
+                long longValue;
+                if (long.TryParse(value, out longValue))
+                {
+                    return longValue;
+                }
+                float floatValue;
+                if (float.TryParse(value, out floatValue))
+                {
+                    return floatValue;
+                }
+                double doubleValue;
+                if (double.TryParse(value, out doubleValue))
+                {
+                    return doubleValue;
+                }
+                return value;
+            }
+            else
+            {
+                TypeConverter converter = TypeDescriptor.GetConverter(type);
+                if (converter != null)
+                {
+                    try
+                    {
+                        object result = converter.ConvertFromInvariantString(value);
+                        return result;
+                    }
+                    catch (Exception)
+                    {
+                        return value;
+                    }
+                }
+            }
+            return value;
         }
 
         public string GetNameOf(ModelObject symbol)

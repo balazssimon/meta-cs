@@ -169,7 +169,7 @@ expression
     | KTypeof TOpenParen                          typeOfReference TCloseParen #typeofExpression                                  
 	| TOpenParen expression TCloseParen #bracketExpression                                   
 	| KThis #thisExpression                                
-	| value=literal #constantExpression                                    
+	| value=literalExpression #constantExpression                                    
 	|        name=identifier #identifierExpression                                      
     | expression TOpenBracket                      expressionList TCloseBracket #indexerExpression                                   
     | expression TOpenParen                      expressionList? TCloseParen #functionCallExpression                                        
@@ -192,6 +192,15 @@ expression
     | left=expression TQuestionQuestion right=expression #nullCoalescingExpression                                          
     | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression                                       
     | left=expression operator=assignmentOperator right=expression #assignmentExpression 
+	;
+
+literalExpression 
+    :                             nullLiteral
+	|        booleanLiteral
+	|        integerLiteral
+	|        decimalLiteral
+	|        scientificLiteral
+    |        stringLiteral
 	;
 
        
@@ -282,7 +291,7 @@ identifier : IdentifierNormal | IdentifierVerbatim;
 
 // Literals
 literal 
-    :                             nullLiteral
+    :        nullLiteral
 	|        booleanLiteral
 	|        integerLiteral
 	|        decimalLiteral

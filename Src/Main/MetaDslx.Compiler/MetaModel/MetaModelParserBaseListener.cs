@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\bmgbtfh5.y0v\MetaModelParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\ow0l2pty.3du\MetaModelParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -960,6 +960,18 @@ public partial class MetaModelParserBaseListener : IMetaModelParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitNullCoalescingExpression([NotNull] MetaModelParser.NullCoalescingExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.literalExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLiteralExpression([NotNull] MetaModelParser.LiteralExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.literalExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLiteralExpression([NotNull] MetaModelParser.LiteralExpressionContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaModelParser.newObjectExpression"/>.
 	/// <para>The default implementation does nothing.</para>

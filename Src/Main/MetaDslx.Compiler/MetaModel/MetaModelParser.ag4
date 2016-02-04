@@ -169,7 +169,7 @@ expression
     | KTypeof TOpenParen $Property(TypeReference) typeOfReference TCloseParen #typeofExpression $SymbolType(MetaTypeOfExpression)
 	| TOpenParen expression TCloseParen #bracketExpression $SymbolType(MetaBracketExpression)
 	| KThis #thisExpression $SymbolType(MetaThisExpression)
-	| value=literal #constantExpression $SymbolType(MetaConstantExpression)
+	| value=literalExpression #constantExpression $SymbolType(MetaConstantExpression)
 	| $Value name=identifier #identifierExpression $SymbolType(MetaIdentifierExpression)
     | expression TOpenBracket $Property(Arguments) expressionList TCloseBracket #indexerExpression $SymbolType(MetaIndexerExpression)
     | expression TOpenParen $Property(Arguments) expressionList? TCloseParen #functionCallExpression $SymbolType(MetaFunctionCallExpression)
@@ -192,6 +192,15 @@ expression
     | left=expression TQuestionQuestion right=expression #nullCoalescingExpression $SymbolType(MetaNullCoalescingExpression)
     | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression $SymbolType(MetaConditionalExpression)
     | left=expression operator=assignmentOperator right=expression #assignmentExpression 
+	;
+
+literalExpression 
+    : $Symbol(MetaNullExpression) nullLiteral
+	| $Value booleanLiteral
+	| $Value integerLiteral
+	| $Value decimalLiteral
+	| $Value scientificLiteral
+    | $Value stringLiteral
 	;
 
 $Symbol
@@ -282,7 +291,7 @@ identifier : IdentifierNormal | IdentifierVerbatim;
 
 // Literals
 literal 
-    : $Symbol(MetaNullExpression) nullLiteral
+    : $Value nullLiteral
 	| $Value booleanLiteral
 	| $Value integerLiteral
 	| $Value decimalLiteral

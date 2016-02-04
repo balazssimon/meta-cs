@@ -20,19 +20,28 @@ namespace MetaDslx.Compiler
             return name;
         }
 
-        public override object GetValue(object node)
+        public override object GetValue(object node, Type type)
         {
             IParseTree parseTree = node as IParseTree;
             if (parseTree == null) return null;
             string text = parseTree.GetText();
-            if (text == "null") return null;
-            if (text == "true") return true;
-            if (text == "false") return false;
-            if (text.Length >= 2 && text.StartsWith("\"") && text.EndsWith("\""))
+            if (text.Length >= 3 && text.StartsWith("@\'") && text.EndsWith("\'"))
+            {
+                return text.Substring(2, text.Length - 3).Replace("\'\'", "\'");
+            }
+            else if (text.Length >= 2 && text.StartsWith("\'") && text.EndsWith("\'"))
             {
                 return Regex.Unescape(text.Substring(1, text.Length - 2));
             }
-            return parseTree.GetText();
+            else if (text.Length >= 3 && text.StartsWith("@\"") && text.EndsWith("\""))
+            {
+                return text.Substring(2, text.Length - 3).Replace("\"\"", "\"");
+            }
+            else if (text.Length >= 2 && text.StartsWith("\"") && text.EndsWith("\""))
+            {
+                return Regex.Unescape(text.Substring(1, text.Length - 2));
+            }
+            return base.GetValue(text, type);
         }
 
         public override TextSpan GetTreeNodeTextSpan(object node)

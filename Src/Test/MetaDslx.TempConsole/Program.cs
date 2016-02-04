@@ -122,14 +122,14 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelCSharpGenerator.cs"
                     );
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel1.cs"
                     );
                 //*/
-                //*
+                /*
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.java",
@@ -185,8 +185,8 @@ namespace MetaDslx.TempConsole
                 source = reader.ReadToEnd();
             }
             AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(source, outputDirectory, fileName);
-            //compiler.DefaultNamespace = "MetaDslx.Compiler";
-            compiler.DefaultNamespace = "MetaDslx.Soal";
+            compiler.DefaultNamespace = "MetaDslx.Compiler";
+            //compiler.DefaultNamespace = "MetaDslx.Soal";
             compiler.Compile();
             string outputFileName = Path.Combine(outputDirectory, antlr4FileName + "Annotator.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))
@@ -235,8 +235,8 @@ namespace MetaDslx.TempConsole
             //Meta.StaticInit();
             //Console.WriteLine(Meta.Model);
                         
-            Model model = new Model();
-            using (new ModelContextScope(model))
+            //Model model = new Model();
+            //using (new ModelContextScope(model))
             {
                 string source;
                 using (StreamReader reader = new StreamReader(fileName))
@@ -245,6 +245,7 @@ namespace MetaDslx.TempConsole
                 }
                 MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
                 compiler.Compile();
+                Model model = compiler.Model;
                 if (!compiler.Diagnostics.HasErrors())
                 {
                     ModelExchange.SaveToFile("MetaModel.xmi", model);
@@ -275,7 +276,7 @@ namespace MetaDslx.TempConsole
                         }
                         else
                         {
-                            MetaModelCSharpGenerator generator = new MetaModelCSharpGenerator(ModelContext.Current.Instances);
+                            MetaModelCSharpGenerator generator = new MetaModelCSharpGenerator(model.Instances);
                             writer.WriteLine(generator.Generate());
                         }
                     }
@@ -285,7 +286,7 @@ namespace MetaDslx.TempConsole
 
                 using (StreamWriter writer = new StreamWriter("symbols.txt"))
                 {
-                    foreach (var symbol in ModelContext.Current.Instances)
+                    foreach (var symbol in model.Instances)
                     {
                         ModelObject mo = symbol as ModelObject;
                         if (mo != null)
