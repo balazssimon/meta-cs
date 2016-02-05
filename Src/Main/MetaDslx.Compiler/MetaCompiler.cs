@@ -219,10 +219,14 @@ namespace MetaDslx.Compiler
 
     public class PropertyAnnotation
     {
-        private object value;
+        public PropertyAnnotation()
+        {
+            this.SymbolTypes = new List<Type>();
+        }
 
         public List<Type> SymbolTypes { get; set; }
         public string Name { get; set; }
+        private object value;
         public object Value
         {
             get { return this.value; }
@@ -231,7 +235,7 @@ namespace MetaDslx.Compiler
         public bool HasValue { get; set; }
     }
 
-    public enum TriviaKind
+    public enum TriviaPosition
     {
         Any,
         Leading,
@@ -240,13 +244,12 @@ namespace MetaDslx.Compiler
 
     public class TriviaAnnotation
     {
-        private Type symbolType;
-        public Type SymbolType
+        public TriviaAnnotation()
         {
-            get { return this.symbolType; }
-            set { this.symbolType = value; this.HasSymbolType = true; }
+            this.SymbolTypes = new List<Type>();
         }
-        public bool HasSymbolType { get; set; }
+
+        public List<Type> SymbolTypes { get; set; }
 
         private string property;
         public string Property
@@ -255,13 +258,7 @@ namespace MetaDslx.Compiler
             set { this.property = value; this.HasProperty = true; }
         }
         public bool HasProperty { get; set; }
-        private TriviaKind kind;
-        public TriviaKind Kind
-        {
-            get { return this.kind; }
-            set { this.kind = value; this.HasKind = true; }
-        }
-        public bool HasKind { get; set; }
+        public TriviaPosition Position { get; set; }
     }
 
 
@@ -1787,39 +1784,68 @@ namespace MetaDslx.Compiler
 
         protected virtual void HandleTrivia(IParseTree node)
         {
-            IEnumerable<TriviaAnnotation> tas = this.GetAnnotationsFor<TriviaAnnotation>(node);
-            foreach (var ta in tas)
+            ModelObject symbol = this.CurrentSymbol;
+            if (symbol != null)
             {
-                if (ta.Property != null)
+                bool retrievedTrivia = false;
+                string leadingTrivia = null;
+                string trailingTrivia = null;
+                IEnumerable<TriviaAnnotation> tas = this.GetAnnotationsFor<TriviaAnnotation>(node);
+                foreach (var ta in tas)
                 {
-                    ModelObject symbol = this.CurrentSymbol;
-                    if (symbol != null)
+                    if (ta.Property != null)
                     {
-                        ModelProperty prop = symbol.MFindProperty(ta.Property);
-                        if (prop != null)
+                        bool symbolOK = false;
+                        if (ta.SymbolTypes == null || ta.SymbolTypes.Count == 0)
                         {
-                            string trivia = null;
-                            switch (ta.Kind)
+                            symbolOK = true;
+                        }
+                        else
+                        {
+                            foreach (var symbolType in ta.SymbolTypes)
                             {
-                                case TriviaKind.Any:
-                                    trivia = this.Compiler.TriviaProvider.GetLeadingTrivia(symbol);
-                                    if (trivia == null)
-                                    {
-                                        trivia = this.Compiler.TriviaProvider.GetTrailingTrivia(symbol);
-                                    }
+                                if (symbolType.IsAssignableFrom(symbol.GetType()))
+                                {
+                                    symbolOK = true;
                                     break;
-                                case TriviaKind.Leading:
-                                    trivia = this.Compiler.TriviaProvider.GetLeadingTrivia(symbol);
-                                    break;
-                                case TriviaKind.Trailing:
-                                    trivia = this.Compiler.TriviaProvider.GetTrailingTrivia(symbol);
-                                    break;
-                                default:
-                                    break;
+                                }
                             }
-                            if (!string.IsNullOrWhiteSpace(trivia))
+                        }
+                        if (symbolOK)
+                        {
+                            ModelProperty prop = symbol.MFindProperty(ta.Property);
+                            if (prop != null)
                             {
-                                symbol.MAdd(prop, trivia);
+
+                                if (!retrievedTrivia)
+                                {
+                                    leadingTrivia = this.Compiler.TriviaProvider.GetLeadingTrivia(symbol);
+                                    trailingTrivia = this.Compiler.TriviaProvider.GetTrailingTrivia(symbol);
+                                    retrievedTrivia = true;
+                                }
+                                string trivia = null;
+                                switch (ta.Position)
+                                {
+                                    case TriviaPosition.Any:
+                                        trivia = leadingTrivia;
+                                        if (trivia == null)
+                                        {
+                                            trivia = trailingTrivia;
+                                        }
+                                        break;
+                                    case TriviaPosition.Leading:
+                                        trivia = leadingTrivia;
+                                        break;
+                                    case TriviaPosition.Trailing:
+                                        trivia = trailingTrivia;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                if (!string.IsNullOrWhiteSpace(trivia))
+                                {
+                                    symbol.MAdd(prop, trivia);
+                                }
                             }
                         }
                     }

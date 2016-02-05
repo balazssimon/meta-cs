@@ -3,6 +3,7 @@ using Antlr4.Runtime.Tree;
 using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -60,9 +61,111 @@ namespace MetaDslx.Compiler
         {
             this.compiler = compiler;
             this.channel = channel;
+            this.CleanTrivia = true;
+            this.TrimTriviaLines = true;
+            this.ConcatTriviaLines = false;
+            this.TriviaStartTokens = new List<string>();
+            this.TriviaEndTokens = new List<string>();
+            this.TriviaLineStartTokens = new List<string>();
+            this.TriviaLineEndTokens = new List<string>();
+            this.TriviaStartTokens.Add("///");
+            this.TriviaStartTokens.Add("/**");
+            this.TriviaStartTokens.Add("//");
+            this.TriviaStartTokens.Add("/*");
+            this.TriviaEndTokens.Add("*/");
+            this.TriviaLineStartTokens.Add("*");
         }
 
-        private string GetTriviaText(IList<IToken> triviaTokens)
+        public bool CleanTrivia { get; set; }
+        public bool TrimTriviaLines { get; set; }
+        public bool ConcatTriviaLines { get; set; }
+        public List<string> TriviaStartTokens { get; private set; }
+        public List<string> TriviaEndTokens { get; private set; }
+        public List<string> TriviaLineStartTokens { get; private set; }
+        public List<string> TriviaLineEndTokens { get; private set; }
+
+        protected virtual string CleanTriviaText(string text)
+        {
+            if (text == null) return text;
+            text = text.Trim();
+            foreach (var token in this.TriviaStartTokens)
+            {
+                if (text.StartsWith(token))
+                {
+                    text = text.Substring(token.Length);
+                    break;
+                }
+            }
+            foreach (var token in this.TriviaEndTokens)
+            {
+                if (text.EndsWith(token))
+                {
+                    text = text.Substring(0, text.Length - token.Length);
+                    break;
+                }
+            }
+            if (this.TrimTriviaLines)
+            {
+                text = text.Trim();
+            }
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(text);
+            writer.Flush();
+            stream.Position = 0;
+            StringBuilder sb = new StringBuilder();
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                while(!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        foreach (var token in this.TriviaLineStartTokens)
+                        {
+                            if (line.StartsWith(token))
+                            {
+                                line = line.Substring(token.Length);
+                                break;
+                            }
+                        }
+                        foreach (var token in this.TriviaLineEndTokens)
+                        {
+                            if (line.EndsWith(token))
+                            {
+                                line = line.Substring(token.Length);
+                                break;
+                            }
+                        }
+                        if (this.TrimTriviaLines)
+                        {
+                            line = line.Trim();
+                        }
+                        if (this.ConcatTriviaLines)
+                        {
+                            if (sb.Length != 0)
+                            {
+                                sb.Append(" ");
+                            }
+                            sb.Append(line);
+                        }
+                        else
+                        {
+                            if (sb.Length != 0)
+                            {
+                                sb.AppendLine();
+                            }
+                            sb.Append(line);
+                        }
+                    }
+                }
+            }
+            string result = sb.ToString();
+            if (string.IsNullOrWhiteSpace(result)) return null;
+            else return result;
+        }
+
+        protected virtual string GetTriviaText(IList<IToken> triviaTokens)
         {
             if (triviaTokens.Count == 0) return null;
             StringBuilder builder = new StringBuilder();
@@ -70,7 +173,12 @@ namespace MetaDslx.Compiler
             {
                 builder.Append(token.Text);
             }
-            return builder.ToString();
+            string triviaText = builder.ToString();
+            if (this.CleanTrivia)
+            {
+                triviaText = this.CleanTriviaText(triviaText);
+            }
+            return triviaText;
         }
 
         public override string GetLeadingTrivia(object node)
