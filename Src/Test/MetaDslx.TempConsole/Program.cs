@@ -122,7 +122,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelCSharpGenerator.cs"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
@@ -152,6 +152,13 @@ namespace MetaDslx.TempConsole
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Compiler\LanguageService\MetaLanguageServiceGenerator.mgen",
                     @"..\..\..\..\Main\MetaDslx.Compiler\LanguageService\MetaLanguageServiceGenerator.cs"
+                    );
+                //*/
+                //*
+                Console.WriteLine("----");
+                CompileGenerator(
+                    @"..\..\..\..\..\..\soal-cs\src\Main\MetaDslx.Soal\SoalPrinter.mgen",
+                    @"..\..\..\..\..\..\soal-cs\src\Main\MetaDslx.Soal\SoalPrinter.cs"
                     );
                 //*/
                 /*
@@ -423,7 +430,8 @@ namespace MetaDslx.TempConsole
             compiler.Compile();
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
-                writer.WriteLine(compiler.GeneratedSource);
+                MetaGeneratorGenerator generator = new MetaGeneratorGenerator(compiler.ParseTree);
+                writer.WriteLine(generator.GeneratedSource);
             }
             using (StreamWriter writer = new StreamWriter("messages_gen.txt"))
             {

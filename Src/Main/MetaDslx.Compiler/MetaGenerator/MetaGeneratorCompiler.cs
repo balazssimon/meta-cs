@@ -51,8 +51,21 @@ namespace MetaDslx.Compiler
 
     public class MetaGeneratorGenerator
     {
+        private bool generated = false;
+        private string generatedSource = null;
         public MetaGeneratorParser.MainContext ParseTree { get; private set; }
-        public string GeneratedSource { get; private set; }
+        public string GeneratedSource
+        {
+            get
+            {
+                if (!this.generated)
+                {
+                    this.generatedSource = this.Generate();
+                    this.generated = true;
+                }
+                return this.generatedSource;
+            }
+        }
 
         public MetaGeneratorGenerator(MetaGeneratorParser.MainContext parseTree)
         {
@@ -70,8 +83,7 @@ namespace MetaDslx.Compiler
             cl.HasLoops = ul.HasLoops;
             cl.Visit(this.ParseTree);
             cl.Close();
-            this.GeneratedSource = sb.ToString();
-            return this.GeneratedSource;
+            return sb.ToString();
         }
     }
 
@@ -339,6 +351,69 @@ namespace MetaDslx.Compiler
 
         public override void Close()
         {
+            WriteLine("private class StringBuilder");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("private bool newLine;");
+            WriteLine("private bool whitespaceLine;");
+            WriteLine("private System.Text.StringBuilder builder = new System.Text.StringBuilder();");
+            WriteLine("");
+            WriteLine("public StringBuilder()");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("this.newLine = true;");
+            WriteLine("this.whitespaceLine = true;");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("");
+            WriteLine("public void Append(string str)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("if (str == null) return;");
+            WriteLine("if (!string.IsNullOrEmpty(str))");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("this.newLine = false;");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("if (!string.IsNullOrWhiteSpace(str))");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("this.whitespaceLine = false;");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("builder.Append(str);");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("");
+            WriteLine("public void Append(object obj)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("string text = obj.ToString();");
+            WriteLine("this.Append(text);");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("");
+            WriteLine("public void AppendLine(bool force = false)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("if (force || !this.newLine)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("builder.AppendLine();");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("");
+            WriteLine("public override string ToString()");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("return builder.ToString();");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
             DecIndent();
             WriteLine("}");
             DecIndent();
@@ -1261,8 +1336,7 @@ namespace MetaDslx.Compiler
                             WriteLine("if ({0}Line == null)", tmp);
                             WriteLine("{");
                             IncIndent();
-                            WriteLine("if (string.IsNullOrEmpty({0}) && string.IsNullOrEmpty({1})) break;", prefix, suffix);
-                            WriteLine("else {0}Line = {1};", tmp, "\"\"");
+                            WriteLine("{0}Line = {1};", tmp, "\"\"");
                             DecIndent();
                             WriteLine("}");
                         }
@@ -1334,23 +1408,29 @@ namespace MetaDslx.Compiler
         {
             if (context.TemplateCrLf() != null)
             {
-                if (!context.TemplateCrLf().GetText().StartsWith("\\"))
+                string lineBreakText = context.TemplateCrLf().GetText();
+                string force = lineBreakText.StartsWith("^") ? "true" : "false";
+                if (!lineBreakText.StartsWith("\\"))
                 {
-                    WriteLine("{0}.AppendLine(); {1}", output, context.ToComment());
+                    WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }
             }
             else if (context.TemplateLineBreak() != null)
             {
+                string lineBreakText = context.TemplateLineBreak().GetText();
+                string force = lineBreakText.StartsWith("^") ? "true" : "false";
                 if (!context.TemplateLineBreak().GetText().StartsWith("\\"))
                 {
-                    WriteLine("{0}.AppendLine(); {1}", output, context.ToComment());
+                    WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }
             }
             else if (context.TemplateLineControl() != null)
             {
+                string lineBreakText = context.TemplateLineControl().GetText();
+                string force = lineBreakText.StartsWith("^") ? "true" : "false";
                 if (!context.TemplateLineControl().GetText().StartsWith("\\"))
                 {
-                    WriteLine("{0}.AppendLine(); {1}", output, context.ToComment());
+                    WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }
             }
             return null;
