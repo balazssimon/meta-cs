@@ -8,6 +8,9 @@ using MetaDslx.Compiler;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 
+// The variable '...' is assigned but its value is never used
+#pragma warning disable 0219
+
 namespace MetaDslx.Compiler
 {
     public class MetaModelLexerAnnotator

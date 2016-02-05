@@ -63,7 +63,7 @@
 	extern list<ModelObject> select_of_name(list<ModelObject> symbols, string name);
 		
 	/*
-	Represents an annotated element.
+	<summary>Represents an annotated element.</summary>
 	*/
 	abstract class MetaAnnotatedElement
 	{

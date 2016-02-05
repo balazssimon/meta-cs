@@ -37,9 +37,11 @@ template GenerateDocumentation(MetaDocumentedElement elem)
 [IList<string> lines = elem.GetDocumentationLines()]
 [if (lines.Count > 0)]
 /**
+ * <summary>
 	[loop(line:lines)]
  * [line]
 	[end loop]
+ * </summary>
  */
 [end if]
 end template
@@ -562,6 +564,7 @@ end template
 
 template GenerateMetaModelClass(MetaClass cls)
 ^
+[GenerateDocumentation(cls)]
 public static class [cls.CSharpName()]
 {
     internal static void StaticInit()
@@ -573,7 +576,6 @@ public static class [cls.CSharpName()]
         [cls.Model.CSharpFullDescriptorName()].StaticInit();
     }
 ^
-	[GenerateDocumentation(cls)]
 [if (cls.CSharpName() == "MetaClass")]
     public static global::MetaDslx.Core.MetaClass _MetaClass
 [else]
