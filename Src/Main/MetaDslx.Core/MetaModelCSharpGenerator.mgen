@@ -33,6 +33,17 @@ namespace [model.Namespace.CSharpName()]
 }
 end template
 
+template GenerateDocumentation(MetaDocumentedElement elem)
+[IList<string> lines = elem.GetDocumentationLines()]
+[if (lines.Count > 0)]
+/**
+	[loop(line:lines)]
+ * [line]
+	[end loop]
+ */
+[end if]
+end template
+
 template GenerateAnnotations(MetaAnnotatedElement elem)
 [loop(elem->annot:Annotations)]
 ["["][annot.Name]["]"]
@@ -40,6 +51,7 @@ template GenerateAnnotations(MetaAnnotatedElement elem)
 end template
 
 template GenerateEnum(MetaEnum enm)
+[GenerateDocumentation(enm)]
 [GenerateAnnotations(enm)]
 public enum [enm.CSharpName()]
 {
@@ -59,6 +71,7 @@ function string GetAncestors(MetaClass cls)
 end function
 
 template GenerateInterface(MetaClass cls)
+[GenerateDocumentation(cls)]
 [GenerateAnnotations(cls)]
 public interface [cls.CSharpName()][GetAncestors(cls)]
 {
@@ -74,6 +87,7 @@ public interface [cls.CSharpName()][GetAncestors(cls)]
 end template
 
 template GenerateProperty(MetaProperty prop)
+[GenerateDocumentation(prop)]
 [if (prop.Class.GetAllSuperPropertyNames().Contains(prop.Name))]
 new \
 [end if]
@@ -141,6 +155,7 @@ function string GetImplCallParameterNames(MetaOperation op)
 end function
 
 template GenerateOperation(MetaOperation op)
+[GenerateDocumentation(op)]
 [op.ReturnType.CSharpFullPublicName()] [op.Name]([GetParameters(op, true)]);
 end template
 
@@ -558,6 +573,7 @@ public static class [cls.CSharpName()]
         [cls.Model.CSharpFullDescriptorName()].StaticInit();
     }
 ^
+	[GenerateDocumentation(cls)]
 [if (cls.CSharpName() == "MetaClass")]
     public static global::MetaDslx.Core.MetaClass _MetaClass
 [else]
@@ -568,6 +584,7 @@ public static class [cls.CSharpName()]
     }
 ^
     [loop(cls->prop:Properties)]
+	[GenerateDocumentation(prop)]
     [GeneratePropertyDeclaration(cls.Model, cls, prop)]
     [end loop]
 }
@@ -575,6 +592,7 @@ end template
 
 
 template GenerateModelConstant(MetaModel model, MetaConstant mconst)
+[GenerateDocumentation(mconst)]
 public static readonly [mconst.Type.CSharpFullName()] [mconst.Name];
 end template
 
@@ -636,6 +654,9 @@ template GenerateModelObjectInstanceDeclaration(ModelObject mobj, Dictionary<Mod
 		[if (name.StartsWith("__"))]
 private static readonly global::MetaDslx.Core.[mobj.MMetaClass.CSharpName()] [name];
 		[else]
+			[if (mobj is MetaDocumentedElement)]
+[GenerateDocumentation(((MetaDocumentedElement)mobj))]
+			[end if]
 public static readonly global::MetaDslx.Core.[mobj.MMetaClass.CSharpName()] [name];
 		[end if]
 	[end if]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -222,6 +223,30 @@ namespace MetaDslx.Core
 
     internal class MetaImplementation : MetaImplementationBase
     {
+        public override IList<string> MetaDocumentedElement_GetDocumentationLines(MetaDocumentedElement @this)
+        {
+            List<string> result = new List<string>();
+            if (@this.Documentation == null) return result;
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(@this.Documentation);
+            writer.Flush();
+            stream.Position = 0;
+            StringBuilder sb = new StringBuilder();
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        result.Add(line);
+                    }
+                }
+            }
+            return result;
+        }
+
         public override void MetaFunction(MetaFunction @this)
         {
             base.MetaFunction(@this);

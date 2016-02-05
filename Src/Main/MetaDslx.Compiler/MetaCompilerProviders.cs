@@ -143,11 +143,14 @@ namespace MetaDslx.Compiler
                         }
                         if (this.ConcatTriviaLines)
                         {
-                            if (sb.Length != 0)
+                            if (!string.IsNullOrWhiteSpace(line))
                             {
-                                sb.Append(" ");
+                                if (sb.Length != 0)
+                                {
+                                    sb.Append(" ");
+                                }
+                                sb.Append(line);
                             }
-                            sb.Append(line);
                         }
                         else
                         {

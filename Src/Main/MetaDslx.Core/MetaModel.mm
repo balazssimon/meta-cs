@@ -73,6 +73,7 @@
 	abstract class MetaDocumentedElement
 	{
 		string Documentation;
+		list<string> GetDocumentationLines();
 	}
 
 	abstract class MetaNamedElement : MetaDocumentedElement

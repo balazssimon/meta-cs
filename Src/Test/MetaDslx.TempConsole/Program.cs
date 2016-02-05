@@ -308,6 +308,12 @@ namespace MetaDslx.TempConsole
                             writer.WriteLine("  Parent=" + mo.MParent);
                             Console.WriteLine("  Parent=" + mo.MParent);
                             ModelProperty mp;
+                            mp = mo.MFindProperty("Documentation");
+                            if (mp != null)
+                            {
+                                writer.WriteLine("  Documentation=" + mo.MGet(mp));
+                                Console.WriteLine("  Documentation=" + mo.MGet(mp));
+                            }
                             mp = mo.MFindProperty("Name");
                             if (mp != null)
                             {
