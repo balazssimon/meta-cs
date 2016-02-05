@@ -116,6 +116,11 @@ namespace MetaDslx.Core
     	public const string Uri = "http://metadslx.core/1.0";
     
         
+        /**
+         * <summary>
+         * Represents an annotated element.
+         * </summary>
+         */
         public static class MetaAnnotatedElement
         {
             internal static void StaticInit()
@@ -127,15 +132,16 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	/**
-        	 * <summary>Represents an annotated element.</summary>
-        	 */
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaAnnotatedElement; }
             }
         
-        	
+        	/**
+        	 * <summary>
+        	 * List of annotations
+        	 * </summary>
+        	 */
             [ContainmentAttribute]
             public static readonly ModelProperty AnnotationsProperty =
                 ModelProperty.Register("Annotations", typeof(global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation>), typeof(global::MetaDslx.Core.MetaAnnotatedElement), typeof(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaAnnotatedElement_AnnotationsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -153,7 +159,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaDocumentedElement; }
@@ -176,7 +181,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNamedElement; }
@@ -200,7 +204,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaTypedElement; }
@@ -224,7 +227,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaType; }
@@ -243,7 +245,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaAnnotation; }
@@ -267,7 +268,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaAnnotationProperty; }
@@ -291,7 +291,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNamespace; }
@@ -340,7 +339,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaDeclaration; }
@@ -369,7 +367,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaModel; }
@@ -397,7 +394,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaCollectionType; }
@@ -424,7 +420,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNullableType; }
@@ -447,7 +442,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaPrimitiveType; }
@@ -466,7 +460,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaEnum; }
@@ -499,7 +492,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaEnumLiteral; }
@@ -523,7 +515,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass _MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaClass; }
@@ -571,7 +562,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaFunctionType; }
@@ -598,7 +588,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaFunction; }
@@ -634,7 +623,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaGlobalFunction; }
@@ -653,7 +641,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaOperation; }
@@ -678,7 +665,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaConstant; }
@@ -702,7 +688,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaConstructor; }
@@ -732,7 +717,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaParameter; }
@@ -756,7 +740,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaProperty; }
@@ -809,7 +792,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaPropertyInitializer; }
@@ -850,7 +832,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaSynthetizedPropertyInitializer; }
@@ -869,7 +850,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaInheritedPropertyInitializer; }
@@ -896,7 +876,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaExpression; }
@@ -925,7 +904,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaBracketExpression; }
@@ -949,7 +927,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaBoundExpression; }
@@ -988,7 +965,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaThisExpression; }
@@ -1007,7 +983,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNullExpression; }
@@ -1026,7 +1001,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaTypeConversionExpression; }
@@ -1054,7 +1028,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaTypeAsExpression; }
@@ -1073,7 +1046,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaTypeCastExpression; }
@@ -1092,7 +1064,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaTypeCheckExpression; }
@@ -1120,7 +1091,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaTypeOfExpression; }
@@ -1143,7 +1113,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaConditionalExpression; }
@@ -1181,7 +1150,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaConstantExpression; }
@@ -1204,7 +1172,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaIdentifierExpression; }
@@ -1227,7 +1194,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaMemberAccessExpression; }
@@ -1255,7 +1221,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaFunctionCallExpression; }
@@ -1279,7 +1244,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaIndexerExpression; }
@@ -1303,7 +1267,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNewExpression; }
@@ -1332,7 +1295,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer; }
@@ -1368,7 +1330,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNewCollectionExpression; }
@@ -1396,7 +1357,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaOperatorExpression; }
@@ -1420,7 +1380,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaUnaryExpression; }
@@ -1444,7 +1403,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaUnaryPlusExpression; }
@@ -1463,7 +1421,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNegateExpression; }
@@ -1482,7 +1439,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaOnesComplementExpression; }
@@ -1501,7 +1457,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNotExpression; }
@@ -1520,7 +1475,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaUnaryAssignExpression; }
@@ -1539,7 +1493,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaPostIncrementAssignExpression; }
@@ -1558,7 +1511,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaPostDecrementAssignExpression; }
@@ -1577,7 +1529,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaPreIncrementAssignExpression; }
@@ -1596,7 +1547,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaPreDecrementAssignExpression; }
@@ -1615,7 +1565,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaBinaryExpression; }
@@ -1644,7 +1593,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaBinaryArithmeticExpression; }
@@ -1663,7 +1611,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaMultiplyExpression; }
@@ -1682,7 +1629,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaDivideExpression; }
@@ -1701,7 +1647,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaModuloExpression; }
@@ -1720,7 +1665,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaAddExpression; }
@@ -1739,7 +1683,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaSubtractExpression; }
@@ -1758,7 +1701,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaLeftShiftExpression; }
@@ -1777,7 +1719,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaRightShiftExpression; }
@@ -1796,7 +1737,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaBinaryComparisonExpression; }
@@ -1815,7 +1755,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaLessThanExpression; }
@@ -1834,7 +1773,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaLessThanOrEqualExpression; }
@@ -1853,7 +1791,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaGreaterThanExpression; }
@@ -1872,7 +1809,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaGreaterThanOrEqualExpression; }
@@ -1891,7 +1827,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaEqualExpression; }
@@ -1910,7 +1845,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNotEqualExpression; }
@@ -1929,7 +1863,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaBinaryLogicalExpression; }
@@ -1948,7 +1881,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaAndExpression; }
@@ -1967,7 +1899,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaOrExpression; }
@@ -1986,7 +1917,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaExclusiveOrExpression; }
@@ -2005,7 +1935,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaAndAlsoExpression; }
@@ -2024,7 +1953,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaOrElseExpression; }
@@ -2043,7 +1971,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaNullCoalescingExpression; }
@@ -2062,7 +1989,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaAssignmentExpression; }
@@ -2081,7 +2007,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaAssignExpression; }
@@ -2100,7 +2025,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaArithmeticAssignmentExpression; }
@@ -2119,7 +2043,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaMultiplyAssignExpression; }
@@ -2138,7 +2061,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaDivideAssignExpression; }
@@ -2157,7 +2079,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaModuloAssignExpression; }
@@ -2176,7 +2097,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaAddAssignExpression; }
@@ -2195,7 +2115,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaSubtractAssignExpression; }
@@ -2214,7 +2133,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaLeftShiftAssignExpression; }
@@ -2233,7 +2151,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaRightShiftAssignExpression; }
@@ -2252,7 +2169,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaLogicalAssignmentExpression; }
@@ -2271,7 +2187,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaAndAssignExpression; }
@@ -2290,7 +2205,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaExclusiveOrAssignExpression; }
@@ -2309,7 +2223,6 @@ namespace MetaDslx.Core
                 global::MetaDslx.Core.MetaDescriptor.StaticInit();
             }
         
-        	
             public static global::MetaDslx.Core.MetaClass MetaClass
             {
                 get { return global::MetaDslx.Core.MetaInstance.MetaOrAssignExpression; }
@@ -2548,10 +2461,17 @@ namespace MetaDslx.Core
 		private static readonly global::MetaDslx.Core.MetaParameter __tmp182;
 		private static readonly global::MetaDslx.Core.MetaParameter __tmp183;
 		/**
-		 * <summary>Represents an annotated element.</summary>
+		 * <summary>
+		 * Represents an annotated element.
+		 * </summary>
 		 */
 		public static readonly global::MetaDslx.Core.MetaClass MetaAnnotatedElement;
 		private static readonly global::MetaDslx.Core.MetaCollectionType __tmp184;
+		/**
+		 * <summary>
+		 * List of annotations
+		 * </summary>
+		 */
 		public static readonly global::MetaDslx.Core.MetaProperty MetaAnnotatedElement_AnnotationsProperty;
 		public static readonly global::MetaDslx.Core.MetaClass MetaDocumentedElement;
 		public static readonly global::MetaDslx.Core.MetaProperty MetaDocumentedElement_DocumentationProperty;
@@ -5602,7 +5522,7 @@ namespace MetaDslx.Core
 				((ModelObject)MetaAnnotatedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)MetaAnnotatedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "MetaAnnotatedElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)MetaAnnotatedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
-				((ModelObject)MetaAnnotatedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, new Lazy<object>(() => "<summary>Represents an annotated element.</summary>", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)MetaAnnotatedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, new Lazy<object>(() => "Represents an annotated element.", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp184).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)__tmp184).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)__tmp184).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
@@ -5614,7 +5534,7 @@ namespace MetaDslx.Core
 				((ModelObject)MetaAnnotatedElement_AnnotationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)MetaAnnotatedElement_AnnotationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Annotations", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)MetaAnnotatedElement_AnnotationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
-				((ModelObject)MetaAnnotatedElement_AnnotationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)MetaAnnotatedElement_AnnotationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, new Lazy<object>(() => "List of annotations", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)MetaAnnotatedElement_AnnotationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)MetaAnnotatedElement_AnnotationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => __tmp184, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)MetaDocumentedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
@@ -11338,10 +11258,17 @@ namespace MetaDslx.Core
     }
     
     /**
-     * <summary>Represents an annotated element.</summary>
+     * <summary>
+     * Represents an annotated element.
+     * </summary>
      */
     public interface MetaAnnotatedElement
     {
+        /**
+         * <summary>
+         * List of annotations
+         * </summary>
+         */
         global::System.Collections.Generic.IList<global::MetaDslx.Core.MetaAnnotation> Annotations { get; }
     
     }

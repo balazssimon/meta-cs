@@ -63,11 +63,12 @@
 	extern list<ModelObject> select_of_name(list<ModelObject> symbols, string name);
 		
 	/*
-	<summary>Represents an annotated element.</summary>
+	Represents an annotated element.
 	*/
 	abstract class MetaAnnotatedElement
 	{
-		containment list<MetaAnnotation> Annotations;
+		// List of annotations
+		containment list<MetaAnnotation> Annotations; 
 	}
 
 	abstract class MetaDocumentedElement
