@@ -355,14 +355,12 @@ namespace MetaDslx.Compiler
             WriteLine("{");
             IncIndent();
             WriteLine("private bool newLine;");
-            WriteLine("private bool whitespaceLine;");
             WriteLine("private System.Text.StringBuilder builder = new System.Text.StringBuilder();");
             WriteLine("");
             WriteLine("public StringBuilder()");
             WriteLine("{");
             IncIndent();
             WriteLine("this.newLine = true;");
-            WriteLine("this.whitespaceLine = true;");
             DecIndent();
             WriteLine("}");
             WriteLine("");
@@ -376,12 +374,6 @@ namespace MetaDslx.Compiler
             WriteLine("this.newLine = false;");
             DecIndent();
             WriteLine("}");
-            WriteLine("if (!string.IsNullOrWhiteSpace(str))");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("this.whitespaceLine = false;");
-            DecIndent();
-            WriteLine("}");
             WriteLine("builder.Append(str);");
             DecIndent();
             WriteLine("}");
@@ -389,6 +381,7 @@ namespace MetaDslx.Compiler
             WriteLine("public void Append(object obj)");
             WriteLine("{");
             IncIndent();
+            WriteLine("if (obj == null) return;");
             WriteLine("string text = obj.ToString();");
             WriteLine("this.Append(text);");
             DecIndent();
@@ -401,6 +394,7 @@ namespace MetaDslx.Compiler
             WriteLine("{");
             IncIndent();
             WriteLine("builder.AppendLine();");
+            WriteLine("this.newLine = true;");
             DecIndent();
             WriteLine("}");
             DecIndent();
@@ -1271,98 +1265,6 @@ namespace MetaDslx.Compiler
                     }
                 }
             }
-            else if (statementCount == 0 && outputExpressionCount > 0)
-            {
-                int startIndex = 0;
-                int endIndex = lastIndex;
-                string prefix = NewTmp() + "Prefix";
-                string suffix = NewTmp() + "Suffix";
-                if (lastIndex >= 1)
-                {
-                    MetaGeneratorParser.TemplateOutputContext output;
-                    output = context.children[0] as MetaGeneratorParser.TemplateOutputContext;
-                    if (output != null)
-                    {
-                        WriteLine("string {0} = \"{1}\"; {2}", prefix, EscapeText(output.GetText()), output.ToComment());
-                        startIndex = 1;
-                    }
-                    else
-                    {
-                        WriteLine("string {0} = string.Empty; {1}", prefix, output.ToComment());
-                    }
-                    output = context.children[lastIndex] as MetaGeneratorParser.TemplateOutputContext;
-                    if (output != null)
-                    {
-                        WriteLine("string {0} = \"{1}\"; {2}", suffix, EscapeText(output.GetText()), output.ToComment());
-                        endIndex = lastIndex - 1;
-                    }
-                    else
-                    {
-                        WriteLine("string {0} = string.Empty; {1}", suffix, output.ToComment());
-                    }
-                }
-                else
-                {
-                    WriteLine("string {0} = string.Empty;", prefix);
-                    WriteLine("string {0} = string.Empty;", suffix);
-                }
-                for (int i = startIndex; i <= endIndex; ++i)
-                {
-                    var child = context.children[i];
-                    string tmp = NewTmp();
-                    bool closeBraces = false;
-                    if (child is MetaGeneratorParser.TemplateOutputContext)
-                    {
-                        MetaGeneratorParser.TemplateOutputContext output = child as MetaGeneratorParser.TemplateOutputContext;
-                        WriteLine("string {0}Line = \"{1}\"; {2}", tmp, EscapeText(output.GetText()), output.ToComment());
-                    }
-                    else if (child is MetaGeneratorParser.TemplateStatementStartEndContext)
-                    {
-                        MetaGeneratorParser.TemplateStatementStartEndContext statement = child as MetaGeneratorParser.TemplateStatementStartEndContext;
-                        if (statement.templateStatement() != null)
-                        {
-                            closeBraces = true;
-                            WriteLine("StringBuilder {0} = new StringBuilder();", tmp);
-                            VisitTemplateStatement(statement.templateStatement(), tmp);
-                            WriteLine("using(StreamReader {0}Reader = new StreamReader(this.__ToStream({0}.ToString())))", tmp);
-                            WriteLine("{");
-                            IncIndent();
-                            WriteLine("bool {0}_first = true;", tmp);
-                            WriteLine("while({0}_first || !{0}Reader.EndOfStream)", tmp);
-                            WriteLine("{");
-                            IncIndent();
-                            WriteLine("{0}_first = false;", tmp);
-                            WriteLine("string {0}Line = {0}Reader.ReadLine();", tmp);
-                            WriteLine("if ({0}Line == null)", tmp);
-                            WriteLine("{");
-                            IncIndent();
-                            WriteLine("{0}Line = {1};", tmp, "\"\"");
-                            DecIndent();
-                            WriteLine("}");
-                        }
-                    }
-                    if (i == startIndex)
-                    {
-                        WriteLine("__out.Append({0});", prefix);
-                    }
-                    WriteLine("__out.Append({0}Line);", tmp);
-                    if (i == endIndex)
-                    {
-                        WriteLine("__out.Append({0});", suffix);
-                        if (forceNewLine || !noNewLine)
-                        {
-                            VisitTemplateLineEnd(context.templateLineEnd());
-                        }
-                    }
-                    if (closeBraces)
-                    {
-                        DecIndent();
-                        WriteLine("}");
-                        DecIndent();
-                        WriteLine("}");
-                    }
-                }
-            }
             else if (statementCount > 0 && (outputExpressionCount == 0 && nonWhitespaceOutputCount == 0))
             {
                 for (int i = 0; i <= lastIndex; ++i)
@@ -1376,6 +1278,102 @@ namespace MetaDslx.Compiler
                 if (forceNewLine)
                 {
                     VisitTemplateLineEnd(context.templateLineEnd());
+                }
+            }
+            else if (outputExpressionCount > 0)
+            {
+                int startIndex = 0;
+                int endIndex = lastIndex;
+                string prefix = NewTmp() + "Prefix";
+                string prefixText = null;
+                if (lastIndex >= 1)
+                {
+                    MetaGeneratorParser.TemplateOutputContext output;
+                    output = context.children[0] as MetaGeneratorParser.TemplateOutputContext;
+                    if (output != null)
+                    {
+                        prefixText = output.GetText();
+                    }
+                    if (prefixText != null && string.IsNullOrWhiteSpace(prefixText))
+                    {
+                        WriteLine("string {0} = \"{1}\"; {2}", prefix, EscapeText(prefixText), output.ToComment());
+                        startIndex = 1;
+                    }
+                }
+                if (startIndex == 0)
+                {
+                    WriteLine("string {0} = string.Empty;", prefix);
+                }
+                for (int i = startIndex; i <= endIndex; ++i)
+                {
+                    var child = context.children[i];
+                    string tmp = NewTmp();
+                    bool hasOutput = false;
+                    bool closeBraces = false;
+                    if (child is MetaGeneratorParser.TemplateOutputContext)
+                    {
+                        MetaGeneratorParser.TemplateOutputContext output = child as MetaGeneratorParser.TemplateOutputContext;
+                        WriteLine("string {0}Line = \"{1}\"; {2}", tmp, EscapeText(output.GetText()), output.ToComment());
+                        hasOutput = true;
+                    }
+                    else if (child is MetaGeneratorParser.TemplateStatementStartEndContext)
+                    {
+                        MetaGeneratorParser.TemplateStatementStartEndContext statement = child as MetaGeneratorParser.TemplateStatementStartEndContext;
+                        if (statement.templateStatement() != null)
+                        {
+                            if (IsTemplateOutputExpression(statement))
+                            {
+                                closeBraces = true;
+                                WriteLine("StringBuilder {0} = new StringBuilder();", tmp);
+                                VisitTemplateStatement(statement.templateStatement(), tmp);
+                                WriteLine("using(StreamReader {0}Reader = new StreamReader(this.__ToStream({0}.ToString())))", tmp);
+                                WriteLine("{");
+                                IncIndent();
+                                WriteLine("bool {0}_first = true;", tmp);
+                                WriteLine("bool {0}_last = {0}Reader.EndOfStream;", tmp);
+                                WriteLine("while({0}_first || !{0}_last)", tmp);
+                                WriteLine("{");
+                                IncIndent();
+                                WriteLine("{0}_first = false;", tmp);
+                                WriteLine("string {0}Line = {0}Reader.ReadLine();", tmp);
+                                WriteLine("{0}_last = {0}Reader.EndOfStream;", tmp);
+                                hasOutput = true;
+                            }
+                            else
+                            {
+                                Visit(statement);
+                            }
+                        }
+                    }
+                    if (i == startIndex)
+                    {
+                        WriteLine("__out.Append({0});", prefix);
+                    }
+                    if (hasOutput)
+                    {
+                        WriteLine("if ({0}Line != null) __out.Append({0}Line);", tmp);
+                        if (closeBraces)
+                        {
+                            WriteLine("if (!{0}_last) __out.AppendLine(true);", tmp);
+                        }
+                    }
+                    if (i == endIndex)
+                    {
+                        if (forceNewLine || !noNewLine)
+                        {
+                            VisitTemplateLineEnd(context.templateLineEnd());
+                        }
+                    }
+                    if (hasOutput)
+                    {
+                        if (closeBraces)
+                        {
+                            DecIndent();
+                            WriteLine("}");
+                            DecIndent();
+                            WriteLine("}");
+                        }
+                    }
                 }
             }
             else
