@@ -36,4 +36,4 @@ Installation steps:
 6. Right click the **MetaDslx.VisualStudio** project, and under the **Debug** tab set the following:
  * Start Action / Start external program: **C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe**
  * Start Options / Command line arguments: **/rootsuffix Exp**
-7. Right click on the MetaDslx solution and choose Build Solution.
+7. Right click on the **MetaDslx** solution and choose **Build Solution**.
