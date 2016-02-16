@@ -8,7 +8,7 @@ MetaDslx supports the following features:
 * creating user friendly template-based code generators
 * generating syntax highlighters for Visual Studio
 
-# Installation instructions for users of the v0.4-alpha release
+# Installation instructions for users
 
 These are the installation instructions if you would like to use the MetaDslx framework for creating your own DSLs. For an example DSL see the [SOAL language](https://github.com/balazssimon/soal-cs).
 
