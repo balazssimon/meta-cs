@@ -313,11 +313,7 @@ namespace MetaDslx.Core
 
         public ModelProperty MFindProperty(string name)
         {
-            var results =
-                from p in this.MGetProperties()
-                where p.Name == name
-                select p;
-            return this.SelectSingleProperty(results);
+            return this.MGetProperties().FirstOrDefault(p => p.Name == name);
         }
 
         public IEnumerable<ModelProperty> MFindProperties(string name)
@@ -327,14 +323,6 @@ namespace MetaDslx.Core
                 where p.Name == name
                 select p;
             return results.ToList();
-        }
-
-        private ModelProperty SelectSingleProperty(IEnumerable<ModelProperty> properties)
-        {
-            List<ModelProperty> results = properties.ToList();
-            if (results.Count == 0) return null;
-            if (results.Count == 1) return results[0];
-            throw new ModelException("More than one property named '"+results[0].Name+"' found in "+this.ToString());
         }
 
         public string MetaID

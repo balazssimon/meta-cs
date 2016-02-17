@@ -377,6 +377,22 @@ namespace MetaDslx.Core
             return node.ToString();
         }
 
+        public string GetNameOf(ModelObject symbol)
+        {
+            if (symbol == null) return null;
+            foreach (var prop in symbol.MGetProperties())
+            {
+                if (prop.IsMetaName())
+                {
+                    object value = symbol.MGet(prop);
+                    if (value == null) return null;
+                    else if (value is string) return (string)value;
+                    else return value.ToString();
+                }
+            }
+            return null;
+        }
+
         public virtual object GetValue(object node, Type type)
         {
             if (node == null) return null;
@@ -428,22 +444,6 @@ namespace MetaDslx.Core
                 }
             }
             return value;
-        }
-
-        public string GetNameOf(ModelObject symbol)
-        {
-            if (symbol == null) return null;
-            foreach (var prop in symbol.MGetProperties())
-            {
-                if (prop.IsMetaName())
-                {
-                    object value = symbol.MGet(prop);
-                    if (value == null) return null;
-                    else if (value is string) return (string)value;
-                    else return value.ToString();
-                }
-            }
-            return null;
         }
 
         public virtual IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject symbol)

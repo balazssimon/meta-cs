@@ -220,6 +220,20 @@ namespace MetaDslx.Core
 
     public class ModelCompilerContextScope : IDisposable
     {
+        public ModelCompilerContextScope()
+        {
+            lock (ModelCompilerContext.contextStacks)
+            {
+                List<ModelCompilerContext> contextStack = null;
+                if (!ModelCompilerContext.contextStacks.TryGetValue(Thread.CurrentThread, out contextStack))
+                {
+                    contextStack = new List<ModelCompilerContext>();
+                    ModelCompilerContext.contextStacks.Add(Thread.CurrentThread, contextStack);
+                }
+                contextStack.Add(new ModelCompilerContext(new DefaultModelCompiler()));
+            }
+        }
+
         public ModelCompilerContextScope(IModelCompiler compiler)
         {
             if (compiler == null) throw new ArgumentNullException(nameof(compiler));
