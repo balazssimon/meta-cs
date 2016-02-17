@@ -40,14 +40,6 @@ namespace MetaDslx.Compiler
         public bool HasAnnotatedAntlr4Errors { get; private set; }
         public bool HasAntlr4Errors { get; private set; }
 
-
-        public override List<object> LexerAnnotations { get; protected set; }
-        public override List<object> ParserAnnotations { get; protected set; }
-        public override Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
-        public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
-        public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
-        public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
-
         public AnnotatedAntlr4Compiler(string source, string outputDirectory, string fileName)
             : base(source, fileName)
         {
@@ -1952,13 +1944,6 @@ namespace MetaDslx.Compiler
             WriteLine("public "+ rootType + " ParseTree { get; private set; }");
             WriteLine("public "+ this.lexerName + " Lexer { get; private set; }");
             WriteLine("public "+ this.parserName + " Parser { get; private set; }");
-            WriteLine();
-            WriteLine("public override List<object> LexerAnnotations { get; protected set; }");
-            WriteLine("public override List<object> ParserAnnotations { get; protected set; }");
-            WriteLine("public override Dictionary<int, List<object>> ModeAnnotations { get; protected set; }");
-            WriteLine("public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }");
-            WriteLine("public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }");
-            WriteLine("public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }");
             DecIndent();
             WriteLine("}");
         }

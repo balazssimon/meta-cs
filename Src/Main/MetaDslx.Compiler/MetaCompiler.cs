@@ -335,12 +335,12 @@ namespace MetaDslx.Compiler
 
         public MetaCompilerData Data { get; protected set; }
         public CommonTokenStream CommonTokenStream { get; protected set; }
-        public abstract List<object> LexerAnnotations { get; protected set; }
-        public abstract List<object> ParserAnnotations { get; protected set; }
-        public abstract Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
-        public abstract Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
-        public abstract Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
-        public abstract Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
+        public List<object> LexerAnnotations { get; protected set; }
+        public List<object> ParserAnnotations { get; protected set; }
+        public Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
+        public Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
+        public Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
+        public Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
 
     }
 
