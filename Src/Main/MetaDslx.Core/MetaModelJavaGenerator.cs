@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelJavaGenerator_1889302984;
-    namespace __Hidden_MetaModelJavaGenerator_1889302984
+    using __Hidden_MetaModelJavaGenerator_1090538334;
+    namespace __Hidden_MetaModelJavaGenerator_1090538334
     {
         internal static class __Extensions
         {
@@ -85,25 +85,20 @@ namespace MetaDslx.Core //1:1
                 ++__loop1_iteration;
                 var __loop1_var1 = __tmp1.__loop1_var1;
                 var mm = __tmp1.mm;
-                string __tmp2Prefix = string.Empty;
-                string __tmp3Suffix = string.Empty;
-                StringBuilder __tmp4 = new StringBuilder();
-                __tmp4.Append(GenerateMetamodel(mm));
-                using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
+                StringBuilder __tmp3 = new StringBuilder();
+                __tmp3.Append(GenerateMetamodel(mm));
+                using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
                 {
-                    bool __tmp4_first = true;
-                    while(__tmp4_first || !__tmp4Reader.EndOfStream)
+                    bool __tmp3_first = true;
+                    bool __tmp3_last = __tmp3Reader.EndOfStream;
+                    while(__tmp3_first || !__tmp3_last)
                     {
-                        __tmp4_first = false;
-                        string __tmp4Line = __tmp4Reader.ReadLine();
-                        if (__tmp4Line == null)
-                        {
-                            __tmp4Line = "";
-                        }
-                        __out.Append(__tmp2Prefix);
-                        __out.Append(__tmp4Line);
-                        __out.Append(__tmp3Suffix);
-                        __out.AppendLine(); //11:24
+                        __tmp3_first = false;
+                        string __tmp3Line = __tmp3Reader.ReadLine();
+                        __tmp3_last = __tmp3Reader.EndOfStream;
+                        if (__tmp3Line != null) __out.Append(__tmp3Line);
+                        if (!__tmp3_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //11:24
                     }
                 }
             }
@@ -120,46 +115,36 @@ namespace MetaDslx.Core //1:1
         public string GenerateMetamodel(MetaModel model) //21:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty;
-            string __tmp2Suffix = string.Empty;
-            StringBuilder __tmp3 = new StringBuilder();
-            __tmp3.Append(GenerateMetaModelDescriptor(model));
-            using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+            StringBuilder __tmp2 = new StringBuilder();
+            __tmp2.Append(GenerateMetaModelDescriptor(model));
+            using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
             {
-                bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp2_first = true;
+                bool __tmp2_last = __tmp2Reader.EndOfStream;
+                while(__tmp2_first || !__tmp2_last)
                 {
-                    __tmp3_first = false;
-                    string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //22:37
+                    __tmp2_first = false;
+                    string __tmp2Line = __tmp2Reader.ReadLine();
+                    __tmp2_last = __tmp2Reader.EndOfStream;
+                    if (__tmp2Line != null) __out.Append(__tmp2Line);
+                    if (!__tmp2_last) __out.AppendLine(true);
+                    __out.AppendLine(false); //22:37
                 }
             }
-            string __tmp4Prefix = string.Empty;
-            string __tmp5Suffix = string.Empty;
-            StringBuilder __tmp6 = new StringBuilder();
-            __tmp6.Append(GenerateMetaModelInstance(model));
-            using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
+            StringBuilder __tmp4 = new StringBuilder();
+            __tmp4.Append(GenerateMetaModelInstance(model));
+            using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
             {
-                bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                bool __tmp4_first = true;
+                bool __tmp4_last = __tmp4Reader.EndOfStream;
+                while(__tmp4_first || !__tmp4_last)
                 {
-                    __tmp6_first = false;
-                    string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp4Prefix);
-                    __out.Append(__tmp6Line);
-                    __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //23:35
+                    __tmp4_first = false;
+                    string __tmp4Line = __tmp4Reader.ReadLine();
+                    __tmp4_last = __tmp4Reader.EndOfStream;
+                    if (__tmp4Line != null) __out.Append(__tmp4Line);
+                    if (!__tmp4_last) __out.AppendLine(true);
+                    __out.AppendLine(false); //23:35
                 }
             }
             var __loop2_results = 
@@ -170,32 +155,27 @@ namespace MetaDslx.Core //1:1
                 select new { __loop2_var1 = __loop2_var1, Namespace = Namespace, Declarations = Declarations, enm = enm}
                 ).ToList(); //24:2
             int __loop2_iteration = 0;
-            foreach (var __tmp7 in __loop2_results)
+            foreach (var __tmp5 in __loop2_results)
             {
                 ++__loop2_iteration;
-                var __loop2_var1 = __tmp7.__loop2_var1;
-                var Namespace = __tmp7.Namespace;
-                var Declarations = __tmp7.Declarations;
-                var enm = __tmp7.enm;
-                string __tmp8Prefix = string.Empty;
-                string __tmp9Suffix = string.Empty;
-                StringBuilder __tmp10 = new StringBuilder();
-                __tmp10.Append(GenerateEnum(enm));
-                using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
+                var __loop2_var1 = __tmp5.__loop2_var1;
+                var Namespace = __tmp5.Namespace;
+                var Declarations = __tmp5.Declarations;
+                var enm = __tmp5.enm;
+                StringBuilder __tmp7 = new StringBuilder();
+                __tmp7.Append(GenerateEnum(enm));
+                using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
                 {
-                    bool __tmp10_first = true;
-                    while(__tmp10_first || !__tmp10Reader.EndOfStream)
+                    bool __tmp7_first = true;
+                    bool __tmp7_last = __tmp7Reader.EndOfStream;
+                    while(__tmp7_first || !__tmp7_last)
                     {
-                        __tmp10_first = false;
-                        string __tmp10Line = __tmp10Reader.ReadLine();
-                        if (__tmp10Line == null)
-                        {
-                            __tmp10Line = "";
-                        }
-                        __out.Append(__tmp8Prefix);
-                        __out.Append(__tmp10Line);
-                        __out.Append(__tmp9Suffix);
-                        __out.AppendLine(); //25:20
+                        __tmp7_first = false;
+                        string __tmp7Line = __tmp7Reader.ReadLine();
+                        __tmp7_last = __tmp7Reader.EndOfStream;
+                        if (__tmp7Line != null) __out.Append(__tmp7Line);
+                        if (!__tmp7_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //25:20
                     }
                 }
             }
@@ -207,117 +187,92 @@ namespace MetaDslx.Core //1:1
                 select new { __loop3_var1 = __loop3_var1, Namespace = Namespace, Declarations = Declarations, cls = cls}
                 ).ToList(); //27:2
             int __loop3_iteration = 0;
-            foreach (var __tmp11 in __loop3_results)
+            foreach (var __tmp8 in __loop3_results)
             {
                 ++__loop3_iteration;
-                var __loop3_var1 = __tmp11.__loop3_var1;
-                var Namespace = __tmp11.Namespace;
-                var Declarations = __tmp11.Declarations;
-                var cls = __tmp11.cls;
-                string __tmp12Prefix = string.Empty;
-                string __tmp13Suffix = string.Empty;
-                StringBuilder __tmp14 = new StringBuilder();
-                __tmp14.Append(GenerateInterface(cls));
-                using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
+                var __loop3_var1 = __tmp8.__loop3_var1;
+                var Namespace = __tmp8.Namespace;
+                var Declarations = __tmp8.Declarations;
+                var cls = __tmp8.cls;
+                StringBuilder __tmp10 = new StringBuilder();
+                __tmp10.Append(GenerateInterface(cls));
+                using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
                 {
-                    bool __tmp14_first = true;
-                    while(__tmp14_first || !__tmp14Reader.EndOfStream)
+                    bool __tmp10_first = true;
+                    bool __tmp10_last = __tmp10Reader.EndOfStream;
+                    while(__tmp10_first || !__tmp10_last)
                     {
-                        __tmp14_first = false;
-                        string __tmp14Line = __tmp14Reader.ReadLine();
-                        if (__tmp14Line == null)
-                        {
-                            __tmp14Line = "";
-                        }
-                        __out.Append(__tmp12Prefix);
-                        __out.Append(__tmp14Line);
-                        __out.Append(__tmp13Suffix);
-                        __out.AppendLine(); //28:25
+                        __tmp10_first = false;
+                        string __tmp10Line = __tmp10Reader.ReadLine();
+                        __tmp10_last = __tmp10Reader.EndOfStream;
+                        if (__tmp10Line != null) __out.Append(__tmp10Line);
+                        if (!__tmp10_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //28:25
                     }
                 }
-                string __tmp15Prefix = string.Empty;
-                string __tmp16Suffix = string.Empty;
-                StringBuilder __tmp17 = new StringBuilder();
-                __tmp17.Append(GenerateInterfaceImpl(model, cls));
-                using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
+                StringBuilder __tmp12 = new StringBuilder();
+                __tmp12.Append(GenerateInterfaceImpl(model, cls));
+                using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
                 {
-                    bool __tmp17_first = true;
-                    while(__tmp17_first || !__tmp17Reader.EndOfStream)
+                    bool __tmp12_first = true;
+                    bool __tmp12_last = __tmp12Reader.EndOfStream;
+                    while(__tmp12_first || !__tmp12_last)
                     {
-                        __tmp17_first = false;
-                        string __tmp17Line = __tmp17Reader.ReadLine();
-                        if (__tmp17Line == null)
-                        {
-                            __tmp17Line = "";
-                        }
-                        __out.Append(__tmp15Prefix);
-                        __out.Append(__tmp17Line);
-                        __out.Append(__tmp16Suffix);
-                        __out.AppendLine(); //29:36
+                        __tmp12_first = false;
+                        string __tmp12Line = __tmp12Reader.ReadLine();
+                        __tmp12_last = __tmp12Reader.EndOfStream;
+                        if (__tmp12Line != null) __out.Append(__tmp12Line);
+                        if (!__tmp12_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //29:36
                     }
                 }
             }
-            string __tmp18Prefix = string.Empty;
-            string __tmp19Suffix = string.Empty;
-            StringBuilder __tmp20 = new StringBuilder();
-            __tmp20.Append(GenerateFactory(model));
-            using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
+            StringBuilder __tmp14 = new StringBuilder();
+            __tmp14.Append(GenerateFactory(model));
+            using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
             {
-                bool __tmp20_first = true;
-                while(__tmp20_first || !__tmp20Reader.EndOfStream)
+                bool __tmp14_first = true;
+                bool __tmp14_last = __tmp14Reader.EndOfStream;
+                while(__tmp14_first || !__tmp14_last)
                 {
-                    __tmp20_first = false;
-                    string __tmp20Line = __tmp20Reader.ReadLine();
-                    if (__tmp20Line == null)
-                    {
-                        __tmp20Line = "";
-                    }
-                    __out.Append(__tmp18Prefix);
-                    __out.Append(__tmp20Line);
-                    __out.Append(__tmp19Suffix);
-                    __out.AppendLine(); //31:25
+                    __tmp14_first = false;
+                    string __tmp14Line = __tmp14Reader.ReadLine();
+                    __tmp14_last = __tmp14Reader.EndOfStream;
+                    if (__tmp14Line != null) __out.Append(__tmp14Line);
+                    if (!__tmp14_last) __out.AppendLine(true);
+                    __out.AppendLine(false); //31:25
                 }
             }
-            string __tmp21Prefix = string.Empty;
-            string __tmp22Suffix = string.Empty;
-            StringBuilder __tmp23 = new StringBuilder();
-            __tmp23.Append(GenerateImplementationProvider(model));
-            using(StreamReader __tmp23Reader = new StreamReader(this.__ToStream(__tmp23.ToString())))
+            StringBuilder __tmp16 = new StringBuilder();
+            __tmp16.Append(GenerateImplementationProvider(model));
+            using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
             {
-                bool __tmp23_first = true;
-                while(__tmp23_first || !__tmp23Reader.EndOfStream)
+                bool __tmp16_first = true;
+                bool __tmp16_last = __tmp16Reader.EndOfStream;
+                while(__tmp16_first || !__tmp16_last)
                 {
-                    __tmp23_first = false;
-                    string __tmp23Line = __tmp23Reader.ReadLine();
-                    if (__tmp23Line == null)
-                    {
-                        __tmp23Line = "";
-                    }
-                    __out.Append(__tmp21Prefix);
-                    __out.Append(__tmp23Line);
-                    __out.Append(__tmp22Suffix);
-                    __out.AppendLine(); //32:40
+                    __tmp16_first = false;
+                    string __tmp16Line = __tmp16Reader.ReadLine();
+                    __tmp16_last = __tmp16Reader.EndOfStream;
+                    if (__tmp16Line != null) __out.Append(__tmp16Line);
+                    if (!__tmp16_last) __out.AppendLine(true);
+                    __out.AppendLine(false); //32:40
                 }
             }
-            string __tmp24Prefix = string.Empty;
-            string __tmp25Suffix = string.Empty;
-            StringBuilder __tmp26 = new StringBuilder();
-            __tmp26.Append(GenerateImplementationBase(model));
-            using(StreamReader __tmp26Reader = new StreamReader(this.__ToStream(__tmp26.ToString())))
+            StringBuilder __tmp18 = new StringBuilder();
+            __tmp18.Append(GenerateImplementationBase(model));
+            using(StreamReader __tmp18Reader = new StreamReader(this.__ToStream(__tmp18.ToString())))
             {
-                bool __tmp26_first = true;
-                while(__tmp26_first || !__tmp26Reader.EndOfStream)
+                bool __tmp18_first = true;
+                bool __tmp18_last = __tmp18Reader.EndOfStream;
+                while(__tmp18_first || !__tmp18_last)
                 {
-                    __tmp26_first = false;
-                    string __tmp26Line = __tmp26Reader.ReadLine();
-                    if (__tmp26Line == null)
-                    {
-                        __tmp26Line = "";
-                    }
-                    __out.Append(__tmp24Prefix);
-                    __out.Append(__tmp26Line);
-                    __out.Append(__tmp25Suffix);
-                    __out.AppendLine(); //33:36
+                    __tmp18_first = false;
+                    string __tmp18Line = __tmp18Reader.ReadLine();
+                    __tmp18_last = __tmp18Reader.EndOfStream;
+                    if (__tmp18Line != null) __out.Append(__tmp18Line);
+                    if (!__tmp18_last) __out.AppendLine(true);
+                    __out.AppendLine(false); //33:36
                 }
             }
             return __out.ToString();
@@ -337,25 +292,22 @@ namespace MetaDslx.Core //1:1
                 ++__loop4_iteration;
                 var __loop4_var1 = __tmp1.__loop4_var1;
                 var annot = __tmp1.annot;
-                string __tmp2Prefix = "@"; //38:1
-                string __tmp3Suffix = string.Empty; 
+                string __tmp3Line = "@metadslx.core."; //38:1
+                if (__tmp3Line != null) __out.Append(__tmp3Line);
                 StringBuilder __tmp4 = new StringBuilder();
                 __tmp4.Append(annot.Name);
                 using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
                 {
                     bool __tmp4_first = true;
-                    while(__tmp4_first || !__tmp4Reader.EndOfStream)
+                    bool __tmp4_last = __tmp4Reader.EndOfStream;
+                    while(__tmp4_first || !__tmp4_last)
                     {
                         __tmp4_first = false;
                         string __tmp4Line = __tmp4Reader.ReadLine();
-                        if (__tmp4Line == null)
-                        {
-                            __tmp4Line = "";
-                        }
-                        __out.Append(__tmp2Prefix);
-                        __out.Append(__tmp4Line);
-                        __out.Append(__tmp3Suffix);
-                        __out.AppendLine(); //38:14
+                        __tmp4_last = __tmp4Reader.EndOfStream;
+                        if (__tmp4Line != null) __out.Append(__tmp4Line);
+                        if (!__tmp4_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //38:28
                     }
                 }
             }
@@ -365,70 +317,63 @@ namespace MetaDslx.Core //1:1
         public string GenerateEnum(MetaEnum enm) //42:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "package "; //43:1
-            string __tmp2Suffix = ";"; //43:35
+            string __tmp2Line = "package "; //43:1
+            if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(enm.Namespace.JavaName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //43:36
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //44:1
-            string __tmp4Prefix = string.Empty;
-            string __tmp5Suffix = string.Empty;
+            string __tmp4Line = ";"; //43:35
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
+            __out.AppendLine(false); //43:36
+            __out.AppendLine(true); //44:1
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(GenerateAnnotations(enm));
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
             {
                 bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                bool __tmp6_last = __tmp6Reader.EndOfStream;
+                while(__tmp6_first || !__tmp6_last)
                 {
                     __tmp6_first = false;
                     string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp4Prefix);
-                    __out.Append(__tmp6Line);
-                    __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //45:27
+                    __tmp6_last = __tmp6Reader.EndOfStream;
+                    if (__tmp6Line != null) __out.Append(__tmp6Line);
+                    if (!__tmp6_last) __out.AppendLine(true);
+                    __out.AppendLine(false); //45:27
                 }
             }
-            string __tmp7Prefix = "public enum "; //46:1
-            string __tmp8Suffix = " {"; //46:29
+            string __tmp8Line = "public enum "; //46:1
+            if (__tmp8Line != null) __out.Append(__tmp8Line);
             StringBuilder __tmp9 = new StringBuilder();
             __tmp9.Append(enm.JavaName());
             using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
             {
                 bool __tmp9_first = true;
-                while(__tmp9_first || !__tmp9Reader.EndOfStream)
+                bool __tmp9_last = __tmp9Reader.EndOfStream;
+                while(__tmp9_first || !__tmp9_last)
                 {
                     __tmp9_first = false;
                     string __tmp9Line = __tmp9Reader.ReadLine();
-                    if (__tmp9Line == null)
-                    {
-                        __tmp9Line = "";
-                    }
-                    __out.Append(__tmp7Prefix);
-                    __out.Append(__tmp9Line);
-                    __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //46:31
+                    __tmp9_last = __tmp9Reader.EndOfStream;
+                    if (__tmp9Line != null) __out.Append(__tmp9Line);
+                    if (!__tmp9_last) __out.AppendLine(true);
                 }
             }
+            string __tmp10Line = " {"; //46:29
+            if (__tmp10Line != null) __out.Append(__tmp10Line);
+            __out.AppendLine(false); //46:31
             var __loop5_results = 
                 (from __loop5_var1 in __Enumerate((enm).GetEnumerator()) //47:11
                 from value in __Enumerate((__loop5_var1.EnumLiterals).GetEnumerator()) //47:16
@@ -436,225 +381,209 @@ namespace MetaDslx.Core //1:1
                 ).ToList(); //47:6
             int __loop5_iteration = 0;
             string delim = ""; //47:36
-            foreach (var __tmp10 in __loop5_results)
+            foreach (var __tmp11 in __loop5_results)
             {
                 ++__loop5_iteration;
                 if (__loop5_iteration >= 2) //47:55
                 {
                     delim = ","; //47:55
                 }
-                var __loop5_var1 = __tmp10.__loop5_var1;
-                var value = __tmp10.value;
-                string __tmp11Prefix = string.Empty;
-                string __tmp12Suffix = string.Empty;
+                var __loop5_var1 = __tmp11.__loop5_var1;
+                var value = __tmp11.value;
                 StringBuilder __tmp13 = new StringBuilder();
                 __tmp13.Append(delim);
                 using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
                 {
                     bool __tmp13_first = true;
-                    while(__tmp13_first || !__tmp13Reader.EndOfStream)
+                    bool __tmp13_last = __tmp13Reader.EndOfStream;
+                    while(__tmp13_first || !__tmp13_last)
                     {
                         __tmp13_first = false;
                         string __tmp13Line = __tmp13Reader.ReadLine();
-                        if (__tmp13Line == null)
-                        {
-                            __tmp13Line = "";
-                        }
-                        __out.Append(__tmp11Prefix);
-                        __out.Append(__tmp13Line);
-                        __out.Append(__tmp12Suffix);
-                        __out.AppendLine(); //48:8
+                        __tmp13_last = __tmp13Reader.EndOfStream;
+                        if (__tmp13Line != null) __out.Append(__tmp13Line);
+                        if (!__tmp13_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //48:8
                     }
                 }
                 string __tmp14Prefix = "    "; //49:1
-                string __tmp15Suffix = string.Empty; 
-                StringBuilder __tmp16 = new StringBuilder();
-                __tmp16.Append(value.Name);
-                using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
+                StringBuilder __tmp15 = new StringBuilder();
+                __tmp15.Append(value.Name);
+                using(StreamReader __tmp15Reader = new StreamReader(this.__ToStream(__tmp15.ToString())))
                 {
-                    bool __tmp16_first = true;
-                    while(__tmp16_first || !__tmp16Reader.EndOfStream)
+                    bool __tmp15_first = true;
+                    bool __tmp15_last = __tmp15Reader.EndOfStream;
+                    while(__tmp15_first || !__tmp15_last)
                     {
-                        __tmp16_first = false;
-                        string __tmp16Line = __tmp16Reader.ReadLine();
-                        if (__tmp16Line == null)
-                        {
-                            __tmp16Line = "";
-                        }
+                        __tmp15_first = false;
+                        string __tmp15Line = __tmp15Reader.ReadLine();
+                        __tmp15_last = __tmp15Reader.EndOfStream;
                         __out.Append(__tmp14Prefix);
-                        __out.Append(__tmp16Line);
-                        __out.Append(__tmp15Suffix);
+                        if (__tmp15Line != null) __out.Append(__tmp15Line);
+                        if (!__tmp15_last) __out.AppendLine(true);
                     }
                 }
             }
             __out.Append(";"); //51:1
-            __out.AppendLine(); //51:2
+            __out.AppendLine(false); //51:2
             var __loop6_results = 
                 (from __loop6_var1 in __Enumerate((enm).GetEnumerator()) //52:7
                 from op in __Enumerate((__loop6_var1.Operations).GetEnumerator()) //52:12
                 select new { __loop6_var1 = __loop6_var1, op = op}
                 ).ToList(); //52:2
             int __loop6_iteration = 0;
-            foreach (var __tmp17 in __loop6_results)
+            foreach (var __tmp16 in __loop6_results)
             {
                 ++__loop6_iteration;
-                var __loop6_var1 = __tmp17.__loop6_var1;
-                var op = __tmp17.op;
-                __out.AppendLine(); //53:1
-                string __tmp18Prefix = "    public "; //54:1
-                string __tmp19Suffix = ") {"; //54:105
-                StringBuilder __tmp20 = new StringBuilder();
-                __tmp20.Append(op.ReturnType.JavaFullPublicName());
-                using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
+                var __loop6_var1 = __tmp16.__loop6_var1;
+                var op = __tmp16.op;
+                __out.AppendLine(true); //53:1
+                string __tmp18Line = "    public "; //54:1
+                if (__tmp18Line != null) __out.Append(__tmp18Line);
+                StringBuilder __tmp19 = new StringBuilder();
+                __tmp19.Append(op.ReturnType.JavaFullPublicName());
+                using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
                 {
-                    bool __tmp20_first = true;
-                    while(__tmp20_first || !__tmp20Reader.EndOfStream)
+                    bool __tmp19_first = true;
+                    bool __tmp19_last = __tmp19Reader.EndOfStream;
+                    while(__tmp19_first || !__tmp19_last)
                     {
-                        __tmp20_first = false;
-                        string __tmp20Line = __tmp20Reader.ReadLine();
-                        if (__tmp20Line == null)
-                        {
-                            __tmp20Line = "";
-                        }
-                        __out.Append(__tmp18Prefix);
-                        __out.Append(__tmp20Line);
+                        __tmp19_first = false;
+                        string __tmp19Line = __tmp19Reader.ReadLine();
+                        __tmp19_last = __tmp19Reader.EndOfStream;
+                        if (__tmp19Line != null) __out.Append(__tmp19Line);
+                        if (!__tmp19_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp21Line = " "; //54:48
-                __out.Append(__tmp21Line);
-                StringBuilder __tmp22 = new StringBuilder();
-                __tmp22.Append(op.Name.ToCamelCase());
-                using(StreamReader __tmp22Reader = new StreamReader(this.__ToStream(__tmp22.ToString())))
+                string __tmp20Line = " "; //54:48
+                if (__tmp20Line != null) __out.Append(__tmp20Line);
+                StringBuilder __tmp21 = new StringBuilder();
+                __tmp21.Append(op.Name.ToCamelCase());
+                using(StreamReader __tmp21Reader = new StreamReader(this.__ToStream(__tmp21.ToString())))
                 {
-                    bool __tmp22_first = true;
-                    while(__tmp22_first || !__tmp22Reader.EndOfStream)
+                    bool __tmp21_first = true;
+                    bool __tmp21_last = __tmp21Reader.EndOfStream;
+                    while(__tmp21_first || !__tmp21_last)
                     {
-                        __tmp22_first = false;
-                        string __tmp22Line = __tmp22Reader.ReadLine();
-                        if (__tmp22Line == null)
-                        {
-                            __tmp22Line = "";
-                        }
-                        __out.Append(__tmp22Line);
+                        __tmp21_first = false;
+                        string __tmp21Line = __tmp21Reader.ReadLine();
+                        __tmp21_last = __tmp21Reader.EndOfStream;
+                        if (__tmp21Line != null) __out.Append(__tmp21Line);
+                        if (!__tmp21_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp23Line = "("; //54:72
-                __out.Append(__tmp23Line);
-                StringBuilder __tmp24 = new StringBuilder();
-                __tmp24.Append(GetEnumImplParameters(enm, op));
-                using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
+                string __tmp22Line = "("; //54:72
+                if (__tmp22Line != null) __out.Append(__tmp22Line);
+                StringBuilder __tmp23 = new StringBuilder();
+                __tmp23.Append(GetEnumImplParameters(enm, op));
+                using(StreamReader __tmp23Reader = new StreamReader(this.__ToStream(__tmp23.ToString())))
                 {
-                    bool __tmp24_first = true;
-                    while(__tmp24_first || !__tmp24Reader.EndOfStream)
+                    bool __tmp23_first = true;
+                    bool __tmp23_last = __tmp23Reader.EndOfStream;
+                    while(__tmp23_first || !__tmp23_last)
                     {
-                        __tmp24_first = false;
-                        string __tmp24Line = __tmp24Reader.ReadLine();
-                        if (__tmp24Line == null)
-                        {
-                            __tmp24Line = "";
-                        }
-                        __out.Append(__tmp24Line);
-                        __out.Append(__tmp19Suffix);
-                        __out.AppendLine(); //54:108
+                        __tmp23_first = false;
+                        string __tmp23Line = __tmp23Reader.ReadLine();
+                        __tmp23_last = __tmp23Reader.EndOfStream;
+                        if (__tmp23Line != null) __out.Append(__tmp23Line);
+                        if (!__tmp23_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp24Line = ") {"; //54:105
+                if (__tmp24Line != null) __out.Append(__tmp24Line);
+                __out.AppendLine(false); //54:108
                 string __tmp25Prefix = "        "; //55:1
-                string __tmp26Suffix = ");"; //55:162
+                StringBuilder __tmp26 = new StringBuilder();
+                __tmp26.Append(GetReturn(op));
+                using(StreamReader __tmp26Reader = new StreamReader(this.__ToStream(__tmp26.ToString())))
+                {
+                    bool __tmp26_first = true;
+                    bool __tmp26_last = __tmp26Reader.EndOfStream;
+                    while(__tmp26_first || !__tmp26_last)
+                    {
+                        __tmp26_first = false;
+                        string __tmp26Line = __tmp26Reader.ReadLine();
+                        __tmp26_last = __tmp26Reader.EndOfStream;
+                        __out.Append(__tmp25Prefix);
+                        if (__tmp26Line != null) __out.Append(__tmp26Line);
+                        if (!__tmp26_last) __out.AppendLine(true);
+                    }
+                }
                 StringBuilder __tmp27 = new StringBuilder();
-                __tmp27.Append(GetReturn(op));
+                __tmp27.Append(enm.Model.Name);
                 using(StreamReader __tmp27Reader = new StreamReader(this.__ToStream(__tmp27.ToString())))
                 {
                     bool __tmp27_first = true;
-                    while(__tmp27_first || !__tmp27Reader.EndOfStream)
+                    bool __tmp27_last = __tmp27Reader.EndOfStream;
+                    while(__tmp27_first || !__tmp27_last)
                     {
                         __tmp27_first = false;
                         string __tmp27Line = __tmp27Reader.ReadLine();
-                        if (__tmp27Line == null)
-                        {
-                            __tmp27Line = "";
-                        }
-                        __out.Append(__tmp25Prefix);
-                        __out.Append(__tmp27Line);
+                        __tmp27_last = __tmp27Reader.EndOfStream;
+                        if (__tmp27Line != null) __out.Append(__tmp27Line);
+                        if (!__tmp27_last) __out.AppendLine(true);
                     }
                 }
-                StringBuilder __tmp28 = new StringBuilder();
-                __tmp28.Append(enm.Model.Name);
-                using(StreamReader __tmp28Reader = new StreamReader(this.__ToStream(__tmp28.ToString())))
+                string __tmp28Line = "ImplementationProvider.implementation()."; //55:40
+                if (__tmp28Line != null) __out.Append(__tmp28Line);
+                StringBuilder __tmp29 = new StringBuilder();
+                __tmp29.Append(op.Parent.JavaName());
+                using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
                 {
-                    bool __tmp28_first = true;
-                    while(__tmp28_first || !__tmp28Reader.EndOfStream)
+                    bool __tmp29_first = true;
+                    bool __tmp29_last = __tmp29Reader.EndOfStream;
+                    while(__tmp29_first || !__tmp29_last)
                     {
-                        __tmp28_first = false;
-                        string __tmp28Line = __tmp28Reader.ReadLine();
-                        if (__tmp28Line == null)
-                        {
-                            __tmp28Line = "";
-                        }
-                        __out.Append(__tmp28Line);
+                        __tmp29_first = false;
+                        string __tmp29Line = __tmp29Reader.ReadLine();
+                        __tmp29_last = __tmp29Reader.EndOfStream;
+                        if (__tmp29Line != null) __out.Append(__tmp29Line);
+                        if (!__tmp29_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp29Line = "ImplementationProvider.implementation()."; //55:40
-                __out.Append(__tmp29Line);
-                StringBuilder __tmp30 = new StringBuilder();
-                __tmp30.Append(op.Parent.JavaName());
-                using(StreamReader __tmp30Reader = new StreamReader(this.__ToStream(__tmp30.ToString())))
+                string __tmp30Line = "_"; //55:102
+                if (__tmp30Line != null) __out.Append(__tmp30Line);
+                StringBuilder __tmp31 = new StringBuilder();
+                __tmp31.Append(op.Name.ToCamelCase());
+                using(StreamReader __tmp31Reader = new StreamReader(this.__ToStream(__tmp31.ToString())))
                 {
-                    bool __tmp30_first = true;
-                    while(__tmp30_first || !__tmp30Reader.EndOfStream)
+                    bool __tmp31_first = true;
+                    bool __tmp31_last = __tmp31Reader.EndOfStream;
+                    while(__tmp31_first || !__tmp31_last)
                     {
-                        __tmp30_first = false;
-                        string __tmp30Line = __tmp30Reader.ReadLine();
-                        if (__tmp30Line == null)
-                        {
-                            __tmp30Line = "";
-                        }
-                        __out.Append(__tmp30Line);
+                        __tmp31_first = false;
+                        string __tmp31Line = __tmp31Reader.ReadLine();
+                        __tmp31_last = __tmp31Reader.EndOfStream;
+                        if (__tmp31Line != null) __out.Append(__tmp31Line);
+                        if (!__tmp31_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp31Line = "_"; //55:102
-                __out.Append(__tmp31Line);
-                StringBuilder __tmp32 = new StringBuilder();
-                __tmp32.Append(op.Name.ToCamelCase());
-                using(StreamReader __tmp32Reader = new StreamReader(this.__ToStream(__tmp32.ToString())))
+                string __tmp32Line = "("; //55:126
+                if (__tmp32Line != null) __out.Append(__tmp32Line);
+                StringBuilder __tmp33 = new StringBuilder();
+                __tmp33.Append(GetEnumImplCallParameterNames(op));
+                using(StreamReader __tmp33Reader = new StreamReader(this.__ToStream(__tmp33.ToString())))
                 {
-                    bool __tmp32_first = true;
-                    while(__tmp32_first || !__tmp32Reader.EndOfStream)
+                    bool __tmp33_first = true;
+                    bool __tmp33_last = __tmp33Reader.EndOfStream;
+                    while(__tmp33_first || !__tmp33_last)
                     {
-                        __tmp32_first = false;
-                        string __tmp32Line = __tmp32Reader.ReadLine();
-                        if (__tmp32Line == null)
-                        {
-                            __tmp32Line = "";
-                        }
-                        __out.Append(__tmp32Line);
+                        __tmp33_first = false;
+                        string __tmp33Line = __tmp33Reader.ReadLine();
+                        __tmp33_last = __tmp33Reader.EndOfStream;
+                        if (__tmp33Line != null) __out.Append(__tmp33Line);
+                        if (!__tmp33_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp33Line = "("; //55:126
-                __out.Append(__tmp33Line);
-                StringBuilder __tmp34 = new StringBuilder();
-                __tmp34.Append(GetEnumImplCallParameterNames(op));
-                using(StreamReader __tmp34Reader = new StreamReader(this.__ToStream(__tmp34.ToString())))
-                {
-                    bool __tmp34_first = true;
-                    while(__tmp34_first || !__tmp34Reader.EndOfStream)
-                    {
-                        __tmp34_first = false;
-                        string __tmp34Line = __tmp34Reader.ReadLine();
-                        if (__tmp34Line == null)
-                        {
-                            __tmp34Line = "";
-                        }
-                        __out.Append(__tmp34Line);
-                        __out.Append(__tmp26Suffix);
-                        __out.AppendLine(); //55:164
-                    }
-                }
+                string __tmp34Line = ");"; //55:162
+                if (__tmp34Line != null) __out.Append(__tmp34Line);
+                __out.AppendLine(false); //55:164
                 __out.Append("    }"); //56:1
-                __out.AppendLine(); //56:6
+                __out.AppendLine(false); //56:6
             }
             __out.Append("}"); //58:1
-            __out.AppendLine(); //58:2
-            __out.AppendLine(); //59:1
+            __out.AppendLine(false); //58:2
+            __out.AppendLine(true); //59:1
             return __out.ToString();
         }
 
@@ -685,66 +614,58 @@ namespace MetaDslx.Core //1:1
         public string GenerateInterface(MetaClass cls) //70:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "package "; //71:1
-            string __tmp2Suffix = ";"; //71:35
+            string __tmp2Line = "package "; //71:1
+            if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(cls.Namespace.JavaName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //71:36
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //72:1
-            string __tmp4Prefix = string.Empty;
-            string __tmp5Suffix = string.Empty;
+            string __tmp4Line = ";"; //71:35
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
+            __out.AppendLine(false); //71:36
+            __out.AppendLine(true); //72:1
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(GenerateAnnotations(cls));
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
             {
                 bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                bool __tmp6_last = __tmp6Reader.EndOfStream;
+                while(__tmp6_first || !__tmp6_last)
                 {
                     __tmp6_first = false;
                     string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp4Prefix);
-                    __out.Append(__tmp6Line);
-                    __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //73:27
+                    __tmp6_last = __tmp6Reader.EndOfStream;
+                    if (__tmp6Line != null) __out.Append(__tmp6Line);
+                    if (!__tmp6_last) __out.AppendLine(true);
+                    __out.AppendLine(false); //73:27
                 }
             }
-            string __tmp7Prefix = "public interface "; //74:1
-            string __tmp8Suffix = string.Empty; 
+            string __tmp8Line = "public interface "; //74:1
+            if (__tmp8Line != null) __out.Append(__tmp8Line);
             StringBuilder __tmp9 = new StringBuilder();
             __tmp9.Append(cls.JavaName());
             using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
             {
                 bool __tmp9_first = true;
-                while(__tmp9_first || !__tmp9Reader.EndOfStream)
+                bool __tmp9_last = __tmp9Reader.EndOfStream;
+                while(__tmp9_first || !__tmp9_last)
                 {
                     __tmp9_first = false;
                     string __tmp9Line = __tmp9Reader.ReadLine();
-                    if (__tmp9Line == null)
-                    {
-                        __tmp9Line = "";
-                    }
-                    __out.Append(__tmp7Prefix);
-                    __out.Append(__tmp9Line);
+                    __tmp9_last = __tmp9Reader.EndOfStream;
+                    if (__tmp9Line != null) __out.Append(__tmp9Line);
+                    if (!__tmp9_last) __out.AppendLine(true);
                 }
             }
             StringBuilder __tmp10 = new StringBuilder();
@@ -752,21 +673,19 @@ namespace MetaDslx.Core //1:1
             using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
             {
                 bool __tmp10_first = true;
-                while(__tmp10_first || !__tmp10Reader.EndOfStream)
+                bool __tmp10_last = __tmp10Reader.EndOfStream;
+                while(__tmp10_first || !__tmp10_last)
                 {
                     __tmp10_first = false;
                     string __tmp10Line = __tmp10Reader.ReadLine();
-                    if (__tmp10Line == null)
-                    {
-                        __tmp10Line = "";
-                    }
-                    __out.Append(__tmp10Line);
-                    __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //74:53
+                    __tmp10_last = __tmp10Reader.EndOfStream;
+                    if (__tmp10Line != null) __out.Append(__tmp10Line);
+                    if (!__tmp10_last) __out.AppendLine(true);
+                    __out.AppendLine(false); //74:53
                 }
             }
             __out.Append("{"); //75:1
-            __out.AppendLine(); //75:2
+            __out.AppendLine(false); //75:2
             var __loop8_results = 
                 (from __loop8_var1 in __Enumerate((cls).GetEnumerator()) //76:11
                 from prop in __Enumerate((__loop8_var1.Properties).GetEnumerator()) //76:16
@@ -779,150 +698,138 @@ namespace MetaDslx.Core //1:1
                 var __loop8_var1 = __tmp11.__loop8_var1;
                 var prop = __tmp11.prop;
                 string __tmp12Prefix = "    "; //77:1
-                string __tmp13Suffix = string.Empty; 
-                StringBuilder __tmp14 = new StringBuilder();
-                __tmp14.Append(GenerateProperty(prop));
-                using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
+                StringBuilder __tmp13 = new StringBuilder();
+                __tmp13.Append(GenerateProperty(prop));
+                using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
                 {
-                    bool __tmp14_first = true;
-                    while(__tmp14_first || !__tmp14Reader.EndOfStream)
+                    bool __tmp13_first = true;
+                    bool __tmp13_last = __tmp13Reader.EndOfStream;
+                    while(__tmp13_first || !__tmp13_last)
                     {
-                        __tmp14_first = false;
-                        string __tmp14Line = __tmp14Reader.ReadLine();
-                        if (__tmp14Line == null)
-                        {
-                            __tmp14Line = "";
-                        }
+                        __tmp13_first = false;
+                        string __tmp13Line = __tmp13Reader.ReadLine();
+                        __tmp13_last = __tmp13Reader.EndOfStream;
                         __out.Append(__tmp12Prefix);
-                        __out.Append(__tmp14Line);
-                        __out.Append(__tmp13Suffix);
-                        __out.AppendLine(); //77:29
+                        if (__tmp13Line != null) __out.Append(__tmp13Line);
+                        if (!__tmp13_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //77:29
                     }
                 }
             }
-            __out.AppendLine(); //79:1
+            __out.AppendLine(true); //79:1
             var __loop9_results = 
                 (from __loop9_var1 in __Enumerate((cls).GetEnumerator()) //80:11
                 from op in __Enumerate((__loop9_var1.Operations).GetEnumerator()) //80:16
                 select new { __loop9_var1 = __loop9_var1, op = op}
                 ).ToList(); //80:6
             int __loop9_iteration = 0;
-            foreach (var __tmp15 in __loop9_results)
+            foreach (var __tmp14 in __loop9_results)
             {
                 ++__loop9_iteration;
-                var __loop9_var1 = __tmp15.__loop9_var1;
-                var op = __tmp15.op;
-                string __tmp16Prefix = "    "; //81:1
-                string __tmp17Suffix = string.Empty; 
-                StringBuilder __tmp18 = new StringBuilder();
-                __tmp18.Append(GenerateOperation(op));
-                using(StreamReader __tmp18Reader = new StreamReader(this.__ToStream(__tmp18.ToString())))
+                var __loop9_var1 = __tmp14.__loop9_var1;
+                var op = __tmp14.op;
+                string __tmp15Prefix = "    "; //81:1
+                StringBuilder __tmp16 = new StringBuilder();
+                __tmp16.Append(GenerateOperation(op));
+                using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
                 {
-                    bool __tmp18_first = true;
-                    while(__tmp18_first || !__tmp18Reader.EndOfStream)
+                    bool __tmp16_first = true;
+                    bool __tmp16_last = __tmp16Reader.EndOfStream;
+                    while(__tmp16_first || !__tmp16_last)
                     {
-                        __tmp18_first = false;
-                        string __tmp18Line = __tmp18Reader.ReadLine();
-                        if (__tmp18Line == null)
-                        {
-                            __tmp18Line = "";
-                        }
-                        __out.Append(__tmp16Prefix);
-                        __out.Append(__tmp18Line);
-                        __out.Append(__tmp17Suffix);
-                        __out.AppendLine(); //81:28
+                        __tmp16_first = false;
+                        string __tmp16Line = __tmp16Reader.ReadLine();
+                        __tmp16_last = __tmp16Reader.EndOfStream;
+                        __out.Append(__tmp15Prefix);
+                        if (__tmp16Line != null) __out.Append(__tmp16Line);
+                        if (!__tmp16_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //81:28
                     }
                 }
             }
             __out.Append("}"); //83:1
-            __out.AppendLine(); //83:2
-            __out.AppendLine(); //84:1
+            __out.AppendLine(false); //83:2
+            __out.AppendLine(true); //84:1
             return __out.ToString();
         }
 
         public string GenerateProperty(MetaProperty prop) //87:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty; 
-            string __tmp2Suffix = "();"; //88:68
-            StringBuilder __tmp3 = new StringBuilder();
-            __tmp3.Append(prop.Type.JavaFullPublicName());
-            using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+            StringBuilder __tmp2 = new StringBuilder();
+            __tmp2.Append(prop.Type.JavaFullPublicName());
+            using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
             {
-                bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp2_first = true;
+                bool __tmp2_last = __tmp2Reader.EndOfStream;
+                while(__tmp2_first || !__tmp2_last)
                 {
-                    __tmp3_first = false;
-                    string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
+                    __tmp2_first = false;
+                    string __tmp2Line = __tmp2Reader.ReadLine();
+                    __tmp2_last = __tmp2Reader.EndOfStream;
+                    if (__tmp2Line != null) __out.Append(__tmp2Line);
+                    if (!__tmp2_last) __out.AppendLine(true);
                 }
             }
-            string __tmp4Line = " "; //88:33
-            __out.Append(__tmp4Line);
-            StringBuilder __tmp5 = new StringBuilder();
-            __tmp5.Append(("get" + prop.Name).SafeJavaName());
-            using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
+            string __tmp3Line = " "; //88:33
+            if (__tmp3Line != null) __out.Append(__tmp3Line);
+            StringBuilder __tmp4 = new StringBuilder();
+            __tmp4.Append(("get" + prop.Name).SafeJavaName());
+            using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
             {
-                bool __tmp5_first = true;
-                while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                bool __tmp4_first = true;
+                bool __tmp4_last = __tmp4Reader.EndOfStream;
+                while(__tmp4_first || !__tmp4_last)
                 {
-                    __tmp5_first = false;
-                    string __tmp5Line = __tmp5Reader.ReadLine();
-                    if (__tmp5Line == null)
-                    {
-                        __tmp5Line = "";
-                    }
-                    __out.Append(__tmp5Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //88:71
+                    __tmp4_first = false;
+                    string __tmp4Line = __tmp4Reader.ReadLine();
+                    __tmp4_last = __tmp4Reader.EndOfStream;
+                    if (__tmp4Line != null) __out.Append(__tmp4Line);
+                    if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
+            string __tmp5Line = "();"; //88:68
+            if (__tmp5Line != null) __out.Append(__tmp5Line);
+            __out.AppendLine(false); //88:71
             if ((prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) && !(prop.Type is MetaCollectionType)) //89:3
             {
-                string __tmp6Prefix = "void "; //90:1
-                string __tmp7Suffix = " value);"; //90:73
+                string __tmp7Line = "void "; //90:1
+                if (__tmp7Line != null) __out.Append(__tmp7Line);
                 StringBuilder __tmp8 = new StringBuilder();
                 __tmp8.Append(("set" + prop.Name).SafeJavaName());
                 using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
                 {
                     bool __tmp8_first = true;
-                    while(__tmp8_first || !__tmp8Reader.EndOfStream)
+                    bool __tmp8_last = __tmp8Reader.EndOfStream;
+                    while(__tmp8_first || !__tmp8_last)
                     {
                         __tmp8_first = false;
                         string __tmp8Line = __tmp8Reader.ReadLine();
-                        if (__tmp8Line == null)
-                        {
-                            __tmp8Line = "";
-                        }
-                        __out.Append(__tmp6Prefix);
-                        __out.Append(__tmp8Line);
+                        __tmp8_last = __tmp8Reader.EndOfStream;
+                        if (__tmp8Line != null) __out.Append(__tmp8Line);
+                        if (!__tmp8_last) __out.AppendLine(true);
                     }
                 }
                 string __tmp9Line = "("; //90:40
-                __out.Append(__tmp9Line);
+                if (__tmp9Line != null) __out.Append(__tmp9Line);
                 StringBuilder __tmp10 = new StringBuilder();
                 __tmp10.Append(prop.Type.JavaFullPublicName());
                 using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
                 {
                     bool __tmp10_first = true;
-                    while(__tmp10_first || !__tmp10Reader.EndOfStream)
+                    bool __tmp10_last = __tmp10Reader.EndOfStream;
+                    while(__tmp10_first || !__tmp10_last)
                     {
                         __tmp10_first = false;
                         string __tmp10Line = __tmp10Reader.ReadLine();
-                        if (__tmp10Line == null)
-                        {
-                            __tmp10Line = "";
-                        }
-                        __out.Append(__tmp10Line);
-                        __out.Append(__tmp7Suffix);
-                        __out.AppendLine(); //90:81
+                        __tmp10_last = __tmp10Reader.EndOfStream;
+                        if (__tmp10Line != null) __out.Append(__tmp10Line);
+                        if (!__tmp10_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp11Line = " value);"; //90:73
+                if (__tmp11Line != null) __out.Append(__tmp11Line);
+                __out.AppendLine(false); //90:81
             }
             return __out.ToString();
         }
@@ -1054,231 +961,217 @@ namespace MetaDslx.Core //1:1
         public string GenerateOperation(MetaOperation op) //147:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty; 
-            string __tmp2Suffix = ");"; //148:87
-            StringBuilder __tmp3 = new StringBuilder();
-            __tmp3.Append(op.ReturnType.JavaFullPublicName());
-            using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+            StringBuilder __tmp2 = new StringBuilder();
+            __tmp2.Append(op.ReturnType.JavaFullPublicName());
+            using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
             {
-                bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp2_first = true;
+                bool __tmp2_last = __tmp2Reader.EndOfStream;
+                while(__tmp2_first || !__tmp2_last)
                 {
-                    __tmp3_first = false;
-                    string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
+                    __tmp2_first = false;
+                    string __tmp2Line = __tmp2Reader.ReadLine();
+                    __tmp2_last = __tmp2Reader.EndOfStream;
+                    if (__tmp2Line != null) __out.Append(__tmp2Line);
+                    if (!__tmp2_last) __out.AppendLine(true);
                 }
             }
-            string __tmp4Line = " "; //148:37
-            __out.Append(__tmp4Line);
-            StringBuilder __tmp5 = new StringBuilder();
-            __tmp5.Append(op.Name.ToCamelCase());
-            using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
+            string __tmp3Line = " "; //148:37
+            if (__tmp3Line != null) __out.Append(__tmp3Line);
+            StringBuilder __tmp4 = new StringBuilder();
+            __tmp4.Append(op.Name.ToCamelCase());
+            using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
             {
-                bool __tmp5_first = true;
-                while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                bool __tmp4_first = true;
+                bool __tmp4_last = __tmp4Reader.EndOfStream;
+                while(__tmp4_first || !__tmp4_last)
                 {
-                    __tmp5_first = false;
-                    string __tmp5Line = __tmp5Reader.ReadLine();
-                    if (__tmp5Line == null)
-                    {
-                        __tmp5Line = "";
-                    }
-                    __out.Append(__tmp5Line);
+                    __tmp4_first = false;
+                    string __tmp4Line = __tmp4Reader.ReadLine();
+                    __tmp4_last = __tmp4Reader.EndOfStream;
+                    if (__tmp4Line != null) __out.Append(__tmp4Line);
+                    if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp6Line = "("; //148:61
-            __out.Append(__tmp6Line);
-            StringBuilder __tmp7 = new StringBuilder();
-            __tmp7.Append(GetParameters(op, true));
-            using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
+            string __tmp5Line = "("; //148:61
+            if (__tmp5Line != null) __out.Append(__tmp5Line);
+            StringBuilder __tmp6 = new StringBuilder();
+            __tmp6.Append(GetParameters(op, true));
+            using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
             {
-                bool __tmp7_first = true;
-                while(__tmp7_first || !__tmp7Reader.EndOfStream)
+                bool __tmp6_first = true;
+                bool __tmp6_last = __tmp6Reader.EndOfStream;
+                while(__tmp6_first || !__tmp6_last)
                 {
-                    __tmp7_first = false;
-                    string __tmp7Line = __tmp7Reader.ReadLine();
-                    if (__tmp7Line == null)
-                    {
-                        __tmp7Line = "";
-                    }
-                    __out.Append(__tmp7Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //148:89
+                    __tmp6_first = false;
+                    string __tmp6Line = __tmp6Reader.ReadLine();
+                    __tmp6_last = __tmp6Reader.EndOfStream;
+                    if (__tmp6Line != null) __out.Append(__tmp6Line);
+                    if (!__tmp6_last) __out.AppendLine(true);
                 }
             }
+            string __tmp7Line = ");"; //148:87
+            if (__tmp7Line != null) __out.Append(__tmp7Line);
+            __out.AppendLine(false); //148:89
             return __out.ToString();
         }
 
         public string GenerateInterfaceImpl(MetaModel model, MetaClass cls) //151:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "package "; //152:1
-            string __tmp2Suffix = ";"; //152:35
+            string __tmp2Line = "package "; //152:1
+            if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(cls.Namespace.JavaName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //152:36
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //153:1
-            string __tmp4Prefix = "class "; //154:1
-            string __tmp5Suffix = " {"; //154:93
-            StringBuilder __tmp6 = new StringBuilder();
-            __tmp6.Append(cls.JavaImplName());
-            using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
+            string __tmp4Line = ";"; //152:35
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
+            __out.AppendLine(false); //152:36
+            __out.AppendLine(true); //153:1
+            string __tmp6Line = "class "; //154:1
+            if (__tmp6Line != null) __out.Append(__tmp6Line);
+            StringBuilder __tmp7 = new StringBuilder();
+            __tmp7.Append(cls.JavaImplName());
+            using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
             {
-                bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                bool __tmp7_first = true;
+                bool __tmp7_last = __tmp7Reader.EndOfStream;
+                while(__tmp7_first || !__tmp7_last)
                 {
-                    __tmp6_first = false;
-                    string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp4Prefix);
-                    __out.Append(__tmp6Line);
+                    __tmp7_first = false;
+                    string __tmp7Line = __tmp7Reader.ReadLine();
+                    __tmp7_last = __tmp7Reader.EndOfStream;
+                    if (__tmp7Line != null) __out.Append(__tmp7Line);
+                    if (!__tmp7_last) __out.AppendLine(true);
                 }
             }
-            string __tmp7Line = " extends metadslx.core.ModelObject implements "; //154:27
-            __out.Append(__tmp7Line);
-            StringBuilder __tmp8 = new StringBuilder();
-            __tmp8.Append(cls.JavaFullName());
-            using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
+            string __tmp8Line = " extends metadslx.core.ModelObject implements "; //154:27
+            if (__tmp8Line != null) __out.Append(__tmp8Line);
+            StringBuilder __tmp9 = new StringBuilder();
+            __tmp9.Append(cls.JavaFullName());
+            using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
             {
-                bool __tmp8_first = true;
-                while(__tmp8_first || !__tmp8Reader.EndOfStream)
+                bool __tmp9_first = true;
+                bool __tmp9_last = __tmp9Reader.EndOfStream;
+                while(__tmp9_first || !__tmp9_last)
                 {
-                    __tmp8_first = false;
-                    string __tmp8Line = __tmp8Reader.ReadLine();
-                    if (__tmp8Line == null)
-                    {
-                        __tmp8Line = "";
-                    }
-                    __out.Append(__tmp8Line);
-                    __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //154:95
+                    __tmp9_first = false;
+                    string __tmp9Line = __tmp9Reader.ReadLine();
+                    __tmp9_last = __tmp9Reader.EndOfStream;
+                    if (__tmp9Line != null) __out.Append(__tmp9Line);
+                    if (!__tmp9_last) __out.AppendLine(true);
                 }
             }
+            string __tmp10Line = " {"; //154:93
+            if (__tmp10Line != null) __out.Append(__tmp10Line);
+            __out.AppendLine(false); //154:95
             __out.Append("    static {"); //155:1
-            __out.AppendLine(); //155:13
-            string __tmp9Prefix = "        "; //156:1
-            string __tmp10Suffix = ".staticInit();"; //156:45
-            StringBuilder __tmp11 = new StringBuilder();
-            __tmp11.Append(cls.Model.JavaFullDescriptorName());
-            using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
+            __out.AppendLine(false); //155:13
+            string __tmp11Prefix = "        "; //156:1
+            StringBuilder __tmp12 = new StringBuilder();
+            __tmp12.Append(cls.Model.JavaFullDescriptorName());
+            using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
             {
-                bool __tmp11_first = true;
-                while(__tmp11_first || !__tmp11Reader.EndOfStream)
+                bool __tmp12_first = true;
+                bool __tmp12_last = __tmp12Reader.EndOfStream;
+                while(__tmp12_first || !__tmp12_last)
                 {
-                    __tmp11_first = false;
-                    string __tmp11Line = __tmp11Reader.ReadLine();
-                    if (__tmp11Line == null)
-                    {
-                        __tmp11Line = "";
-                    }
-                    __out.Append(__tmp9Prefix);
-                    __out.Append(__tmp11Line);
-                    __out.Append(__tmp10Suffix);
-                    __out.AppendLine(); //156:59
+                    __tmp12_first = false;
+                    string __tmp12Line = __tmp12Reader.ReadLine();
+                    __tmp12_last = __tmp12Reader.EndOfStream;
+                    __out.Append(__tmp11Prefix);
+                    if (__tmp12Line != null) __out.Append(__tmp12Line);
+                    if (!__tmp12_last) __out.AppendLine(true);
                 }
             }
+            string __tmp13Line = ".staticInit();"; //156:45
+            if (__tmp13Line != null) __out.Append(__tmp13Line);
+            __out.AppendLine(false); //156:59
             __out.Append("    }"); //157:1
-            __out.AppendLine(); //157:6
-            __out.AppendLine(); //158:1
+            __out.AppendLine(false); //157:6
+            __out.AppendLine(true); //158:1
             __out.Append("	@Override"); //159:1
-            __out.AppendLine(); //159:11
+            __out.AppendLine(false); //159:11
             __out.Append("    public metadslx.core.MetaModel mMetaModel() {"); //160:1
-            __out.AppendLine(); //160:50
-            string __tmp12Prefix = "        return "; //161:1
-            string __tmp13Suffix = "; "; //161:50
-            StringBuilder __tmp14 = new StringBuilder();
-            __tmp14.Append(cls.Model.JavaFullInstanceName());
-            using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
+            __out.AppendLine(false); //160:50
+            string __tmp15Line = "        return "; //161:1
+            if (__tmp15Line != null) __out.Append(__tmp15Line);
+            StringBuilder __tmp16 = new StringBuilder();
+            __tmp16.Append(cls.Model.JavaFullInstanceName());
+            using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
             {
-                bool __tmp14_first = true;
-                while(__tmp14_first || !__tmp14Reader.EndOfStream)
+                bool __tmp16_first = true;
+                bool __tmp16_last = __tmp16Reader.EndOfStream;
+                while(__tmp16_first || !__tmp16_last)
                 {
-                    __tmp14_first = false;
-                    string __tmp14Line = __tmp14Reader.ReadLine();
-                    if (__tmp14Line == null)
-                    {
-                        __tmp14Line = "";
-                    }
-                    __out.Append(__tmp12Prefix);
-                    __out.Append(__tmp14Line);
-                    __out.Append(__tmp13Suffix);
-                    __out.AppendLine(); //161:52
+                    __tmp16_first = false;
+                    string __tmp16Line = __tmp16Reader.ReadLine();
+                    __tmp16_last = __tmp16Reader.EndOfStream;
+                    if (__tmp16Line != null) __out.Append(__tmp16Line);
+                    if (!__tmp16_last) __out.AppendLine(true);
                 }
             }
+            string __tmp17Line = "; "; //161:50
+            if (__tmp17Line != null) __out.Append(__tmp17Line);
+            __out.AppendLine(false); //161:52
             __out.Append("    }"); //162:1
-            __out.AppendLine(); //162:6
-            __out.AppendLine(); //163:1
+            __out.AppendLine(false); //162:6
+            __out.AppendLine(true); //163:1
             __out.Append("	@Override"); //164:1
-            __out.AppendLine(); //164:11
+            __out.AppendLine(false); //164:11
             __out.Append("    public metadslx.core.MetaClass mMetaClass() {"); //165:1
-            __out.AppendLine(); //165:50
-            string __tmp15Prefix = "        return "; //166:1
-            string __tmp16Suffix = "; "; //166:44
-            StringBuilder __tmp17 = new StringBuilder();
-            __tmp17.Append(cls.JavaFullInstanceName());
-            using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
-            {
-                bool __tmp17_first = true;
-                while(__tmp17_first || !__tmp17Reader.EndOfStream)
-                {
-                    __tmp17_first = false;
-                    string __tmp17Line = __tmp17Reader.ReadLine();
-                    if (__tmp17Line == null)
-                    {
-                        __tmp17Line = "";
-                    }
-                    __out.Append(__tmp15Prefix);
-                    __out.Append(__tmp17Line);
-                    __out.Append(__tmp16Suffix);
-                    __out.AppendLine(); //166:46
-                }
-            }
-            __out.Append("    }"); //167:1
-            __out.AppendLine(); //167:6
-            __out.AppendLine(); //168:1
-            string __tmp18Prefix = "    "; //169:1
-            string __tmp19Suffix = string.Empty; 
+            __out.AppendLine(false); //165:50
+            string __tmp19Line = "        return "; //166:1
+            if (__tmp19Line != null) __out.Append(__tmp19Line);
             StringBuilder __tmp20 = new StringBuilder();
-            __tmp20.Append(GenerateConstructorImpl(model, cls));
+            __tmp20.Append(cls.JavaFullInstanceName());
             using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
             {
                 bool __tmp20_first = true;
-                while(__tmp20_first || !__tmp20Reader.EndOfStream)
+                bool __tmp20_last = __tmp20Reader.EndOfStream;
+                while(__tmp20_first || !__tmp20_last)
                 {
                     __tmp20_first = false;
                     string __tmp20Line = __tmp20Reader.ReadLine();
-                    if (__tmp20Line == null)
-                    {
-                        __tmp20Line = "";
-                    }
-                    __out.Append(__tmp18Prefix);
-                    __out.Append(__tmp20Line);
-                    __out.Append(__tmp19Suffix);
-                    __out.AppendLine(); //169:42
+                    __tmp20_last = __tmp20Reader.EndOfStream;
+                    if (__tmp20Line != null) __out.Append(__tmp20Line);
+                    if (!__tmp20_last) __out.AppendLine(true);
+                }
+            }
+            string __tmp21Line = "; "; //166:44
+            if (__tmp21Line != null) __out.Append(__tmp21Line);
+            __out.AppendLine(false); //166:46
+            __out.Append("    }"); //167:1
+            __out.AppendLine(false); //167:6
+            __out.AppendLine(true); //168:1
+            string __tmp22Prefix = "    "; //169:1
+            StringBuilder __tmp23 = new StringBuilder();
+            __tmp23.Append(GenerateConstructorImpl(model, cls));
+            using(StreamReader __tmp23Reader = new StreamReader(this.__ToStream(__tmp23.ToString())))
+            {
+                bool __tmp23_first = true;
+                bool __tmp23_last = __tmp23Reader.EndOfStream;
+                while(__tmp23_first || !__tmp23_last)
+                {
+                    __tmp23_first = false;
+                    string __tmp23Line = __tmp23Reader.ReadLine();
+                    __tmp23_last = __tmp23Reader.EndOfStream;
+                    __out.Append(__tmp22Prefix);
+                    if (__tmp23Line != null) __out.Append(__tmp23Line);
+                    if (!__tmp23_last) __out.AppendLine(true);
+                    __out.AppendLine(false); //169:42
                 }
             }
             HashSet<string> propMethodNames = new HashSet<string>(); //170:3
@@ -1288,30 +1181,27 @@ namespace MetaDslx.Core //1:1
                 select new { __loop16_var1 = __loop16_var1, prop = prop}
                 ).ToList(); //171:6
             int __loop16_iteration = 0;
-            foreach (var __tmp21 in __loop16_results)
+            foreach (var __tmp24 in __loop16_results)
             {
                 ++__loop16_iteration;
-                var __loop16_var1 = __tmp21.__loop16_var1;
-                var prop = __tmp21.prop;
-                string __tmp22Prefix = "    "; //172:1
-                string __tmp23Suffix = string.Empty; 
-                StringBuilder __tmp24 = new StringBuilder();
-                __tmp24.Append(GeneratePropertyImpl(model, cls, prop, propMethodNames));
-                using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
+                var __loop16_var1 = __tmp24.__loop16_var1;
+                var prop = __tmp24.prop;
+                string __tmp25Prefix = "    "; //172:1
+                StringBuilder __tmp26 = new StringBuilder();
+                __tmp26.Append(GeneratePropertyImpl(model, cls, prop, propMethodNames));
+                using(StreamReader __tmp26Reader = new StreamReader(this.__ToStream(__tmp26.ToString())))
                 {
-                    bool __tmp24_first = true;
-                    while(__tmp24_first || !__tmp24Reader.EndOfStream)
+                    bool __tmp26_first = true;
+                    bool __tmp26_last = __tmp26Reader.EndOfStream;
+                    while(__tmp26_first || !__tmp26_last)
                     {
-                        __tmp24_first = false;
-                        string __tmp24Line = __tmp24Reader.ReadLine();
-                        if (__tmp24Line == null)
-                        {
-                            __tmp24Line = "";
-                        }
-                        __out.Append(__tmp22Prefix);
-                        __out.Append(__tmp24Line);
-                        __out.Append(__tmp23Suffix);
-                        __out.AppendLine(); //172:62
+                        __tmp26_first = false;
+                        string __tmp26Line = __tmp26Reader.ReadLine();
+                        __tmp26_last = __tmp26Reader.EndOfStream;
+                        __out.Append(__tmp25Prefix);
+                        if (__tmp26Line != null) __out.Append(__tmp26Line);
+                        if (!__tmp26_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //172:62
                     }
                 }
             }
@@ -1322,36 +1212,33 @@ namespace MetaDslx.Core //1:1
                 select new { __loop17_var1 = __loop17_var1, op = op}
                 ).ToList(); //175:6
             int __loop17_iteration = 0;
-            foreach (var __tmp25 in __loop17_results)
+            foreach (var __tmp27 in __loop17_results)
             {
                 ++__loop17_iteration;
-                var __loop17_var1 = __tmp25.__loop17_var1;
-                var op = __tmp25.op;
-                string __tmp26Prefix = "    "; //176:1
-                string __tmp27Suffix = string.Empty; 
-                StringBuilder __tmp28 = new StringBuilder();
-                __tmp28.Append(GenerateOperationImpl(model, op, methodNames));
-                using(StreamReader __tmp28Reader = new StreamReader(this.__ToStream(__tmp28.ToString())))
+                var __loop17_var1 = __tmp27.__loop17_var1;
+                var op = __tmp27.op;
+                string __tmp28Prefix = "    "; //176:1
+                StringBuilder __tmp29 = new StringBuilder();
+                __tmp29.Append(GenerateOperationImpl(model, op, methodNames));
+                using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
                 {
-                    bool __tmp28_first = true;
-                    while(__tmp28_first || !__tmp28Reader.EndOfStream)
+                    bool __tmp29_first = true;
+                    bool __tmp29_last = __tmp29Reader.EndOfStream;
+                    while(__tmp29_first || !__tmp29_last)
                     {
-                        __tmp28_first = false;
-                        string __tmp28Line = __tmp28Reader.ReadLine();
-                        if (__tmp28Line == null)
-                        {
-                            __tmp28Line = "";
-                        }
-                        __out.Append(__tmp26Prefix);
-                        __out.Append(__tmp28Line);
-                        __out.Append(__tmp27Suffix);
-                        __out.AppendLine(); //176:52
+                        __tmp29_first = false;
+                        string __tmp29Line = __tmp29Reader.ReadLine();
+                        __tmp29_last = __tmp29Reader.EndOfStream;
+                        __out.Append(__tmp28Prefix);
+                        if (__tmp29Line != null) __out.Append(__tmp29Line);
+                        if (!__tmp29_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //176:52
                     }
                 }
             }
             __out.Append("}"); //178:1
-            __out.AppendLine(); //178:2
-            __out.AppendLine(); //179:1
+            __out.AppendLine(false); //178:2
+            __out.AppendLine(true); //179:1
             return __out.ToString();
         }
 
@@ -1360,85 +1247,78 @@ namespace MetaDslx.Core //1:1
             StringBuilder __out = new StringBuilder();
             if (prop.Class == cls) //183:2
             {
-                string __tmp1Prefix = string.Empty;
-                string __tmp2Suffix = string.Empty;
-                StringBuilder __tmp3 = new StringBuilder();
-                __tmp3.Append(GenerateAnnotations(prop));
-                using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+                StringBuilder __tmp2 = new StringBuilder();
+                __tmp2.Append(GenerateAnnotations(prop));
+                using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
                 {
-                    bool __tmp3_first = true;
-                    while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                    bool __tmp2_first = true;
+                    bool __tmp2_last = __tmp2Reader.EndOfStream;
+                    while(__tmp2_first || !__tmp2_last)
                     {
-                        __tmp3_first = false;
-                        string __tmp3Line = __tmp3Reader.ReadLine();
-                        if (__tmp3Line == null)
-                        {
-                            __tmp3Line = "";
-                        }
-                        __out.Append(__tmp1Prefix);
-                        __out.Append(__tmp3Line);
-                        __out.Append(__tmp2Suffix);
-                        __out.AppendLine(); //184:28
+                        __tmp2_first = false;
+                        string __tmp2Line = __tmp2Reader.ReadLine();
+                        __tmp2_last = __tmp2Reader.EndOfStream;
+                        if (__tmp2Line != null) __out.Append(__tmp2Line);
+                        if (!__tmp2_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //184:28
                     }
                 }
                 if (prop.Kind == MetaPropertyKind.Containment) //185:2
                 {
                     __out.Append("@metadslx.core.Containment"); //186:1
-                    __out.AppendLine(); //186:27
+                    __out.AppendLine(false); //186:27
                 }
                 if (prop.Kind != MetaPropertyKind.Normal && prop.Kind != MetaPropertyKind.Containment) //188:2
                 {
                     __out.Append("@metadslx.core.Readonly"); //189:1
-                    __out.AppendLine(); //189:24
+                    __out.AppendLine(false); //189:24
                 }
                 var __loop18_results = 
                     (from p in __Enumerate((prop.OppositeProperties).GetEnumerator()) //191:7
                     select new { p = p}
                     ).ToList(); //191:2
                 int __loop18_iteration = 0;
-                foreach (var __tmp4 in __loop18_results)
+                foreach (var __tmp3 in __loop18_results)
                 {
                     ++__loop18_iteration;
-                    var p = __tmp4.p;
-                    string __tmp5Prefix = "@metadslx.core.Opposite(declaringType="; //192:1
-                    string __tmp6Suffix = "\")"; //192:103
-                    StringBuilder __tmp7 = new StringBuilder();
-                    __tmp7.Append(p.Class.JavaFullDescriptorName());
-                    using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
+                    var p = __tmp3.p;
+                    string __tmp5Line = "@metadslx.core.Opposite(declaringType="; //192:1
+                    if (__tmp5Line != null) __out.Append(__tmp5Line);
+                    StringBuilder __tmp6 = new StringBuilder();
+                    __tmp6.Append(p.Class.JavaFullDescriptorName());
+                    using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
                     {
-                        bool __tmp7_first = true;
-                        while(__tmp7_first || !__tmp7Reader.EndOfStream)
+                        bool __tmp6_first = true;
+                        bool __tmp6_last = __tmp6Reader.EndOfStream;
+                        while(__tmp6_first || !__tmp6_last)
                         {
-                            __tmp7_first = false;
-                            string __tmp7Line = __tmp7Reader.ReadLine();
-                            if (__tmp7Line == null)
-                            {
-                                __tmp7Line = "";
-                            }
-                            __out.Append(__tmp5Prefix);
-                            __out.Append(__tmp7Line);
+                            __tmp6_first = false;
+                            string __tmp6Line = __tmp6Reader.ReadLine();
+                            __tmp6_last = __tmp6Reader.EndOfStream;
+                            if (__tmp6Line != null) __out.Append(__tmp6Line);
+                            if (!__tmp6_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp8Line = ".class, propertyName=\""; //192:73
-                    __out.Append(__tmp8Line);
-                    StringBuilder __tmp9 = new StringBuilder();
-                    __tmp9.Append(p.Name);
-                    using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
+                    string __tmp7Line = ".class, propertyName=\""; //192:73
+                    if (__tmp7Line != null) __out.Append(__tmp7Line);
+                    StringBuilder __tmp8 = new StringBuilder();
+                    __tmp8.Append(p.Name);
+                    using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
                     {
-                        bool __tmp9_first = true;
-                        while(__tmp9_first || !__tmp9Reader.EndOfStream)
+                        bool __tmp8_first = true;
+                        bool __tmp8_last = __tmp8Reader.EndOfStream;
+                        while(__tmp8_first || !__tmp8_last)
                         {
-                            __tmp9_first = false;
-                            string __tmp9Line = __tmp9Reader.ReadLine();
-                            if (__tmp9Line == null)
-                            {
-                                __tmp9Line = "";
-                            }
-                            __out.Append(__tmp9Line);
-                            __out.Append(__tmp6Suffix);
-                            __out.AppendLine(); //192:105
+                            __tmp8_first = false;
+                            string __tmp8Line = __tmp8Reader.ReadLine();
+                            __tmp8_last = __tmp8Reader.EndOfStream;
+                            if (__tmp8Line != null) __out.Append(__tmp8Line);
+                            if (!__tmp8_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp9Line = "\")"; //192:103
+                    if (__tmp9Line != null) __out.Append(__tmp9Line);
+                    __out.AppendLine(false); //192:105
                 }
                 var __loop19_results = 
                     (from p in __Enumerate((prop.SubsettedProperties).GetEnumerator()) //194:7
@@ -1451,69 +1331,66 @@ namespace MetaDslx.Core //1:1
                     var p = __tmp10.p;
                     if (cls.GetAllSuperClasses(false).Contains(p.Class)) //195:3
                     {
-                        string __tmp11Prefix = "@metadslx.core.Subsets(declaringType="; //196:1
-                        string __tmp12Suffix = "\")"; //196:102
+                        string __tmp12Line = "@metadslx.core.Subsets(declaringType="; //196:1
+                        if (__tmp12Line != null) __out.Append(__tmp12Line);
                         StringBuilder __tmp13 = new StringBuilder();
                         __tmp13.Append(p.Class.JavaFullDescriptorName());
                         using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
                         {
                             bool __tmp13_first = true;
-                            while(__tmp13_first || !__tmp13Reader.EndOfStream)
+                            bool __tmp13_last = __tmp13Reader.EndOfStream;
+                            while(__tmp13_first || !__tmp13_last)
                             {
                                 __tmp13_first = false;
                                 string __tmp13Line = __tmp13Reader.ReadLine();
-                                if (__tmp13Line == null)
-                                {
-                                    __tmp13Line = "";
-                                }
-                                __out.Append(__tmp11Prefix);
-                                __out.Append(__tmp13Line);
+                                __tmp13_last = __tmp13Reader.EndOfStream;
+                                if (__tmp13Line != null) __out.Append(__tmp13Line);
+                                if (!__tmp13_last) __out.AppendLine(true);
                             }
                         }
                         string __tmp14Line = ".class, propertyName=\""; //196:72
-                        __out.Append(__tmp14Line);
+                        if (__tmp14Line != null) __out.Append(__tmp14Line);
                         StringBuilder __tmp15 = new StringBuilder();
                         __tmp15.Append(p.Name);
                         using(StreamReader __tmp15Reader = new StreamReader(this.__ToStream(__tmp15.ToString())))
                         {
                             bool __tmp15_first = true;
-                            while(__tmp15_first || !__tmp15Reader.EndOfStream)
+                            bool __tmp15_last = __tmp15Reader.EndOfStream;
+                            while(__tmp15_first || !__tmp15_last)
                             {
                                 __tmp15_first = false;
                                 string __tmp15Line = __tmp15Reader.ReadLine();
-                                if (__tmp15Line == null)
-                                {
-                                    __tmp15Line = "";
-                                }
-                                __out.Append(__tmp15Line);
-                                __out.Append(__tmp12Suffix);
-                                __out.AppendLine(); //196:104
+                                __tmp15_last = __tmp15Reader.EndOfStream;
+                                if (__tmp15Line != null) __out.Append(__tmp15Line);
+                                if (!__tmp15_last) __out.AppendLine(true);
                             }
                         }
+                        string __tmp16Line = "\")"; //196:102
+                        if (__tmp16Line != null) __out.Append(__tmp16Line);
+                        __out.AppendLine(false); //196:104
                     }
                     else //197:3
                     {
-                        string __tmp16Prefix = "// ERROR: subsetted property '"; //198:1
-                        string __tmp17Suffix = "' must be a property of an ancestor class"; //198:59
-                        StringBuilder __tmp18 = new StringBuilder();
-                        __tmp18.Append(p.JavaFullDescriptorName());
-                        using(StreamReader __tmp18Reader = new StreamReader(this.__ToStream(__tmp18.ToString())))
+                        string __tmp18Line = "// ERROR: subsetted property '"; //198:1
+                        if (__tmp18Line != null) __out.Append(__tmp18Line);
+                        StringBuilder __tmp19 = new StringBuilder();
+                        __tmp19.Append(p.JavaFullDescriptorName());
+                        using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
                         {
-                            bool __tmp18_first = true;
-                            while(__tmp18_first || !__tmp18Reader.EndOfStream)
+                            bool __tmp19_first = true;
+                            bool __tmp19_last = __tmp19Reader.EndOfStream;
+                            while(__tmp19_first || !__tmp19_last)
                             {
-                                __tmp18_first = false;
-                                string __tmp18Line = __tmp18Reader.ReadLine();
-                                if (__tmp18Line == null)
-                                {
-                                    __tmp18Line = "";
-                                }
-                                __out.Append(__tmp16Prefix);
-                                __out.Append(__tmp18Line);
-                                __out.Append(__tmp17Suffix);
-                                __out.AppendLine(); //198:100
+                                __tmp19_first = false;
+                                string __tmp19Line = __tmp19Reader.ReadLine();
+                                __tmp19_last = __tmp19Reader.EndOfStream;
+                                if (__tmp19Line != null) __out.Append(__tmp19Line);
+                                if (!__tmp19_last) __out.AppendLine(true);
                             }
                         }
+                        string __tmp20Line = "' must be a property of an ancestor class"; //198:59
+                        if (__tmp20Line != null) __out.Append(__tmp20Line);
+                        __out.AppendLine(false); //198:100
                     }
                 }
                 var __loop20_results = 
@@ -1521,439 +1398,417 @@ namespace MetaDslx.Core //1:1
                     select new { p = p}
                     ).ToList(); //201:2
                 int __loop20_iteration = 0;
-                foreach (var __tmp19 in __loop20_results)
+                foreach (var __tmp21 in __loop20_results)
                 {
                     ++__loop20_iteration;
-                    var p = __tmp19.p;
+                    var p = __tmp21.p;
                     if (cls.GetAllSuperClasses(false).Contains(p.Class)) //202:3
                     {
-                        string __tmp20Prefix = "@metadslx.core.Redefines(declaringType="; //203:1
-                        string __tmp21Suffix = "\")"; //203:104
-                        StringBuilder __tmp22 = new StringBuilder();
-                        __tmp22.Append(p.Class.JavaFullDescriptorName());
-                        using(StreamReader __tmp22Reader = new StreamReader(this.__ToStream(__tmp22.ToString())))
-                        {
-                            bool __tmp22_first = true;
-                            while(__tmp22_first || !__tmp22Reader.EndOfStream)
-                            {
-                                __tmp22_first = false;
-                                string __tmp22Line = __tmp22Reader.ReadLine();
-                                if (__tmp22Line == null)
-                                {
-                                    __tmp22Line = "";
-                                }
-                                __out.Append(__tmp20Prefix);
-                                __out.Append(__tmp22Line);
-                            }
-                        }
-                        string __tmp23Line = ".class, propertyName=\""; //203:74
-                        __out.Append(__tmp23Line);
+                        string __tmp23Line = "@metadslx.core.Redefines(declaringType="; //203:1
+                        if (__tmp23Line != null) __out.Append(__tmp23Line);
                         StringBuilder __tmp24 = new StringBuilder();
-                        __tmp24.Append(p.Name);
+                        __tmp24.Append(p.Class.JavaFullDescriptorName());
                         using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
                         {
                             bool __tmp24_first = true;
-                            while(__tmp24_first || !__tmp24Reader.EndOfStream)
+                            bool __tmp24_last = __tmp24Reader.EndOfStream;
+                            while(__tmp24_first || !__tmp24_last)
                             {
                                 __tmp24_first = false;
                                 string __tmp24Line = __tmp24Reader.ReadLine();
-                                if (__tmp24Line == null)
-                                {
-                                    __tmp24Line = "";
-                                }
-                                __out.Append(__tmp24Line);
-                                __out.Append(__tmp21Suffix);
-                                __out.AppendLine(); //203:106
+                                __tmp24_last = __tmp24Reader.EndOfStream;
+                                if (__tmp24Line != null) __out.Append(__tmp24Line);
+                                if (!__tmp24_last) __out.AppendLine(true);
                             }
                         }
+                        string __tmp25Line = ".class, propertyName=\""; //203:74
+                        if (__tmp25Line != null) __out.Append(__tmp25Line);
+                        StringBuilder __tmp26 = new StringBuilder();
+                        __tmp26.Append(p.Name);
+                        using(StreamReader __tmp26Reader = new StreamReader(this.__ToStream(__tmp26.ToString())))
+                        {
+                            bool __tmp26_first = true;
+                            bool __tmp26_last = __tmp26Reader.EndOfStream;
+                            while(__tmp26_first || !__tmp26_last)
+                            {
+                                __tmp26_first = false;
+                                string __tmp26Line = __tmp26Reader.ReadLine();
+                                __tmp26_last = __tmp26Reader.EndOfStream;
+                                if (__tmp26Line != null) __out.Append(__tmp26Line);
+                                if (!__tmp26_last) __out.AppendLine(true);
+                            }
+                        }
+                        string __tmp27Line = "\")"; //203:104
+                        if (__tmp27Line != null) __out.Append(__tmp27Line);
+                        __out.AppendLine(false); //203:106
                     }
                     else //204:3
                     {
-                        string __tmp25Prefix = "// ERROR: redefined property '"; //205:1
-                        string __tmp26Suffix = "' must be a property of an ancestor class"; //205:59
-                        StringBuilder __tmp27 = new StringBuilder();
-                        __tmp27.Append(p.JavaFullDescriptorName());
-                        using(StreamReader __tmp27Reader = new StreamReader(this.__ToStream(__tmp27.ToString())))
+                        string __tmp29Line = "// ERROR: redefined property '"; //205:1
+                        if (__tmp29Line != null) __out.Append(__tmp29Line);
+                        StringBuilder __tmp30 = new StringBuilder();
+                        __tmp30.Append(p.JavaFullDescriptorName());
+                        using(StreamReader __tmp30Reader = new StreamReader(this.__ToStream(__tmp30.ToString())))
                         {
-                            bool __tmp27_first = true;
-                            while(__tmp27_first || !__tmp27Reader.EndOfStream)
+                            bool __tmp30_first = true;
+                            bool __tmp30_last = __tmp30Reader.EndOfStream;
+                            while(__tmp30_first || !__tmp30_last)
                             {
-                                __tmp27_first = false;
-                                string __tmp27Line = __tmp27Reader.ReadLine();
-                                if (__tmp27Line == null)
-                                {
-                                    __tmp27Line = "";
-                                }
-                                __out.Append(__tmp25Prefix);
-                                __out.Append(__tmp27Line);
-                                __out.Append(__tmp26Suffix);
-                                __out.AppendLine(); //205:100
+                                __tmp30_first = false;
+                                string __tmp30Line = __tmp30Reader.ReadLine();
+                                __tmp30_last = __tmp30Reader.EndOfStream;
+                                if (__tmp30Line != null) __out.Append(__tmp30Line);
+                                if (!__tmp30_last) __out.AppendLine(true);
                             }
                         }
+                        string __tmp31Line = "' must be a property of an ancestor class"; //205:59
+                        if (__tmp31Line != null) __out.Append(__tmp31Line);
+                        __out.AppendLine(false); //205:100
                     }
                 }
                 if (prop.Type is MetaCollectionType) //208:2
                 {
-                    string __tmp28Prefix = "public static final ModelProperty "; //209:1
-                    string __tmp29Suffix = "Property ="; //209:46
-                    StringBuilder __tmp30 = new StringBuilder();
-                    __tmp30.Append(prop.Name);
-                    using(StreamReader __tmp30Reader = new StreamReader(this.__ToStream(__tmp30.ToString())))
+                    string __tmp33Line = "public static final ModelProperty "; //209:1
+                    if (__tmp33Line != null) __out.Append(__tmp33Line);
+                    StringBuilder __tmp34 = new StringBuilder();
+                    __tmp34.Append(prop.Name);
+                    using(StreamReader __tmp34Reader = new StreamReader(this.__ToStream(__tmp34.ToString())))
                     {
-                        bool __tmp30_first = true;
-                        while(__tmp30_first || !__tmp30Reader.EndOfStream)
+                        bool __tmp34_first = true;
+                        bool __tmp34_last = __tmp34Reader.EndOfStream;
+                        while(__tmp34_first || !__tmp34_last)
                         {
-                            __tmp30_first = false;
-                            string __tmp30Line = __tmp30Reader.ReadLine();
-                            if (__tmp30Line == null)
-                            {
-                                __tmp30Line = "";
-                            }
-                            __out.Append(__tmp28Prefix);
-                            __out.Append(__tmp30Line);
-                            __out.Append(__tmp29Suffix);
-                            __out.AppendLine(); //209:56
+                            __tmp34_first = false;
+                            string __tmp34Line = __tmp34Reader.ReadLine();
+                            __tmp34_last = __tmp34Reader.EndOfStream;
+                            if (__tmp34Line != null) __out.Append(__tmp34Line);
+                            if (!__tmp34_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp31Prefix = "    metadslx.core.ModelProperty.register(\""; //210:1
-                    string __tmp32Suffix = "Property, true));"; //210:396
-                    StringBuilder __tmp33 = new StringBuilder();
-                    __tmp33.Append(prop.Name);
-                    using(StreamReader __tmp33Reader = new StreamReader(this.__ToStream(__tmp33.ToString())))
+                    string __tmp35Line = "Property ="; //209:46
+                    if (__tmp35Line != null) __out.Append(__tmp35Line);
+                    __out.AppendLine(false); //209:56
+                    string __tmp37Line = "    metadslx.core.ModelProperty.register(\""; //210:1
+                    if (__tmp37Line != null) __out.Append(__tmp37Line);
+                    StringBuilder __tmp38 = new StringBuilder();
+                    __tmp38.Append(prop.Name);
+                    using(StreamReader __tmp38Reader = new StreamReader(this.__ToStream(__tmp38.ToString())))
                     {
-                        bool __tmp33_first = true;
-                        while(__tmp33_first || !__tmp33Reader.EndOfStream)
+                        bool __tmp38_first = true;
+                        bool __tmp38_last = __tmp38Reader.EndOfStream;
+                        while(__tmp38_first || !__tmp38_last)
                         {
-                            __tmp33_first = false;
-                            string __tmp33Line = __tmp33Reader.ReadLine();
-                            if (__tmp33Line == null)
-                            {
-                                __tmp33Line = "";
-                            }
-                            __out.Append(__tmp31Prefix);
-                            __out.Append(__tmp33Line);
+                            __tmp38_first = false;
+                            string __tmp38Line = __tmp38Reader.ReadLine();
+                            __tmp38_last = __tmp38Reader.EndOfStream;
+                            if (__tmp38Line != null) __out.Append(__tmp38Line);
+                            if (!__tmp38_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp34Line = "\", "; //210:54
-                    __out.Append(__tmp34Line);
-                    StringBuilder __tmp35 = new StringBuilder();
-                    __tmp35.Append(prop.Type.JavaNonGenericFullName());
-                    using(StreamReader __tmp35Reader = new StreamReader(this.__ToStream(__tmp35.ToString())))
+                    string __tmp39Line = "\", "; //210:54
+                    if (__tmp39Line != null) __out.Append(__tmp39Line);
+                    StringBuilder __tmp40 = new StringBuilder();
+                    __tmp40.Append(prop.Type.JavaNonGenericFullName());
+                    using(StreamReader __tmp40Reader = new StreamReader(this.__ToStream(__tmp40.ToString())))
                     {
-                        bool __tmp35_first = true;
-                        while(__tmp35_first || !__tmp35Reader.EndOfStream)
+                        bool __tmp40_first = true;
+                        bool __tmp40_last = __tmp40Reader.EndOfStream;
+                        while(__tmp40_first || !__tmp40_last)
                         {
-                            __tmp35_first = false;
-                            string __tmp35Line = __tmp35Reader.ReadLine();
-                            if (__tmp35Line == null)
-                            {
-                                __tmp35Line = "";
-                            }
-                            __out.Append(__tmp35Line);
+                            __tmp40_first = false;
+                            string __tmp40Line = __tmp40Reader.ReadLine();
+                            __tmp40_last = __tmp40Reader.EndOfStream;
+                            if (__tmp40Line != null) __out.Append(__tmp40Line);
+                            if (!__tmp40_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp36Line = ".class, "; //210:93
-                    __out.Append(__tmp36Line);
-                    StringBuilder __tmp37 = new StringBuilder();
-                    __tmp37.Append(((MetaCollectionType)prop.Type).InnerType.JavaNonGenericFullName());
-                    using(StreamReader __tmp37Reader = new StreamReader(this.__ToStream(__tmp37.ToString())))
+                    string __tmp41Line = ".class, "; //210:93
+                    if (__tmp41Line != null) __out.Append(__tmp41Line);
+                    StringBuilder __tmp42 = new StringBuilder();
+                    __tmp42.Append(((MetaCollectionType)prop.Type).InnerType.JavaNonGenericFullName());
+                    using(StreamReader __tmp42Reader = new StreamReader(this.__ToStream(__tmp42.ToString())))
                     {
-                        bool __tmp37_first = true;
-                        while(__tmp37_first || !__tmp37Reader.EndOfStream)
+                        bool __tmp42_first = true;
+                        bool __tmp42_last = __tmp42Reader.EndOfStream;
+                        while(__tmp42_first || !__tmp42_last)
                         {
-                            __tmp37_first = false;
-                            string __tmp37Line = __tmp37Reader.ReadLine();
-                            if (__tmp37Line == null)
-                            {
-                                __tmp37Line = "";
-                            }
-                            __out.Append(__tmp37Line);
+                            __tmp42_first = false;
+                            string __tmp42Line = __tmp42Reader.ReadLine();
+                            __tmp42_last = __tmp42Reader.EndOfStream;
+                            if (__tmp42Line != null) __out.Append(__tmp42Line);
+                            if (!__tmp42_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp38Line = ".class, "; //210:169
-                    __out.Append(__tmp38Line);
-                    StringBuilder __tmp39 = new StringBuilder();
-                    __tmp39.Append(prop.Class.JavaFullName());
-                    using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
+                    string __tmp43Line = ".class, "; //210:169
+                    if (__tmp43Line != null) __out.Append(__tmp43Line);
+                    StringBuilder __tmp44 = new StringBuilder();
+                    __tmp44.Append(prop.Class.JavaFullName());
+                    using(StreamReader __tmp44Reader = new StreamReader(this.__ToStream(__tmp44.ToString())))
                     {
-                        bool __tmp39_first = true;
-                        while(__tmp39_first || !__tmp39Reader.EndOfStream)
+                        bool __tmp44_first = true;
+                        bool __tmp44_last = __tmp44Reader.EndOfStream;
+                        while(__tmp44_first || !__tmp44_last)
                         {
-                            __tmp39_first = false;
-                            string __tmp39Line = __tmp39Reader.ReadLine();
-                            if (__tmp39Line == null)
-                            {
-                                __tmp39Line = "";
-                            }
-                            __out.Append(__tmp39Line);
+                            __tmp44_first = false;
+                            string __tmp44Line = __tmp44Reader.ReadLine();
+                            __tmp44_last = __tmp44Reader.EndOfStream;
+                            if (__tmp44Line != null) __out.Append(__tmp44Line);
+                            if (!__tmp44_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp40Line = ".class, "; //210:204
-                    __out.Append(__tmp40Line);
-                    StringBuilder __tmp41 = new StringBuilder();
-                    __tmp41.Append(prop.Class.Model.JavaFullName());
-                    using(StreamReader __tmp41Reader = new StreamReader(this.__ToStream(__tmp41.ToString())))
+                    string __tmp45Line = ".class, "; //210:204
+                    if (__tmp45Line != null) __out.Append(__tmp45Line);
+                    StringBuilder __tmp46 = new StringBuilder();
+                    __tmp46.Append(prop.Class.Model.JavaFullName());
+                    using(StreamReader __tmp46Reader = new StreamReader(this.__ToStream(__tmp46.ToString())))
                     {
-                        bool __tmp41_first = true;
-                        while(__tmp41_first || !__tmp41Reader.EndOfStream)
+                        bool __tmp46_first = true;
+                        bool __tmp46_last = __tmp46Reader.EndOfStream;
+                        while(__tmp46_first || !__tmp46_last)
                         {
-                            __tmp41_first = false;
-                            string __tmp41Line = __tmp41Reader.ReadLine();
-                            if (__tmp41Line == null)
-                            {
-                                __tmp41Line = "";
-                            }
-                            __out.Append(__tmp41Line);
+                            __tmp46_first = false;
+                            string __tmp46Line = __tmp46Reader.ReadLine();
+                            __tmp46_last = __tmp46Reader.EndOfStream;
+                            if (__tmp46Line != null) __out.Append(__tmp46Line);
+                            if (!__tmp46_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp42Line = "Descriptor."; //210:245
-                    __out.Append(__tmp42Line);
-                    StringBuilder __tmp43 = new StringBuilder();
-                    __tmp43.Append(prop.Class.JavaName());
-                    using(StreamReader __tmp43Reader = new StreamReader(this.__ToStream(__tmp43.ToString())))
+                    string __tmp47Line = "Descriptor."; //210:245
+                    if (__tmp47Line != null) __out.Append(__tmp47Line);
+                    StringBuilder __tmp48 = new StringBuilder();
+                    __tmp48.Append(prop.Class.JavaName());
+                    using(StreamReader __tmp48Reader = new StreamReader(this.__ToStream(__tmp48.ToString())))
                     {
-                        bool __tmp43_first = true;
-                        while(__tmp43_first || !__tmp43Reader.EndOfStream)
+                        bool __tmp48_first = true;
+                        bool __tmp48_last = __tmp48Reader.EndOfStream;
+                        while(__tmp48_first || !__tmp48_last)
                         {
-                            __tmp43_first = false;
-                            string __tmp43Line = __tmp43Reader.ReadLine();
-                            if (__tmp43Line == null)
-                            {
-                                __tmp43Line = "";
-                            }
-                            __out.Append(__tmp43Line);
+                            __tmp48_first = false;
+                            string __tmp48Line = __tmp48Reader.ReadLine();
+                            __tmp48_last = __tmp48Reader.EndOfStream;
+                            if (__tmp48Line != null) __out.Append(__tmp48Line);
+                            if (!__tmp48_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp44Line = ".class, metadslx.core.Lazy.create(() -> "; //210:279
-                    __out.Append(__tmp44Line);
-                    StringBuilder __tmp45 = new StringBuilder();
-                    __tmp45.Append(prop.Class.Model.JavaFullName());
-                    using(StreamReader __tmp45Reader = new StreamReader(this.__ToStream(__tmp45.ToString())))
+                    string __tmp49Line = ".class, metadslx.core.Lazy.create(() -> "; //210:279
+                    if (__tmp49Line != null) __out.Append(__tmp49Line);
+                    StringBuilder __tmp50 = new StringBuilder();
+                    __tmp50.Append(prop.Class.Model.JavaFullName());
+                    using(StreamReader __tmp50Reader = new StreamReader(this.__ToStream(__tmp50.ToString())))
                     {
-                        bool __tmp45_first = true;
-                        while(__tmp45_first || !__tmp45Reader.EndOfStream)
+                        bool __tmp50_first = true;
+                        bool __tmp50_last = __tmp50Reader.EndOfStream;
+                        while(__tmp50_first || !__tmp50_last)
                         {
-                            __tmp45_first = false;
-                            string __tmp45Line = __tmp45Reader.ReadLine();
-                            if (__tmp45Line == null)
-                            {
-                                __tmp45Line = "";
-                            }
-                            __out.Append(__tmp45Line);
+                            __tmp50_first = false;
+                            string __tmp50Line = __tmp50Reader.ReadLine();
+                            __tmp50_last = __tmp50Reader.EndOfStream;
+                            if (__tmp50Line != null) __out.Append(__tmp50Line);
+                            if (!__tmp50_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp46Line = "Instance."; //210:352
-                    __out.Append(__tmp46Line);
-                    StringBuilder __tmp47 = new StringBuilder();
-                    __tmp47.Append(prop.Class.JavaName());
-                    using(StreamReader __tmp47Reader = new StreamReader(this.__ToStream(__tmp47.ToString())))
-                    {
-                        bool __tmp47_first = true;
-                        while(__tmp47_first || !__tmp47Reader.EndOfStream)
-                        {
-                            __tmp47_first = false;
-                            string __tmp47Line = __tmp47Reader.ReadLine();
-                            if (__tmp47Line == null)
-                            {
-                                __tmp47Line = "";
-                            }
-                            __out.Append(__tmp47Line);
-                        }
-                    }
-                    string __tmp48Line = "_"; //210:384
-                    __out.Append(__tmp48Line);
-                    StringBuilder __tmp49 = new StringBuilder();
-                    __tmp49.Append(prop.Name);
-                    using(StreamReader __tmp49Reader = new StreamReader(this.__ToStream(__tmp49.ToString())))
-                    {
-                        bool __tmp49_first = true;
-                        while(__tmp49_first || !__tmp49Reader.EndOfStream)
-                        {
-                            __tmp49_first = false;
-                            string __tmp49Line = __tmp49Reader.ReadLine();
-                            if (__tmp49Line == null)
-                            {
-                                __tmp49Line = "";
-                            }
-                            __out.Append(__tmp49Line);
-                            __out.Append(__tmp32Suffix);
-                            __out.AppendLine(); //210:413
-                        }
-                    }
-                }
-                else //211:2
-                {
-                    string __tmp50Prefix = "public static final ModelProperty "; //212:1
-                    string __tmp51Suffix = "Property ="; //212:46
+                    string __tmp51Line = "Instance."; //210:352
+                    if (__tmp51Line != null) __out.Append(__tmp51Line);
                     StringBuilder __tmp52 = new StringBuilder();
-                    __tmp52.Append(prop.Name);
+                    __tmp52.Append(prop.Class.JavaName());
                     using(StreamReader __tmp52Reader = new StreamReader(this.__ToStream(__tmp52.ToString())))
                     {
                         bool __tmp52_first = true;
-                        while(__tmp52_first || !__tmp52Reader.EndOfStream)
+                        bool __tmp52_last = __tmp52Reader.EndOfStream;
+                        while(__tmp52_first || !__tmp52_last)
                         {
                             __tmp52_first = false;
                             string __tmp52Line = __tmp52Reader.ReadLine();
-                            if (__tmp52Line == null)
-                            {
-                                __tmp52Line = "";
-                            }
-                            __out.Append(__tmp50Prefix);
-                            __out.Append(__tmp52Line);
-                            __out.Append(__tmp51Suffix);
-                            __out.AppendLine(); //212:56
+                            __tmp52_last = __tmp52Reader.EndOfStream;
+                            if (__tmp52Line != null) __out.Append(__tmp52Line);
+                            if (!__tmp52_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp53Prefix = "    metadslx.core.ModelProperty.register(\""; //213:1
-                    string __tmp54Suffix = "Property, true));"; //213:322
-                    StringBuilder __tmp55 = new StringBuilder();
-                    __tmp55.Append(prop.Name);
-                    using(StreamReader __tmp55Reader = new StreamReader(this.__ToStream(__tmp55.ToString())))
+                    string __tmp53Line = "_"; //210:384
+                    if (__tmp53Line != null) __out.Append(__tmp53Line);
+                    StringBuilder __tmp54 = new StringBuilder();
+                    __tmp54.Append(prop.Name);
+                    using(StreamReader __tmp54Reader = new StreamReader(this.__ToStream(__tmp54.ToString())))
                     {
-                        bool __tmp55_first = true;
-                        while(__tmp55_first || !__tmp55Reader.EndOfStream)
+                        bool __tmp54_first = true;
+                        bool __tmp54_last = __tmp54Reader.EndOfStream;
+                        while(__tmp54_first || !__tmp54_last)
                         {
-                            __tmp55_first = false;
-                            string __tmp55Line = __tmp55Reader.ReadLine();
-                            if (__tmp55Line == null)
-                            {
-                                __tmp55Line = "";
-                            }
-                            __out.Append(__tmp53Prefix);
-                            __out.Append(__tmp55Line);
+                            __tmp54_first = false;
+                            string __tmp54Line = __tmp54Reader.ReadLine();
+                            __tmp54_last = __tmp54Reader.EndOfStream;
+                            if (__tmp54Line != null) __out.Append(__tmp54Line);
+                            if (!__tmp54_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp56Line = "\", "; //213:54
-                    __out.Append(__tmp56Line);
-                    StringBuilder __tmp57 = new StringBuilder();
-                    __tmp57.Append(prop.Type.JavaFullPublicName());
-                    using(StreamReader __tmp57Reader = new StreamReader(this.__ToStream(__tmp57.ToString())))
+                    string __tmp55Line = "Property, true));"; //210:396
+                    if (__tmp55Line != null) __out.Append(__tmp55Line);
+                    __out.AppendLine(false); //210:413
+                }
+                else //211:2
+                {
+                    string __tmp57Line = "public static final ModelProperty "; //212:1
+                    if (__tmp57Line != null) __out.Append(__tmp57Line);
+                    StringBuilder __tmp58 = new StringBuilder();
+                    __tmp58.Append(prop.Name);
+                    using(StreamReader __tmp58Reader = new StreamReader(this.__ToStream(__tmp58.ToString())))
                     {
-                        bool __tmp57_first = true;
-                        while(__tmp57_first || !__tmp57Reader.EndOfStream)
+                        bool __tmp58_first = true;
+                        bool __tmp58_last = __tmp58Reader.EndOfStream;
+                        while(__tmp58_first || !__tmp58_last)
                         {
-                            __tmp57_first = false;
-                            string __tmp57Line = __tmp57Reader.ReadLine();
-                            if (__tmp57Line == null)
-                            {
-                                __tmp57Line = "";
-                            }
-                            __out.Append(__tmp57Line);
+                            __tmp58_first = false;
+                            string __tmp58Line = __tmp58Reader.ReadLine();
+                            __tmp58_last = __tmp58Reader.EndOfStream;
+                            if (__tmp58Line != null) __out.Append(__tmp58Line);
+                            if (!__tmp58_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp58Line = ".class, null, "; //213:89
-                    __out.Append(__tmp58Line);
-                    StringBuilder __tmp59 = new StringBuilder();
-                    __tmp59.Append(prop.Class.JavaFullName());
-                    using(StreamReader __tmp59Reader = new StreamReader(this.__ToStream(__tmp59.ToString())))
+                    string __tmp59Line = "Property ="; //212:46
+                    if (__tmp59Line != null) __out.Append(__tmp59Line);
+                    __out.AppendLine(false); //212:56
+                    string __tmp61Line = "    metadslx.core.ModelProperty.register(\""; //213:1
+                    if (__tmp61Line != null) __out.Append(__tmp61Line);
+                    StringBuilder __tmp62 = new StringBuilder();
+                    __tmp62.Append(prop.Name);
+                    using(StreamReader __tmp62Reader = new StreamReader(this.__ToStream(__tmp62.ToString())))
                     {
-                        bool __tmp59_first = true;
-                        while(__tmp59_first || !__tmp59Reader.EndOfStream)
+                        bool __tmp62_first = true;
+                        bool __tmp62_last = __tmp62Reader.EndOfStream;
+                        while(__tmp62_first || !__tmp62_last)
                         {
-                            __tmp59_first = false;
-                            string __tmp59Line = __tmp59Reader.ReadLine();
-                            if (__tmp59Line == null)
-                            {
-                                __tmp59Line = "";
-                            }
-                            __out.Append(__tmp59Line);
+                            __tmp62_first = false;
+                            string __tmp62Line = __tmp62Reader.ReadLine();
+                            __tmp62_last = __tmp62Reader.EndOfStream;
+                            if (__tmp62Line != null) __out.Append(__tmp62Line);
+                            if (!__tmp62_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp60Line = ".class, "; //213:130
-                    __out.Append(__tmp60Line);
-                    StringBuilder __tmp61 = new StringBuilder();
-                    __tmp61.Append(prop.Class.Model.JavaFullName());
-                    using(StreamReader __tmp61Reader = new StreamReader(this.__ToStream(__tmp61.ToString())))
+                    string __tmp63Line = "\", "; //213:54
+                    if (__tmp63Line != null) __out.Append(__tmp63Line);
+                    StringBuilder __tmp64 = new StringBuilder();
+                    __tmp64.Append(prop.Type.JavaFullPublicName());
+                    using(StreamReader __tmp64Reader = new StreamReader(this.__ToStream(__tmp64.ToString())))
                     {
-                        bool __tmp61_first = true;
-                        while(__tmp61_first || !__tmp61Reader.EndOfStream)
+                        bool __tmp64_first = true;
+                        bool __tmp64_last = __tmp64Reader.EndOfStream;
+                        while(__tmp64_first || !__tmp64_last)
                         {
-                            __tmp61_first = false;
-                            string __tmp61Line = __tmp61Reader.ReadLine();
-                            if (__tmp61Line == null)
-                            {
-                                __tmp61Line = "";
-                            }
-                            __out.Append(__tmp61Line);
+                            __tmp64_first = false;
+                            string __tmp64Line = __tmp64Reader.ReadLine();
+                            __tmp64_last = __tmp64Reader.EndOfStream;
+                            if (__tmp64Line != null) __out.Append(__tmp64Line);
+                            if (!__tmp64_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp62Line = "Descriptor."; //213:171
-                    __out.Append(__tmp62Line);
-                    StringBuilder __tmp63 = new StringBuilder();
-                    __tmp63.Append(prop.Class.JavaName());
-                    using(StreamReader __tmp63Reader = new StreamReader(this.__ToStream(__tmp63.ToString())))
+                    string __tmp65Line = ".class, null, "; //213:89
+                    if (__tmp65Line != null) __out.Append(__tmp65Line);
+                    StringBuilder __tmp66 = new StringBuilder();
+                    __tmp66.Append(prop.Class.JavaFullName());
+                    using(StreamReader __tmp66Reader = new StreamReader(this.__ToStream(__tmp66.ToString())))
                     {
-                        bool __tmp63_first = true;
-                        while(__tmp63_first || !__tmp63Reader.EndOfStream)
+                        bool __tmp66_first = true;
+                        bool __tmp66_last = __tmp66Reader.EndOfStream;
+                        while(__tmp66_first || !__tmp66_last)
                         {
-                            __tmp63_first = false;
-                            string __tmp63Line = __tmp63Reader.ReadLine();
-                            if (__tmp63Line == null)
-                            {
-                                __tmp63Line = "";
-                            }
-                            __out.Append(__tmp63Line);
+                            __tmp66_first = false;
+                            string __tmp66Line = __tmp66Reader.ReadLine();
+                            __tmp66_last = __tmp66Reader.EndOfStream;
+                            if (__tmp66Line != null) __out.Append(__tmp66Line);
+                            if (!__tmp66_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp64Line = ".class, metadslx.core.Lazy.create(() -> "; //213:205
-                    __out.Append(__tmp64Line);
-                    StringBuilder __tmp65 = new StringBuilder();
-                    __tmp65.Append(prop.Class.Model.JavaFullName());
-                    using(StreamReader __tmp65Reader = new StreamReader(this.__ToStream(__tmp65.ToString())))
+                    string __tmp67Line = ".class, "; //213:130
+                    if (__tmp67Line != null) __out.Append(__tmp67Line);
+                    StringBuilder __tmp68 = new StringBuilder();
+                    __tmp68.Append(prop.Class.Model.JavaFullName());
+                    using(StreamReader __tmp68Reader = new StreamReader(this.__ToStream(__tmp68.ToString())))
                     {
-                        bool __tmp65_first = true;
-                        while(__tmp65_first || !__tmp65Reader.EndOfStream)
+                        bool __tmp68_first = true;
+                        bool __tmp68_last = __tmp68Reader.EndOfStream;
+                        while(__tmp68_first || !__tmp68_last)
                         {
-                            __tmp65_first = false;
-                            string __tmp65Line = __tmp65Reader.ReadLine();
-                            if (__tmp65Line == null)
-                            {
-                                __tmp65Line = "";
-                            }
-                            __out.Append(__tmp65Line);
+                            __tmp68_first = false;
+                            string __tmp68Line = __tmp68Reader.ReadLine();
+                            __tmp68_last = __tmp68Reader.EndOfStream;
+                            if (__tmp68Line != null) __out.Append(__tmp68Line);
+                            if (!__tmp68_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp66Line = "Instance."; //213:278
-                    __out.Append(__tmp66Line);
-                    StringBuilder __tmp67 = new StringBuilder();
-                    __tmp67.Append(prop.Class.JavaName());
-                    using(StreamReader __tmp67Reader = new StreamReader(this.__ToStream(__tmp67.ToString())))
+                    string __tmp69Line = "Descriptor."; //213:171
+                    if (__tmp69Line != null) __out.Append(__tmp69Line);
+                    StringBuilder __tmp70 = new StringBuilder();
+                    __tmp70.Append(prop.Class.JavaName());
+                    using(StreamReader __tmp70Reader = new StreamReader(this.__ToStream(__tmp70.ToString())))
                     {
-                        bool __tmp67_first = true;
-                        while(__tmp67_first || !__tmp67Reader.EndOfStream)
+                        bool __tmp70_first = true;
+                        bool __tmp70_last = __tmp70Reader.EndOfStream;
+                        while(__tmp70_first || !__tmp70_last)
                         {
-                            __tmp67_first = false;
-                            string __tmp67Line = __tmp67Reader.ReadLine();
-                            if (__tmp67Line == null)
-                            {
-                                __tmp67Line = "";
-                            }
-                            __out.Append(__tmp67Line);
+                            __tmp70_first = false;
+                            string __tmp70Line = __tmp70Reader.ReadLine();
+                            __tmp70_last = __tmp70Reader.EndOfStream;
+                            if (__tmp70Line != null) __out.Append(__tmp70Line);
+                            if (!__tmp70_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp68Line = "_"; //213:310
-                    __out.Append(__tmp68Line);
-                    StringBuilder __tmp69 = new StringBuilder();
-                    __tmp69.Append(prop.Name);
-                    using(StreamReader __tmp69Reader = new StreamReader(this.__ToStream(__tmp69.ToString())))
+                    string __tmp71Line = ".class, metadslx.core.Lazy.create(() -> "; //213:205
+                    if (__tmp71Line != null) __out.Append(__tmp71Line);
+                    StringBuilder __tmp72 = new StringBuilder();
+                    __tmp72.Append(prop.Class.Model.JavaFullName());
+                    using(StreamReader __tmp72Reader = new StreamReader(this.__ToStream(__tmp72.ToString())))
                     {
-                        bool __tmp69_first = true;
-                        while(__tmp69_first || !__tmp69Reader.EndOfStream)
+                        bool __tmp72_first = true;
+                        bool __tmp72_last = __tmp72Reader.EndOfStream;
+                        while(__tmp72_first || !__tmp72_last)
                         {
-                            __tmp69_first = false;
-                            string __tmp69Line = __tmp69Reader.ReadLine();
-                            if (__tmp69Line == null)
-                            {
-                                __tmp69Line = "";
-                            }
-                            __out.Append(__tmp69Line);
-                            __out.Append(__tmp54Suffix);
-                            __out.AppendLine(); //213:339
+                            __tmp72_first = false;
+                            string __tmp72Line = __tmp72Reader.ReadLine();
+                            __tmp72_last = __tmp72Reader.EndOfStream;
+                            if (__tmp72Line != null) __out.Append(__tmp72Line);
+                            if (!__tmp72_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp73Line = "Instance."; //213:278
+                    if (__tmp73Line != null) __out.Append(__tmp73Line);
+                    StringBuilder __tmp74 = new StringBuilder();
+                    __tmp74.Append(prop.Class.JavaName());
+                    using(StreamReader __tmp74Reader = new StreamReader(this.__ToStream(__tmp74.ToString())))
+                    {
+                        bool __tmp74_first = true;
+                        bool __tmp74_last = __tmp74Reader.EndOfStream;
+                        while(__tmp74_first || !__tmp74_last)
+                        {
+                            __tmp74_first = false;
+                            string __tmp74Line = __tmp74Reader.ReadLine();
+                            __tmp74_last = __tmp74Reader.EndOfStream;
+                            if (__tmp74Line != null) __out.Append(__tmp74Line);
+                            if (!__tmp74_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp75Line = "_"; //213:310
+                    if (__tmp75Line != null) __out.Append(__tmp75Line);
+                    StringBuilder __tmp76 = new StringBuilder();
+                    __tmp76.Append(prop.Name);
+                    using(StreamReader __tmp76Reader = new StreamReader(this.__ToStream(__tmp76.ToString())))
+                    {
+                        bool __tmp76_first = true;
+                        bool __tmp76_last = __tmp76Reader.EndOfStream;
+                        while(__tmp76_first || !__tmp76_last)
+                        {
+                            __tmp76_first = false;
+                            string __tmp76Line = __tmp76Reader.ReadLine();
+                            __tmp76_last = __tmp76Reader.EndOfStream;
+                            if (__tmp76Line != null) __out.Append(__tmp76Line);
+                            if (!__tmp76_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp77Line = "Property, true));"; //213:322
+                    if (__tmp77Line != null) __out.Append(__tmp77Line);
+                    __out.AppendLine(false); //213:339
                 }
             }
-            __out.AppendLine(); //216:1
+            __out.AppendLine(true); //216:1
             return __out.ToString();
         }
 
@@ -1962,197 +1817,188 @@ namespace MetaDslx.Core //1:1
             StringBuilder __out = new StringBuilder();
             if (generated.Add("get" + prop.Name)) //220:2
             {
-                __out.AppendLine(); //221:1
-                string __tmp1Prefix = "public "; //222:1
-                string __tmp2Suffix = "() {"; //222:75
+                __out.AppendLine(true); //221:1
+                string __tmp2Line = "public "; //222:1
+                if (__tmp2Line != null) __out.Append(__tmp2Line);
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(prop.Type.JavaFullPublicName());
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
                 {
                     bool __tmp3_first = true;
-                    while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                    bool __tmp3_last = __tmp3Reader.EndOfStream;
+                    while(__tmp3_first || !__tmp3_last)
                     {
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
-                        if (__tmp3Line == null)
-                        {
-                            __tmp3Line = "";
-                        }
-                        __out.Append(__tmp1Prefix);
-                        __out.Append(__tmp3Line);
+                        __tmp3_last = __tmp3Reader.EndOfStream;
+                        if (__tmp3Line != null) __out.Append(__tmp3Line);
+                        if (!__tmp3_last) __out.AppendLine(true);
                     }
                 }
                 string __tmp4Line = " "; //222:40
-                __out.Append(__tmp4Line);
+                if (__tmp4Line != null) __out.Append(__tmp4Line);
                 StringBuilder __tmp5 = new StringBuilder();
                 __tmp5.Append(("get" + prop.Name).SafeJavaName());
                 using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
                 {
                     bool __tmp5_first = true;
-                    while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                    bool __tmp5_last = __tmp5Reader.EndOfStream;
+                    while(__tmp5_first || !__tmp5_last)
                     {
                         __tmp5_first = false;
                         string __tmp5Line = __tmp5Reader.ReadLine();
-                        if (__tmp5Line == null)
-                        {
-                            __tmp5Line = "";
-                        }
-                        __out.Append(__tmp5Line);
-                        __out.Append(__tmp2Suffix);
-                        __out.AppendLine(); //222:79
+                        __tmp5_last = __tmp5Reader.EndOfStream;
+                        if (__tmp5Line != null) __out.Append(__tmp5Line);
+                        if (!__tmp5_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp6Prefix = "    Object result = this.mGet("; //223:1
-                string __tmp7Suffix = "); "; //223:62
-                StringBuilder __tmp8 = new StringBuilder();
-                __tmp8.Append(prop.JavaFullDescriptorName());
-                using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
+                string __tmp6Line = "() {"; //222:75
+                if (__tmp6Line != null) __out.Append(__tmp6Line);
+                __out.AppendLine(false); //222:79
+                string __tmp8Line = "    Object result = this.mGet("; //223:1
+                if (__tmp8Line != null) __out.Append(__tmp8Line);
+                StringBuilder __tmp9 = new StringBuilder();
+                __tmp9.Append(prop.JavaFullDescriptorName());
+                using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
                 {
-                    bool __tmp8_first = true;
-                    while(__tmp8_first || !__tmp8Reader.EndOfStream)
+                    bool __tmp9_first = true;
+                    bool __tmp9_last = __tmp9Reader.EndOfStream;
+                    while(__tmp9_first || !__tmp9_last)
                     {
-                        __tmp8_first = false;
-                        string __tmp8Line = __tmp8Reader.ReadLine();
-                        if (__tmp8Line == null)
-                        {
-                            __tmp8Line = "";
-                        }
-                        __out.Append(__tmp6Prefix);
-                        __out.Append(__tmp8Line);
-                        __out.Append(__tmp7Suffix);
-                        __out.AppendLine(); //223:65
+                        __tmp9_first = false;
+                        string __tmp9Line = __tmp9Reader.ReadLine();
+                        __tmp9_last = __tmp9Reader.EndOfStream;
+                        if (__tmp9Line != null) __out.Append(__tmp9Line);
+                        if (!__tmp9_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp9Prefix = "    if (result != null) return ("; //224:1
-                string __tmp10Suffix = ")result;"; //224:65
-                StringBuilder __tmp11 = new StringBuilder();
-                __tmp11.Append(prop.Type.JavaFullPublicName());
-                using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
+                string __tmp10Line = "); "; //223:62
+                if (__tmp10Line != null) __out.Append(__tmp10Line);
+                __out.AppendLine(false); //223:65
+                string __tmp12Line = "    if (result != null) return ("; //224:1
+                if (__tmp12Line != null) __out.Append(__tmp12Line);
+                StringBuilder __tmp13 = new StringBuilder();
+                __tmp13.Append(prop.Type.JavaFullPublicName());
+                using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
                 {
-                    bool __tmp11_first = true;
-                    while(__tmp11_first || !__tmp11Reader.EndOfStream)
+                    bool __tmp13_first = true;
+                    bool __tmp13_last = __tmp13Reader.EndOfStream;
+                    while(__tmp13_first || !__tmp13_last)
                     {
-                        __tmp11_first = false;
-                        string __tmp11Line = __tmp11Reader.ReadLine();
-                        if (__tmp11Line == null)
-                        {
-                            __tmp11Line = "";
-                        }
-                        __out.Append(__tmp9Prefix);
-                        __out.Append(__tmp11Line);
-                        __out.Append(__tmp10Suffix);
-                        __out.AppendLine(); //224:73
+                        __tmp13_first = false;
+                        string __tmp13Line = __tmp13Reader.ReadLine();
+                        __tmp13_last = __tmp13Reader.EndOfStream;
+                        if (__tmp13Line != null) __out.Append(__tmp13Line);
+                        if (!__tmp13_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp12Prefix = "    else return ("; //225:1
-                string __tmp13Suffix = ";"; //225:81
-                StringBuilder __tmp14 = new StringBuilder();
-                __tmp14.Append(prop.Type.JavaFullPublicName());
-                using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
+                string __tmp14Line = ")result;"; //224:65
+                if (__tmp14Line != null) __out.Append(__tmp14Line);
+                __out.AppendLine(false); //224:73
+                string __tmp16Line = "    else return ("; //225:1
+                if (__tmp16Line != null) __out.Append(__tmp16Line);
+                StringBuilder __tmp17 = new StringBuilder();
+                __tmp17.Append(prop.Type.JavaFullPublicName());
+                using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
                 {
-                    bool __tmp14_first = true;
-                    while(__tmp14_first || !__tmp14Reader.EndOfStream)
+                    bool __tmp17_first = true;
+                    bool __tmp17_last = __tmp17Reader.EndOfStream;
+                    while(__tmp17_first || !__tmp17_last)
                     {
-                        __tmp14_first = false;
-                        string __tmp14Line = __tmp14Reader.ReadLine();
-                        if (__tmp14Line == null)
-                        {
-                            __tmp14Line = "";
-                        }
-                        __out.Append(__tmp12Prefix);
-                        __out.Append(__tmp14Line);
+                        __tmp17_first = false;
+                        string __tmp17Line = __tmp17Reader.ReadLine();
+                        __tmp17_last = __tmp17Reader.EndOfStream;
+                        if (__tmp17Line != null) __out.Append(__tmp17Line);
+                        if (!__tmp17_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp15Line = ")"; //225:50
-                __out.Append(__tmp15Line);
-                StringBuilder __tmp16 = new StringBuilder();
-                __tmp16.Append(prop.Type.JavaDefaultValue());
-                using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
+                string __tmp18Line = ")"; //225:50
+                if (__tmp18Line != null) __out.Append(__tmp18Line);
+                StringBuilder __tmp19 = new StringBuilder();
+                __tmp19.Append(prop.Type.JavaDefaultValue());
+                using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
                 {
-                    bool __tmp16_first = true;
-                    while(__tmp16_first || !__tmp16Reader.EndOfStream)
+                    bool __tmp19_first = true;
+                    bool __tmp19_last = __tmp19Reader.EndOfStream;
+                    while(__tmp19_first || !__tmp19_last)
                     {
-                        __tmp16_first = false;
-                        string __tmp16Line = __tmp16Reader.ReadLine();
-                        if (__tmp16Line == null)
-                        {
-                            __tmp16Line = "";
-                        }
-                        __out.Append(__tmp16Line);
-                        __out.Append(__tmp13Suffix);
-                        __out.AppendLine(); //225:82
+                        __tmp19_first = false;
+                        string __tmp19Line = __tmp19Reader.ReadLine();
+                        __tmp19_last = __tmp19Reader.EndOfStream;
+                        if (__tmp19Line != null) __out.Append(__tmp19Line);
+                        if (!__tmp19_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp20Line = ";"; //225:81
+                if (__tmp20Line != null) __out.Append(__tmp20Line);
+                __out.AppendLine(false); //225:82
                 __out.Append("}"); //226:1
-                __out.AppendLine(); //226:2
+                __out.AppendLine(false); //226:2
             }
             if ((prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) && !(prop.Type is MetaCollectionType)) //228:2
             {
                 if (generated.Add("set" + prop.Name)) //229:2
                 {
-                    __out.AppendLine(); //230:1
-                    string __tmp17Prefix = "public void "; //231:1
-                    string __tmp18Suffix = " value) {"; //231:80
-                    StringBuilder __tmp19 = new StringBuilder();
-                    __tmp19.Append(("set" + prop.Name).SafeJavaName());
-                    using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
+                    __out.AppendLine(true); //230:1
+                    string __tmp22Line = "public void "; //231:1
+                    if (__tmp22Line != null) __out.Append(__tmp22Line);
+                    StringBuilder __tmp23 = new StringBuilder();
+                    __tmp23.Append(("set" + prop.Name).SafeJavaName());
+                    using(StreamReader __tmp23Reader = new StreamReader(this.__ToStream(__tmp23.ToString())))
                     {
-                        bool __tmp19_first = true;
-                        while(__tmp19_first || !__tmp19Reader.EndOfStream)
+                        bool __tmp23_first = true;
+                        bool __tmp23_last = __tmp23Reader.EndOfStream;
+                        while(__tmp23_first || !__tmp23_last)
                         {
-                            __tmp19_first = false;
-                            string __tmp19Line = __tmp19Reader.ReadLine();
-                            if (__tmp19Line == null)
-                            {
-                                __tmp19Line = "";
-                            }
-                            __out.Append(__tmp17Prefix);
-                            __out.Append(__tmp19Line);
+                            __tmp23_first = false;
+                            string __tmp23Line = __tmp23Reader.ReadLine();
+                            __tmp23_last = __tmp23Reader.EndOfStream;
+                            if (__tmp23Line != null) __out.Append(__tmp23Line);
+                            if (!__tmp23_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp20Line = "("; //231:47
-                    __out.Append(__tmp20Line);
-                    StringBuilder __tmp21 = new StringBuilder();
-                    __tmp21.Append(prop.Type.JavaFullPublicName());
-                    using(StreamReader __tmp21Reader = new StreamReader(this.__ToStream(__tmp21.ToString())))
+                    string __tmp24Line = "("; //231:47
+                    if (__tmp24Line != null) __out.Append(__tmp24Line);
+                    StringBuilder __tmp25 = new StringBuilder();
+                    __tmp25.Append(prop.Type.JavaFullPublicName());
+                    using(StreamReader __tmp25Reader = new StreamReader(this.__ToStream(__tmp25.ToString())))
                     {
-                        bool __tmp21_first = true;
-                        while(__tmp21_first || !__tmp21Reader.EndOfStream)
+                        bool __tmp25_first = true;
+                        bool __tmp25_last = __tmp25Reader.EndOfStream;
+                        while(__tmp25_first || !__tmp25_last)
                         {
-                            __tmp21_first = false;
-                            string __tmp21Line = __tmp21Reader.ReadLine();
-                            if (__tmp21Line == null)
-                            {
-                                __tmp21Line = "";
-                            }
-                            __out.Append(__tmp21Line);
-                            __out.Append(__tmp18Suffix);
-                            __out.AppendLine(); //231:89
+                            __tmp25_first = false;
+                            string __tmp25Line = __tmp25Reader.ReadLine();
+                            __tmp25_last = __tmp25Reader.EndOfStream;
+                            if (__tmp25Line != null) __out.Append(__tmp25Line);
+                            if (!__tmp25_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp22Prefix = "    this.mSet("; //232:1
-                    string __tmp23Suffix = ", value);"; //232:46
-                    StringBuilder __tmp24 = new StringBuilder();
-                    __tmp24.Append(prop.JavaFullDescriptorName());
-                    using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
+                    string __tmp26Line = " value) {"; //231:80
+                    if (__tmp26Line != null) __out.Append(__tmp26Line);
+                    __out.AppendLine(false); //231:89
+                    string __tmp28Line = "    this.mSet("; //232:1
+                    if (__tmp28Line != null) __out.Append(__tmp28Line);
+                    StringBuilder __tmp29 = new StringBuilder();
+                    __tmp29.Append(prop.JavaFullDescriptorName());
+                    using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
                     {
-                        bool __tmp24_first = true;
-                        while(__tmp24_first || !__tmp24Reader.EndOfStream)
+                        bool __tmp29_first = true;
+                        bool __tmp29_last = __tmp29Reader.EndOfStream;
+                        while(__tmp29_first || !__tmp29_last)
                         {
-                            __tmp24_first = false;
-                            string __tmp24Line = __tmp24Reader.ReadLine();
-                            if (__tmp24Line == null)
-                            {
-                                __tmp24Line = "";
-                            }
-                            __out.Append(__tmp22Prefix);
-                            __out.Append(__tmp24Line);
-                            __out.Append(__tmp23Suffix);
-                            __out.AppendLine(); //232:55
+                            __tmp29_first = false;
+                            string __tmp29Line = __tmp29Reader.ReadLine();
+                            __tmp29_last = __tmp29Reader.EndOfStream;
+                            if (__tmp29Line != null) __out.Append(__tmp29Line);
+                            if (!__tmp29_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp30Line = ", value);"; //232:46
+                    if (__tmp30Line != null) __out.Append(__tmp30Line);
+                    __out.AppendLine(false); //232:55
                     __out.Append("}"); //233:1
-                    __out.AppendLine(); //233:2
+                    __out.AppendLine(false); //233:2
                 }
             }
             return __out.ToString();
@@ -2177,15 +2023,47 @@ namespace MetaDslx.Core //1:1
             var __tmp1 = expr; //249:10
             if (expr is MetaBracketExpression) //250:2
             {
-                __out.Append("("); //250:33
-                __out.Append(GenerateExpression(((MetaBracketExpression)expr).Expression));
-                __out.Append(")"); //250:71
+                string __tmp4Line = "("; //250:33
+                if (__tmp4Line != null) __out.Append(__tmp4Line);
+                StringBuilder __tmp5 = new StringBuilder();
+                __tmp5.Append(GenerateExpression(((MetaBracketExpression)expr).Expression));
+                using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
+                {
+                    bool __tmp5_first = true;
+                    bool __tmp5_last = __tmp5Reader.EndOfStream;
+                    while(__tmp5_first || !__tmp5_last)
+                    {
+                        __tmp5_first = false;
+                        string __tmp5Line = __tmp5Reader.ReadLine();
+                        __tmp5_last = __tmp5Reader.EndOfStream;
+                        if (__tmp5Line != null) __out.Append(__tmp5Line);
+                        if (!__tmp5_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp6Line = ")"; //250:71
+                if (__tmp6Line != null) __out.Append(__tmp6Line);
             }
             else if (expr is MetaThisExpression) //251:2
             {
-                __out.Append("(("); //251:30
-                __out.Append(((MetaType)ModelCompilerContext.Current.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)((MetaThisExpression)expr))).JavaName());
-                __out.Append(")this)"); //251:145
+                string __tmp9Line = "(("; //251:30
+                if (__tmp9Line != null) __out.Append(__tmp9Line);
+                StringBuilder __tmp10 = new StringBuilder();
+                __tmp10.Append(((MetaType)ModelCompilerContext.Current.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)((MetaThisExpression)expr))).JavaName());
+                using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
+                {
+                    bool __tmp10_first = true;
+                    bool __tmp10_last = __tmp10Reader.EndOfStream;
+                    while(__tmp10_first || !__tmp10_last)
+                    {
+                        __tmp10_first = false;
+                        string __tmp10Line = __tmp10Reader.ReadLine();
+                        __tmp10_last = __tmp10Reader.EndOfStream;
+                        if (__tmp10Line != null) __out.Append(__tmp10Line);
+                        if (!__tmp10_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp11Line = ")this)"; //251:145
+                if (__tmp11Line != null) __out.Append(__tmp11Line);
             }
             else if (expr is MetaNullExpression) //252:2
             {
@@ -2193,81 +2071,375 @@ namespace MetaDslx.Core //1:1
             }
             else if (expr is MetaTypeAsExpression) //253:2
             {
-                __out.Append("metadslx.core.ModelUtils.as("); //253:32
-                __out.Append(((MetaTypeAsExpression)expr).TypeReference.JavaName());
-                __out.Append(".class,"); //253:91
-                __out.Append(GenerateExpression(((MetaTypeAsExpression)expr).Expression));
-                __out.Append(")"); //253:135
+                string __tmp14Line = "metadslx.core.ModelUtils.as("; //253:32
+                if (__tmp14Line != null) __out.Append(__tmp14Line);
+                StringBuilder __tmp15 = new StringBuilder();
+                __tmp15.Append(((MetaTypeAsExpression)expr).TypeReference.JavaName());
+                using(StreamReader __tmp15Reader = new StreamReader(this.__ToStream(__tmp15.ToString())))
+                {
+                    bool __tmp15_first = true;
+                    bool __tmp15_last = __tmp15Reader.EndOfStream;
+                    while(__tmp15_first || !__tmp15_last)
+                    {
+                        __tmp15_first = false;
+                        string __tmp15Line = __tmp15Reader.ReadLine();
+                        __tmp15_last = __tmp15Reader.EndOfStream;
+                        if (__tmp15Line != null) __out.Append(__tmp15Line);
+                        if (!__tmp15_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp16Line = ".class,"; //253:91
+                if (__tmp16Line != null) __out.Append(__tmp16Line);
+                StringBuilder __tmp17 = new StringBuilder();
+                __tmp17.Append(GenerateExpression(((MetaTypeAsExpression)expr).Expression));
+                using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
+                {
+                    bool __tmp17_first = true;
+                    bool __tmp17_last = __tmp17Reader.EndOfStream;
+                    while(__tmp17_first || !__tmp17_last)
+                    {
+                        __tmp17_first = false;
+                        string __tmp17Line = __tmp17Reader.ReadLine();
+                        __tmp17_last = __tmp17Reader.EndOfStream;
+                        if (__tmp17Line != null) __out.Append(__tmp17Line);
+                        if (!__tmp17_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp18Line = ")"; //253:135
+                if (__tmp18Line != null) __out.Append(__tmp18Line);
             }
             else if (expr is MetaTypeCastExpression) //254:2
             {
-                __out.Append("("); //254:34
-                __out.Append(((MetaTypeCastExpression)expr).TypeReference.JavaName());
-                __out.Append(")"); //254:66
-                __out.Append(GenerateExpression(((MetaTypeCastExpression)expr).Expression));
+                string __tmp21Line = "("; //254:34
+                if (__tmp21Line != null) __out.Append(__tmp21Line);
+                StringBuilder __tmp22 = new StringBuilder();
+                __tmp22.Append(((MetaTypeCastExpression)expr).TypeReference.JavaName());
+                using(StreamReader __tmp22Reader = new StreamReader(this.__ToStream(__tmp22.ToString())))
+                {
+                    bool __tmp22_first = true;
+                    bool __tmp22_last = __tmp22Reader.EndOfStream;
+                    while(__tmp22_first || !__tmp22_last)
+                    {
+                        __tmp22_first = false;
+                        string __tmp22Line = __tmp22Reader.ReadLine();
+                        __tmp22_last = __tmp22Reader.EndOfStream;
+                        if (__tmp22Line != null) __out.Append(__tmp22Line);
+                        if (!__tmp22_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp23Line = ")"; //254:66
+                if (__tmp23Line != null) __out.Append(__tmp23Line);
+                StringBuilder __tmp24 = new StringBuilder();
+                __tmp24.Append(GenerateExpression(((MetaTypeCastExpression)expr).Expression));
+                using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
+                {
+                    bool __tmp24_first = true;
+                    bool __tmp24_last = __tmp24Reader.EndOfStream;
+                    while(__tmp24_first || !__tmp24_last)
+                    {
+                        __tmp24_first = false;
+                        string __tmp24Line = __tmp24Reader.ReadLine();
+                        __tmp24_last = __tmp24Reader.EndOfStream;
+                        if (__tmp24Line != null) __out.Append(__tmp24Line);
+                        if (!__tmp24_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (expr is MetaTypeCheckExpression) //255:2
             {
-                __out.Append(GenerateExpression(((MetaTypeCheckExpression)expr).Expression));
-                __out.Append(" instanceof "); //255:72
-                __out.Append(((MetaTypeCheckExpression)expr).TypeReference.JavaName());
+                StringBuilder __tmp27 = new StringBuilder();
+                __tmp27.Append(GenerateExpression(((MetaTypeCheckExpression)expr).Expression));
+                using(StreamReader __tmp27Reader = new StreamReader(this.__ToStream(__tmp27.ToString())))
+                {
+                    bool __tmp27_first = true;
+                    bool __tmp27_last = __tmp27Reader.EndOfStream;
+                    while(__tmp27_first || !__tmp27_last)
+                    {
+                        __tmp27_first = false;
+                        string __tmp27Line = __tmp27Reader.ReadLine();
+                        __tmp27_last = __tmp27Reader.EndOfStream;
+                        if (__tmp27Line != null) __out.Append(__tmp27Line);
+                        if (!__tmp27_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp28Line = " instanceof "; //255:72
+                if (__tmp28Line != null) __out.Append(__tmp28Line);
+                StringBuilder __tmp29 = new StringBuilder();
+                __tmp29.Append(((MetaTypeCheckExpression)expr).TypeReference.JavaName());
+                using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
+                {
+                    bool __tmp29_first = true;
+                    bool __tmp29_last = __tmp29Reader.EndOfStream;
+                    while(__tmp29_first || !__tmp29_last)
+                    {
+                        __tmp29_first = false;
+                        string __tmp29Line = __tmp29Reader.ReadLine();
+                        __tmp29_last = __tmp29Reader.EndOfStream;
+                        if (__tmp29Line != null) __out.Append(__tmp29Line);
+                        if (!__tmp29_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (expr is MetaTypeOfExpression) //256:2
             {
-                __out.Append(GenerateTypeOf(((MetaTypeOfExpression)expr)));
+                StringBuilder __tmp32 = new StringBuilder();
+                __tmp32.Append(GenerateTypeOf(((MetaTypeOfExpression)expr)));
+                using(StreamReader __tmp32Reader = new StreamReader(this.__ToStream(__tmp32.ToString())))
+                {
+                    bool __tmp32_first = true;
+                    bool __tmp32_last = __tmp32Reader.EndOfStream;
+                    while(__tmp32_first || !__tmp32_last)
+                    {
+                        __tmp32_first = false;
+                        string __tmp32Line = __tmp32Reader.ReadLine();
+                        __tmp32_last = __tmp32Reader.EndOfStream;
+                        if (__tmp32Line != null) __out.Append(__tmp32Line);
+                        if (!__tmp32_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (expr is MetaConditionalExpression) //257:2
             {
-                __out.Append(GenerateExpression(((MetaConditionalExpression)expr).Condition));
-                __out.Append(" ? "); //257:73
-                __out.Append(GenerateExpression(((MetaConditionalExpression)expr).Then));
-                __out.Append(" : "); //257:107
-                __out.Append(GenerateExpression(((MetaConditionalExpression)expr).Else));
+                StringBuilder __tmp35 = new StringBuilder();
+                __tmp35.Append(GenerateExpression(((MetaConditionalExpression)expr).Condition));
+                using(StreamReader __tmp35Reader = new StreamReader(this.__ToStream(__tmp35.ToString())))
+                {
+                    bool __tmp35_first = true;
+                    bool __tmp35_last = __tmp35Reader.EndOfStream;
+                    while(__tmp35_first || !__tmp35_last)
+                    {
+                        __tmp35_first = false;
+                        string __tmp35Line = __tmp35Reader.ReadLine();
+                        __tmp35_last = __tmp35Reader.EndOfStream;
+                        if (__tmp35Line != null) __out.Append(__tmp35Line);
+                        if (!__tmp35_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp36Line = " ? "; //257:73
+                if (__tmp36Line != null) __out.Append(__tmp36Line);
+                StringBuilder __tmp37 = new StringBuilder();
+                __tmp37.Append(GenerateExpression(((MetaConditionalExpression)expr).Then));
+                using(StreamReader __tmp37Reader = new StreamReader(this.__ToStream(__tmp37.ToString())))
+                {
+                    bool __tmp37_first = true;
+                    bool __tmp37_last = __tmp37Reader.EndOfStream;
+                    while(__tmp37_first || !__tmp37_last)
+                    {
+                        __tmp37_first = false;
+                        string __tmp37Line = __tmp37Reader.ReadLine();
+                        __tmp37_last = __tmp37Reader.EndOfStream;
+                        if (__tmp37Line != null) __out.Append(__tmp37Line);
+                        if (!__tmp37_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp38Line = " : "; //257:107
+                if (__tmp38Line != null) __out.Append(__tmp38Line);
+                StringBuilder __tmp39 = new StringBuilder();
+                __tmp39.Append(GenerateExpression(((MetaConditionalExpression)expr).Else));
+                using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
+                {
+                    bool __tmp39_first = true;
+                    bool __tmp39_last = __tmp39Reader.EndOfStream;
+                    while(__tmp39_first || !__tmp39_last)
+                    {
+                        __tmp39_first = false;
+                        string __tmp39Line = __tmp39Reader.ReadLine();
+                        __tmp39_last = __tmp39Reader.EndOfStream;
+                        if (__tmp39Line != null) __out.Append(__tmp39Line);
+                        if (!__tmp39_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (expr is MetaConstantExpression) //258:2
             {
-                __out.Append(GetJavaValue(((MetaConstantExpression)expr).Value));
+                StringBuilder __tmp42 = new StringBuilder();
+                __tmp42.Append(GetJavaValue(((MetaConstantExpression)expr).Value));
+                using(StreamReader __tmp42Reader = new StreamReader(this.__ToStream(__tmp42.ToString())))
+                {
+                    bool __tmp42_first = true;
+                    bool __tmp42_last = __tmp42Reader.EndOfStream;
+                    while(__tmp42_first || !__tmp42_last)
+                    {
+                        __tmp42_first = false;
+                        string __tmp42Line = __tmp42Reader.ReadLine();
+                        __tmp42_last = __tmp42Reader.EndOfStream;
+                        if (__tmp42Line != null) __out.Append(__tmp42Line);
+                        if (!__tmp42_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (expr is MetaIdentifierExpression) //259:2
             {
-                __out.Append(GenerateIdentifierExpression(((MetaIdentifierExpression)expr)));
+                StringBuilder __tmp45 = new StringBuilder();
+                __tmp45.Append(GenerateIdentifierExpression(((MetaIdentifierExpression)expr)));
+                using(StreamReader __tmp45Reader = new StreamReader(this.__ToStream(__tmp45.ToString())))
+                {
+                    bool __tmp45_first = true;
+                    bool __tmp45_last = __tmp45Reader.EndOfStream;
+                    while(__tmp45_first || !__tmp45_last)
+                    {
+                        __tmp45_first = false;
+                        string __tmp45Line = __tmp45Reader.ReadLine();
+                        __tmp45_last = __tmp45Reader.EndOfStream;
+                        if (__tmp45Line != null) __out.Append(__tmp45Line);
+                        if (!__tmp45_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (expr is MetaMemberAccessExpression) //260:2
             {
-                __out.Append(GenerateExpression(((MetaMemberAccessExpression)expr).Expression));
-                __out.Append(".get"); //260:75
-                __out.Append(((MetaMemberAccessExpression)expr).Name);
-                __out.Append("()"); //260:90
+                StringBuilder __tmp48 = new StringBuilder();
+                __tmp48.Append(GenerateExpression(((MetaMemberAccessExpression)expr).Expression));
+                using(StreamReader __tmp48Reader = new StreamReader(this.__ToStream(__tmp48.ToString())))
+                {
+                    bool __tmp48_first = true;
+                    bool __tmp48_last = __tmp48Reader.EndOfStream;
+                    while(__tmp48_first || !__tmp48_last)
+                    {
+                        __tmp48_first = false;
+                        string __tmp48Line = __tmp48Reader.ReadLine();
+                        __tmp48_last = __tmp48Reader.EndOfStream;
+                        if (__tmp48Line != null) __out.Append(__tmp48Line);
+                        if (!__tmp48_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp49Line = ".get"; //260:75
+                if (__tmp49Line != null) __out.Append(__tmp49Line);
+                StringBuilder __tmp50 = new StringBuilder();
+                __tmp50.Append(((MetaMemberAccessExpression)expr).Name);
+                using(StreamReader __tmp50Reader = new StreamReader(this.__ToStream(__tmp50.ToString())))
+                {
+                    bool __tmp50_first = true;
+                    bool __tmp50_last = __tmp50Reader.EndOfStream;
+                    while(__tmp50_first || !__tmp50_last)
+                    {
+                        __tmp50_first = false;
+                        string __tmp50Line = __tmp50Reader.ReadLine();
+                        __tmp50_last = __tmp50Reader.EndOfStream;
+                        if (__tmp50Line != null) __out.Append(__tmp50Line);
+                        if (!__tmp50_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp51Line = "()"; //260:90
+                if (__tmp51Line != null) __out.Append(__tmp51Line);
             }
             else if (expr is MetaFunctionCallExpression) //261:2
             {
-                __out.Append(GenerateFunctionCall(((MetaFunctionCallExpression)expr)));
+                StringBuilder __tmp54 = new StringBuilder();
+                __tmp54.Append(GenerateFunctionCall(((MetaFunctionCallExpression)expr)));
+                using(StreamReader __tmp54Reader = new StreamReader(this.__ToStream(__tmp54.ToString())))
+                {
+                    bool __tmp54_first = true;
+                    bool __tmp54_last = __tmp54Reader.EndOfStream;
+                    while(__tmp54_first || !__tmp54_last)
+                    {
+                        __tmp54_first = false;
+                        string __tmp54Line = __tmp54Reader.ReadLine();
+                        __tmp54_last = __tmp54Reader.EndOfStream;
+                        if (__tmp54Line != null) __out.Append(__tmp54Line);
+                        if (!__tmp54_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (expr is MetaIndexerExpression) //262:2
             {
-                __out.Append(GenerateIndexerCall(((MetaIndexerExpression)expr)));
+                StringBuilder __tmp57 = new StringBuilder();
+                __tmp57.Append(GenerateIndexerCall(((MetaIndexerExpression)expr)));
+                using(StreamReader __tmp57Reader = new StreamReader(this.__ToStream(__tmp57.ToString())))
+                {
+                    bool __tmp57_first = true;
+                    bool __tmp57_last = __tmp57Reader.EndOfStream;
+                    while(__tmp57_first || !__tmp57_last)
+                    {
+                        __tmp57_first = false;
+                        string __tmp57Line = __tmp57Reader.ReadLine();
+                        __tmp57_last = __tmp57Reader.EndOfStream;
+                        if (__tmp57Line != null) __out.Append(__tmp57Line);
+                        if (!__tmp57_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (expr is MetaOperatorExpression) //263:2
             {
-                __out.Append(GenerateOperator(((MetaOperatorExpression)expr)));
+                StringBuilder __tmp60 = new StringBuilder();
+                __tmp60.Append(GenerateOperator(((MetaOperatorExpression)expr)));
+                using(StreamReader __tmp60Reader = new StreamReader(this.__ToStream(__tmp60.ToString())))
+                {
+                    bool __tmp60_first = true;
+                    bool __tmp60_last = __tmp60Reader.EndOfStream;
+                    while(__tmp60_first || !__tmp60_last)
+                    {
+                        __tmp60_first = false;
+                        string __tmp60Line = __tmp60Reader.ReadLine();
+                        __tmp60_last = __tmp60Reader.EndOfStream;
+                        if (__tmp60Line != null) __out.Append(__tmp60Line);
+                        if (!__tmp60_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (expr is MetaNewExpression) //264:2
             {
-                __out.Append(((MetaNewExpression)expr).TypeReference.JavaFullFactoryMethodName());
-                __out.Append("("); //264:77
-                __out.Append(GenerateNewPropertyInitializers(((MetaNewExpression)expr)));
-                __out.Append(")"); //264:117
+                StringBuilder __tmp63 = new StringBuilder();
+                __tmp63.Append(((MetaNewExpression)expr).TypeReference.JavaFullFactoryMethodName());
+                using(StreamReader __tmp63Reader = new StreamReader(this.__ToStream(__tmp63.ToString())))
+                {
+                    bool __tmp63_first = true;
+                    bool __tmp63_last = __tmp63Reader.EndOfStream;
+                    while(__tmp63_first || !__tmp63_last)
+                    {
+                        __tmp63_first = false;
+                        string __tmp63Line = __tmp63Reader.ReadLine();
+                        __tmp63_last = __tmp63Reader.EndOfStream;
+                        if (__tmp63Line != null) __out.Append(__tmp63Line);
+                        if (!__tmp63_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp64Line = "("; //264:77
+                if (__tmp64Line != null) __out.Append(__tmp64Line);
+                StringBuilder __tmp65 = new StringBuilder();
+                __tmp65.Append(GenerateNewPropertyInitializers(((MetaNewExpression)expr)));
+                using(StreamReader __tmp65Reader = new StreamReader(this.__ToStream(__tmp65.ToString())))
+                {
+                    bool __tmp65_first = true;
+                    bool __tmp65_last = __tmp65Reader.EndOfStream;
+                    while(__tmp65_first || !__tmp65_last)
+                    {
+                        __tmp65_first = false;
+                        string __tmp65Line = __tmp65Reader.ReadLine();
+                        __tmp65_last = __tmp65Reader.EndOfStream;
+                        if (__tmp65Line != null) __out.Append(__tmp65Line);
+                        if (!__tmp65_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp66Line = ")"; //264:117
+                if (__tmp66Line != null) __out.Append(__tmp66Line);
             }
             else if (expr is MetaNewCollectionExpression) //265:2
             {
-                __out.Append("new java.util.ArrayList<metadslx.core.Lazy<Object>>() { "); //265:39
-                __out.Append(GenerateNewCollectionValues(((MetaNewCollectionExpression)expr)));
-                __out.Append(" }"); //265:130
+                string __tmp69Line = "new java.util.ArrayList<metadslx.core.Lazy<Object>>() { "; //265:39
+                if (__tmp69Line != null) __out.Append(__tmp69Line);
+                StringBuilder __tmp70 = new StringBuilder();
+                __tmp70.Append(GenerateNewCollectionValues(((MetaNewCollectionExpression)expr)));
+                using(StreamReader __tmp70Reader = new StreamReader(this.__ToStream(__tmp70.ToString())))
+                {
+                    bool __tmp70_first = true;
+                    bool __tmp70_last = __tmp70Reader.EndOfStream;
+                    while(__tmp70_first || !__tmp70_last)
+                    {
+                        __tmp70_first = false;
+                        string __tmp70Line = __tmp70Reader.ReadLine();
+                        __tmp70_last = __tmp70Reader.EndOfStream;
+                        if (__tmp70Line != null) __out.Append(__tmp70Line);
+                        if (!__tmp70_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp71Line = " }"; //265:130
+                if (__tmp71Line != null) __out.Append(__tmp71Line);
             }
             else //266:2
             {
                 __out.Append("***unknown expression type***"); //266:11
-                __out.AppendLine(); //266:40
+                __out.AppendLine(false); //266:40
             }//267:2
             return __out.ToString();
         }
@@ -2277,65 +2449,58 @@ namespace MetaDslx.Core //1:1
             StringBuilder __out = new StringBuilder();
             if (expr.Definition is MetaProperty) //271:2
             {
-                string __tmp1Prefix = "(("; //272:1
-                string __tmp2Suffix = "()"; //272:137
+                string __tmp2Line = "(("; //272:1
+                if (__tmp2Line != null) __out.Append(__tmp2Line);
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(((MetaType)ModelCompilerContext.Current.ResolutionProvider.GetCurrentTypeScopeOf((ModelObject)expr)).JavaName());
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
                 {
                     bool __tmp3_first = true;
-                    while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                    bool __tmp3_last = __tmp3Reader.EndOfStream;
+                    while(__tmp3_first || !__tmp3_last)
                     {
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
-                        if (__tmp3Line == null)
-                        {
-                            __tmp3Line = "";
-                        }
-                        __out.Append(__tmp1Prefix);
-                        __out.Append(__tmp3Line);
+                        __tmp3_last = __tmp3Reader.EndOfStream;
+                        if (__tmp3Line != null) __out.Append(__tmp3Line);
+                        if (!__tmp3_last) __out.AppendLine(true);
                     }
                 }
                 string __tmp4Line = ")this).get"; //272:116
-                __out.Append(__tmp4Line);
+                if (__tmp4Line != null) __out.Append(__tmp4Line);
                 StringBuilder __tmp5 = new StringBuilder();
                 __tmp5.Append(expr.Name);
                 using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
                 {
                     bool __tmp5_first = true;
-                    while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                    bool __tmp5_last = __tmp5Reader.EndOfStream;
+                    while(__tmp5_first || !__tmp5_last)
                     {
                         __tmp5_first = false;
                         string __tmp5Line = __tmp5Reader.ReadLine();
-                        if (__tmp5Line == null)
-                        {
-                            __tmp5Line = "";
-                        }
-                        __out.Append(__tmp5Line);
-                        __out.Append(__tmp2Suffix);
+                        __tmp5_last = __tmp5Reader.EndOfStream;
+                        if (__tmp5Line != null) __out.Append(__tmp5Line);
+                        if (!__tmp5_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp6Line = "()"; //272:137
+                if (__tmp6Line != null) __out.Append(__tmp6Line);
             }
             else //273:2
             {
-                string __tmp6Prefix = string.Empty;
-                string __tmp7Suffix = string.Empty;
                 StringBuilder __tmp8 = new StringBuilder();
                 __tmp8.Append(expr.Name);
                 using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
                 {
                     bool __tmp8_first = true;
-                    while(__tmp8_first || !__tmp8Reader.EndOfStream)
+                    bool __tmp8_last = __tmp8Reader.EndOfStream;
+                    while(__tmp8_first || !__tmp8_last)
                     {
                         __tmp8_first = false;
                         string __tmp8Line = __tmp8Reader.ReadLine();
-                        if (__tmp8Line == null)
-                        {
-                            __tmp8Line = "";
-                        }
-                        __out.Append(__tmp6Prefix);
-                        __out.Append(__tmp8Line);
-                        __out.Append(__tmp7Suffix);
+                        __tmp8_last = __tmp8Reader.EndOfStream;
+                        if (__tmp8Line != null) __out.Append(__tmp8Line);
+                        if (!__tmp8_last) __out.AppendLine(true);
                     }
                 }
             }
@@ -2352,166 +2517,799 @@ namespace MetaDslx.Core //1:1
             StringBuilder __out = new StringBuilder();
             if (call.Definition is MetaGlobalFunction && SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.TypeOf)) //283:2
             {
-                __out.Append(GenerateTypeOf(call.Arguments[0]));
+                StringBuilder __tmp3 = new StringBuilder();
+                __tmp3.Append(GenerateTypeOf(call.Arguments[0]));
+                using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+                {
+                    bool __tmp3_first = true;
+                    bool __tmp3_last = __tmp3Reader.EndOfStream;
+                    while(__tmp3_first || !__tmp3_last)
+                    {
+                        __tmp3_first = false;
+                        string __tmp3Line = __tmp3Reader.ReadLine();
+                        __tmp3_last = __tmp3Reader.EndOfStream;
+                        if (__tmp3Line != null) __out.Append(__tmp3Line);
+                        if (!__tmp3_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.GetValueType)) //284:2
             {
-                __out.Append("ModelCompilerContext.current().getTypeProvider().getTypeOf("); //284:89
-                __out.Append(GenerateCallArguments(call, ""));
-                __out.Append(")"); //284:181
+                string __tmp6Line = "ModelCompilerContext.current().getTypeProvider().getTypeOf("; //284:89
+                if (__tmp6Line != null) __out.Append(__tmp6Line);
+                StringBuilder __tmp7 = new StringBuilder();
+                __tmp7.Append(GenerateCallArguments(call, ""));
+                using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
+                {
+                    bool __tmp7_first = true;
+                    bool __tmp7_last = __tmp7Reader.EndOfStream;
+                    while(__tmp7_first || !__tmp7_last)
+                    {
+                        __tmp7_first = false;
+                        string __tmp7Line = __tmp7Reader.ReadLine();
+                        __tmp7_last = __tmp7Reader.EndOfStream;
+                        if (__tmp7Line != null) __out.Append(__tmp7Line);
+                        if (!__tmp7_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp8Line = ")"; //284:181
+                if (__tmp8Line != null) __out.Append(__tmp8Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.GetReturnType)) //285:2
             {
-                __out.Append("ModelCompilerContext.current().getTypeProvider().getReturnTypeOf("); //285:90
-                __out.Append(GenerateCallArguments(call, "(ModelObject)"));
-                __out.Append(")"); //285:201
+                string __tmp11Line = "ModelCompilerContext.current().getTypeProvider().getReturnTypeOf("; //285:90
+                if (__tmp11Line != null) __out.Append(__tmp11Line);
+                StringBuilder __tmp12 = new StringBuilder();
+                __tmp12.Append(GenerateCallArguments(call, "(ModelObject)"));
+                using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
+                {
+                    bool __tmp12_first = true;
+                    bool __tmp12_last = __tmp12Reader.EndOfStream;
+                    while(__tmp12_first || !__tmp12_last)
+                    {
+                        __tmp12_first = false;
+                        string __tmp12Line = __tmp12Reader.ReadLine();
+                        __tmp12_last = __tmp12Reader.EndOfStream;
+                        if (__tmp12Line != null) __out.Append(__tmp12Line);
+                        if (!__tmp12_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp13Line = ")"; //285:201
+                if (__tmp13Line != null) __out.Append(__tmp13Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.CurrentType)) //286:2
             {
-                __out.Append("ModelCompilerContext.current().getResolutionProvider().getCurrentTypeScopeOf("); //286:88
-                __out.Append(GenerateCallArguments(call, "(ModelObject)"));
-                __out.Append(")"); //286:211
+                string __tmp16Line = "ModelCompilerContext.current().getResolutionProvider().getCurrentTypeScopeOf("; //286:88
+                if (__tmp16Line != null) __out.Append(__tmp16Line);
+                StringBuilder __tmp17 = new StringBuilder();
+                __tmp17.Append(GenerateCallArguments(call, "(ModelObject)"));
+                using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
+                {
+                    bool __tmp17_first = true;
+                    bool __tmp17_last = __tmp17Reader.EndOfStream;
+                    while(__tmp17_first || !__tmp17_last)
+                    {
+                        __tmp17_first = false;
+                        string __tmp17Line = __tmp17Reader.ReadLine();
+                        __tmp17_last = __tmp17Reader.EndOfStream;
+                        if (__tmp17Line != null) __out.Append(__tmp17Line);
+                        if (!__tmp17_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp18Line = ")"; //286:211
+                if (__tmp18Line != null) __out.Append(__tmp18Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.TypeCheck)) //287:2
             {
-                __out.Append("ModelCompilerContext.current().getTypeProvider().typeCheck("); //287:86
-                __out.Append(GenerateCallArguments(call, "(ModelObject)"));
-                __out.Append(")"); //287:191
+                string __tmp21Line = "ModelCompilerContext.current().getTypeProvider().typeCheck("; //287:86
+                if (__tmp21Line != null) __out.Append(__tmp21Line);
+                StringBuilder __tmp22 = new StringBuilder();
+                __tmp22.Append(GenerateCallArguments(call, "(ModelObject)"));
+                using(StreamReader __tmp22Reader = new StreamReader(this.__ToStream(__tmp22.ToString())))
+                {
+                    bool __tmp22_first = true;
+                    bool __tmp22_last = __tmp22Reader.EndOfStream;
+                    while(__tmp22_first || !__tmp22_last)
+                    {
+                        __tmp22_first = false;
+                        string __tmp22Line = __tmp22Reader.ReadLine();
+                        __tmp22_last = __tmp22Reader.EndOfStream;
+                        if (__tmp22Line != null) __out.Append(__tmp22Line);
+                        if (!__tmp22_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp23Line = ")"; //287:191
+                if (__tmp23Line != null) __out.Append(__tmp23Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Balance)) //288:2
             {
-                __out.Append("ModelCompilerContext.current().getTypeProvider().balance("); //288:84
-                __out.Append(GenerateCallArguments(call, "(ModelObject)"));
-                __out.Append(")"); //288:187
+                string __tmp26Line = "ModelCompilerContext.current().getTypeProvider().balance("; //288:84
+                if (__tmp26Line != null) __out.Append(__tmp26Line);
+                StringBuilder __tmp27 = new StringBuilder();
+                __tmp27.Append(GenerateCallArguments(call, "(ModelObject)"));
+                using(StreamReader __tmp27Reader = new StreamReader(this.__ToStream(__tmp27.ToString())))
+                {
+                    bool __tmp27_first = true;
+                    bool __tmp27_last = __tmp27Reader.EndOfStream;
+                    while(__tmp27_first || !__tmp27_last)
+                    {
+                        __tmp27_first = false;
+                        string __tmp27Line = __tmp27Reader.ReadLine();
+                        __tmp27_last = __tmp27Reader.EndOfStream;
+                        if (__tmp27Line != null) __out.Append(__tmp27Line);
+                        if (!__tmp27_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp28Line = ")"; //288:187
+                if (__tmp28Line != null) __out.Append(__tmp28Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Resolve1)) //289:2
             {
-                __out.Append("ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"); //289:85
-                __out.Append("[]");
-                __out.Append(" { ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this) }), ResolveKind.NameOrType, "); //289:207
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //289:354
+                string __tmp31Line = "ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"; //289:85
+                if (__tmp31Line != null) __out.Append(__tmp31Line);
+                StringBuilder __tmp32 = new StringBuilder();
+                __tmp32.Append("[]");
+                using(StreamReader __tmp32Reader = new StreamReader(this.__ToStream(__tmp32.ToString())))
+                {
+                    bool __tmp32_first = true;
+                    bool __tmp32_last = __tmp32Reader.EndOfStream;
+                    while(__tmp32_first || !__tmp32_last)
+                    {
+                        __tmp32_first = false;
+                        string __tmp32Line = __tmp32Reader.ReadLine();
+                        __tmp32_last = __tmp32Reader.EndOfStream;
+                        if (__tmp32Line != null) __out.Append(__tmp32Line);
+                        if (!__tmp32_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp33Line = " { ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this) }), ResolveKind.NameOrType, "; //289:207
+                if (__tmp33Line != null) __out.Append(__tmp33Line);
+                StringBuilder __tmp34 = new StringBuilder();
+                __tmp34.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp34Reader = new StreamReader(this.__ToStream(__tmp34.ToString())))
+                {
+                    bool __tmp34_first = true;
+                    bool __tmp34_last = __tmp34Reader.EndOfStream;
+                    while(__tmp34_first || !__tmp34_last)
+                    {
+                        __tmp34_first = false;
+                        string __tmp34Line = __tmp34Reader.ReadLine();
+                        __tmp34_last = __tmp34Reader.EndOfStream;
+                        if (__tmp34Line != null) __out.Append(__tmp34Line);
+                        if (!__tmp34_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp35Line = ", new ResolutionInfo(), ResolveFlags.All)"; //289:354
+                if (__tmp35Line != null) __out.Append(__tmp35Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Resolve2)) //290:2
             {
-                __out.Append("ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"); //290:85
-                __out.Append("[]");
-                __out.Append(" { (ModelObject)"); //290:207
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }), ResolveKind.NameOrType, "); //290:262
-                __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //290:330
+                string __tmp38Line = "ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"; //290:85
+                if (__tmp38Line != null) __out.Append(__tmp38Line);
+                StringBuilder __tmp39 = new StringBuilder();
+                __tmp39.Append("[]");
+                using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
+                {
+                    bool __tmp39_first = true;
+                    bool __tmp39_last = __tmp39Reader.EndOfStream;
+                    while(__tmp39_first || !__tmp39_last)
+                    {
+                        __tmp39_first = false;
+                        string __tmp39Line = __tmp39Reader.ReadLine();
+                        __tmp39_last = __tmp39Reader.EndOfStream;
+                        if (__tmp39Line != null) __out.Append(__tmp39Line);
+                        if (!__tmp39_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp40Line = " { (ModelObject)"; //290:207
+                if (__tmp40Line != null) __out.Append(__tmp40Line);
+                StringBuilder __tmp41 = new StringBuilder();
+                __tmp41.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp41Reader = new StreamReader(this.__ToStream(__tmp41.ToString())))
+                {
+                    bool __tmp41_first = true;
+                    bool __tmp41_last = __tmp41Reader.EndOfStream;
+                    while(__tmp41_first || !__tmp41_last)
+                    {
+                        __tmp41_first = false;
+                        string __tmp41Line = __tmp41Reader.ReadLine();
+                        __tmp41_last = __tmp41Reader.EndOfStream;
+                        if (__tmp41Line != null) __out.Append(__tmp41Line);
+                        if (!__tmp41_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp42Line = " }), ResolveKind.NameOrType, "; //290:262
+                if (__tmp42Line != null) __out.Append(__tmp42Line);
+                StringBuilder __tmp43 = new StringBuilder();
+                __tmp43.Append(GenerateExpression(call.Arguments[1]));
+                using(StreamReader __tmp43Reader = new StreamReader(this.__ToStream(__tmp43.ToString())))
+                {
+                    bool __tmp43_first = true;
+                    bool __tmp43_last = __tmp43Reader.EndOfStream;
+                    while(__tmp43_first || !__tmp43_last)
+                    {
+                        __tmp43_first = false;
+                        string __tmp43Line = __tmp43Reader.ReadLine();
+                        __tmp43_last = __tmp43Reader.EndOfStream;
+                        if (__tmp43Line != null) __out.Append(__tmp43Line);
+                        if (!__tmp43_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp44Line = ", new ResolutionInfo(), ResolveFlags.All)"; //290:330
+                if (__tmp44Line != null) __out.Append(__tmp44Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveType1)) //291:2
             {
-                __out.Append("ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"); //291:89
-                __out.Append("[]");
-                __out.Append(" { ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this) }), ResolveKind.Type, "); //291:211
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //291:352
+                string __tmp47Line = "ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"; //291:89
+                if (__tmp47Line != null) __out.Append(__tmp47Line);
+                StringBuilder __tmp48 = new StringBuilder();
+                __tmp48.Append("[]");
+                using(StreamReader __tmp48Reader = new StreamReader(this.__ToStream(__tmp48.ToString())))
+                {
+                    bool __tmp48_first = true;
+                    bool __tmp48_last = __tmp48Reader.EndOfStream;
+                    while(__tmp48_first || !__tmp48_last)
+                    {
+                        __tmp48_first = false;
+                        string __tmp48Line = __tmp48Reader.ReadLine();
+                        __tmp48_last = __tmp48Reader.EndOfStream;
+                        if (__tmp48Line != null) __out.Append(__tmp48Line);
+                        if (!__tmp48_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp49Line = " { ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this) }), ResolveKind.Type, "; //291:211
+                if (__tmp49Line != null) __out.Append(__tmp49Line);
+                StringBuilder __tmp50 = new StringBuilder();
+                __tmp50.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp50Reader = new StreamReader(this.__ToStream(__tmp50.ToString())))
+                {
+                    bool __tmp50_first = true;
+                    bool __tmp50_last = __tmp50Reader.EndOfStream;
+                    while(__tmp50_first || !__tmp50_last)
+                    {
+                        __tmp50_first = false;
+                        string __tmp50Line = __tmp50Reader.ReadLine();
+                        __tmp50_last = __tmp50Reader.EndOfStream;
+                        if (__tmp50Line != null) __out.Append(__tmp50Line);
+                        if (!__tmp50_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp51Line = ", new ResolutionInfo(), ResolveFlags.All)"; //291:352
+                if (__tmp51Line != null) __out.Append(__tmp51Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveType2)) //292:2
             {
-                __out.Append("ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"); //292:89
-                __out.Append("[]");
-                __out.Append(" { (ModelObject)"); //292:211
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }), ResolveKind.Type, "); //292:266
-                __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //292:328
+                string __tmp54Line = "ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"; //292:89
+                if (__tmp54Line != null) __out.Append(__tmp54Line);
+                StringBuilder __tmp55 = new StringBuilder();
+                __tmp55.Append("[]");
+                using(StreamReader __tmp55Reader = new StreamReader(this.__ToStream(__tmp55.ToString())))
+                {
+                    bool __tmp55_first = true;
+                    bool __tmp55_last = __tmp55Reader.EndOfStream;
+                    while(__tmp55_first || !__tmp55_last)
+                    {
+                        __tmp55_first = false;
+                        string __tmp55Line = __tmp55Reader.ReadLine();
+                        __tmp55_last = __tmp55Reader.EndOfStream;
+                        if (__tmp55Line != null) __out.Append(__tmp55Line);
+                        if (!__tmp55_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp56Line = " { (ModelObject)"; //292:211
+                if (__tmp56Line != null) __out.Append(__tmp56Line);
+                StringBuilder __tmp57 = new StringBuilder();
+                __tmp57.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp57Reader = new StreamReader(this.__ToStream(__tmp57.ToString())))
+                {
+                    bool __tmp57_first = true;
+                    bool __tmp57_last = __tmp57Reader.EndOfStream;
+                    while(__tmp57_first || !__tmp57_last)
+                    {
+                        __tmp57_first = false;
+                        string __tmp57Line = __tmp57Reader.ReadLine();
+                        __tmp57_last = __tmp57Reader.EndOfStream;
+                        if (__tmp57Line != null) __out.Append(__tmp57Line);
+                        if (!__tmp57_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp58Line = " }), ResolveKind.Type, "; //292:266
+                if (__tmp58Line != null) __out.Append(__tmp58Line);
+                StringBuilder __tmp59 = new StringBuilder();
+                __tmp59.Append(GenerateExpression(call.Arguments[1]));
+                using(StreamReader __tmp59Reader = new StreamReader(this.__ToStream(__tmp59.ToString())))
+                {
+                    bool __tmp59_first = true;
+                    bool __tmp59_last = __tmp59Reader.EndOfStream;
+                    while(__tmp59_first || !__tmp59_last)
+                    {
+                        __tmp59_first = false;
+                        string __tmp59Line = __tmp59Reader.ReadLine();
+                        __tmp59_last = __tmp59Reader.EndOfStream;
+                        if (__tmp59Line != null) __out.Append(__tmp59Line);
+                        if (!__tmp59_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp60Line = ", new ResolutionInfo(), ResolveFlags.All)"; //292:328
+                if (__tmp60Line != null) __out.Append(__tmp60Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveName1)) //293:2
             {
-                __out.Append("ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"); //293:89
-                __out.Append("[]");
-                __out.Append(" { ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this) }), ResolveKind.Name, "); //293:211
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //293:352
+                string __tmp63Line = "ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"; //293:89
+                if (__tmp63Line != null) __out.Append(__tmp63Line);
+                StringBuilder __tmp64 = new StringBuilder();
+                __tmp64.Append("[]");
+                using(StreamReader __tmp64Reader = new StreamReader(this.__ToStream(__tmp64.ToString())))
+                {
+                    bool __tmp64_first = true;
+                    bool __tmp64_last = __tmp64Reader.EndOfStream;
+                    while(__tmp64_first || !__tmp64_last)
+                    {
+                        __tmp64_first = false;
+                        string __tmp64Line = __tmp64Reader.ReadLine();
+                        __tmp64_last = __tmp64Reader.EndOfStream;
+                        if (__tmp64Line != null) __out.Append(__tmp64Line);
+                        if (!__tmp64_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp65Line = " { ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this) }), ResolveKind.Name, "; //293:211
+                if (__tmp65Line != null) __out.Append(__tmp65Line);
+                StringBuilder __tmp66 = new StringBuilder();
+                __tmp66.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp66Reader = new StreamReader(this.__ToStream(__tmp66.ToString())))
+                {
+                    bool __tmp66_first = true;
+                    bool __tmp66_last = __tmp66Reader.EndOfStream;
+                    while(__tmp66_first || !__tmp66_last)
+                    {
+                        __tmp66_first = false;
+                        string __tmp66Line = __tmp66Reader.ReadLine();
+                        __tmp66_last = __tmp66Reader.EndOfStream;
+                        if (__tmp66Line != null) __out.Append(__tmp66Line);
+                        if (!__tmp66_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp67Line = ", new ResolutionInfo(), ResolveFlags.All)"; //293:352
+                if (__tmp67Line != null) __out.Append(__tmp67Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveName2)) //294:2
             {
-                __out.Append("ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"); //294:89
-                __out.Append("[]");
-                __out.Append(" { (ModelObject)"); //294:211
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }), ResolveKind.Name, "); //294:266
-                __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(", new ResolutionInfo(), ResolveFlags.All)"); //294:328
+                string __tmp70Line = "ModelCompilerContext.current().getResolutionProvider().resolve(java.util.Arrays.asList(new metadslx.core.ModelObject"; //294:89
+                if (__tmp70Line != null) __out.Append(__tmp70Line);
+                StringBuilder __tmp71 = new StringBuilder();
+                __tmp71.Append("[]");
+                using(StreamReader __tmp71Reader = new StreamReader(this.__ToStream(__tmp71.ToString())))
+                {
+                    bool __tmp71_first = true;
+                    bool __tmp71_last = __tmp71Reader.EndOfStream;
+                    while(__tmp71_first || !__tmp71_last)
+                    {
+                        __tmp71_first = false;
+                        string __tmp71Line = __tmp71Reader.ReadLine();
+                        __tmp71_last = __tmp71Reader.EndOfStream;
+                        if (__tmp71Line != null) __out.Append(__tmp71Line);
+                        if (!__tmp71_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp72Line = " { (ModelObject)"; //294:211
+                if (__tmp72Line != null) __out.Append(__tmp72Line);
+                StringBuilder __tmp73 = new StringBuilder();
+                __tmp73.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp73Reader = new StreamReader(this.__ToStream(__tmp73.ToString())))
+                {
+                    bool __tmp73_first = true;
+                    bool __tmp73_last = __tmp73Reader.EndOfStream;
+                    while(__tmp73_first || !__tmp73_last)
+                    {
+                        __tmp73_first = false;
+                        string __tmp73Line = __tmp73Reader.ReadLine();
+                        __tmp73_last = __tmp73Reader.EndOfStream;
+                        if (__tmp73Line != null) __out.Append(__tmp73Line);
+                        if (!__tmp73_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp74Line = " }), ResolveKind.Name, "; //294:266
+                if (__tmp74Line != null) __out.Append(__tmp74Line);
+                StringBuilder __tmp75 = new StringBuilder();
+                __tmp75.Append(GenerateExpression(call.Arguments[1]));
+                using(StreamReader __tmp75Reader = new StreamReader(this.__ToStream(__tmp75.ToString())))
+                {
+                    bool __tmp75_first = true;
+                    bool __tmp75_last = __tmp75Reader.EndOfStream;
+                    while(__tmp75_first || !__tmp75_last)
+                    {
+                        __tmp75_first = false;
+                        string __tmp75Line = __tmp75Reader.ReadLine();
+                        __tmp75_last = __tmp75Reader.EndOfStream;
+                        if (__tmp75Line != null) __out.Append(__tmp75Line);
+                        if (!__tmp75_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp76Line = ", new ResolutionInfo(), ResolveFlags.All)"; //294:328
+                if (__tmp76Line != null) __out.Append(__tmp76Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind1)) //295:2
             {
-                __out.Append("ModelCompilerContext.current().getBindingProvider().bind(this, java.util.Arrays.asList(new metadslx.core.ModelObject"); //295:82
-                __out.Append("[]");
-                __out.Append(" { (ModelObject)"); //295:204
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }), new BindingInfo())"); //295:259
+                string __tmp79Line = "ModelCompilerContext.current().getBindingProvider().bind(this, java.util.Arrays.asList(new metadslx.core.ModelObject"; //295:82
+                if (__tmp79Line != null) __out.Append(__tmp79Line);
+                StringBuilder __tmp80 = new StringBuilder();
+                __tmp80.Append("[]");
+                using(StreamReader __tmp80Reader = new StreamReader(this.__ToStream(__tmp80.ToString())))
+                {
+                    bool __tmp80_first = true;
+                    bool __tmp80_last = __tmp80Reader.EndOfStream;
+                    while(__tmp80_first || !__tmp80_last)
+                    {
+                        __tmp80_first = false;
+                        string __tmp80Line = __tmp80Reader.ReadLine();
+                        __tmp80_last = __tmp80Reader.EndOfStream;
+                        if (__tmp80Line != null) __out.Append(__tmp80Line);
+                        if (!__tmp80_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp81Line = " { (ModelObject)"; //295:204
+                if (__tmp81Line != null) __out.Append(__tmp81Line);
+                StringBuilder __tmp82 = new StringBuilder();
+                __tmp82.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp82Reader = new StreamReader(this.__ToStream(__tmp82.ToString())))
+                {
+                    bool __tmp82_first = true;
+                    bool __tmp82_last = __tmp82Reader.EndOfStream;
+                    while(__tmp82_first || !__tmp82_last)
+                    {
+                        __tmp82_first = false;
+                        string __tmp82Line = __tmp82Reader.ReadLine();
+                        __tmp82_last = __tmp82Reader.EndOfStream;
+                        if (__tmp82Line != null) __out.Append(__tmp82Line);
+                        if (!__tmp82_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp83Line = " }), new BindingInfo())"; //295:259
+                if (__tmp83Line != null) __out.Append(__tmp83Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind2)) //296:2
             {
-                __out.Append("ModelCompilerContext.current().getBindingProvider().bind(this, "); //296:82
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", new BindingInfo())"); //296:184
+                string __tmp86Line = "ModelCompilerContext.current().getBindingProvider().bind(this, "; //296:82
+                if (__tmp86Line != null) __out.Append(__tmp86Line);
+                StringBuilder __tmp87 = new StringBuilder();
+                __tmp87.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp87Reader = new StreamReader(this.__ToStream(__tmp87.ToString())))
+                {
+                    bool __tmp87_first = true;
+                    bool __tmp87_last = __tmp87Reader.EndOfStream;
+                    while(__tmp87_first || !__tmp87_last)
+                    {
+                        __tmp87_first = false;
+                        string __tmp87Line = __tmp87Reader.ReadLine();
+                        __tmp87_last = __tmp87Reader.EndOfStream;
+                        if (__tmp87Line != null) __out.Append(__tmp87Line);
+                        if (!__tmp87_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp88Line = ", new BindingInfo())"; //296:184
+                if (__tmp88Line != null) __out.Append(__tmp88Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind3)) //297:2
             {
-                __out.Append("ModelCompilerContext.current().getBindingProvider().bind((ModelObject)"); //297:82
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", java.util.Arrays.asList(new metadslx.core.ModelObject"); //297:191
-                __out.Append("[]");
-                __out.Append(" { (ModelObject)"); //297:252
-                __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(" }), new BindingInfo())"); //297:307
+                string __tmp91Line = "ModelCompilerContext.current().getBindingProvider().bind((ModelObject)"; //297:82
+                if (__tmp91Line != null) __out.Append(__tmp91Line);
+                StringBuilder __tmp92 = new StringBuilder();
+                __tmp92.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp92Reader = new StreamReader(this.__ToStream(__tmp92.ToString())))
+                {
+                    bool __tmp92_first = true;
+                    bool __tmp92_last = __tmp92Reader.EndOfStream;
+                    while(__tmp92_first || !__tmp92_last)
+                    {
+                        __tmp92_first = false;
+                        string __tmp92Line = __tmp92Reader.ReadLine();
+                        __tmp92_last = __tmp92Reader.EndOfStream;
+                        if (__tmp92Line != null) __out.Append(__tmp92Line);
+                        if (!__tmp92_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp93Line = ", java.util.Arrays.asList(new metadslx.core.ModelObject"; //297:191
+                if (__tmp93Line != null) __out.Append(__tmp93Line);
+                StringBuilder __tmp94 = new StringBuilder();
+                __tmp94.Append("[]");
+                using(StreamReader __tmp94Reader = new StreamReader(this.__ToStream(__tmp94.ToString())))
+                {
+                    bool __tmp94_first = true;
+                    bool __tmp94_last = __tmp94Reader.EndOfStream;
+                    while(__tmp94_first || !__tmp94_last)
+                    {
+                        __tmp94_first = false;
+                        string __tmp94Line = __tmp94Reader.ReadLine();
+                        __tmp94_last = __tmp94Reader.EndOfStream;
+                        if (__tmp94Line != null) __out.Append(__tmp94Line);
+                        if (!__tmp94_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp95Line = " { (ModelObject)"; //297:252
+                if (__tmp95Line != null) __out.Append(__tmp95Line);
+                StringBuilder __tmp96 = new StringBuilder();
+                __tmp96.Append(GenerateExpression(call.Arguments[1]));
+                using(StreamReader __tmp96Reader = new StreamReader(this.__ToStream(__tmp96.ToString())))
+                {
+                    bool __tmp96_first = true;
+                    bool __tmp96_last = __tmp96Reader.EndOfStream;
+                    while(__tmp96_first || !__tmp96_last)
+                    {
+                        __tmp96_first = false;
+                        string __tmp96Line = __tmp96Reader.ReadLine();
+                        __tmp96_last = __tmp96Reader.EndOfStream;
+                        if (__tmp96Line != null) __out.Append(__tmp96Line);
+                        if (!__tmp96_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp97Line = " }), new BindingInfo())"; //297:307
+                if (__tmp97Line != null) __out.Append(__tmp97Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind4)) //298:2
             {
-                __out.Append("ModelCompilerContext.current().getBindingProvider().bind((ModelObject)"); //298:82
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(", "); //298:191
-                __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(", new BindingInfo())"); //298:232
+                string __tmp100Line = "ModelCompilerContext.current().getBindingProvider().bind((ModelObject)"; //298:82
+                if (__tmp100Line != null) __out.Append(__tmp100Line);
+                StringBuilder __tmp101 = new StringBuilder();
+                __tmp101.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp101Reader = new StreamReader(this.__ToStream(__tmp101.ToString())))
+                {
+                    bool __tmp101_first = true;
+                    bool __tmp101_last = __tmp101Reader.EndOfStream;
+                    while(__tmp101_first || !__tmp101_last)
+                    {
+                        __tmp101_first = false;
+                        string __tmp101Line = __tmp101Reader.ReadLine();
+                        __tmp101_last = __tmp101Reader.EndOfStream;
+                        if (__tmp101Line != null) __out.Append(__tmp101Line);
+                        if (!__tmp101_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp102Line = ", "; //298:191
+                if (__tmp102Line != null) __out.Append(__tmp102Line);
+                StringBuilder __tmp103 = new StringBuilder();
+                __tmp103.Append(GenerateExpression(call.Arguments[1]));
+                using(StreamReader __tmp103Reader = new StreamReader(this.__ToStream(__tmp103.ToString())))
+                {
+                    bool __tmp103_first = true;
+                    bool __tmp103_last = __tmp103Reader.EndOfStream;
+                    while(__tmp103_first || !__tmp103_last)
+                    {
+                        __tmp103_first = false;
+                        string __tmp103Line = __tmp103Reader.ReadLine();
+                        __tmp103_last = __tmp103Reader.EndOfStream;
+                        if (__tmp103Line != null) __out.Append(__tmp103Line);
+                        if (!__tmp103_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp104Line = ", new BindingInfo())"; //298:232
+                if (__tmp104Line != null) __out.Append(__tmp104Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.SelectOfType1)) //299:2
             {
-                __out.Append("java.util.Arrays.asList(new Object"); //299:90
-                __out.Append("[]");
-                __out.Append(" { "); //299:130
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }).stream().filter(e -> ModelCompilerContext.current().getTypeProvider().getTypeOf(e) instanceof "); //299:172
-                __out.Append(GetTypeName(call.Arguments[1]));
-                __out.Append(").collect(java.util.stream.Collectors.toList())"); //299:302
+                string __tmp107Line = "java.util.Arrays.asList(new Object"; //299:90
+                if (__tmp107Line != null) __out.Append(__tmp107Line);
+                StringBuilder __tmp108 = new StringBuilder();
+                __tmp108.Append("[]");
+                using(StreamReader __tmp108Reader = new StreamReader(this.__ToStream(__tmp108.ToString())))
+                {
+                    bool __tmp108_first = true;
+                    bool __tmp108_last = __tmp108Reader.EndOfStream;
+                    while(__tmp108_first || !__tmp108_last)
+                    {
+                        __tmp108_first = false;
+                        string __tmp108Line = __tmp108Reader.ReadLine();
+                        __tmp108_last = __tmp108Reader.EndOfStream;
+                        if (__tmp108Line != null) __out.Append(__tmp108Line);
+                        if (!__tmp108_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp109Line = " { "; //299:130
+                if (__tmp109Line != null) __out.Append(__tmp109Line);
+                StringBuilder __tmp110 = new StringBuilder();
+                __tmp110.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp110Reader = new StreamReader(this.__ToStream(__tmp110.ToString())))
+                {
+                    bool __tmp110_first = true;
+                    bool __tmp110_last = __tmp110Reader.EndOfStream;
+                    while(__tmp110_first || !__tmp110_last)
+                    {
+                        __tmp110_first = false;
+                        string __tmp110Line = __tmp110Reader.ReadLine();
+                        __tmp110_last = __tmp110Reader.EndOfStream;
+                        if (__tmp110Line != null) __out.Append(__tmp110Line);
+                        if (!__tmp110_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp111Line = " }).stream().filter(e -> ModelCompilerContext.current().getTypeProvider().getTypeOf(e) instanceof "; //299:172
+                if (__tmp111Line != null) __out.Append(__tmp111Line);
+                StringBuilder __tmp112 = new StringBuilder();
+                __tmp112.Append(GetTypeName(call.Arguments[1]));
+                using(StreamReader __tmp112Reader = new StreamReader(this.__ToStream(__tmp112.ToString())))
+                {
+                    bool __tmp112_first = true;
+                    bool __tmp112_last = __tmp112Reader.EndOfStream;
+                    while(__tmp112_first || !__tmp112_last)
+                    {
+                        __tmp112_first = false;
+                        string __tmp112Line = __tmp112Reader.ReadLine();
+                        __tmp112_last = __tmp112Reader.EndOfStream;
+                        if (__tmp112Line != null) __out.Append(__tmp112Line);
+                        if (!__tmp112_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp113Line = ").collect(java.util.stream.Collectors.toList())"; //299:302
+                if (__tmp113Line != null) __out.Append(__tmp113Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.SelectOfType2)) //300:2
             {
-                __out.Append("("); //300:90
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(").stream().filter(e -> ModelCompilerContext.current().getTypeProvider().getTypeOf(e) instanceof "); //300:130
-                __out.Append(GetTypeName(call.Arguments[1]));
-                __out.Append(").collect(java.util.stream.Collectors.toList())"); //300:258
+                string __tmp116Line = "("; //300:90
+                if (__tmp116Line != null) __out.Append(__tmp116Line);
+                StringBuilder __tmp117 = new StringBuilder();
+                __tmp117.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp117Reader = new StreamReader(this.__ToStream(__tmp117.ToString())))
+                {
+                    bool __tmp117_first = true;
+                    bool __tmp117_last = __tmp117Reader.EndOfStream;
+                    while(__tmp117_first || !__tmp117_last)
+                    {
+                        __tmp117_first = false;
+                        string __tmp117Line = __tmp117Reader.ReadLine();
+                        __tmp117_last = __tmp117Reader.EndOfStream;
+                        if (__tmp117Line != null) __out.Append(__tmp117Line);
+                        if (!__tmp117_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp118Line = ").stream().filter(e -> ModelCompilerContext.current().getTypeProvider().getTypeOf(e) instanceof "; //300:130
+                if (__tmp118Line != null) __out.Append(__tmp118Line);
+                StringBuilder __tmp119 = new StringBuilder();
+                __tmp119.Append(GetTypeName(call.Arguments[1]));
+                using(StreamReader __tmp119Reader = new StreamReader(this.__ToStream(__tmp119.ToString())))
+                {
+                    bool __tmp119_first = true;
+                    bool __tmp119_last = __tmp119Reader.EndOfStream;
+                    while(__tmp119_first || !__tmp119_last)
+                    {
+                        __tmp119_first = false;
+                        string __tmp119Line = __tmp119Reader.ReadLine();
+                        __tmp119_last = __tmp119Reader.EndOfStream;
+                        if (__tmp119Line != null) __out.Append(__tmp119Line);
+                        if (!__tmp119_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp120Line = ").collect(java.util.stream.Collectors.toList())"; //300:258
+                if (__tmp120Line != null) __out.Append(__tmp120Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.SelectOfName1)) //301:2
             {
-                __out.Append("java.util.Arrays.asList(new Object"); //301:90
-                __out.Append("[]");
-                __out.Append(" { "); //301:130
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(" }).stream().filter(e -> ModelCompilerContext.current().getNameProvider().getNameOf((ModelObject)e) == "); //301:172
-                __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(").collect(java.util.stream.Collectors.toList())"); //301:314
+                string __tmp123Line = "java.util.Arrays.asList(new Object"; //301:90
+                if (__tmp123Line != null) __out.Append(__tmp123Line);
+                StringBuilder __tmp124 = new StringBuilder();
+                __tmp124.Append("[]");
+                using(StreamReader __tmp124Reader = new StreamReader(this.__ToStream(__tmp124.ToString())))
+                {
+                    bool __tmp124_first = true;
+                    bool __tmp124_last = __tmp124Reader.EndOfStream;
+                    while(__tmp124_first || !__tmp124_last)
+                    {
+                        __tmp124_first = false;
+                        string __tmp124Line = __tmp124Reader.ReadLine();
+                        __tmp124_last = __tmp124Reader.EndOfStream;
+                        if (__tmp124Line != null) __out.Append(__tmp124Line);
+                        if (!__tmp124_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp125Line = " { "; //301:130
+                if (__tmp125Line != null) __out.Append(__tmp125Line);
+                StringBuilder __tmp126 = new StringBuilder();
+                __tmp126.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp126Reader = new StreamReader(this.__ToStream(__tmp126.ToString())))
+                {
+                    bool __tmp126_first = true;
+                    bool __tmp126_last = __tmp126Reader.EndOfStream;
+                    while(__tmp126_first || !__tmp126_last)
+                    {
+                        __tmp126_first = false;
+                        string __tmp126Line = __tmp126Reader.ReadLine();
+                        __tmp126_last = __tmp126Reader.EndOfStream;
+                        if (__tmp126Line != null) __out.Append(__tmp126Line);
+                        if (!__tmp126_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp127Line = " }).stream().filter(e -> ModelCompilerContext.current().getNameProvider().getNameOf((ModelObject)e) == "; //301:172
+                if (__tmp127Line != null) __out.Append(__tmp127Line);
+                StringBuilder __tmp128 = new StringBuilder();
+                __tmp128.Append(GenerateExpression(call.Arguments[1]));
+                using(StreamReader __tmp128Reader = new StreamReader(this.__ToStream(__tmp128.ToString())))
+                {
+                    bool __tmp128_first = true;
+                    bool __tmp128_last = __tmp128Reader.EndOfStream;
+                    while(__tmp128_first || !__tmp128_last)
+                    {
+                        __tmp128_first = false;
+                        string __tmp128Line = __tmp128Reader.ReadLine();
+                        __tmp128_last = __tmp128Reader.EndOfStream;
+                        if (__tmp128Line != null) __out.Append(__tmp128Line);
+                        if (!__tmp128_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp129Line = ").collect(java.util.stream.Collectors.toList())"; //301:314
+                if (__tmp129Line != null) __out.Append(__tmp129Line);
             }
             else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.SelectOfName2)) //302:2
             {
-                __out.Append("("); //302:90
-                __out.Append(GenerateExpression(call.Arguments[0]));
-                __out.Append(").stream().filter(e -> ModelCompilerContext.current().getNameProvider().getNameOf((ModelObject)e) == "); //302:130
-                __out.Append(GenerateExpression(call.Arguments[1]));
-                __out.Append(").collect(java.util.stream.Collectors.toList())"); //302:270
+                string __tmp132Line = "("; //302:90
+                if (__tmp132Line != null) __out.Append(__tmp132Line);
+                StringBuilder __tmp133 = new StringBuilder();
+                __tmp133.Append(GenerateExpression(call.Arguments[0]));
+                using(StreamReader __tmp133Reader = new StreamReader(this.__ToStream(__tmp133.ToString())))
+                {
+                    bool __tmp133_first = true;
+                    bool __tmp133_last = __tmp133Reader.EndOfStream;
+                    while(__tmp133_first || !__tmp133_last)
+                    {
+                        __tmp133_first = false;
+                        string __tmp133Line = __tmp133Reader.ReadLine();
+                        __tmp133_last = __tmp133Reader.EndOfStream;
+                        if (__tmp133Line != null) __out.Append(__tmp133Line);
+                        if (!__tmp133_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp134Line = ").stream().filter(e -> ModelCompilerContext.current().getNameProvider().getNameOf((ModelObject)e) == "; //302:130
+                if (__tmp134Line != null) __out.Append(__tmp134Line);
+                StringBuilder __tmp135 = new StringBuilder();
+                __tmp135.Append(GenerateExpression(call.Arguments[1]));
+                using(StreamReader __tmp135Reader = new StreamReader(this.__ToStream(__tmp135.ToString())))
+                {
+                    bool __tmp135_first = true;
+                    bool __tmp135_last = __tmp135Reader.EndOfStream;
+                    while(__tmp135_first || !__tmp135_last)
+                    {
+                        __tmp135_first = false;
+                        string __tmp135Line = __tmp135Reader.ReadLine();
+                        __tmp135_last = __tmp135Reader.EndOfStream;
+                        if (__tmp135Line != null) __out.Append(__tmp135Line);
+                        if (!__tmp135_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp136Line = ").collect(java.util.stream.Collectors.toList())"; //302:270
+                if (__tmp136Line != null) __out.Append(__tmp136Line);
             }
             else //303:2
             {
-                __out.Append(GenerateExpression(call.Expression));
-                __out.Append("("); //303:44
-                __out.Append(GenerateCallArguments(call, ""));
-                __out.Append(")"); //303:78
+                StringBuilder __tmp139 = new StringBuilder();
+                __tmp139.Append(GenerateExpression(call.Expression));
+                using(StreamReader __tmp139Reader = new StreamReader(this.__ToStream(__tmp139.ToString())))
+                {
+                    bool __tmp139_first = true;
+                    bool __tmp139_last = __tmp139Reader.EndOfStream;
+                    while(__tmp139_first || !__tmp139_last)
+                    {
+                        __tmp139_first = false;
+                        string __tmp139Line = __tmp139Reader.ReadLine();
+                        __tmp139_last = __tmp139Reader.EndOfStream;
+                        if (__tmp139Line != null) __out.Append(__tmp139Line);
+                        if (!__tmp139_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp140Line = "("; //303:44
+                if (__tmp140Line != null) __out.Append(__tmp140Line);
+                StringBuilder __tmp141 = new StringBuilder();
+                __tmp141.Append(GenerateCallArguments(call, ""));
+                using(StreamReader __tmp141Reader = new StreamReader(this.__ToStream(__tmp141.ToString())))
+                {
+                    bool __tmp141_first = true;
+                    bool __tmp141_last = __tmp141Reader.EndOfStream;
+                    while(__tmp141_first || !__tmp141_last)
+                    {
+                        __tmp141_first = false;
+                        string __tmp141Line = __tmp141Reader.ReadLine();
+                        __tmp141_last = __tmp141Reader.EndOfStream;
+                        if (__tmp141Line != null) __out.Append(__tmp141Line);
+                        if (!__tmp141_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp142Line = ")"; //303:78
+                if (__tmp142Line != null) __out.Append(__tmp142Line);
             }
             return __out.ToString();
         }
@@ -2519,72 +3317,64 @@ namespace MetaDslx.Core //1:1
         public string GenerateIndexerCall(MetaIndexerExpression call) //307:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty; 
-            string __tmp2Suffix = string.Empty; 
+            StringBuilder __tmp2 = new StringBuilder();
+            __tmp2.Append(GenerateExpression(call.Expression));
+            using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
+            {
+                bool __tmp2_first = true;
+                bool __tmp2_last = __tmp2Reader.EndOfStream;
+                while(__tmp2_first || !__tmp2_last)
+                {
+                    __tmp2_first = false;
+                    string __tmp2Line = __tmp2Reader.ReadLine();
+                    __tmp2_last = __tmp2Reader.EndOfStream;
+                    if (__tmp2Line != null) __out.Append(__tmp2Line);
+                    if (!__tmp2_last) __out.AppendLine(true);
+                }
+            }
             StringBuilder __tmp3 = new StringBuilder();
-            __tmp3.Append(GenerateExpression(call.Expression));
+            __tmp3.Append("[");
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
             StringBuilder __tmp4 = new StringBuilder();
-            __tmp4.Append("[");
+            __tmp4.Append(GenerateCallArguments(call, ""));
             using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
             {
                 bool __tmp4_first = true;
-                while(__tmp4_first || !__tmp4Reader.EndOfStream)
+                bool __tmp4_last = __tmp4Reader.EndOfStream;
+                while(__tmp4_first || !__tmp4_last)
                 {
                     __tmp4_first = false;
                     string __tmp4Line = __tmp4Reader.ReadLine();
-                    if (__tmp4Line == null)
-                    {
-                        __tmp4Line = "";
-                    }
-                    __out.Append(__tmp4Line);
+                    __tmp4_last = __tmp4Reader.EndOfStream;
+                    if (__tmp4Line != null) __out.Append(__tmp4Line);
+                    if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
             StringBuilder __tmp5 = new StringBuilder();
-            __tmp5.Append(GenerateCallArguments(call, ""));
+            __tmp5.Append("]");
             using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
             {
                 bool __tmp5_first = true;
-                while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                bool __tmp5_last = __tmp5Reader.EndOfStream;
+                while(__tmp5_first || !__tmp5_last)
                 {
                     __tmp5_first = false;
                     string __tmp5Line = __tmp5Reader.ReadLine();
-                    if (__tmp5Line == null)
-                    {
-                        __tmp5Line = "";
-                    }
-                    __out.Append(__tmp5Line);
-                }
-            }
-            StringBuilder __tmp6 = new StringBuilder();
-            __tmp6.Append("]");
-            using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
-            {
-                bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
-                {
-                    __tmp6_first = false;
-                    string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp6Line);
-                    __out.Append(__tmp2Suffix);
+                    __tmp5_last = __tmp5Reader.EndOfStream;
+                    if (__tmp5Line != null) __out.Append(__tmp5Line);
+                    if (!__tmp5_last) __out.AppendLine(true);
                 }
             }
             return __out.ToString();
@@ -2670,16 +3460,59 @@ namespace MetaDslx.Core //1:1
             }
             else if (expr is MetaTypeOfExpression) //330:2
             {
-                __out.Append(GenerateTypeOf(((MetaTypeOfExpression)expr).TypeReference));
+                StringBuilder __tmp5 = new StringBuilder();
+                __tmp5.Append(GenerateTypeOf(((MetaTypeOfExpression)expr).TypeReference));
+                using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
+                {
+                    bool __tmp5_first = true;
+                    bool __tmp5_last = __tmp5Reader.EndOfStream;
+                    while(__tmp5_first || !__tmp5_last)
+                    {
+                        __tmp5_first = false;
+                        string __tmp5Line = __tmp5Reader.ReadLine();
+                        __tmp5_last = __tmp5Reader.EndOfStream;
+                        if (__tmp5Line != null) __out.Append(__tmp5Line);
+                        if (!__tmp5_last) __out.AppendLine(true);
+                    }
+                }
             }
             else if (expr is MetaClass) //331:2
             {
-                __out.Append(((MetaClass)expr).JavaFullDescriptorName());
-                __out.Append(".getMetaClass()"); //331:52
+                StringBuilder __tmp8 = new StringBuilder();
+                __tmp8.Append(((MetaClass)expr).JavaFullDescriptorName());
+                using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
+                {
+                    bool __tmp8_first = true;
+                    bool __tmp8_last = __tmp8Reader.EndOfStream;
+                    while(__tmp8_first || !__tmp8_last)
+                    {
+                        __tmp8_first = false;
+                        string __tmp8Line = __tmp8Reader.ReadLine();
+                        __tmp8_last = __tmp8Reader.EndOfStream;
+                        if (__tmp8Line != null) __out.Append(__tmp8Line);
+                        if (!__tmp8_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp9Line = ".getMetaClass()"; //331:52
+                if (__tmp9Line != null) __out.Append(__tmp9Line);
             }
             else if (expr is MetaCollectionType) //332:2
             {
-                __out.Append(((MetaCollectionType)expr).JavaFullName());
+                StringBuilder __tmp12 = new StringBuilder();
+                __tmp12.Append(((MetaCollectionType)expr).JavaFullName());
+                using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
+                {
+                    bool __tmp12_first = true;
+                    bool __tmp12_last = __tmp12Reader.EndOfStream;
+                    while(__tmp12_first || !__tmp12_last)
+                    {
+                        __tmp12_first = false;
+                        string __tmp12Line = __tmp12Reader.ReadLine();
+                        __tmp12_last = __tmp12Reader.EndOfStream;
+                        if (__tmp12Line != null) __out.Append(__tmp12Line);
+                        if (!__tmp12_last) __out.AppendLine(true);
+                    }
+                }
             }
             else //333:2
             {
@@ -2707,56 +3540,49 @@ namespace MetaDslx.Core //1:1
                 }
                 var __loop21_var1 = __tmp1.__loop21_var1;
                 var arg = __tmp1.arg;
-                string __tmp2Prefix = string.Empty; 
-                string __tmp3Suffix = string.Empty; 
+                StringBuilder __tmp3 = new StringBuilder();
+                __tmp3.Append(delim);
+                using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+                {
+                    bool __tmp3_first = true;
+                    bool __tmp3_last = __tmp3Reader.EndOfStream;
+                    while(__tmp3_first || !__tmp3_last)
+                    {
+                        __tmp3_first = false;
+                        string __tmp3Line = __tmp3Reader.ReadLine();
+                        __tmp3_last = __tmp3Reader.EndOfStream;
+                        if (__tmp3Line != null) __out.Append(__tmp3Line);
+                        if (!__tmp3_last) __out.AppendLine(true);
+                    }
+                }
                 StringBuilder __tmp4 = new StringBuilder();
-                __tmp4.Append(delim);
+                __tmp4.Append(prefix);
                 using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
                 {
                     bool __tmp4_first = true;
-                    while(__tmp4_first || !__tmp4Reader.EndOfStream)
+                    bool __tmp4_last = __tmp4Reader.EndOfStream;
+                    while(__tmp4_first || !__tmp4_last)
                     {
                         __tmp4_first = false;
                         string __tmp4Line = __tmp4Reader.ReadLine();
-                        if (__tmp4Line == null)
-                        {
-                            __tmp4Line = "";
-                        }
-                        __out.Append(__tmp2Prefix);
-                        __out.Append(__tmp4Line);
+                        __tmp4_last = __tmp4Reader.EndOfStream;
+                        if (__tmp4Line != null) __out.Append(__tmp4Line);
+                        if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
                 StringBuilder __tmp5 = new StringBuilder();
-                __tmp5.Append(prefix);
+                __tmp5.Append(GenerateExpression(arg));
                 using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
                 {
                     bool __tmp5_first = true;
-                    while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                    bool __tmp5_last = __tmp5Reader.EndOfStream;
+                    while(__tmp5_first || !__tmp5_last)
                     {
                         __tmp5_first = false;
                         string __tmp5Line = __tmp5Reader.ReadLine();
-                        if (__tmp5Line == null)
-                        {
-                            __tmp5Line = "";
-                        }
-                        __out.Append(__tmp5Line);
-                    }
-                }
-                StringBuilder __tmp6 = new StringBuilder();
-                __tmp6.Append(GenerateExpression(arg));
-                using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
-                {
-                    bool __tmp6_first = true;
-                    while(__tmp6_first || !__tmp6Reader.EndOfStream)
-                    {
-                        __tmp6_first = false;
-                        string __tmp6Line = __tmp6Reader.ReadLine();
-                        if (__tmp6Line == null)
-                        {
-                            __tmp6Line = "";
-                        }
-                        __out.Append(__tmp6Line);
-                        __out.Append(__tmp3Suffix);
+                        __tmp5_last = __tmp5Reader.EndOfStream;
+                        if (__tmp5Line != null) __out.Append(__tmp5Line);
+                        if (!__tmp5_last) __out.AppendLine(true);
                     }
                 }
             }
@@ -2771,135 +3597,116 @@ namespace MetaDslx.Core //1:1
             {
                 if (((MetaUnaryExpression)expr) is MetaPostIncrementAssignExpression || ((MetaUnaryExpression)expr) is MetaPostDecrementAssignExpression) //346:3
                 {
-                    string __tmp2Prefix = string.Empty; 
-                    string __tmp3Suffix = string.Empty; 
+                    StringBuilder __tmp3 = new StringBuilder();
+                    __tmp3.Append(GenerateExpression(((MetaUnaryExpression)expr).Expression));
+                    using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+                    {
+                        bool __tmp3_first = true;
+                        bool __tmp3_last = __tmp3Reader.EndOfStream;
+                        while(__tmp3_first || !__tmp3_last)
+                        {
+                            __tmp3_first = false;
+                            string __tmp3Line = __tmp3Reader.ReadLine();
+                            __tmp3_last = __tmp3Reader.EndOfStream;
+                            if (__tmp3Line != null) __out.Append(__tmp3Line);
+                            if (!__tmp3_last) __out.AppendLine(true);
+                        }
+                    }
                     StringBuilder __tmp4 = new StringBuilder();
-                    __tmp4.Append(GenerateExpression(((MetaUnaryExpression)expr).Expression));
+                    __tmp4.Append(GetJavaOperator(((MetaUnaryExpression)expr)));
                     using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
                     {
                         bool __tmp4_first = true;
-                        while(__tmp4_first || !__tmp4Reader.EndOfStream)
+                        bool __tmp4_last = __tmp4Reader.EndOfStream;
+                        while(__tmp4_first || !__tmp4_last)
                         {
                             __tmp4_first = false;
                             string __tmp4Line = __tmp4Reader.ReadLine();
-                            if (__tmp4Line == null)
-                            {
-                                __tmp4Line = "";
-                            }
-                            __out.Append(__tmp2Prefix);
-                            __out.Append(__tmp4Line);
-                        }
-                    }
-                    StringBuilder __tmp5 = new StringBuilder();
-                    __tmp5.Append(GetJavaOperator(((MetaUnaryExpression)expr)));
-                    using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
-                    {
-                        bool __tmp5_first = true;
-                        while(__tmp5_first || !__tmp5Reader.EndOfStream)
-                        {
-                            __tmp5_first = false;
-                            string __tmp5Line = __tmp5Reader.ReadLine();
-                            if (__tmp5Line == null)
-                            {
-                                __tmp5Line = "";
-                            }
-                            __out.Append(__tmp5Line);
-                            __out.Append(__tmp3Suffix);
+                            __tmp4_last = __tmp4Reader.EndOfStream;
+                            if (__tmp4Line != null) __out.Append(__tmp4Line);
+                            if (!__tmp4_last) __out.AppendLine(true);
                         }
                     }
                 }
                 else //348:3
                 {
-                    string __tmp6Prefix = string.Empty; 
-                    string __tmp7Suffix = string.Empty; 
-                    StringBuilder __tmp8 = new StringBuilder();
-                    __tmp8.Append(GetJavaOperator(((MetaUnaryExpression)expr)));
-                    using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
+                    StringBuilder __tmp6 = new StringBuilder();
+                    __tmp6.Append(GetJavaOperator(((MetaUnaryExpression)expr)));
+                    using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
                     {
-                        bool __tmp8_first = true;
-                        while(__tmp8_first || !__tmp8Reader.EndOfStream)
+                        bool __tmp6_first = true;
+                        bool __tmp6_last = __tmp6Reader.EndOfStream;
+                        while(__tmp6_first || !__tmp6_last)
                         {
-                            __tmp8_first = false;
-                            string __tmp8Line = __tmp8Reader.ReadLine();
-                            if (__tmp8Line == null)
-                            {
-                                __tmp8Line = "";
-                            }
-                            __out.Append(__tmp6Prefix);
-                            __out.Append(__tmp8Line);
+                            __tmp6_first = false;
+                            string __tmp6Line = __tmp6Reader.ReadLine();
+                            __tmp6_last = __tmp6Reader.EndOfStream;
+                            if (__tmp6Line != null) __out.Append(__tmp6Line);
+                            if (!__tmp6_last) __out.AppendLine(true);
                         }
                     }
-                    StringBuilder __tmp9 = new StringBuilder();
-                    __tmp9.Append(GenerateExpression(((MetaUnaryExpression)expr).Expression));
-                    using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
+                    StringBuilder __tmp7 = new StringBuilder();
+                    __tmp7.Append(GenerateExpression(((MetaUnaryExpression)expr).Expression));
+                    using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
                     {
-                        bool __tmp9_first = true;
-                        while(__tmp9_first || !__tmp9Reader.EndOfStream)
+                        bool __tmp7_first = true;
+                        bool __tmp7_last = __tmp7Reader.EndOfStream;
+                        while(__tmp7_first || !__tmp7_last)
                         {
-                            __tmp9_first = false;
-                            string __tmp9Line = __tmp9Reader.ReadLine();
-                            if (__tmp9Line == null)
-                            {
-                                __tmp9Line = "";
-                            }
-                            __out.Append(__tmp9Line);
-                            __out.Append(__tmp7Suffix);
+                            __tmp7_first = false;
+                            string __tmp7Line = __tmp7Reader.ReadLine();
+                            __tmp7_last = __tmp7Reader.EndOfStream;
+                            if (__tmp7Line != null) __out.Append(__tmp7Line);
+                            if (!__tmp7_last) __out.AppendLine(true);
                         }
                     }
                 }
             }
             else if (expr is MetaBinaryExpression) //351:2
             {
-                string __tmp10Prefix = string.Empty; 
-                string __tmp11Suffix = string.Empty; 
-                StringBuilder __tmp12 = new StringBuilder();
-                __tmp12.Append(GenerateExpression(((MetaBinaryExpression)expr).Left));
-                using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
+                StringBuilder __tmp9 = new StringBuilder();
+                __tmp9.Append(GenerateExpression(((MetaBinaryExpression)expr).Left));
+                using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
                 {
-                    bool __tmp12_first = true;
-                    while(__tmp12_first || !__tmp12Reader.EndOfStream)
+                    bool __tmp9_first = true;
+                    bool __tmp9_last = __tmp9Reader.EndOfStream;
+                    while(__tmp9_first || !__tmp9_last)
                     {
-                        __tmp12_first = false;
-                        string __tmp12Line = __tmp12Reader.ReadLine();
-                        if (__tmp12Line == null)
-                        {
-                            __tmp12Line = "";
-                        }
-                        __out.Append(__tmp10Prefix);
-                        __out.Append(__tmp12Line);
+                        __tmp9_first = false;
+                        string __tmp9Line = __tmp9Reader.ReadLine();
+                        __tmp9_last = __tmp9Reader.EndOfStream;
+                        if (__tmp9Line != null) __out.Append(__tmp9Line);
+                        if (!__tmp9_last) __out.AppendLine(true);
                     }
                 }
-                StringBuilder __tmp13 = new StringBuilder();
-                __tmp13.Append(GetJavaOperator(((MetaBinaryExpression)expr)));
-                using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
+                StringBuilder __tmp10 = new StringBuilder();
+                __tmp10.Append(GetJavaOperator(((MetaBinaryExpression)expr)));
+                using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
                 {
-                    bool __tmp13_first = true;
-                    while(__tmp13_first || !__tmp13Reader.EndOfStream)
+                    bool __tmp10_first = true;
+                    bool __tmp10_last = __tmp10Reader.EndOfStream;
+                    while(__tmp10_first || !__tmp10_last)
                     {
-                        __tmp13_first = false;
-                        string __tmp13Line = __tmp13Reader.ReadLine();
-                        if (__tmp13Line == null)
-                        {
-                            __tmp13Line = "";
-                        }
-                        __out.Append(__tmp13Line);
+                        __tmp10_first = false;
+                        string __tmp10Line = __tmp10Reader.ReadLine();
+                        __tmp10_last = __tmp10Reader.EndOfStream;
+                        if (__tmp10Line != null) __out.Append(__tmp10Line);
+                        if (!__tmp10_last) __out.AppendLine(true);
                     }
                 }
-                StringBuilder __tmp14 = new StringBuilder();
-                __tmp14.Append(GenerateExpression(((MetaBinaryExpression)expr).Right));
-                using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
+                StringBuilder __tmp11 = new StringBuilder();
+                __tmp11.Append(GenerateExpression(((MetaBinaryExpression)expr).Right));
+                using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
                 {
-                    bool __tmp14_first = true;
-                    while(__tmp14_first || !__tmp14Reader.EndOfStream)
+                    bool __tmp11_first = true;
+                    bool __tmp11_last = __tmp11Reader.EndOfStream;
+                    while(__tmp11_first || !__tmp11_last)
                     {
-                        __tmp14_first = false;
-                        string __tmp14Line = __tmp14Reader.ReadLine();
-                        if (__tmp14Line == null)
-                        {
-                            __tmp14Line = "";
-                        }
-                        __out.Append(__tmp14Line);
-                        __out.Append(__tmp11Suffix);
+                        __tmp11_first = false;
+                        string __tmp11Line = __tmp11Reader.ReadLine();
+                        __tmp11_last = __tmp11Reader.EndOfStream;
+                        if (__tmp11Line != null) __out.Append(__tmp11Line);
+                        if (!__tmp11_last) __out.AppendLine(true);
                     }
                 }
             }//353:2
@@ -2914,26 +3721,25 @@ namespace MetaDslx.Core //1:1
             select new { __loop22_var1 = __loop22_var1, pi = pi}
             ).GetEnumerator().MoveNext()) //357:2
             {
-                string __tmp1Prefix = "java.util.Arrays.asList(new metadslx.core.ModelPropertyInitializer"; //358:1
-                string __tmp2Suffix = " {"; //358:73
+                string __tmp2Line = "java.util.Arrays.asList(new metadslx.core.ModelPropertyInitializer"; //358:1
+                if (__tmp2Line != null) __out.Append(__tmp2Line);
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append("[]");
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
                 {
                     bool __tmp3_first = true;
-                    while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                    bool __tmp3_last = __tmp3Reader.EndOfStream;
+                    while(__tmp3_first || !__tmp3_last)
                     {
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
-                        if (__tmp3Line == null)
-                        {
-                            __tmp3Line = "";
-                        }
-                        __out.Append(__tmp1Prefix);
-                        __out.Append(__tmp3Line);
-                        __out.Append(__tmp2Suffix);
+                        __tmp3_last = __tmp3Reader.EndOfStream;
+                        if (__tmp3Line != null) __out.Append(__tmp3Line);
+                        if (!__tmp3_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp4Line = " {"; //358:73
+                if (__tmp4Line != null) __out.Append(__tmp4Line);
                 var __loop23_results = 
                     (from __loop23_var1 in __Enumerate((expr).GetEnumerator()) //359:7
                     from pi in __Enumerate((__loop23_var1.PropertyInitializers).GetEnumerator()) //359:13
@@ -2941,71 +3747,66 @@ namespace MetaDslx.Core //1:1
                     ).ToList(); //359:2
                 int __loop23_iteration = 0;
                 string delim = ""; //359:38
-                foreach (var __tmp4 in __loop23_results)
+                foreach (var __tmp5 in __loop23_results)
                 {
                     ++__loop23_iteration;
                     if (__loop23_iteration >= 2) //359:57
                     {
                         delim = ", "; //359:57
                     }
-                    var __loop23_var1 = __tmp4.__loop23_var1;
-                    var pi = __tmp4.pi;
-                    string __tmp5Prefix = string.Empty; 
-                    string __tmp6Suffix = ", true))"; //360:153
+                    var __loop23_var1 = __tmp5.__loop23_var1;
+                    var pi = __tmp5.pi;
                     StringBuilder __tmp7 = new StringBuilder();
                     __tmp7.Append(delim);
                     using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
                     {
                         bool __tmp7_first = true;
-                        while(__tmp7_first || !__tmp7Reader.EndOfStream)
+                        bool __tmp7_last = __tmp7Reader.EndOfStream;
+                        while(__tmp7_first || !__tmp7_last)
                         {
                             __tmp7_first = false;
                             string __tmp7Line = __tmp7Reader.ReadLine();
-                            if (__tmp7Line == null)
-                            {
-                                __tmp7Line = "";
-                            }
-                            __out.Append(__tmp5Prefix);
-                            __out.Append(__tmp7Line);
+                            __tmp7_last = __tmp7Reader.EndOfStream;
+                            if (__tmp7Line != null) __out.Append(__tmp7Line);
+                            if (!__tmp7_last) __out.AppendLine(true);
                         }
                     }
                     string __tmp8Line = "new metadslx.core.ModelPropertyInitializer("; //360:8
-                    __out.Append(__tmp8Line);
+                    if (__tmp8Line != null) __out.Append(__tmp8Line);
                     StringBuilder __tmp9 = new StringBuilder();
                     __tmp9.Append(pi.Property.JavaFullDescriptorName());
                     using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
                     {
                         bool __tmp9_first = true;
-                        while(__tmp9_first || !__tmp9Reader.EndOfStream)
+                        bool __tmp9_last = __tmp9Reader.EndOfStream;
+                        while(__tmp9_first || !__tmp9_last)
                         {
                             __tmp9_first = false;
                             string __tmp9Line = __tmp9Reader.ReadLine();
-                            if (__tmp9Line == null)
-                            {
-                                __tmp9Line = "";
-                            }
-                            __out.Append(__tmp9Line);
+                            __tmp9_last = __tmp9Reader.EndOfStream;
+                            if (__tmp9Line != null) __out.Append(__tmp9Line);
+                            if (!__tmp9_last) __out.AppendLine(true);
                         }
                     }
                     string __tmp10Line = ", metadslx.core.Lazy.create(() -> "; //360:89
-                    __out.Append(__tmp10Line);
+                    if (__tmp10Line != null) __out.Append(__tmp10Line);
                     StringBuilder __tmp11 = new StringBuilder();
                     __tmp11.Append(GenerateExpression(pi.Value));
                     using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
                     {
                         bool __tmp11_first = true;
-                        while(__tmp11_first || !__tmp11Reader.EndOfStream)
+                        bool __tmp11_last = __tmp11Reader.EndOfStream;
+                        while(__tmp11_first || !__tmp11_last)
                         {
                             __tmp11_first = false;
                             string __tmp11Line = __tmp11Reader.ReadLine();
-                            if (__tmp11Line == null)
-                            {
-                                __tmp11Line = "";
-                            }
-                            __out.Append(__tmp11Line);
-                            __out.Append(__tmp6Suffix);
+                            __tmp11_last = __tmp11Reader.EndOfStream;
+                            if (__tmp11Line != null) __out.Append(__tmp11Line);
+                            if (!__tmp11_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp12Line = ", true))"; //360:153
+                    if (__tmp12Line != null) __out.Append(__tmp12Line);
                 }
                 __out.Append("})"); //362:1
             }
@@ -3031,40 +3832,34 @@ namespace MetaDslx.Core //1:1
                 }
                 var __loop24_var1 = __tmp1.__loop24_var1;
                 var v = __tmp1.v;
-                string __tmp2Prefix = string.Empty; 
-                string __tmp3Suffix = string.Empty; 
+                StringBuilder __tmp3 = new StringBuilder();
+                __tmp3.Append(delim);
+                using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+                {
+                    bool __tmp3_first = true;
+                    bool __tmp3_last = __tmp3Reader.EndOfStream;
+                    while(__tmp3_first || !__tmp3_last)
+                    {
+                        __tmp3_first = false;
+                        string __tmp3Line = __tmp3Reader.ReadLine();
+                        __tmp3_last = __tmp3Reader.EndOfStream;
+                        if (__tmp3Line != null) __out.Append(__tmp3Line);
+                        if (!__tmp3_last) __out.AppendLine(true);
+                    }
+                }
                 StringBuilder __tmp4 = new StringBuilder();
-                __tmp4.Append(delim);
+                __tmp4.Append(GenerateExpression(v));
                 using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
                 {
                     bool __tmp4_first = true;
-                    while(__tmp4_first || !__tmp4Reader.EndOfStream)
+                    bool __tmp4_last = __tmp4Reader.EndOfStream;
+                    while(__tmp4_first || !__tmp4_last)
                     {
                         __tmp4_first = false;
                         string __tmp4Line = __tmp4Reader.ReadLine();
-                        if (__tmp4Line == null)
-                        {
-                            __tmp4Line = "";
-                        }
-                        __out.Append(__tmp2Prefix);
-                        __out.Append(__tmp4Line);
-                    }
-                }
-                StringBuilder __tmp5 = new StringBuilder();
-                __tmp5.Append(GenerateExpression(v));
-                using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
-                {
-                    bool __tmp5_first = true;
-                    while(__tmp5_first || !__tmp5Reader.EndOfStream)
-                    {
-                        __tmp5_first = false;
-                        string __tmp5Line = __tmp5Reader.ReadLine();
-                        if (__tmp5Line == null)
-                        {
-                            __tmp5Line = "";
-                        }
-                        __out.Append(__tmp5Line);
-                        __out.Append(__tmp3Suffix);
+                        __tmp4_last = __tmp4Reader.EndOfStream;
+                        if (__tmp4Line != null) __out.Append(__tmp4Line);
+                        if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
             }
@@ -3319,38 +4114,37 @@ namespace MetaDslx.Core //1:1
         public string GenerateConstructorImpl(MetaModel model, MetaClass cls) //454:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "public "; //455:1
-            string __tmp2Suffix = "() {"; //455:28
+            string __tmp2Line = "public "; //455:1
+            if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(cls.JavaImplName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //455:32
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
+            string __tmp4Line = "() {"; //455:28
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
+            __out.AppendLine(false); //455:32
             var __loop26_results = 
                 (from __loop26_var1 in __Enumerate((cls).GetEnumerator()) //456:8
                 from prop in __Enumerate((__loop26_var1.GetAllProperties()).GetEnumerator()) //456:13
                 select new { __loop26_var1 = __loop26_var1, prop = prop}
                 ).ToList(); //456:3
             int __loop26_iteration = 0;
-            foreach (var __tmp4 in __loop26_results)
+            foreach (var __tmp5 in __loop26_results)
             {
                 ++__loop26_iteration;
-                var __loop26_var1 = __tmp4.__loop26_var1;
-                var prop = __tmp4.prop;
+                var __loop26_var1 = __tmp5.__loop26_var1;
+                var prop = __tmp5.prop;
                 MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop); //457:4
                 if (synInit != null) //458:4
                 {
@@ -3358,130 +4152,124 @@ namespace MetaDslx.Core //1:1
                     {
                         if (ModelCompilerContext.Current.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType) //460:6
                         {
-                            string __tmp5Prefix = "    this.mLazySet("; //461:1
-                            string __tmp6Suffix = ", true));"; //461:119
-                            StringBuilder __tmp7 = new StringBuilder();
-                            __tmp7.Append(prop.JavaFullDescriptorName());
-                            using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
+                            string __tmp7Line = "    this.mLazySet("; //461:1
+                            if (__tmp7Line != null) __out.Append(__tmp7Line);
+                            StringBuilder __tmp8 = new StringBuilder();
+                            __tmp8.Append(prop.JavaFullDescriptorName());
+                            using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
                             {
-                                bool __tmp7_first = true;
-                                while(__tmp7_first || !__tmp7Reader.EndOfStream)
+                                bool __tmp8_first = true;
+                                bool __tmp8_last = __tmp8Reader.EndOfStream;
+                                while(__tmp8_first || !__tmp8_last)
                                 {
-                                    __tmp7_first = false;
-                                    string __tmp7Line = __tmp7Reader.ReadLine();
-                                    if (__tmp7Line == null)
-                                    {
-                                        __tmp7Line = "";
-                                    }
-                                    __out.Append(__tmp5Prefix);
-                                    __out.Append(__tmp7Line);
+                                    __tmp8_first = false;
+                                    string __tmp8Line = __tmp8Reader.ReadLine();
+                                    __tmp8_last = __tmp8Reader.EndOfStream;
+                                    if (__tmp8Line != null) __out.Append(__tmp8Line);
+                                    if (!__tmp8_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp8Line = ", metadslx.core.Lazy.create(() -> "; //461:50
-                            __out.Append(__tmp8Line);
-                            StringBuilder __tmp9 = new StringBuilder();
-                            __tmp9.Append(GenerateExpression(synInit.Value));
-                            using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
+                            string __tmp9Line = ", metadslx.core.Lazy.create(() -> "; //461:50
+                            if (__tmp9Line != null) __out.Append(__tmp9Line);
+                            StringBuilder __tmp10 = new StringBuilder();
+                            __tmp10.Append(GenerateExpression(synInit.Value));
+                            using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
                             {
-                                bool __tmp9_first = true;
-                                while(__tmp9_first || !__tmp9Reader.EndOfStream)
+                                bool __tmp10_first = true;
+                                bool __tmp10_last = __tmp10Reader.EndOfStream;
+                                while(__tmp10_first || !__tmp10_last)
                                 {
-                                    __tmp9_first = false;
-                                    string __tmp9Line = __tmp9Reader.ReadLine();
-                                    if (__tmp9Line == null)
-                                    {
-                                        __tmp9Line = "";
-                                    }
-                                    __out.Append(__tmp9Line);
-                                    __out.Append(__tmp6Suffix);
-                                    __out.AppendLine(); //461:128
+                                    __tmp10_first = false;
+                                    string __tmp10Line = __tmp10Reader.ReadLine();
+                                    __tmp10_last = __tmp10Reader.EndOfStream;
+                                    if (__tmp10Line != null) __out.Append(__tmp10Line);
+                                    if (!__tmp10_last) __out.AppendLine(true);
                                 }
                             }
+                            string __tmp11Line = ", true));"; //461:119
+                            if (__tmp11Line != null) __out.Append(__tmp11Line);
+                            __out.AppendLine(false); //461:128
                         }
                         else //462:6
                         {
-                            string __tmp10Prefix = "    this.mLazySet("; //463:1
-                            string __tmp11Suffix = ", true));"; //463:119
-                            StringBuilder __tmp12 = new StringBuilder();
-                            __tmp12.Append(prop.JavaFullDescriptorName());
-                            using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
-                            {
-                                bool __tmp12_first = true;
-                                while(__tmp12_first || !__tmp12Reader.EndOfStream)
-                                {
-                                    __tmp12_first = false;
-                                    string __tmp12Line = __tmp12Reader.ReadLine();
-                                    if (__tmp12Line == null)
-                                    {
-                                        __tmp12Line = "";
-                                    }
-                                    __out.Append(__tmp10Prefix);
-                                    __out.Append(__tmp12Line);
-                                }
-                            }
-                            string __tmp13Line = ", metadslx.core.Lazy.create(() -> "; //463:50
-                            __out.Append(__tmp13Line);
+                            string __tmp13Line = "    this.mLazySet("; //463:1
+                            if (__tmp13Line != null) __out.Append(__tmp13Line);
                             StringBuilder __tmp14 = new StringBuilder();
-                            __tmp14.Append(GenerateExpression(synInit.Value));
+                            __tmp14.Append(prop.JavaFullDescriptorName());
                             using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
                             {
                                 bool __tmp14_first = true;
-                                while(__tmp14_first || !__tmp14Reader.EndOfStream)
+                                bool __tmp14_last = __tmp14Reader.EndOfStream;
+                                while(__tmp14_first || !__tmp14_last)
                                 {
                                     __tmp14_first = false;
                                     string __tmp14Line = __tmp14Reader.ReadLine();
-                                    if (__tmp14Line == null)
-                                    {
-                                        __tmp14Line = "";
-                                    }
-                                    __out.Append(__tmp14Line);
-                                    __out.Append(__tmp11Suffix);
-                                    __out.AppendLine(); //463:128
+                                    __tmp14_last = __tmp14Reader.EndOfStream;
+                                    if (__tmp14Line != null) __out.Append(__tmp14Line);
+                                    if (!__tmp14_last) __out.AppendLine(true);
                                 }
                             }
+                            string __tmp15Line = ", metadslx.core.Lazy.create(() -> "; //463:50
+                            if (__tmp15Line != null) __out.Append(__tmp15Line);
+                            StringBuilder __tmp16 = new StringBuilder();
+                            __tmp16.Append(GenerateExpression(synInit.Value));
+                            using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
+                            {
+                                bool __tmp16_first = true;
+                                bool __tmp16_last = __tmp16Reader.EndOfStream;
+                                while(__tmp16_first || !__tmp16_last)
+                                {
+                                    __tmp16_first = false;
+                                    string __tmp16Line = __tmp16Reader.ReadLine();
+                                    __tmp16_last = __tmp16Reader.EndOfStream;
+                                    if (__tmp16Line != null) __out.Append(__tmp16Line);
+                                    if (!__tmp16_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp17Line = ", true));"; //463:119
+                            if (__tmp17Line != null) __out.Append(__tmp17Line);
+                            __out.AppendLine(false); //463:128
                         }
                     }
                     else //465:5
                     {
-                        string __tmp15Prefix = "    this.mDerivedSet("; //466:1
-                        string __tmp16Suffix = ");"; //466:96
-                        StringBuilder __tmp17 = new StringBuilder();
-                        __tmp17.Append(prop.JavaFullDescriptorName());
-                        using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
+                        string __tmp19Line = "    this.mDerivedSet("; //466:1
+                        if (__tmp19Line != null) __out.Append(__tmp19Line);
+                        StringBuilder __tmp20 = new StringBuilder();
+                        __tmp20.Append(prop.JavaFullDescriptorName());
+                        using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
                         {
-                            bool __tmp17_first = true;
-                            while(__tmp17_first || !__tmp17Reader.EndOfStream)
+                            bool __tmp20_first = true;
+                            bool __tmp20_last = __tmp20Reader.EndOfStream;
+                            while(__tmp20_first || !__tmp20_last)
                             {
-                                __tmp17_first = false;
-                                string __tmp17Line = __tmp17Reader.ReadLine();
-                                if (__tmp17Line == null)
-                                {
-                                    __tmp17Line = "";
-                                }
-                                __out.Append(__tmp15Prefix);
-                                __out.Append(__tmp17Line);
+                                __tmp20_first = false;
+                                string __tmp20Line = __tmp20Reader.ReadLine();
+                                __tmp20_last = __tmp20Reader.EndOfStream;
+                                if (__tmp20Line != null) __out.Append(__tmp20Line);
+                                if (!__tmp20_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp18Line = ", () -> "; //466:53
-                        __out.Append(__tmp18Line);
-                        StringBuilder __tmp19 = new StringBuilder();
-                        __tmp19.Append(GenerateExpression(synInit.Value));
-                        using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
+                        string __tmp21Line = ", () -> "; //466:53
+                        if (__tmp21Line != null) __out.Append(__tmp21Line);
+                        StringBuilder __tmp22 = new StringBuilder();
+                        __tmp22.Append(GenerateExpression(synInit.Value));
+                        using(StreamReader __tmp22Reader = new StreamReader(this.__ToStream(__tmp22.ToString())))
                         {
-                            bool __tmp19_first = true;
-                            while(__tmp19_first || !__tmp19Reader.EndOfStream)
+                            bool __tmp22_first = true;
+                            bool __tmp22_last = __tmp22Reader.EndOfStream;
+                            while(__tmp22_first || !__tmp22_last)
                             {
-                                __tmp19_first = false;
-                                string __tmp19Line = __tmp19Reader.ReadLine();
-                                if (__tmp19Line == null)
-                                {
-                                    __tmp19Line = "";
-                                }
-                                __out.Append(__tmp19Line);
-                                __out.Append(__tmp16Suffix);
-                                __out.AppendLine(); //466:98
+                                __tmp22_first = false;
+                                string __tmp22Line = __tmp22Reader.ReadLine();
+                                __tmp22_last = __tmp22Reader.EndOfStream;
+                                if (__tmp22Line != null) __out.Append(__tmp22Line);
+                                if (!__tmp22_last) __out.AppendLine(true);
                             }
                         }
+                        string __tmp23Line = ");"; //466:96
+                        if (__tmp23Line != null) __out.Append(__tmp23Line);
+                        __out.AppendLine(false); //466:98
                     }
                 }
                 else //468:4
@@ -3490,295 +4278,278 @@ namespace MetaDslx.Core //1:1
                     {
                         if (prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) //470:6
                         {
-                            string __tmp20Prefix = "    this.mSet("; //471:1
-                            string __tmp21Suffix = "));"; //471:113
-                            StringBuilder __tmp22 = new StringBuilder();
-                            __tmp22.Append(prop.JavaFullDescriptorName());
-                            using(StreamReader __tmp22Reader = new StreamReader(this.__ToStream(__tmp22.ToString())))
-                            {
-                                bool __tmp22_first = true;
-                                while(__tmp22_first || !__tmp22Reader.EndOfStream)
-                                {
-                                    __tmp22_first = false;
-                                    string __tmp22Line = __tmp22Reader.ReadLine();
-                                    if (__tmp22Line == null)
-                                    {
-                                        __tmp22Line = "";
-                                    }
-                                    __out.Append(__tmp20Prefix);
-                                    __out.Append(__tmp22Line);
-                                }
-                            }
-                            string __tmp23Line = ", new "; //471:46
-                            __out.Append(__tmp23Line);
-                            StringBuilder __tmp24 = new StringBuilder();
-                            __tmp24.Append(prop.Type.JavaName());
-                            using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
-                            {
-                                bool __tmp24_first = true;
-                                while(__tmp24_first || !__tmp24Reader.EndOfStream)
-                                {
-                                    __tmp24_first = false;
-                                    string __tmp24Line = __tmp24Reader.ReadLine();
-                                    if (__tmp24Line == null)
-                                    {
-                                        __tmp24Line = "";
-                                    }
-                                    __out.Append(__tmp24Line);
-                                }
-                            }
-                            string __tmp25Line = "("; //471:74
-                            __out.Append(__tmp25Line);
+                            string __tmp25Line = "    this.mSet("; //471:1
+                            if (__tmp25Line != null) __out.Append(__tmp25Line);
                             StringBuilder __tmp26 = new StringBuilder();
-                            __tmp26.Append(GetCollectionConstructorParams(prop));
+                            __tmp26.Append(prop.JavaFullDescriptorName());
                             using(StreamReader __tmp26Reader = new StreamReader(this.__ToStream(__tmp26.ToString())))
                             {
                                 bool __tmp26_first = true;
-                                while(__tmp26_first || !__tmp26Reader.EndOfStream)
+                                bool __tmp26_last = __tmp26Reader.EndOfStream;
+                                while(__tmp26_first || !__tmp26_last)
                                 {
                                     __tmp26_first = false;
                                     string __tmp26Line = __tmp26Reader.ReadLine();
-                                    if (__tmp26Line == null)
-                                    {
-                                        __tmp26Line = "";
-                                    }
-                                    __out.Append(__tmp26Line);
-                                    __out.Append(__tmp21Suffix);
-                                    __out.AppendLine(); //471:116
+                                    __tmp26_last = __tmp26Reader.EndOfStream;
+                                    if (__tmp26Line != null) __out.Append(__tmp26Line);
+                                    if (!__tmp26_last) __out.AppendLine(true);
                                 }
                             }
+                            string __tmp27Line = ", new "; //471:46
+                            if (__tmp27Line != null) __out.Append(__tmp27Line);
+                            StringBuilder __tmp28 = new StringBuilder();
+                            __tmp28.Append(prop.Type.JavaName());
+                            using(StreamReader __tmp28Reader = new StreamReader(this.__ToStream(__tmp28.ToString())))
+                            {
+                                bool __tmp28_first = true;
+                                bool __tmp28_last = __tmp28Reader.EndOfStream;
+                                while(__tmp28_first || !__tmp28_last)
+                                {
+                                    __tmp28_first = false;
+                                    string __tmp28Line = __tmp28Reader.ReadLine();
+                                    __tmp28_last = __tmp28Reader.EndOfStream;
+                                    if (__tmp28Line != null) __out.Append(__tmp28Line);
+                                    if (!__tmp28_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp29Line = "("; //471:74
+                            if (__tmp29Line != null) __out.Append(__tmp29Line);
+                            StringBuilder __tmp30 = new StringBuilder();
+                            __tmp30.Append(GetCollectionConstructorParams(prop));
+                            using(StreamReader __tmp30Reader = new StreamReader(this.__ToStream(__tmp30.ToString())))
+                            {
+                                bool __tmp30_first = true;
+                                bool __tmp30_last = __tmp30Reader.EndOfStream;
+                                while(__tmp30_first || !__tmp30_last)
+                                {
+                                    __tmp30_first = false;
+                                    string __tmp30Line = __tmp30Reader.ReadLine();
+                                    __tmp30_last = __tmp30Reader.EndOfStream;
+                                    if (__tmp30Line != null) __out.Append(__tmp30Line);
+                                    if (!__tmp30_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp31Line = "));"; //471:113
+                            if (__tmp31Line != null) __out.Append(__tmp31Line);
+                            __out.AppendLine(false); //471:116
                         }
                         else if (prop.Kind == MetaPropertyKind.Lazy) //472:6
                         {
-                            string __tmp27Prefix = "    this.mLazySet("; //473:1
-                            string __tmp28Suffix = "(this), true));"; //473:167
-                            StringBuilder __tmp29 = new StringBuilder();
-                            __tmp29.Append(prop.JavaFullDescriptorName());
-                            using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
+                            string __tmp33Line = "    this.mLazySet("; //473:1
+                            if (__tmp33Line != null) __out.Append(__tmp33Line);
+                            StringBuilder __tmp34 = new StringBuilder();
+                            __tmp34.Append(prop.JavaFullDescriptorName());
+                            using(StreamReader __tmp34Reader = new StreamReader(this.__ToStream(__tmp34.ToString())))
                             {
-                                bool __tmp29_first = true;
-                                while(__tmp29_first || !__tmp29Reader.EndOfStream)
+                                bool __tmp34_first = true;
+                                bool __tmp34_last = __tmp34Reader.EndOfStream;
+                                while(__tmp34_first || !__tmp34_last)
                                 {
-                                    __tmp29_first = false;
-                                    string __tmp29Line = __tmp29Reader.ReadLine();
-                                    if (__tmp29Line == null)
-                                    {
-                                        __tmp29Line = "";
-                                    }
-                                    __out.Append(__tmp27Prefix);
-                                    __out.Append(__tmp29Line);
+                                    __tmp34_first = false;
+                                    string __tmp34Line = __tmp34Reader.ReadLine();
+                                    __tmp34_last = __tmp34Reader.EndOfStream;
+                                    if (__tmp34Line != null) __out.Append(__tmp34Line);
+                                    if (!__tmp34_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp30Line = ", metadslx.core.Lazy.create(() -> "; //473:50
-                            __out.Append(__tmp30Line);
-                            StringBuilder __tmp31 = new StringBuilder();
-                            __tmp31.Append(prop.Class.Model.JavaFullImplementationName());
-                            using(StreamReader __tmp31Reader = new StreamReader(this.__ToStream(__tmp31.ToString())))
+                            string __tmp35Line = ", metadslx.core.Lazy.create(() -> "; //473:50
+                            if (__tmp35Line != null) __out.Append(__tmp35Line);
+                            StringBuilder __tmp36 = new StringBuilder();
+                            __tmp36.Append(prop.Class.Model.JavaFullImplementationName());
+                            using(StreamReader __tmp36Reader = new StreamReader(this.__ToStream(__tmp36.ToString())))
                             {
-                                bool __tmp31_first = true;
-                                while(__tmp31_first || !__tmp31Reader.EndOfStream)
+                                bool __tmp36_first = true;
+                                bool __tmp36_last = __tmp36Reader.EndOfStream;
+                                while(__tmp36_first || !__tmp36_last)
                                 {
-                                    __tmp31_first = false;
-                                    string __tmp31Line = __tmp31Reader.ReadLine();
-                                    if (__tmp31Line == null)
-                                    {
-                                        __tmp31Line = "";
-                                    }
-                                    __out.Append(__tmp31Line);
+                                    __tmp36_first = false;
+                                    string __tmp36Line = __tmp36Reader.ReadLine();
+                                    __tmp36_last = __tmp36Reader.EndOfStream;
+                                    if (__tmp36Line != null) __out.Append(__tmp36Line);
+                                    if (!__tmp36_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp32Line = "."; //473:131
-                            __out.Append(__tmp32Line);
-                            StringBuilder __tmp33 = new StringBuilder();
-                            __tmp33.Append(prop.Class.JavaName());
-                            using(StreamReader __tmp33Reader = new StreamReader(this.__ToStream(__tmp33.ToString())))
-                            {
-                                bool __tmp33_first = true;
-                                while(__tmp33_first || !__tmp33Reader.EndOfStream)
-                                {
-                                    __tmp33_first = false;
-                                    string __tmp33Line = __tmp33Reader.ReadLine();
-                                    if (__tmp33Line == null)
-                                    {
-                                        __tmp33Line = "";
-                                    }
-                                    __out.Append(__tmp33Line);
-                                }
-                            }
-                            string __tmp34Line = "_"; //473:155
-                            __out.Append(__tmp34Line);
-                            StringBuilder __tmp35 = new StringBuilder();
-                            __tmp35.Append(prop.Name);
-                            using(StreamReader __tmp35Reader = new StreamReader(this.__ToStream(__tmp35.ToString())))
-                            {
-                                bool __tmp35_first = true;
-                                while(__tmp35_first || !__tmp35Reader.EndOfStream)
-                                {
-                                    __tmp35_first = false;
-                                    string __tmp35Line = __tmp35Reader.ReadLine();
-                                    if (__tmp35Line == null)
-                                    {
-                                        __tmp35Line = "";
-                                    }
-                                    __out.Append(__tmp35Line);
-                                    __out.Append(__tmp28Suffix);
-                                    __out.AppendLine(); //473:182
-                                }
-                            }
-                        }
-                        else if (prop.Kind == MetaPropertyKind.Derived) //474:6
-                        {
-                            string __tmp36Prefix = "    this.mDerivedSet("; //475:1
-                            string __tmp37Suffix = "(this));"; //475:144
+                            string __tmp37Line = "."; //473:131
+                            if (__tmp37Line != null) __out.Append(__tmp37Line);
                             StringBuilder __tmp38 = new StringBuilder();
-                            __tmp38.Append(prop.JavaFullDescriptorName());
+                            __tmp38.Append(prop.Class.JavaName());
                             using(StreamReader __tmp38Reader = new StreamReader(this.__ToStream(__tmp38.ToString())))
                             {
                                 bool __tmp38_first = true;
-                                while(__tmp38_first || !__tmp38Reader.EndOfStream)
+                                bool __tmp38_last = __tmp38Reader.EndOfStream;
+                                while(__tmp38_first || !__tmp38_last)
                                 {
                                     __tmp38_first = false;
                                     string __tmp38Line = __tmp38Reader.ReadLine();
-                                    if (__tmp38Line == null)
-                                    {
-                                        __tmp38Line = "";
-                                    }
-                                    __out.Append(__tmp36Prefix);
-                                    __out.Append(__tmp38Line);
+                                    __tmp38_last = __tmp38Reader.EndOfStream;
+                                    if (__tmp38Line != null) __out.Append(__tmp38Line);
+                                    if (!__tmp38_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp39Line = ", () -> "; //475:53
-                            __out.Append(__tmp39Line);
+                            string __tmp39Line = "_"; //473:155
+                            if (__tmp39Line != null) __out.Append(__tmp39Line);
                             StringBuilder __tmp40 = new StringBuilder();
-                            __tmp40.Append(prop.Class.Model.JavaFullImplementationName());
+                            __tmp40.Append(prop.Name);
                             using(StreamReader __tmp40Reader = new StreamReader(this.__ToStream(__tmp40.ToString())))
                             {
                                 bool __tmp40_first = true;
-                                while(__tmp40_first || !__tmp40Reader.EndOfStream)
+                                bool __tmp40_last = __tmp40Reader.EndOfStream;
+                                while(__tmp40_first || !__tmp40_last)
                                 {
                                     __tmp40_first = false;
                                     string __tmp40Line = __tmp40Reader.ReadLine();
-                                    if (__tmp40Line == null)
-                                    {
-                                        __tmp40Line = "";
-                                    }
-                                    __out.Append(__tmp40Line);
+                                    __tmp40_last = __tmp40Reader.EndOfStream;
+                                    if (__tmp40Line != null) __out.Append(__tmp40Line);
+                                    if (!__tmp40_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp41Line = "."; //475:108
-                            __out.Append(__tmp41Line);
-                            StringBuilder __tmp42 = new StringBuilder();
-                            __tmp42.Append(prop.Class.JavaName());
-                            using(StreamReader __tmp42Reader = new StreamReader(this.__ToStream(__tmp42.ToString())))
-                            {
-                                bool __tmp42_first = true;
-                                while(__tmp42_first || !__tmp42Reader.EndOfStream)
-                                {
-                                    __tmp42_first = false;
-                                    string __tmp42Line = __tmp42Reader.ReadLine();
-                                    if (__tmp42Line == null)
-                                    {
-                                        __tmp42Line = "";
-                                    }
-                                    __out.Append(__tmp42Line);
-                                }
-                            }
-                            string __tmp43Line = "_"; //475:132
-                            __out.Append(__tmp43Line);
+                            string __tmp41Line = "(this), true));"; //473:167
+                            if (__tmp41Line != null) __out.Append(__tmp41Line);
+                            __out.AppendLine(false); //473:182
+                        }
+                        else if (prop.Kind == MetaPropertyKind.Derived) //474:6
+                        {
+                            string __tmp43Line = "    this.mDerivedSet("; //475:1
+                            if (__tmp43Line != null) __out.Append(__tmp43Line);
                             StringBuilder __tmp44 = new StringBuilder();
-                            __tmp44.Append(prop.Name);
+                            __tmp44.Append(prop.JavaFullDescriptorName());
                             using(StreamReader __tmp44Reader = new StreamReader(this.__ToStream(__tmp44.ToString())))
                             {
                                 bool __tmp44_first = true;
-                                while(__tmp44_first || !__tmp44Reader.EndOfStream)
+                                bool __tmp44_last = __tmp44Reader.EndOfStream;
+                                while(__tmp44_first || !__tmp44_last)
                                 {
                                     __tmp44_first = false;
                                     string __tmp44Line = __tmp44Reader.ReadLine();
-                                    if (__tmp44Line == null)
-                                    {
-                                        __tmp44Line = "";
-                                    }
-                                    __out.Append(__tmp44Line);
-                                    __out.Append(__tmp37Suffix);
-                                    __out.AppendLine(); //475:152
+                                    __tmp44_last = __tmp44Reader.EndOfStream;
+                                    if (__tmp44Line != null) __out.Append(__tmp44Line);
+                                    if (!__tmp44_last) __out.AppendLine(true);
                                 }
                             }
+                            string __tmp45Line = ", () -> "; //475:53
+                            if (__tmp45Line != null) __out.Append(__tmp45Line);
+                            StringBuilder __tmp46 = new StringBuilder();
+                            __tmp46.Append(prop.Class.Model.JavaFullImplementationName());
+                            using(StreamReader __tmp46Reader = new StreamReader(this.__ToStream(__tmp46.ToString())))
+                            {
+                                bool __tmp46_first = true;
+                                bool __tmp46_last = __tmp46Reader.EndOfStream;
+                                while(__tmp46_first || !__tmp46_last)
+                                {
+                                    __tmp46_first = false;
+                                    string __tmp46Line = __tmp46Reader.ReadLine();
+                                    __tmp46_last = __tmp46Reader.EndOfStream;
+                                    if (__tmp46Line != null) __out.Append(__tmp46Line);
+                                    if (!__tmp46_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp47Line = "."; //475:108
+                            if (__tmp47Line != null) __out.Append(__tmp47Line);
+                            StringBuilder __tmp48 = new StringBuilder();
+                            __tmp48.Append(prop.Class.JavaName());
+                            using(StreamReader __tmp48Reader = new StreamReader(this.__ToStream(__tmp48.ToString())))
+                            {
+                                bool __tmp48_first = true;
+                                bool __tmp48_last = __tmp48Reader.EndOfStream;
+                                while(__tmp48_first || !__tmp48_last)
+                                {
+                                    __tmp48_first = false;
+                                    string __tmp48Line = __tmp48Reader.ReadLine();
+                                    __tmp48_last = __tmp48Reader.EndOfStream;
+                                    if (__tmp48Line != null) __out.Append(__tmp48Line);
+                                    if (!__tmp48_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp49Line = "_"; //475:132
+                            if (__tmp49Line != null) __out.Append(__tmp49Line);
+                            StringBuilder __tmp50 = new StringBuilder();
+                            __tmp50.Append(prop.Name);
+                            using(StreamReader __tmp50Reader = new StreamReader(this.__ToStream(__tmp50.ToString())))
+                            {
+                                bool __tmp50_first = true;
+                                bool __tmp50_last = __tmp50Reader.EndOfStream;
+                                while(__tmp50_first || !__tmp50_last)
+                                {
+                                    __tmp50_first = false;
+                                    string __tmp50Line = __tmp50Reader.ReadLine();
+                                    __tmp50_last = __tmp50Reader.EndOfStream;
+                                    if (__tmp50Line != null) __out.Append(__tmp50Line);
+                                    if (!__tmp50_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp51Line = "(this));"; //475:144
+                            if (__tmp51Line != null) __out.Append(__tmp51Line);
+                            __out.AppendLine(false); //475:152
                         }
                         else if (prop.Kind == MetaPropertyKind.Readonly) //476:6
                         {
-                            string __tmp45Prefix = "    // Init "; //477:1
-                            string __tmp46Suffix = string.Empty; 
-                            StringBuilder __tmp47 = new StringBuilder();
-                            __tmp47.Append(prop.JavaFullDescriptorName());
-                            using(StreamReader __tmp47Reader = new StreamReader(this.__ToStream(__tmp47.ToString())))
+                            string __tmp53Line = "    // Init "; //477:1
+                            if (__tmp53Line != null) __out.Append(__tmp53Line);
+                            StringBuilder __tmp54 = new StringBuilder();
+                            __tmp54.Append(prop.JavaFullDescriptorName());
+                            using(StreamReader __tmp54Reader = new StreamReader(this.__ToStream(__tmp54.ToString())))
                             {
-                                bool __tmp47_first = true;
-                                while(__tmp47_first || !__tmp47Reader.EndOfStream)
+                                bool __tmp54_first = true;
+                                bool __tmp54_last = __tmp54Reader.EndOfStream;
+                                while(__tmp54_first || !__tmp54_last)
                                 {
-                                    __tmp47_first = false;
-                                    string __tmp47Line = __tmp47Reader.ReadLine();
-                                    if (__tmp47Line == null)
-                                    {
-                                        __tmp47Line = "";
-                                    }
-                                    __out.Append(__tmp45Prefix);
-                                    __out.Append(__tmp47Line);
+                                    __tmp54_first = false;
+                                    string __tmp54Line = __tmp54Reader.ReadLine();
+                                    __tmp54_last = __tmp54Reader.EndOfStream;
+                                    if (__tmp54Line != null) __out.Append(__tmp54Line);
+                                    if (!__tmp54_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp48Line = " in "; //477:44
-                            __out.Append(__tmp48Line);
-                            StringBuilder __tmp49 = new StringBuilder();
-                            __tmp49.Append(prop.Class.Model.JavaFullImplementationName());
-                            using(StreamReader __tmp49Reader = new StreamReader(this.__ToStream(__tmp49.ToString())))
+                            string __tmp55Line = " in "; //477:44
+                            if (__tmp55Line != null) __out.Append(__tmp55Line);
+                            StringBuilder __tmp56 = new StringBuilder();
+                            __tmp56.Append(prop.Class.Model.JavaFullImplementationName());
+                            using(StreamReader __tmp56Reader = new StreamReader(this.__ToStream(__tmp56.ToString())))
                             {
-                                bool __tmp49_first = true;
-                                while(__tmp49_first || !__tmp49Reader.EndOfStream)
+                                bool __tmp56_first = true;
+                                bool __tmp56_last = __tmp56Reader.EndOfStream;
+                                while(__tmp56_first || !__tmp56_last)
                                 {
-                                    __tmp49_first = false;
-                                    string __tmp49Line = __tmp49Reader.ReadLine();
-                                    if (__tmp49Line == null)
-                                    {
-                                        __tmp49Line = "";
-                                    }
-                                    __out.Append(__tmp49Line);
+                                    __tmp56_first = false;
+                                    string __tmp56Line = __tmp56Reader.ReadLine();
+                                    __tmp56_last = __tmp56Reader.EndOfStream;
+                                    if (__tmp56Line != null) __out.Append(__tmp56Line);
+                                    if (!__tmp56_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp50Line = "."; //477:95
-                            __out.Append(__tmp50Line);
-                            StringBuilder __tmp51 = new StringBuilder();
-                            __tmp51.Append(cls.JavaName());
-                            using(StreamReader __tmp51Reader = new StreamReader(this.__ToStream(__tmp51.ToString())))
+                            string __tmp57Line = "."; //477:95
+                            if (__tmp57Line != null) __out.Append(__tmp57Line);
+                            StringBuilder __tmp58 = new StringBuilder();
+                            __tmp58.Append(cls.JavaName());
+                            using(StreamReader __tmp58Reader = new StreamReader(this.__ToStream(__tmp58.ToString())))
                             {
-                                bool __tmp51_first = true;
-                                while(__tmp51_first || !__tmp51Reader.EndOfStream)
+                                bool __tmp58_first = true;
+                                bool __tmp58_last = __tmp58Reader.EndOfStream;
+                                while(__tmp58_first || !__tmp58_last)
                                 {
-                                    __tmp51_first = false;
-                                    string __tmp51Line = __tmp51Reader.ReadLine();
-                                    if (__tmp51Line == null)
-                                    {
-                                        __tmp51Line = "";
-                                    }
-                                    __out.Append(__tmp51Line);
+                                    __tmp58_first = false;
+                                    string __tmp58Line = __tmp58Reader.ReadLine();
+                                    __tmp58_last = __tmp58Reader.EndOfStream;
+                                    if (__tmp58Line != null) __out.Append(__tmp58Line);
+                                    if (!__tmp58_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp52Line = "_"; //477:112
-                            __out.Append(__tmp52Line);
-                            StringBuilder __tmp53 = new StringBuilder();
-                            __tmp53.Append(cls.JavaName());
-                            using(StreamReader __tmp53Reader = new StreamReader(this.__ToStream(__tmp53.ToString())))
+                            string __tmp59Line = "_"; //477:112
+                            if (__tmp59Line != null) __out.Append(__tmp59Line);
+                            StringBuilder __tmp60 = new StringBuilder();
+                            __tmp60.Append(cls.JavaName());
+                            using(StreamReader __tmp60Reader = new StreamReader(this.__ToStream(__tmp60.ToString())))
                             {
-                                bool __tmp53_first = true;
-                                while(__tmp53_first || !__tmp53Reader.EndOfStream)
+                                bool __tmp60_first = true;
+                                bool __tmp60_last = __tmp60Reader.EndOfStream;
+                                while(__tmp60_first || !__tmp60_last)
                                 {
-                                    __tmp53_first = false;
-                                    string __tmp53Line = __tmp53Reader.ReadLine();
-                                    if (__tmp53Line == null)
-                                    {
-                                        __tmp53Line = "";
-                                    }
-                                    __out.Append(__tmp53Line);
-                                    __out.Append(__tmp46Suffix);
-                                    __out.AppendLine(); //477:129
+                                    __tmp60_first = false;
+                                    string __tmp60Line = __tmp60Reader.ReadLine();
+                                    __tmp60_last = __tmp60Reader.EndOfStream;
+                                    if (__tmp60Line != null) __out.Append(__tmp60Line);
+                                    if (!__tmp60_last) __out.AppendLine(true);
+                                    __out.AppendLine(false); //477:129
                                 }
                             }
                         }
@@ -3787,235 +4558,221 @@ namespace MetaDslx.Core //1:1
                     {
                         if (prop.Kind == MetaPropertyKind.Lazy) //480:6
                         {
-                            string __tmp54Prefix = "    this.mLazySet("; //481:1
-                            string __tmp55Suffix = "(this), true));"; //481:156
-                            StringBuilder __tmp56 = new StringBuilder();
-                            __tmp56.Append(prop.JavaFullDescriptorName());
-                            using(StreamReader __tmp56Reader = new StreamReader(this.__ToStream(__tmp56.ToString())))
+                            string __tmp62Line = "    this.mLazySet("; //481:1
+                            if (__tmp62Line != null) __out.Append(__tmp62Line);
+                            StringBuilder __tmp63 = new StringBuilder();
+                            __tmp63.Append(prop.JavaFullDescriptorName());
+                            using(StreamReader __tmp63Reader = new StreamReader(this.__ToStream(__tmp63.ToString())))
                             {
-                                bool __tmp56_first = true;
-                                while(__tmp56_first || !__tmp56Reader.EndOfStream)
+                                bool __tmp63_first = true;
+                                bool __tmp63_last = __tmp63Reader.EndOfStream;
+                                while(__tmp63_first || !__tmp63_last)
                                 {
-                                    __tmp56_first = false;
-                                    string __tmp56Line = __tmp56Reader.ReadLine();
-                                    if (__tmp56Line == null)
-                                    {
-                                        __tmp56Line = "";
-                                    }
-                                    __out.Append(__tmp54Prefix);
-                                    __out.Append(__tmp56Line);
+                                    __tmp63_first = false;
+                                    string __tmp63Line = __tmp63Reader.ReadLine();
+                                    __tmp63_last = __tmp63Reader.EndOfStream;
+                                    if (__tmp63Line != null) __out.Append(__tmp63Line);
+                                    if (!__tmp63_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp57Line = ", metadslx.core.Lazy.create(() -> "; //481:50
-                            __out.Append(__tmp57Line);
-                            StringBuilder __tmp58 = new StringBuilder();
-                            __tmp58.Append(model.JavaFullImplementationName());
-                            using(StreamReader __tmp58Reader = new StreamReader(this.__ToStream(__tmp58.ToString())))
-                            {
-                                bool __tmp58_first = true;
-                                while(__tmp58_first || !__tmp58Reader.EndOfStream)
-                                {
-                                    __tmp58_first = false;
-                                    string __tmp58Line = __tmp58Reader.ReadLine();
-                                    if (__tmp58Line == null)
-                                    {
-                                        __tmp58Line = "";
-                                    }
-                                    __out.Append(__tmp58Line);
-                                }
-                            }
-                            string __tmp59Line = "."; //481:120
-                            __out.Append(__tmp59Line);
-                            StringBuilder __tmp60 = new StringBuilder();
-                            __tmp60.Append(prop.Class.JavaName());
-                            using(StreamReader __tmp60Reader = new StreamReader(this.__ToStream(__tmp60.ToString())))
-                            {
-                                bool __tmp60_first = true;
-                                while(__tmp60_first || !__tmp60Reader.EndOfStream)
-                                {
-                                    __tmp60_first = false;
-                                    string __tmp60Line = __tmp60Reader.ReadLine();
-                                    if (__tmp60Line == null)
-                                    {
-                                        __tmp60Line = "";
-                                    }
-                                    __out.Append(__tmp60Line);
-                                }
-                            }
-                            string __tmp61Line = "_"; //481:144
-                            __out.Append(__tmp61Line);
-                            StringBuilder __tmp62 = new StringBuilder();
-                            __tmp62.Append(prop.Name);
-                            using(StreamReader __tmp62Reader = new StreamReader(this.__ToStream(__tmp62.ToString())))
-                            {
-                                bool __tmp62_first = true;
-                                while(__tmp62_first || !__tmp62Reader.EndOfStream)
-                                {
-                                    __tmp62_first = false;
-                                    string __tmp62Line = __tmp62Reader.ReadLine();
-                                    if (__tmp62Line == null)
-                                    {
-                                        __tmp62Line = "";
-                                    }
-                                    __out.Append(__tmp62Line);
-                                    __out.Append(__tmp55Suffix);
-                                    __out.AppendLine(); //481:171
-                                }
-                            }
-                        }
-                        else if (prop.Kind == MetaPropertyKind.Derived) //482:6
-                        {
-                            string __tmp63Prefix = "    this.mDerivedSet("; //483:1
-                            string __tmp64Suffix = "(this));"; //483:133
+                            string __tmp64Line = ", metadslx.core.Lazy.create(() -> "; //481:50
+                            if (__tmp64Line != null) __out.Append(__tmp64Line);
                             StringBuilder __tmp65 = new StringBuilder();
-                            __tmp65.Append(prop.JavaFullDescriptorName());
+                            __tmp65.Append(model.JavaFullImplementationName());
                             using(StreamReader __tmp65Reader = new StreamReader(this.__ToStream(__tmp65.ToString())))
                             {
                                 bool __tmp65_first = true;
-                                while(__tmp65_first || !__tmp65Reader.EndOfStream)
+                                bool __tmp65_last = __tmp65Reader.EndOfStream;
+                                while(__tmp65_first || !__tmp65_last)
                                 {
                                     __tmp65_first = false;
                                     string __tmp65Line = __tmp65Reader.ReadLine();
-                                    if (__tmp65Line == null)
-                                    {
-                                        __tmp65Line = "";
-                                    }
-                                    __out.Append(__tmp63Prefix);
-                                    __out.Append(__tmp65Line);
+                                    __tmp65_last = __tmp65Reader.EndOfStream;
+                                    if (__tmp65Line != null) __out.Append(__tmp65Line);
+                                    if (!__tmp65_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp66Line = ", () -> "; //483:53
-                            __out.Append(__tmp66Line);
+                            string __tmp66Line = "."; //481:120
+                            if (__tmp66Line != null) __out.Append(__tmp66Line);
                             StringBuilder __tmp67 = new StringBuilder();
-                            __tmp67.Append(model.JavaFullImplementationName());
+                            __tmp67.Append(prop.Class.JavaName());
                             using(StreamReader __tmp67Reader = new StreamReader(this.__ToStream(__tmp67.ToString())))
                             {
                                 bool __tmp67_first = true;
-                                while(__tmp67_first || !__tmp67Reader.EndOfStream)
+                                bool __tmp67_last = __tmp67Reader.EndOfStream;
+                                while(__tmp67_first || !__tmp67_last)
                                 {
                                     __tmp67_first = false;
                                     string __tmp67Line = __tmp67Reader.ReadLine();
-                                    if (__tmp67Line == null)
-                                    {
-                                        __tmp67Line = "";
-                                    }
-                                    __out.Append(__tmp67Line);
+                                    __tmp67_last = __tmp67Reader.EndOfStream;
+                                    if (__tmp67Line != null) __out.Append(__tmp67Line);
+                                    if (!__tmp67_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp68Line = "."; //483:97
-                            __out.Append(__tmp68Line);
+                            string __tmp68Line = "_"; //481:144
+                            if (__tmp68Line != null) __out.Append(__tmp68Line);
                             StringBuilder __tmp69 = new StringBuilder();
-                            __tmp69.Append(prop.Class.JavaName());
+                            __tmp69.Append(prop.Name);
                             using(StreamReader __tmp69Reader = new StreamReader(this.__ToStream(__tmp69.ToString())))
                             {
                                 bool __tmp69_first = true;
-                                while(__tmp69_first || !__tmp69Reader.EndOfStream)
+                                bool __tmp69_last = __tmp69Reader.EndOfStream;
+                                while(__tmp69_first || !__tmp69_last)
                                 {
                                     __tmp69_first = false;
                                     string __tmp69Line = __tmp69Reader.ReadLine();
-                                    if (__tmp69Line == null)
-                                    {
-                                        __tmp69Line = "";
-                                    }
-                                    __out.Append(__tmp69Line);
+                                    __tmp69_last = __tmp69Reader.EndOfStream;
+                                    if (__tmp69Line != null) __out.Append(__tmp69Line);
+                                    if (!__tmp69_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp70Line = "_"; //483:121
-                            __out.Append(__tmp70Line);
-                            StringBuilder __tmp71 = new StringBuilder();
-                            __tmp71.Append(prop.Name);
-                            using(StreamReader __tmp71Reader = new StreamReader(this.__ToStream(__tmp71.ToString())))
+                            string __tmp70Line = "(this), true));"; //481:156
+                            if (__tmp70Line != null) __out.Append(__tmp70Line);
+                            __out.AppendLine(false); //481:171
+                        }
+                        else if (prop.Kind == MetaPropertyKind.Derived) //482:6
+                        {
+                            string __tmp72Line = "    this.mDerivedSet("; //483:1
+                            if (__tmp72Line != null) __out.Append(__tmp72Line);
+                            StringBuilder __tmp73 = new StringBuilder();
+                            __tmp73.Append(prop.JavaFullDescriptorName());
+                            using(StreamReader __tmp73Reader = new StreamReader(this.__ToStream(__tmp73.ToString())))
                             {
-                                bool __tmp71_first = true;
-                                while(__tmp71_first || !__tmp71Reader.EndOfStream)
+                                bool __tmp73_first = true;
+                                bool __tmp73_last = __tmp73Reader.EndOfStream;
+                                while(__tmp73_first || !__tmp73_last)
                                 {
-                                    __tmp71_first = false;
-                                    string __tmp71Line = __tmp71Reader.ReadLine();
-                                    if (__tmp71Line == null)
-                                    {
-                                        __tmp71Line = "";
-                                    }
-                                    __out.Append(__tmp71Line);
-                                    __out.Append(__tmp64Suffix);
-                                    __out.AppendLine(); //483:141
+                                    __tmp73_first = false;
+                                    string __tmp73Line = __tmp73Reader.ReadLine();
+                                    __tmp73_last = __tmp73Reader.EndOfStream;
+                                    if (__tmp73Line != null) __out.Append(__tmp73Line);
+                                    if (!__tmp73_last) __out.AppendLine(true);
                                 }
                             }
+                            string __tmp74Line = ", () -> "; //483:53
+                            if (__tmp74Line != null) __out.Append(__tmp74Line);
+                            StringBuilder __tmp75 = new StringBuilder();
+                            __tmp75.Append(model.JavaFullImplementationName());
+                            using(StreamReader __tmp75Reader = new StreamReader(this.__ToStream(__tmp75.ToString())))
+                            {
+                                bool __tmp75_first = true;
+                                bool __tmp75_last = __tmp75Reader.EndOfStream;
+                                while(__tmp75_first || !__tmp75_last)
+                                {
+                                    __tmp75_first = false;
+                                    string __tmp75Line = __tmp75Reader.ReadLine();
+                                    __tmp75_last = __tmp75Reader.EndOfStream;
+                                    if (__tmp75Line != null) __out.Append(__tmp75Line);
+                                    if (!__tmp75_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp76Line = "."; //483:97
+                            if (__tmp76Line != null) __out.Append(__tmp76Line);
+                            StringBuilder __tmp77 = new StringBuilder();
+                            __tmp77.Append(prop.Class.JavaName());
+                            using(StreamReader __tmp77Reader = new StreamReader(this.__ToStream(__tmp77.ToString())))
+                            {
+                                bool __tmp77_first = true;
+                                bool __tmp77_last = __tmp77Reader.EndOfStream;
+                                while(__tmp77_first || !__tmp77_last)
+                                {
+                                    __tmp77_first = false;
+                                    string __tmp77Line = __tmp77Reader.ReadLine();
+                                    __tmp77_last = __tmp77Reader.EndOfStream;
+                                    if (__tmp77Line != null) __out.Append(__tmp77Line);
+                                    if (!__tmp77_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp78Line = "_"; //483:121
+                            if (__tmp78Line != null) __out.Append(__tmp78Line);
+                            StringBuilder __tmp79 = new StringBuilder();
+                            __tmp79.Append(prop.Name);
+                            using(StreamReader __tmp79Reader = new StreamReader(this.__ToStream(__tmp79.ToString())))
+                            {
+                                bool __tmp79_first = true;
+                                bool __tmp79_last = __tmp79Reader.EndOfStream;
+                                while(__tmp79_first || !__tmp79_last)
+                                {
+                                    __tmp79_first = false;
+                                    string __tmp79Line = __tmp79Reader.ReadLine();
+                                    __tmp79_last = __tmp79Reader.EndOfStream;
+                                    if (__tmp79Line != null) __out.Append(__tmp79Line);
+                                    if (!__tmp79_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp80Line = "(this));"; //483:133
+                            if (__tmp80Line != null) __out.Append(__tmp80Line);
+                            __out.AppendLine(false); //483:141
                         }
                         else if (prop.Kind == MetaPropertyKind.Readonly) //484:6
                         {
-                            string __tmp72Prefix = "    // Init "; //485:1
-                            string __tmp73Suffix = string.Empty; 
-                            StringBuilder __tmp74 = new StringBuilder();
-                            __tmp74.Append(prop.JavaFullDescriptorName());
-                            using(StreamReader __tmp74Reader = new StreamReader(this.__ToStream(__tmp74.ToString())))
+                            string __tmp82Line = "    // Init "; //485:1
+                            if (__tmp82Line != null) __out.Append(__tmp82Line);
+                            StringBuilder __tmp83 = new StringBuilder();
+                            __tmp83.Append(prop.JavaFullDescriptorName());
+                            using(StreamReader __tmp83Reader = new StreamReader(this.__ToStream(__tmp83.ToString())))
                             {
-                                bool __tmp74_first = true;
-                                while(__tmp74_first || !__tmp74Reader.EndOfStream)
+                                bool __tmp83_first = true;
+                                bool __tmp83_last = __tmp83Reader.EndOfStream;
+                                while(__tmp83_first || !__tmp83_last)
                                 {
-                                    __tmp74_first = false;
-                                    string __tmp74Line = __tmp74Reader.ReadLine();
-                                    if (__tmp74Line == null)
-                                    {
-                                        __tmp74Line = "";
-                                    }
-                                    __out.Append(__tmp72Prefix);
-                                    __out.Append(__tmp74Line);
+                                    __tmp83_first = false;
+                                    string __tmp83Line = __tmp83Reader.ReadLine();
+                                    __tmp83_last = __tmp83Reader.EndOfStream;
+                                    if (__tmp83Line != null) __out.Append(__tmp83Line);
+                                    if (!__tmp83_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp75Line = " in "; //485:44
-                            __out.Append(__tmp75Line);
-                            StringBuilder __tmp76 = new StringBuilder();
-                            __tmp76.Append(model.JavaFullImplementationName());
-                            using(StreamReader __tmp76Reader = new StreamReader(this.__ToStream(__tmp76.ToString())))
+                            string __tmp84Line = " in "; //485:44
+                            if (__tmp84Line != null) __out.Append(__tmp84Line);
+                            StringBuilder __tmp85 = new StringBuilder();
+                            __tmp85.Append(model.JavaFullImplementationName());
+                            using(StreamReader __tmp85Reader = new StreamReader(this.__ToStream(__tmp85.ToString())))
                             {
-                                bool __tmp76_first = true;
-                                while(__tmp76_first || !__tmp76Reader.EndOfStream)
+                                bool __tmp85_first = true;
+                                bool __tmp85_last = __tmp85Reader.EndOfStream;
+                                while(__tmp85_first || !__tmp85_last)
                                 {
-                                    __tmp76_first = false;
-                                    string __tmp76Line = __tmp76Reader.ReadLine();
-                                    if (__tmp76Line == null)
-                                    {
-                                        __tmp76Line = "";
-                                    }
-                                    __out.Append(__tmp76Line);
+                                    __tmp85_first = false;
+                                    string __tmp85Line = __tmp85Reader.ReadLine();
+                                    __tmp85_last = __tmp85Reader.EndOfStream;
+                                    if (__tmp85Line != null) __out.Append(__tmp85Line);
+                                    if (!__tmp85_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp77Line = "."; //485:84
-                            __out.Append(__tmp77Line);
-                            StringBuilder __tmp78 = new StringBuilder();
-                            __tmp78.Append(cls.JavaName());
-                            using(StreamReader __tmp78Reader = new StreamReader(this.__ToStream(__tmp78.ToString())))
+                            string __tmp86Line = "."; //485:84
+                            if (__tmp86Line != null) __out.Append(__tmp86Line);
+                            StringBuilder __tmp87 = new StringBuilder();
+                            __tmp87.Append(cls.JavaName());
+                            using(StreamReader __tmp87Reader = new StreamReader(this.__ToStream(__tmp87.ToString())))
                             {
-                                bool __tmp78_first = true;
-                                while(__tmp78_first || !__tmp78Reader.EndOfStream)
+                                bool __tmp87_first = true;
+                                bool __tmp87_last = __tmp87Reader.EndOfStream;
+                                while(__tmp87_first || !__tmp87_last)
                                 {
-                                    __tmp78_first = false;
-                                    string __tmp78Line = __tmp78Reader.ReadLine();
-                                    if (__tmp78Line == null)
-                                    {
-                                        __tmp78Line = "";
-                                    }
-                                    __out.Append(__tmp78Line);
+                                    __tmp87_first = false;
+                                    string __tmp87Line = __tmp87Reader.ReadLine();
+                                    __tmp87_last = __tmp87Reader.EndOfStream;
+                                    if (__tmp87Line != null) __out.Append(__tmp87Line);
+                                    if (!__tmp87_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp79Line = "_"; //485:101
-                            __out.Append(__tmp79Line);
-                            StringBuilder __tmp80 = new StringBuilder();
-                            __tmp80.Append(cls.JavaName());
-                            using(StreamReader __tmp80Reader = new StreamReader(this.__ToStream(__tmp80.ToString())))
+                            string __tmp88Line = "_"; //485:101
+                            if (__tmp88Line != null) __out.Append(__tmp88Line);
+                            StringBuilder __tmp89 = new StringBuilder();
+                            __tmp89.Append(cls.JavaName());
+                            using(StreamReader __tmp89Reader = new StreamReader(this.__ToStream(__tmp89.ToString())))
                             {
-                                bool __tmp80_first = true;
-                                while(__tmp80_first || !__tmp80Reader.EndOfStream)
+                                bool __tmp89_first = true;
+                                bool __tmp89_last = __tmp89Reader.EndOfStream;
+                                while(__tmp89_first || !__tmp89_last)
                                 {
-                                    __tmp80_first = false;
-                                    string __tmp80Line = __tmp80Reader.ReadLine();
-                                    if (__tmp80Line == null)
-                                    {
-                                        __tmp80Line = "";
-                                    }
-                                    __out.Append(__tmp80Line);
-                                    __out.Append(__tmp73Suffix);
-                                    __out.AppendLine(); //485:118
+                                    __tmp89_first = false;
+                                    string __tmp89Line = __tmp89Reader.ReadLine();
+                                    __tmp89_last = __tmp89Reader.EndOfStream;
+                                    if (__tmp89Line != null) __out.Append(__tmp89Line);
+                                    if (!__tmp89_last) __out.AppendLine(true);
+                                    __out.AppendLine(false); //485:118
                                 }
                             }
                         }
@@ -4031,244 +4788,233 @@ namespace MetaDslx.Core //1:1
                 select new { __loop27_var1 = __loop27_var1, sup = sup, Constructor = Constructor, Initializers = Initializers, init = init}
                 ).ToList(); //490:3
             int __loop27_iteration = 0;
-            foreach (var __tmp81 in __loop27_results)
+            foreach (var __tmp90 in __loop27_results)
             {
                 ++__loop27_iteration;
-                var __loop27_var1 = __tmp81.__loop27_var1;
-                var sup = __tmp81.sup;
-                var Constructor = __tmp81.Constructor;
-                var Initializers = __tmp81.Initializers;
-                var init = __tmp81.init;
+                var __loop27_var1 = __tmp90.__loop27_var1;
+                var sup = __tmp90.sup;
+                var Constructor = __tmp90.Constructor;
+                var Initializers = __tmp90.Initializers;
+                var init = __tmp90.init;
                 if (init.Object != null && init.Property != null) //491:4
                 {
-                    string __tmp82Prefix = "    this.mLazySetChild("; //492:1
-                    string __tmp83Suffix = ", true));"; //492:170
-                    StringBuilder __tmp84 = new StringBuilder();
-                    __tmp84.Append(init.Object.JavaFullDescriptorName());
-                    using(StreamReader __tmp84Reader = new StreamReader(this.__ToStream(__tmp84.ToString())))
+                    string __tmp92Line = "    this.mLazySetChild("; //492:1
+                    if (__tmp92Line != null) __out.Append(__tmp92Line);
+                    StringBuilder __tmp93 = new StringBuilder();
+                    __tmp93.Append(init.Object.JavaFullDescriptorName());
+                    using(StreamReader __tmp93Reader = new StreamReader(this.__ToStream(__tmp93.ToString())))
                     {
-                        bool __tmp84_first = true;
-                        while(__tmp84_first || !__tmp84Reader.EndOfStream)
+                        bool __tmp93_first = true;
+                        bool __tmp93_last = __tmp93Reader.EndOfStream;
+                        while(__tmp93_first || !__tmp93_last)
                         {
-                            __tmp84_first = false;
-                            string __tmp84Line = __tmp84Reader.ReadLine();
-                            if (__tmp84Line == null)
-                            {
-                                __tmp84Line = "";
-                            }
-                            __out.Append(__tmp82Prefix);
-                            __out.Append(__tmp84Line);
+                            __tmp93_first = false;
+                            string __tmp93Line = __tmp93Reader.ReadLine();
+                            __tmp93_last = __tmp93Reader.EndOfStream;
+                            if (__tmp93Line != null) __out.Append(__tmp93Line);
+                            if (!__tmp93_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp85Line = ", "; //492:62
-                    __out.Append(__tmp85Line);
-                    StringBuilder __tmp86 = new StringBuilder();
-                    __tmp86.Append(init.Property.JavaFullDescriptorName());
-                    using(StreamReader __tmp86Reader = new StreamReader(this.__ToStream(__tmp86.ToString())))
+                    string __tmp94Line = ", "; //492:62
+                    if (__tmp94Line != null) __out.Append(__tmp94Line);
+                    StringBuilder __tmp95 = new StringBuilder();
+                    __tmp95.Append(init.Property.JavaFullDescriptorName());
+                    using(StreamReader __tmp95Reader = new StreamReader(this.__ToStream(__tmp95.ToString())))
                     {
-                        bool __tmp86_first = true;
-                        while(__tmp86_first || !__tmp86Reader.EndOfStream)
+                        bool __tmp95_first = true;
+                        bool __tmp95_last = __tmp95Reader.EndOfStream;
+                        while(__tmp95_first || !__tmp95_last)
                         {
-                            __tmp86_first = false;
-                            string __tmp86Line = __tmp86Reader.ReadLine();
-                            if (__tmp86Line == null)
-                            {
-                                __tmp86Line = "";
-                            }
-                            __out.Append(__tmp86Line);
+                            __tmp95_first = false;
+                            string __tmp95Line = __tmp95Reader.ReadLine();
+                            __tmp95_last = __tmp95Reader.EndOfStream;
+                            if (__tmp95Line != null) __out.Append(__tmp95Line);
+                            if (!__tmp95_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp87Line = ", metadslx.core.Lazy.create(() -> "; //492:104
-                    __out.Append(__tmp87Line);
-                    StringBuilder __tmp88 = new StringBuilder();
-                    __tmp88.Append(GenerateExpression(init.Value));
-                    using(StreamReader __tmp88Reader = new StreamReader(this.__ToStream(__tmp88.ToString())))
+                    string __tmp96Line = ", metadslx.core.Lazy.create(() -> "; //492:104
+                    if (__tmp96Line != null) __out.Append(__tmp96Line);
+                    StringBuilder __tmp97 = new StringBuilder();
+                    __tmp97.Append(GenerateExpression(init.Value));
+                    using(StreamReader __tmp97Reader = new StreamReader(this.__ToStream(__tmp97.ToString())))
                     {
-                        bool __tmp88_first = true;
-                        while(__tmp88_first || !__tmp88Reader.EndOfStream)
+                        bool __tmp97_first = true;
+                        bool __tmp97_last = __tmp97Reader.EndOfStream;
+                        while(__tmp97_first || !__tmp97_last)
                         {
-                            __tmp88_first = false;
-                            string __tmp88Line = __tmp88Reader.ReadLine();
-                            if (__tmp88Line == null)
-                            {
-                                __tmp88Line = "";
-                            }
-                            __out.Append(__tmp88Line);
-                            __out.Append(__tmp83Suffix);
-                            __out.AppendLine(); //492:179
+                            __tmp97_first = false;
+                            string __tmp97Line = __tmp97Reader.ReadLine();
+                            __tmp97_last = __tmp97Reader.EndOfStream;
+                            if (__tmp97Line != null) __out.Append(__tmp97Line);
+                            if (!__tmp97_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp98Line = ", true));"; //492:170
+                    if (__tmp98Line != null) __out.Append(__tmp98Line);
+                    __out.AppendLine(false); //492:179
                 }
             }
-            string __tmp89Prefix = "    "; //495:1
-            string __tmp90Suffix = "(this);"; //495:62
-            StringBuilder __tmp91 = new StringBuilder();
-            __tmp91.Append(cls.Model.JavaFullImplementationName());
-            using(StreamReader __tmp91Reader = new StreamReader(this.__ToStream(__tmp91.ToString())))
+            string __tmp99Prefix = "    "; //495:1
+            StringBuilder __tmp100 = new StringBuilder();
+            __tmp100.Append(cls.Model.JavaFullImplementationName());
+            using(StreamReader __tmp100Reader = new StreamReader(this.__ToStream(__tmp100.ToString())))
             {
-                bool __tmp91_first = true;
-                while(__tmp91_first || !__tmp91Reader.EndOfStream)
+                bool __tmp100_first = true;
+                bool __tmp100_last = __tmp100Reader.EndOfStream;
+                while(__tmp100_first || !__tmp100_last)
                 {
-                    __tmp91_first = false;
-                    string __tmp91Line = __tmp91Reader.ReadLine();
-                    if (__tmp91Line == null)
-                    {
-                        __tmp91Line = "";
-                    }
-                    __out.Append(__tmp89Prefix);
-                    __out.Append(__tmp91Line);
+                    __tmp100_first = false;
+                    string __tmp100Line = __tmp100Reader.ReadLine();
+                    __tmp100_last = __tmp100Reader.EndOfStream;
+                    __out.Append(__tmp99Prefix);
+                    if (__tmp100Line != null) __out.Append(__tmp100Line);
+                    if (!__tmp100_last) __out.AppendLine(true);
                 }
             }
-            string __tmp92Line = "."; //495:45
-            __out.Append(__tmp92Line);
-            StringBuilder __tmp93 = new StringBuilder();
-            __tmp93.Append(cls.JavaName());
-            using(StreamReader __tmp93Reader = new StreamReader(this.__ToStream(__tmp93.ToString())))
+            string __tmp101Line = "."; //495:45
+            if (__tmp101Line != null) __out.Append(__tmp101Line);
+            StringBuilder __tmp102 = new StringBuilder();
+            __tmp102.Append(cls.JavaName());
+            using(StreamReader __tmp102Reader = new StreamReader(this.__ToStream(__tmp102.ToString())))
             {
-                bool __tmp93_first = true;
-                while(__tmp93_first || !__tmp93Reader.EndOfStream)
+                bool __tmp102_first = true;
+                bool __tmp102_last = __tmp102Reader.EndOfStream;
+                while(__tmp102_first || !__tmp102_last)
                 {
-                    __tmp93_first = false;
-                    string __tmp93Line = __tmp93Reader.ReadLine();
-                    if (__tmp93Line == null)
-                    {
-                        __tmp93Line = "";
-                    }
-                    __out.Append(__tmp93Line);
-                    __out.Append(__tmp90Suffix);
-                    __out.AppendLine(); //495:69
+                    __tmp102_first = false;
+                    string __tmp102Line = __tmp102Reader.ReadLine();
+                    __tmp102_last = __tmp102Reader.EndOfStream;
+                    if (__tmp102Line != null) __out.Append(__tmp102Line);
+                    if (!__tmp102_last) __out.AppendLine(true);
                 }
             }
+            string __tmp103Line = "(this);"; //495:62
+            if (__tmp103Line != null) __out.Append(__tmp103Line);
+            __out.AppendLine(false); //495:69
             var __loop28_results = 
                 (from __loop28_var1 in __Enumerate((cls).GetEnumerator()) //496:11
                 from prop in __Enumerate((__loop28_var1.GetAllProperties()).GetEnumerator()) //496:16
                 select new { __loop28_var1 = __loop28_var1, prop = prop}
                 ).ToList(); //496:6
             int __loop28_iteration = 0;
-            foreach (var __tmp94 in __loop28_results)
+            foreach (var __tmp104 in __loop28_results)
             {
                 ++__loop28_iteration;
-                var __loop28_var1 = __tmp94.__loop28_var1;
-                var prop = __tmp94.prop;
+                var __loop28_var1 = __tmp104.__loop28_var1;
+                var prop = __tmp104.prop;
                 if (prop.Kind == MetaPropertyKind.Readonly) //497:4
                 {
-                    string __tmp95Prefix = "    if (!this.mIsSet("; //498:1
-                    string __tmp96Suffix = "().\");"; //498:211
-                    StringBuilder __tmp97 = new StringBuilder();
-                    __tmp97.Append(prop.JavaFullDescriptorName());
-                    using(StreamReader __tmp97Reader = new StreamReader(this.__ToStream(__tmp97.ToString())))
-                    {
-                        bool __tmp97_first = true;
-                        while(__tmp97_first || !__tmp97Reader.EndOfStream)
-                        {
-                            __tmp97_first = false;
-                            string __tmp97Line = __tmp97Reader.ReadLine();
-                            if (__tmp97Line == null)
-                            {
-                                __tmp97Line = "";
-                            }
-                            __out.Append(__tmp95Prefix);
-                            __out.Append(__tmp97Line);
-                        }
-                    }
-                    string __tmp98Line = ")) throw new ModelException(\"Readonly property "; //498:53
-                    __out.Append(__tmp98Line);
-                    StringBuilder __tmp99 = new StringBuilder();
-                    __tmp99.Append(model.JavaName());
-                    using(StreamReader __tmp99Reader = new StreamReader(this.__ToStream(__tmp99.ToString())))
-                    {
-                        bool __tmp99_first = true;
-                        while(__tmp99_first || !__tmp99Reader.EndOfStream)
-                        {
-                            __tmp99_first = false;
-                            string __tmp99Line = __tmp99Reader.ReadLine();
-                            if (__tmp99Line == null)
-                            {
-                                __tmp99Line = "";
-                            }
-                            __out.Append(__tmp99Line);
-                        }
-                    }
-                    string __tmp100Line = "."; //498:118
-                    __out.Append(__tmp100Line);
-                    StringBuilder __tmp101 = new StringBuilder();
-                    __tmp101.Append(prop.Class.JavaName());
-                    using(StreamReader __tmp101Reader = new StreamReader(this.__ToStream(__tmp101.ToString())))
-                    {
-                        bool __tmp101_first = true;
-                        while(__tmp101_first || !__tmp101Reader.EndOfStream)
-                        {
-                            __tmp101_first = false;
-                            string __tmp101Line = __tmp101Reader.ReadLine();
-                            if (__tmp101Line == null)
-                            {
-                                __tmp101Line = "";
-                            }
-                            __out.Append(__tmp101Line);
-                        }
-                    }
-                    string __tmp102Line = "."; //498:142
-                    __out.Append(__tmp102Line);
-                    StringBuilder __tmp103 = new StringBuilder();
-                    __tmp103.Append(prop.Name);
-                    using(StreamReader __tmp103Reader = new StreamReader(this.__ToStream(__tmp103.ToString())))
-                    {
-                        bool __tmp103_first = true;
-                        while(__tmp103_first || !__tmp103Reader.EndOfStream)
-                        {
-                            __tmp103_first = false;
-                            string __tmp103Line = __tmp103Reader.ReadLine();
-                            if (__tmp103Line == null)
-                            {
-                                __tmp103Line = "";
-                            }
-                            __out.Append(__tmp103Line);
-                        }
-                    }
-                    string __tmp104Line = "Property was not set in "; //498:154
-                    __out.Append(__tmp104Line);
-                    StringBuilder __tmp105 = new StringBuilder();
-                    __tmp105.Append(cls.JavaName());
-                    using(StreamReader __tmp105Reader = new StreamReader(this.__ToStream(__tmp105.ToString())))
-                    {
-                        bool __tmp105_first = true;
-                        while(__tmp105_first || !__tmp105Reader.EndOfStream)
-                        {
-                            __tmp105_first = false;
-                            string __tmp105Line = __tmp105Reader.ReadLine();
-                            if (__tmp105Line == null)
-                            {
-                                __tmp105Line = "";
-                            }
-                            __out.Append(__tmp105Line);
-                        }
-                    }
-                    string __tmp106Line = "_"; //498:194
-                    __out.Append(__tmp106Line);
+                    string __tmp106Line = "    if (!this.mIsSet("; //498:1
+                    if (__tmp106Line != null) __out.Append(__tmp106Line);
                     StringBuilder __tmp107 = new StringBuilder();
-                    __tmp107.Append(cls.JavaName());
+                    __tmp107.Append(prop.JavaFullDescriptorName());
                     using(StreamReader __tmp107Reader = new StreamReader(this.__ToStream(__tmp107.ToString())))
                     {
                         bool __tmp107_first = true;
-                        while(__tmp107_first || !__tmp107Reader.EndOfStream)
+                        bool __tmp107_last = __tmp107Reader.EndOfStream;
+                        while(__tmp107_first || !__tmp107_last)
                         {
                             __tmp107_first = false;
                             string __tmp107Line = __tmp107Reader.ReadLine();
-                            if (__tmp107Line == null)
-                            {
-                                __tmp107Line = "";
-                            }
-                            __out.Append(__tmp107Line);
-                            __out.Append(__tmp96Suffix);
-                            __out.AppendLine(); //498:217
+                            __tmp107_last = __tmp107Reader.EndOfStream;
+                            if (__tmp107Line != null) __out.Append(__tmp107Line);
+                            if (!__tmp107_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp108Line = ")) throw new ModelException(\"Readonly property "; //498:53
+                    if (__tmp108Line != null) __out.Append(__tmp108Line);
+                    StringBuilder __tmp109 = new StringBuilder();
+                    __tmp109.Append(model.JavaName());
+                    using(StreamReader __tmp109Reader = new StreamReader(this.__ToStream(__tmp109.ToString())))
+                    {
+                        bool __tmp109_first = true;
+                        bool __tmp109_last = __tmp109Reader.EndOfStream;
+                        while(__tmp109_first || !__tmp109_last)
+                        {
+                            __tmp109_first = false;
+                            string __tmp109Line = __tmp109Reader.ReadLine();
+                            __tmp109_last = __tmp109Reader.EndOfStream;
+                            if (__tmp109Line != null) __out.Append(__tmp109Line);
+                            if (!__tmp109_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp110Line = "."; //498:118
+                    if (__tmp110Line != null) __out.Append(__tmp110Line);
+                    StringBuilder __tmp111 = new StringBuilder();
+                    __tmp111.Append(prop.Class.JavaName());
+                    using(StreamReader __tmp111Reader = new StreamReader(this.__ToStream(__tmp111.ToString())))
+                    {
+                        bool __tmp111_first = true;
+                        bool __tmp111_last = __tmp111Reader.EndOfStream;
+                        while(__tmp111_first || !__tmp111_last)
+                        {
+                            __tmp111_first = false;
+                            string __tmp111Line = __tmp111Reader.ReadLine();
+                            __tmp111_last = __tmp111Reader.EndOfStream;
+                            if (__tmp111Line != null) __out.Append(__tmp111Line);
+                            if (!__tmp111_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp112Line = "."; //498:142
+                    if (__tmp112Line != null) __out.Append(__tmp112Line);
+                    StringBuilder __tmp113 = new StringBuilder();
+                    __tmp113.Append(prop.Name);
+                    using(StreamReader __tmp113Reader = new StreamReader(this.__ToStream(__tmp113.ToString())))
+                    {
+                        bool __tmp113_first = true;
+                        bool __tmp113_last = __tmp113Reader.EndOfStream;
+                        while(__tmp113_first || !__tmp113_last)
+                        {
+                            __tmp113_first = false;
+                            string __tmp113Line = __tmp113Reader.ReadLine();
+                            __tmp113_last = __tmp113Reader.EndOfStream;
+                            if (__tmp113Line != null) __out.Append(__tmp113Line);
+                            if (!__tmp113_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp114Line = "Property was not set in "; //498:154
+                    if (__tmp114Line != null) __out.Append(__tmp114Line);
+                    StringBuilder __tmp115 = new StringBuilder();
+                    __tmp115.Append(cls.JavaName());
+                    using(StreamReader __tmp115Reader = new StreamReader(this.__ToStream(__tmp115.ToString())))
+                    {
+                        bool __tmp115_first = true;
+                        bool __tmp115_last = __tmp115Reader.EndOfStream;
+                        while(__tmp115_first || !__tmp115_last)
+                        {
+                            __tmp115_first = false;
+                            string __tmp115Line = __tmp115Reader.ReadLine();
+                            __tmp115_last = __tmp115Reader.EndOfStream;
+                            if (__tmp115Line != null) __out.Append(__tmp115Line);
+                            if (!__tmp115_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp116Line = "_"; //498:194
+                    if (__tmp116Line != null) __out.Append(__tmp116Line);
+                    StringBuilder __tmp117 = new StringBuilder();
+                    __tmp117.Append(cls.JavaName());
+                    using(StreamReader __tmp117Reader = new StreamReader(this.__ToStream(__tmp117.ToString())))
+                    {
+                        bool __tmp117_first = true;
+                        bool __tmp117_last = __tmp117Reader.EndOfStream;
+                        while(__tmp117_first || !__tmp117_last)
+                        {
+                            __tmp117_first = false;
+                            string __tmp117Line = __tmp117Reader.ReadLine();
+                            __tmp117_last = __tmp117Reader.EndOfStream;
+                            if (__tmp117Line != null) __out.Append(__tmp117Line);
+                            if (!__tmp117_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp118Line = "().\");"; //498:211
+                    if (__tmp118Line != null) __out.Append(__tmp118Line);
+                    __out.AppendLine(false); //498:217
                 }
             }
             __out.Append("    this.mMakeDefault();"); //501:1
-            __out.AppendLine(); //501:25
+            __out.AppendLine(false); //501:25
             __out.Append("}"); //502:1
-            __out.AppendLine(); //502:2
+            __out.AppendLine(false); //502:2
             return __out.ToString();
         }
 
@@ -4289,81 +5035,76 @@ namespace MetaDslx.Core //1:1
             StringBuilder __out = new StringBuilder();
             if (generated.Add(op.Name)) //514:2
             {
-                __out.AppendLine(); //515:1
-                string __tmp1Prefix = "public "; //516:1
-                string __tmp2Suffix = ") {"; //516:95
+                __out.AppendLine(true); //515:1
+                string __tmp2Line = "public "; //516:1
+                if (__tmp2Line != null) __out.Append(__tmp2Line);
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(op.ReturnType.JavaFullPublicName());
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
                 {
                     bool __tmp3_first = true;
-                    while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                    bool __tmp3_last = __tmp3Reader.EndOfStream;
+                    while(__tmp3_first || !__tmp3_last)
                     {
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
-                        if (__tmp3Line == null)
-                        {
-                            __tmp3Line = "";
-                        }
-                        __out.Append(__tmp1Prefix);
-                        __out.Append(__tmp3Line);
+                        __tmp3_last = __tmp3Reader.EndOfStream;
+                        if (__tmp3Line != null) __out.Append(__tmp3Line);
+                        if (!__tmp3_last) __out.AppendLine(true);
                     }
                 }
                 string __tmp4Line = " "; //516:44
-                __out.Append(__tmp4Line);
+                if (__tmp4Line != null) __out.Append(__tmp4Line);
                 StringBuilder __tmp5 = new StringBuilder();
                 __tmp5.Append(op.Name.ToCamelCase());
                 using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
                 {
                     bool __tmp5_first = true;
-                    while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                    bool __tmp5_last = __tmp5Reader.EndOfStream;
+                    while(__tmp5_first || !__tmp5_last)
                     {
                         __tmp5_first = false;
                         string __tmp5Line = __tmp5Reader.ReadLine();
-                        if (__tmp5Line == null)
-                        {
-                            __tmp5Line = "";
-                        }
-                        __out.Append(__tmp5Line);
+                        __tmp5_last = __tmp5Reader.EndOfStream;
+                        if (__tmp5Line != null) __out.Append(__tmp5Line);
+                        if (!__tmp5_last) __out.AppendLine(true);
                     }
                 }
                 string __tmp6Line = "("; //516:68
-                __out.Append(__tmp6Line);
+                if (__tmp6Line != null) __out.Append(__tmp6Line);
                 StringBuilder __tmp7 = new StringBuilder();
                 __tmp7.Append(GetParameters(op, false));
                 using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
                 {
                     bool __tmp7_first = true;
-                    while(__tmp7_first || !__tmp7Reader.EndOfStream)
+                    bool __tmp7_last = __tmp7Reader.EndOfStream;
+                    while(__tmp7_first || !__tmp7_last)
                     {
                         __tmp7_first = false;
                         string __tmp7Line = __tmp7Reader.ReadLine();
-                        if (__tmp7Line == null)
-                        {
-                            __tmp7Line = "";
-                        }
-                        __out.Append(__tmp7Line);
-                        __out.Append(__tmp2Suffix);
-                        __out.AppendLine(); //516:98
+                        __tmp7_last = __tmp7Reader.EndOfStream;
+                        if (__tmp7Line != null) __out.Append(__tmp7Line);
+                        if (!__tmp7_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp8Prefix = "    "; //517:1
-                string __tmp9Suffix = ");"; //517:135
+                string __tmp8Line = ") {"; //516:95
+                if (__tmp8Line != null) __out.Append(__tmp8Line);
+                __out.AppendLine(false); //516:98
+                string __tmp9Prefix = "    "; //517:1
                 StringBuilder __tmp10 = new StringBuilder();
                 __tmp10.Append(GetReturn(op));
                 using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
                 {
                     bool __tmp10_first = true;
-                    while(__tmp10_first || !__tmp10Reader.EndOfStream)
+                    bool __tmp10_last = __tmp10Reader.EndOfStream;
+                    while(__tmp10_first || !__tmp10_last)
                     {
                         __tmp10_first = false;
                         string __tmp10Line = __tmp10Reader.ReadLine();
-                        if (__tmp10Line == null)
-                        {
-                            __tmp10Line = "";
-                        }
-                        __out.Append(__tmp8Prefix);
-                        __out.Append(__tmp10Line);
+                        __tmp10_last = __tmp10Reader.EndOfStream;
+                        __out.Append(__tmp9Prefix);
+                        if (__tmp10Line != null) __out.Append(__tmp10Line);
+                        if (!__tmp10_last) __out.AppendLine(true);
                     }
                 }
                 StringBuilder __tmp11 = new StringBuilder();
@@ -4371,75 +5112,72 @@ namespace MetaDslx.Core //1:1
                 using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
                 {
                     bool __tmp11_first = true;
-                    while(__tmp11_first || !__tmp11Reader.EndOfStream)
+                    bool __tmp11_last = __tmp11Reader.EndOfStream;
+                    while(__tmp11_first || !__tmp11_last)
                     {
                         __tmp11_first = false;
                         string __tmp11Line = __tmp11Reader.ReadLine();
-                        if (__tmp11Line == null)
-                        {
-                            __tmp11Line = "";
-                        }
-                        __out.Append(__tmp11Line);
+                        __tmp11_last = __tmp11Reader.EndOfStream;
+                        if (__tmp11Line != null) __out.Append(__tmp11Line);
+                        if (!__tmp11_last) __out.AppendLine(true);
                     }
                 }
                 string __tmp12Line = "."; //517:56
-                __out.Append(__tmp12Line);
+                if (__tmp12Line != null) __out.Append(__tmp12Line);
                 StringBuilder __tmp13 = new StringBuilder();
                 __tmp13.Append(op.Parent.JavaName());
                 using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
                 {
                     bool __tmp13_first = true;
-                    while(__tmp13_first || !__tmp13Reader.EndOfStream)
+                    bool __tmp13_last = __tmp13Reader.EndOfStream;
+                    while(__tmp13_first || !__tmp13_last)
                     {
                         __tmp13_first = false;
                         string __tmp13Line = __tmp13Reader.ReadLine();
-                        if (__tmp13Line == null)
-                        {
-                            __tmp13Line = "";
-                        }
-                        __out.Append(__tmp13Line);
+                        __tmp13_last = __tmp13Reader.EndOfStream;
+                        if (__tmp13Line != null) __out.Append(__tmp13Line);
+                        if (!__tmp13_last) __out.AppendLine(true);
                     }
                 }
                 string __tmp14Line = "_"; //517:79
-                __out.Append(__tmp14Line);
+                if (__tmp14Line != null) __out.Append(__tmp14Line);
                 StringBuilder __tmp15 = new StringBuilder();
                 __tmp15.Append(op.Name.ToCamelCase());
                 using(StreamReader __tmp15Reader = new StreamReader(this.__ToStream(__tmp15.ToString())))
                 {
                     bool __tmp15_first = true;
-                    while(__tmp15_first || !__tmp15Reader.EndOfStream)
+                    bool __tmp15_last = __tmp15Reader.EndOfStream;
+                    while(__tmp15_first || !__tmp15_last)
                     {
                         __tmp15_first = false;
                         string __tmp15Line = __tmp15Reader.ReadLine();
-                        if (__tmp15Line == null)
-                        {
-                            __tmp15Line = "";
-                        }
-                        __out.Append(__tmp15Line);
+                        __tmp15_last = __tmp15Reader.EndOfStream;
+                        if (__tmp15Line != null) __out.Append(__tmp15Line);
+                        if (!__tmp15_last) __out.AppendLine(true);
                     }
                 }
                 string __tmp16Line = "("; //517:103
-                __out.Append(__tmp16Line);
+                if (__tmp16Line != null) __out.Append(__tmp16Line);
                 StringBuilder __tmp17 = new StringBuilder();
                 __tmp17.Append(GetImplCallParameterNames(op));
                 using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
                 {
                     bool __tmp17_first = true;
-                    while(__tmp17_first || !__tmp17Reader.EndOfStream)
+                    bool __tmp17_last = __tmp17Reader.EndOfStream;
+                    while(__tmp17_first || !__tmp17_last)
                     {
                         __tmp17_first = false;
                         string __tmp17Line = __tmp17Reader.ReadLine();
-                        if (__tmp17Line == null)
-                        {
-                            __tmp17Line = "";
-                        }
-                        __out.Append(__tmp17Line);
-                        __out.Append(__tmp9Suffix);
-                        __out.AppendLine(); //517:137
+                        __tmp17_last = __tmp17Reader.EndOfStream;
+                        if (__tmp17Line != null) __out.Append(__tmp17Line);
+                        if (!__tmp17_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp18Line = ");"; //517:135
+                if (__tmp18Line != null) __out.Append(__tmp18Line);
+                __out.AppendLine(false); //517:137
                 __out.Append("}"); //518:1
-                __out.AppendLine(); //518:2
+                __out.AppendLine(false); //518:2
             }
             return __out.ToString();
         }
@@ -4495,51 +5233,49 @@ namespace MetaDslx.Core //1:1
         public string GenerateMetaModelDescriptor(MetaModel model) //538:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "package "; //539:1
-            string __tmp2Suffix = ";"; //539:37
+            string __tmp2Line = "package "; //539:1
+            if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(model.Namespace.JavaName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //539:38
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //540:1
-            string __tmp4Prefix = "public final class "; //541:1
-            string __tmp5Suffix = " {"; //541:48
-            StringBuilder __tmp6 = new StringBuilder();
-            __tmp6.Append(model.JavaDescriptorName());
-            using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
+            string __tmp4Line = ";"; //539:37
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
+            __out.AppendLine(false); //539:38
+            __out.AppendLine(true); //540:1
+            string __tmp6Line = "public final class "; //541:1
+            if (__tmp6Line != null) __out.Append(__tmp6Line);
+            StringBuilder __tmp7 = new StringBuilder();
+            __tmp7.Append(model.JavaDescriptorName());
+            using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
             {
-                bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                bool __tmp7_first = true;
+                bool __tmp7_last = __tmp7Reader.EndOfStream;
+                while(__tmp7_first || !__tmp7_last)
                 {
-                    __tmp6_first = false;
-                    string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp4Prefix);
-                    __out.Append(__tmp6Line);
-                    __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //541:50
+                    __tmp7_first = false;
+                    string __tmp7Line = __tmp7Reader.ReadLine();
+                    __tmp7_last = __tmp7Reader.EndOfStream;
+                    if (__tmp7Line != null) __out.Append(__tmp7Line);
+                    if (!__tmp7_last) __out.AppendLine(true);
                 }
             }
+            string __tmp8Line = " {"; //541:48
+            if (__tmp8Line != null) __out.Append(__tmp8Line);
+            __out.AppendLine(false); //541:50
             __out.Append("    static {"); //542:1
-            __out.AppendLine(); //542:13
+            __out.AppendLine(false); //542:13
             var __loop31_results = 
                 (from __loop31_var1 in __Enumerate((model).GetEnumerator()) //543:11
                 from Namespace in __Enumerate((__loop31_var1.Namespace).GetEnumerator()) //543:18
@@ -4548,63 +5284,61 @@ namespace MetaDslx.Core //1:1
                 select new { __loop31_var1 = __loop31_var1, Namespace = Namespace, Declarations = Declarations, cls = cls}
                 ).ToList(); //543:6
             int __loop31_iteration = 0;
-            foreach (var __tmp7 in __loop31_results)
+            foreach (var __tmp9 in __loop31_results)
             {
                 ++__loop31_iteration;
-                var __loop31_var1 = __tmp7.__loop31_var1;
-                var Namespace = __tmp7.Namespace;
-                var Declarations = __tmp7.Declarations;
-                var cls = __tmp7.cls;
-                string __tmp8Prefix = "        "; //544:1
-                string __tmp9Suffix = ".staticInit();"; //544:25
-                StringBuilder __tmp10 = new StringBuilder();
-                __tmp10.Append(cls.JavaName());
-                using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
+                var __loop31_var1 = __tmp9.__loop31_var1;
+                var Namespace = __tmp9.Namespace;
+                var Declarations = __tmp9.Declarations;
+                var cls = __tmp9.cls;
+                string __tmp10Prefix = "        "; //544:1
+                StringBuilder __tmp11 = new StringBuilder();
+                __tmp11.Append(cls.JavaName());
+                using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
                 {
-                    bool __tmp10_first = true;
-                    while(__tmp10_first || !__tmp10Reader.EndOfStream)
+                    bool __tmp11_first = true;
+                    bool __tmp11_last = __tmp11Reader.EndOfStream;
+                    while(__tmp11_first || !__tmp11_last)
                     {
-                        __tmp10_first = false;
-                        string __tmp10Line = __tmp10Reader.ReadLine();
-                        if (__tmp10Line == null)
-                        {
-                            __tmp10Line = "";
-                        }
-                        __out.Append(__tmp8Prefix);
-                        __out.Append(__tmp10Line);
-                        __out.Append(__tmp9Suffix);
-                        __out.AppendLine(); //544:39
+                        __tmp11_first = false;
+                        string __tmp11Line = __tmp11Reader.ReadLine();
+                        __tmp11_last = __tmp11Reader.EndOfStream;
+                        __out.Append(__tmp10Prefix);
+                        if (__tmp11Line != null) __out.Append(__tmp11Line);
+                        if (!__tmp11_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp12Line = ".staticInit();"; //544:25
+                if (__tmp12Line != null) __out.Append(__tmp12Line);
+                __out.AppendLine(false); //544:39
             }
             __out.Append("    }"); //546:1
-            __out.AppendLine(); //546:6
-            __out.AppendLine(); //547:1
+            __out.AppendLine(false); //546:6
+            __out.AppendLine(true); //547:1
             __out.Append("    static void staticInit() {}"); //548:1
-            __out.AppendLine(); //548:32
-            __out.AppendLine(); //549:1
-            string __tmp11Prefix = "	public static final String Uri = \""; //550:1
-            string __tmp12Suffix = "\";"; //550:47
-            StringBuilder __tmp13 = new StringBuilder();
-            __tmp13.Append(model.Uri);
-            using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
+            __out.AppendLine(false); //548:32
+            __out.AppendLine(true); //549:1
+            string __tmp14Line = "	public static final String Uri = \""; //550:1
+            if (__tmp14Line != null) __out.Append(__tmp14Line);
+            StringBuilder __tmp15 = new StringBuilder();
+            __tmp15.Append(model.Uri);
+            using(StreamReader __tmp15Reader = new StreamReader(this.__ToStream(__tmp15.ToString())))
             {
-                bool __tmp13_first = true;
-                while(__tmp13_first || !__tmp13Reader.EndOfStream)
+                bool __tmp15_first = true;
+                bool __tmp15_last = __tmp15Reader.EndOfStream;
+                while(__tmp15_first || !__tmp15_last)
                 {
-                    __tmp13_first = false;
-                    string __tmp13Line = __tmp13Reader.ReadLine();
-                    if (__tmp13Line == null)
-                    {
-                        __tmp13Line = "";
-                    }
-                    __out.Append(__tmp11Prefix);
-                    __out.Append(__tmp13Line);
-                    __out.Append(__tmp12Suffix);
-                    __out.AppendLine(); //550:49
+                    __tmp15_first = false;
+                    string __tmp15Line = __tmp15Reader.ReadLine();
+                    __tmp15_last = __tmp15Reader.EndOfStream;
+                    if (__tmp15Line != null) __out.Append(__tmp15Line);
+                    if (!__tmp15_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //551:1
+            string __tmp16Line = "\";"; //550:47
+            if (__tmp16Line != null) __out.Append(__tmp16Line);
+            __out.AppendLine(false); //550:49
+            __out.AppendLine(true); //551:1
             var __loop32_results = 
                 (from __loop32_var1 in __Enumerate((model).GetEnumerator()) //552:11
                 from Namespace in __Enumerate((__loop32_var1.Namespace).GetEnumerator()) //552:18
@@ -4613,246 +5347,231 @@ namespace MetaDslx.Core //1:1
                 select new { __loop32_var1 = __loop32_var1, Namespace = Namespace, Declarations = Declarations, cls = cls}
                 ).ToList(); //552:6
             int __loop32_iteration = 0;
-            foreach (var __tmp14 in __loop32_results)
+            foreach (var __tmp17 in __loop32_results)
             {
                 ++__loop32_iteration;
-                var __loop32_var1 = __tmp14.__loop32_var1;
-                var Namespace = __tmp14.Namespace;
-                var Declarations = __tmp14.Declarations;
-                var cls = __tmp14.cls;
-                string __tmp15Prefix = "    "; //553:1
-                string __tmp16Suffix = string.Empty; 
-                StringBuilder __tmp17 = new StringBuilder();
-                __tmp17.Append(GenerateMetaModelClass(cls));
-                using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
+                var __loop32_var1 = __tmp17.__loop32_var1;
+                var Namespace = __tmp17.Namespace;
+                var Declarations = __tmp17.Declarations;
+                var cls = __tmp17.cls;
+                string __tmp18Prefix = "    "; //553:1
+                StringBuilder __tmp19 = new StringBuilder();
+                __tmp19.Append(GenerateMetaModelClass(cls));
+                using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
                 {
-                    bool __tmp17_first = true;
-                    while(__tmp17_first || !__tmp17Reader.EndOfStream)
+                    bool __tmp19_first = true;
+                    bool __tmp19_last = __tmp19Reader.EndOfStream;
+                    while(__tmp19_first || !__tmp19_last)
                     {
-                        __tmp17_first = false;
-                        string __tmp17Line = __tmp17Reader.ReadLine();
-                        if (__tmp17Line == null)
-                        {
-                            __tmp17Line = "";
-                        }
-                        __out.Append(__tmp15Prefix);
-                        __out.Append(__tmp17Line);
-                        __out.Append(__tmp16Suffix);
-                        __out.AppendLine(); //553:34
+                        __tmp19_first = false;
+                        string __tmp19Line = __tmp19Reader.ReadLine();
+                        __tmp19_last = __tmp19Reader.EndOfStream;
+                        __out.Append(__tmp18Prefix);
+                        if (__tmp19Line != null) __out.Append(__tmp19Line);
+                        if (!__tmp19_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //553:34
                     }
                 }
             }
             __out.Append("}"); //555:1
-            __out.AppendLine(); //555:2
-            __out.AppendLine(); //556:1
+            __out.AppendLine(false); //555:2
+            __out.AppendLine(true); //556:1
             return __out.ToString();
         }
 
         public string GenerateMetaModelClass(MetaClass cls) //560:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.AppendLine(); //561:1
-            string __tmp1Prefix = "public static final class "; //562:1
-            string __tmp2Suffix = " {"; //562:43
+            __out.AppendLine(true); //561:1
+            string __tmp2Line = "public static final class "; //562:1
+            if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(cls.JavaName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //562:45
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
+            string __tmp4Line = " {"; //562:43
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
+            __out.AppendLine(false); //562:45
             __out.Append("    static void staticInit() {}"); //563:1
-            __out.AppendLine(); //563:32
-            __out.AppendLine(); //564:1
+            __out.AppendLine(false); //563:32
+            __out.AppendLine(true); //564:1
             __out.Append("    static {"); //565:1
-            __out.AppendLine(); //565:13
-            string __tmp4Prefix = "        "; //566:1
-            string __tmp5Suffix = ".staticInit();"; //566:45
+            __out.AppendLine(false); //565:13
+            string __tmp5Prefix = "        "; //566:1
             StringBuilder __tmp6 = new StringBuilder();
             __tmp6.Append(cls.Model.JavaFullDescriptorName());
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
             {
                 bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                bool __tmp6_last = __tmp6Reader.EndOfStream;
+                while(__tmp6_first || !__tmp6_last)
                 {
                     __tmp6_first = false;
                     string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp4Prefix);
-                    __out.Append(__tmp6Line);
-                    __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //566:59
+                    __tmp6_last = __tmp6Reader.EndOfStream;
+                    __out.Append(__tmp5Prefix);
+                    if (__tmp6Line != null) __out.Append(__tmp6Line);
+                    if (!__tmp6_last) __out.AppendLine(true);
                 }
             }
+            string __tmp7Line = ".staticInit();"; //566:45
+            if (__tmp7Line != null) __out.Append(__tmp7Line);
+            __out.AppendLine(false); //566:59
             __out.Append("    }"); //567:1
-            __out.AppendLine(); //567:6
-            __out.AppendLine(); //568:1
+            __out.AppendLine(false); //567:6
+            __out.AppendLine(true); //568:1
             __out.Append("    public static metadslx.core.MetaClass getMetaClass() {"); //569:1
-            __out.AppendLine(); //569:59
-            string __tmp7Prefix = "        return "; //570:1
-            string __tmp8Suffix = "; "; //570:44
-            StringBuilder __tmp9 = new StringBuilder();
-            __tmp9.Append(cls.JavaFullInstanceName());
-            using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
+            __out.AppendLine(false); //569:59
+            string __tmp9Line = "        return "; //570:1
+            if (__tmp9Line != null) __out.Append(__tmp9Line);
+            StringBuilder __tmp10 = new StringBuilder();
+            __tmp10.Append(cls.JavaFullInstanceName());
+            using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
             {
-                bool __tmp9_first = true;
-                while(__tmp9_first || !__tmp9Reader.EndOfStream)
+                bool __tmp10_first = true;
+                bool __tmp10_last = __tmp10Reader.EndOfStream;
+                while(__tmp10_first || !__tmp10_last)
                 {
-                    __tmp9_first = false;
-                    string __tmp9Line = __tmp9Reader.ReadLine();
-                    if (__tmp9Line == null)
-                    {
-                        __tmp9Line = "";
-                    }
-                    __out.Append(__tmp7Prefix);
-                    __out.Append(__tmp9Line);
-                    __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //570:46
+                    __tmp10_first = false;
+                    string __tmp10Line = __tmp10Reader.ReadLine();
+                    __tmp10_last = __tmp10Reader.EndOfStream;
+                    if (__tmp10Line != null) __out.Append(__tmp10Line);
+                    if (!__tmp10_last) __out.AppendLine(true);
                 }
             }
+            string __tmp11Line = "; "; //570:44
+            if (__tmp11Line != null) __out.Append(__tmp11Line);
+            __out.AppendLine(false); //570:46
             __out.Append("    }"); //571:1
-            __out.AppendLine(); //571:6
-            __out.AppendLine(); //572:1
+            __out.AppendLine(false); //571:6
+            __out.AppendLine(true); //572:1
             var __loop33_results = 
                 (from __loop33_var1 in __Enumerate((cls).GetEnumerator()) //573:11
                 from prop in __Enumerate((__loop33_var1.Properties).GetEnumerator()) //573:16
                 select new { __loop33_var1 = __loop33_var1, prop = prop}
                 ).ToList(); //573:6
             int __loop33_iteration = 0;
-            foreach (var __tmp10 in __loop33_results)
+            foreach (var __tmp12 in __loop33_results)
             {
                 ++__loop33_iteration;
-                var __loop33_var1 = __tmp10.__loop33_var1;
-                var prop = __tmp10.prop;
-                string __tmp11Prefix = "    "; //574:1
-                string __tmp12Suffix = string.Empty; 
-                StringBuilder __tmp13 = new StringBuilder();
-                __tmp13.Append(GeneratePropertyDeclaration(cls.Model, cls, prop));
-                using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
+                var __loop33_var1 = __tmp12.__loop33_var1;
+                var prop = __tmp12.prop;
+                string __tmp13Prefix = "    "; //574:1
+                StringBuilder __tmp14 = new StringBuilder();
+                __tmp14.Append(GeneratePropertyDeclaration(cls.Model, cls, prop));
+                using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
                 {
-                    bool __tmp13_first = true;
-                    while(__tmp13_first || !__tmp13Reader.EndOfStream)
+                    bool __tmp14_first = true;
+                    bool __tmp14_last = __tmp14Reader.EndOfStream;
+                    while(__tmp14_first || !__tmp14_last)
                     {
-                        __tmp13_first = false;
-                        string __tmp13Line = __tmp13Reader.ReadLine();
-                        if (__tmp13Line == null)
-                        {
-                            __tmp13Line = "";
-                        }
-                        __out.Append(__tmp11Prefix);
-                        __out.Append(__tmp13Line);
-                        __out.Append(__tmp12Suffix);
-                        __out.AppendLine(); //574:56
+                        __tmp14_first = false;
+                        string __tmp14Line = __tmp14Reader.ReadLine();
+                        __tmp14_last = __tmp14Reader.EndOfStream;
+                        __out.Append(__tmp13Prefix);
+                        if (__tmp14Line != null) __out.Append(__tmp14Line);
+                        if (!__tmp14_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //574:56
                     }
                 }
             }
             __out.Append("}"); //576:1
-            __out.AppendLine(); //576:2
+            __out.AppendLine(false); //576:2
             return __out.ToString();
         }
 
         public string GenerateModelConstant(MetaModel model, MetaConstant mconst) //580:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "public static final "; //581:1
-            string __tmp2Suffix = ";"; //581:63
+            string __tmp2Line = "public static final "; //581:1
+            if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(mconst.Type.JavaFullName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
             string __tmp4Line = " "; //581:49
-            __out.Append(__tmp4Line);
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
             StringBuilder __tmp5 = new StringBuilder();
             __tmp5.Append(mconst.Name);
             using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
             {
                 bool __tmp5_first = true;
-                while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                bool __tmp5_last = __tmp5Reader.EndOfStream;
+                while(__tmp5_first || !__tmp5_last)
                 {
                     __tmp5_first = false;
                     string __tmp5Line = __tmp5Reader.ReadLine();
-                    if (__tmp5Line == null)
-                    {
-                        __tmp5Line = "";
-                    }
-                    __out.Append(__tmp5Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //581:64
+                    __tmp5_last = __tmp5Reader.EndOfStream;
+                    if (__tmp5Line != null) __out.Append(__tmp5Line);
+                    if (!__tmp5_last) __out.AppendLine(true);
                 }
             }
+            string __tmp6Line = ";"; //581:63
+            if (__tmp6Line != null) __out.Append(__tmp6Line);
+            __out.AppendLine(false); //581:64
             return __out.ToString();
         }
 
         public string GenerateModelConstantImpl(MetaModel model, MetaConstant mconst, Dictionary<ModelObject,string> mobjToTmp) //584:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = string.Empty; 
-            string __tmp2Suffix = ";"; //585:51
-            StringBuilder __tmp3 = new StringBuilder();
-            __tmp3.Append(mconst.Name);
-            using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+            StringBuilder __tmp2 = new StringBuilder();
+            __tmp2.Append(mconst.Name);
+            using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
             {
-                bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp2_first = true;
+                bool __tmp2_last = __tmp2Reader.EndOfStream;
+                while(__tmp2_first || !__tmp2_last)
                 {
-                    __tmp3_first = false;
-                    string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
+                    __tmp2_first = false;
+                    string __tmp2Line = __tmp2Reader.ReadLine();
+                    __tmp2_last = __tmp2Reader.EndOfStream;
+                    if (__tmp2Line != null) __out.Append(__tmp2Line);
+                    if (!__tmp2_last) __out.AppendLine(true);
                 }
             }
-            string __tmp4Line = " = "; //585:14
-            __out.Append(__tmp4Line);
-            StringBuilder __tmp5 = new StringBuilder();
-            __tmp5.Append(GenerateExpression(mconst.Value));
-            using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
+            string __tmp3Line = " = "; //585:14
+            if (__tmp3Line != null) __out.Append(__tmp3Line);
+            StringBuilder __tmp4 = new StringBuilder();
+            __tmp4.Append(GenerateExpression(mconst.Value));
+            using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
             {
-                bool __tmp5_first = true;
-                while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                bool __tmp4_first = true;
+                bool __tmp4_last = __tmp4Reader.EndOfStream;
+                while(__tmp4_first || !__tmp4_last)
                 {
-                    __tmp5_first = false;
-                    string __tmp5Line = __tmp5Reader.ReadLine();
-                    if (__tmp5Line == null)
-                    {
-                        __tmp5Line = "";
-                    }
-                    __out.Append(__tmp5Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //585:52
+                    __tmp4_first = false;
+                    string __tmp4Line = __tmp4Reader.ReadLine();
+                    __tmp4_last = __tmp4Reader.EndOfStream;
+                    if (__tmp4Line != null) __out.Append(__tmp4Line);
+                    if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
+            string __tmp5Line = ";"; //585:51
+            if (__tmp5Line != null) __out.Append(__tmp5Line);
+            __out.AppendLine(false); //585:52
             return __out.ToString();
         }
 
@@ -4860,103 +5579,93 @@ namespace MetaDslx.Core //1:1
         {
             StringBuilder __out = new StringBuilder();
             Dictionary<ModelObject,string> mobjToName = model.GetNamedModelObjects(); //590:2
-            string __tmp1Prefix = string.Empty;
-            string __tmp2Suffix = string.Empty;
-            StringBuilder __tmp3 = new StringBuilder();
-            __tmp3.Append(ResetCounters());
-            using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+            StringBuilder __tmp2 = new StringBuilder();
+            __tmp2.Append(ResetCounters());
+            using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
             {
-                bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp2_first = true;
+                bool __tmp2_last = __tmp2Reader.EndOfStream;
+                while(__tmp2_first || !__tmp2_last)
                 {
-                    __tmp3_first = false;
-                    string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
+                    __tmp2_first = false;
+                    string __tmp2Line = __tmp2Reader.ReadLine();
+                    __tmp2_last = __tmp2Reader.EndOfStream;
+                    if (__tmp2Line != null) __out.Append(__tmp2Line);
+                    if (!__tmp2_last) __out.AppendLine(true);
                 }
             }
-            string __tmp4Prefix = "package "; //592:1
-            string __tmp5Suffix = ";"; //592:37
-            StringBuilder __tmp6 = new StringBuilder();
-            __tmp6.Append(model.Namespace.JavaName());
-            using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
+            string __tmp4Line = "package "; //592:1
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
+            StringBuilder __tmp5 = new StringBuilder();
+            __tmp5.Append(model.Namespace.JavaName());
+            using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
             {
-                bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                bool __tmp5_first = true;
+                bool __tmp5_last = __tmp5Reader.EndOfStream;
+                while(__tmp5_first || !__tmp5_last)
                 {
-                    __tmp6_first = false;
-                    string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp4Prefix);
-                    __out.Append(__tmp6Line);
-                    __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //592:38
+                    __tmp5_first = false;
+                    string __tmp5Line = __tmp5Reader.ReadLine();
+                    __tmp5_last = __tmp5Reader.EndOfStream;
+                    if (__tmp5Line != null) __out.Append(__tmp5Line);
+                    if (!__tmp5_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //593:1
-            string __tmp7Prefix = "public final class "; //594:1
-            string __tmp8Suffix = string.Empty; 
+            string __tmp6Line = ";"; //592:37
+            if (__tmp6Line != null) __out.Append(__tmp6Line);
+            __out.AppendLine(false); //592:38
+            __out.AppendLine(true); //593:1
+            string __tmp8Line = "public final class "; //594:1
+            if (__tmp8Line != null) __out.Append(__tmp8Line);
             StringBuilder __tmp9 = new StringBuilder();
             __tmp9.Append(model.CSharpInstancesName());
             using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
             {
                 bool __tmp9_first = true;
-                while(__tmp9_first || !__tmp9Reader.EndOfStream)
+                bool __tmp9_last = __tmp9Reader.EndOfStream;
+                while(__tmp9_first || !__tmp9_last)
                 {
                     __tmp9_first = false;
                     string __tmp9Line = __tmp9Reader.ReadLine();
-                    if (__tmp9Line == null)
-                    {
-                        __tmp9Line = "";
-                    }
-                    __out.Append(__tmp7Prefix);
-                    __out.Append(__tmp9Line);
-                    __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //594:49
+                    __tmp9_last = __tmp9Reader.EndOfStream;
+                    if (__tmp9Line != null) __out.Append(__tmp9Line);
+                    if (!__tmp9_last) __out.AppendLine(true);
+                    __out.AppendLine(false); //594:49
                 }
             }
             __out.Append("{"); //595:1
-            __out.AppendLine(); //595:2
+            __out.AppendLine(false); //595:2
             __out.Append("    private static metadslx.core.Model model;"); //596:1
-            __out.AppendLine(); //596:46
-            __out.AppendLine(); //597:1
+            __out.AppendLine(false); //596:46
+            __out.AppendLine(true); //597:1
             __out.Append("    public static metadslx.core.Model model() {"); //598:1
-            __out.AppendLine(); //598:48
-            string __tmp10Prefix = "        return "; //599:1
-            string __tmp11Suffix = "Instance.model;"; //599:28
+            __out.AppendLine(false); //598:48
+            string __tmp11Line = "        return "; //599:1
+            if (__tmp11Line != null) __out.Append(__tmp11Line);
             StringBuilder __tmp12 = new StringBuilder();
             __tmp12.Append(model.Name);
             using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
             {
                 bool __tmp12_first = true;
-                while(__tmp12_first || !__tmp12Reader.EndOfStream)
+                bool __tmp12_last = __tmp12Reader.EndOfStream;
+                while(__tmp12_first || !__tmp12_last)
                 {
                     __tmp12_first = false;
                     string __tmp12Line = __tmp12Reader.ReadLine();
-                    if (__tmp12Line == null)
-                    {
-                        __tmp12Line = "";
-                    }
-                    __out.Append(__tmp10Prefix);
-                    __out.Append(__tmp12Line);
-                    __out.Append(__tmp11Suffix);
-                    __out.AppendLine(); //599:43
+                    __tmp12_last = __tmp12Reader.EndOfStream;
+                    if (__tmp12Line != null) __out.Append(__tmp12Line);
+                    if (!__tmp12_last) __out.AppendLine(true);
                 }
             }
+            string __tmp13Line = "Instance.model;"; //599:28
+            if (__tmp13Line != null) __out.Append(__tmp13Line);
+            __out.AppendLine(false); //599:43
             __out.Append("    }"); //600:1
-            __out.AppendLine(); //600:6
-            __out.AppendLine(); //601:1
+            __out.AppendLine(false); //600:6
+            __out.AppendLine(true); //601:1
             __out.Append("    public static final metadslx.core.MetaModel Meta;"); //602:1
-            __out.AppendLine(); //602:54
-            __out.AppendLine(); //603:1
+            __out.AppendLine(false); //602:54
+            __out.AppendLine(true); //603:1
             var __loop34_results = 
                 (from __loop34_var1 in __Enumerate((model).GetEnumerator()) //604:11
                 from Namespace in __Enumerate((__loop34_var1.Namespace).GetEnumerator()) //604:18
@@ -4965,36 +5674,33 @@ namespace MetaDslx.Core //1:1
                 select new { __loop34_var1 = __loop34_var1, Namespace = Namespace, Declarations = Declarations, c = c}
                 ).ToList(); //604:6
             int __loop34_iteration = 0;
-            foreach (var __tmp13 in __loop34_results)
+            foreach (var __tmp14 in __loop34_results)
             {
                 ++__loop34_iteration;
-                var __loop34_var1 = __tmp13.__loop34_var1;
-                var Namespace = __tmp13.Namespace;
-                var Declarations = __tmp13.Declarations;
-                var c = __tmp13.c;
-                string __tmp14Prefix = "    "; //605:1
-                string __tmp15Suffix = string.Empty; 
+                var __loop34_var1 = __tmp14.__loop34_var1;
+                var Namespace = __tmp14.Namespace;
+                var Declarations = __tmp14.Declarations;
+                var c = __tmp14.c;
+                string __tmp15Prefix = "    "; //605:1
                 StringBuilder __tmp16 = new StringBuilder();
                 __tmp16.Append(GenerateModelConstant(model, c));
                 using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
                 {
                     bool __tmp16_first = true;
-                    while(__tmp16_first || !__tmp16Reader.EndOfStream)
+                    bool __tmp16_last = __tmp16Reader.EndOfStream;
+                    while(__tmp16_first || !__tmp16_last)
                     {
                         __tmp16_first = false;
                         string __tmp16Line = __tmp16Reader.ReadLine();
-                        if (__tmp16Line == null)
-                        {
-                            __tmp16Line = "";
-                        }
-                        __out.Append(__tmp14Prefix);
-                        __out.Append(__tmp16Line);
-                        __out.Append(__tmp15Suffix);
-                        __out.AppendLine(); //605:38
+                        __tmp16_last = __tmp16Reader.EndOfStream;
+                        __out.Append(__tmp15Prefix);
+                        if (__tmp16Line != null) __out.Append(__tmp16Line);
+                        if (!__tmp16_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //605:38
                     }
                 }
             }
-            __out.AppendLine(); //607:1
+            __out.AppendLine(true); //607:1
             var __loop35_results = 
                 (from mobj in __Enumerate((Instances).GetEnumerator()) //608:11
                 select new { mobj = mobj}
@@ -5005,93 +5711,87 @@ namespace MetaDslx.Core //1:1
                 ++__loop35_iteration;
                 var mobj = __tmp17.mobj;
                 string __tmp18Prefix = "	"; //609:1
-                string __tmp19Suffix = string.Empty; 
-                StringBuilder __tmp20 = new StringBuilder();
-                __tmp20.Append(GenerateModelObjectInstanceDeclaration(mobj, mobjToName));
-                using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
+                StringBuilder __tmp19 = new StringBuilder();
+                __tmp19.Append(GenerateModelObjectInstanceDeclaration(mobj, mobjToName));
+                using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
                 {
-                    bool __tmp20_first = true;
-                    while(__tmp20_first || !__tmp20Reader.EndOfStream)
+                    bool __tmp19_first = true;
+                    bool __tmp19_last = __tmp19Reader.EndOfStream;
+                    while(__tmp19_first || !__tmp19_last)
                     {
-                        __tmp20_first = false;
-                        string __tmp20Line = __tmp20Reader.ReadLine();
-                        if (__tmp20Line == null)
-                        {
-                            __tmp20Line = "";
-                        }
+                        __tmp19_first = false;
+                        string __tmp19Line = __tmp19Reader.ReadLine();
+                        __tmp19_last = __tmp19Reader.EndOfStream;
                         __out.Append(__tmp18Prefix);
-                        __out.Append(__tmp20Line);
-                        __out.Append(__tmp19Suffix);
-                        __out.AppendLine(); //609:60
+                        if (__tmp19Line != null) __out.Append(__tmp19Line);
+                        if (!__tmp19_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //609:60
                     }
                 }
             }
-            __out.AppendLine(); //611:1
+            __out.AppendLine(true); //611:1
             __out.Append("    static {"); //612:1
-            __out.AppendLine(); //612:13
-            string __tmp21Prefix = "		"; //613:1
-            string __tmp22Suffix = ".staticInit();"; //613:31
-            StringBuilder __tmp23 = new StringBuilder();
-            __tmp23.Append(model.JavaDescriptorName());
-            using(StreamReader __tmp23Reader = new StreamReader(this.__ToStream(__tmp23.ToString())))
+            __out.AppendLine(false); //612:13
+            string __tmp20Prefix = "		"; //613:1
+            StringBuilder __tmp21 = new StringBuilder();
+            __tmp21.Append(model.JavaDescriptorName());
+            using(StreamReader __tmp21Reader = new StreamReader(this.__ToStream(__tmp21.ToString())))
             {
-                bool __tmp23_first = true;
-                while(__tmp23_first || !__tmp23Reader.EndOfStream)
+                bool __tmp21_first = true;
+                bool __tmp21_last = __tmp21Reader.EndOfStream;
+                while(__tmp21_first || !__tmp21_last)
                 {
-                    __tmp23_first = false;
-                    string __tmp23Line = __tmp23Reader.ReadLine();
-                    if (__tmp23Line == null)
-                    {
-                        __tmp23Line = "";
-                    }
-                    __out.Append(__tmp21Prefix);
-                    __out.Append(__tmp23Line);
-                    __out.Append(__tmp22Suffix);
-                    __out.AppendLine(); //613:45
+                    __tmp21_first = false;
+                    string __tmp21Line = __tmp21Reader.ReadLine();
+                    __tmp21_last = __tmp21Reader.EndOfStream;
+                    __out.Append(__tmp20Prefix);
+                    if (__tmp21Line != null) __out.Append(__tmp21Line);
+                    if (!__tmp21_last) __out.AppendLine(true);
                 }
             }
-            string __tmp24Prefix = "		"; //614:1
-            string __tmp25Suffix = ".model = new metadslx.core.Model();"; //614:30
-            StringBuilder __tmp26 = new StringBuilder();
-            __tmp26.Append(model.JavaInstancesName());
-            using(StreamReader __tmp26Reader = new StreamReader(this.__ToStream(__tmp26.ToString())))
+            string __tmp22Line = ".staticInit();"; //613:31
+            if (__tmp22Line != null) __out.Append(__tmp22Line);
+            __out.AppendLine(false); //613:45
+            string __tmp23Prefix = "		"; //614:1
+            StringBuilder __tmp24 = new StringBuilder();
+            __tmp24.Append(model.JavaInstancesName());
+            using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
             {
-                bool __tmp26_first = true;
-                while(__tmp26_first || !__tmp26Reader.EndOfStream)
+                bool __tmp24_first = true;
+                bool __tmp24_last = __tmp24Reader.EndOfStream;
+                while(__tmp24_first || !__tmp24_last)
                 {
-                    __tmp26_first = false;
-                    string __tmp26Line = __tmp26Reader.ReadLine();
-                    if (__tmp26Line == null)
-                    {
-                        __tmp26Line = "";
-                    }
-                    __out.Append(__tmp24Prefix);
-                    __out.Append(__tmp26Line);
-                    __out.Append(__tmp25Suffix);
-                    __out.AppendLine(); //614:65
+                    __tmp24_first = false;
+                    string __tmp24Line = __tmp24Reader.ReadLine();
+                    __tmp24_last = __tmp24Reader.EndOfStream;
+                    __out.Append(__tmp23Prefix);
+                    if (__tmp24Line != null) __out.Append(__tmp24Line);
+                    if (!__tmp24_last) __out.AppendLine(true);
                 }
             }
-            string __tmp27Prefix = "   		try (metadslx.core.ModelContextScope _scope = new metadslx.core.ModelContextScope("; //615:1
-            string __tmp28Suffix = ".model)) {"; //615:115
-            StringBuilder __tmp29 = new StringBuilder();
-            __tmp29.Append(model.JavaInstancesName());
-            using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
+            string __tmp25Line = ".model = new metadslx.core.Model();"; //614:30
+            if (__tmp25Line != null) __out.Append(__tmp25Line);
+            __out.AppendLine(false); //614:65
+            string __tmp27Line = "   		try (metadslx.core.ModelContextScope _scope = new metadslx.core.ModelContextScope("; //615:1
+            if (__tmp27Line != null) __out.Append(__tmp27Line);
+            StringBuilder __tmp28 = new StringBuilder();
+            __tmp28.Append(model.JavaInstancesName());
+            using(StreamReader __tmp28Reader = new StreamReader(this.__ToStream(__tmp28.ToString())))
             {
-                bool __tmp29_first = true;
-                while(__tmp29_first || !__tmp29Reader.EndOfStream)
+                bool __tmp28_first = true;
+                bool __tmp28_last = __tmp28Reader.EndOfStream;
+                while(__tmp28_first || !__tmp28_last)
                 {
-                    __tmp29_first = false;
-                    string __tmp29Line = __tmp29Reader.ReadLine();
-                    if (__tmp29Line == null)
-                    {
-                        __tmp29Line = "";
-                    }
-                    __out.Append(__tmp27Prefix);
-                    __out.Append(__tmp29Line);
-                    __out.Append(__tmp28Suffix);
-                    __out.AppendLine(); //615:125
+                    __tmp28_first = false;
+                    string __tmp28Line = __tmp28Reader.ReadLine();
+                    __tmp28_last = __tmp28Reader.EndOfStream;
+                    if (__tmp28Line != null) __out.Append(__tmp28Line);
+                    if (!__tmp28_last) __out.AppendLine(true);
                 }
             }
+            string __tmp29Line = ".model)) {"; //615:115
+            if (__tmp29Line != null) __out.Append(__tmp29Line);
+            __out.AppendLine(false); //615:125
             var __loop36_results = 
                 (from __loop36_var1 in __Enumerate((model).GetEnumerator()) //616:13
                 from Namespace in __Enumerate((__loop36_var1.Namespace).GetEnumerator()) //616:20
@@ -5108,162 +5808,151 @@ namespace MetaDslx.Core //1:1
                 var Declarations = __tmp30.Declarations;
                 var c = __tmp30.c;
                 string __tmp31Prefix = "            "; //617:1
-                string __tmp32Suffix = string.Empty; 
-                StringBuilder __tmp33 = new StringBuilder();
-                __tmp33.Append(GenerateModelConstantImpl(model, c, mobjToName));
-                using(StreamReader __tmp33Reader = new StreamReader(this.__ToStream(__tmp33.ToString())))
+                StringBuilder __tmp32 = new StringBuilder();
+                __tmp32.Append(GenerateModelConstantImpl(model, c, mobjToName));
+                using(StreamReader __tmp32Reader = new StreamReader(this.__ToStream(__tmp32.ToString())))
                 {
-                    bool __tmp33_first = true;
-                    while(__tmp33_first || !__tmp33Reader.EndOfStream)
+                    bool __tmp32_first = true;
+                    bool __tmp32_last = __tmp32Reader.EndOfStream;
+                    while(__tmp32_first || !__tmp32_last)
                     {
-                        __tmp33_first = false;
-                        string __tmp33Line = __tmp33Reader.ReadLine();
-                        if (__tmp33Line == null)
-                        {
-                            __tmp33Line = "";
-                        }
+                        __tmp32_first = false;
+                        string __tmp32Line = __tmp32Reader.ReadLine();
+                        __tmp32_last = __tmp32Reader.EndOfStream;
                         __out.Append(__tmp31Prefix);
-                        __out.Append(__tmp33Line);
-                        __out.Append(__tmp32Suffix);
-                        __out.AppendLine(); //617:62
+                        if (__tmp32Line != null) __out.Append(__tmp32Line);
+                        if (!__tmp32_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //617:62
                     }
                 }
             }
-            __out.AppendLine(); //619:1
+            __out.AppendLine(true); //619:1
             var __loop37_results = 
                 (from mobj in __Enumerate((Instances).GetEnumerator()) //620:10
                 select new { mobj = mobj}
                 ).ToList(); //620:5
             int __loop37_iteration = 0;
-            foreach (var __tmp34 in __loop37_results)
+            foreach (var __tmp33 in __loop37_results)
             {
                 ++__loop37_iteration;
-                var mobj = __tmp34.mobj;
-                string __tmp35Prefix = "			"; //621:1
-                string __tmp36Suffix = string.Empty; 
-                StringBuilder __tmp37 = new StringBuilder();
-                __tmp37.Append(GenerateModelObjectInstance(mobj, mobjToName));
-                using(StreamReader __tmp37Reader = new StreamReader(this.__ToStream(__tmp37.ToString())))
+                var mobj = __tmp33.mobj;
+                string __tmp34Prefix = "			"; //621:1
+                StringBuilder __tmp35 = new StringBuilder();
+                __tmp35.Append(GenerateModelObjectInstance(mobj, mobjToName));
+                using(StreamReader __tmp35Reader = new StreamReader(this.__ToStream(__tmp35.ToString())))
                 {
-                    bool __tmp37_first = true;
-                    while(__tmp37_first || !__tmp37Reader.EndOfStream)
+                    bool __tmp35_first = true;
+                    bool __tmp35_last = __tmp35Reader.EndOfStream;
+                    while(__tmp35_first || !__tmp35_last)
                     {
-                        __tmp37_first = false;
-                        string __tmp37Line = __tmp37Reader.ReadLine();
-                        if (__tmp37Line == null)
-                        {
-                            __tmp37Line = "";
-                        }
-                        __out.Append(__tmp35Prefix);
-                        __out.Append(__tmp37Line);
-                        __out.Append(__tmp36Suffix);
-                        __out.AppendLine(); //621:51
+                        __tmp35_first = false;
+                        string __tmp35Line = __tmp35Reader.ReadLine();
+                        __tmp35_last = __tmp35Reader.EndOfStream;
+                        __out.Append(__tmp34Prefix);
+                        if (__tmp35Line != null) __out.Append(__tmp35Line);
+                        if (!__tmp35_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //621:51
                     }
                 }
             }
-            __out.AppendLine(); //623:1
+            __out.AppendLine(true); //623:1
             __out.Append("			init();"); //624:1
-            __out.AppendLine(); //624:11
-            __out.AppendLine(); //625:1
-            string __tmp38Prefix = "            "; //626:1
-            string __tmp39Suffix = ".model.evalLazyValues();"; //626:40
-            StringBuilder __tmp40 = new StringBuilder();
-            __tmp40.Append(model.JavaInstancesName());
-            using(StreamReader __tmp40Reader = new StreamReader(this.__ToStream(__tmp40.ToString())))
+            __out.AppendLine(false); //624:11
+            __out.AppendLine(true); //625:1
+            string __tmp36Prefix = "            "; //626:1
+            StringBuilder __tmp37 = new StringBuilder();
+            __tmp37.Append(model.JavaInstancesName());
+            using(StreamReader __tmp37Reader = new StreamReader(this.__ToStream(__tmp37.ToString())))
             {
-                bool __tmp40_first = true;
-                while(__tmp40_first || !__tmp40Reader.EndOfStream)
+                bool __tmp37_first = true;
+                bool __tmp37_last = __tmp37Reader.EndOfStream;
+                while(__tmp37_first || !__tmp37_last)
                 {
-                    __tmp40_first = false;
-                    string __tmp40Line = __tmp40Reader.ReadLine();
-                    if (__tmp40Line == null)
-                    {
-                        __tmp40Line = "";
-                    }
-                    __out.Append(__tmp38Prefix);
-                    __out.Append(__tmp40Line);
-                    __out.Append(__tmp39Suffix);
-                    __out.AppendLine(); //626:64
+                    __tmp37_first = false;
+                    string __tmp37Line = __tmp37Reader.ReadLine();
+                    __tmp37_last = __tmp37Reader.EndOfStream;
+                    __out.Append(__tmp36Prefix);
+                    if (__tmp37Line != null) __out.Append(__tmp37Line);
+                    if (!__tmp37_last) __out.AppendLine(true);
                 }
             }
+            string __tmp38Line = ".model.evalLazyValues();"; //626:40
+            if (__tmp38Line != null) __out.Append(__tmp38Line);
+            __out.AppendLine(false); //626:64
             __out.Append("		}"); //627:1
-            __out.AppendLine(); //627:4
+            __out.AppendLine(false); //627:4
             __out.Append("    }"); //628:1
-            __out.AppendLine(); //628:6
-            __out.AppendLine(); //629:1
+            __out.AppendLine(false); //628:6
+            __out.AppendLine(true); //629:1
             __out.Append("	private static void init0() {"); //630:1
-            __out.AppendLine(); //630:31
+            __out.AppendLine(false); //630:31
             var __loop38_results = 
                 (from mobj in __Enumerate((Instances).GetEnumerator()) //631:8
                 select new { mobj = mobj}
                 ).ToList(); //631:3
             int __loop38_iteration = 0;
-            foreach (var __tmp41 in __loop38_results)
+            foreach (var __tmp39 in __loop38_results)
             {
                 ++__loop38_iteration;
-                var mobj = __tmp41.mobj;
-                string __tmp42Prefix = "	"; //632:1
-                string __tmp43Suffix = string.Empty; 
-                StringBuilder __tmp44 = new StringBuilder();
-                __tmp44.Append(GenerateModelObjectInstanceInitializer(mobj, mobjToName));
-                using(StreamReader __tmp44Reader = new StreamReader(this.__ToStream(__tmp44.ToString())))
+                var mobj = __tmp39.mobj;
+                string __tmp40Prefix = "	"; //632:1
+                StringBuilder __tmp41 = new StringBuilder();
+                __tmp41.Append(GenerateModelObjectInstanceInitializer(mobj, mobjToName));
+                using(StreamReader __tmp41Reader = new StreamReader(this.__ToStream(__tmp41.ToString())))
                 {
-                    bool __tmp44_first = true;
-                    while(__tmp44_first || !__tmp44Reader.EndOfStream)
+                    bool __tmp41_first = true;
+                    bool __tmp41_last = __tmp41Reader.EndOfStream;
+                    while(__tmp41_first || !__tmp41_last)
                     {
-                        __tmp44_first = false;
-                        string __tmp44Line = __tmp44Reader.ReadLine();
-                        if (__tmp44Line == null)
-                        {
-                            __tmp44Line = "";
-                        }
-                        __out.Append(__tmp42Prefix);
-                        __out.Append(__tmp44Line);
-                        __out.Append(__tmp43Suffix);
-                        __out.AppendLine(); //632:60
+                        __tmp41_first = false;
+                        string __tmp41Line = __tmp41Reader.ReadLine();
+                        __tmp41_last = __tmp41Reader.EndOfStream;
+                        __out.Append(__tmp40Prefix);
+                        if (__tmp41Line != null) __out.Append(__tmp41Line);
+                        if (!__tmp41_last) __out.AppendLine(true);
+                        __out.AppendLine(false); //632:60
                     }
                 }
             }
             __out.Append("	}"); //634:1
-            __out.AppendLine(); //634:3
-            __out.AppendLine(); //635:1
+            __out.AppendLine(false); //634:3
+            __out.AppendLine(true); //635:1
             __out.Append("	private static void init() {"); //636:1
-            __out.AppendLine(); //636:30
+            __out.AppendLine(false); //636:30
             var __loop39_results = 
                 (from i in __Enumerate((Enumerable.Range(0, Properties.FunctionCount)).GetEnumerator()) //637:8
                 select new { i = i}
                 ).ToList(); //637:3
             int __loop39_iteration = 0;
-            foreach (var __tmp45 in __loop39_results)
+            foreach (var __tmp42 in __loop39_results)
             {
                 ++__loop39_iteration;
-                var i = __tmp45.i;
-                string __tmp46Prefix = "		init"; //638:1
-                string __tmp47Suffix = "();"; //638:10
-                StringBuilder __tmp48 = new StringBuilder();
-                __tmp48.Append(i);
-                using(StreamReader __tmp48Reader = new StreamReader(this.__ToStream(__tmp48.ToString())))
+                var i = __tmp42.i;
+                string __tmp44Line = "		init"; //638:1
+                if (__tmp44Line != null) __out.Append(__tmp44Line);
+                StringBuilder __tmp45 = new StringBuilder();
+                __tmp45.Append(i);
+                using(StreamReader __tmp45Reader = new StreamReader(this.__ToStream(__tmp45.ToString())))
                 {
-                    bool __tmp48_first = true;
-                    while(__tmp48_first || !__tmp48Reader.EndOfStream)
+                    bool __tmp45_first = true;
+                    bool __tmp45_last = __tmp45Reader.EndOfStream;
+                    while(__tmp45_first || !__tmp45_last)
                     {
-                        __tmp48_first = false;
-                        string __tmp48Line = __tmp48Reader.ReadLine();
-                        if (__tmp48Line == null)
-                        {
-                            __tmp48Line = "";
-                        }
-                        __out.Append(__tmp46Prefix);
-                        __out.Append(__tmp48Line);
-                        __out.Append(__tmp47Suffix);
-                        __out.AppendLine(); //638:13
+                        __tmp45_first = false;
+                        string __tmp45Line = __tmp45Reader.ReadLine();
+                        __tmp45_last = __tmp45Reader.EndOfStream;
+                        if (__tmp45Line != null) __out.Append(__tmp45Line);
+                        if (!__tmp45_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp46Line = "();"; //638:10
+                if (__tmp46Line != null) __out.Append(__tmp46Line);
+                __out.AppendLine(false); //638:13
             }
             __out.Append("	}"); //640:1
-            __out.AppendLine(); //640:3
+            __out.AppendLine(false); //640:3
             __out.Append("}"); //641:1
-            __out.AppendLine(); //641:2
+            __out.AppendLine(false); //641:2
             return __out.ToString();
         }
 
@@ -5277,87 +5966,83 @@ namespace MetaDslx.Core //1:1
                     string name = mobjToName[mobj]; //648:4
                     if (name.StartsWith("__")) //649:4
                     {
-                        string __tmp1Prefix = "private static final metadslx.core."; //650:1
-                        string __tmp2Suffix = ";"; //650:71
+                        string __tmp2Line = "private static final metadslx.core."; //650:1
+                        if (__tmp2Line != null) __out.Append(__tmp2Line);
                         StringBuilder __tmp3 = new StringBuilder();
                         __tmp3.Append(mobj.MMetaClass.JavaName());
                         using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
                         {
                             bool __tmp3_first = true;
-                            while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                            bool __tmp3_last = __tmp3Reader.EndOfStream;
+                            while(__tmp3_first || !__tmp3_last)
                             {
                                 __tmp3_first = false;
                                 string __tmp3Line = __tmp3Reader.ReadLine();
-                                if (__tmp3Line == null)
-                                {
-                                    __tmp3Line = "";
-                                }
-                                __out.Append(__tmp1Prefix);
-                                __out.Append(__tmp3Line);
+                                __tmp3_last = __tmp3Reader.EndOfStream;
+                                if (__tmp3Line != null) __out.Append(__tmp3Line);
+                                if (!__tmp3_last) __out.AppendLine(true);
                             }
                         }
                         string __tmp4Line = " "; //650:64
-                        __out.Append(__tmp4Line);
+                        if (__tmp4Line != null) __out.Append(__tmp4Line);
                         StringBuilder __tmp5 = new StringBuilder();
                         __tmp5.Append(name);
                         using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
                         {
                             bool __tmp5_first = true;
-                            while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                            bool __tmp5_last = __tmp5Reader.EndOfStream;
+                            while(__tmp5_first || !__tmp5_last)
                             {
                                 __tmp5_first = false;
                                 string __tmp5Line = __tmp5Reader.ReadLine();
-                                if (__tmp5Line == null)
-                                {
-                                    __tmp5Line = "";
-                                }
-                                __out.Append(__tmp5Line);
-                                __out.Append(__tmp2Suffix);
-                                __out.AppendLine(); //650:72
+                                __tmp5_last = __tmp5Reader.EndOfStream;
+                                if (__tmp5Line != null) __out.Append(__tmp5Line);
+                                if (!__tmp5_last) __out.AppendLine(true);
                             }
                         }
+                        string __tmp6Line = ";"; //650:71
+                        if (__tmp6Line != null) __out.Append(__tmp6Line);
+                        __out.AppendLine(false); //650:72
                     }
                     else //651:4
                     {
-                        string __tmp6Prefix = "public static final metadslx.core."; //652:1
-                        string __tmp7Suffix = ";"; //652:70
-                        StringBuilder __tmp8 = new StringBuilder();
-                        __tmp8.Append(mobj.MMetaClass.JavaName());
-                        using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
+                        string __tmp8Line = "public static final metadslx.core."; //652:1
+                        if (__tmp8Line != null) __out.Append(__tmp8Line);
+                        StringBuilder __tmp9 = new StringBuilder();
+                        __tmp9.Append(mobj.MMetaClass.JavaName());
+                        using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
                         {
-                            bool __tmp8_first = true;
-                            while(__tmp8_first || !__tmp8Reader.EndOfStream)
+                            bool __tmp9_first = true;
+                            bool __tmp9_last = __tmp9Reader.EndOfStream;
+                            while(__tmp9_first || !__tmp9_last)
                             {
-                                __tmp8_first = false;
-                                string __tmp8Line = __tmp8Reader.ReadLine();
-                                if (__tmp8Line == null)
-                                {
-                                    __tmp8Line = "";
-                                }
-                                __out.Append(__tmp6Prefix);
-                                __out.Append(__tmp8Line);
+                                __tmp9_first = false;
+                                string __tmp9Line = __tmp9Reader.ReadLine();
+                                __tmp9_last = __tmp9Reader.EndOfStream;
+                                if (__tmp9Line != null) __out.Append(__tmp9Line);
+                                if (!__tmp9_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp9Line = " "; //652:63
-                        __out.Append(__tmp9Line);
-                        StringBuilder __tmp10 = new StringBuilder();
-                        __tmp10.Append(name);
-                        using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
+                        string __tmp10Line = " "; //652:63
+                        if (__tmp10Line != null) __out.Append(__tmp10Line);
+                        StringBuilder __tmp11 = new StringBuilder();
+                        __tmp11.Append(name);
+                        using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
                         {
-                            bool __tmp10_first = true;
-                            while(__tmp10_first || !__tmp10Reader.EndOfStream)
+                            bool __tmp11_first = true;
+                            bool __tmp11_last = __tmp11Reader.EndOfStream;
+                            while(__tmp11_first || !__tmp11_last)
                             {
-                                __tmp10_first = false;
-                                string __tmp10Line = __tmp10Reader.ReadLine();
-                                if (__tmp10Line == null)
-                                {
-                                    __tmp10Line = "";
-                                }
-                                __out.Append(__tmp10Line);
-                                __out.Append(__tmp7Suffix);
-                                __out.AppendLine(); //652:71
+                                __tmp11_first = false;
+                                string __tmp11Line = __tmp11Reader.ReadLine();
+                                __tmp11_last = __tmp11Reader.EndOfStream;
+                                if (__tmp11Line != null) __out.Append(__tmp11Line);
+                                if (!__tmp11_last) __out.AppendLine(true);
                             }
                         }
+                        string __tmp12Line = ";"; //652:70
+                        if (__tmp12Line != null) __out.Append(__tmp12Line);
+                        __out.AppendLine(false); //652:71
                     }
                 }
             }
@@ -5372,68 +6057,63 @@ namespace MetaDslx.Core //1:1
                 if (mobjToName.ContainsKey(mobj)) //661:3
                 {
                     string name = mobjToName[mobj]; //662:4
-                    string __tmp1Prefix = string.Empty; 
-                    string __tmp2Suffix = "();"; //663:83
-                    StringBuilder __tmp3 = new StringBuilder();
-                    __tmp3.Append(name);
-                    using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
+                    StringBuilder __tmp2 = new StringBuilder();
+                    __tmp2.Append(name);
+                    using(StreamReader __tmp2Reader = new StreamReader(this.__ToStream(__tmp2.ToString())))
                     {
-                        bool __tmp3_first = true;
-                        while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                        bool __tmp2_first = true;
+                        bool __tmp2_last = __tmp2Reader.EndOfStream;
+                        while(__tmp2_first || !__tmp2_last)
                         {
-                            __tmp3_first = false;
-                            string __tmp3Line = __tmp3Reader.ReadLine();
-                            if (__tmp3Line == null)
-                            {
-                                __tmp3Line = "";
-                            }
-                            __out.Append(__tmp1Prefix);
-                            __out.Append(__tmp3Line);
+                            __tmp2_first = false;
+                            string __tmp2Line = __tmp2Reader.ReadLine();
+                            __tmp2_last = __tmp2Reader.EndOfStream;
+                            if (__tmp2Line != null) __out.Append(__tmp2Line);
+                            if (!__tmp2_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp4Line = " = metadslx.core.MetaFactory.instance().create"; //663:7
-                    __out.Append(__tmp4Line);
-                    StringBuilder __tmp5 = new StringBuilder();
-                    __tmp5.Append(mobj.MMetaClass.CSharpName());
-                    using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
+                    string __tmp3Line = " = metadslx.core.MetaFactory.instance().create"; //663:7
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    StringBuilder __tmp4 = new StringBuilder();
+                    __tmp4.Append(mobj.MMetaClass.CSharpName());
+                    using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
                     {
-                        bool __tmp5_first = true;
-                        while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                        bool __tmp4_first = true;
+                        bool __tmp4_last = __tmp4Reader.EndOfStream;
+                        while(__tmp4_first || !__tmp4_last)
                         {
-                            __tmp5_first = false;
-                            string __tmp5Line = __tmp5Reader.ReadLine();
-                            if (__tmp5Line == null)
-                            {
-                                __tmp5Line = "";
-                            }
-                            __out.Append(__tmp5Line);
-                            __out.Append(__tmp2Suffix);
-                            __out.AppendLine(); //663:86
+                            __tmp4_first = false;
+                            string __tmp4Line = __tmp4Reader.ReadLine();
+                            __tmp4_last = __tmp4Reader.EndOfStream;
+                            if (__tmp4Line != null) __out.Append(__tmp4Line);
+                            if (!__tmp4_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp5Line = "();"; //663:83
+                    if (__tmp5Line != null) __out.Append(__tmp5Line);
+                    __out.AppendLine(false); //663:86
                     if (mobj is MetaModel) //664:4
                     {
-                        string __tmp6Prefix = "Meta = "; //665:1
-                        string __tmp7Suffix = ";"; //665:14
+                        string __tmp7Line = "Meta = "; //665:1
+                        if (__tmp7Line != null) __out.Append(__tmp7Line);
                         StringBuilder __tmp8 = new StringBuilder();
                         __tmp8.Append(name);
                         using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
                         {
                             bool __tmp8_first = true;
-                            while(__tmp8_first || !__tmp8Reader.EndOfStream)
+                            bool __tmp8_last = __tmp8Reader.EndOfStream;
+                            while(__tmp8_first || !__tmp8_last)
                             {
                                 __tmp8_first = false;
                                 string __tmp8Line = __tmp8Reader.ReadLine();
-                                if (__tmp8Line == null)
-                                {
-                                    __tmp8Line = "";
-                                }
-                                __out.Append(__tmp6Prefix);
-                                __out.Append(__tmp8Line);
-                                __out.Append(__tmp7Suffix);
-                                __out.AppendLine(); //665:15
+                                __tmp8_last = __tmp8Reader.EndOfStream;
+                                if (__tmp8Line != null) __out.Append(__tmp8Line);
+                                if (!__tmp8_last) __out.AppendLine(true);
                             }
                         }
+                        string __tmp9Line = ";"; //665:14
+                        if (__tmp9Line != null) __out.Append(__tmp9Line);
+                        __out.AppendLine(false); //665:15
                     }
                 }
             }
@@ -5464,48 +6144,44 @@ namespace MetaDslx.Core //1:1
                             if ((++Properties.LineCount) % 1000 == 0) //678:6
                             {
                                 __out.Append("}"); //679:1
-                                __out.AppendLine(); //679:2
-                                string __tmp2Prefix = "private static void init"; //680:1
-                                string __tmp3Suffix = "() {"; //680:53
+                                __out.AppendLine(false); //679:2
+                                string __tmp3Line = "private static void init"; //680:1
+                                if (__tmp3Line != null) __out.Append(__tmp3Line);
                                 StringBuilder __tmp4 = new StringBuilder();
                                 __tmp4.Append(++Properties.FunctionCount);
                                 using(StreamReader __tmp4Reader = new StreamReader(this.__ToStream(__tmp4.ToString())))
                                 {
                                     bool __tmp4_first = true;
-                                    while(__tmp4_first || !__tmp4Reader.EndOfStream)
+                                    bool __tmp4_last = __tmp4Reader.EndOfStream;
+                                    while(__tmp4_first || !__tmp4_last)
                                     {
                                         __tmp4_first = false;
                                         string __tmp4Line = __tmp4Reader.ReadLine();
-                                        if (__tmp4Line == null)
-                                        {
-                                            __tmp4Line = "";
-                                        }
-                                        __out.Append(__tmp2Prefix);
-                                        __out.Append(__tmp4Line);
-                                        __out.Append(__tmp3Suffix);
-                                        __out.AppendLine(); //680:57
+                                        __tmp4_last = __tmp4Reader.EndOfStream;
+                                        if (__tmp4Line != null) __out.Append(__tmp4Line);
+                                        if (!__tmp4_last) __out.AppendLine(true);
                                     }
                                 }
+                                string __tmp5Line = "() {"; //680:53
+                                if (__tmp5Line != null) __out.Append(__tmp5Line);
+                                __out.AppendLine(false); //680:57
                             }
-                            string __tmp5Prefix = "	"; //682:1
-                            string __tmp6Suffix = string.Empty; 
+                            string __tmp6Prefix = "	"; //682:1
                             StringBuilder __tmp7 = new StringBuilder();
                             __tmp7.Append(GenerateModelObjectPropertyValue(mobj, prop, propValue, mobjToName));
                             using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
                             {
                                 bool __tmp7_first = true;
-                                while(__tmp7_first || !__tmp7Reader.EndOfStream)
+                                bool __tmp7_last = __tmp7Reader.EndOfStream;
+                                while(__tmp7_first || !__tmp7_last)
                                 {
                                     __tmp7_first = false;
                                     string __tmp7Line = __tmp7Reader.ReadLine();
-                                    if (__tmp7Line == null)
-                                    {
-                                        __tmp7Line = "";
-                                    }
-                                    __out.Append(__tmp5Prefix);
-                                    __out.Append(__tmp7Line);
-                                    __out.Append(__tmp6Suffix);
-                                    __out.AppendLine(); //682:71
+                                    __tmp7_last = __tmp7Reader.EndOfStream;
+                                    __out.Append(__tmp6Prefix);
+                                    if (__tmp7Line != null) __out.Append(__tmp7Line);
+                                    if (!__tmp7_last) __out.AppendLine(true);
+                                    __out.AppendLine(false); //682:71
                                 }
                             }
                         }
@@ -5522,568 +6198,538 @@ namespace MetaDslx.Core //1:1
             string propDeclName = prop.JavaFullDeclaredName(); //692:2
             if (!prop.IsCollection) //693:2
             {
-                string __tmp1Prefix = "((metadslx.core.ModelObject)"; //694:1
-                string __tmp2Suffix = ");"; //694:58
+                string __tmp2Line = "((metadslx.core.ModelObject)"; //694:1
+                if (__tmp2Line != null) __out.Append(__tmp2Line);
                 StringBuilder __tmp3 = new StringBuilder();
                 __tmp3.Append(name);
                 using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
                 {
                     bool __tmp3_first = true;
-                    while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                    bool __tmp3_last = __tmp3Reader.EndOfStream;
+                    while(__tmp3_first || !__tmp3_last)
                     {
                         __tmp3_first = false;
                         string __tmp3Line = __tmp3Reader.ReadLine();
-                        if (__tmp3Line == null)
-                        {
-                            __tmp3Line = "";
-                        }
-                        __out.Append(__tmp1Prefix);
-                        __out.Append(__tmp3Line);
+                        __tmp3_last = __tmp3Reader.EndOfStream;
+                        if (__tmp3Line != null) __out.Append(__tmp3Line);
+                        if (!__tmp3_last) __out.AppendLine(true);
                     }
                 }
                 string __tmp4Line = ").mUnSet("; //694:35
-                __out.Append(__tmp4Line);
+                if (__tmp4Line != null) __out.Append(__tmp4Line);
                 StringBuilder __tmp5 = new StringBuilder();
                 __tmp5.Append(propDeclName);
                 using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
                 {
                     bool __tmp5_first = true;
-                    while(__tmp5_first || !__tmp5Reader.EndOfStream)
+                    bool __tmp5_last = __tmp5Reader.EndOfStream;
+                    while(__tmp5_first || !__tmp5_last)
                     {
                         __tmp5_first = false;
                         string __tmp5Line = __tmp5Reader.ReadLine();
-                        if (__tmp5Line == null)
-                        {
-                            __tmp5Line = "";
-                        }
-                        __out.Append(__tmp5Line);
-                        __out.Append(__tmp2Suffix);
-                        __out.AppendLine(); //694:60
+                        __tmp5_last = __tmp5Reader.EndOfStream;
+                        if (__tmp5Line != null) __out.Append(__tmp5Line);
+                        if (!__tmp5_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp6Line = ");"; //694:58
+                if (__tmp6Line != null) __out.Append(__tmp6Line);
+                __out.AppendLine(false); //694:60
             }
             ModelObject moValue = value as ModelObject; //696:2
             if (value == null) //697:2
             {
-                string __tmp6Prefix = "((metadslx.core.ModelObject)"; //698:1
-                string __tmp7Suffix = ", metadslx.core.Lazy.create(() -> null, true));"; //698:60
-                StringBuilder __tmp8 = new StringBuilder();
-                __tmp8.Append(name);
-                using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
+                string __tmp8Line = "((metadslx.core.ModelObject)"; //698:1
+                if (__tmp8Line != null) __out.Append(__tmp8Line);
+                StringBuilder __tmp9 = new StringBuilder();
+                __tmp9.Append(name);
+                using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
                 {
-                    bool __tmp8_first = true;
-                    while(__tmp8_first || !__tmp8Reader.EndOfStream)
+                    bool __tmp9_first = true;
+                    bool __tmp9_last = __tmp9Reader.EndOfStream;
+                    while(__tmp9_first || !__tmp9_last)
                     {
-                        __tmp8_first = false;
-                        string __tmp8Line = __tmp8Reader.ReadLine();
-                        if (__tmp8Line == null)
-                        {
-                            __tmp8Line = "";
-                        }
-                        __out.Append(__tmp6Prefix);
-                        __out.Append(__tmp8Line);
+                        __tmp9_first = false;
+                        string __tmp9Line = __tmp9Reader.ReadLine();
+                        __tmp9_last = __tmp9Reader.EndOfStream;
+                        if (__tmp9Line != null) __out.Append(__tmp9Line);
+                        if (!__tmp9_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp9Line = ").mLazyAdd("; //698:35
-                __out.Append(__tmp9Line);
-                StringBuilder __tmp10 = new StringBuilder();
-                __tmp10.Append(propDeclName);
-                using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
+                string __tmp10Line = ").mLazyAdd("; //698:35
+                if (__tmp10Line != null) __out.Append(__tmp10Line);
+                StringBuilder __tmp11 = new StringBuilder();
+                __tmp11.Append(propDeclName);
+                using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
                 {
-                    bool __tmp10_first = true;
-                    while(__tmp10_first || !__tmp10Reader.EndOfStream)
+                    bool __tmp11_first = true;
+                    bool __tmp11_last = __tmp11Reader.EndOfStream;
+                    while(__tmp11_first || !__tmp11_last)
                     {
-                        __tmp10_first = false;
-                        string __tmp10Line = __tmp10Reader.ReadLine();
-                        if (__tmp10Line == null)
-                        {
-                            __tmp10Line = "";
-                        }
-                        __out.Append(__tmp10Line);
-                        __out.Append(__tmp7Suffix);
-                        __out.AppendLine(); //698:107
+                        __tmp11_first = false;
+                        string __tmp11Line = __tmp11Reader.ReadLine();
+                        __tmp11_last = __tmp11Reader.EndOfStream;
+                        if (__tmp11Line != null) __out.Append(__tmp11Line);
+                        if (!__tmp11_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp12Line = ", metadslx.core.Lazy.create(() -> null, true));"; //698:60
+                if (__tmp12Line != null) __out.Append(__tmp12Line);
+                __out.AppendLine(false); //698:107
             }
             else if (value is string) //699:2
             {
-                string __tmp11Prefix = "((metadslx.core.ModelObject)"; //700:1
-                string __tmp12Suffix = "\", true));"; //700:102
-                StringBuilder __tmp13 = new StringBuilder();
-                __tmp13.Append(name);
-                using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
-                {
-                    bool __tmp13_first = true;
-                    while(__tmp13_first || !__tmp13Reader.EndOfStream)
-                    {
-                        __tmp13_first = false;
-                        string __tmp13Line = __tmp13Reader.ReadLine();
-                        if (__tmp13Line == null)
-                        {
-                            __tmp13Line = "";
-                        }
-                        __out.Append(__tmp11Prefix);
-                        __out.Append(__tmp13Line);
-                    }
-                }
-                string __tmp14Line = ").mLazyAdd("; //700:35
-                __out.Append(__tmp14Line);
+                string __tmp14Line = "((metadslx.core.ModelObject)"; //700:1
+                if (__tmp14Line != null) __out.Append(__tmp14Line);
                 StringBuilder __tmp15 = new StringBuilder();
-                __tmp15.Append(propDeclName);
+                __tmp15.Append(name);
                 using(StreamReader __tmp15Reader = new StreamReader(this.__ToStream(__tmp15.ToString())))
                 {
                     bool __tmp15_first = true;
-                    while(__tmp15_first || !__tmp15Reader.EndOfStream)
+                    bool __tmp15_last = __tmp15Reader.EndOfStream;
+                    while(__tmp15_first || !__tmp15_last)
                     {
                         __tmp15_first = false;
                         string __tmp15Line = __tmp15Reader.ReadLine();
-                        if (__tmp15Line == null)
-                        {
-                            __tmp15Line = "";
-                        }
-                        __out.Append(__tmp15Line);
+                        __tmp15_last = __tmp15Reader.EndOfStream;
+                        if (__tmp15Line != null) __out.Append(__tmp15Line);
+                        if (!__tmp15_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp16Line = ", metadslx.core.Lazy.create(() -> \""; //700:60
-                __out.Append(__tmp16Line);
+                string __tmp16Line = ").mLazyAdd("; //700:35
+                if (__tmp16Line != null) __out.Append(__tmp16Line);
                 StringBuilder __tmp17 = new StringBuilder();
-                __tmp17.Append(value);
+                __tmp17.Append(propDeclName);
                 using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
                 {
                     bool __tmp17_first = true;
-                    while(__tmp17_first || !__tmp17Reader.EndOfStream)
+                    bool __tmp17_last = __tmp17Reader.EndOfStream;
+                    while(__tmp17_first || !__tmp17_last)
                     {
                         __tmp17_first = false;
                         string __tmp17Line = __tmp17Reader.ReadLine();
-                        if (__tmp17Line == null)
-                        {
-                            __tmp17Line = "";
-                        }
-                        __out.Append(__tmp17Line);
-                        __out.Append(__tmp12Suffix);
-                        __out.AppendLine(); //700:112
+                        __tmp17_last = __tmp17Reader.EndOfStream;
+                        if (__tmp17Line != null) __out.Append(__tmp17Line);
+                        if (!__tmp17_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp18Line = ", metadslx.core.Lazy.create(() -> \""; //700:60
+                if (__tmp18Line != null) __out.Append(__tmp18Line);
+                StringBuilder __tmp19 = new StringBuilder();
+                __tmp19.Append(value);
+                using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
+                {
+                    bool __tmp19_first = true;
+                    bool __tmp19_last = __tmp19Reader.EndOfStream;
+                    while(__tmp19_first || !__tmp19_last)
+                    {
+                        __tmp19_first = false;
+                        string __tmp19Line = __tmp19Reader.ReadLine();
+                        __tmp19_last = __tmp19Reader.EndOfStream;
+                        if (__tmp19Line != null) __out.Append(__tmp19Line);
+                        if (!__tmp19_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp20Line = "\", true));"; //700:102
+                if (__tmp20Line != null) __out.Append(__tmp20Line);
+                __out.AppendLine(false); //700:112
             }
             else if (value is bool) //701:2
             {
-                string __tmp18Prefix = "((metadslx.core.ModelObject)"; //702:1
-                string __tmp19Suffix = ", true));"; //702:122
-                StringBuilder __tmp20 = new StringBuilder();
-                __tmp20.Append(name);
-                using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
+                string __tmp22Line = "((metadslx.core.ModelObject)"; //702:1
+                if (__tmp22Line != null) __out.Append(__tmp22Line);
+                StringBuilder __tmp23 = new StringBuilder();
+                __tmp23.Append(name);
+                using(StreamReader __tmp23Reader = new StreamReader(this.__ToStream(__tmp23.ToString())))
                 {
-                    bool __tmp20_first = true;
-                    while(__tmp20_first || !__tmp20Reader.EndOfStream)
+                    bool __tmp23_first = true;
+                    bool __tmp23_last = __tmp23Reader.EndOfStream;
+                    while(__tmp23_first || !__tmp23_last)
                     {
-                        __tmp20_first = false;
-                        string __tmp20Line = __tmp20Reader.ReadLine();
-                        if (__tmp20Line == null)
-                        {
-                            __tmp20Line = "";
-                        }
-                        __out.Append(__tmp18Prefix);
-                        __out.Append(__tmp20Line);
+                        __tmp23_first = false;
+                        string __tmp23Line = __tmp23Reader.ReadLine();
+                        __tmp23_last = __tmp23Reader.EndOfStream;
+                        if (__tmp23Line != null) __out.Append(__tmp23Line);
+                        if (!__tmp23_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp21Line = ").mLazyAdd("; //702:35
-                __out.Append(__tmp21Line);
-                StringBuilder __tmp22 = new StringBuilder();
-                __tmp22.Append(propDeclName);
-                using(StreamReader __tmp22Reader = new StreamReader(this.__ToStream(__tmp22.ToString())))
+                string __tmp24Line = ").mLazyAdd("; //702:35
+                if (__tmp24Line != null) __out.Append(__tmp24Line);
+                StringBuilder __tmp25 = new StringBuilder();
+                __tmp25.Append(propDeclName);
+                using(StreamReader __tmp25Reader = new StreamReader(this.__ToStream(__tmp25.ToString())))
                 {
-                    bool __tmp22_first = true;
-                    while(__tmp22_first || !__tmp22Reader.EndOfStream)
+                    bool __tmp25_first = true;
+                    bool __tmp25_last = __tmp25Reader.EndOfStream;
+                    while(__tmp25_first || !__tmp25_last)
                     {
-                        __tmp22_first = false;
-                        string __tmp22Line = __tmp22Reader.ReadLine();
-                        if (__tmp22Line == null)
-                        {
-                            __tmp22Line = "";
-                        }
-                        __out.Append(__tmp22Line);
+                        __tmp25_first = false;
+                        string __tmp25Line = __tmp25Reader.ReadLine();
+                        __tmp25_last = __tmp25Reader.EndOfStream;
+                        if (__tmp25Line != null) __out.Append(__tmp25Line);
+                        if (!__tmp25_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp23Line = ", metadslx.core.Lazy.create(() -> "; //702:60
-                __out.Append(__tmp23Line);
-                StringBuilder __tmp24 = new StringBuilder();
-                __tmp24.Append(value.ToString().ToLower());
-                using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
-                {
-                    bool __tmp24_first = true;
-                    while(__tmp24_first || !__tmp24Reader.EndOfStream)
-                    {
-                        __tmp24_first = false;
-                        string __tmp24Line = __tmp24Reader.ReadLine();
-                        if (__tmp24Line == null)
-                        {
-                            __tmp24Line = "";
-                        }
-                        __out.Append(__tmp24Line);
-                        __out.Append(__tmp19Suffix);
-                        __out.AppendLine(); //702:131
-                    }
-                }
-            }
-            else if (value.GetType().IsPrimitive) //703:2
-            {
-                string __tmp25Prefix = "((metadslx.core.ModelObject)"; //704:1
-                string __tmp26Suffix = ", true));"; //704:112
+                string __tmp26Line = ", metadslx.core.Lazy.create(() -> "; //702:60
+                if (__tmp26Line != null) __out.Append(__tmp26Line);
                 StringBuilder __tmp27 = new StringBuilder();
-                __tmp27.Append(name);
+                __tmp27.Append(value.ToString().ToLower());
                 using(StreamReader __tmp27Reader = new StreamReader(this.__ToStream(__tmp27.ToString())))
                 {
                     bool __tmp27_first = true;
-                    while(__tmp27_first || !__tmp27Reader.EndOfStream)
+                    bool __tmp27_last = __tmp27Reader.EndOfStream;
+                    while(__tmp27_first || !__tmp27_last)
                     {
                         __tmp27_first = false;
                         string __tmp27Line = __tmp27Reader.ReadLine();
-                        if (__tmp27Line == null)
-                        {
-                            __tmp27Line = "";
-                        }
-                        __out.Append(__tmp25Prefix);
-                        __out.Append(__tmp27Line);
+                        __tmp27_last = __tmp27Reader.EndOfStream;
+                        if (__tmp27Line != null) __out.Append(__tmp27Line);
+                        if (!__tmp27_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp28Line = ").mLazyAdd("; //704:35
-                __out.Append(__tmp28Line);
-                StringBuilder __tmp29 = new StringBuilder();
-                __tmp29.Append(propDeclName);
-                using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
-                {
-                    bool __tmp29_first = true;
-                    while(__tmp29_first || !__tmp29Reader.EndOfStream)
-                    {
-                        __tmp29_first = false;
-                        string __tmp29Line = __tmp29Reader.ReadLine();
-                        if (__tmp29Line == null)
-                        {
-                            __tmp29Line = "";
-                        }
-                        __out.Append(__tmp29Line);
-                    }
-                }
-                string __tmp30Line = ", metadslx.core.Lazy.create(() -> "; //704:60
-                __out.Append(__tmp30Line);
+                string __tmp28Line = ", true));"; //702:122
+                if (__tmp28Line != null) __out.Append(__tmp28Line);
+                __out.AppendLine(false); //702:131
+            }
+            else if (value.GetType().IsPrimitive) //703:2
+            {
+                string __tmp30Line = "((metadslx.core.ModelObject)"; //704:1
+                if (__tmp30Line != null) __out.Append(__tmp30Line);
                 StringBuilder __tmp31 = new StringBuilder();
-                __tmp31.Append(value.ToString());
+                __tmp31.Append(name);
                 using(StreamReader __tmp31Reader = new StreamReader(this.__ToStream(__tmp31.ToString())))
                 {
                     bool __tmp31_first = true;
-                    while(__tmp31_first || !__tmp31Reader.EndOfStream)
+                    bool __tmp31_last = __tmp31Reader.EndOfStream;
+                    while(__tmp31_first || !__tmp31_last)
                     {
                         __tmp31_first = false;
                         string __tmp31Line = __tmp31Reader.ReadLine();
-                        if (__tmp31Line == null)
-                        {
-                            __tmp31Line = "";
-                        }
-                        __out.Append(__tmp31Line);
-                        __out.Append(__tmp26Suffix);
-                        __out.AppendLine(); //704:121
+                        __tmp31_last = __tmp31Reader.EndOfStream;
+                        if (__tmp31Line != null) __out.Append(__tmp31Line);
+                        if (!__tmp31_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp32Line = ").mLazyAdd("; //704:35
+                if (__tmp32Line != null) __out.Append(__tmp32Line);
+                StringBuilder __tmp33 = new StringBuilder();
+                __tmp33.Append(propDeclName);
+                using(StreamReader __tmp33Reader = new StreamReader(this.__ToStream(__tmp33.ToString())))
+                {
+                    bool __tmp33_first = true;
+                    bool __tmp33_last = __tmp33Reader.EndOfStream;
+                    while(__tmp33_first || !__tmp33_last)
+                    {
+                        __tmp33_first = false;
+                        string __tmp33Line = __tmp33Reader.ReadLine();
+                        __tmp33_last = __tmp33Reader.EndOfStream;
+                        if (__tmp33Line != null) __out.Append(__tmp33Line);
+                        if (!__tmp33_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp34Line = ", metadslx.core.Lazy.create(() -> "; //704:60
+                if (__tmp34Line != null) __out.Append(__tmp34Line);
+                StringBuilder __tmp35 = new StringBuilder();
+                __tmp35.Append(value.ToString());
+                using(StreamReader __tmp35Reader = new StreamReader(this.__ToStream(__tmp35.ToString())))
+                {
+                    bool __tmp35_first = true;
+                    bool __tmp35_last = __tmp35Reader.EndOfStream;
+                    while(__tmp35_first || !__tmp35_last)
+                    {
+                        __tmp35_first = false;
+                        string __tmp35Line = __tmp35Reader.ReadLine();
+                        __tmp35_last = __tmp35Reader.EndOfStream;
+                        if (__tmp35Line != null) __out.Append(__tmp35Line);
+                        if (!__tmp35_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp36Line = ", true));"; //704:112
+                if (__tmp36Line != null) __out.Append(__tmp36Line);
+                __out.AppendLine(false); //704:121
             }
             else if (MetaBuiltInTypes.Types.Contains(value)) //705:2
             {
-                string __tmp32Prefix = "((metadslx.core.ModelObject)"; //706:1
-                string __tmp33Suffix = ", true));"; //706:117
-                StringBuilder __tmp34 = new StringBuilder();
-                __tmp34.Append(name);
-                using(StreamReader __tmp34Reader = new StreamReader(this.__ToStream(__tmp34.ToString())))
+                string __tmp38Line = "((metadslx.core.ModelObject)"; //706:1
+                if (__tmp38Line != null) __out.Append(__tmp38Line);
+                StringBuilder __tmp39 = new StringBuilder();
+                __tmp39.Append(name);
+                using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
                 {
-                    bool __tmp34_first = true;
-                    while(__tmp34_first || !__tmp34Reader.EndOfStream)
+                    bool __tmp39_first = true;
+                    bool __tmp39_last = __tmp39Reader.EndOfStream;
+                    while(__tmp39_first || !__tmp39_last)
                     {
-                        __tmp34_first = false;
-                        string __tmp34Line = __tmp34Reader.ReadLine();
-                        if (__tmp34Line == null)
-                        {
-                            __tmp34Line = "";
-                        }
-                        __out.Append(__tmp32Prefix);
-                        __out.Append(__tmp34Line);
+                        __tmp39_first = false;
+                        string __tmp39Line = __tmp39Reader.ReadLine();
+                        __tmp39_last = __tmp39Reader.EndOfStream;
+                        if (__tmp39Line != null) __out.Append(__tmp39Line);
+                        if (!__tmp39_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp35Line = ").mLazyAdd("; //706:35
-                __out.Append(__tmp35Line);
-                StringBuilder __tmp36 = new StringBuilder();
-                __tmp36.Append(propDeclName);
-                using(StreamReader __tmp36Reader = new StreamReader(this.__ToStream(__tmp36.ToString())))
-                {
-                    bool __tmp36_first = true;
-                    while(__tmp36_first || !__tmp36Reader.EndOfStream)
-                    {
-                        __tmp36_first = false;
-                        string __tmp36Line = __tmp36Reader.ReadLine();
-                        if (__tmp36Line == null)
-                        {
-                            __tmp36Line = "";
-                        }
-                        __out.Append(__tmp36Line);
-                    }
-                }
-                string __tmp37Line = ", metadslx.core.Lazy.create(() -> "; //706:60
-                __out.Append(__tmp37Line);
-                StringBuilder __tmp38 = new StringBuilder();
-                __tmp38.Append(GenerateTypeOf(value));
-                using(StreamReader __tmp38Reader = new StreamReader(this.__ToStream(__tmp38.ToString())))
-                {
-                    bool __tmp38_first = true;
-                    while(__tmp38_first || !__tmp38Reader.EndOfStream)
-                    {
-                        __tmp38_first = false;
-                        string __tmp38Line = __tmp38Reader.ReadLine();
-                        if (__tmp38Line == null)
-                        {
-                            __tmp38Line = "";
-                        }
-                        __out.Append(__tmp38Line);
-                        __out.Append(__tmp33Suffix);
-                        __out.AppendLine(); //706:126
-                    }
-                }
-            }
-            else if (value is MetaPrimitiveType) //707:2
-            {
-                string __tmp39Prefix = "((metadslx.core.ModelObject)"; //708:1
-                string __tmp40Suffix = ", true));"; //708:117
+                string __tmp40Line = ").mLazyAdd("; //706:35
+                if (__tmp40Line != null) __out.Append(__tmp40Line);
                 StringBuilder __tmp41 = new StringBuilder();
-                __tmp41.Append(name);
+                __tmp41.Append(propDeclName);
                 using(StreamReader __tmp41Reader = new StreamReader(this.__ToStream(__tmp41.ToString())))
                 {
                     bool __tmp41_first = true;
-                    while(__tmp41_first || !__tmp41Reader.EndOfStream)
+                    bool __tmp41_last = __tmp41Reader.EndOfStream;
+                    while(__tmp41_first || !__tmp41_last)
                     {
                         __tmp41_first = false;
                         string __tmp41Line = __tmp41Reader.ReadLine();
-                        if (__tmp41Line == null)
-                        {
-                            __tmp41Line = "";
-                        }
-                        __out.Append(__tmp39Prefix);
-                        __out.Append(__tmp41Line);
+                        __tmp41_last = __tmp41Reader.EndOfStream;
+                        if (__tmp41Line != null) __out.Append(__tmp41Line);
+                        if (!__tmp41_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp42Line = ").mLazyAdd("; //708:35
-                __out.Append(__tmp42Line);
+                string __tmp42Line = ", metadslx.core.Lazy.create(() -> "; //706:60
+                if (__tmp42Line != null) __out.Append(__tmp42Line);
                 StringBuilder __tmp43 = new StringBuilder();
-                __tmp43.Append(propDeclName);
+                __tmp43.Append(GenerateTypeOf(value));
                 using(StreamReader __tmp43Reader = new StreamReader(this.__ToStream(__tmp43.ToString())))
                 {
                     bool __tmp43_first = true;
-                    while(__tmp43_first || !__tmp43Reader.EndOfStream)
+                    bool __tmp43_last = __tmp43Reader.EndOfStream;
+                    while(__tmp43_first || !__tmp43_last)
                     {
                         __tmp43_first = false;
                         string __tmp43Line = __tmp43Reader.ReadLine();
-                        if (__tmp43Line == null)
-                        {
-                            __tmp43Line = "";
-                        }
-                        __out.Append(__tmp43Line);
+                        __tmp43_last = __tmp43Reader.EndOfStream;
+                        if (__tmp43Line != null) __out.Append(__tmp43Line);
+                        if (!__tmp43_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp44Line = ", metadslx.core.Lazy.create(() -> "; //708:60
-                __out.Append(__tmp44Line);
-                StringBuilder __tmp45 = new StringBuilder();
-                __tmp45.Append(GenerateTypeOf(value));
-                using(StreamReader __tmp45Reader = new StreamReader(this.__ToStream(__tmp45.ToString())))
+                string __tmp44Line = ", true));"; //706:117
+                if (__tmp44Line != null) __out.Append(__tmp44Line);
+                __out.AppendLine(false); //706:126
+            }
+            else if (value is MetaPrimitiveType) //707:2
+            {
+                string __tmp46Line = "((metadslx.core.ModelObject)"; //708:1
+                if (__tmp46Line != null) __out.Append(__tmp46Line);
+                StringBuilder __tmp47 = new StringBuilder();
+                __tmp47.Append(name);
+                using(StreamReader __tmp47Reader = new StreamReader(this.__ToStream(__tmp47.ToString())))
                 {
-                    bool __tmp45_first = true;
-                    while(__tmp45_first || !__tmp45Reader.EndOfStream)
+                    bool __tmp47_first = true;
+                    bool __tmp47_last = __tmp47Reader.EndOfStream;
+                    while(__tmp47_first || !__tmp47_last)
                     {
-                        __tmp45_first = false;
-                        string __tmp45Line = __tmp45Reader.ReadLine();
-                        if (__tmp45Line == null)
-                        {
-                            __tmp45Line = "";
-                        }
-                        __out.Append(__tmp45Line);
-                        __out.Append(__tmp40Suffix);
-                        __out.AppendLine(); //708:126
+                        __tmp47_first = false;
+                        string __tmp47Line = __tmp47Reader.ReadLine();
+                        __tmp47_last = __tmp47Reader.EndOfStream;
+                        if (__tmp47Line != null) __out.Append(__tmp47Line);
+                        if (!__tmp47_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp48Line = ").mLazyAdd("; //708:35
+                if (__tmp48Line != null) __out.Append(__tmp48Line);
+                StringBuilder __tmp49 = new StringBuilder();
+                __tmp49.Append(propDeclName);
+                using(StreamReader __tmp49Reader = new StreamReader(this.__ToStream(__tmp49.ToString())))
+                {
+                    bool __tmp49_first = true;
+                    bool __tmp49_last = __tmp49Reader.EndOfStream;
+                    while(__tmp49_first || !__tmp49_last)
+                    {
+                        __tmp49_first = false;
+                        string __tmp49Line = __tmp49Reader.ReadLine();
+                        __tmp49_last = __tmp49Reader.EndOfStream;
+                        if (__tmp49Line != null) __out.Append(__tmp49Line);
+                        if (!__tmp49_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp50Line = ", metadslx.core.Lazy.create(() -> "; //708:60
+                if (__tmp50Line != null) __out.Append(__tmp50Line);
+                StringBuilder __tmp51 = new StringBuilder();
+                __tmp51.Append(GenerateTypeOf(value));
+                using(StreamReader __tmp51Reader = new StreamReader(this.__ToStream(__tmp51.ToString())))
+                {
+                    bool __tmp51_first = true;
+                    bool __tmp51_last = __tmp51Reader.EndOfStream;
+                    while(__tmp51_first || !__tmp51_last)
+                    {
+                        __tmp51_first = false;
+                        string __tmp51Line = __tmp51Reader.ReadLine();
+                        __tmp51_last = __tmp51Reader.EndOfStream;
+                        if (__tmp51Line != null) __out.Append(__tmp51Line);
+                        if (!__tmp51_last) __out.AppendLine(true);
+                    }
+                }
+                string __tmp52Line = ", true));"; //708:117
+                if (__tmp52Line != null) __out.Append(__tmp52Line);
+                __out.AppendLine(false); //708:126
             }
             else if (value is Enum) //709:2
             {
-                string __tmp46Prefix = "((metadslx.core.ModelObject)"; //710:1
-                string __tmp47Suffix = ", true));"; //710:119
-                StringBuilder __tmp48 = new StringBuilder();
-                __tmp48.Append(name);
-                using(StreamReader __tmp48Reader = new StreamReader(this.__ToStream(__tmp48.ToString())))
+                string __tmp54Line = "((metadslx.core.ModelObject)"; //710:1
+                if (__tmp54Line != null) __out.Append(__tmp54Line);
+                StringBuilder __tmp55 = new StringBuilder();
+                __tmp55.Append(name);
+                using(StreamReader __tmp55Reader = new StreamReader(this.__ToStream(__tmp55.ToString())))
                 {
-                    bool __tmp48_first = true;
-                    while(__tmp48_first || !__tmp48Reader.EndOfStream)
+                    bool __tmp55_first = true;
+                    bool __tmp55_last = __tmp55Reader.EndOfStream;
+                    while(__tmp55_first || !__tmp55_last)
                     {
-                        __tmp48_first = false;
-                        string __tmp48Line = __tmp48Reader.ReadLine();
-                        if (__tmp48Line == null)
-                        {
-                            __tmp48Line = "";
-                        }
-                        __out.Append(__tmp46Prefix);
-                        __out.Append(__tmp48Line);
+                        __tmp55_first = false;
+                        string __tmp55Line = __tmp55Reader.ReadLine();
+                        __tmp55_last = __tmp55Reader.EndOfStream;
+                        if (__tmp55Line != null) __out.Append(__tmp55Line);
+                        if (!__tmp55_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp49Line = ").mLazyAdd("; //710:35
-                __out.Append(__tmp49Line);
-                StringBuilder __tmp50 = new StringBuilder();
-                __tmp50.Append(propDeclName);
-                using(StreamReader __tmp50Reader = new StreamReader(this.__ToStream(__tmp50.ToString())))
+                string __tmp56Line = ").mLazyAdd("; //710:35
+                if (__tmp56Line != null) __out.Append(__tmp56Line);
+                StringBuilder __tmp57 = new StringBuilder();
+                __tmp57.Append(propDeclName);
+                using(StreamReader __tmp57Reader = new StreamReader(this.__ToStream(__tmp57.ToString())))
                 {
-                    bool __tmp50_first = true;
-                    while(__tmp50_first || !__tmp50Reader.EndOfStream)
+                    bool __tmp57_first = true;
+                    bool __tmp57_last = __tmp57Reader.EndOfStream;
+                    while(__tmp57_first || !__tmp57_last)
                     {
-                        __tmp50_first = false;
-                        string __tmp50Line = __tmp50Reader.ReadLine();
-                        if (__tmp50Line == null)
-                        {
-                            __tmp50Line = "";
-                        }
-                        __out.Append(__tmp50Line);
+                        __tmp57_first = false;
+                        string __tmp57Line = __tmp57Reader.ReadLine();
+                        __tmp57_last = __tmp57Reader.EndOfStream;
+                        if (__tmp57Line != null) __out.Append(__tmp57Line);
+                        if (!__tmp57_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp51Line = ", metadslx.core.Lazy.create(() -> "; //710:60
-                __out.Append(__tmp51Line);
-                StringBuilder __tmp52 = new StringBuilder();
-                __tmp52.Append(value.JavaEnumValueOf());
-                using(StreamReader __tmp52Reader = new StreamReader(this.__ToStream(__tmp52.ToString())))
+                string __tmp58Line = ", metadslx.core.Lazy.create(() -> "; //710:60
+                if (__tmp58Line != null) __out.Append(__tmp58Line);
+                StringBuilder __tmp59 = new StringBuilder();
+                __tmp59.Append(value.JavaEnumValueOf());
+                using(StreamReader __tmp59Reader = new StreamReader(this.__ToStream(__tmp59.ToString())))
                 {
-                    bool __tmp52_first = true;
-                    while(__tmp52_first || !__tmp52Reader.EndOfStream)
+                    bool __tmp59_first = true;
+                    bool __tmp59_last = __tmp59Reader.EndOfStream;
+                    while(__tmp59_first || !__tmp59_last)
                     {
-                        __tmp52_first = false;
-                        string __tmp52Line = __tmp52Reader.ReadLine();
-                        if (__tmp52Line == null)
-                        {
-                            __tmp52Line = "";
-                        }
-                        __out.Append(__tmp52Line);
-                        __out.Append(__tmp47Suffix);
-                        __out.AppendLine(); //710:128
+                        __tmp59_first = false;
+                        string __tmp59Line = __tmp59Reader.ReadLine();
+                        __tmp59_last = __tmp59Reader.EndOfStream;
+                        if (__tmp59Line != null) __out.Append(__tmp59Line);
+                        if (!__tmp59_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp60Line = ", true));"; //710:119
+                if (__tmp60Line != null) __out.Append(__tmp60Line);
+                __out.AppendLine(false); //710:128
             }
             else if (moValue != null) //711:2
             {
                 if (mobjToName.ContainsKey(moValue)) //712:3
                 {
-                    string __tmp53Prefix = "((metadslx.core.ModelObject)"; //713:1
-                    string __tmp54Suffix = ", true));"; //713:115
-                    StringBuilder __tmp55 = new StringBuilder();
-                    __tmp55.Append(name);
-                    using(StreamReader __tmp55Reader = new StreamReader(this.__ToStream(__tmp55.ToString())))
+                    string __tmp62Line = "((metadslx.core.ModelObject)"; //713:1
+                    if (__tmp62Line != null) __out.Append(__tmp62Line);
+                    StringBuilder __tmp63 = new StringBuilder();
+                    __tmp63.Append(name);
+                    using(StreamReader __tmp63Reader = new StreamReader(this.__ToStream(__tmp63.ToString())))
                     {
-                        bool __tmp55_first = true;
-                        while(__tmp55_first || !__tmp55Reader.EndOfStream)
+                        bool __tmp63_first = true;
+                        bool __tmp63_last = __tmp63Reader.EndOfStream;
+                        while(__tmp63_first || !__tmp63_last)
                         {
-                            __tmp55_first = false;
-                            string __tmp55Line = __tmp55Reader.ReadLine();
-                            if (__tmp55Line == null)
-                            {
-                                __tmp55Line = "";
-                            }
-                            __out.Append(__tmp53Prefix);
-                            __out.Append(__tmp55Line);
+                            __tmp63_first = false;
+                            string __tmp63Line = __tmp63Reader.ReadLine();
+                            __tmp63_last = __tmp63Reader.EndOfStream;
+                            if (__tmp63Line != null) __out.Append(__tmp63Line);
+                            if (!__tmp63_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp56Line = ").mLazyAdd("; //713:35
-                    __out.Append(__tmp56Line);
-                    StringBuilder __tmp57 = new StringBuilder();
-                    __tmp57.Append(propDeclName);
-                    using(StreamReader __tmp57Reader = new StreamReader(this.__ToStream(__tmp57.ToString())))
+                    string __tmp64Line = ").mLazyAdd("; //713:35
+                    if (__tmp64Line != null) __out.Append(__tmp64Line);
+                    StringBuilder __tmp65 = new StringBuilder();
+                    __tmp65.Append(propDeclName);
+                    using(StreamReader __tmp65Reader = new StreamReader(this.__ToStream(__tmp65.ToString())))
                     {
-                        bool __tmp57_first = true;
-                        while(__tmp57_first || !__tmp57Reader.EndOfStream)
+                        bool __tmp65_first = true;
+                        bool __tmp65_last = __tmp65Reader.EndOfStream;
+                        while(__tmp65_first || !__tmp65_last)
                         {
-                            __tmp57_first = false;
-                            string __tmp57Line = __tmp57Reader.ReadLine();
-                            if (__tmp57Line == null)
-                            {
-                                __tmp57Line = "";
-                            }
-                            __out.Append(__tmp57Line);
+                            __tmp65_first = false;
+                            string __tmp65Line = __tmp65Reader.ReadLine();
+                            __tmp65_last = __tmp65Reader.EndOfStream;
+                            if (__tmp65Line != null) __out.Append(__tmp65Line);
+                            if (!__tmp65_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp58Line = ", metadslx.core.Lazy.create(() -> "; //713:60
-                    __out.Append(__tmp58Line);
-                    StringBuilder __tmp59 = new StringBuilder();
-                    __tmp59.Append(mobjToName[moValue]);
-                    using(StreamReader __tmp59Reader = new StreamReader(this.__ToStream(__tmp59.ToString())))
+                    string __tmp66Line = ", metadslx.core.Lazy.create(() -> "; //713:60
+                    if (__tmp66Line != null) __out.Append(__tmp66Line);
+                    StringBuilder __tmp67 = new StringBuilder();
+                    __tmp67.Append(mobjToName[moValue]);
+                    using(StreamReader __tmp67Reader = new StreamReader(this.__ToStream(__tmp67.ToString())))
                     {
-                        bool __tmp59_first = true;
-                        while(__tmp59_first || !__tmp59Reader.EndOfStream)
+                        bool __tmp67_first = true;
+                        bool __tmp67_last = __tmp67Reader.EndOfStream;
+                        while(__tmp67_first || !__tmp67_last)
                         {
-                            __tmp59_first = false;
-                            string __tmp59Line = __tmp59Reader.ReadLine();
-                            if (__tmp59Line == null)
-                            {
-                                __tmp59Line = "";
-                            }
-                            __out.Append(__tmp59Line);
-                            __out.Append(__tmp54Suffix);
-                            __out.AppendLine(); //713:124
+                            __tmp67_first = false;
+                            string __tmp67Line = __tmp67Reader.ReadLine();
+                            __tmp67_last = __tmp67Reader.EndOfStream;
+                            if (__tmp67Line != null) __out.Append(__tmp67Line);
+                            if (!__tmp67_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp68Line = ", true));"; //713:115
+                    if (__tmp68Line != null) __out.Append(__tmp68Line);
+                    __out.AppendLine(false); //713:124
                 }
                 else //714:3
                 {
-                    string __tmp60Prefix = "// Omitted since not part of the model: "; //715:1
-                    string __tmp61Suffix = string.Empty; 
-                    StringBuilder __tmp62 = new StringBuilder();
-                    __tmp62.Append(name);
-                    using(StreamReader __tmp62Reader = new StreamReader(this.__ToStream(__tmp62.ToString())))
+                    string __tmp70Line = "// Omitted since not part of the model: "; //715:1
+                    if (__tmp70Line != null) __out.Append(__tmp70Line);
+                    StringBuilder __tmp71 = new StringBuilder();
+                    __tmp71.Append(name);
+                    using(StreamReader __tmp71Reader = new StreamReader(this.__ToStream(__tmp71.ToString())))
                     {
-                        bool __tmp62_first = true;
-                        while(__tmp62_first || !__tmp62Reader.EndOfStream)
+                        bool __tmp71_first = true;
+                        bool __tmp71_last = __tmp71Reader.EndOfStream;
+                        while(__tmp71_first || !__tmp71_last)
                         {
-                            __tmp62_first = false;
-                            string __tmp62Line = __tmp62Reader.ReadLine();
-                            if (__tmp62Line == null)
-                            {
-                                __tmp62Line = "";
-                            }
-                            __out.Append(__tmp60Prefix);
-                            __out.Append(__tmp62Line);
+                            __tmp71_first = false;
+                            string __tmp71Line = __tmp71Reader.ReadLine();
+                            __tmp71_last = __tmp71Reader.EndOfStream;
+                            if (__tmp71Line != null) __out.Append(__tmp71Line);
+                            if (!__tmp71_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp63Line = "."; //715:47
-                    __out.Append(__tmp63Line);
-                    StringBuilder __tmp64 = new StringBuilder();
-                    __tmp64.Append(propDeclName);
-                    using(StreamReader __tmp64Reader = new StreamReader(this.__ToStream(__tmp64.ToString())))
+                    string __tmp72Line = "."; //715:47
+                    if (__tmp72Line != null) __out.Append(__tmp72Line);
+                    StringBuilder __tmp73 = new StringBuilder();
+                    __tmp73.Append(propDeclName);
+                    using(StreamReader __tmp73Reader = new StreamReader(this.__ToStream(__tmp73.ToString())))
                     {
-                        bool __tmp64_first = true;
-                        while(__tmp64_first || !__tmp64Reader.EndOfStream)
+                        bool __tmp73_first = true;
+                        bool __tmp73_last = __tmp73Reader.EndOfStream;
+                        while(__tmp73_first || !__tmp73_last)
                         {
-                            __tmp64_first = false;
-                            string __tmp64Line = __tmp64Reader.ReadLine();
-                            if (__tmp64Line == null)
-                            {
-                                __tmp64Line = "";
-                            }
-                            __out.Append(__tmp64Line);
+                            __tmp73_first = false;
+                            string __tmp73Line = __tmp73Reader.ReadLine();
+                            __tmp73_last = __tmp73Reader.EndOfStream;
+                            if (__tmp73Line != null) __out.Append(__tmp73Line);
+                            if (!__tmp73_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp65Line = " = "; //715:62
-                    __out.Append(__tmp65Line);
-                    StringBuilder __tmp66 = new StringBuilder();
-                    __tmp66.Append(moValue);
-                    using(StreamReader __tmp66Reader = new StreamReader(this.__ToStream(__tmp66.ToString())))
+                    string __tmp74Line = " = "; //715:62
+                    if (__tmp74Line != null) __out.Append(__tmp74Line);
+                    StringBuilder __tmp75 = new StringBuilder();
+                    __tmp75.Append(moValue);
+                    using(StreamReader __tmp75Reader = new StreamReader(this.__ToStream(__tmp75.ToString())))
                     {
-                        bool __tmp66_first = true;
-                        while(__tmp66_first || !__tmp66Reader.EndOfStream)
+                        bool __tmp75_first = true;
+                        bool __tmp75_last = __tmp75Reader.EndOfStream;
+                        while(__tmp75_first || !__tmp75_last)
                         {
-                            __tmp66_first = false;
-                            string __tmp66Line = __tmp66Reader.ReadLine();
-                            if (__tmp66Line == null)
-                            {
-                                __tmp66Line = "";
-                            }
-                            __out.Append(__tmp66Line);
-                            __out.Append(__tmp61Suffix);
-                            __out.AppendLine(); //715:74
+                            __tmp75_first = false;
+                            string __tmp75Line = __tmp75Reader.ReadLine();
+                            __tmp75_last = __tmp75Reader.EndOfStream;
+                            if (__tmp75Line != null) __out.Append(__tmp75Line);
+                            if (!__tmp75_last) __out.AppendLine(true);
+                            __out.AppendLine(false); //715:74
                         }
                     }
                 }
@@ -6098,31 +6744,26 @@ namespace MetaDslx.Core //1:1
                         select new { cvalue = cvalue}
                         ).ToList(); //720:4
                     int __loop41_iteration = 0;
-                    foreach (var __tmp67 in __loop41_results)
+                    foreach (var __tmp76 in __loop41_results)
                     {
                         ++__loop41_iteration;
-                        var cvalue = __tmp67.cvalue;
+                        var cvalue = __tmp76.cvalue;
                         if (!mobj.ContainedBySingleOpposite(prop, (ModelObject)cvalue)) //721:5
                         {
-                            string __tmp68Prefix = string.Empty;
-                            string __tmp69Suffix = string.Empty;
-                            StringBuilder __tmp70 = new StringBuilder();
-                            __tmp70.Append(GenerateModelObjectPropertyValue(mobj, prop, cvalue, mobjToName));
-                            using(StreamReader __tmp70Reader = new StreamReader(this.__ToStream(__tmp70.ToString())))
+                            StringBuilder __tmp78 = new StringBuilder();
+                            __tmp78.Append(GenerateModelObjectPropertyValue(mobj, prop, cvalue, mobjToName));
+                            using(StreamReader __tmp78Reader = new StreamReader(this.__ToStream(__tmp78.ToString())))
                             {
-                                bool __tmp70_first = true;
-                                while(__tmp70_first || !__tmp70Reader.EndOfStream)
+                                bool __tmp78_first = true;
+                                bool __tmp78_last = __tmp78Reader.EndOfStream;
+                                while(__tmp78_first || !__tmp78_last)
                                 {
-                                    __tmp70_first = false;
-                                    string __tmp70Line = __tmp70Reader.ReadLine();
-                                    if (__tmp70Line == null)
-                                    {
-                                        __tmp70Line = "";
-                                    }
-                                    __out.Append(__tmp68Prefix);
-                                    __out.Append(__tmp70Line);
-                                    __out.Append(__tmp69Suffix);
-                                    __out.AppendLine(); //722:67
+                                    __tmp78_first = false;
+                                    string __tmp78Line = __tmp78Reader.ReadLine();
+                                    __tmp78_last = __tmp78Reader.EndOfStream;
+                                    if (__tmp78Line != null) __out.Append(__tmp78Line);
+                                    if (!__tmp78_last) __out.AppendLine(true);
+                                    __out.AppendLine(false); //722:67
                                 }
                             }
                         }
@@ -6130,61 +6771,56 @@ namespace MetaDslx.Core //1:1
                 }
                 else //725:3
                 {
-                    string __tmp71Prefix = "// Invalid property value type: "; //726:1
-                    string __tmp72Suffix = string.Empty; 
-                    StringBuilder __tmp73 = new StringBuilder();
-                    __tmp73.Append(name);
-                    using(StreamReader __tmp73Reader = new StreamReader(this.__ToStream(__tmp73.ToString())))
+                    string __tmp80Line = "// Invalid property value type: "; //726:1
+                    if (__tmp80Line != null) __out.Append(__tmp80Line);
+                    StringBuilder __tmp81 = new StringBuilder();
+                    __tmp81.Append(name);
+                    using(StreamReader __tmp81Reader = new StreamReader(this.__ToStream(__tmp81.ToString())))
                     {
-                        bool __tmp73_first = true;
-                        while(__tmp73_first || !__tmp73Reader.EndOfStream)
+                        bool __tmp81_first = true;
+                        bool __tmp81_last = __tmp81Reader.EndOfStream;
+                        while(__tmp81_first || !__tmp81_last)
                         {
-                            __tmp73_first = false;
-                            string __tmp73Line = __tmp73Reader.ReadLine();
-                            if (__tmp73Line == null)
-                            {
-                                __tmp73Line = "";
-                            }
-                            __out.Append(__tmp71Prefix);
-                            __out.Append(__tmp73Line);
+                            __tmp81_first = false;
+                            string __tmp81Line = __tmp81Reader.ReadLine();
+                            __tmp81_last = __tmp81Reader.EndOfStream;
+                            if (__tmp81Line != null) __out.Append(__tmp81Line);
+                            if (!__tmp81_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp74Line = "."; //726:39
-                    __out.Append(__tmp74Line);
-                    StringBuilder __tmp75 = new StringBuilder();
-                    __tmp75.Append(propDeclName);
-                    using(StreamReader __tmp75Reader = new StreamReader(this.__ToStream(__tmp75.ToString())))
+                    string __tmp82Line = "."; //726:39
+                    if (__tmp82Line != null) __out.Append(__tmp82Line);
+                    StringBuilder __tmp83 = new StringBuilder();
+                    __tmp83.Append(propDeclName);
+                    using(StreamReader __tmp83Reader = new StreamReader(this.__ToStream(__tmp83.ToString())))
                     {
-                        bool __tmp75_first = true;
-                        while(__tmp75_first || !__tmp75Reader.EndOfStream)
+                        bool __tmp83_first = true;
+                        bool __tmp83_last = __tmp83Reader.EndOfStream;
+                        while(__tmp83_first || !__tmp83_last)
                         {
-                            __tmp75_first = false;
-                            string __tmp75Line = __tmp75Reader.ReadLine();
-                            if (__tmp75Line == null)
-                            {
-                                __tmp75Line = "";
-                            }
-                            __out.Append(__tmp75Line);
+                            __tmp83_first = false;
+                            string __tmp83Line = __tmp83Reader.ReadLine();
+                            __tmp83_last = __tmp83Reader.EndOfStream;
+                            if (__tmp83Line != null) __out.Append(__tmp83Line);
+                            if (!__tmp83_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp76Line = " = "; //726:54
-                    __out.Append(__tmp76Line);
-                    StringBuilder __tmp77 = new StringBuilder();
-                    __tmp77.Append(value.GetType());
-                    using(StreamReader __tmp77Reader = new StreamReader(this.__ToStream(__tmp77.ToString())))
+                    string __tmp84Line = " = "; //726:54
+                    if (__tmp84Line != null) __out.Append(__tmp84Line);
+                    StringBuilder __tmp85 = new StringBuilder();
+                    __tmp85.Append(value.GetType());
+                    using(StreamReader __tmp85Reader = new StreamReader(this.__ToStream(__tmp85.ToString())))
                     {
-                        bool __tmp77_first = true;
-                        while(__tmp77_first || !__tmp77Reader.EndOfStream)
+                        bool __tmp85_first = true;
+                        bool __tmp85_last = __tmp85Reader.EndOfStream;
+                        while(__tmp85_first || !__tmp85_last)
                         {
-                            __tmp77_first = false;
-                            string __tmp77Line = __tmp77Reader.ReadLine();
-                            if (__tmp77Line == null)
-                            {
-                                __tmp77Line = "";
-                            }
-                            __out.Append(__tmp77Line);
-                            __out.Append(__tmp72Suffix);
-                            __out.AppendLine(); //726:74
+                            __tmp85_first = false;
+                            string __tmp85Line = __tmp85Reader.ReadLine();
+                            __tmp85_last = __tmp85Reader.EndOfStream;
+                            if (__tmp85Line != null) __out.Append(__tmp85Line);
+                            if (!__tmp85_last) __out.AppendLine(true);
+                            __out.AppendLine(false); //726:74
                         }
                     }
                 }
@@ -6195,255 +6831,244 @@ namespace MetaDslx.Core //1:1
         public string GenerateImplementationProvider(MetaModel model) //732:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "package "; //733:1
-            string __tmp2Suffix = ";"; //733:37
+            string __tmp2Line = "package "; //733:1
+            if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(model.Namespace.JavaName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //733:38
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //734:1
-            string __tmp4Prefix = "final class "; //735:1
-            string __tmp5Suffix = "ImplementationProvider {"; //735:25
-            StringBuilder __tmp6 = new StringBuilder();
-            __tmp6.Append(model.Name);
-            using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
+            string __tmp4Line = ";"; //733:37
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
+            __out.AppendLine(false); //733:38
+            __out.AppendLine(true); //734:1
+            string __tmp6Line = "final class "; //735:1
+            if (__tmp6Line != null) __out.Append(__tmp6Line);
+            StringBuilder __tmp7 = new StringBuilder();
+            __tmp7.Append(model.Name);
+            using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
             {
-                bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                bool __tmp7_first = true;
+                bool __tmp7_last = __tmp7Reader.EndOfStream;
+                while(__tmp7_first || !__tmp7_last)
                 {
-                    __tmp6_first = false;
-                    string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp4Prefix);
-                    __out.Append(__tmp6Line);
-                    __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //735:49
+                    __tmp7_first = false;
+                    string __tmp7Line = __tmp7Reader.ReadLine();
+                    __tmp7_last = __tmp7Reader.EndOfStream;
+                    if (__tmp7Line != null) __out.Append(__tmp7Line);
+                    if (!__tmp7_last) __out.AppendLine(true);
                 }
             }
-            string __tmp7Prefix = "    // If there is a compile error at this line, create a new class called "; //736:1
-            string __tmp8Suffix = "Implementation"; //736:88
-            StringBuilder __tmp9 = new StringBuilder();
-            __tmp9.Append(model.Name);
-            using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
+            string __tmp8Line = "ImplementationProvider {"; //735:25
+            if (__tmp8Line != null) __out.Append(__tmp8Line);
+            __out.AppendLine(false); //735:49
+            string __tmp10Line = "    // If there is a compile error at this line, create a new class called "; //736:1
+            if (__tmp10Line != null) __out.Append(__tmp10Line);
+            StringBuilder __tmp11 = new StringBuilder();
+            __tmp11.Append(model.Name);
+            using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
             {
-                bool __tmp9_first = true;
-                while(__tmp9_first || !__tmp9Reader.EndOfStream)
+                bool __tmp11_first = true;
+                bool __tmp11_last = __tmp11Reader.EndOfStream;
+                while(__tmp11_first || !__tmp11_last)
                 {
-                    __tmp9_first = false;
-                    string __tmp9Line = __tmp9Reader.ReadLine();
-                    if (__tmp9Line == null)
-                    {
-                        __tmp9Line = "";
-                    }
-                    __out.Append(__tmp7Prefix);
-                    __out.Append(__tmp9Line);
-                    __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //736:102
+                    __tmp11_first = false;
+                    string __tmp11Line = __tmp11Reader.ReadLine();
+                    __tmp11_last = __tmp11Reader.EndOfStream;
+                    if (__tmp11Line != null) __out.Append(__tmp11Line);
+                    if (!__tmp11_last) __out.AppendLine(true);
                 }
             }
-            string __tmp10Prefix = "	// which is a subclass of "; //737:1
-            string __tmp11Suffix = "ImplementationBase:"; //737:40
-            StringBuilder __tmp12 = new StringBuilder();
-            __tmp12.Append(model.Name);
-            using(StreamReader __tmp12Reader = new StreamReader(this.__ToStream(__tmp12.ToString())))
-            {
-                bool __tmp12_first = true;
-                while(__tmp12_first || !__tmp12Reader.EndOfStream)
-                {
-                    __tmp12_first = false;
-                    string __tmp12Line = __tmp12Reader.ReadLine();
-                    if (__tmp12Line == null)
-                    {
-                        __tmp12Line = "";
-                    }
-                    __out.Append(__tmp10Prefix);
-                    __out.Append(__tmp12Line);
-                    __out.Append(__tmp11Suffix);
-                    __out.AppendLine(); //737:59
-                }
-            }
-            string __tmp13Prefix = "    private static "; //738:1
-            string __tmp14Suffix = "Implementation();"; //738:80
+            string __tmp12Line = "Implementation"; //736:88
+            if (__tmp12Line != null) __out.Append(__tmp12Line);
+            __out.AppendLine(false); //736:102
+            string __tmp14Line = "	// which is a subclass of "; //737:1
+            if (__tmp14Line != null) __out.Append(__tmp14Line);
             StringBuilder __tmp15 = new StringBuilder();
             __tmp15.Append(model.Name);
             using(StreamReader __tmp15Reader = new StreamReader(this.__ToStream(__tmp15.ToString())))
             {
                 bool __tmp15_first = true;
-                while(__tmp15_first || !__tmp15Reader.EndOfStream)
+                bool __tmp15_last = __tmp15Reader.EndOfStream;
+                while(__tmp15_first || !__tmp15_last)
                 {
                     __tmp15_first = false;
                     string __tmp15Line = __tmp15Reader.ReadLine();
-                    if (__tmp15Line == null)
-                    {
-                        __tmp15Line = "";
-                    }
-                    __out.Append(__tmp13Prefix);
-                    __out.Append(__tmp15Line);
+                    __tmp15_last = __tmp15Reader.EndOfStream;
+                    if (__tmp15Line != null) __out.Append(__tmp15Line);
+                    if (!__tmp15_last) __out.AppendLine(true);
                 }
             }
-            string __tmp16Line = "Implementation implementation = new "; //738:32
-            __out.Append(__tmp16Line);
-            StringBuilder __tmp17 = new StringBuilder();
-            __tmp17.Append(model.Name);
-            using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
+            string __tmp16Line = "ImplementationBase:"; //737:40
+            if (__tmp16Line != null) __out.Append(__tmp16Line);
+            __out.AppendLine(false); //737:59
+            string __tmp18Line = "    private static "; //738:1
+            if (__tmp18Line != null) __out.Append(__tmp18Line);
+            StringBuilder __tmp19 = new StringBuilder();
+            __tmp19.Append(model.Name);
+            using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
             {
-                bool __tmp17_first = true;
-                while(__tmp17_first || !__tmp17Reader.EndOfStream)
+                bool __tmp19_first = true;
+                bool __tmp19_last = __tmp19Reader.EndOfStream;
+                while(__tmp19_first || !__tmp19_last)
                 {
-                    __tmp17_first = false;
-                    string __tmp17Line = __tmp17Reader.ReadLine();
-                    if (__tmp17Line == null)
-                    {
-                        __tmp17Line = "";
-                    }
-                    __out.Append(__tmp17Line);
-                    __out.Append(__tmp14Suffix);
-                    __out.AppendLine(); //738:97
+                    __tmp19_first = false;
+                    string __tmp19Line = __tmp19Reader.ReadLine();
+                    __tmp19_last = __tmp19Reader.EndOfStream;
+                    if (__tmp19Line != null) __out.Append(__tmp19Line);
+                    if (!__tmp19_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //739:1
-            string __tmp18Prefix = "    public static "; //740:1
-            string __tmp19Suffix = "Implementation implementation() {"; //740:31
-            StringBuilder __tmp20 = new StringBuilder();
-            __tmp20.Append(model.Name);
-            using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
+            string __tmp20Line = "Implementation implementation = new "; //738:32
+            if (__tmp20Line != null) __out.Append(__tmp20Line);
+            StringBuilder __tmp21 = new StringBuilder();
+            __tmp21.Append(model.Name);
+            using(StreamReader __tmp21Reader = new StreamReader(this.__ToStream(__tmp21.ToString())))
             {
-                bool __tmp20_first = true;
-                while(__tmp20_first || !__tmp20Reader.EndOfStream)
+                bool __tmp21_first = true;
+                bool __tmp21_last = __tmp21Reader.EndOfStream;
+                while(__tmp21_first || !__tmp21_last)
                 {
-                    __tmp20_first = false;
-                    string __tmp20Line = __tmp20Reader.ReadLine();
-                    if (__tmp20Line == null)
-                    {
-                        __tmp20Line = "";
-                    }
-                    __out.Append(__tmp18Prefix);
-                    __out.Append(__tmp20Line);
-                    __out.Append(__tmp19Suffix);
-                    __out.AppendLine(); //740:64
+                    __tmp21_first = false;
+                    string __tmp21Line = __tmp21Reader.ReadLine();
+                    __tmp21_last = __tmp21Reader.EndOfStream;
+                    if (__tmp21Line != null) __out.Append(__tmp21Line);
+                    if (!__tmp21_last) __out.AppendLine(true);
                 }
             }
-            string __tmp21Prefix = "        return "; //741:1
-            string __tmp22Suffix = "ImplementationProvider.implementation;"; //741:28
-            StringBuilder __tmp23 = new StringBuilder();
-            __tmp23.Append(model.Name);
-            using(StreamReader __tmp23Reader = new StreamReader(this.__ToStream(__tmp23.ToString())))
+            string __tmp22Line = "Implementation();"; //738:80
+            if (__tmp22Line != null) __out.Append(__tmp22Line);
+            __out.AppendLine(false); //738:97
+            __out.AppendLine(true); //739:1
+            string __tmp24Line = "    public static "; //740:1
+            if (__tmp24Line != null) __out.Append(__tmp24Line);
+            StringBuilder __tmp25 = new StringBuilder();
+            __tmp25.Append(model.Name);
+            using(StreamReader __tmp25Reader = new StreamReader(this.__ToStream(__tmp25.ToString())))
             {
-                bool __tmp23_first = true;
-                while(__tmp23_first || !__tmp23Reader.EndOfStream)
+                bool __tmp25_first = true;
+                bool __tmp25_last = __tmp25Reader.EndOfStream;
+                while(__tmp25_first || !__tmp25_last)
                 {
-                    __tmp23_first = false;
-                    string __tmp23Line = __tmp23Reader.ReadLine();
-                    if (__tmp23Line == null)
-                    {
-                        __tmp23Line = "";
-                    }
-                    __out.Append(__tmp21Prefix);
-                    __out.Append(__tmp23Line);
-                    __out.Append(__tmp22Suffix);
-                    __out.AppendLine(); //741:66
+                    __tmp25_first = false;
+                    string __tmp25Line = __tmp25Reader.ReadLine();
+                    __tmp25_last = __tmp25Reader.EndOfStream;
+                    if (__tmp25Line != null) __out.Append(__tmp25Line);
+                    if (!__tmp25_last) __out.AppendLine(true);
                 }
             }
+            string __tmp26Line = "Implementation implementation() {"; //740:31
+            if (__tmp26Line != null) __out.Append(__tmp26Line);
+            __out.AppendLine(false); //740:64
+            string __tmp28Line = "        return "; //741:1
+            if (__tmp28Line != null) __out.Append(__tmp28Line);
+            StringBuilder __tmp29 = new StringBuilder();
+            __tmp29.Append(model.Name);
+            using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
+            {
+                bool __tmp29_first = true;
+                bool __tmp29_last = __tmp29Reader.EndOfStream;
+                while(__tmp29_first || !__tmp29_last)
+                {
+                    __tmp29_first = false;
+                    string __tmp29Line = __tmp29Reader.ReadLine();
+                    __tmp29_last = __tmp29Reader.EndOfStream;
+                    if (__tmp29Line != null) __out.Append(__tmp29Line);
+                    if (!__tmp29_last) __out.AppendLine(true);
+                }
+            }
+            string __tmp30Line = "ImplementationProvider.implementation;"; //741:28
+            if (__tmp30Line != null) __out.Append(__tmp30Line);
+            __out.AppendLine(false); //741:66
             __out.Append("    }"); //742:1
-            __out.AppendLine(); //742:6
+            __out.AppendLine(false); //742:6
             __out.Append("}"); //743:1
-            __out.AppendLine(); //743:2
+            __out.AppendLine(false); //743:2
             return __out.ToString();
         }
 
         public string GenerateImplementationBase(MetaModel model) //746:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "package "; //747:1
-            string __tmp2Suffix = ";"; //747:37
+            string __tmp2Line = "package "; //747:1
+            if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(model.Namespace.JavaName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //747:38
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //748:1
+            string __tmp4Line = ";"; //747:37
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
+            __out.AppendLine(false); //747:38
+            __out.AppendLine(true); //748:1
             __out.Append("/**"); //749:1
-            __out.AppendLine(); //749:4
+            __out.AppendLine(false); //749:4
             __out.Append(" * Base class for implementing the behavior of the model elements."); //750:1
-            __out.AppendLine(); //750:67
-            string __tmp4Prefix = " * This class has to be be overriden in "; //751:1
-            string __tmp5Suffix = "Implementation to provide custom"; //751:53
-            StringBuilder __tmp6 = new StringBuilder();
-            __tmp6.Append(model.Name);
-            using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
+            __out.AppendLine(false); //750:67
+            string __tmp6Line = " * This class has to be be overriden in "; //751:1
+            if (__tmp6Line != null) __out.Append(__tmp6Line);
+            StringBuilder __tmp7 = new StringBuilder();
+            __tmp7.Append(model.Name);
+            using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
             {
-                bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                bool __tmp7_first = true;
+                bool __tmp7_last = __tmp7Reader.EndOfStream;
+                while(__tmp7_first || !__tmp7_last)
                 {
-                    __tmp6_first = false;
-                    string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp4Prefix);
-                    __out.Append(__tmp6Line);
-                    __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //751:85
+                    __tmp7_first = false;
+                    string __tmp7Line = __tmp7Reader.ReadLine();
+                    __tmp7_last = __tmp7Reader.EndOfStream;
+                    if (__tmp7Line != null) __out.Append(__tmp7Line);
+                    if (!__tmp7_last) __out.AppendLine(true);
                 }
             }
+            string __tmp8Line = "Implementation to provide custom"; //751:53
+            if (__tmp8Line != null) __out.Append(__tmp8Line);
+            __out.AppendLine(false); //751:85
             __out.Append(" * implementation for the constructors, operations and property values."); //752:1
-            __out.AppendLine(); //752:72
+            __out.AppendLine(false); //752:72
             __out.Append(" */"); //753:1
-            __out.AppendLine(); //753:4
-            string __tmp7Prefix = "abstract class "; //754:1
-            string __tmp8Suffix = "ImplementationBase {"; //754:28
-            StringBuilder __tmp9 = new StringBuilder();
-            __tmp9.Append(model.Name);
-            using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
+            __out.AppendLine(false); //753:4
+            string __tmp10Line = "abstract class "; //754:1
+            if (__tmp10Line != null) __out.Append(__tmp10Line);
+            StringBuilder __tmp11 = new StringBuilder();
+            __tmp11.Append(model.Name);
+            using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
             {
-                bool __tmp9_first = true;
-                while(__tmp9_first || !__tmp9Reader.EndOfStream)
+                bool __tmp11_first = true;
+                bool __tmp11_last = __tmp11Reader.EndOfStream;
+                while(__tmp11_first || !__tmp11_last)
                 {
-                    __tmp9_first = false;
-                    string __tmp9Line = __tmp9Reader.ReadLine();
-                    if (__tmp9Line == null)
-                    {
-                        __tmp9Line = "";
-                    }
-                    __out.Append(__tmp7Prefix);
-                    __out.Append(__tmp9Line);
-                    __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //754:48
+                    __tmp11_first = false;
+                    string __tmp11Line = __tmp11Reader.ReadLine();
+                    __tmp11_last = __tmp11Reader.EndOfStream;
+                    if (__tmp11Line != null) __out.Append(__tmp11Line);
+                    if (!__tmp11_last) __out.AppendLine(true);
                 }
             }
+            string __tmp12Line = "ImplementationBase {"; //754:28
+            if (__tmp12Line != null) __out.Append(__tmp12Line);
+            __out.AppendLine(false); //754:48
             var __loop42_results = 
                 (from __loop42_var1 in __Enumerate((model).GetEnumerator()) //755:8
                 from Namespace in __Enumerate((__loop42_var1.Namespace).GetEnumerator()) //755:15
@@ -6452,81 +7077,74 @@ namespace MetaDslx.Core //1:1
                 select new { __loop42_var1 = __loop42_var1, Namespace = Namespace, Declarations = Declarations, cls = cls}
                 ).ToList(); //755:3
             int __loop42_iteration = 0;
-            foreach (var __tmp10 in __loop42_results)
+            foreach (var __tmp13 in __loop42_results)
             {
                 ++__loop42_iteration;
-                var __loop42_var1 = __tmp10.__loop42_var1;
-                var Namespace = __tmp10.Namespace;
-                var Declarations = __tmp10.Declarations;
-                var cls = __tmp10.cls;
+                var __loop42_var1 = __tmp13.__loop42_var1;
+                var Namespace = __tmp13.Namespace;
+                var Declarations = __tmp13.Declarations;
+                var cls = __tmp13.cls;
                 __out.Append("    /**"); //756:1
-                __out.AppendLine(); //756:8
-                string __tmp11Prefix = "	 * Implements the constructor: "; //757:1
-                string __tmp12Suffix = "()"; //757:49
-                StringBuilder __tmp13 = new StringBuilder();
-                __tmp13.Append(cls.JavaName());
-                using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
+                __out.AppendLine(false); //756:8
+                string __tmp15Line = "	 * Implements the constructor: "; //757:1
+                if (__tmp15Line != null) __out.Append(__tmp15Line);
+                StringBuilder __tmp16 = new StringBuilder();
+                __tmp16.Append(cls.JavaName());
+                using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
                 {
-                    bool __tmp13_first = true;
-                    while(__tmp13_first || !__tmp13Reader.EndOfStream)
+                    bool __tmp16_first = true;
+                    bool __tmp16_last = __tmp16Reader.EndOfStream;
+                    while(__tmp16_first || !__tmp16_last)
                     {
-                        __tmp13_first = false;
-                        string __tmp13Line = __tmp13Reader.ReadLine();
-                        if (__tmp13Line == null)
-                        {
-                            __tmp13Line = "";
-                        }
-                        __out.Append(__tmp11Prefix);
-                        __out.Append(__tmp13Line);
-                        __out.Append(__tmp12Suffix);
-                        __out.AppendLine(); //757:51
+                        __tmp16_first = false;
+                        string __tmp16Line = __tmp16Reader.ReadLine();
+                        __tmp16_last = __tmp16Reader.EndOfStream;
+                        if (__tmp16Line != null) __out.Append(__tmp16Line);
+                        if (!__tmp16_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp17Line = "()"; //757:49
+                if (__tmp17Line != null) __out.Append(__tmp17Line);
+                __out.AppendLine(false); //757:51
                 if ((from __loop43_var1 in __Enumerate((cls).GetEnumerator()) //758:15
                 from sup in __Enumerate((__loop43_var1.SuperClasses).GetEnumerator()) //758:20
                 select new { __loop43_var1 = __loop43_var1, sup = sup}
                 ).GetEnumerator().MoveNext()) //758:3
                 {
-                    string __tmp14Prefix = "	 * Direct superclasses: "; //759:1
-                    string __tmp15Suffix = string.Empty; 
-                    StringBuilder __tmp16 = new StringBuilder();
-                    __tmp16.Append(GetSuperClasses(cls));
-                    using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
+                    string __tmp19Line = "	 * Direct superclasses: "; //759:1
+                    if (__tmp19Line != null) __out.Append(__tmp19Line);
+                    StringBuilder __tmp20 = new StringBuilder();
+                    __tmp20.Append(GetSuperClasses(cls));
+                    using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
                     {
-                        bool __tmp16_first = true;
-                        while(__tmp16_first || !__tmp16Reader.EndOfStream)
+                        bool __tmp20_first = true;
+                        bool __tmp20_last = __tmp20Reader.EndOfStream;
+                        while(__tmp20_first || !__tmp20_last)
                         {
-                            __tmp16_first = false;
-                            string __tmp16Line = __tmp16Reader.ReadLine();
-                            if (__tmp16Line == null)
-                            {
-                                __tmp16Line = "";
-                            }
-                            __out.Append(__tmp14Prefix);
-                            __out.Append(__tmp16Line);
-                            __out.Append(__tmp15Suffix);
-                            __out.AppendLine(); //759:48
+                            __tmp20_first = false;
+                            string __tmp20Line = __tmp20Reader.ReadLine();
+                            __tmp20_last = __tmp20Reader.EndOfStream;
+                            if (__tmp20Line != null) __out.Append(__tmp20Line);
+                            if (!__tmp20_last) __out.AppendLine(true);
+                            __out.AppendLine(false); //759:48
                         }
                     }
-                    string __tmp17Prefix = "	 * All superclasses: "; //760:1
-                    string __tmp18Suffix = string.Empty; 
-                    StringBuilder __tmp19 = new StringBuilder();
-                    __tmp19.Append(GetAllSuperClasses(cls));
-                    using(StreamReader __tmp19Reader = new StreamReader(this.__ToStream(__tmp19.ToString())))
+                    string __tmp22Line = "	 * All superclasses: "; //760:1
+                    if (__tmp22Line != null) __out.Append(__tmp22Line);
+                    StringBuilder __tmp23 = new StringBuilder();
+                    __tmp23.Append(GetAllSuperClasses(cls));
+                    using(StreamReader __tmp23Reader = new StreamReader(this.__ToStream(__tmp23.ToString())))
                     {
-                        bool __tmp19_first = true;
-                        while(__tmp19_first || !__tmp19Reader.EndOfStream)
+                        bool __tmp23_first = true;
+                        bool __tmp23_last = __tmp23Reader.EndOfStream;
+                        while(__tmp23_first || !__tmp23_last)
                         {
-                            __tmp19_first = false;
-                            string __tmp19Line = __tmp19Reader.ReadLine();
-                            if (__tmp19Line == null)
-                            {
-                                __tmp19Line = "";
-                            }
-                            __out.Append(__tmp17Prefix);
-                            __out.Append(__tmp19Line);
-                            __out.Append(__tmp18Suffix);
-                            __out.AppendLine(); //760:48
+                            __tmp23_first = false;
+                            string __tmp23Line = __tmp23Reader.ReadLine();
+                            __tmp23_last = __tmp23Reader.EndOfStream;
+                            if (__tmp23Line != null) __out.Append(__tmp23Line);
+                            if (!__tmp23_last) __out.AppendLine(true);
+                            __out.AppendLine(false); //760:48
                         }
                     }
                 }
@@ -6537,7 +7155,7 @@ namespace MetaDslx.Core //1:1
                 ).GetEnumerator().MoveNext()) //762:3
                 {
                     __out.Append("     * Initializes the following readonly properties:"); //763:1
-                    __out.AppendLine(); //763:54
+                    __out.AppendLine(false); //763:54
                 }
                 var __loop45_results = 
                     (from __loop45_var1 in __Enumerate((cls).GetEnumerator()) //765:11
@@ -6545,395 +7163,372 @@ namespace MetaDslx.Core //1:1
                     select new { __loop45_var1 = __loop45_var1, prop = prop}
                     ).ToList(); //765:6
                 int __loop45_iteration = 0;
-                foreach (var __tmp20 in __loop45_results)
+                foreach (var __tmp24 in __loop45_results)
                 {
                     ++__loop45_iteration;
-                    var __loop45_var1 = __tmp20.__loop45_var1;
-                    var prop = __tmp20.prop;
+                    var __loop45_var1 = __tmp24.__loop45_var1;
+                    var prop = __tmp24.prop;
                     if (prop.Kind == MetaPropertyKind.Readonly) //766:3
                     {
-                        string __tmp21Prefix = "     *    "; //767:1
-                        string __tmp22Suffix = string.Empty; 
-                        StringBuilder __tmp23 = new StringBuilder();
-                        __tmp23.Append(prop.Class.Name);
-                        using(StreamReader __tmp23Reader = new StreamReader(this.__ToStream(__tmp23.ToString())))
+                        string __tmp26Line = "     *    "; //767:1
+                        if (__tmp26Line != null) __out.Append(__tmp26Line);
+                        StringBuilder __tmp27 = new StringBuilder();
+                        __tmp27.Append(prop.Class.Name);
+                        using(StreamReader __tmp27Reader = new StreamReader(this.__ToStream(__tmp27.ToString())))
                         {
-                            bool __tmp23_first = true;
-                            while(__tmp23_first || !__tmp23Reader.EndOfStream)
+                            bool __tmp27_first = true;
+                            bool __tmp27_last = __tmp27Reader.EndOfStream;
+                            while(__tmp27_first || !__tmp27_last)
                             {
-                                __tmp23_first = false;
-                                string __tmp23Line = __tmp23Reader.ReadLine();
-                                if (__tmp23Line == null)
-                                {
-                                    __tmp23Line = "";
-                                }
-                                __out.Append(__tmp21Prefix);
-                                __out.Append(__tmp23Line);
+                                __tmp27_first = false;
+                                string __tmp27Line = __tmp27Reader.ReadLine();
+                                __tmp27_last = __tmp27Reader.EndOfStream;
+                                if (__tmp27Line != null) __out.Append(__tmp27Line);
+                                if (!__tmp27_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp24Line = "."; //767:28
-                        __out.Append(__tmp24Line);
-                        StringBuilder __tmp25 = new StringBuilder();
-                        __tmp25.Append(prop.Name);
-                        using(StreamReader __tmp25Reader = new StreamReader(this.__ToStream(__tmp25.ToString())))
+                        string __tmp28Line = "."; //767:28
+                        if (__tmp28Line != null) __out.Append(__tmp28Line);
+                        StringBuilder __tmp29 = new StringBuilder();
+                        __tmp29.Append(prop.Name);
+                        using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
                         {
-                            bool __tmp25_first = true;
-                            while(__tmp25_first || !__tmp25Reader.EndOfStream)
+                            bool __tmp29_first = true;
+                            bool __tmp29_last = __tmp29Reader.EndOfStream;
+                            while(__tmp29_first || !__tmp29_last)
                             {
-                                __tmp25_first = false;
-                                string __tmp25Line = __tmp25Reader.ReadLine();
-                                if (__tmp25Line == null)
-                                {
-                                    __tmp25Line = "";
-                                }
-                                __out.Append(__tmp25Line);
-                                __out.Append(__tmp22Suffix);
-                                __out.AppendLine(); //767:40
+                                __tmp29_first = false;
+                                string __tmp29Line = __tmp29Reader.ReadLine();
+                                __tmp29_last = __tmp29Reader.EndOfStream;
+                                if (__tmp29Line != null) __out.Append(__tmp29Line);
+                                if (!__tmp29_last) __out.AppendLine(true);
+                                __out.AppendLine(false); //767:40
                             }
                         }
                     }
                 }
                 __out.Append("    */"); //770:1
-                __out.AppendLine(); //770:7
-                string __tmp26Prefix = "    public void "; //771:1
-                string __tmp27Suffix = " _this) {"; //771:50
-                StringBuilder __tmp28 = new StringBuilder();
-                __tmp28.Append(cls.JavaName());
-                using(StreamReader __tmp28Reader = new StreamReader(this.__ToStream(__tmp28.ToString())))
+                __out.AppendLine(false); //770:7
+                string __tmp31Line = "    public void "; //771:1
+                if (__tmp31Line != null) __out.Append(__tmp31Line);
+                StringBuilder __tmp32 = new StringBuilder();
+                __tmp32.Append(cls.JavaName());
+                using(StreamReader __tmp32Reader = new StreamReader(this.__ToStream(__tmp32.ToString())))
                 {
-                    bool __tmp28_first = true;
-                    while(__tmp28_first || !__tmp28Reader.EndOfStream)
+                    bool __tmp32_first = true;
+                    bool __tmp32_last = __tmp32Reader.EndOfStream;
+                    while(__tmp32_first || !__tmp32_last)
                     {
-                        __tmp28_first = false;
-                        string __tmp28Line = __tmp28Reader.ReadLine();
-                        if (__tmp28Line == null)
-                        {
-                            __tmp28Line = "";
-                        }
-                        __out.Append(__tmp26Prefix);
-                        __out.Append(__tmp28Line);
+                        __tmp32_first = false;
+                        string __tmp32Line = __tmp32Reader.ReadLine();
+                        __tmp32_last = __tmp32Reader.EndOfStream;
+                        if (__tmp32Line != null) __out.Append(__tmp32Line);
+                        if (!__tmp32_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp29Line = "("; //771:33
-                __out.Append(__tmp29Line);
-                StringBuilder __tmp30 = new StringBuilder();
-                __tmp30.Append(cls.JavaName());
-                using(StreamReader __tmp30Reader = new StreamReader(this.__ToStream(__tmp30.ToString())))
+                string __tmp33Line = "("; //771:33
+                if (__tmp33Line != null) __out.Append(__tmp33Line);
+                StringBuilder __tmp34 = new StringBuilder();
+                __tmp34.Append(cls.JavaName());
+                using(StreamReader __tmp34Reader = new StreamReader(this.__ToStream(__tmp34.ToString())))
                 {
-                    bool __tmp30_first = true;
-                    while(__tmp30_first || !__tmp30Reader.EndOfStream)
+                    bool __tmp34_first = true;
+                    bool __tmp34_last = __tmp34Reader.EndOfStream;
+                    while(__tmp34_first || !__tmp34_last)
                     {
-                        __tmp30_first = false;
-                        string __tmp30Line = __tmp30Reader.ReadLine();
-                        if (__tmp30Line == null)
-                        {
-                            __tmp30Line = "";
-                        }
-                        __out.Append(__tmp30Line);
-                        __out.Append(__tmp27Suffix);
-                        __out.AppendLine(); //771:59
+                        __tmp34_first = false;
+                        string __tmp34Line = __tmp34Reader.ReadLine();
+                        __tmp34_last = __tmp34Reader.EndOfStream;
+                        if (__tmp34Line != null) __out.Append(__tmp34Line);
+                        if (!__tmp34_last) __out.AppendLine(true);
                     }
                 }
+                string __tmp35Line = " _this) {"; //771:50
+                if (__tmp35Line != null) __out.Append(__tmp35Line);
+                __out.AppendLine(false); //771:59
                 var __loop46_results = 
                     (from __loop46_var1 in __Enumerate((cls).GetEnumerator()) //772:9
                     from sup in __Enumerate((__loop46_var1.SuperClasses).GetEnumerator()) //772:14
                     select new { __loop46_var1 = __loop46_var1, sup = sup}
                     ).ToList(); //772:4
                 int __loop46_iteration = 0;
-                foreach (var __tmp31 in __loop46_results)
+                foreach (var __tmp36 in __loop46_results)
                 {
                     ++__loop46_iteration;
-                    var __loop46_var1 = __tmp31.__loop46_var1;
-                    var sup = __tmp31.sup;
-                    string __tmp32Prefix = "        this."; //773:1
-                    string __tmp33Suffix = "(_this);"; //773:30
-                    StringBuilder __tmp34 = new StringBuilder();
-                    __tmp34.Append(sup.JavaName());
-                    using(StreamReader __tmp34Reader = new StreamReader(this.__ToStream(__tmp34.ToString())))
+                    var __loop46_var1 = __tmp36.__loop46_var1;
+                    var sup = __tmp36.sup;
+                    string __tmp38Line = "        this."; //773:1
+                    if (__tmp38Line != null) __out.Append(__tmp38Line);
+                    StringBuilder __tmp39 = new StringBuilder();
+                    __tmp39.Append(sup.JavaName());
+                    using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
                     {
-                        bool __tmp34_first = true;
-                        while(__tmp34_first || !__tmp34Reader.EndOfStream)
+                        bool __tmp39_first = true;
+                        bool __tmp39_last = __tmp39Reader.EndOfStream;
+                        while(__tmp39_first || !__tmp39_last)
                         {
-                            __tmp34_first = false;
-                            string __tmp34Line = __tmp34Reader.ReadLine();
-                            if (__tmp34Line == null)
-                            {
-                                __tmp34Line = "";
-                            }
-                            __out.Append(__tmp32Prefix);
-                            __out.Append(__tmp34Line);
-                            __out.Append(__tmp33Suffix);
-                            __out.AppendLine(); //773:38
+                            __tmp39_first = false;
+                            string __tmp39Line = __tmp39Reader.ReadLine();
+                            __tmp39_last = __tmp39Reader.EndOfStream;
+                            if (__tmp39Line != null) __out.Append(__tmp39Line);
+                            if (!__tmp39_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp40Line = "(_this);"; //773:30
+                    if (__tmp40Line != null) __out.Append(__tmp40Line);
+                    __out.AppendLine(false); //773:38
                 }
                 __out.Append("    }"); //775:1
-                __out.AppendLine(); //775:6
+                __out.AppendLine(false); //775:6
                 var __loop47_results = 
                     (from __loop47_var1 in __Enumerate((cls).GetEnumerator()) //776:11
                     from prop in __Enumerate((__loop47_var1.Properties).GetEnumerator()) //776:16
                     select new { __loop47_var1 = __loop47_var1, prop = prop}
                     ).ToList(); //776:6
                 int __loop47_iteration = 0;
-                foreach (var __tmp35 in __loop47_results)
+                foreach (var __tmp41 in __loop47_results)
                 {
                     ++__loop47_iteration;
-                    var __loop47_var1 = __tmp35.__loop47_var1;
-                    var prop = __tmp35.prop;
+                    var __loop47_var1 = __tmp41.__loop47_var1;
+                    var prop = __tmp41.prop;
                     MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop); //777:4
                     if (synInit == null) //778:4
                     {
                         if (prop.Kind == MetaPropertyKind.Derived) //779:5
                         {
-                            __out.AppendLine(); //780:1
+                            __out.AppendLine(true); //780:1
                             __out.Append("    /**"); //781:1
-                            __out.AppendLine(); //781:8
-                            string __tmp36Prefix = "     * Returns the value of the derived property: "; //782:1
-                            string __tmp37Suffix = string.Empty; 
-                            StringBuilder __tmp38 = new StringBuilder();
-                            __tmp38.Append(cls.JavaName());
-                            using(StreamReader __tmp38Reader = new StreamReader(this.__ToStream(__tmp38.ToString())))
+                            __out.AppendLine(false); //781:8
+                            string __tmp43Line = "     * Returns the value of the derived property: "; //782:1
+                            if (__tmp43Line != null) __out.Append(__tmp43Line);
+                            StringBuilder __tmp44 = new StringBuilder();
+                            __tmp44.Append(cls.JavaName());
+                            using(StreamReader __tmp44Reader = new StreamReader(this.__ToStream(__tmp44.ToString())))
                             {
-                                bool __tmp38_first = true;
-                                while(__tmp38_first || !__tmp38Reader.EndOfStream)
+                                bool __tmp44_first = true;
+                                bool __tmp44_last = __tmp44Reader.EndOfStream;
+                                while(__tmp44_first || !__tmp44_last)
                                 {
-                                    __tmp38_first = false;
-                                    string __tmp38Line = __tmp38Reader.ReadLine();
-                                    if (__tmp38Line == null)
-                                    {
-                                        __tmp38Line = "";
-                                    }
-                                    __out.Append(__tmp36Prefix);
-                                    __out.Append(__tmp38Line);
+                                    __tmp44_first = false;
+                                    string __tmp44Line = __tmp44Reader.ReadLine();
+                                    __tmp44_last = __tmp44Reader.EndOfStream;
+                                    if (__tmp44Line != null) __out.Append(__tmp44Line);
+                                    if (!__tmp44_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp39Line = "."; //782:67
-                            __out.Append(__tmp39Line);
-                            StringBuilder __tmp40 = new StringBuilder();
-                            __tmp40.Append(prop.Name);
-                            using(StreamReader __tmp40Reader = new StreamReader(this.__ToStream(__tmp40.ToString())))
+                            string __tmp45Line = "."; //782:67
+                            if (__tmp45Line != null) __out.Append(__tmp45Line);
+                            StringBuilder __tmp46 = new StringBuilder();
+                            __tmp46.Append(prop.Name);
+                            using(StreamReader __tmp46Reader = new StreamReader(this.__ToStream(__tmp46.ToString())))
                             {
-                                bool __tmp40_first = true;
-                                while(__tmp40_first || !__tmp40Reader.EndOfStream)
+                                bool __tmp46_first = true;
+                                bool __tmp46_last = __tmp46Reader.EndOfStream;
+                                while(__tmp46_first || !__tmp46_last)
                                 {
-                                    __tmp40_first = false;
-                                    string __tmp40Line = __tmp40Reader.ReadLine();
-                                    if (__tmp40Line == null)
-                                    {
-                                        __tmp40Line = "";
-                                    }
-                                    __out.Append(__tmp40Line);
-                                    __out.Append(__tmp37Suffix);
-                                    __out.AppendLine(); //782:79
+                                    __tmp46_first = false;
+                                    string __tmp46Line = __tmp46Reader.ReadLine();
+                                    __tmp46_last = __tmp46Reader.EndOfStream;
+                                    if (__tmp46Line != null) __out.Append(__tmp46Line);
+                                    if (!__tmp46_last) __out.AppendLine(true);
+                                    __out.AppendLine(false); //782:79
                                 }
                             }
                             __out.Append("     */"); //783:1
-                            __out.AppendLine(); //783:8
-                            string __tmp41Prefix = "    public "; //784:1
-                            string __tmp42Suffix = " _this) {"; //784:90
-                            StringBuilder __tmp43 = new StringBuilder();
-                            __tmp43.Append(prop.Type.JavaFullPublicName());
-                            using(StreamReader __tmp43Reader = new StreamReader(this.__ToStream(__tmp43.ToString())))
-                            {
-                                bool __tmp43_first = true;
-                                while(__tmp43_first || !__tmp43Reader.EndOfStream)
-                                {
-                                    __tmp43_first = false;
-                                    string __tmp43Line = __tmp43Reader.ReadLine();
-                                    if (__tmp43Line == null)
-                                    {
-                                        __tmp43Line = "";
-                                    }
-                                    __out.Append(__tmp41Prefix);
-                                    __out.Append(__tmp43Line);
-                                }
-                            }
-                            string __tmp44Line = " "; //784:44
-                            __out.Append(__tmp44Line);
-                            StringBuilder __tmp45 = new StringBuilder();
-                            __tmp45.Append(cls.JavaName());
-                            using(StreamReader __tmp45Reader = new StreamReader(this.__ToStream(__tmp45.ToString())))
-                            {
-                                bool __tmp45_first = true;
-                                while(__tmp45_first || !__tmp45Reader.EndOfStream)
-                                {
-                                    __tmp45_first = false;
-                                    string __tmp45Line = __tmp45Reader.ReadLine();
-                                    if (__tmp45Line == null)
-                                    {
-                                        __tmp45Line = "";
-                                    }
-                                    __out.Append(__tmp45Line);
-                                }
-                            }
-                            string __tmp46Line = "_"; //784:61
-                            __out.Append(__tmp46Line);
-                            StringBuilder __tmp47 = new StringBuilder();
-                            __tmp47.Append(prop.Name);
-                            using(StreamReader __tmp47Reader = new StreamReader(this.__ToStream(__tmp47.ToString())))
-                            {
-                                bool __tmp47_first = true;
-                                while(__tmp47_first || !__tmp47Reader.EndOfStream)
-                                {
-                                    __tmp47_first = false;
-                                    string __tmp47Line = __tmp47Reader.ReadLine();
-                                    if (__tmp47Line == null)
-                                    {
-                                        __tmp47Line = "";
-                                    }
-                                    __out.Append(__tmp47Line);
-                                }
-                            }
-                            string __tmp48Line = "("; //784:73
-                            __out.Append(__tmp48Line);
+                            __out.AppendLine(false); //783:8
+                            string __tmp48Line = "    public "; //784:1
+                            if (__tmp48Line != null) __out.Append(__tmp48Line);
                             StringBuilder __tmp49 = new StringBuilder();
-                            __tmp49.Append(cls.JavaName());
+                            __tmp49.Append(prop.Type.JavaFullPublicName());
                             using(StreamReader __tmp49Reader = new StreamReader(this.__ToStream(__tmp49.ToString())))
                             {
                                 bool __tmp49_first = true;
-                                while(__tmp49_first || !__tmp49Reader.EndOfStream)
+                                bool __tmp49_last = __tmp49Reader.EndOfStream;
+                                while(__tmp49_first || !__tmp49_last)
                                 {
                                     __tmp49_first = false;
                                     string __tmp49Line = __tmp49Reader.ReadLine();
-                                    if (__tmp49Line == null)
-                                    {
-                                        __tmp49Line = "";
-                                    }
-                                    __out.Append(__tmp49Line);
-                                    __out.Append(__tmp42Suffix);
-                                    __out.AppendLine(); //784:99
+                                    __tmp49_last = __tmp49Reader.EndOfStream;
+                                    if (__tmp49Line != null) __out.Append(__tmp49Line);
+                                    if (!__tmp49_last) __out.AppendLine(true);
                                 }
                             }
+                            string __tmp50Line = " "; //784:44
+                            if (__tmp50Line != null) __out.Append(__tmp50Line);
+                            StringBuilder __tmp51 = new StringBuilder();
+                            __tmp51.Append(cls.JavaName());
+                            using(StreamReader __tmp51Reader = new StreamReader(this.__ToStream(__tmp51.ToString())))
+                            {
+                                bool __tmp51_first = true;
+                                bool __tmp51_last = __tmp51Reader.EndOfStream;
+                                while(__tmp51_first || !__tmp51_last)
+                                {
+                                    __tmp51_first = false;
+                                    string __tmp51Line = __tmp51Reader.ReadLine();
+                                    __tmp51_last = __tmp51Reader.EndOfStream;
+                                    if (__tmp51Line != null) __out.Append(__tmp51Line);
+                                    if (!__tmp51_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp52Line = "_"; //784:61
+                            if (__tmp52Line != null) __out.Append(__tmp52Line);
+                            StringBuilder __tmp53 = new StringBuilder();
+                            __tmp53.Append(prop.Name);
+                            using(StreamReader __tmp53Reader = new StreamReader(this.__ToStream(__tmp53.ToString())))
+                            {
+                                bool __tmp53_first = true;
+                                bool __tmp53_last = __tmp53Reader.EndOfStream;
+                                while(__tmp53_first || !__tmp53_last)
+                                {
+                                    __tmp53_first = false;
+                                    string __tmp53Line = __tmp53Reader.ReadLine();
+                                    __tmp53_last = __tmp53Reader.EndOfStream;
+                                    if (__tmp53Line != null) __out.Append(__tmp53Line);
+                                    if (!__tmp53_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp54Line = "("; //784:73
+                            if (__tmp54Line != null) __out.Append(__tmp54Line);
+                            StringBuilder __tmp55 = new StringBuilder();
+                            __tmp55.Append(cls.JavaName());
+                            using(StreamReader __tmp55Reader = new StreamReader(this.__ToStream(__tmp55.ToString())))
+                            {
+                                bool __tmp55_first = true;
+                                bool __tmp55_last = __tmp55Reader.EndOfStream;
+                                while(__tmp55_first || !__tmp55_last)
+                                {
+                                    __tmp55_first = false;
+                                    string __tmp55Line = __tmp55Reader.ReadLine();
+                                    __tmp55_last = __tmp55Reader.EndOfStream;
+                                    if (__tmp55Line != null) __out.Append(__tmp55Line);
+                                    if (!__tmp55_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp56Line = " _this) {"; //784:90
+                            if (__tmp56Line != null) __out.Append(__tmp56Line);
+                            __out.AppendLine(false); //784:99
                             __out.Append("        throw new UnsupportedOperationException();"); //785:1
-                            __out.AppendLine(); //785:51
+                            __out.AppendLine(false); //785:51
                             __out.Append("    }"); //786:1
-                            __out.AppendLine(); //786:6
+                            __out.AppendLine(false); //786:6
                         }
                         else if (prop.Kind == MetaPropertyKind.Lazy) //787:5
                         {
-                            __out.AppendLine(); //788:1
+                            __out.AppendLine(true); //788:1
                             __out.Append("    /**"); //789:1
-                            __out.AppendLine(); //789:8
-                            string __tmp50Prefix = "     * Returns the value of the lazy property: "; //790:1
-                            string __tmp51Suffix = string.Empty; 
-                            StringBuilder __tmp52 = new StringBuilder();
-                            __tmp52.Append(cls.JavaName());
-                            using(StreamReader __tmp52Reader = new StreamReader(this.__ToStream(__tmp52.ToString())))
-                            {
-                                bool __tmp52_first = true;
-                                while(__tmp52_first || !__tmp52Reader.EndOfStream)
-                                {
-                                    __tmp52_first = false;
-                                    string __tmp52Line = __tmp52Reader.ReadLine();
-                                    if (__tmp52Line == null)
-                                    {
-                                        __tmp52Line = "";
-                                    }
-                                    __out.Append(__tmp50Prefix);
-                                    __out.Append(__tmp52Line);
-                                }
-                            }
-                            string __tmp53Line = "."; //790:64
-                            __out.Append(__tmp53Line);
-                            StringBuilder __tmp54 = new StringBuilder();
-                            __tmp54.Append(prop.Name);
-                            using(StreamReader __tmp54Reader = new StreamReader(this.__ToStream(__tmp54.ToString())))
-                            {
-                                bool __tmp54_first = true;
-                                while(__tmp54_first || !__tmp54Reader.EndOfStream)
-                                {
-                                    __tmp54_first = false;
-                                    string __tmp54Line = __tmp54Reader.ReadLine();
-                                    if (__tmp54Line == null)
-                                    {
-                                        __tmp54Line = "";
-                                    }
-                                    __out.Append(__tmp54Line);
-                                    __out.Append(__tmp51Suffix);
-                                    __out.AppendLine(); //790:76
-                                }
-                            }
-                            __out.Append("     */"); //791:1
-                            __out.AppendLine(); //791:8
-                            string __tmp55Prefix = "    public "; //792:1
-                            string __tmp56Suffix = " _this) {"; //792:90
-                            StringBuilder __tmp57 = new StringBuilder();
-                            __tmp57.Append(prop.Type.JavaFullPublicName());
-                            using(StreamReader __tmp57Reader = new StreamReader(this.__ToStream(__tmp57.ToString())))
-                            {
-                                bool __tmp57_first = true;
-                                while(__tmp57_first || !__tmp57Reader.EndOfStream)
-                                {
-                                    __tmp57_first = false;
-                                    string __tmp57Line = __tmp57Reader.ReadLine();
-                                    if (__tmp57Line == null)
-                                    {
-                                        __tmp57Line = "";
-                                    }
-                                    __out.Append(__tmp55Prefix);
-                                    __out.Append(__tmp57Line);
-                                }
-                            }
-                            string __tmp58Line = " "; //792:44
-                            __out.Append(__tmp58Line);
+                            __out.AppendLine(false); //789:8
+                            string __tmp58Line = "     * Returns the value of the lazy property: "; //790:1
+                            if (__tmp58Line != null) __out.Append(__tmp58Line);
                             StringBuilder __tmp59 = new StringBuilder();
                             __tmp59.Append(cls.JavaName());
                             using(StreamReader __tmp59Reader = new StreamReader(this.__ToStream(__tmp59.ToString())))
                             {
                                 bool __tmp59_first = true;
-                                while(__tmp59_first || !__tmp59Reader.EndOfStream)
+                                bool __tmp59_last = __tmp59Reader.EndOfStream;
+                                while(__tmp59_first || !__tmp59_last)
                                 {
                                     __tmp59_first = false;
                                     string __tmp59Line = __tmp59Reader.ReadLine();
-                                    if (__tmp59Line == null)
-                                    {
-                                        __tmp59Line = "";
-                                    }
-                                    __out.Append(__tmp59Line);
+                                    __tmp59_last = __tmp59Reader.EndOfStream;
+                                    if (__tmp59Line != null) __out.Append(__tmp59Line);
+                                    if (!__tmp59_last) __out.AppendLine(true);
                                 }
                             }
-                            string __tmp60Line = "_"; //792:61
-                            __out.Append(__tmp60Line);
+                            string __tmp60Line = "."; //790:64
+                            if (__tmp60Line != null) __out.Append(__tmp60Line);
                             StringBuilder __tmp61 = new StringBuilder();
                             __tmp61.Append(prop.Name);
                             using(StreamReader __tmp61Reader = new StreamReader(this.__ToStream(__tmp61.ToString())))
                             {
                                 bool __tmp61_first = true;
-                                while(__tmp61_first || !__tmp61Reader.EndOfStream)
+                                bool __tmp61_last = __tmp61Reader.EndOfStream;
+                                while(__tmp61_first || !__tmp61_last)
                                 {
                                     __tmp61_first = false;
                                     string __tmp61Line = __tmp61Reader.ReadLine();
-                                    if (__tmp61Line == null)
-                                    {
-                                        __tmp61Line = "";
-                                    }
-                                    __out.Append(__tmp61Line);
+                                    __tmp61_last = __tmp61Reader.EndOfStream;
+                                    if (__tmp61Line != null) __out.Append(__tmp61Line);
+                                    if (!__tmp61_last) __out.AppendLine(true);
+                                    __out.AppendLine(false); //790:76
                                 }
                             }
-                            string __tmp62Line = "("; //792:73
-                            __out.Append(__tmp62Line);
-                            StringBuilder __tmp63 = new StringBuilder();
-                            __tmp63.Append(cls.JavaName());
-                            using(StreamReader __tmp63Reader = new StreamReader(this.__ToStream(__tmp63.ToString())))
+                            __out.Append("     */"); //791:1
+                            __out.AppendLine(false); //791:8
+                            string __tmp63Line = "    public "; //792:1
+                            if (__tmp63Line != null) __out.Append(__tmp63Line);
+                            StringBuilder __tmp64 = new StringBuilder();
+                            __tmp64.Append(prop.Type.JavaFullPublicName());
+                            using(StreamReader __tmp64Reader = new StreamReader(this.__ToStream(__tmp64.ToString())))
                             {
-                                bool __tmp63_first = true;
-                                while(__tmp63_first || !__tmp63Reader.EndOfStream)
+                                bool __tmp64_first = true;
+                                bool __tmp64_last = __tmp64Reader.EndOfStream;
+                                while(__tmp64_first || !__tmp64_last)
                                 {
-                                    __tmp63_first = false;
-                                    string __tmp63Line = __tmp63Reader.ReadLine();
-                                    if (__tmp63Line == null)
-                                    {
-                                        __tmp63Line = "";
-                                    }
-                                    __out.Append(__tmp63Line);
-                                    __out.Append(__tmp56Suffix);
-                                    __out.AppendLine(); //792:99
+                                    __tmp64_first = false;
+                                    string __tmp64Line = __tmp64Reader.ReadLine();
+                                    __tmp64_last = __tmp64Reader.EndOfStream;
+                                    if (__tmp64Line != null) __out.Append(__tmp64Line);
+                                    if (!__tmp64_last) __out.AppendLine(true);
                                 }
                             }
+                            string __tmp65Line = " "; //792:44
+                            if (__tmp65Line != null) __out.Append(__tmp65Line);
+                            StringBuilder __tmp66 = new StringBuilder();
+                            __tmp66.Append(cls.JavaName());
+                            using(StreamReader __tmp66Reader = new StreamReader(this.__ToStream(__tmp66.ToString())))
+                            {
+                                bool __tmp66_first = true;
+                                bool __tmp66_last = __tmp66Reader.EndOfStream;
+                                while(__tmp66_first || !__tmp66_last)
+                                {
+                                    __tmp66_first = false;
+                                    string __tmp66Line = __tmp66Reader.ReadLine();
+                                    __tmp66_last = __tmp66Reader.EndOfStream;
+                                    if (__tmp66Line != null) __out.Append(__tmp66Line);
+                                    if (!__tmp66_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp67Line = "_"; //792:61
+                            if (__tmp67Line != null) __out.Append(__tmp67Line);
+                            StringBuilder __tmp68 = new StringBuilder();
+                            __tmp68.Append(prop.Name);
+                            using(StreamReader __tmp68Reader = new StreamReader(this.__ToStream(__tmp68.ToString())))
+                            {
+                                bool __tmp68_first = true;
+                                bool __tmp68_last = __tmp68Reader.EndOfStream;
+                                while(__tmp68_first || !__tmp68_last)
+                                {
+                                    __tmp68_first = false;
+                                    string __tmp68Line = __tmp68Reader.ReadLine();
+                                    __tmp68_last = __tmp68Reader.EndOfStream;
+                                    if (__tmp68Line != null) __out.Append(__tmp68Line);
+                                    if (!__tmp68_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp69Line = "("; //792:73
+                            if (__tmp69Line != null) __out.Append(__tmp69Line);
+                            StringBuilder __tmp70 = new StringBuilder();
+                            __tmp70.Append(cls.JavaName());
+                            using(StreamReader __tmp70Reader = new StreamReader(this.__ToStream(__tmp70.ToString())))
+                            {
+                                bool __tmp70_first = true;
+                                bool __tmp70_last = __tmp70Reader.EndOfStream;
+                                while(__tmp70_first || !__tmp70_last)
+                                {
+                                    __tmp70_first = false;
+                                    string __tmp70Line = __tmp70Reader.ReadLine();
+                                    __tmp70_last = __tmp70Reader.EndOfStream;
+                                    if (__tmp70Line != null) __out.Append(__tmp70Line);
+                                    if (!__tmp70_last) __out.AppendLine(true);
+                                }
+                            }
+                            string __tmp71Line = " _this) {"; //792:90
+                            if (__tmp71Line != null) __out.Append(__tmp71Line);
+                            __out.AppendLine(false); //792:99
                             __out.Append("        throw new UnsupportedOperationException();"); //793:1
-                            __out.AppendLine(); //793:51
+                            __out.AppendLine(false); //793:51
                             __out.Append("    }"); //794:1
-                            __out.AppendLine(); //794:6
+                            __out.AppendLine(false); //794:6
                         }
                     }
                 }
@@ -6943,136 +7538,130 @@ namespace MetaDslx.Core //1:1
                     select new { __loop48_var1 = __loop48_var1, op = op}
                     ).ToList(); //798:6
                 int __loop48_iteration = 0;
-                foreach (var __tmp64 in __loop48_results)
+                foreach (var __tmp72 in __loop48_results)
                 {
                     ++__loop48_iteration;
-                    var __loop48_var1 = __tmp64.__loop48_var1;
-                    var op = __tmp64.op;
-                    __out.AppendLine(); //799:1
+                    var __loop48_var1 = __tmp72.__loop48_var1;
+                    var op = __tmp72.op;
+                    __out.AppendLine(true); //799:1
                     __out.Append("    /**"); //800:1
-                    __out.AppendLine(); //800:8
-                    string __tmp65Prefix = "     * Implements the operation: "; //801:1
-                    string __tmp66Suffix = "()"; //801:60
-                    StringBuilder __tmp67 = new StringBuilder();
-                    __tmp67.Append(cls.JavaName());
-                    using(StreamReader __tmp67Reader = new StreamReader(this.__ToStream(__tmp67.ToString())))
+                    __out.AppendLine(false); //800:8
+                    string __tmp74Line = "     * Implements the operation: "; //801:1
+                    if (__tmp74Line != null) __out.Append(__tmp74Line);
+                    StringBuilder __tmp75 = new StringBuilder();
+                    __tmp75.Append(cls.JavaName());
+                    using(StreamReader __tmp75Reader = new StreamReader(this.__ToStream(__tmp75.ToString())))
                     {
-                        bool __tmp67_first = true;
-                        while(__tmp67_first || !__tmp67Reader.EndOfStream)
+                        bool __tmp75_first = true;
+                        bool __tmp75_last = __tmp75Reader.EndOfStream;
+                        while(__tmp75_first || !__tmp75_last)
                         {
-                            __tmp67_first = false;
-                            string __tmp67Line = __tmp67Reader.ReadLine();
-                            if (__tmp67Line == null)
-                            {
-                                __tmp67Line = "";
-                            }
-                            __out.Append(__tmp65Prefix);
-                            __out.Append(__tmp67Line);
+                            __tmp75_first = false;
+                            string __tmp75Line = __tmp75Reader.ReadLine();
+                            __tmp75_last = __tmp75Reader.EndOfStream;
+                            if (__tmp75Line != null) __out.Append(__tmp75Line);
+                            if (!__tmp75_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp68Line = "."; //801:50
-                    __out.Append(__tmp68Line);
-                    StringBuilder __tmp69 = new StringBuilder();
-                    __tmp69.Append(op.Name);
-                    using(StreamReader __tmp69Reader = new StreamReader(this.__ToStream(__tmp69.ToString())))
+                    string __tmp76Line = "."; //801:50
+                    if (__tmp76Line != null) __out.Append(__tmp76Line);
+                    StringBuilder __tmp77 = new StringBuilder();
+                    __tmp77.Append(op.Name);
+                    using(StreamReader __tmp77Reader = new StreamReader(this.__ToStream(__tmp77.ToString())))
                     {
-                        bool __tmp69_first = true;
-                        while(__tmp69_first || !__tmp69Reader.EndOfStream)
+                        bool __tmp77_first = true;
+                        bool __tmp77_last = __tmp77Reader.EndOfStream;
+                        while(__tmp77_first || !__tmp77_last)
                         {
-                            __tmp69_first = false;
-                            string __tmp69Line = __tmp69Reader.ReadLine();
-                            if (__tmp69Line == null)
-                            {
-                                __tmp69Line = "";
-                            }
-                            __out.Append(__tmp69Line);
-                            __out.Append(__tmp66Suffix);
-                            __out.AppendLine(); //801:62
+                            __tmp77_first = false;
+                            string __tmp77Line = __tmp77Reader.ReadLine();
+                            __tmp77_last = __tmp77Reader.EndOfStream;
+                            if (__tmp77Line != null) __out.Append(__tmp77Line);
+                            if (!__tmp77_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp78Line = "()"; //801:60
+                    if (__tmp78Line != null) __out.Append(__tmp78Line);
+                    __out.AppendLine(false); //801:62
                     __out.Append("     */"); //802:1
-                    __out.AppendLine(); //802:8
-                    string __tmp70Prefix = "    public "; //803:1
-                    string __tmp71Suffix = ") {"; //803:118
-                    StringBuilder __tmp72 = new StringBuilder();
-                    __tmp72.Append(op.ReturnType.JavaFullPublicName());
-                    using(StreamReader __tmp72Reader = new StreamReader(this.__ToStream(__tmp72.ToString())))
+                    __out.AppendLine(false); //802:8
+                    string __tmp80Line = "    public "; //803:1
+                    if (__tmp80Line != null) __out.Append(__tmp80Line);
+                    StringBuilder __tmp81 = new StringBuilder();
+                    __tmp81.Append(op.ReturnType.JavaFullPublicName());
+                    using(StreamReader __tmp81Reader = new StreamReader(this.__ToStream(__tmp81.ToString())))
                     {
-                        bool __tmp72_first = true;
-                        while(__tmp72_first || !__tmp72Reader.EndOfStream)
+                        bool __tmp81_first = true;
+                        bool __tmp81_last = __tmp81Reader.EndOfStream;
+                        while(__tmp81_first || !__tmp81_last)
                         {
-                            __tmp72_first = false;
-                            string __tmp72Line = __tmp72Reader.ReadLine();
-                            if (__tmp72Line == null)
-                            {
-                                __tmp72Line = "";
-                            }
-                            __out.Append(__tmp70Prefix);
-                            __out.Append(__tmp72Line);
+                            __tmp81_first = false;
+                            string __tmp81Line = __tmp81Reader.ReadLine();
+                            __tmp81_last = __tmp81Reader.EndOfStream;
+                            if (__tmp81Line != null) __out.Append(__tmp81Line);
+                            if (!__tmp81_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp73Line = " "; //803:48
-                    __out.Append(__tmp73Line);
-                    StringBuilder __tmp74 = new StringBuilder();
-                    __tmp74.Append(cls.JavaName());
-                    using(StreamReader __tmp74Reader = new StreamReader(this.__ToStream(__tmp74.ToString())))
+                    string __tmp82Line = " "; //803:48
+                    if (__tmp82Line != null) __out.Append(__tmp82Line);
+                    StringBuilder __tmp83 = new StringBuilder();
+                    __tmp83.Append(cls.JavaName());
+                    using(StreamReader __tmp83Reader = new StreamReader(this.__ToStream(__tmp83.ToString())))
                     {
-                        bool __tmp74_first = true;
-                        while(__tmp74_first || !__tmp74Reader.EndOfStream)
+                        bool __tmp83_first = true;
+                        bool __tmp83_last = __tmp83Reader.EndOfStream;
+                        while(__tmp83_first || !__tmp83_last)
                         {
-                            __tmp74_first = false;
-                            string __tmp74Line = __tmp74Reader.ReadLine();
-                            if (__tmp74Line == null)
-                            {
-                                __tmp74Line = "";
-                            }
-                            __out.Append(__tmp74Line);
+                            __tmp83_first = false;
+                            string __tmp83Line = __tmp83Reader.ReadLine();
+                            __tmp83_last = __tmp83Reader.EndOfStream;
+                            if (__tmp83Line != null) __out.Append(__tmp83Line);
+                            if (!__tmp83_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp75Line = "_"; //803:65
-                    __out.Append(__tmp75Line);
-                    StringBuilder __tmp76 = new StringBuilder();
-                    __tmp76.Append(op.Name.ToCamelCase());
-                    using(StreamReader __tmp76Reader = new StreamReader(this.__ToStream(__tmp76.ToString())))
+                    string __tmp84Line = "_"; //803:65
+                    if (__tmp84Line != null) __out.Append(__tmp84Line);
+                    StringBuilder __tmp85 = new StringBuilder();
+                    __tmp85.Append(op.Name.ToCamelCase());
+                    using(StreamReader __tmp85Reader = new StreamReader(this.__ToStream(__tmp85.ToString())))
                     {
-                        bool __tmp76_first = true;
-                        while(__tmp76_first || !__tmp76Reader.EndOfStream)
+                        bool __tmp85_first = true;
+                        bool __tmp85_last = __tmp85Reader.EndOfStream;
+                        while(__tmp85_first || !__tmp85_last)
                         {
-                            __tmp76_first = false;
-                            string __tmp76Line = __tmp76Reader.ReadLine();
-                            if (__tmp76Line == null)
-                            {
-                                __tmp76Line = "";
-                            }
-                            __out.Append(__tmp76Line);
+                            __tmp85_first = false;
+                            string __tmp85Line = __tmp85Reader.ReadLine();
+                            __tmp85_last = __tmp85Reader.EndOfStream;
+                            if (__tmp85Line != null) __out.Append(__tmp85Line);
+                            if (!__tmp85_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp77Line = "("; //803:89
-                    __out.Append(__tmp77Line);
-                    StringBuilder __tmp78 = new StringBuilder();
-                    __tmp78.Append(GetImplParameters(cls, op));
-                    using(StreamReader __tmp78Reader = new StreamReader(this.__ToStream(__tmp78.ToString())))
+                    string __tmp86Line = "("; //803:89
+                    if (__tmp86Line != null) __out.Append(__tmp86Line);
+                    StringBuilder __tmp87 = new StringBuilder();
+                    __tmp87.Append(GetImplParameters(cls, op));
+                    using(StreamReader __tmp87Reader = new StreamReader(this.__ToStream(__tmp87.ToString())))
                     {
-                        bool __tmp78_first = true;
-                        while(__tmp78_first || !__tmp78Reader.EndOfStream)
+                        bool __tmp87_first = true;
+                        bool __tmp87_last = __tmp87Reader.EndOfStream;
+                        while(__tmp87_first || !__tmp87_last)
                         {
-                            __tmp78_first = false;
-                            string __tmp78Line = __tmp78Reader.ReadLine();
-                            if (__tmp78Line == null)
-                            {
-                                __tmp78Line = "";
-                            }
-                            __out.Append(__tmp78Line);
-                            __out.Append(__tmp71Suffix);
-                            __out.AppendLine(); //803:121
+                            __tmp87_first = false;
+                            string __tmp87Line = __tmp87Reader.ReadLine();
+                            __tmp87_last = __tmp87Reader.EndOfStream;
+                            if (__tmp87Line != null) __out.Append(__tmp87Line);
+                            if (!__tmp87_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp88Line = ") {"; //803:118
+                    if (__tmp88Line != null) __out.Append(__tmp88Line);
+                    __out.AppendLine(false); //803:121
                     __out.Append("        throw new UnsupportedOperationException();"); //804:1
-                    __out.AppendLine(); //804:51
+                    __out.AppendLine(false); //804:51
                     __out.Append("    }"); //805:1
-                    __out.AppendLine(); //805:6
+                    __out.AppendLine(false); //805:6
                 }
-                __out.AppendLine(); //807:1
+                __out.AppendLine(true); //807:1
             }
             var __loop49_results = 
                 (from __loop49_var1 in __Enumerate((model).GetEnumerator()) //809:8
@@ -7082,324 +7671,309 @@ namespace MetaDslx.Core //1:1
                 select new { __loop49_var1 = __loop49_var1, Namespace = Namespace, Declarations = Declarations, enm = enm}
                 ).ToList(); //809:3
             int __loop49_iteration = 0;
-            foreach (var __tmp79 in __loop49_results)
+            foreach (var __tmp89 in __loop49_results)
             {
                 ++__loop49_iteration;
-                var __loop49_var1 = __tmp79.__loop49_var1;
-                var Namespace = __tmp79.Namespace;
-                var Declarations = __tmp79.Declarations;
-                var enm = __tmp79.enm;
+                var __loop49_var1 = __tmp89.__loop49_var1;
+                var Namespace = __tmp89.Namespace;
+                var Declarations = __tmp89.Declarations;
+                var enm = __tmp89.enm;
                 var __loop50_results = 
                     (from __loop50_var1 in __Enumerate((enm).GetEnumerator()) //810:11
                     from op in __Enumerate((__loop50_var1.Operations).GetEnumerator()) //810:16
                     select new { __loop50_var1 = __loop50_var1, op = op}
                     ).ToList(); //810:6
                 int __loop50_iteration = 0;
-                foreach (var __tmp80 in __loop50_results)
+                foreach (var __tmp90 in __loop50_results)
                 {
                     ++__loop50_iteration;
-                    var __loop50_var1 = __tmp80.__loop50_var1;
-                    var op = __tmp80.op;
-                    __out.AppendLine(); //811:1
+                    var __loop50_var1 = __tmp90.__loop50_var1;
+                    var op = __tmp90.op;
+                    __out.AppendLine(true); //811:1
                     __out.Append("    /**"); //812:1
-                    __out.AppendLine(); //812:8
-                    string __tmp81Prefix = "     * Implements the operation: "; //813:1
-                    string __tmp82Suffix = string.Empty; 
-                    StringBuilder __tmp83 = new StringBuilder();
-                    __tmp83.Append(enm.JavaName());
-                    using(StreamReader __tmp83Reader = new StreamReader(this.__ToStream(__tmp83.ToString())))
+                    __out.AppendLine(false); //812:8
+                    string __tmp92Line = "     * Implements the operation: "; //813:1
+                    if (__tmp92Line != null) __out.Append(__tmp92Line);
+                    StringBuilder __tmp93 = new StringBuilder();
+                    __tmp93.Append(enm.JavaName());
+                    using(StreamReader __tmp93Reader = new StreamReader(this.__ToStream(__tmp93.ToString())))
                     {
-                        bool __tmp83_first = true;
-                        while(__tmp83_first || !__tmp83Reader.EndOfStream)
+                        bool __tmp93_first = true;
+                        bool __tmp93_last = __tmp93Reader.EndOfStream;
+                        while(__tmp93_first || !__tmp93_last)
                         {
-                            __tmp83_first = false;
-                            string __tmp83Line = __tmp83Reader.ReadLine();
-                            if (__tmp83Line == null)
-                            {
-                                __tmp83Line = "";
-                            }
-                            __out.Append(__tmp81Prefix);
-                            __out.Append(__tmp83Line);
+                            __tmp93_first = false;
+                            string __tmp93Line = __tmp93Reader.ReadLine();
+                            __tmp93_last = __tmp93Reader.EndOfStream;
+                            if (__tmp93Line != null) __out.Append(__tmp93Line);
+                            if (!__tmp93_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp84Line = "."; //813:50
-                    __out.Append(__tmp84Line);
-                    StringBuilder __tmp85 = new StringBuilder();
-                    __tmp85.Append(op.Name);
-                    using(StreamReader __tmp85Reader = new StreamReader(this.__ToStream(__tmp85.ToString())))
+                    string __tmp94Line = "."; //813:50
+                    if (__tmp94Line != null) __out.Append(__tmp94Line);
+                    StringBuilder __tmp95 = new StringBuilder();
+                    __tmp95.Append(op.Name);
+                    using(StreamReader __tmp95Reader = new StreamReader(this.__ToStream(__tmp95.ToString())))
                     {
-                        bool __tmp85_first = true;
-                        while(__tmp85_first || !__tmp85Reader.EndOfStream)
+                        bool __tmp95_first = true;
+                        bool __tmp95_last = __tmp95Reader.EndOfStream;
+                        while(__tmp95_first || !__tmp95_last)
                         {
-                            __tmp85_first = false;
-                            string __tmp85Line = __tmp85Reader.ReadLine();
-                            if (__tmp85Line == null)
-                            {
-                                __tmp85Line = "";
-                            }
-                            __out.Append(__tmp85Line);
-                            __out.Append(__tmp82Suffix);
-                            __out.AppendLine(); //813:60
+                            __tmp95_first = false;
+                            string __tmp95Line = __tmp95Reader.ReadLine();
+                            __tmp95_last = __tmp95Reader.EndOfStream;
+                            if (__tmp95Line != null) __out.Append(__tmp95Line);
+                            if (!__tmp95_last) __out.AppendLine(true);
+                            __out.AppendLine(false); //813:60
                         }
                     }
                     __out.Append("     */"); //814:1
-                    __out.AppendLine(); //814:8
-                    string __tmp86Prefix = "    public "; //815:1
-                    string __tmp87Suffix = ") {"; //815:118
-                    StringBuilder __tmp88 = new StringBuilder();
-                    __tmp88.Append(op.ReturnType.JavaFullPublicName());
-                    using(StreamReader __tmp88Reader = new StreamReader(this.__ToStream(__tmp88.ToString())))
+                    __out.AppendLine(false); //814:8
+                    string __tmp97Line = "    public "; //815:1
+                    if (__tmp97Line != null) __out.Append(__tmp97Line);
+                    StringBuilder __tmp98 = new StringBuilder();
+                    __tmp98.Append(op.ReturnType.JavaFullPublicName());
+                    using(StreamReader __tmp98Reader = new StreamReader(this.__ToStream(__tmp98.ToString())))
                     {
-                        bool __tmp88_first = true;
-                        while(__tmp88_first || !__tmp88Reader.EndOfStream)
+                        bool __tmp98_first = true;
+                        bool __tmp98_last = __tmp98Reader.EndOfStream;
+                        while(__tmp98_first || !__tmp98_last)
                         {
-                            __tmp88_first = false;
-                            string __tmp88Line = __tmp88Reader.ReadLine();
-                            if (__tmp88Line == null)
-                            {
-                                __tmp88Line = "";
-                            }
-                            __out.Append(__tmp86Prefix);
-                            __out.Append(__tmp88Line);
+                            __tmp98_first = false;
+                            string __tmp98Line = __tmp98Reader.ReadLine();
+                            __tmp98_last = __tmp98Reader.EndOfStream;
+                            if (__tmp98Line != null) __out.Append(__tmp98Line);
+                            if (!__tmp98_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp89Line = " "; //815:48
-                    __out.Append(__tmp89Line);
-                    StringBuilder __tmp90 = new StringBuilder();
-                    __tmp90.Append(enm.JavaName());
-                    using(StreamReader __tmp90Reader = new StreamReader(this.__ToStream(__tmp90.ToString())))
+                    string __tmp99Line = " "; //815:48
+                    if (__tmp99Line != null) __out.Append(__tmp99Line);
+                    StringBuilder __tmp100 = new StringBuilder();
+                    __tmp100.Append(enm.JavaName());
+                    using(StreamReader __tmp100Reader = new StreamReader(this.__ToStream(__tmp100.ToString())))
                     {
-                        bool __tmp90_first = true;
-                        while(__tmp90_first || !__tmp90Reader.EndOfStream)
+                        bool __tmp100_first = true;
+                        bool __tmp100_last = __tmp100Reader.EndOfStream;
+                        while(__tmp100_first || !__tmp100_last)
                         {
-                            __tmp90_first = false;
-                            string __tmp90Line = __tmp90Reader.ReadLine();
-                            if (__tmp90Line == null)
-                            {
-                                __tmp90Line = "";
-                            }
-                            __out.Append(__tmp90Line);
+                            __tmp100_first = false;
+                            string __tmp100Line = __tmp100Reader.ReadLine();
+                            __tmp100_last = __tmp100Reader.EndOfStream;
+                            if (__tmp100Line != null) __out.Append(__tmp100Line);
+                            if (!__tmp100_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp91Line = "_"; //815:65
-                    __out.Append(__tmp91Line);
-                    StringBuilder __tmp92 = new StringBuilder();
-                    __tmp92.Append(op.Name.ToCamelCase());
-                    using(StreamReader __tmp92Reader = new StreamReader(this.__ToStream(__tmp92.ToString())))
+                    string __tmp101Line = "_"; //815:65
+                    if (__tmp101Line != null) __out.Append(__tmp101Line);
+                    StringBuilder __tmp102 = new StringBuilder();
+                    __tmp102.Append(op.Name.ToCamelCase());
+                    using(StreamReader __tmp102Reader = new StreamReader(this.__ToStream(__tmp102.ToString())))
                     {
-                        bool __tmp92_first = true;
-                        while(__tmp92_first || !__tmp92Reader.EndOfStream)
+                        bool __tmp102_first = true;
+                        bool __tmp102_last = __tmp102Reader.EndOfStream;
+                        while(__tmp102_first || !__tmp102_last)
                         {
-                            __tmp92_first = false;
-                            string __tmp92Line = __tmp92Reader.ReadLine();
-                            if (__tmp92Line == null)
-                            {
-                                __tmp92Line = "";
-                            }
-                            __out.Append(__tmp92Line);
+                            __tmp102_first = false;
+                            string __tmp102Line = __tmp102Reader.ReadLine();
+                            __tmp102_last = __tmp102Reader.EndOfStream;
+                            if (__tmp102Line != null) __out.Append(__tmp102Line);
+                            if (!__tmp102_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp93Line = "("; //815:89
-                    __out.Append(__tmp93Line);
-                    StringBuilder __tmp94 = new StringBuilder();
-                    __tmp94.Append(GetImplParameters(enm, op));
-                    using(StreamReader __tmp94Reader = new StreamReader(this.__ToStream(__tmp94.ToString())))
+                    string __tmp103Line = "("; //815:89
+                    if (__tmp103Line != null) __out.Append(__tmp103Line);
+                    StringBuilder __tmp104 = new StringBuilder();
+                    __tmp104.Append(GetImplParameters(enm, op));
+                    using(StreamReader __tmp104Reader = new StreamReader(this.__ToStream(__tmp104.ToString())))
                     {
-                        bool __tmp94_first = true;
-                        while(__tmp94_first || !__tmp94Reader.EndOfStream)
+                        bool __tmp104_first = true;
+                        bool __tmp104_last = __tmp104Reader.EndOfStream;
+                        while(__tmp104_first || !__tmp104_last)
                         {
-                            __tmp94_first = false;
-                            string __tmp94Line = __tmp94Reader.ReadLine();
-                            if (__tmp94Line == null)
-                            {
-                                __tmp94Line = "";
-                            }
-                            __out.Append(__tmp94Line);
-                            __out.Append(__tmp87Suffix);
-                            __out.AppendLine(); //815:121
+                            __tmp104_first = false;
+                            string __tmp104Line = __tmp104Reader.ReadLine();
+                            __tmp104_last = __tmp104Reader.EndOfStream;
+                            if (__tmp104Line != null) __out.Append(__tmp104Line);
+                            if (!__tmp104_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp105Line = ") {"; //815:118
+                    if (__tmp105Line != null) __out.Append(__tmp105Line);
+                    __out.AppendLine(false); //815:121
                     __out.Append("        throw new UnsupportedOperationException();"); //816:1
-                    __out.AppendLine(); //816:51
+                    __out.AppendLine(false); //816:51
                     __out.Append("    }"); //817:1
-                    __out.AppendLine(); //817:6
+                    __out.AppendLine(false); //817:6
                 }
-                __out.AppendLine(); //819:1
+                __out.AppendLine(true); //819:1
             }
             __out.Append("}"); //821:1
-            __out.AppendLine(); //821:2
-            __out.AppendLine(); //822:1
+            __out.AppendLine(false); //821:2
+            __out.AppendLine(true); //822:1
             return __out.ToString();
         }
 
         public string GenerateFactory(MetaModel model) //825:1
         {
             StringBuilder __out = new StringBuilder();
-            string __tmp1Prefix = "package "; //826:1
-            string __tmp2Suffix = ";"; //826:37
+            string __tmp2Line = "package "; //826:1
+            if (__tmp2Line != null) __out.Append(__tmp2Line);
             StringBuilder __tmp3 = new StringBuilder();
             __tmp3.Append(model.Namespace.JavaName());
             using(StreamReader __tmp3Reader = new StreamReader(this.__ToStream(__tmp3.ToString())))
             {
                 bool __tmp3_first = true;
-                while(__tmp3_first || !__tmp3Reader.EndOfStream)
+                bool __tmp3_last = __tmp3Reader.EndOfStream;
+                while(__tmp3_first || !__tmp3_last)
                 {
                     __tmp3_first = false;
                     string __tmp3Line = __tmp3Reader.ReadLine();
-                    if (__tmp3Line == null)
-                    {
-                        __tmp3Line = "";
-                    }
-                    __out.Append(__tmp1Prefix);
-                    __out.Append(__tmp3Line);
-                    __out.Append(__tmp2Suffix);
-                    __out.AppendLine(); //826:38
+                    __tmp3_last = __tmp3Reader.EndOfStream;
+                    if (__tmp3Line != null) __out.Append(__tmp3Line);
+                    if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //827:1
+            string __tmp4Line = ";"; //826:37
+            if (__tmp4Line != null) __out.Append(__tmp4Line);
+            __out.AppendLine(false); //826:38
+            __out.AppendLine(true); //827:1
             __out.Append("/**"); //828:1
-            __out.AppendLine(); //828:4
+            __out.AppendLine(false); //828:4
             __out.Append(" * Factory class for creating instances of model elements."); //829:1
-            __out.AppendLine(); //829:59
+            __out.AppendLine(false); //829:59
             __out.Append(" */"); //830:1
-            __out.AppendLine(); //830:4
-            string __tmp4Prefix = "public class "; //831:1
-            string __tmp5Suffix = " extends ModelFactory {"; //831:39
-            StringBuilder __tmp6 = new StringBuilder();
-            __tmp6.Append(model.JavaFactoryName());
-            using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
+            __out.AppendLine(false); //830:4
+            string __tmp6Line = "public class "; //831:1
+            if (__tmp6Line != null) __out.Append(__tmp6Line);
+            StringBuilder __tmp7 = new StringBuilder();
+            __tmp7.Append(model.JavaFactoryName());
+            using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
             {
-                bool __tmp6_first = true;
-                while(__tmp6_first || !__tmp6Reader.EndOfStream)
+                bool __tmp7_first = true;
+                bool __tmp7_last = __tmp7Reader.EndOfStream;
+                while(__tmp7_first || !__tmp7_last)
                 {
-                    __tmp6_first = false;
-                    string __tmp6Line = __tmp6Reader.ReadLine();
-                    if (__tmp6Line == null)
-                    {
-                        __tmp6Line = "";
-                    }
-                    __out.Append(__tmp4Prefix);
-                    __out.Append(__tmp6Line);
-                    __out.Append(__tmp5Suffix);
-                    __out.AppendLine(); //831:62
+                    __tmp7_first = false;
+                    string __tmp7Line = __tmp7Reader.ReadLine();
+                    __tmp7_last = __tmp7Reader.EndOfStream;
+                    if (__tmp7Line != null) __out.Append(__tmp7Line);
+                    if (!__tmp7_last) __out.AppendLine(true);
                 }
             }
-            string __tmp7Prefix = "    private static "; //832:1
-            string __tmp8Suffix = "();"; //832:86
-            StringBuilder __tmp9 = new StringBuilder();
-            __tmp9.Append(model.JavaFactoryName());
-            using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
-            {
-                bool __tmp9_first = true;
-                while(__tmp9_first || !__tmp9Reader.EndOfStream)
-                {
-                    __tmp9_first = false;
-                    string __tmp9Line = __tmp9Reader.ReadLine();
-                    if (__tmp9Line == null)
-                    {
-                        __tmp9Line = "";
-                    }
-                    __out.Append(__tmp7Prefix);
-                    __out.Append(__tmp9Line);
-                }
-            }
-            string __tmp10Line = " instance = new "; //832:45
-            __out.Append(__tmp10Line);
+            string __tmp8Line = " extends ModelFactory {"; //831:39
+            if (__tmp8Line != null) __out.Append(__tmp8Line);
+            __out.AppendLine(false); //831:62
+            string __tmp10Line = "    private static "; //832:1
+            if (__tmp10Line != null) __out.Append(__tmp10Line);
             StringBuilder __tmp11 = new StringBuilder();
             __tmp11.Append(model.JavaFactoryName());
             using(StreamReader __tmp11Reader = new StreamReader(this.__ToStream(__tmp11.ToString())))
             {
                 bool __tmp11_first = true;
-                while(__tmp11_first || !__tmp11Reader.EndOfStream)
+                bool __tmp11_last = __tmp11Reader.EndOfStream;
+                while(__tmp11_first || !__tmp11_last)
                 {
                     __tmp11_first = false;
                     string __tmp11Line = __tmp11Reader.ReadLine();
-                    if (__tmp11Line == null)
-                    {
-                        __tmp11Line = "";
-                    }
-                    __out.Append(__tmp11Line);
-                    __out.Append(__tmp8Suffix);
-                    __out.AppendLine(); //832:89
+                    __tmp11_last = __tmp11Reader.EndOfStream;
+                    if (__tmp11Line != null) __out.Append(__tmp11Line);
+                    if (!__tmp11_last) __out.AppendLine(true);
                 }
             }
-            __out.AppendLine(); //833:1
-            string __tmp12Prefix = "	private "; //834:1
-            string __tmp13Suffix = "()"; //834:35
-            StringBuilder __tmp14 = new StringBuilder();
-            __tmp14.Append(model.JavaFactoryName());
-            using(StreamReader __tmp14Reader = new StreamReader(this.__ToStream(__tmp14.ToString())))
+            string __tmp12Line = " instance = new "; //832:45
+            if (__tmp12Line != null) __out.Append(__tmp12Line);
+            StringBuilder __tmp13 = new StringBuilder();
+            __tmp13.Append(model.JavaFactoryName());
+            using(StreamReader __tmp13Reader = new StreamReader(this.__ToStream(__tmp13.ToString())))
             {
-                bool __tmp14_first = true;
-                while(__tmp14_first || !__tmp14Reader.EndOfStream)
+                bool __tmp13_first = true;
+                bool __tmp13_last = __tmp13Reader.EndOfStream;
+                while(__tmp13_first || !__tmp13_last)
                 {
-                    __tmp14_first = false;
-                    string __tmp14Line = __tmp14Reader.ReadLine();
-                    if (__tmp14Line == null)
-                    {
-                        __tmp14Line = "";
-                    }
-                    __out.Append(__tmp12Prefix);
-                    __out.Append(__tmp14Line);
-                    __out.Append(__tmp13Suffix);
-                    __out.AppendLine(); //834:37
+                    __tmp13_first = false;
+                    string __tmp13Line = __tmp13Reader.ReadLine();
+                    __tmp13_last = __tmp13Reader.EndOfStream;
+                    if (__tmp13Line != null) __out.Append(__tmp13Line);
+                    if (!__tmp13_last) __out.AppendLine(true);
                 }
             }
-            __out.Append("	{"); //835:1
-            __out.AppendLine(); //835:3
-            __out.Append("	}"); //836:1
-            __out.AppendLine(); //836:3
-            __out.AppendLine(); //837:1
-            __out.Append("    /**"); //838:1
-            __out.AppendLine(); //838:8
-            __out.Append("     * The singleton instance of the factory."); //839:1
-            __out.AppendLine(); //839:46
-            __out.Append("     */"); //840:1
-            __out.AppendLine(); //840:8
-            string __tmp15Prefix = "    public static "; //841:1
-            string __tmp16Suffix = " instance() {"; //841:44
+            string __tmp14Line = "();"; //832:86
+            if (__tmp14Line != null) __out.Append(__tmp14Line);
+            __out.AppendLine(false); //832:89
+            __out.AppendLine(true); //833:1
+            string __tmp16Line = "	private "; //834:1
+            if (__tmp16Line != null) __out.Append(__tmp16Line);
             StringBuilder __tmp17 = new StringBuilder();
             __tmp17.Append(model.JavaFactoryName());
             using(StreamReader __tmp17Reader = new StreamReader(this.__ToStream(__tmp17.ToString())))
             {
                 bool __tmp17_first = true;
-                while(__tmp17_first || !__tmp17Reader.EndOfStream)
+                bool __tmp17_last = __tmp17Reader.EndOfStream;
+                while(__tmp17_first || !__tmp17_last)
                 {
                     __tmp17_first = false;
                     string __tmp17Line = __tmp17Reader.ReadLine();
-                    if (__tmp17Line == null)
-                    {
-                        __tmp17Line = "";
-                    }
-                    __out.Append(__tmp15Prefix);
-                    __out.Append(__tmp17Line);
-                    __out.Append(__tmp16Suffix);
-                    __out.AppendLine(); //841:57
+                    __tmp17_last = __tmp17Reader.EndOfStream;
+                    if (__tmp17Line != null) __out.Append(__tmp17Line);
+                    if (!__tmp17_last) __out.AppendLine(true);
                 }
             }
-            string __tmp18Prefix = "        return "; //842:1
-            string __tmp19Suffix = ".instance;"; //842:41
-            StringBuilder __tmp20 = new StringBuilder();
-            __tmp20.Append(model.JavaFactoryName());
-            using(StreamReader __tmp20Reader = new StreamReader(this.__ToStream(__tmp20.ToString())))
+            string __tmp18Line = "()"; //834:35
+            if (__tmp18Line != null) __out.Append(__tmp18Line);
+            __out.AppendLine(false); //834:37
+            __out.Append("	{"); //835:1
+            __out.AppendLine(false); //835:3
+            __out.Append("	}"); //836:1
+            __out.AppendLine(false); //836:3
+            __out.AppendLine(true); //837:1
+            __out.Append("    /**"); //838:1
+            __out.AppendLine(false); //838:8
+            __out.Append("     * The singleton instance of the factory."); //839:1
+            __out.AppendLine(false); //839:46
+            __out.Append("     */"); //840:1
+            __out.AppendLine(false); //840:8
+            string __tmp20Line = "    public static "; //841:1
+            if (__tmp20Line != null) __out.Append(__tmp20Line);
+            StringBuilder __tmp21 = new StringBuilder();
+            __tmp21.Append(model.JavaFactoryName());
+            using(StreamReader __tmp21Reader = new StreamReader(this.__ToStream(__tmp21.ToString())))
             {
-                bool __tmp20_first = true;
-                while(__tmp20_first || !__tmp20Reader.EndOfStream)
+                bool __tmp21_first = true;
+                bool __tmp21_last = __tmp21Reader.EndOfStream;
+                while(__tmp21_first || !__tmp21_last)
                 {
-                    __tmp20_first = false;
-                    string __tmp20Line = __tmp20Reader.ReadLine();
-                    if (__tmp20Line == null)
-                    {
-                        __tmp20Line = "";
-                    }
-                    __out.Append(__tmp18Prefix);
-                    __out.Append(__tmp20Line);
-                    __out.Append(__tmp19Suffix);
-                    __out.AppendLine(); //842:51
+                    __tmp21_first = false;
+                    string __tmp21Line = __tmp21Reader.ReadLine();
+                    __tmp21_last = __tmp21Reader.EndOfStream;
+                    if (__tmp21Line != null) __out.Append(__tmp21Line);
+                    if (!__tmp21_last) __out.AppendLine(true);
                 }
             }
+            string __tmp22Line = " instance() {"; //841:44
+            if (__tmp22Line != null) __out.Append(__tmp22Line);
+            __out.AppendLine(false); //841:57
+            string __tmp24Line = "        return "; //842:1
+            if (__tmp24Line != null) __out.Append(__tmp24Line);
+            StringBuilder __tmp25 = new StringBuilder();
+            __tmp25.Append(model.JavaFactoryName());
+            using(StreamReader __tmp25Reader = new StreamReader(this.__ToStream(__tmp25.ToString())))
+            {
+                bool __tmp25_first = true;
+                bool __tmp25_last = __tmp25Reader.EndOfStream;
+                while(__tmp25_first || !__tmp25_last)
+                {
+                    __tmp25_first = false;
+                    string __tmp25Line = __tmp25Reader.ReadLine();
+                    __tmp25_last = __tmp25Reader.EndOfStream;
+                    if (__tmp25Line != null) __out.Append(__tmp25Line);
+                    if (!__tmp25_last) __out.AppendLine(true);
+                }
+            }
+            string __tmp26Line = ".instance;"; //842:41
+            if (__tmp26Line != null) __out.Append(__tmp26Line);
+            __out.AppendLine(false); //842:51
             __out.Append("    }"); //843:1
-            __out.AppendLine(); //843:6
+            __out.AppendLine(false); //843:6
             var __loop51_results = 
                 (from __loop51_var1 in __Enumerate((model).GetEnumerator()) //844:8
                 from Namespace in __Enumerate((__loop51_var1.Namespace).GetEnumerator()) //844:15
@@ -7408,223 +7982,256 @@ namespace MetaDslx.Core //1:1
                 select new { __loop51_var1 = __loop51_var1, Namespace = Namespace, Declarations = Declarations, cls = cls}
                 ).ToList(); //844:3
             int __loop51_iteration = 0;
-            foreach (var __tmp21 in __loop51_results)
+            foreach (var __tmp27 in __loop51_results)
             {
                 ++__loop51_iteration;
-                var __loop51_var1 = __tmp21.__loop51_var1;
-                var Namespace = __tmp21.Namespace;
-                var Declarations = __tmp21.Declarations;
-                var cls = __tmp21.cls;
+                var __loop51_var1 = __tmp27.__loop51_var1;
+                var Namespace = __tmp27.Namespace;
+                var Declarations = __tmp27.Declarations;
+                var cls = __tmp27.cls;
                 if (!cls.IsAbstract) //845:4
                 {
-                    __out.AppendLine(); //846:1
+                    __out.AppendLine(true); //846:1
                     __out.Append("    /**"); //847:1
-                    __out.AppendLine(); //847:8
-                    string __tmp22Prefix = "     * Creates a new instance of "; //848:1
-                    string __tmp23Suffix = "."; //848:50
-                    StringBuilder __tmp24 = new StringBuilder();
-                    __tmp24.Append(cls.JavaName());
-                    using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
+                    __out.AppendLine(false); //847:8
+                    string __tmp29Line = "     * Creates a new instance of "; //848:1
+                    if (__tmp29Line != null) __out.Append(__tmp29Line);
+                    StringBuilder __tmp30 = new StringBuilder();
+                    __tmp30.Append(cls.JavaName());
+                    using(StreamReader __tmp30Reader = new StreamReader(this.__ToStream(__tmp30.ToString())))
                     {
-                        bool __tmp24_first = true;
-                        while(__tmp24_first || !__tmp24Reader.EndOfStream)
+                        bool __tmp30_first = true;
+                        bool __tmp30_last = __tmp30Reader.EndOfStream;
+                        while(__tmp30_first || !__tmp30_last)
                         {
-                            __tmp24_first = false;
-                            string __tmp24Line = __tmp24Reader.ReadLine();
-                            if (__tmp24Line == null)
-                            {
-                                __tmp24Line = "";
-                            }
-                            __out.Append(__tmp22Prefix);
-                            __out.Append(__tmp24Line);
-                            __out.Append(__tmp23Suffix);
-                            __out.AppendLine(); //848:51
+                            __tmp30_first = false;
+                            string __tmp30Line = __tmp30Reader.ReadLine();
+                            __tmp30_last = __tmp30Reader.EndOfStream;
+                            if (__tmp30Line != null) __out.Append(__tmp30Line);
+                            if (!__tmp30_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp31Line = "."; //848:50
+                    if (__tmp31Line != null) __out.Append(__tmp31Line);
+                    __out.AppendLine(false); //848:51
                     __out.Append("     */"); //849:1
-                    __out.AppendLine(); //849:8
-                    string __tmp25Prefix = "    public "; //850:1
-                    string __tmp26Suffix = "() {"; //850:51
-                    StringBuilder __tmp27 = new StringBuilder();
-                    __tmp27.Append(cls.JavaName());
-                    using(StreamReader __tmp27Reader = new StreamReader(this.__ToStream(__tmp27.ToString())))
+                    __out.AppendLine(false); //849:8
+                    string __tmp33Line = "    public "; //850:1
+                    if (__tmp33Line != null) __out.Append(__tmp33Line);
+                    StringBuilder __tmp34 = new StringBuilder();
+                    __tmp34.Append(cls.JavaName());
+                    using(StreamReader __tmp34Reader = new StreamReader(this.__ToStream(__tmp34.ToString())))
                     {
-                        bool __tmp27_first = true;
-                        while(__tmp27_first || !__tmp27Reader.EndOfStream)
+                        bool __tmp34_first = true;
+                        bool __tmp34_last = __tmp34Reader.EndOfStream;
+                        while(__tmp34_first || !__tmp34_last)
                         {
-                            __tmp27_first = false;
-                            string __tmp27Line = __tmp27Reader.ReadLine();
-                            if (__tmp27Line == null)
-                            {
-                                __tmp27Line = "";
-                            }
-                            __out.Append(__tmp25Prefix);
-                            __out.Append(__tmp27Line);
+                            __tmp34_first = false;
+                            string __tmp34Line = __tmp34Reader.ReadLine();
+                            __tmp34_last = __tmp34Reader.EndOfStream;
+                            if (__tmp34Line != null) __out.Append(__tmp34Line);
+                            if (!__tmp34_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp28Line = " create"; //850:28
-                    __out.Append(__tmp28Line);
-                    StringBuilder __tmp29 = new StringBuilder();
-                    __tmp29.Append(cls.JavaName());
-                    using(StreamReader __tmp29Reader = new StreamReader(this.__ToStream(__tmp29.ToString())))
+                    string __tmp35Line = " create"; //850:28
+                    if (__tmp35Line != null) __out.Append(__tmp35Line);
+                    StringBuilder __tmp36 = new StringBuilder();
+                    __tmp36.Append(cls.JavaName());
+                    using(StreamReader __tmp36Reader = new StreamReader(this.__ToStream(__tmp36.ToString())))
                     {
-                        bool __tmp29_first = true;
-                        while(__tmp29_first || !__tmp29Reader.EndOfStream)
+                        bool __tmp36_first = true;
+                        bool __tmp36_last = __tmp36Reader.EndOfStream;
+                        while(__tmp36_first || !__tmp36_last)
                         {
-                            __tmp29_first = false;
-                            string __tmp29Line = __tmp29Reader.ReadLine();
-                            if (__tmp29Line == null)
-                            {
-                                __tmp29Line = "";
-                            }
-                            __out.Append(__tmp29Line);
-                            __out.Append(__tmp26Suffix);
-                            __out.AppendLine(); //850:55
+                            __tmp36_first = false;
+                            string __tmp36Line = __tmp36Reader.ReadLine();
+                            __tmp36_last = __tmp36Reader.EndOfStream;
+                            if (__tmp36Line != null) __out.Append(__tmp36Line);
+                            if (!__tmp36_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp30Prefix = "		return this.create"; //851:1
-                    string __tmp31Suffix = "(null);"; //851:37
-                    StringBuilder __tmp32 = new StringBuilder();
-                    __tmp32.Append(cls.JavaName());
-                    using(StreamReader __tmp32Reader = new StreamReader(this.__ToStream(__tmp32.ToString())))
-                    {
-                        bool __tmp32_first = true;
-                        while(__tmp32_first || !__tmp32Reader.EndOfStream)
-                        {
-                            __tmp32_first = false;
-                            string __tmp32Line = __tmp32Reader.ReadLine();
-                            if (__tmp32Line == null)
-                            {
-                                __tmp32Line = "";
-                            }
-                            __out.Append(__tmp30Prefix);
-                            __out.Append(__tmp32Line);
-                            __out.Append(__tmp31Suffix);
-                            __out.AppendLine(); //851:44
-                        }
-                    }
-                    __out.Append("	}"); //852:1
-                    __out.AppendLine(); //852:3
-                    __out.Append("    /**"); //854:1
-                    __out.AppendLine(); //854:8
-                    string __tmp33Prefix = "     * Creates a new instance of "; //855:1
-                    string __tmp34Suffix = "."; //855:50
-                    StringBuilder __tmp35 = new StringBuilder();
-                    __tmp35.Append(cls.JavaName());
-                    using(StreamReader __tmp35Reader = new StreamReader(this.__ToStream(__tmp35.ToString())))
-                    {
-                        bool __tmp35_first = true;
-                        while(__tmp35_first || !__tmp35Reader.EndOfStream)
-                        {
-                            __tmp35_first = false;
-                            string __tmp35Line = __tmp35Reader.ReadLine();
-                            if (__tmp35Line == null)
-                            {
-                                __tmp35Line = "";
-                            }
-                            __out.Append(__tmp33Prefix);
-                            __out.Append(__tmp35Line);
-                            __out.Append(__tmp34Suffix);
-                            __out.AppendLine(); //855:51
-                        }
-                    }
-                    __out.Append("     */"); //856:1
-                    __out.AppendLine(); //856:8
-                    string __tmp36Prefix = "    public "; //857:1
-                    string __tmp37Suffix = "(Iterable<ModelPropertyInitializer> initializers) {"; //857:51
-                    StringBuilder __tmp38 = new StringBuilder();
-                    __tmp38.Append(cls.JavaName());
-                    using(StreamReader __tmp38Reader = new StreamReader(this.__ToStream(__tmp38.ToString())))
-                    {
-                        bool __tmp38_first = true;
-                        while(__tmp38_first || !__tmp38Reader.EndOfStream)
-                        {
-                            __tmp38_first = false;
-                            string __tmp38Line = __tmp38Reader.ReadLine();
-                            if (__tmp38Line == null)
-                            {
-                                __tmp38Line = "";
-                            }
-                            __out.Append(__tmp36Prefix);
-                            __out.Append(__tmp38Line);
-                        }
-                    }
-                    string __tmp39Line = " create"; //857:28
-                    __out.Append(__tmp39Line);
+                    string __tmp37Line = "() {"; //850:51
+                    if (__tmp37Line != null) __out.Append(__tmp37Line);
+                    __out.AppendLine(false); //850:55
+                    string __tmp39Line = "		return this.create"; //851:1
+                    if (__tmp39Line != null) __out.Append(__tmp39Line);
                     StringBuilder __tmp40 = new StringBuilder();
                     __tmp40.Append(cls.JavaName());
                     using(StreamReader __tmp40Reader = new StreamReader(this.__ToStream(__tmp40.ToString())))
                     {
                         bool __tmp40_first = true;
-                        while(__tmp40_first || !__tmp40Reader.EndOfStream)
+                        bool __tmp40_last = __tmp40Reader.EndOfStream;
+                        while(__tmp40_first || !__tmp40_last)
                         {
                             __tmp40_first = false;
                             string __tmp40Line = __tmp40Reader.ReadLine();
-                            if (__tmp40Line == null)
-                            {
-                                __tmp40Line = "";
-                            }
-                            __out.Append(__tmp40Line);
-                            __out.Append(__tmp37Suffix);
-                            __out.AppendLine(); //857:102
+                            __tmp40_last = __tmp40Reader.EndOfStream;
+                            if (__tmp40Line != null) __out.Append(__tmp40Line);
+                            if (!__tmp40_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp41Prefix = "		"; //858:1
-                    string __tmp42Suffix = "Impl();"; //858:53
-                    StringBuilder __tmp43 = new StringBuilder();
-                    __tmp43.Append(cls.JavaName());
-                    using(StreamReader __tmp43Reader = new StreamReader(this.__ToStream(__tmp43.ToString())))
+                    string __tmp41Line = "(null);"; //851:37
+                    if (__tmp41Line != null) __out.Append(__tmp41Line);
+                    __out.AppendLine(false); //851:44
+                    __out.Append("	}"); //852:1
+                    __out.AppendLine(false); //852:3
+                    __out.Append("    /**"); //854:1
+                    __out.AppendLine(false); //854:8
+                    string __tmp43Line = "     * Creates a new instance of "; //855:1
+                    if (__tmp43Line != null) __out.Append(__tmp43Line);
+                    StringBuilder __tmp44 = new StringBuilder();
+                    __tmp44.Append(cls.JavaName());
+                    using(StreamReader __tmp44Reader = new StreamReader(this.__ToStream(__tmp44.ToString())))
                     {
-                        bool __tmp43_first = true;
-                        while(__tmp43_first || !__tmp43Reader.EndOfStream)
+                        bool __tmp44_first = true;
+                        bool __tmp44_last = __tmp44Reader.EndOfStream;
+                        while(__tmp44_first || !__tmp44_last)
                         {
-                            __tmp43_first = false;
-                            string __tmp43Line = __tmp43Reader.ReadLine();
-                            if (__tmp43Line == null)
-                            {
-                                __tmp43Line = "";
-                            }
-                            __out.Append(__tmp41Prefix);
-                            __out.Append(__tmp43Line);
+                            __tmp44_first = false;
+                            string __tmp44Line = __tmp44Reader.ReadLine();
+                            __tmp44_last = __tmp44Reader.EndOfStream;
+                            if (__tmp44Line != null) __out.Append(__tmp44Line);
+                            if (!__tmp44_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp44Line = " result = new "; //858:19
-                    __out.Append(__tmp44Line);
-                    StringBuilder __tmp45 = new StringBuilder();
-                    __tmp45.Append(cls.JavaFullName());
-                    using(StreamReader __tmp45Reader = new StreamReader(this.__ToStream(__tmp45.ToString())))
+                    string __tmp45Line = "."; //855:50
+                    if (__tmp45Line != null) __out.Append(__tmp45Line);
+                    __out.AppendLine(false); //855:51
+                    __out.Append("     */"); //856:1
+                    __out.AppendLine(false); //856:8
+                    string __tmp47Line = "    public "; //857:1
+                    if (__tmp47Line != null) __out.Append(__tmp47Line);
+                    StringBuilder __tmp48 = new StringBuilder();
+                    __tmp48.Append(cls.JavaName());
+                    using(StreamReader __tmp48Reader = new StreamReader(this.__ToStream(__tmp48.ToString())))
                     {
-                        bool __tmp45_first = true;
-                        while(__tmp45_first || !__tmp45Reader.EndOfStream)
+                        bool __tmp48_first = true;
+                        bool __tmp48_last = __tmp48Reader.EndOfStream;
+                        while(__tmp48_first || !__tmp48_last)
                         {
-                            __tmp45_first = false;
-                            string __tmp45Line = __tmp45Reader.ReadLine();
-                            if (__tmp45Line == null)
-                            {
-                                __tmp45Line = "";
-                            }
-                            __out.Append(__tmp45Line);
-                            __out.Append(__tmp42Suffix);
-                            __out.AppendLine(); //858:60
+                            __tmp48_first = false;
+                            string __tmp48Line = __tmp48Reader.ReadLine();
+                            __tmp48_last = __tmp48Reader.EndOfStream;
+                            if (__tmp48Line != null) __out.Append(__tmp48Line);
+                            if (!__tmp48_last) __out.AppendLine(true);
                         }
                     }
+                    string __tmp49Line = " create"; //857:28
+                    if (__tmp49Line != null) __out.Append(__tmp49Line);
+                    StringBuilder __tmp50 = new StringBuilder();
+                    __tmp50.Append(cls.JavaName());
+                    using(StreamReader __tmp50Reader = new StreamReader(this.__ToStream(__tmp50.ToString())))
+                    {
+                        bool __tmp50_first = true;
+                        bool __tmp50_last = __tmp50Reader.EndOfStream;
+                        while(__tmp50_first || !__tmp50_last)
+                        {
+                            __tmp50_first = false;
+                            string __tmp50Line = __tmp50Reader.ReadLine();
+                            __tmp50_last = __tmp50Reader.EndOfStream;
+                            if (__tmp50Line != null) __out.Append(__tmp50Line);
+                            if (!__tmp50_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp51Line = "(Iterable<ModelPropertyInitializer> initializers) {"; //857:51
+                    if (__tmp51Line != null) __out.Append(__tmp51Line);
+                    __out.AppendLine(false); //857:102
+                    string __tmp52Prefix = "		"; //858:1
+                    StringBuilder __tmp53 = new StringBuilder();
+                    __tmp53.Append(cls.JavaName());
+                    using(StreamReader __tmp53Reader = new StreamReader(this.__ToStream(__tmp53.ToString())))
+                    {
+                        bool __tmp53_first = true;
+                        bool __tmp53_last = __tmp53Reader.EndOfStream;
+                        while(__tmp53_first || !__tmp53_last)
+                        {
+                            __tmp53_first = false;
+                            string __tmp53Line = __tmp53Reader.ReadLine();
+                            __tmp53_last = __tmp53Reader.EndOfStream;
+                            __out.Append(__tmp52Prefix);
+                            if (__tmp53Line != null) __out.Append(__tmp53Line);
+                            if (!__tmp53_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp54Line = " result = new "; //858:19
+                    if (__tmp54Line != null) __out.Append(__tmp54Line);
+                    StringBuilder __tmp55 = new StringBuilder();
+                    __tmp55.Append(cls.JavaFullName());
+                    using(StreamReader __tmp55Reader = new StreamReader(this.__ToStream(__tmp55.ToString())))
+                    {
+                        bool __tmp55_first = true;
+                        bool __tmp55_last = __tmp55Reader.EndOfStream;
+                        while(__tmp55_first || !__tmp55_last)
+                        {
+                            __tmp55_first = false;
+                            string __tmp55Line = __tmp55Reader.ReadLine();
+                            __tmp55_last = __tmp55Reader.EndOfStream;
+                            if (__tmp55Line != null) __out.Append(__tmp55Line);
+                            if (!__tmp55_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp56Line = "Impl();"; //858:53
+                    if (__tmp56Line != null) __out.Append(__tmp56Line);
+                    __out.AppendLine(false); //858:60
                     __out.Append("		if (initializers != null) {"); //859:1
-                    __out.AppendLine(); //859:30
+                    __out.AppendLine(false); //859:30
                     __out.Append("			this.init((ModelObject)result, initializers);"); //860:1
-                    __out.AppendLine(); //860:49
+                    __out.AppendLine(false); //860:49
                     __out.Append("		}"); //861:1
-                    __out.AppendLine(); //861:4
+                    __out.AppendLine(false); //861:4
                     __out.Append("		return result;"); //862:1
-                    __out.AppendLine(); //862:17
+                    __out.AppendLine(false); //862:17
                     __out.Append("	}"); //863:1
-                    __out.AppendLine(); //863:3
+                    __out.AppendLine(false); //863:3
                 }
             }
             __out.Append("}"); //866:1
-            __out.AppendLine(); //866:2
-            __out.AppendLine(); //867:1
+            __out.AppendLine(false); //866:2
+            __out.AppendLine(true); //867:1
             return __out.ToString();
         }
 
+        private class StringBuilder
+        {
+            private bool newLine;
+            private System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            
+            public StringBuilder()
+            {
+                this.newLine = true;
+            }
+            
+            public void Append(string str)
+            {
+                if (str == null) return;
+                if (!string.IsNullOrEmpty(str))
+                {
+                    this.newLine = false;
+                }
+                builder.Append(str);
+            }
+            
+            public void Append(object obj)
+            {
+                if (obj == null) return;
+                string text = obj.ToString();
+                this.Append(text);
+            }
+            
+            public void AppendLine(bool force = false)
+            {
+                if (force || !this.newLine)
+                {
+                    builder.AppendLine();
+                    this.newLine = true;
+                }
+            }
+            
+            public override string ToString()
+            {
+                return builder.ToString();
+            }
+        }
     }
 }
+

@@ -35,7 +35,7 @@ end template
 
 template GenerateAnnotations(MetaAnnotatedElement elem)
 [loop(elem->annot:Annotations)]
-@[annot.Name]
+@metadslx.core.[annot.Name]
 [end loop]
 end template
 

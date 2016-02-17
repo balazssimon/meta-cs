@@ -1300,10 +1300,6 @@ namespace MetaDslx.Compiler
                         startIndex = 1;
                     }
                 }
-                if (startIndex == 0)
-                {
-                    WriteLine("string {0} = string.Empty;", prefix);
-                }
                 for (int i = startIndex; i <= endIndex; ++i)
                 {
                     var child = context.children[i];
@@ -1345,7 +1341,7 @@ namespace MetaDslx.Compiler
                             }
                         }
                     }
-                    if (i == startIndex)
+                    if (startIndex > 0 && i == startIndex)
                     {
                         WriteLine("__out.Append({0});", prefix);
                     }

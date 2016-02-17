@@ -124,6 +124,13 @@ namespace MetaDslx.TempConsole
                 //*/
                 /*
                 Console.WriteLine("----");
+                CompileGenerator(
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelJavaGenerator.mgen",
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelJavaGenerator.cs"
+                    );
+                //*/                
+                /*
+                Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel1.cs"
