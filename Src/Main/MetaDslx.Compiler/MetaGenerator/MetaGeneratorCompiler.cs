@@ -1090,7 +1090,7 @@ namespace MetaDslx.Compiler
         public override object VisitLambdaExpression(MetaGeneratorParser.LambdaExpressionContext context)
         {
             Visit(context.GetChild(0));
-            Write(" {0} ", context.GetChild(1).GetText());
+            Write(" => ");
             Visit(context.GetChild(2));
             return null;
         }
