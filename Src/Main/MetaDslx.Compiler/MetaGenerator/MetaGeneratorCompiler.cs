@@ -112,16 +112,6 @@ namespace MetaDslx.Compiler
             if (prc == null || prc.Start == null) return string.Empty;
             return string.Format("//{0}:{1}", prc.Start.Line, prc.Start.Column+1);
         }
-
-        public static Stream ToStream(this string text)
-        {
-            MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
-            writer.Write(text);
-            writer.Flush();
-            stream.Position = 0;
-            return stream;
-        }
     }
 
     internal abstract class MetaGenVisitor : MetaGeneratorParserBaseVisitor<object>
@@ -173,14 +163,16 @@ namespace MetaDslx.Compiler
 
         protected void WriteLine(string text = "")
         {
-            sb.Append(indent);
-            sb.AppendLine(text);
+            this.WriteIndent();
+            this.Write(text);
+            this.AppendLine();
         }
 
         protected void WriteLine(string format, params object[] args)
         {
-            sb.Append(indent);
-            sb.AppendLine(string.Format(format, args));
+            this.WriteIndent();
+            this.Write(format, args);
+            this.AppendLine();
         }
 
         public virtual void Close()
