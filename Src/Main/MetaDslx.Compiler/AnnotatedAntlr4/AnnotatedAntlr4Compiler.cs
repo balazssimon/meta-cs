@@ -610,78 +610,6 @@ namespace MetaDslx.Compiler
             return null;
         }
 
-        private void HandleAutoSymbols(ParserRule rule)
-        {
-            if (rule == null) return;
-            Annotation autoSymbol = rule.Annotations.FirstOrDefault(a => a.Type.Name == "AutoSymbol");
-            if (autoSymbol != null)
-            {
-                rule.Annotations.RemoveAll(a => a.Type.Name == "AutoSymbol");
-                if (rule.Alternatives.Count > 0)
-                {
-                    foreach (var alt in rule.Alternatives)
-                    {
-                        this.CreateSymbolAnnotations(alt);
-                    }
-                }
-                else
-                {
-                    this.CreateSymbolAnnotations(rule);
-                }
-            }
-        }
-
-        private void HandleAutoProperties(ParserRule rule)
-        {
-            if (rule == null) return;
-            Annotation autoSymbol = rule.Annotations.FirstOrDefault(a => a.Type.Name == "AutoProperty");
-            if (autoSymbol != null)
-            {
-                rule.Annotations.RemoveAll(a => a.Type.Name == "AutoProperty");
-                if (rule.Alternatives.Count > 0)
-                {
-                    foreach (var alt in rule.Alternatives)
-                    {
-                        this.CreatePropertyAnnotations(alt);
-                    }
-                }
-                else
-                {
-                    this.CreatePropertyAnnotations(rule);
-                }
-            }
-        }
-
-        private void CreateSymbolAnnotations(ParserRule rule)
-        {
-            if (rule == null) return;
-            if (!rule.Annotations.Any(a => a.Type.Name == "Symbol"))
-            {
-                AnnotationType symbolType = this.RegisterAnnotationType("Symbol");
-                Annotation symbolAnnot = new Annotation();
-                symbolAnnot.Type = symbolType;
-                symbolAnnot.Value = this.ToPascalCase(rule.Name);
-                rule.Annotations.Add(symbolAnnot);
-            }
-            this.CreatePropertyAnnotations(rule);
-        }
-
-        private void CreatePropertyAnnotations(ParserRule rule)
-        {
-            foreach (var elem in rule.Elements)
-            {
-                if (elem.IsParserRule)
-                {
-                    if (elem.Annotations.Any(a => a.Type.Name == "Property")) continue;
-                    AnnotationType propType = this.RegisterAnnotationType("Property");
-                    Annotation propAnnot = new Annotation();
-                    propAnnot.Type = propType;
-                    propAnnot.Value = this.ToPascalCase(elem.Name);
-                    elem.Annotations.Add(propAnnot);
-                }
-            }
-        }
-
         public override object VisitAtom(AnnotatedAntlr4Parser.AtomContext context)
         {
             String name = null;
@@ -759,6 +687,78 @@ namespace MetaDslx.Compiler
             base.VisitAtom(context);
             this.currentElement = null;
             return null;
+        }
+
+        private void HandleAutoSymbols(ParserRule rule)
+        {
+            if (rule == null) return;
+            Annotation autoSymbol = rule.Annotations.FirstOrDefault(a => a.Type.Name == "AutoSymbol");
+            if (autoSymbol != null)
+            {
+                rule.Annotations.RemoveAll(a => a.Type.Name == "AutoSymbol");
+                if (rule.Alternatives.Count > 0)
+                {
+                    foreach (var alt in rule.Alternatives)
+                    {
+                        this.CreateSymbolAnnotations(alt);
+                    }
+                }
+                else
+                {
+                    this.CreateSymbolAnnotations(rule);
+                }
+            }
+        }
+
+        private void HandleAutoProperties(ParserRule rule)
+        {
+            if (rule == null) return;
+            Annotation autoSymbol = rule.Annotations.FirstOrDefault(a => a.Type.Name == "AutoProperty");
+            if (autoSymbol != null)
+            {
+                rule.Annotations.RemoveAll(a => a.Type.Name == "AutoProperty");
+                if (rule.Alternatives.Count > 0)
+                {
+                    foreach (var alt in rule.Alternatives)
+                    {
+                        this.CreatePropertyAnnotations(alt);
+                    }
+                }
+                else
+                {
+                    this.CreatePropertyAnnotations(rule);
+                }
+            }
+        }
+
+        private void CreateSymbolAnnotations(ParserRule rule)
+        {
+            if (rule == null) return;
+            if (!rule.Annotations.Any(a => a.Type.Name == "Symbol"))
+            {
+                AnnotationType symbolType = this.RegisterAnnotationType("Symbol");
+                Annotation symbolAnnot = new Annotation();
+                symbolAnnot.Type = symbolType;
+                symbolAnnot.Value = this.ToPascalCase(rule.Name);
+                rule.Annotations.Add(symbolAnnot);
+            }
+            this.CreatePropertyAnnotations(rule);
+        }
+
+        private void CreatePropertyAnnotations(ParserRule rule)
+        {
+            foreach (var elem in rule.Elements)
+            {
+                if (elem.IsParserRule)
+                {
+                    if (elem.Annotations.Any(a => a.Type.Name == "Property")) continue;
+                    AnnotationType propType = this.RegisterAnnotationType("Property");
+                    Annotation propAnnot = new Annotation();
+                    propAnnot.Type = propType;
+                    propAnnot.Value = this.ToPascalCase(elem.Name);
+                    elem.Annotations.Add(propAnnot);
+                }
+            }
         }
 
         private AnnotationType RegisterAnnotationType(string name)
@@ -855,55 +855,6 @@ namespace MetaDslx.Compiler
             }
         }
 
-        public string Generate(string targetNamespace)
-        {
-            this.sb = new StringBuilder();
-            this.indent = "";
-
-            WriteLine("using System;");
-            WriteLine("using System.Collections.Generic;");
-            WriteLine("using System.Linq;");
-            WriteLine("using System.Text;");
-            WriteLine("using System.Threading.Tasks;");
-            WriteLine("using MetaDslx.Core;");
-            WriteLine("using MetaDslx.Compiler;");
-            WriteLine("using Antlr4.Runtime;");
-            WriteLine("using Antlr4.Runtime.Tree;");
-            WriteLine("");
-            WriteLine("// The variable '...' is assigned but its value is never used");
-            WriteLine("#pragma warning disable 0219");
-            WriteLine("");
-            if (!string.IsNullOrWhiteSpace(targetNamespace))
-            {
-                WriteLine("namespace {0}", targetNamespace);
-                WriteLine("{");
-                IncIndent();
-            }
-            if (this.compiler.IsParser && !string.IsNullOrWhiteSpace(this.parserHeader))
-            {
-                WriteLine(this.parserHeader);
-            }
-            else if (this.compiler.IsLexer && !string.IsNullOrWhiteSpace(this.lexerHeader))
-            {
-                WriteLine(this.lexerHeader);
-            }
-            this.GenerateAnnotatorVisitor();
-            if (this.compiler.IsParser)
-            {
-                this.GeneratePropertyEvaluator();
-                if (this.generateCompiler || this.generateCompilerBase)
-                {
-                    this.GenerateCompiler();
-                }
-            }
-            if (!string.IsNullOrWhiteSpace(targetNamespace))
-            {
-                DecIndent();
-                WriteLine("}");
-            }
-            return this.sb.ToString();
-        }
-
         internal protected string ToAnnotationName(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) return name;
@@ -938,7 +889,7 @@ namespace MetaDslx.Compiler
                 value = value.Substring(1, value.Length - 2);
                 for (int i = 0; i < value.Length; ++i)
                 {
-                    if (i+1 < value.Length && value[i] == '\\')
+                    if (i + 1 < value.Length && value[i] == '\\')
                     {
                         sb.Append(value[i]);
                         ++i;
@@ -946,7 +897,7 @@ namespace MetaDslx.Compiler
                     }
                     else if (value[i] == '"')
                     {
-                        sb.Append("\\"+value[i]);
+                        sb.Append("\\" + value[i]);
                     }
                     else
                     {
@@ -1049,6 +1000,55 @@ namespace MetaDslx.Compiler
                 }
             }
             return value;
+        }
+
+        public string Generate(string targetNamespace)
+        {
+            this.sb = new StringBuilder();
+            this.indent = "";
+
+            WriteLine("using System;");
+            WriteLine("using System.Collections.Generic;");
+            WriteLine("using System.Linq;");
+            WriteLine("using System.Text;");
+            WriteLine("using System.Threading.Tasks;");
+            WriteLine("using MetaDslx.Core;");
+            WriteLine("using MetaDslx.Compiler;");
+            WriteLine("using Antlr4.Runtime;");
+            WriteLine("using Antlr4.Runtime.Tree;");
+            WriteLine("");
+            WriteLine("// The variable '...' is assigned but its value is never used");
+            WriteLine("#pragma warning disable 0219");
+            WriteLine("");
+            if (!string.IsNullOrWhiteSpace(targetNamespace))
+            {
+                WriteLine("namespace {0}", targetNamespace);
+                WriteLine("{");
+                IncIndent();
+            }
+            if (this.compiler.IsParser && !string.IsNullOrWhiteSpace(this.parserHeader))
+            {
+                WriteLine(this.parserHeader);
+            }
+            else if (this.compiler.IsLexer && !string.IsNullOrWhiteSpace(this.lexerHeader))
+            {
+                WriteLine(this.lexerHeader);
+            }
+            this.GenerateAnnotatorVisitor();
+            if (this.compiler.IsParser)
+            {
+                this.GeneratePropertyEvaluator();
+                if (this.generateCompiler || this.generateCompilerBase)
+                {
+                    this.GenerateCompiler();
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(targetNamespace))
+            {
+                DecIndent();
+                WriteLine("}");
+            }
+            return this.sb.ToString();
         }
 
         private void GenerateAnnotatorVisitor()
@@ -1327,50 +1327,7 @@ namespace MetaDslx.Compiler
                 WriteLine("{");
                 IncIndent();
                 WriteLine("List<object> annotList = null;");
-                /*if (this.dynamicAnnotations.Count > 0)
-                {
-                    WriteLine("List<object> staticAnnotList = null;");
-                    WriteLine("if (this.tokenAnnotations.TryGetValue(token.Type, out staticAnnotList))");
-                    WriteLine("{");
-                    IncIndent();
-                    WriteLine("annotList = new List<object>(staticAnnotList);");
-                    DecIndent();
-                    WriteLine("}");
-                    WriteLine("switch (token.Type)");
-                    WriteLine("{");
-                    IncIndent();
-                    foreach (var token in currentGrammar.LexerRules)
-                    {
-                        if (token.Annotations.Count(a => a.Type.IsDynamic) > 0)
-                        {
-                            WriteLine("case {0}.{1}:", this.lexerName, token.Name);
-                            IncIndent();
-                            WriteLine("if (annotList == null) annotList = new List<object>();");
-                            foreach (var annot in token.Annotations)
-                            {
-                                if (annot.Type.IsDynamic)
-                                {
-                                    string tmp = this.GetTmpVariable();
-                                    this.GenerateAnnotationCreation(annot, tmp, true);
-                                    WriteLine("annotList.Add({0});", tmp);
-                                }
-                            }
-                            WriteLine("break;");
-                            DecIndent();
-                        }
-                    }
-                    WriteLine("default:");
-                    IncIndent();
-                    WriteLine("break;");
-                    DecIndent();
-                    DecIndent();
-                    WriteLine("}");
-                    WriteLine("if (annotList != null)");
-                }
-                else
-                {*/
-                    WriteLine("if (this.tokenAnnotations.TryGetValue(token.Type, out annotList))");
-                //}
+                WriteLine("if (this.tokenAnnotations.TryGetValue(token.Type, out annotList))");
                 WriteLine("{");
                 IncIndent();
                 WriteLine("List<object> treeAnnotList = null;");
@@ -2186,18 +2143,16 @@ namespace MetaDslx.Compiler
                 return Antlr4TextSpan;
             }
 
-            private List<string> GetSelectors(AnnotatedAntlr4PropertiesParser.QualifiedPropertyContext qprop)
+            private ParserRuleElement GetElement(string name)
             {
-                List<string> result = new List<string>();
-                AnnotatedAntlr4PropertiesParser.PropertySelectorContext[] propSels = qprop.propertySelector();
-                foreach (var propSel in propSels)
+                foreach (var elem in this.ParserRule.Elements)
                 {
-                    if (propSel.selector != null)
+                    if (elem.Name == name)
                     {
-                        result.Add(propSel.selector.GetText());
+                        return elem;
                     }
                 }
-                return result;
+                return null;
             }
 
             public override object VisitPropertyAssignment(AnnotatedAntlr4PropertiesParser.PropertyAssignmentContext context)
@@ -2468,17 +2423,6 @@ namespace MetaDslx.Compiler
                 return null;
             }
 
-            private ParserRuleElement GetElement(string name)
-            {
-                foreach (var elem in this.ParserRule.Elements)
-                {
-                    if (elem.Name == name)
-                    {
-                        return elem;
-                    }
-                }
-                return null;
-            }
         }
 
         private static readonly string[] reservedNames =
