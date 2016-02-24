@@ -133,7 +133,7 @@ namespace MetaDslx.Compiler
                         {
                             if (line.EndsWith(token))
                             {
-                                line = line.Substring(token.Length);
+                                line = line.Substring(0, line.Length - token.Length);
                                 break;
                             }
                         }
