@@ -469,7 +469,7 @@ namespace MetaDslx.Compiler
                 typeof(QualifiedNameAnnotation),
             };
 
-        public MetaCompiler Compiler { get; private set; }
+        protected MetaCompiler Compiler { get; private set; }
         protected ModelFactory ModelFactory { get; private set; }
 
         public MetaCompilerPhase(MetaCompiler compiler)
@@ -728,7 +728,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        public virtual void VisitChildren(IParseTree node)
+        protected virtual void VisitChildren(IParseTree node)
         {
             if (!this.IsVisitBoundary(node))
             {
@@ -746,14 +746,10 @@ namespace MetaDslx.Compiler
 
         protected virtual void HandleProperties(IParseTree node)
         {
-            //ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
-            //if (va == null)
+            List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).Where(pa => !string.IsNullOrEmpty(pa.Name) && !pa.HasValue).ToList();
+            foreach (var pa in pas)
             {
-                List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).Where(pa => !string.IsNullOrEmpty(pa.Name) && !pa.HasValue).ToList();
-                foreach (var pa in pas)
-                {
-                    this.AddProperty(node, pa);
-                }
+                this.AddProperty(node, pa);
             }
         }
 
@@ -940,7 +936,7 @@ namespace MetaDslx.Compiler
             if (symbol == null) return false;
             if (propertyAnnotation == null) return false;
             bool symbolOK = false;
-            if (propertyAnnotation.SymbolTypes == null || propertyAnnotation.SymbolTypes.Count == 0)
+            if (propertyAnnotation.SymbolTypes.Count == 0)
             {
                 symbolOK = true;
             }
@@ -957,7 +953,7 @@ namespace MetaDslx.Compiler
             }
             if (symbolOK)
             {
-                ModelObject mo = symbol as ModelObject;
+                ModelObject mo = symbol;
                 ModelProperty prop = mo.MFindProperties(propertyAnnotation.Name).FirstOrDefault();
                 if (prop != null)
                 {
@@ -1094,7 +1090,7 @@ namespace MetaDslx.Compiler
             if (propertyAnnotation == null) return false;
             ModelProperty prop = symbol.MFindProperty(propertyAnnotation.Name);
             if (prop == null) return false;
-            return prop.Annotations.Any(a => a is NameAttribute);
+            return prop.IsMetaName();
         }
     }
 
