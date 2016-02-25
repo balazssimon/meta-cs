@@ -151,6 +151,9 @@ end template
 template GenerateInterfaceImpl(MetaModel model, MetaClass cls)
 package [cls.Namespace.JavaName()];
 ^
+[if(hasloop(cls->prop:GetAllProperties() where prop.Type is MetaCollectionType))]
+@SuppressWarnings("unchecked")
+[end if]
 class [cls.JavaImplName()] extends metadslx.core.ModelObject implements [cls.JavaFullName()] {
     static {
         [cls.Model.JavaFullDescriptorName()].staticInit();
@@ -634,7 +637,7 @@ public final class [model.CSharpInstancesName()]
 	}
 ^
 	private static void init() {
-	[loop(i:Enumerable.Range(0, Properties.FunctionCount))]
+	[loop(i:Enumerable.Range(0, Properties.FunctionCount+1))]
 		init[i]();
 	[end loop]
 	}

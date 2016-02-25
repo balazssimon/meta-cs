@@ -319,7 +319,6 @@ namespace MetaDslx.Core
                 propertyCache = new PropertyCache();
                 ModelProperty.cachedProperties.Add(type, propertyCache);
                 HashSet<ModelProperty> allProperties = new HashSet<ModelProperty>();
-                HashSet<ModelProperty> distinctProperties = new HashSet<ModelProperty>();
                 Dictionary<string, ModelProperty> propertyList;
                 if (ModelProperty.properties.TryGetValue(type, out propertyList))
                 {

@@ -1147,24 +1147,6 @@ namespace MetaDslx.Compiler
             return null;
         }
 
-        private string GetFunctionCallName(MetaGeneratorParser.TemplateStatementStartEndContext statementStartEnd)
-        {
-            MetaGeneratorParser.TemplateStatementContext statement = statementStartEnd.templateStatement();
-            if (statement != null && statement.expressionStatement() != null)
-            {
-                MetaGeneratorParser.ExpressionContext expression = statement.expressionStatement().expression();
-                if (expression is MetaGeneratorParser.FunctionCallExpressionContext)
-                {
-                    MetaGeneratorParser.FunctionCallExpressionContext call = expression as MetaGeneratorParser.FunctionCallExpressionContext;
-                    if (call.expression() is MetaGeneratorParser.IdentifierExpressionContext)
-                    {
-                        return call.expression().GetText();
-                    }
-                }
-            }
-            return null;
-        }
-
         private bool IsTemplateOutputExpression(MetaGeneratorParser.TemplateStatementStartEndContext statementStartEnd)
         {
             MetaGeneratorParser.TemplateStatementContext statement = statementStartEnd.templateStatement();
