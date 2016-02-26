@@ -49,12 +49,23 @@ namespace MetaDslx.Core
         public void EvalLazyValues()
         {
             int oldCount = -1;
-            while (oldCount != this.instances.Count)
+            int uninitialized = -1;
+            int oldUninitialized = 0;
+            while (oldCount != this.instances.Count || oldUninitialized != uninitialized)
             {
                 oldCount = this.instances.Count;
                 foreach (var mo in this.CachedInstances)
                 {
                     mo.MEvalLazyValues();
+                }
+                oldUninitialized = uninitialized;
+                uninitialized = 0;
+                foreach (ModelObject mo in this.CachedInstances)
+                {
+                    if (mo.MHasUninitializedValue())
+                    {
+                        ++uninitialized;
+                    }
                 }
             }
         }

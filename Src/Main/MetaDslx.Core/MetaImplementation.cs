@@ -149,22 +149,6 @@ namespace MetaDslx.Core
                         MetaBuiltInFunctions.functions.Add(MetaInstance.ToDefinitionList);
                         MetaBuiltInFunctions.functions.Add(MetaInstance.Bind1);
                         MetaBuiltInFunctions.functions.Add(MetaInstance.Bind2);
-                        /*
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.Resolve1);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.Resolve2);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.ResolveName1);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.ResolveName2);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.ResolveType1);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.ResolveType2);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.Bind1);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.Bind2);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.Bind3);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.Bind4);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.SelectOfType1);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.SelectOfType2);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.SelectOfName1);
-                        MetaBuiltInFunctions.functions.Add(MetaInstance.SelectOfName2);
-                        */
                     }
                 }
                 return MetaBuiltInFunctions.functions;
@@ -267,6 +251,7 @@ namespace MetaDslx.Core
             ((ModelObject)type).MLazySet(MetaDescriptor.MetaFunctionType.ParameterTypesProperty, new Lazy<object>(() => new ModelMultiList<MetaType>((ModelObject)type, MetaDescriptor.MetaFunctionType.ParameterTypesProperty, @this.Parameters.Select(p => new Lazy<object>(() => p.Type))), LazyThreadSafetyMode.PublicationOnly));
             ((ModelObject)type).MLazySet(MetaDescriptor.MetaFunctionType.ReturnTypeProperty, new Lazy<object>(() => @this.ReturnType, LazyThreadSafetyMode.PublicationOnly));
             ((ModelObject)@this).MSet(MetaDescriptor.MetaFunction.TypeProperty, type);
+            //((ModelObject)type).MLazySet(MetaDescriptor.MetaFunctionType.ReturnTypeProperty, new Lazy<object>(() => @this.ReturnType, LazyThreadSafetyMode.PublicationOnly));
         }
 
         public override void MetaUnaryExpression(MetaUnaryExpression @this)

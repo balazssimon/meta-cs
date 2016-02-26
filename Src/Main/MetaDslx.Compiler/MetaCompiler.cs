@@ -1555,20 +1555,6 @@ namespace MetaDslx.Compiler
             {
                 if (tua != null)
                 {
-                    /*
-                    List<IParseTree> names = this.GetNames(node);
-                    List<string> nameStrings = names.Select(n => this.GetName(n)).ToList();
-                    ModelObject activeScopeSymbol = this.ActiveScopeSymbol;
-                    ModelObject activeSymbol = this.ActiveSymbol;
-                    PropertyAnnotation activeProperty = this.ActiveProperty;
-                    Func<ModelObject> lazySymbol =
-                        () =>
-                            this.Compiler.BindingProvider.Bind(null,
-                            this.FilterByTypes(
-                                this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Type, nameStrings, new ResolutionInfo() { Node = node }, tua.ResolveFlags),
-                                tua.SymbolTypes),
-                            new BindingInfo() { Node = node });
-                    */
                     List<IParseTree> names = this.GetNames(node);
                     ModelObject activeScopeSymbol = this.ActiveScopeSymbol;
                     ModelObject activeSymbol = this.ActiveSymbol;
@@ -1587,18 +1573,6 @@ namespace MetaDslx.Compiler
                 }
                 if (nua != null)
                 {
-                    /*List<IParseTree> names = this.GetNames(node);
-                    List<string> nameStrings = names.Select(n => this.GetName(n)).ToList();
-                    ModelObject activeScopeSymbol = this.ActiveScopeSymbol;
-                    ModelObject activeSymbol = this.ActiveSymbol;
-                    PropertyAnnotation activeProperty = this.ActiveProperty;
-                    Func<ModelObject> lazySymbol =
-                        () =>
-                            this.Compiler.BindingProvider.Bind(null,
-                            this.FilterByTypes(
-                                this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Name, nameStrings, new ResolutionInfo() { Node = node }, nua.ResolveFlags),
-                                nua.SymbolTypes),
-                            new BindingInfo() { Node = node });*/
                     List<IParseTree> names = this.GetNames(node);
                     ModelObject activeScopeSymbol = this.ActiveScopeSymbol;
                     ModelObject activeSymbol = this.ActiveSymbol;

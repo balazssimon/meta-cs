@@ -1878,12 +1878,7 @@ namespace MetaDslx.Compiler
             WriteLine("{0}PropertyEvaluator propertyEvaluator = new {0}PropertyEvaluator(this);", this.parserName);
             WriteLine("propertyEvaluator.Visit(this.ParseTree);");
             WriteLine();
-            WriteLine("foreach (var symbol in this.Data.GetSymbols())");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("symbol.MEvalLazyValues();");
-            DecIndent();
-            WriteLine("}");
+            WriteLine("this.Model.EvalLazyValues();");
             WriteLine("foreach (var symbol in this.Data.GetSymbols())");
             WriteLine("{");
             IncIndent();

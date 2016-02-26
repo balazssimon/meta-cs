@@ -313,15 +313,17 @@ namespace MetaDslx.Core
 
         public void AddMessage(Severity severity, string message, string fileName, ModelObject symbol, bool isLog = false)
         {
+            bool added = false;
             IModelCompiler compiler = ModelCompilerContext.Current;
             if (compiler != null)
             {
                 foreach (var textSpan in compiler.NameProvider.GetSymbolTextSpans(symbol))
                 {
                     this.AddMessage(severity, message, fileName, textSpan, isLog);
+                    added = true;
                 }
             }
-            else
+            if (!added)
             {
                 this.AddMessage(severity, message, fileName, new TextSpan(), isLog);
             }
@@ -805,6 +807,7 @@ namespace MetaDslx.Core
 
         public MetaType GetTypeOf(object value)
         {
+            if (value == null) return MetaInstance.Object;
             ModelObject symbol = value as ModelObject;
             if (symbol != null) return this.GetTypeOf(symbol);
             if (value is string) return MetaInstance.String;
@@ -859,7 +862,7 @@ namespace MetaDslx.Core
 
     public class DefaultResolutionProvider : IResolutionProvider
     {
-        public virtual ModelObject GetParentScope(ModelObject obj)
+        public virtual ModelObject GetParentScope(ModelObject symbol)
         {
             IModelCompiler compiler = ModelCompilerContext.Current;
             ModelObject result = null;
@@ -867,22 +870,22 @@ namespace MetaDslx.Core
             {
                 result = compiler.GlobalScope;
             }
-            if (obj != null)
+            if (symbol != null)
             {
-                obj = obj.MParent;
+                symbol = symbol.MParent;
             }
-            while(obj != null && !obj.IsMetaScope())
+            while(symbol != null && !symbol.IsMetaScope())
             {
-                obj = obj.MParent;
+                symbol = symbol.MParent;
             }
-            if (obj != null)
+            if (symbol != null)
             {
-                result = obj;
+                result = symbol;
             }
             return result;
         }
 
-        public virtual ModelObject GetCurrentScope(ModelObject obj)
+        public virtual ModelObject GetCurrentScope(ModelObject symbol)
         {
             IModelCompiler compiler = ModelCompilerContext.Current;
             ModelObject result = null;
@@ -890,18 +893,18 @@ namespace MetaDslx.Core
             {
                 result = compiler.GlobalScope;
             }
-            while (obj != null && !obj.IsMetaScope())
+            while (symbol != null && !symbol.IsMetaScope())
             {
-                obj = obj.MParent;
+                symbol = symbol.MParent;
             }
-            if (obj != null)
+            if (symbol != null)
             {
-                result = obj;
+                result = symbol;
             }
             return result;
         }
 
-        public virtual ModelObject GetCurrentTypeScopeOf(ModelObject obj)
+        public virtual ModelObject GetCurrentTypeScopeOf(ModelObject symbol)
         {
             IModelCompiler compiler = ModelCompilerContext.Current;
             ModelObject result = null;
@@ -909,13 +912,13 @@ namespace MetaDslx.Core
             {
                 result = compiler.GlobalScope;
             }
-            while (obj != null && !obj.IsMetaScope() && !obj.IsMetaType())
+            while (symbol != null && !symbol.IsMetaScope() && !symbol.IsMetaType())
             {
-                obj = obj.MParent;
+                symbol = symbol.MParent;
             }
-            if (obj != null)
+            if (symbol != null)
             {
-                result = obj;
+                result = symbol;
             }
             return result;
         }
@@ -1016,7 +1019,7 @@ namespace MetaDslx.Core
             {
                 foreach (var prop in entry.MGetProperties())
                 {
-                    if (prop.Annotations.Any(a => a is NameAttribute))
+                    if (prop.IsMetaName())
                     {
                         if (entry.MIsValueCreated(prop))
                         {
@@ -1060,7 +1063,7 @@ namespace MetaDslx.Core
                         foreach (var scopeEntry in scopeEntryList)
                         {
                             ModelObject scopeEntryObject = scopeEntry as ModelObject;
-                            if (scopeEntryObject != null)
+                            if (scopeEntryObject != null && scopeEntryObject.IsMetaScope())
                             {
                                 result.Add(scopeEntryObject);
                             }
@@ -1069,7 +1072,7 @@ namespace MetaDslx.Core
                     else
                     {
                         ModelObject entryObject = entry as ModelObject;
-                        if (entryObject != null)
+                        if (entryObject != null && entryObject.IsMetaScope())
                         {
                             result.Add(entryObject);
                         }
