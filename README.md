@@ -50,4 +50,4 @@ Installation steps:
 ## Uninstallation
 
 1. In Visual Studio open the **Tools / Extensions and Updates...** menu, look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
-2. Run **uninstall64antlr.bat** on 64-bit systems, or **uninstall32antlr.bat** on 32-bit systems to remove the MetaDslx DLLs from the GAC.
+2. Run **uninstall64antlr.bat** on 64-bit systems, or **uninstall32antlr.bat** on 32-bit systems to remove the ANTLR4 runtime DLL from the GAC.
