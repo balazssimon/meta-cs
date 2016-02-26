@@ -209,10 +209,10 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 	[end if]
 [end if]
 [if (prop.Type is MetaCollectionType)]
-public static final ModelProperty [prop.Name]Property =
+public static final metadslx.core.ModelProperty [prop.Name]Property =
     metadslx.core.ModelProperty.register("[prop.Name]", [prop.Type.JavaNonGenericFullName()].class, [((MetaCollectionType)prop.Type).InnerType.JavaNonGenericFullName()].class, [prop.Class.JavaFullName()].class, [prop.Class.Model.JavaFullName()]Descriptor.[prop.Class.JavaName()].class, metadslx.core.Lazy.create(() -> [prop.Class.Model.JavaFullName()]Instance.[prop.Class.JavaName()]_[prop.Name]Property, true));
 [else]
-public static final ModelProperty [prop.Name]Property =
+public static final metadslx.core.ModelProperty [prop.Name]Property =
     metadslx.core.ModelProperty.register("[prop.Name]", [prop.Type.JavaFullPublicName()].class, null, [prop.Class.JavaFullName()].class, [prop.Class.Model.JavaFullName()]Descriptor.[prop.Class.JavaName()].class, metadslx.core.Lazy.create(() -> [prop.Class.Model.JavaFullName()]Instance.[prop.Class.JavaName()]_[prop.Name]Property, true));
 [end if]
 [end if]
@@ -284,20 +284,20 @@ end function
 
 template GenerateFunctionCall(MetaFunctionCallExpression call)
 [if (call.Definition is MetaGlobalFunction && SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.TypeOf))][GenerateTypeOf(call.Arguments[0])]\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.GetValueType))]ModelCompilerContext.current().getTypeProvider().getTypeOf([GenerateCallArguments(call, "")])\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.GetReturnType))]ModelCompilerContext.current().getTypeProvider().getReturnTypeOf([GenerateCallArguments(call, "(ModelObject)")])\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.CurrentType))]ModelCompilerContext.current().getResolutionProvider().getCurrentTypeScopeOf([GenerateCallArguments(call, "(ModelObject)")])\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.TypeCheck))]ModelCompilerContext.current().getTypeProvider().typeCheck([GenerateCallArguments(call, "(ModelObject)")])\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Balance))]ModelCompilerContext.current().getTypeProvider().balance([GenerateCallArguments(call, "(ModelObject)")])\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Resolve1))]ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo(ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this), ResolveKind.NameOrType, [GenerateExpression(call.Arguments[0])]))\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Resolve2))]ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo((ModelObject)[GenerateExpression(call.Arguments[0])], ResolveKind.NameOrType, [GenerateExpression(call.Arguments[1])]))\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveType1))]ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo(ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this), ResolveKind.Type, [GenerateExpression(call.Arguments[0])]))\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveType2))]ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo((ModelObject)[GenerateExpression(call.Arguments[0])], ResolveKind.Type, [GenerateExpression(call.Arguments[1])]))\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveName1))]ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo(ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this), ResolveKind.Name, [GenerateExpression(call.Arguments[0])]))\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveName2))]ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo((ModelObject)[GenerateExpression(call.Arguments[0])], ResolveKind.Name, [GenerateExpression(call.Arguments[1])]))\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ToDefinitionList))]metadslx.core.BindingInfo.createFromDefinitions((ModelObject)[GenerateExpression(call.Arguments[0])])\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind1))]ModelCompilerContext.current().getBindingProvider().bind(null, [GenerateExpression(call.Arguments[0])])\
-[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind2))]ModelCompilerContext.current().getBindingProvider().bind((ModelObject)[GenerateExpression(call.Arguments[0])], [GenerateExpression(call.Arguments[1])])\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.GetValueType))]metadslx.core.ModelCompilerContext.current().getTypeProvider().getTypeOf([GenerateCallArguments(call, "")])\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.GetReturnType))]metadslx.core.ModelCompilerContext.current().getTypeProvider().getReturnTypeOf([GenerateCallArguments(call, "(metadslx.core.ModelObject)")])\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.CurrentType))]metadslx.core.ModelCompilerContext.current().getResolutionProvider().getCurrentTypeScopeOf([GenerateCallArguments(call, "(metadslx.core.ModelObject)")])\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.TypeCheck))]metadslx.core.ModelCompilerContext.current().getTypeProvider().typeCheck([GenerateCallArguments(call, "(metadslx.core.ModelObject)")])\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Balance))]metadslx.core.ModelCompilerContext.current().getTypeProvider().balance([GenerateCallArguments(call, "(metadslx.core.ModelObject)")])\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Resolve1))]metadslx.core.ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo(metadslx.core.ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this), metadslx.core.ResolveKind.NameOrType, [GenerateExpression(call.Arguments[0])]))\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Resolve2))]metadslx.core.ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo((metadslx.core.ModelObject)[GenerateExpression(call.Arguments[0])], metadslx.core.ResolveKind.NameOrType, [GenerateExpression(call.Arguments[1])]))\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveType1))]metadslx.core.ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo(metadslx.core.ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this), metadslx.core.ResolveKind.Type, [GenerateExpression(call.Arguments[0])]))\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveType2))]metadslx.core.ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo((metadslx.core.ModelObject)[GenerateExpression(call.Arguments[0])], metadslx.core.ResolveKind.Type, [GenerateExpression(call.Arguments[1])]))\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveName1))]metadslx.core.ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo(metadslx.core.ModelCompilerContext.current().getResolutionProvider().getCurrentScope(this), metadslx.core.ResolveKind.Name, [GenerateExpression(call.Arguments[0])]))\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ResolveName2))]metadslx.core.ModelCompilerContext.current().getResolutionProvider().resolve(new metadslx.core.ResolutionInfo((metadslx.core.ModelObject)[GenerateExpression(call.Arguments[0])], metadslx.core.ResolveKind.Name, [GenerateExpression(call.Arguments[1])]))\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.ToDefinitionList))]metadslx.core.BindingInfo.createFromDefinitions((metadslx.core.ModelObject)[GenerateExpression(call.Arguments[0])])\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind1))]metadslx.core.ModelCompilerContext.current().getBindingProvider().bind(null, [GenerateExpression(call.Arguments[0])])\
+[else if (SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.Bind2))]metadslx.core.ModelCompilerContext.current().getBindingProvider().bind((metadslx.core.ModelObject)[GenerateExpression(call.Arguments[0])], [GenerateExpression(call.Arguments[1])])\
 [else][GenerateExpression(call.Expression)]([GenerateCallArguments(call, "")])\
 [end if]
 end template
@@ -310,21 +310,21 @@ template GenerateTypeOf(object expr)
 [switch(expr)]
 [type as MetaPrimitiveType:]
 	[switch(expr.Name)]
-	[case "*none*":]MetaInstance.None\
-	[case "*error*":]MetaInstance.Error\
-	[case "*any*":]MetaInstance.Any\
-	[case "object":]MetaInstance.Object\
-	[case "string":]MetaInstance.String\
-	[case "int":]MetaInstance.Int\
-	[case "long":]MetaInstance.Long\
-	[case "float":]MetaInstance.Float\
-	[case "double":]MetaInstance.Double\
-	[case "byte":]MetaInstance.Byte\
-	[case "bool":]MetaInstance.Bool\
-	[case "void":]MetaInstance.Void\
-	[case "ModelObject":]MetaInstance.ModelObject\
-	[case "DefinitionList":]MetaInstance.DefinitionList\
-	[case "ModelObjectList":]MetaInstance.ModelObjectList\
+	[case "*none*":]metadslx.core.MetaInstance.None\
+	[case "*error*":]metadslx.core.MetaInstance.Error\
+	[case "*any*":]metadslx.core.MetaInstance.Any\
+	[case "object":]metadslx.core.MetaInstance.Object\
+	[case "string":]metadslx.core.MetaInstance.String\
+	[case "int":]metadslx.core.MetaInstance.Int\
+	[case "long":]metadslx.core.MetaInstance.Long\
+	[case "float":]metadslx.core.MetaInstance.Float\
+	[case "double":]metadslx.core.MetaInstance.Double\
+	[case "byte":]metadslx.core.MetaInstance.Byte\
+	[case "bool":]metadslx.core.MetaInstance.Bool\
+	[case "void":]metadslx.core.MetaInstance.Void\
+	[case "ModelObject":]metadslx.core.MetaInstance.ModelObject\
+	[case "DefinitionList":]metadslx.core.MetaInstance.DefinitionList\
+	[case "ModelObjectList":]metadslx.core.MetaInstance.ModelObjectList\
 	[end switch]
 [type as MetaTypeOfExpression:][GenerateTypeOf(expr.TypeReference)]\
 [type as MetaClass:][expr.JavaFullDescriptorName()].getMetaClass()\
@@ -494,7 +494,7 @@ public [cls.JavaImplName()]() {
     [cls.Model.JavaFullImplementationName()].[cls.JavaName()](this);
     [loop(cls->prop:GetAllProperties())]
 		[if (prop.Kind == MetaPropertyKind.Readonly)]
-    if (!this.mIsSet([prop.JavaFullDescriptorName()])) throw new ModelException("Readonly property [model.JavaName()].[prop.Class.JavaName()].[prop.Name]Property was not set in [cls.JavaName()]_[cls.JavaName()]().");
+    if (!this.mIsSet([prop.JavaFullDescriptorName()])) throw new metadslx.core.ModelException("Readonly property [model.JavaName()].[prop.Class.JavaName()].[prop.Name]Property was not set in [cls.JavaName()]_[cls.JavaName()]().");
 		[end if]
 	[end loop]
     this.mMakeDefault();
@@ -823,6 +823,10 @@ end template
 
 template GenerateFactory(MetaModel model)
 package [model.Namespace.JavaName()];
+^
+import metadslx.core.ModelFactory;
+import metadslx.core.ModelObject;
+import metadslx.core.ModelPropertyInitializer;
 ^
 /**
  * Factory class for creating instances of model elements.

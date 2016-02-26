@@ -128,8 +128,8 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelJavaGenerator.mgen",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelJavaGenerator.cs"
                     );
-                //*/                
-                //*
+                //*/
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
@@ -142,6 +142,13 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.java",
                     true
                     );
+                //*/
+                //*
+                Console.WriteLine("----");
+                CompileMeta(
+                    @"k:\VersionControl\soal-java\src\metadslx.soal.runtime\src\main\resources\Soal.mm",
+                    @"Soal.java",
+                    true);
                 //*/
                 /*
                 using (ModelContextScope scope = new ModelContextScope(MetaInstance.Model))
@@ -270,7 +277,8 @@ namespace MetaDslx.TempConsole
                             MetaModelJavaGenerator mmjg = new MetaModelJavaGenerator(model.Instances);
                             string javaSource = mmjg.Generate();
                             writer.WriteLine(javaSource);
-                            string javaDir = @"k:\VersionControl\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
+                            string javaDir = @"k:\VersionControl\soal-java\src\metadslx.soal.runtime\src\generated\java\metadslx\languages\soal\";
+                            //string javaDir = @"k:\VersionControl\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
                             //string javaDir = @"c:\Users\Balazs\Documents\git\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
                             MetaModel mm = (MetaModel)model.Instances.FirstOrDefault(obj => obj is MetaModel);
                             SaveToFile(javaDir + mm.Name + "Descriptor.java", mmjg.GenerateMetaModelDescriptor(mm));
