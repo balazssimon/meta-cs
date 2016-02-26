@@ -3858,10 +3858,7 @@ using MetaDslx.Core;
             MetaModelParserPropertyEvaluator propertyEvaluator = new MetaModelParserPropertyEvaluator(this);
             propertyEvaluator.Visit(this.ParseTree);
             
-            foreach (var symbol in this.Data.GetSymbols())
-            {
-                symbol.MEvalLazyValues();
-            }
+            this.Model.EvalLazyValues();
             foreach (var symbol in this.Data.GetSymbols())
             {
                 if (symbol.MHasUninitializedValue())

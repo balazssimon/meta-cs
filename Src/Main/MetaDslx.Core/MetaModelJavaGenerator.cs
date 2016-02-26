@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelJavaGenerator_648468305;
-    namespace __Hidden_MetaModelJavaGenerator_648468305
+    using __Hidden_MetaModelJavaGenerator_1738811289;
+    namespace __Hidden_MetaModelJavaGenerator_1738811289
     {
         internal static class __Extensions
         {

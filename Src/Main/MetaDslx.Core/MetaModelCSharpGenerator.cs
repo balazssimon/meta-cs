@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelCSharpGenerator_516628686;
-    namespace __Hidden_MetaModelCSharpGenerator_516628686
+    using __Hidden_MetaModelCSharpGenerator_1654274007;
+    namespace __Hidden_MetaModelCSharpGenerator_1654274007
     {
         internal static class __Extensions
         {
