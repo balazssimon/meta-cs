@@ -59,7 +59,7 @@ $TypeDef(MetaClass)
 $Trivia(Documentation)
 classDeclaration : annotation* $Property(name=IsAbstract,value=true) KAbstract? KClass identifier (TColon $Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor : $TypeUse(symbolType=MetaClass,resolveFlags=ResolveFlags.Parent) qualifiedName;
+classAncestor : $TypeUse(symbolType=MetaClass,location=ResolutionLocation.Parent) qualifiedName;
 classMemberDeclaration 
 	: $Property(Properties) fieldDeclaration 
 	| $Property(Operations) operationDeclaration

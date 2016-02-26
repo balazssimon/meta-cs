@@ -452,7 +452,7 @@ using MetaDslx.Core;
                 }
                 TypeUseAnnotation __tmp30 = new TypeUseAnnotation();
                 __tmp30.SymbolTypes.Add(typeof(MetaClass));
-                __tmp30.ResolveFlags = ResolveFlags.Parent;
+                __tmp30.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp30);
             }
             this.HandleSymbolType(context);

@@ -191,7 +191,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp5);
                 TypeUseAnnotation __tmp6 = new TypeUseAnnotation();
                 __tmp6.SymbolTypes.Add(typeof(Struct));
-                __tmp6.ResolveFlags = ResolveFlags.Parent;
+                __tmp6.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp6);
             }
             this.HandleSymbolType(context);
@@ -223,7 +223,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp8);
                 TypeUseAnnotation __tmp9 = new TypeUseAnnotation();
                 __tmp9.SymbolTypes.Add(typeof(Exception));
-                __tmp9.ResolveFlags = ResolveFlags.Parent;
+                __tmp9.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp9);
             }
             this.HandleSymbolType(context);
@@ -255,7 +255,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp11);
                 TypeUseAnnotation __tmp12 = new TypeUseAnnotation();
                 __tmp12.SymbolTypes.Add(typeof(Entity));
-                __tmp12.ResolveFlags = ResolveFlags.Parent;
+                __tmp12.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp12);
             }
             this.HandleSymbolType(context);
@@ -460,7 +460,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp29);
                 TypeUseAnnotation __tmp30 = new TypeUseAnnotation();
                 __tmp30.SymbolTypes.Add(typeof(Component));
-                __tmp30.ResolveFlags = ResolveFlags.Parent;
+                __tmp30.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp30);
             }
             this.HandleSymbolType(context);
@@ -706,7 +706,7 @@ namespace MetaDslx.Soal
                 TypeUseAnnotation __tmp55 = new TypeUseAnnotation();
                 __tmp55.SymbolTypes.Add(typeof(Component));
                 __tmp55.SymbolTypes.Add(typeof(Composite));
-                __tmp55.ResolveFlags = ResolveFlags.Parent;
+                __tmp55.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp55);
             }
             this.HandleSymbolType(context);

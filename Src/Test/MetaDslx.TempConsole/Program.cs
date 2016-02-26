@@ -129,14 +129,14 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModelJavaGenerator.cs"
                     );
                 //*/                
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
-                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel1.cs"
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel2.cs"
                     );
                 //*/
-                //*
+                /*
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.java",

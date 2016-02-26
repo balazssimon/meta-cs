@@ -59,7 +59,7 @@ enumMemberDeclaration :                       operationDeclaration;
                       
 classDeclaration : annotation*                                       KAbstract? KClass identifier (TColon                         classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor :                                                                 qualifiedName;
+classAncestor :                                                                   qualifiedName;
 classMemberDeclaration 
 	:                       fieldDeclaration 
 	|                       operationDeclaration
