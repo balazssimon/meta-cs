@@ -18,7 +18,7 @@ The MetaDslx framework requires Visual Studio 2015 and .NET Framework 4.5.2.
 
 Installation steps:
 
-1. Extract the **MetaDslx-v0.5-alpha.zip** file and make sure that the **GAC_DIR** environment variable in the install batch files point to the correct location of the .NET tools directory.
+1. Extract the **MetaDslx-v*.zip** file and make sure that the **GAC_DIR** environment variable in the install batch files point to the correct location of the .NET tools directory.
 2. Run **install64.bat** on 64-bit systems, or **install32.bat** on 32-bit systems to install the MetaDslx DLLs to the GAC.
 3. Run the **MetaDslx.VisualStudio.vsix** to install the Visual Studio 2015 plugin.
 
@@ -37,7 +37,7 @@ Building the MetaDslx framework requires Visual Studio 2015 and the Visual Studi
 
 Installation steps:
 
-1. Extract the **MetaDslx-v0.5-alpha.zip** file and make sure that the **GAC_DIR** environment variable in the install batch files point to the correct location of the .NET tools directory.
+1. Extract the **MetaDslx-v*.zip** file and make sure that the **GAC_DIR** environment variable in the install batch files point to the correct location of the .NET tools directory.
 2. Run **install64antlr.bat** on 64-bit systems, or **install32antlr.bat** on 32-bit systems to install the ANTLR4 runtime DLL to the GAC.
 3. Run the **MetaDslx.VisualStudio.vsix** to install the Visual Studio 2015 plugin.
 4. Check out the source from GitHub.
@@ -46,3 +46,8 @@ Installation steps:
  * Start Action / Start external program: **C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe**
  * Start Options / Command line arguments: **/rootsuffix Exp**
 7. Right click on the **MetaDslx** solution and choose **Build Solution**.
+
+## Uninstallation
+
+1. In Visual Studio open the **Tools / Extensions and Updates...** menu, look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
+2. Run **uninstall64antlr.bat** on 64-bit systems, or **uninstall32antlr.bat** on 32-bit systems to remove the MetaDslx DLLs from the GAC.
