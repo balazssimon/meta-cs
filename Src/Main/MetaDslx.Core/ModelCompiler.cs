@@ -104,24 +104,7 @@ namespace MetaDslx.Core
             return result;
         }
     }
-    /*
-    public class ResolutionInfo
-    {
-        public ResolutionInfo()
-        {
-            this.Position = -1;
-        }
 
-        public object Node { get; set; }
-        public int Position { get; set; }
-        public IEnumerable<Type> SymbolTypes { get; set; }
-    }
-
-    public class BindingInfo
-    {
-        public object Node { get; set; }
-    }
-    */
     public interface ITriviaProvider
     {
         string GetLeadingTrivia(object node);
@@ -154,16 +137,11 @@ namespace MetaDslx.Core
         ModelObject GetCurrentScope(ModelObject symbol);
         ModelObject GetCurrentTypeScopeOf(ModelObject symbol);
         BindingInfo Resolve(ResolutionInfo info);
-        /*
-        IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, List<string> qualifiedName, ResolutionInfo info, ResolutionLocation flags);
-        IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, string name, ResolutionInfo info, ResolutionLocation flags);
-        */
     }
 
     public interface IBindingProvider
     {
         ModelObject Bind(ModelObject context, BindingInfo info);
-        //ModelObject Bind(ModelObject context, IEnumerable<ModelObject> alternatives, BindingInfo info);
     }
 
     public interface IModelCompiler
@@ -1032,92 +1010,6 @@ namespace MetaDslx.Core
             return result;
         }
 
-        /*
-        public virtual IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, List<string> qualifiedName, ResolutionInfo info, ResolutionLocation flags)
-        {
-            if (qualifiedName.Count == 0)
-            {
-                return new ModelObject[0];
-            }
-            if (qualifiedName.Count == 1)
-            {
-                return this.Resolve(scopes, kind, qualifiedName[0], info, flags);
-            }
-            List<ModelObject> result = new List<ModelObject>();
-            ResolutionInfo firstInfo =
-                new ResolutionInfo()
-                {
-                    Node = info.Node,
-                    Position = info.Position,
-                    SymbolTypes = null
-                };
-            ResolutionInfo middleInfo =
-                new ResolutionInfo()
-                {
-                    Node = info.Node,
-                    Position = -1,
-                    SymbolTypes = null
-                };
-            ResolutionInfo lastInfo =
-                new ResolutionInfo()
-                {
-                    Node = info.Node,
-                    Position = -1,
-                    SymbolTypes = info.SymbolTypes
-                };
-            IEnumerable<ModelObject> currentResult = scopes;
-            for (int i = 0; i < qualifiedName.Count; i++)
-            {
-                string name = qualifiedName[i];
-                bool first = i == 0;
-                bool last = i == qualifiedName.Count - 1;
-                currentResult = this.Resolve(currentResult, last ? kind : ResolveKind.NameOrType, name, last ? lastInfo : (first ? firstInfo : middleInfo), first ? flags : ResolutionLocation.Scope);
-            }
-            result.AddRange(currentResult);
-            return result;
-        }
-
-        public virtual IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, string name, ResolutionInfo info, ResolutionLocation flags)
-        {
-            List<ModelObject> result = new List<ModelObject>();
-            foreach (var scope in scopes)
-            {
-                if (flags.HasFlag(ResolutionLocation.Children))
-                {
-                    result.AddRange(this.ResolveEntries(this.GetEntries<ScopeEntryAttribute>(scope), kind, name, info));
-                }
-                if (flags.HasFlag(ResolutionLocation.Inherited))
-                {
-                    result.AddRange(this.Resolve(this.GetScopes<InheritedScopeAttribute>(scope), kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, ResolutionLocation.Scope));
-                }
-                if (flags.HasFlag(ResolutionLocation.Imported))
-                {
-                    result.AddRange(this.Resolve(this.GetScopes<ImportedScopeAttribute>(scope), kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, ResolutionLocation.Scope));
-                }
-                if (flags.HasFlag(ResolutionLocation.ImportedScope))
-                {
-                    result.AddRange(this.ResolveEntries(this.GetEntries<ImportedEntryAttribute>(scope), kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }));
-                }
-            }
-            if (flags.HasFlag(ResolutionLocation.Parent) && result.Count == 0)
-            {
-                List<ModelObject> parentScopes = new List<ModelObject>();
-                foreach (var scope in scopes)
-                {
-                    ModelObject parentScope = this.GetParentOrNullScope(scope);
-                    if (parentScope != null)
-                    {
-                        parentScopes.Add(parentScope);
-                    }
-                }
-                if (parentScopes.Count > 0)
-                {
-                    result.AddRange(this.Resolve(parentScopes, kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, ResolutionLocation.All));
-                }
-            }
-            return result;
-        }
-        */
         protected virtual object GetName(ModelObject entry)
         {
             if (entry != null)
@@ -1411,102 +1303,6 @@ namespace MetaDslx.Core
                 return symbol;
             }
         }
-
-        /*
-        public virtual ModelObject Bind(ModelObject context, IEnumerable<ModelObject> alternatives, BindingInfo info)
-        {
-            IModelCompiler compiler = ModelCompilerContext.Current;
-            List<ModelObject> alternativeList = alternatives.ToList();
-            MetaFunctionCallExpression fce = context as MetaFunctionCallExpression;
-            if (fce != null)
-            {
-                for (int i = 0; i < alternativeList.Count; i++)
-                {
-                    bool goodAlternative = false;
-                    ModelObject alternative = alternativeList[i];
-                    MetaTypedElement mte = alternative as MetaTypedElement;
-                    if (mte != null && mte.Type is MetaFunctionType)
-                    {
-                        goodAlternative = true;
-                    }
-                    if (!goodAlternative)
-                    {
-                        alternativeList.RemoveAt(i);
-                        --i;
-                    }
-                }
-                this.SelectBestAlternative(alternativeList, fce);
-            }
-            if (alternativeList.Count == 0)
-            {
-                if (compiler != null)
-                {
-                    if (info.Node != null)
-                    {
-                        compiler.Diagnostics.AddError("Cannot resolve name or type.", compiler.FileName, info.Node);
-                    }
-                    else
-                    {
-                        compiler.Diagnostics.AddError("Cannot resolve name or type.", compiler.FileName, context);
-                    }
-                }
-                return null;
-            }
-            else if (alternativeList.Count > 1)
-            {
-                bool mustHaveUniqueDefinition = true;
-                if (context != null)
-                {
-                    object mustHaveUniqueDefinitionObject = context.MGet(MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
-                    if (mustHaveUniqueDefinitionObject != null)
-                    {
-                        mustHaveUniqueDefinition = (bool)mustHaveUniqueDefinitionObject;
-                    }
-                }
-                if (mustHaveUniqueDefinition)
-                {
-                    if (compiler != null)
-                    {
-                        if (info.Node != null)
-                        {
-                            compiler.Diagnostics.AddError("Ambiguous name or type.", compiler.FileName, info.Node);
-                        }
-                        else
-                        {
-                            compiler.Diagnostics.AddError("Ambiguous name or type.", compiler.FileName, context);
-                        }
-                    }
-                }
-                return null;
-            }
-            else
-            {
-                ModelObject symbol = alternativeList[0];
-                if (fce != null)
-                {
-                    MetaTypedElement mte = symbol as MetaTypedElement;
-                    if (mte != null && mte.Type is MetaFunctionType)
-                    {
-                        MetaFunctionType ft = mte.Type as MetaFunctionType;
-                        if (ft.ParameterTypes.Count == fce.Arguments.Count)
-                        {
-                            for (int i = 0; i < fce.Arguments.Count; i++)
-                            {
-                                MetaType paramType = ft.ParameterTypes[i];
-                                ((ModelObject)fce.Arguments[i]).MLazySet(MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => paramType));
-                            }
-                        }
-                        else
-                        {
-                            compiler.Diagnostics.AddError("The number of formal and actual parameters are different.", compiler.FileName, context);
-                        }
-                    }
-                }
-                // TODO
-                return symbol;
-            }
-        }
-        */
     }
 
     public class DefaultModelCompiler : IModelCompiler
