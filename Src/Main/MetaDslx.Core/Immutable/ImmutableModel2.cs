@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -8,44 +9,207 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable2
 {
-    public class GreenObject
+    public delegate object LazyValueDelegate(ISymbol context);
+
+    internal enum LazyEvaluationState
     {
-        private long hashCode;
-
-        public GreenObject(long id, long modelId)
-        {
-            this.modelId = modelId;
-            this.id = id;
-        }
-
-        public long ModelId { get { return this.modelId; } }
-        public long Id { get { return this.id; } }
+        Initialized,
+        Evaluating,
+        Evaluated
     }
 
-    public class GreenList : IEnumerable<GreenObject>
+    internal enum ListEvaluationState
     {
-        private List<GreenObject> items = new List<GreenObject>();
+        Initialized,
+        EvaluatingLazy,
+        EvaluatingProperties,
+        Evaluated
+    }
+
+    internal class LazyEvalInfo : IEquatable<LazyEvalInfo>
+    {
+        private static ThreadLocal<List<LazyEvalInfo>> evalInfoStack = new ThreadLocal<List<LazyEvalInfo>>(() => new List<LazyEvalInfo>());
+        private ISymbol symbol;
+        private ModelProperty property;
+        private object lazyEvaluator;
+
+        private LazyEvalInfo(ISymbol symbol, ModelProperty property, object lazyEvaluator)
+        {
+            this.symbol = symbol;
+            this.property = property;
+            this.lazyEvaluator = lazyEvaluator;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is LazyEvalInfo)
+            {
+                return this.Equals((LazyEvalInfo)obj);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.symbol.GetHashCode() ^ this.lazyEvaluator.GetHashCode();
+        }
+
+        public bool Equals(LazyEvalInfo other)
+        {
+            return this.symbol == other.symbol && this.lazyEvaluator == other.lazyEvaluator;
+        }
+
+        public static LazyEvalInfo Push(ISymbol symbol, ModelProperty property, object lazyEvaluator)
+        {
+            LazyEvalInfo info = new LazyEvalInfo(symbol, property, lazyEvaluator);
+            if (evalInfoStack.Value.Contains(info))
+            {
+                throw new ModelException("Circular dependency in lazy evaluation.");
+            }
+            evalInfoStack.Value.Add(info);
+            return info;
+        }
+
+        public static void Pop(LazyEvalInfo info)
+        {
+            Debug.Assert(evalInfoStack.Value.Count > 0);
+            Debug.Assert(evalInfoStack.Value[evalInfoStack.Value.Count - 1] == info);
+            evalInfoStack.Value.RemoveAt(evalInfoStack.Value.Count - 1);
+        }
+    }
+
+    internal class LazyValue
+    {
+        private LazyEvaluationState state;
+        private LazyValueDelegate calculate;
+        private object value;
+
+        public LazyValue(LazyValueDelegate calculate)
+        {
+            this.state = LazyEvaluationState.Initialized;
+            this.calculate = calculate;
+        }
+
+        public bool IsValueCreated
+        {
+            get { return this.state == LazyEvaluationState.Evaluated; }
+        }
+
+        public object CachedValue
+        {
+            get { return this.state == LazyEvaluationState.Evaluated ? value : null; }
+        }
+
+        public object GetValue(ISymbol context, ModelProperty property)
+        {
+            LazyEvalInfo evalInfo = null;
+            lock (this)
+            {
+                if (this.state == LazyEvaluationState.Evaluated)
+                {
+                    return this.value;
+                }
+                else if (this.state == LazyEvaluationState.Evaluating)
+                {
+                    return null;
+                }
+                else
+                {
+                    this.state = LazyEvaluationState.Evaluating;
+                }
+            }
+            evalInfo = LazyEvalInfo.Push(context, property, this);
+            try
+            {
+                Interlocked.CompareExchange(ref this.value, calculate(context), null);
+            }
+            finally
+            {
+                LazyEvalInfo.Pop(evalInfo);
+            }
+            lock(this)
+            {
+                this.state = LazyEvaluationState.Evaluated;
+            }
+            return this.value;
+        }
+    }
+
+    public interface ISymbol
+    {
+        object GetValue(ModelProperty property);
+    }
+
+    public interface IImmutableSymbol : ISymbol
+    {
+
+    }
+
+    public interface IMutableSymbol : ISymbol
+    {
+        void SetValue(ModelProperty property, object value);
+        void SetValueLazy(ModelProperty property, LazyValueDelegate value);
+        bool AddValue(ModelProperty property, object value);
+        bool AddValueLazy(ModelProperty property, LazyValueDelegate value);
+        bool RemoveValue(ModelProperty property, object value);
+    }
+
+    public abstract class GreenSymbol
+    {
+        public GreenSymbol()
+        {
+        }
+
+        public abstract RedSymbol CreateRed(RedModel model);
+    }
+
+    public interface IGreenList : IReadOnlyList<object>
+    {
+        bool Add(object item);
+        bool Remove(object item);
+        bool HasLazyItems { get; }
+    }
+
+    public class GreenList : IGreenList
+    {
+        private int lazyEvaluatorCount = 0;
+        private List<object> items = new List<object>();
 
         public int Count
         {
             get { return this.items.Count; }
         }
 
-        public bool Add(long item)
+        public bool HasLazyItems
+        {
+            get { return this.lazyEvaluatorCount > 0; }
+        }
+
+        public object this[int index]
+        {
+            get { return this.items[index]; }
+        }
+
+        public bool Add(object item)
         {
             if (this.items.Contains(item)) return false;
             this.items.Add(item);
+            if (item is LazyValue) ++this.lazyEvaluatorCount;
             return true;
         }
 
-        public bool Remove(long item)
+        public bool Remove(object item)
         {
             if (!this.items.Contains(item)) return false;
             this.items.Remove(item);
+            if (item is LazyValue) --this.lazyEvaluatorCount;
             return true;
         }
 
-        public IEnumerator<long> GetEnumerator()
+        public IEnumerator<object> GetEnumerator()
         {
             return this.items.GetEnumerator();
         }
@@ -56,34 +220,52 @@ namespace MetaDslx.Core.Immutable2
         }
     }
 
-    public class GreenMultiList : IEnumerable<long>
+    public class GreenMultiList : IGreenList
     {
-        private List<long> items = new List<long>();
+        private int lazyEvaluatorCount = 0;
+        private List<object> items = new List<object>();
 
         public int Count
         {
             get { return this.items.Count; }
         }
 
-        public bool Add(long item)
+        public bool HasLazyItems
+        {
+            get { return this.lazyEvaluatorCount > 0; }
+        }
+
+        public object this[int index]
+        {
+            get { return this.items[index]; }
+        }
+
+        public bool Add(object item)
         {
             this.items.Add(item);
+            if (item is LazyValue) ++this.lazyEvaluatorCount;
             return true;
         }
 
-        public bool Remove(long item)
+        public bool Remove(object item)
         {
             if (!this.items.Contains(item)) return false;
             this.items.Remove(item);
+            if (item is LazyValue) --this.lazyEvaluatorCount;
             return true;
         }
 
-        public bool RemoveAll(long item)
+        public bool RemoveAll(object item)
         {
-            return this.items.RemoveAll(i => i == item) > 0;
+            int removedCount = this.items.RemoveAll(i => i == item);
+            if (item is LazyValue)
+            {
+                this.lazyEvaluatorCount -= removedCount;
+            }
+            return removedCount > 0;
         }
 
-        public IEnumerator<long> GetEnumerator()
+        public IEnumerator<object> GetEnumerator()
         {
             return this.items.GetEnumerator();
         }
@@ -94,180 +276,511 @@ namespace MetaDslx.Core.Immutable2
         }
     }
 
-    public class RedObject
+    public class RedList : IReadOnlyList<object>
+    {
+        private ListEvaluationState state;
+        private RedSymbol parent;
+        private ModelProperty property;
+        private IGreenList greenList;
+        private List<object> redItems;
+
+        public RedList(RedSymbol parent, ModelProperty property, IGreenList greenList)
+        {
+            this.parent = parent;
+            this.property = property;
+            this.greenList = greenList;
+            this.state = ListEvaluationState.Initialized;
+        }
+
+        public RedSymbol Parent { get { return this.parent; } }
+
+        public ModelProperty Property { get { return this.property; } }
+
+        private void Add(object item)
+        {
+            lock (this.redItems)
+            {
+                if (this.greenList is GreenList)
+                {
+                    if (!this.redItems.Contains(item))
+                    {
+                        this.redItems.Add(item);
+                    }
+                }
+                else
+                {
+                    this.redItems.Add(item);
+                }
+            }
+        }
+
+        internal void InternalAddItem(object item)
+        {
+            this.EvaluateLazyItems();
+            this.Add(item);
+        }
+
+        public object this[int index]
+        {
+            get
+            {
+                if (this.state == ListEvaluationState.Evaluated) return this.redItems[index];
+                this.Evaluate();
+                return this.redItems[index];
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                if (this.state == ListEvaluationState.Evaluated) return this.redItems.Count;
+                this.Evaluate();
+                return this.redItems.Count;
+            }
+        }
+
+        public IEnumerator<object> GetEnumerator()
+        {
+            if (this.state == ListEvaluationState.Evaluated) return this.redItems.GetEnumerator();
+            this.Evaluate();
+            return this.redItems.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        internal void Evaluate()
+        {
+            if (this.state == ListEvaluationState.Evaluated) return;
+            this.EvaluateLazyItems();
+            lock(this)
+            {
+                this.state = ListEvaluationState.EvaluatingProperties;
+            }
+            this.parent.Model.EvaluateRelatedProperties(this.property);
+            lock (this)
+            {
+                this.state = ListEvaluationState.Evaluated;
+            }
+        }
+
+        internal void EvaluateLazyItems()
+        {
+            if (this.state == ListEvaluationState.Evaluated) return;
+            if (this.state == ListEvaluationState.EvaluatingProperties) return;
+            lock (this)
+            {
+                if (this.state == ListEvaluationState.Initialized)
+                {
+                    if (this.greenList.HasLazyItems)
+                    {
+                        this.state = ListEvaluationState.EvaluatingLazy;
+                    }
+                    else
+                    {
+                        this.state = ListEvaluationState.EvaluatingProperties;
+                        return;
+                    }
+                }
+                else if (this.state == ListEvaluationState.EvaluatingLazy)
+                {
+                    throw new ModelException("Circular lazy reference in lists.");
+                }
+                else
+                {
+                    return;
+                }
+            }
+            for (int i = 0, n = this.greenList.Count; i < n; i++)
+            {
+                object value = this.parent.Model.GetListItemValue(this, this.greenList[i]);
+                this.Add(value);
+            }
+        }
+    }
+
+    public class RedSymbol : IImmutableSymbol
     {
         private RedModel model;
-        private GreenObject green;
+        private GreenSymbol green;
+        private Dictionary<ModelProperty, object> values;
 
-        public RedObject(GreenObject green, RedModel model)
+        public RedSymbol(GreenSymbol green, RedModel model)
         {
             this.green = green;
             this.model = model;
+            this.values = new Dictionary<ModelProperty, object>();
         }
 
         public RedModel Model { get { return this.model; } }
-        public GreenObject Green { get { return this.green; } }
+        public GreenSymbol Green { get { return this.green; } }
+
+        public object GetValue(ModelProperty property)
+        {
+            object result = null;
+            lock(this.values)
+            {
+                if (this.values.TryGetValue(property, out result)) return result;
+            }
+            result = this.model.GetValue(this.green, property);
+            lock (this.values)
+            {
+                this.values.Add(property, result);
+                return result;
+            }
+        }
+    }
+
+    public class GreenModelPart
+    {
+        private object id;
+        private Dictionary<GreenSymbol, Dictionary<ModelProperty, object>> symbols = new Dictionary<GreenSymbol, Dictionary<ModelProperty, object>>();
+
+        public GreenModelPart()
+        {
+            this.id = new object();
+        }
+
+        public GreenModelPart(object id)
+        {
+            this.id = id;
+        }
+
+        public object Id { get { return this.id; } }
+        internal Dictionary<GreenSymbol, Dictionary<ModelProperty, object>> Symbols { get { return this.symbols; } }
+
+        public bool ContainsSymbol(GreenSymbol symbol)
+        {
+            return this.symbols.ContainsKey(symbol);
+        }
+
+        public bool TryGetValue(GreenSymbol symbol, ModelProperty property, out object value)
+        {
+            Dictionary<ModelProperty, object> properties = null;
+            if (this.symbols.TryGetValue(symbol, out properties))
+            {
+                if (properties.TryGetValue(property, out value))
+                {
+                    return true;
+                }
+            }
+            value = null;
+            return false;
+        }
     }
 
     public class GreenModel
     {
-        private static long idCounter = 0;
-        private long id;
-        private Dictionary<long, Dictionary<ModelProperty, object>> objects = new Dictionary<long, Dictionary<ModelProperty, object>>();
+        internal Dictionary<object, GreenModelPart> parts = new Dictionary<object, GreenModelPart>();
 
-        public GreenModel()
+        internal GreenModel(GreenModelPart part)
         {
-            this.id = Interlocked.Increment(ref idCounter);
+            this.parts.Add(part.Id, part);
         }
 
-        public long Id { get { return this.id; } }
-        internal Dictionary<long, Dictionary<ModelProperty, object>> Objects { get { return this.objects; } }
-
-        public RedModel CreateRed(RedModelGroup group = null)
+        internal GreenModel(GreenModel oldModel, GreenModelPart part)
         {
-            return new RedModel(this, group);
+            this.parts = oldModel.parts.ToDictionary(entry => entry.Key, entry => entry.Value);
+            this.parts[part.Id] = part;
+        }
+
+        internal GreenModel(GreenModel oldModel, IEnumerable<GreenModelPart> parts)
+        {
+            this.parts = oldModel.parts.ToDictionary(entry => entry.Key, entry => entry.Value);
+            foreach (var part in parts)
+            {
+                this.parts[part.Id] = part;
+            }
+        }
+
+        public GreenModel WithPart(GreenModelPart part)
+        {
+            GreenModelPart oldModel = null;
+            if (this.parts.TryGetValue(part.Id, out oldModel))
+            {
+                if (part == oldModel) return this;
+            }
+            return new GreenModel(this, part);
+        }
+
+        public GreenModel WithParts(IEnumerable<GreenModelPart> parts)
+        {
+            List<GreenModelPart> changedParts = new List<GreenModelPart>();
+            foreach (var part in parts)
+            {
+                GreenModelPart oldModel = null;
+                if (this.parts.TryGetValue(part.Id, out oldModel))
+                {
+                    if (part != oldModel)
+                    {
+                        changedParts.Add(part);
+                    }
+                }
+            }
+            if (changedParts.Count == 0) return this;
+            else return new GreenModel(this, changedParts);
+        }
+
+        public IEnumerable<GreenModelPart> Parts
+        {
+            get { return this.parts.Values; }
+        }
+
+        public List<object> GetValue(GreenSymbol symbol, ModelProperty property)
+        {
+            List<object> result = new List<object>();
+            foreach (var part in this.parts.Values)
+            {
+                object value;
+                if (part.TryGetValue(symbol, property, out value))
+                {
+                    if (!result.Contains(value))
+                    {
+                        result.Add(value);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public ModelBuilder Builder()
+        {
+            return new ModelBuilder(this);
         }
     }
 
     public class RedModel
     {
-        private RedModelGroup group;
         private GreenModel green;
+        private Dictionary<GreenSymbol, RedSymbol> symbols = new Dictionary<GreenSymbol, RedSymbol>();
+        private HashSet<ModelProperty> evaluatingProps = new HashSet<ModelProperty>();
+        private HashSet<ModelProperty> evaluatedProps = new HashSet<ModelProperty>();
 
-        public RedModel(GreenModel green, RedModelGroup group = null)
+        public RedModel(GreenModel green)
         {
-            this.group = group;
             this.green = green;
         }
 
-        public long Id { get { return this.green.Id; } }
-        public RedModelGroup Group { get { return this.group; } }
         public GreenModel Green { get { return this.green; } }
 
-        public ModelBuilder Builder()
+        internal RedSymbol GetRedSymbol(GreenSymbol symbol)
         {
-            return this.Group != null ? this.group.Builder() : new ModelBuilder(new GreenModelGroup(this.green));
-        }
-    }
-
-    public class GreenModelGroup
-    {
-        internal Dictionary<long, GreenModel> models = new Dictionary<long, GreenModel>();
-
-        internal GreenModelGroup(GreenModel model)
-        {
-            this.models.Add(model.Id, model);
-        }
-
-        internal GreenModelGroup(GreenModelGroup oldGroup, GreenModel model)
-        {
-            this.models = oldGroup.models.ToDictionary(entry => entry.Key, entry => entry.Value);
-            this.models[model.Id] = model;
-        }
-
-        internal GreenModelGroup(GreenModelGroup oldGroup, IEnumerable<GreenModel> models)
-        {
-            this.models = oldGroup.models.ToDictionary(entry => entry.Key, entry => entry.Value);
-            foreach (var model in models)
+            RedSymbol result = null;
+            lock (this.symbols)
             {
-                this.models[model.Id] = model;
-            }
-        }
-
-        public GreenModelGroup WithModel(GreenModel model)
-        {
-            GreenModel oldModel = null;
-            if (this.models.TryGetValue(model.Id, out oldModel))
-            {
-                if (model == oldModel) return this;
-            }
-            return new GreenModelGroup(this, model);
-        }
-
-        public GreenModelGroup WithModels(IEnumerable<GreenModel> models)
-        {
-            List<GreenModel> changedModels = new List<GreenModel>();
-            foreach (var model in models)
-            {
-                GreenModel oldModel = null;
-                if (this.models.TryGetValue(model.Id, out oldModel))
+                if (!this.symbols.TryGetValue(symbol, out result))
                 {
-                    if (model != oldModel)
+                    result = symbol.CreateRed(this);
+                    if (result != null)
                     {
-                        changedModels.Add(model);
+                        this.symbols.Add(symbol, result);
                     }
                 }
             }
-            if (changedModels.Count == 0) return this;
-            else return new GreenModelGroup(this, changedModels);
+            return result;
         }
 
-        public IEnumerable<GreenModel> Models
+        public object GetListItemValue(RedList list, object greenValue)
         {
-            get { return this.models.Values; }
-        }
-    }
-
-    public class RedModelGroup
-    {
-        private GreenModelGroup green;
-        private List<RedModel> models = new List<RedModel>();
-
-        public RedModelGroup(GreenModelGroup green)
-        {
-            this.green = green;
-            foreach (var gm in this.green.Models)
+            if (greenValue is GreenSymbol)
             {
-                this.models.Add(gm.CreateRed(this));
+                return this.GetRedSymbol((GreenSymbol)greenValue);
+            }
+            else if (greenValue is LazyValue)
+            {
+                return ((LazyValue)greenValue).GetValue(list.Parent, list.Property);
+            }
+            else
+            {
+                return greenValue;
             }
         }
 
-        public GreenModelGroup Green
+        public object GetValue(GreenSymbol symbol, ModelProperty property)
         {
-            get { return this.green; }
+            List<object> greenValues = this.green.GetValue(symbol, property);
+            if (greenValues.Count == 0) return null;
+            if (greenValues.Count == 1)
+            {
+                object greenValue = greenValues[0];
+                if (greenValue is GreenSymbol)
+                {
+                    return this.GetRedSymbol((GreenSymbol)greenValue);
+                }
+                else if (greenValue is IGreenList)
+                {
+                    RedSymbol red = this.GetRedSymbol(symbol);
+                    Debug.Assert(red != null);
+                    return new RedList(red, property, (IGreenList)greenValue);
+                }
+                else if (greenValue is LazyValue)
+                {
+                    RedSymbol red = this.GetRedSymbol(symbol);
+                    Debug.Assert(red != null);
+                    return ((LazyValue)greenValue).GetValue(red, property);
+                }
+                else
+                {
+                    return greenValue;
+                }
+            }
+            else if (property.IsCollection)
+            {
+                RedSymbol red = this.GetRedSymbol(symbol);
+                Debug.Assert(red != null);
+                bool multi = greenValues[0] is GreenMultiList;
+                IGreenList values = null;
+                if (multi) values = new GreenList();
+                else values = new GreenMultiList();
+                // TODO: lazy list initializers
+                foreach (var greenValue in greenValues)
+                {
+                    if (!multi && greenValue is GreenList)
+                    {
+                        foreach (var value in ((GreenList)greenValue))
+                        {
+                            values.Add(value);
+                        }
+                    }
+                    else if (multi && greenValue is GreenMultiList)
+                    {
+                        foreach (var value in ((GreenMultiList)greenValue))
+                        {
+                            values.Add(value);
+                        }
+                    }
+                    else
+                    {
+                        throw new ModelException("Invalid property value type. It should be " + (multi ? typeof(GreenMultiList).Name : typeof(GreenList).Name) + ".");
+                    }
+                }
+                return new RedList(red, property, values);
+            }
+            else
+            {
+                throw new ModelException("Conflicting values.");
+            }
         }
 
-        public IReadOnlyList<RedModel> Models
+        internal void EvaluateProperty(ModelProperty property)
         {
-            get { return this.models; }
+            lock(this)
+            {
+                if (this.evaluatedProps.Contains(property)) return;
+                if (this.evaluatingProps.Contains(property)) return;
+                this.evaluatingProps.Add(property);
+            }
+            foreach (var greenModelPart in this.green.Parts)
+            {
+                foreach (var greenEntry in greenModelPart.Symbols)
+                {
+                    object value;
+                    if (greenEntry.Value.TryGetValue(property, out value))
+                    {
+                        if (value is LazyValue)
+                        {
+                            RedSymbol redSymbol = this.GetRedSymbol(greenEntry.Key);
+                            Debug.Assert(redSymbol != null);
+                            redSymbol.GetValue(property);
+                        }
+                        else if (value is IGreenList)
+                        {
+                            if (((IGreenList)value).HasLazyItems)
+                            {
+                                RedSymbol redSymbol = this.GetRedSymbol(greenEntry.Key);
+                                Debug.Assert(redSymbol != null);
+                                RedList redList = redSymbol.GetValue(property) as RedList;
+                                Debug.Assert(redList != null);
+                                redList.EvaluateLazyItems();
+                            }
+                        }
+                    }
+                }
+            }
+            lock (this)
+            {
+                this.evaluatingProps.Remove(property);
+                this.evaluatedProps.Add(property);
+            }
+            this.EvaluateRelatedProperties(property);
+        }
+
+        internal void EvaluateRelatedProperties(ModelProperty property)
+        {
+            foreach (var prop in property.OppositeProperties)
+            {
+                this.EvaluateProperty(prop);
+            }
+            foreach (var prop in property.SubsettedProperties)
+            {
+                this.EvaluateProperty(prop);
+            }
+            foreach (var prop in property.RedefinedProperties)
+            {
+                this.EvaluateProperty(prop);
+            }
+            foreach (var prop in property.SubsettingProperties)
+            {
+                this.EvaluateProperty(prop);
+            }
+            foreach (var prop in property.RedefiningProperties)
+            {
+                this.EvaluateProperty(prop);
+            }
         }
 
         public ModelBuilder Builder()
         {
-            return new ModelBuilder(this.Green);
+            return this.green.Builder();
         }
     }
 
     public class ObjectBuilder
     {
-        private GreenObject target;
         private ModelBuilder model;
+        private GreenModelPart part;
+        private GreenSymbol target;
 
-        public ObjectBuilder(GreenObject target, ModelBuilder model)
+        public ObjectBuilder(ModelBuilder model, GreenModelPart part, GreenSymbol target)
         {
-            this.target = target;
             this.model = model;
+            this.part = part;
+            this.target = target;
         }
 
-        public void Add(ModelProperty property, object value)
+        public void AddValue(ModelProperty property, object value)
         {
-            this.model.AddValue(this.target, property, value);
+            this.model.AddValue(this.part, this.target, property, value);
         }
 
-        public void Remove(ModelProperty property, object value)
+        public void RemoveValue(ModelProperty property, object value)
         {
-            this.model.RemoveValue(this.target, property, value);
+            this.model.RemoveValue(this.part, this.target, property, value);
         }
     }
 
     public class ModelBuilder
     {
-        private GreenModelGroup group;
+        private GreenModel model;
         private ModelTransactionCommand transaction;
+        private ModelTransactionCommand currentTransaction;
 
-        internal protected ModelBuilder(GreenModelGroup group)
+        internal protected ModelBuilder(GreenModel model)
         {
-            this.group = group;
+            this.model = model;
+        }
+
+        public RedModel ToImmutable()
+        {
+            return new RedModel(this.Fork());
+        }
+
+        private GreenModel Fork()
+        {
+            return null;
         }
 
         internal ModelTransactionCommand Transaction
@@ -276,79 +789,91 @@ namespace MetaDslx.Core.Immutable2
             {
                 if (this.transaction == null)
                 {
-                    Interlocked.CompareExchange(ref this.transaction, new ModelTransactionCommand(this.group), null);
+                    Interlocked.CompareExchange(ref this.transaction, new ModelTransactionCommand(this.model), null);
                 }
                 return this.transaction;
             }
         }
 
+        internal ModelTransactionCommand CurrentTransaction
+        {
+            get
+            {
+                if (this.currentTransaction == null)
+                {
+                    Interlocked.CompareExchange(ref this.currentTransaction, this.Transaction, null);
+                }
+                return this.currentTransaction;
+            }
+        }
         public void BeginTransaction()
         {
-            Interlocked.Exchange(ref this.transaction, this.Transaction.BeginTransaction());
+            Interlocked.Exchange(ref this.currentTransaction, this.CurrentTransaction.BeginTransaction());
         }
 
         public void CommitTransaction()
         {
-            Interlocked.Exchange(ref this.transaction, this.Transaction.CommitTransaction());
+            Interlocked.Exchange(ref this.currentTransaction, this.CurrentTransaction.CommitTransaction());
         }
 
         public void RollbackTransaction()
         {
-            Interlocked.Exchange(ref this.transaction, this.Transaction.RollbackTransaction());
+            Interlocked.Exchange(ref this.currentTransaction, this.CurrentTransaction.RollbackTransaction());
         }
 
-        public void AddModel(GreenModel model)
+        public void AddPart(GreenModelPart part)
         {
-            this.Transaction.AddModel(model);
+            this.CurrentTransaction.AddPart(part);
         }
 
-        public void AddModels(IEnumerable<GreenModel> models)
+        public void AddParts(IEnumerable<GreenModelPart> parts)
         {
-            this.Transaction.AddModels(models);
+            this.CurrentTransaction.AddParts(parts);
         }
 
-        public void RemoveModel(GreenModel model)
+        public void RemovePart(GreenModelPart part)
         {
-            this.Transaction.RemoveModel(model);
+            this.CurrentTransaction.RemovePart(part);
         }
 
-        public void AddObject(GreenModel model, GreenObject obj)
+        public void AddObject(GreenModelPart part, GreenSymbol symbol)
         {
-            this.Transaction.AddObject(model, obj);
+            this.CurrentTransaction.AddSymbol(part, symbol);
         }
 
-        public void RemoveObject(GreenModel model, GreenObject obj)
+        public void RemoveObject(GreenModelPart part, GreenSymbol symbol)
         {
-            this.Transaction.RemoveObject(model, obj);
+            this.CurrentTransaction.RemoveSymbol(part, symbol);
         }
 
-        public void AddValue(GreenObject target, ModelProperty property, object value)
+        public void AddValue(GreenModelPart part, GreenSymbol symbol, ModelProperty property, object value)
         {
-            this.Transaction.AddValue(target, property, value);
+            this.CurrentTransaction.AddValue(part, symbol, property, value);
         }
 
-        public void RemoveValue(GreenObject target, ModelProperty property, object value)
+        public void RemoveValue(GreenModelPart part, GreenSymbol symbol, ModelProperty property, object value)
         {
-            this.Transaction.RemoveValue(target, property, value);
+            this.CurrentTransaction.RemoveValue(part, symbol, property, value);
         }
     }
 
 
 
-    public class ModelBuildCommand
+    internal class ModelBuildCommand
     {
     }
 
-    public class ModelTransactionCommand : ModelBuildCommand
+    internal class ModelTransactionCommand : ModelBuildCommand
     {
-        private GreenModelGroup group;
+        private GreenModel model;
         private ModelTransactionCommand parent;
-        private Dictionary<long, Dictionary<long, Dictionary<ModelProperty, object>>> objects;
+        private Dictionary<object, Dictionary<GreenSymbol, Dictionary<ModelProperty, object>>> symbols;
+        private HashSet<GreenSymbol> deletedSymbols;
         private List<ModelBuildCommand> commands;
 
-        public ModelTransactionCommand(GreenModelGroup group)
+        public ModelTransactionCommand(GreenModel group)
         {
-            this.group = group;
+            this.model = group;
         }
 
         public ModelTransactionCommand(ModelTransactionCommand parent)
@@ -356,9 +881,9 @@ namespace MetaDslx.Core.Immutable2
             this.parent = parent;
         }
 
-        public GreenModelGroup Group
+        public GreenModel Model
         {
-            get { return this.group ?? this.parent?.Group; }
+            get { return this.model ?? this.parent?.Model; }
         }
 
         public List<ModelBuildCommand> Commands
@@ -373,15 +898,15 @@ namespace MetaDslx.Core.Immutable2
             }
         }
 
-        public Dictionary<long, Dictionary<long, Dictionary<ModelProperty, object>>> Objects
+        public Dictionary<object, Dictionary<GreenSymbol, Dictionary<ModelProperty, object>>> Symbols
         {
             get
             {
-                if (this.objects == null)
+                if (this.symbols == null)
                 {
-                    Interlocked.CompareExchange(ref this.objects, new Dictionary<long, Dictionary<long, Dictionary<ModelProperty, object>>>(), null);
+                    Interlocked.CompareExchange(ref this.symbols, new Dictionary<object, Dictionary<GreenSymbol, Dictionary<ModelProperty, object>>>(), null);
                 }
-                return this.objects;
+                return this.symbols;
             }
         }
 
@@ -408,7 +933,7 @@ namespace MetaDslx.Core.Immutable2
 
         public ModelTransactionCommand RollbackTransaction()
         {
-            if (this.parent == null) return new ModelTransactionCommand(this.group);
+            if (this.parent == null) return new ModelTransactionCommand(this.model);
             lock (this.parent.Commands)
             {
                 this.parent.Commands.Remove(this);
@@ -421,56 +946,56 @@ namespace MetaDslx.Core.Immutable2
             // TODO
         }
 
-        public void AddModel(GreenModel model)
+        public void AddPart(GreenModelPart part)
         {
-            Interlocked.Exchange(ref this.group, this.Group.WithModel(model));
+            Interlocked.Exchange(ref this.model, this.Model.WithPart(part));
         }
 
-        public void AddModels(IEnumerable<GreenModel> models)
+        public void AddParts(IEnumerable<GreenModelPart> parts)
         {
-            Interlocked.Exchange(ref this.group, this.Group.WithModels(models));
+            Interlocked.Exchange(ref this.model, this.Model.WithParts(parts));
         }
 
-        public void RemoveModel(GreenModel model)
+        public void RemovePart(GreenModelPart part)
         {
             // TODO
         }
 
-        public void AddObject(GreenModel model, GreenObject obj)
+        public void AddSymbol(GreenModelPart part, GreenSymbol symbol)
         {
             // TODO
         }
 
-        public void RemoveObject(GreenModel model, GreenObject obj)
+        public void RemoveSymbol(GreenModelPart part, GreenSymbol symbol)
         {
             // TODO
         }
 
-        public void AddValue(GreenObject target, ModelProperty property, object value)
+        public void AddValue(GreenModelPart part, GreenSymbol symbol, ModelProperty property, object value)
         {
             // TODO
         }
 
-        public void RemoveValue(GreenObject target, ModelProperty property, object value)
+        public void RemoveValue(GreenModelPart part, GreenSymbol symbol, ModelProperty property, object value)
         {
             // TODO
         }
 
-        private Dictionary<ModelProperty, object> GetObject(long modelId, long objectId, bool clone = true)
+        private Dictionary<ModelProperty, object> GetSymbol(object modelPartId, GreenSymbol symbol, bool clone = true)
         {
-            Dictionary<long, Dictionary<ModelProperty, object>> model = null;
-            lock (this.Objects)
+            Dictionary<GreenSymbol, Dictionary<ModelProperty, object>> modelPart = null;
+            lock (this.Symbols)
             {
-                if (!this.objects.TryGetValue(modelId, out model))
+                if (!this.symbols.TryGetValue(modelPartId, out modelPart))
                 {
-                    model = new Dictionary<long, Dictionary<ModelProperty, object>>();
-                    this.objects.Add(modelId, model);
+                    modelPart = new Dictionary<GreenSymbol, Dictionary<ModelProperty, object>>();
+                    this.symbols.Add(modelPartId, modelPart);
                 }
             }
             Dictionary<ModelProperty, object> result = null;
-            result = this.FindObject(modelId, objectId, FindObjectFlags.This);
+            result = this.FindSymbol(modelPartId, symbol, FindObjectFlags.This);
             if (result != null) return result;
-            result = this.FindObject(modelId, objectId, FindObjectFlags.Ancestors | FindObjectFlags.Default);
+            result = this.FindSymbol(modelPartId, symbol, FindObjectFlags.Ancestors | FindObjectFlags.Default);
             if (clone)
             {
                 Dictionary<ModelProperty, object> clonedResult = null;
@@ -479,9 +1004,9 @@ namespace MetaDslx.Core.Immutable2
                     clonedResult = result.ToDictionary(entry => entry.Key, entry => entry.Value);
                 }
                 result = clonedResult;
-                lock(model)
+                lock(modelPart)
                 {
-                    model.Add(objectId, result);
+                    modelPart.Add(symbol, result);
                 }
             }
             return result;
@@ -496,7 +1021,7 @@ namespace MetaDslx.Core.Immutable2
             All = This | Ancestors | Default
         }
 
-        private Dictionary<ModelProperty, object> FindObject(long modelId, long objectId, FindObjectFlags flags = FindObjectFlags.All)
+        private Dictionary<ModelProperty, object> FindSymbol(object modelPartId, GreenSymbol symbol, FindObjectFlags flags = FindObjectFlags.All)
         {
             Dictionary<ModelProperty, object> result = null;
             ModelTransactionCommand cmd = this;
@@ -506,12 +1031,12 @@ namespace MetaDslx.Core.Immutable2
             }
             while (result == null && cmd != null)
             {
-                Dictionary<long, Dictionary<ModelProperty, object>> model = null;
-                lock (cmd.Objects)
+                Dictionary<GreenSymbol, Dictionary<ModelProperty, object>> modelPart = null;
+                lock (cmd.Symbols)
                 {
-                    if (cmd.objects.TryGetValue(modelId, out model))
+                    if (cmd.symbols.TryGetValue(modelPartId, out modelPart))
                     {
-                        if (model.TryGetValue(objectId, out result))
+                        if (modelPart.TryGetValue(symbol, out result))
                         {
                             return result;
                         }
@@ -526,11 +1051,11 @@ namespace MetaDslx.Core.Immutable2
             }
             else 
             {
-                return this.FindDefaultObject(modelId, objectId);
+                return this.FindDefaultSymbol(modelPartId, symbol);
             }
         }
 
-        private Dictionary<ModelProperty, object> FindDefaultObject(long modelId, long objectId, FindObjectFlags flags = FindObjectFlags.All)
+        private Dictionary<ModelProperty, object> FindDefaultSymbol(object modelPartId, GreenSymbol symbol, FindObjectFlags flags = FindObjectFlags.All)
         {
             Dictionary<ModelProperty, object> result = null;
             ModelTransactionCommand cmd = this;
@@ -540,12 +1065,12 @@ namespace MetaDslx.Core.Immutable2
             }
             while (result == null && cmd != null)
             {
-                lock (cmd.Group)
+                lock (cmd.Model)
                 {
-                    GreenModel model = null;
-                    if (cmd.group.models.TryGetValue(modelId, out model))
+                    GreenModelPart model = null;
+                    if (cmd.model.parts.TryGetValue(modelPartId, out model))
                     {
-                        if (model.Objects.TryGetValue(objectId, out result))
+                        if (model.Symbols.TryGetValue(symbol, out result))
                         {
                             return result;
                         }
@@ -557,44 +1082,44 @@ namespace MetaDslx.Core.Immutable2
             return null;
         }
 
-        private Dictionary<long, Dictionary<ModelProperty, object>> GetObjects(long modelId)
+        private Dictionary<GreenSymbol, Dictionary<ModelProperty, object>> GetSymbols(object modelPartId)
         {
-            lock(this.Objects)
+            lock(this.Symbols)
             {
-                Dictionary<long, Dictionary<ModelProperty, object>> result = null;
-                if (this.objects.TryGetValue(modelId, out result))
+                Dictionary<GreenSymbol, Dictionary<ModelProperty, object>> result = null;
+                if (this.symbols.TryGetValue(modelPartId, out result))
                 {
                     return result;
                 }
             }
-            return this.GetObjectsFromParent(modelId);
+            return this.GetSymbolsFromParent(modelPartId);
         }
 
-        private Dictionary<long, Dictionary<ModelProperty, object>> GetObjectsFromParent(long modelId)
+        private Dictionary<GreenSymbol, Dictionary<ModelProperty, object>> GetSymbolsFromParent(object modelPartId)
         {
-            Dictionary<long, Dictionary<ModelProperty, object>> result = null;
+            Dictionary<GreenSymbol, Dictionary<ModelProperty, object>> result = null;
             if (this.parent != null)
             {
-                result = this.parent.GetObjects(modelId);
+                result = this.parent.GetSymbols(modelPartId);
             }
-            else if (this.group != null)
+            else if (this.model != null)
             {
-                lock (this.Group)
+                lock (this.Model)
                 {
-                    result = this.group.Models.FirstOrDefault(m => m.Id == modelId)?.Objects;
+                    result = this.model.Parts.FirstOrDefault(m => m.Id == modelPartId)?.Symbols;
                 }
             }
             return result;
         }
     }
 
-    public class ModelValueCommand : ModelBuildCommand
+    internal class ModelValueCommand : ModelBuildCommand
     {
-        public GreenObject Target { get; private set; }
+        public GreenSymbol Target { get; private set; }
         public ModelProperty Property { get; private set; }
         public object Value { get; private set; }
 
-        public ModelValueCommand(GreenObject target, ModelProperty property, object value)
+        public ModelValueCommand(GreenSymbol target, ModelProperty property, object value)
         {
             this.Target = target;
             this.Property = property;
@@ -602,17 +1127,17 @@ namespace MetaDslx.Core.Immutable2
         }
     }
 
-    public class ModelAddValueCommand : ModelValueCommand
+    internal class ModelAddValueCommand : ModelValueCommand
     {
-        public ModelAddValueCommand(GreenObject target, ModelProperty property, object value)
+        public ModelAddValueCommand(GreenSymbol target, ModelProperty property, object value)
             : base(target, property, value)
         {
         }
     }
 
-    public class ModelRemoveValueCommand : ModelValueCommand
+    internal class ModelRemoveValueCommand : ModelValueCommand
     {
-        public ModelRemoveValueCommand(GreenObject target, ModelProperty property, object value)
+        public ModelRemoveValueCommand(GreenSymbol target, ModelProperty property, object value)
             : base(target, property, value)
         {
         }
