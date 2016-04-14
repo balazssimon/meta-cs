@@ -157,6 +157,12 @@ namespace MetaDslx.Core.Immutable2
         bool RemoveValue(ModelProperty property, object value);
     }
 
+    internal interface IInternalSymbol
+    {
+        bool InternalAddValue(ModelProperty property, object value);
+        bool InternalRemoveValue(ModelProperty property, object value);
+    }
+
     public abstract class GreenSymbol
     {
         public GreenSymbol()
@@ -276,7 +282,7 @@ namespace MetaDslx.Core.Immutable2
         }
     }
 
-    public class RedList : IReadOnlyList<object>
+    public class RedList : IReadOnlyList<object>, IInternalSymbol
     {
         private ListEvaluationState state;
         private RedSymbol parent;
@@ -296,8 +302,11 @@ namespace MetaDslx.Core.Immutable2
 
         public ModelProperty Property { get { return this.property; } }
 
-        private void Add(object item)
+        private bool Add(object item)
         {
+            if (item == null) return false;
+            bool added = false;
+            bool addRelated = false;
             lock (this.redItems)
             {
                 if (this.greenList is GreenList)
@@ -305,19 +314,21 @@ namespace MetaDslx.Core.Immutable2
                     if (!this.redItems.Contains(item))
                     {
                         this.redItems.Add(item);
+                        added = true;
+                        addRelated = true;
                     }
                 }
                 else
                 {
                     this.redItems.Add(item);
+                    added = true;
                 }
             }
-        }
-
-        internal void InternalAddItem(object item)
-        {
-            this.EvaluateLazyItems();
-            this.Add(item);
+            if (addRelated)
+            {
+                this.parent.Model.AddValueToRelatedProperties(this.parent, this.property, item as RedSymbol);
+            }
+            return added;
         }
 
         public object this[int index]
@@ -400,9 +411,22 @@ namespace MetaDslx.Core.Immutable2
                 this.Add(value);
             }
         }
+
+        public bool InternalAddValue(ModelProperty property, object value)
+        {
+            if (value == null) return false;
+            this.EvaluateLazyItems();
+            return this.Add(value);
+        }
+
+        public bool InternalRemoveValue(ModelProperty property, object value)
+        {
+            Debug.Assert(false);
+            return false;
+        }
     }
 
-    public class RedSymbol : IImmutableSymbol
+    public class RedSymbol : IImmutableSymbol, IInternalSymbol
     {
         private RedModel model;
         private GreenSymbol green;
@@ -426,11 +450,63 @@ namespace MetaDslx.Core.Immutable2
                 if (this.values.TryGetValue(property, out result)) return result;
             }
             result = this.model.GetValue(this.green, property);
+            if (result == null) return result;
             lock (this.values)
             {
                 this.values.Add(property, result);
-                return result;
+                foreach (var prop in property.RedefinedProperties)
+                {
+                    this.values.Add(prop, result);
+                }
+                foreach (var prop in property.RedefiningProperties)
+                {
+                    this.values.Add(prop, result);
+                }
             }
+            this.model.AddValueToRelatedProperties(this, property, result as RedSymbol);
+            return result;
+        }
+
+        public bool InternalAddValue(ModelProperty property, object value)
+        {
+            if (value == null) return false;
+            object oldValue = this.GetValue(property);
+            RedList listValue = oldValue as RedList;
+            if (listValue != null)
+            {
+                return listValue.InternalAddValue(property, value);
+            }
+            if (oldValue == null)
+            {
+                lock (this.values)
+                {
+                    this.values.Add(property, value);
+                    foreach (var prop in property.RedefinedProperties)
+                    {
+                        this.values.Add(prop, value);
+                    }
+                    foreach (var prop in property.RedefiningProperties)
+                    {
+                        this.values.Add(prop, value);
+                    }
+                }
+                this.model.AddValueToRelatedProperties(this, property, value as RedSymbol);
+                return true;
+            }
+            else if (oldValue == value)
+            {
+                return false;
+            }
+            else
+            {
+                throw new ModelException("Cannot reassign value.");
+            }
+        }
+
+        public bool InternalRemoveValue(ModelProperty property, object value)
+        {
+            Debug.Assert(false);
+            return false;
         }
     }
 
@@ -718,17 +794,24 @@ namespace MetaDslx.Core.Immutable2
             {
                 this.EvaluateProperty(prop);
             }
-            foreach (var prop in property.RedefinedProperties)
-            {
-                this.EvaluateProperty(prop);
-            }
             foreach (var prop in property.SubsettingProperties)
             {
                 this.EvaluateProperty(prop);
             }
-            foreach (var prop in property.RedefiningProperties)
+        }
+
+        internal void AddValueToRelatedProperties(RedSymbol symbol, ModelProperty property, RedSymbol value)
+        {
+            if (symbol == null) return;
+            if (property == null) return;
+            if (value == null) return;
+            foreach (var prop in property.SubsettedProperties)
             {
-                this.EvaluateProperty(prop);
+                symbol.InternalAddValue(prop, value);
+            }
+            foreach (var prop in property.OppositeProperties)
+            {
+                value.InternalAddValue(prop, symbol);
             }
         }
 
