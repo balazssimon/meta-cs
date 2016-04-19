@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable4
 {
+    internal delegate void InvalidatePropertyDelegate(GreenSymbol symbol, ModelProperty property);
+
     public abstract class GreenSymbol
     {
         public abstract ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model);
@@ -87,7 +89,7 @@ namespace MetaDslx.Core.Immutable4
     // NOT thread-safe
     public class MutableRedSymbol : RedSymbol
     {
-        private Dictionary<ModelProperty, object> properties;
+        internal HashSet<ModelProperty> invalidatedProperties;
 
         public MutableRedSymbol(GreenSymbol green, MutableRedModel model)
             : base(green, model)
@@ -96,9 +98,32 @@ namespace MetaDslx.Core.Immutable4
 
         public new MutableRedModel Model { get { return (MutableRedModel)base.Model; } }
 
+        internal void InvalidateProperty(ModelProperty property)
+        {
+            if (this.invalidatedProperties == null)
+            {
+                this.invalidatedProperties = new HashSet<ModelProperty>();
+            }
+            this.invalidatedProperties.Add(property);
+        }
+
+        private bool ClearInvalidatedProperty(ModelProperty property)
+        {
+            if (this.invalidatedProperties != null && this.invalidatedProperties.Contains(property))
+            {
+                this.invalidatedProperties.Remove(property);
+                return true;
+            }
+            return false;
+        }
+
         public T GetValue<T>(ModelProperty property, ref T value)
             where T : class
         {
+            if (this.ClearInvalidatedProperty(property))
+            {
+                Interlocked.Exchange(ref value, null);
+            }
             T result = value;
             if (result == null)
             {
@@ -120,6 +145,10 @@ namespace MetaDslx.Core.Immutable4
                     result = Interlocked.CompareExchange(ref value, result, null) ?? result;
                 }
             }
+            if (this.ClearInvalidatedProperty(property) && result != null)
+            {
+                result.Wrapped.Invalidate();
+            }
             return result;
         }
 
@@ -136,6 +165,10 @@ namespace MetaDslx.Core.Immutable4
                     result = Interlocked.CompareExchange(ref value, result, null) ?? result;
                 }
             }
+            if (this.ClearInvalidatedProperty(property) && result != null)
+            {
+                result.Wrapped.Invalidate();
+            }
             return result;
         }
 
@@ -146,6 +179,7 @@ namespace MetaDslx.Core.Immutable4
             if (Interlocked.Exchange(ref value, newValue) != oldValue)
             {
                 this.Model.SetValue(this, property, value);
+                this.ClearInvalidatedProperty(property);
                 return true;
             }
             return false;
@@ -352,14 +386,19 @@ namespace MetaDslx.Core.Immutable4
 
         public new MutableRedModel Model { get { return (MutableRedModel)base.Model; } }
 
+        internal void Invalidate()
+        {
+            Interlocked.Exchange(ref this.cachedItems, null);
+        }
+
         public bool Add(object value)
         {
-            return this.Model.AddListItem(this, this.cachedItems, value);
+            return this.Model.AddListItem(this, value);
         }
 
         public bool Remove(object value)
         {
-            return this.Model.RemoveListItem(this, this.cachedItems, value);
+            return this.Model.RemoveListItem(this, value);
         }
 
         public override object this[int index]
@@ -401,6 +440,8 @@ namespace MetaDslx.Core.Immutable4
         {
             this.wrapped = wrapped;
         }
+
+        internal MutableRedValueList Wrapped { get { return this.wrapped; } }
 
         public T this[int index]
         {
@@ -654,14 +695,19 @@ namespace MetaDslx.Core.Immutable4
 
         public new MutableRedModel Model { get { return (MutableRedModel)base.Model; } }
 
+        internal void Invalidate()
+        {
+            Interlocked.Exchange(ref this.cachedItems, null);
+        }
+
         public bool Add(RedSymbol value)
         {
-            return this.Model.AddListItem(this, this.cachedItems, value);
+            return this.Model.AddListItem(this, value);
         }
 
         public bool Remove(RedSymbol value)
         {
-            return this.Model.RemoveListItem(this, this.cachedItems, value);
+            return this.Model.RemoveListItem(this, value);
         }
 
         public MutableRedSymbol this[int index]
@@ -709,6 +755,8 @@ namespace MetaDslx.Core.Immutable4
         {
             this.wrapped = wrapped;
         }
+
+        internal MutableRedSymbolList Wrapped { get { return this.wrapped; } }
 
         public T this[int index]
         {
@@ -915,11 +963,13 @@ namespace MetaDslx.Core.Immutable4
     public class GreenModelTransaction : GreenModel
     {
         private GreenModel baseModel;
+        internal MutableRedModel redModel;
         //private Dictionary<GreenSymbol, HashSet<ModelProperty>> lazyValues;
 
         internal GreenModelTransaction(GreenModel baseModel)
         {
             Debug.Assert(baseModel != null);
+            Debug.Assert(redModel != null);
             this.baseModel = baseModel;
         }
 
@@ -1205,11 +1255,83 @@ namespace MetaDslx.Core.Immutable4
 
         private void AddValueToRelatedProperties(GreenSymbol symbol, ModelProperty property, GreenList list, object value)
         {
-            // TODO
+            this.redModel.InvalidateProperty(symbol, property);
+            foreach (var subsettedProperty in property.SubsettedProperties)
+            {
+                this.AddValueToSubsettedProperty(symbol, property, subsettedProperty, list, value);
+            }
+            foreach (var redefinedProperty in property.RedefinedProperties)
+            {
+                this.AddValueToRedefinedProperty(symbol, property, redefinedProperty, list, value);
+            }
+            foreach (var redefiningProperty in property.RedefiningProperties)
+            {
+                this.AddValueToRedefiningProperty(symbol, property, redefiningProperty, list, value);
+            }
         }
 
         private void RemoveValueFromRelatedProperties(GreenSymbol symbol, ModelProperty property, GreenList list, object value)
         {
+            this.redModel.InvalidateProperty(symbol, property);
+            foreach (var subsettingProperty in property.SubsettingProperties)
+            {
+                this.RemoveValueFromSubsettingProperty(symbol, property, subsettingProperty, list, value);
+            }
+            foreach (var redefinedProperty in property.RedefinedProperties)
+            {
+                this.RemoveValueFromRedefinedProperty(symbol, property, redefinedProperty, list, value);
+            }
+            foreach (var redefiningProperty in property.RedefiningProperties)
+            {
+                this.RemoveValueFromRedefiningProperty(symbol, property, redefiningProperty, list, value);
+            }
+        }
+
+        private void AddValueToOppositeProperty(GreenSymbol symbol, ModelProperty property, ModelProperty oppositeProperty, GreenList list, object value)
+        {
+            this.redModel.InvalidateProperty(symbol, oppositeProperty);
+            // TODO
+        }
+
+        private void RemoveValueFromOppositeProperty(GreenSymbol symbol, ModelProperty property, ModelProperty oppositeProperty, GreenList list, object value)
+        {
+            this.redModel.InvalidateProperty(symbol, oppositeProperty);
+            // TODO
+        }
+
+        private void AddValueToRedefiningProperty(GreenSymbol symbol, ModelProperty property, ModelProperty redefiningProperty, GreenList list, object value)
+        {
+            this.redModel.InvalidateProperty(symbol, redefiningProperty);
+            // TODO
+        }
+
+        private void RemoveValueFromRedefiningProperty(GreenSymbol symbol, ModelProperty property, ModelProperty redefiningProperty, GreenList list, object value)
+        {
+            this.redModel.InvalidateProperty(symbol, redefiningProperty);
+            // TODO
+        }
+
+        private void AddValueToRedefinedProperty(GreenSymbol symbol, ModelProperty property, ModelProperty redefinedProperty, GreenList list, object value)
+        {
+            this.redModel.InvalidateProperty(symbol, redefinedProperty);
+            // TODO
+        }
+
+        private void RemoveValueFromRedefinedProperty(GreenSymbol symbol, ModelProperty property, ModelProperty redefinedProperty, GreenList list, object value)
+        {
+            this.redModel.InvalidateProperty(symbol, redefinedProperty);
+            // TODO
+        }
+
+        private void AddValueToSubsettedProperty(GreenSymbol symbol, ModelProperty property, ModelProperty subsettedProperty, GreenList list, object value)
+        {
+            this.redModel.InvalidateProperty(symbol, subsettedProperty);
+            // TODO
+        }
+
+        private void RemoveValueFromSubsettingProperty(GreenSymbol symbol, ModelProperty property, ModelProperty subsettingProperty, GreenList list, object value)
+        {
+            this.redModel.InvalidateProperty(symbol, subsettingProperty);
             // TODO
         }
     }
@@ -1412,7 +1534,7 @@ namespace MetaDslx.Core.Immutable4
 
         public MutableRedModel ToMutable()
         {
-            return new MutableRedModel(new GreenModelTransaction(this.Green), this);
+            return new MutableRedModel(this.Green, this);
         }
     }
 
@@ -1420,16 +1542,18 @@ namespace MetaDslx.Core.Immutable4
     public class MutableRedModel : RedModel
     {
         private ImmutableRedModel originalImmutableModel;
+        private Dictionary<GreenSymbol, HashSet<ModelProperty>> invalidatedProperties;
 
-        internal MutableRedModel(GreenModelTransaction green)
-            : base(green)
+        internal MutableRedModel(GreenModel green)
+            : this(green, null)
         {
         }
 
-        internal MutableRedModel(GreenModelTransaction green, ImmutableRedModel originalImmutableModel)
-            : base(green)
+        internal MutableRedModel(GreenModel green, ImmutableRedModel originalImmutableModel)
+            : base(new GreenModelTransaction(green))
         {
             this.originalImmutableModel = originalImmutableModel;
+            this.Green.redModel = this;
         }
 
         public new GreenModelTransaction Green { get { return (GreenModelTransaction)base.Green; } }
@@ -1447,7 +1571,6 @@ namespace MetaDslx.Core.Immutable4
         internal void RemoveSymbol(RedSymbol symbol)
         {
             this.Green.RemoveSymbol(symbol.Green);
-            // TODO: remove from red property values
         }
 
         internal new MutableRedSymbol GetRedSymbol(GreenSymbol green)
@@ -1485,12 +1608,7 @@ namespace MetaDslx.Core.Immutable4
                 value = ((RedSymbolList)value).Green;
             }
             object oldValue;
-            if (this.Green.SetValue(symbol.Green, property, value, out oldValue))
-            {
-                // TODO: invalidate related red properties (do it automatically from green values!)
-                return true;
-            }
-            return false;
+            return this.Green.SetValue(symbol.Green, property, value, out oldValue);
         }
 
         internal void CreateListItems(MutableRedSymbolList list, ref List<MutableRedSymbol> items)
@@ -1508,48 +1626,33 @@ namespace MetaDslx.Core.Immutable4
             Interlocked.CompareExchange(ref items, result, null);
         }
 
-        internal bool AddListItem(MutableRedValueList list, List<object> cachedItems, object item)
+        internal bool AddListItem(MutableRedValueList list, object item)
         {
-            if (this.Green.AddValue(list.Green.Parent, list.Green.Property, item))
-            {
-                cachedItems.Add(item);
-                // TODO: invalidate related red properties
-                return true;
-            }
-            return false;
+            return this.Green.AddValue(list.Green.Parent, list.Green.Property, item);
         }
 
-        internal bool RemoveListItem(MutableRedValueList list, List<object> cachedItems, object item)
+        internal bool RemoveListItem(MutableRedValueList list, object item)
         {
-            if (this.Green.RemoveValue(list.Green.Parent, list.Green.Property, item))
-            {
-                cachedItems.Remove(item);
-                // TODO: invalidate related red properties
-                return true;
-            }
-            return false;
+            return this.Green.RemoveValue(list.Green.Parent, list.Green.Property, item);
         }
 
-        internal bool AddListItem(MutableRedSymbolList list, List<MutableRedSymbol> cachedItems, RedSymbol item)
+        internal bool AddListItem(MutableRedSymbolList list, RedSymbol item)
         {
-            if (this.Green.AddValue(list.Green.Parent, list.Green.Property, item))
-            {
-                cachedItems.Add(this.GetRedSymbol(item.Green));
-                // TODO: invalidate related red properties
-                return true;
-            }
-            return false;
+            return this.Green.AddValue(list.Green.Parent, list.Green.Property, item);
         }
 
-        internal bool RemoveListItem(MutableRedSymbolList list, List<MutableRedSymbol> cachedItems, RedSymbol item)
+        internal bool RemoveListItem(MutableRedSymbolList list, RedSymbol item)
         {
-            if (this.Green.RemoveValue(list.Green.Parent, list.Green.Property, item))
+            return this.Green.RemoveValue(list.Green.Parent, list.Green.Property, item);
+        }
+
+        internal void InvalidateProperty(GreenSymbol symbol, ModelProperty property)
+        {
+            MutableRedSymbol redSymbol = this.GetRedSymbol(symbol);
+            if (redSymbol != null)
             {
-                cachedItems.Remove(this.GetRedSymbol(item.Green));
-                // TODO: invalidate related red properties
-                return true;
+                redSymbol.InvalidateProperty(property);
             }
-            return false;
         }
 
         internal GreenModel Fork()
