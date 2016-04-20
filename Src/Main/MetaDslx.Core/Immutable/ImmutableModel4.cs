@@ -17,6 +17,114 @@ namespace MetaDslx.Core.Immutable4
         public abstract MutableRedSymbol CreateMutableRed(MutableRedModel model);
     }
 
+    internal sealed class GreenLazyItem
+    {
+        private Lazy<object> lazy;
+
+        internal GreenLazyItem(Lazy<object> lazy)
+        {
+            this.lazy = lazy;
+        }
+
+        public object CreateValue(ImmutableRedModel model)
+        {
+            object value = lazy.Value;
+            if (value is GreenLazyItem)
+            {
+                return ((GreenLazyItem)value).CreateValue(model);
+            }
+            else if (value is GreenLazySymbol)
+            {
+                return ((GreenLazySymbol)value).CreateImmutableRed(model);
+            }
+            else if (value is GreenSymbol)
+            {
+                return model.GetRedSymbol((GreenSymbol)value);
+            }
+            else if (value is RedSymbol)
+            {
+                return model.GetRedSymbol(((RedSymbol)value).Green);
+            }
+            return value;
+        }
+
+        public object CreateValue(MutableRedModel model)
+        {
+            object value = lazy.Value;
+            if (value is GreenLazyItem)
+            {
+                return ((GreenLazyItem)value).CreateValue(model);
+            }
+            else if (value is GreenLazySymbol)
+            {
+                return ((GreenLazySymbol)value).CreateMutableRed(model);
+            }
+            else if(value is GreenSymbol)
+            {
+                return model.GetRedSymbol((GreenSymbol)value);
+            }
+            else if (value is RedSymbol)
+            {
+                return model.GetRedSymbol(((RedSymbol)value).Green);
+            }
+            return value;
+        }
+    }
+
+    internal sealed class GreenLazySymbol : GreenSymbol
+    {
+        private Lazy<object> lazy;
+
+        internal GreenLazySymbol(Lazy<object> lazy)
+        {
+            this.lazy = lazy;
+        }
+
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
+        {
+            object value = lazy.Value;
+            if (value is GreenLazyItem)
+            {
+                return ((GreenLazyItem)value).CreateValue(model) as ImmutableRedSymbol;
+            }
+            else if (value is GreenLazySymbol)
+            {
+                return ((GreenLazySymbol)value).CreateImmutableRed(model);
+            }
+            else if(value is GreenSymbol)
+            {
+                return model.GetRedSymbol((GreenSymbol)value);
+            }
+            else if (value is RedSymbol)
+            {
+                return model.GetRedSymbol(((RedSymbol)value).Green);
+            }
+            return null;
+        }
+
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
+        {
+            object value = lazy.Value;
+            if (value is GreenLazyItem)
+            {
+                return ((GreenLazyItem)value).CreateValue(model) as MutableRedSymbol;
+            }
+            else if (value is GreenLazySymbol)
+            {
+                return ((GreenLazySymbol)value).CreateMutableRed(model);
+            }
+            else if (value is GreenSymbol)
+            {
+                return model.GetRedSymbol((GreenSymbol)value);
+            }
+            else if (value is RedSymbol)
+            {
+                return model.GetRedSymbol(((RedSymbol)value).Green);
+            }
+            return null;
+        }
+    }
+
     public class RedSymbol
     {
         private GreenSymbol green;
@@ -411,6 +519,11 @@ namespace MetaDslx.Core.Immutable4
             return this.Model.AddListItem(this, value);
         }
 
+        public bool AddLazy(Lazy<object> lazy)
+        {
+            return this.Model.AddListItem(this, new GreenLazyItem(lazy));
+        }
+
         public bool Remove(object value)
         {
             return this.Model.RemoveListItem(this, value);
@@ -490,6 +603,11 @@ namespace MetaDslx.Core.Immutable4
         public void Add(T item)
         {
             this.wrapped.Add(item);
+        }
+
+        public bool AddLazy(Lazy<T> lazy)
+        {
+            return this.wrapped.AddLazy(new Lazy<object>(() => lazy.Value, false));
         }
 
         public void Clear()
@@ -731,6 +849,11 @@ namespace MetaDslx.Core.Immutable4
             return this.Model.AddListItem(this, value);
         }
 
+        public bool AddLazy(Lazy<RedSymbol> lazy)
+        {
+            return this.Model.AddListItem(this, new GreenLazySymbol(new Lazy<object>(() => lazy.Value, false)));
+        }
+
         public bool Remove(RedSymbol value)
         {
             return this.Model.RemoveListItem(this, value);
@@ -816,6 +939,11 @@ namespace MetaDslx.Core.Immutable4
         public void Add(T item)
         {
             this.wrapped.Add((RedSymbol)(object)item);
+        }
+
+        public void AddLazy(Lazy<T> lazy)
+        {
+            this.wrapped.AddLazy(new Lazy<RedSymbol>(() => (RedSymbol)(object)lazy.Value, false));
         }
 
         public void Clear()
@@ -1353,7 +1481,7 @@ namespace MetaDslx.Core.Immutable4
             this.symbols = new Dictionary<GreenSymbol, ImmutableRedSymbol>();
         }
 
-        private ImmutableRedSymbol GetRedSymbol(GreenSymbol green)
+        public ImmutableRedSymbol GetRedSymbol(GreenSymbol green)
         {
             if (!this.green.ContainsSymbol(green))
             {
@@ -1466,12 +1594,15 @@ namespace MetaDslx.Core.Immutable4
     public sealed class MutableRedModel : RedModel
     {
         // TODO: weak reference
+        // TODO: move to transaction?
         private Dictionary<GreenSymbol, MutableRedSymbol> symbols;
+        private Dictionary<GreenLazyItem, object> lazyItems;
         private Dictionary<GreenSymbol, HashSet<ModelProperty>> invalidatedProperties;
 
         private GreenModelTransaction rootTransaction;
         private GreenModelTransaction currentTransaction;
         private ImmutableRedModel originalImmutableModel;
+        private bool allowLazyEval = false;
 
         public MutableRedModel()
             : this(new GreenModel(), null)
@@ -1532,7 +1663,7 @@ namespace MetaDslx.Core.Immutable4
             // TODO: invalidate properties, remove symbols
         }
 
-        private MutableRedSymbol GetRedSymbol(GreenSymbol green)
+        public MutableRedSymbol GetRedSymbol(GreenSymbol green)
         {
             if (!this.currentTransaction.ContainsSymbol(green))
             {
@@ -1545,6 +1676,10 @@ namespace MetaDslx.Core.Immutable4
                 {
                     return red;
                 }
+            }
+            if (green is GreenLazySymbol && !this.allowLazyEval)
+            {
+                return null;
             }
             red = green.CreateMutableRed(this);
             lock (this.symbols)
@@ -1586,6 +1721,14 @@ namespace MetaDslx.Core.Immutable4
             if (greenObject is GreenSymbol)
             {
                 return this.GetRedSymbol((GreenSymbol)greenObject);
+            }
+            else if (greenObject is GreenLazyItem)
+            {
+                if (this.allowLazyEval)
+                {
+                    // TODO 
+                }
+                return null;
             }
             else if (greenObject is GreenValueList)
             {
@@ -1650,6 +1793,14 @@ namespace MetaDslx.Core.Immutable4
                 {
                     redObject = this.GetRedSymbol((GreenSymbol)greenObject);
                 }
+                else if (greenObject is GreenLazyItem)
+                {
+                    if (this.allowLazyEval)
+                    {
+                        // TODO
+                    }
+                    redObject = null;
+                }
                 if (redObject != null && (allowMultipleItems || !result.Contains(redObject)))
                 {
                     result.Add(redObject);
@@ -1684,6 +1835,11 @@ namespace MetaDslx.Core.Immutable4
         }
 
         internal bool AddListItem(MutableRedSymbolList list, RedSymbol item)
+        {
+            return this.currentTransaction.AddValue(list.Green.Parent, list.Green.Property, item);
+        }
+
+        internal bool AddListItem(MutableRedSymbolList list, GreenLazySymbol item)
         {
             return this.currentTransaction.AddValue(list.Green.Parent, list.Green.Property, item);
         }
