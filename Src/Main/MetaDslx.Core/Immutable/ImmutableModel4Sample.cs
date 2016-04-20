@@ -31,42 +31,37 @@ namespace MetaDslx.Core.Immutable4
 
         public Parent Parent()
         {
-            GreenParent green = new GreenParent();
-            model.AddGreenSymbol(green);
-            ParentImpl red = new ParentImpl(green, model);
-            return red;
+            return (Parent)model.AddGreenSymbol(new GreenParent());
         }
 
         public Child Child()
         {
-            GreenChild green = new GreenChild();
-            model.AddGreenSymbol(green);
-            ChildImpl red = new ChildImpl(green, model);
-            return red;
+            return (Child)model.AddGreenSymbol(new GreenChild());
         }
     }
 
-    public interface ImmutableParent
+    public interface ImmutableParent : RedSymbol
     {
-        IReadOnlyList<ImmutableChild> Children { get; }
+        ImmutableModelList<ImmutableChild> Children { get; }
         Parent AsMutable(MutableRedModel model);
     }
 
-    public interface ImmutableChild
+    public interface ImmutableChild : RedSymbol
     {
         ImmutableParent Parent { get; }
         Child AsMutable(MutableRedModel model);
     }
 
-    public interface Parent
+    public interface Parent : RedSymbol
     {
-        IList<Child> Children { get; }
+        ModelList<Child> Children { get; }
         ImmutableParent AsImmutable(ImmutableRedModel model);
     }
 
-    public interface Child
+    public interface Child : RedSymbol
     {
         Parent Parent { get; set; }
+        void SetParent(Func<Parent> lazy);
         ImmutableChild AsImmutable(ImmutableRedModel model);
     }
 
@@ -107,7 +102,7 @@ namespace MetaDslx.Core.Immutable4
 
         }
 
-        public IReadOnlyList<ImmutableChild> Children
+        public ImmutableModelList<ImmutableChild> Children
         {
             get
             {
@@ -151,10 +146,10 @@ namespace MetaDslx.Core.Immutable4
         public ParentImpl(GreenSymbol green, MutableRedModel model)
             : base(green, model)
         {
-
+            
         }
 
-        public IList<Child> Children
+        public ModelList<Child> Children
         {
             get
             {
@@ -187,6 +182,11 @@ namespace MetaDslx.Core.Immutable4
             {
                 this.SetValue(SampleModelDescriptor.Child.ParentProperty, ref this.parent, value);
             }
+        }
+
+        public void SetParent(Func<Parent> lazy)
+        {
+            this.SetLazyValue(SampleModelDescriptor.Child.ParentProperty, lazy);
         }
 
         public ImmutableChild AsImmutable(ImmutableRedModel model)
