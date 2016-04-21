@@ -333,6 +333,8 @@ namespace MetaDslx.Core.Immutable4
         public GreenSymbol Parent { get { return this.parent; } }
         public ModelProperty Property { get { return this.property; } }
         public bool AllowMultipleItems { get { return this.allowMultipleItems; } }
+
+        public abstract bool Contains(object item);
     }
 
     // NOT thread-safe
@@ -385,6 +387,11 @@ namespace MetaDslx.Core.Immutable4
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        public override bool Contains(object item)
+        {
+            return this.items.Contains(item);
         }
 
         public object Clone()
@@ -755,6 +762,15 @@ namespace MetaDslx.Core.Immutable4
         public GreenSymbol this[int index]
         {
             get { return this.items[index]; }
+        }
+
+        public override bool Contains(object item)
+        {
+            if (item is GreenSymbol)
+            {
+                return this.items.Contains((GreenSymbol)item);
+            }
+            return false;
         }
 
         public IEnumerator<GreenSymbol> GetEnumerator()
@@ -1406,9 +1422,12 @@ namespace MetaDslx.Core.Immutable4
                 {
                     foreach (var container in entry.containers)
                     {
-                        foreach (var containingProperty in container.Value)
+                        if (container.Value != null)
                         {
-                            this.RemoveValue(container.Key, containingProperty, green);
+                            foreach (var containingProperty in container.Value)
+                            {
+                                this.RemoveValue(container.Key, containingProperty, green);
+                            }
                         }
                     }
                 }
@@ -1637,14 +1656,53 @@ namespace MetaDslx.Core.Immutable4
         private void AddValueToRelatedProperties(GreenSymbol symbol, ModelProperty property, GreenList list, object value)
         {
             this.redModel.InvalidateProperty(symbol, property);
-            // TODO: update container
+            if (value is GreenSymbol && !(value is GreenLazySymbol))
+            {
+                GreenSymbol item = (GreenSymbol)value;
+                if (item != symbol)
+                {
+                    GreenSymbolEntry entry = this.GetEntry(item, true, true);
+                    if (entry != null)
+                    {
+                        entry.CreateContainers();
+                        HashSet<ModelProperty> properties;
+                        if (!entry.containers.TryGetValue(symbol, out properties))
+                        {
+                            properties = new HashSet<ModelProperty>();
+                            entry.containers.Add(symbol, properties);
+                        }
+                        properties.Add(property);
+                    }
+                }
+            }
             // TODO: related properties
         }
 
         private void RemoveValueFromRelatedProperties(GreenSymbol symbol, ModelProperty property, GreenList list, object value)
         {
             this.redModel.InvalidateProperty(symbol, property);
-            // TODO: update container
+            if (value is GreenSymbol && !(value is GreenLazySymbol))
+            {
+                GreenSymbol item = (GreenSymbol)value;
+                if (item != symbol)
+                {
+                    if (list == null || !list.Contains(item))
+                    {
+                        GreenSymbolEntry entry = this.GetEntry(item, true, false);
+                        if (entry != null && entry.containers != null)
+                        {
+                            HashSet<ModelProperty> properties;
+                            if (entry.containers.TryGetValue(symbol, out properties))
+                            {
+                                if (properties != null)
+                                {
+                                    properties.Remove(property);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             // TODO: related properties
         }
 
