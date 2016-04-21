@@ -50,12 +50,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
     </Compile>
+    <Compile Include="Immutable\ImmutableModel5Properties.cs" />
     <Compile Include="Immutable\ImmutableModel.cs" />
     <Compile Include="Immutable\ImmutableModel2.cs" />
     <Compile Include="Immutable\ImmutableModel3.cs" />
     <Compile Include="Immutable\ImmutableModel4.cs" />
     <Compile Include="Immutable\ImmutableModel4Properties.cs" />
     <Compile Include="Immutable\ImmutableModel4Sample.cs" />
+    <Compile Include="Immutable\ImmutableModel5.cs" />
+    <Compile Include="Immutable\ImmutableModel5Sample.cs" />
     <Compile Include="MetaImplementation.cs" />
     <Compile Include="MetaModel.cs">
       <AutoGen>True</AutoGen>
