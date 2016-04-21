@@ -13,6 +13,8 @@ namespace MetaDslx.Core.Immutable4
 
     public abstract class GreenSymbol
     {
+        public abstract System.Type ImmutableType { get; }
+        public abstract System.Type MutableType { get; }
         public abstract ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model);
         public abstract MutableRedSymbol CreateMutableRed(MutableRedModel model);
     }
@@ -79,6 +81,10 @@ namespace MetaDslx.Core.Immutable4
         {
             this.lazy = lazy;
         }
+
+        public override Type ImmutableType { get { return typeof(object); } }
+
+        public override Type MutableType { get { return typeof(object); } }
 
         public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
@@ -1656,102 +1662,156 @@ namespace MetaDslx.Core.Immutable4
         private void AddValueToRelatedProperties(GreenSymbol symbol, ModelProperty property, GreenList list, object value)
         {
             this.redModel.InvalidateProperty(symbol, property);
-            if (value is GreenSymbol && !(value is GreenLazySymbol))
+            if (value is GreenLazySymbol) return;
+            GreenSymbol valueSymbol = value as GreenSymbol;
+            if (valueSymbol != null && valueSymbol != symbol)
             {
-                GreenSymbol item = (GreenSymbol)value;
-                if (item != symbol)
+                GreenSymbolEntry itemEntry = this.GetEntry(valueSymbol, true, true);
+                if (itemEntry != null)
                 {
-                    GreenSymbolEntry entry = this.GetEntry(item, true, true);
-                    if (entry != null)
+                    itemEntry.CreateContainers();
+                    HashSet<ModelProperty> properties;
+                    if (!itemEntry.containers.TryGetValue(symbol, out properties))
                     {
-                        entry.CreateContainers();
-                        HashSet<ModelProperty> properties;
-                        if (!entry.containers.TryGetValue(symbol, out properties))
-                        {
-                            properties = new HashSet<ModelProperty>();
-                            entry.containers.Add(symbol, properties);
-                        }
-                        properties.Add(property);
+                        properties = new HashSet<ModelProperty>();
+                        itemEntry.containers.Add(symbol, properties);
+                    }
+                    properties.Add(property);
+                }
+            }
+            if (list == null || !list.AllowMultipleItems)
+            {
+                GreenSymbolEntry entry = this.GetEntry(symbol, false, false);
+                var assignedProperties = entry?.properties?.Keys;
+                var declaredProperties = ModelProperty.GetDeclaredPropertiesForType(symbol.MutableType);
+                if (valueSymbol != null)
+                {
+                    foreach (var oppositeProperty in property.OppositeProperties)
+                    {
+                        this.AddValueToOppositeProperty(symbol, property, oppositeProperty, list, valueSymbol);
+                    }
+                }
+                if (assignedProperties.Contains(property.SubtypedProperty) || declaredProperties.Contains(property.SubtypedProperty))
+                {
+                    this.AddValueToSubtypedProperty(symbol, property, property.SubtypedProperty, list, value);
+                }
+                foreach (var subtypingProperty in property.SubtypingProperties)
+                {
+                    if (assignedProperties.Contains(subtypingProperty) || declaredProperties.Contains(subtypingProperty))
+                    {
+                        this.AddValueToSubtypingProperty(symbol, property, subtypingProperty, list, value);
+                    }
+                }
+                foreach (var subsettedProperty in property.SubsettedProperties)
+                {
+                    if (assignedProperties.Contains(subsettedProperty) || declaredProperties.Contains(subsettedProperty))
+                    {
+                        this.AddValueToSubsettedProperty(symbol, property, subsettedProperty, list, value);
                     }
                 }
             }
-            // TODO: related properties
         }
 
         private void RemoveValueFromRelatedProperties(GreenSymbol symbol, ModelProperty property, GreenList list, object value)
         {
             this.redModel.InvalidateProperty(symbol, property);
-            if (value is GreenSymbol && !(value is GreenLazySymbol))
+            if (value is GreenLazySymbol) return;
+            GreenSymbol valueSymbol = value as GreenSymbol;
+            if (valueSymbol != null && valueSymbol != symbol)
             {
-                GreenSymbol item = (GreenSymbol)value;
-                if (item != symbol)
+                if (list == null || !list.Contains(valueSymbol))
                 {
-                    if (list == null || !list.Contains(item))
+                    GreenSymbolEntry itemEntry = this.GetEntry(valueSymbol, true, false);
+                    if (itemEntry != null && itemEntry.containers != null)
                     {
-                        GreenSymbolEntry entry = this.GetEntry(item, true, false);
-                        if (entry != null && entry.containers != null)
+                        HashSet<ModelProperty> properties;
+                        if (itemEntry.containers.TryGetValue(symbol, out properties))
                         {
-                            HashSet<ModelProperty> properties;
-                            if (entry.containers.TryGetValue(symbol, out properties))
+                            if (properties != null)
                             {
-                                if (properties != null)
-                                {
-                                    properties.Remove(property);
-                                }
+                                properties.Remove(property);
                             }
                         }
                     }
                 }
             }
-            // TODO: related properties
+            if (list == null || !list.AllowMultipleItems)
+            {
+                GreenSymbolEntry entry = this.GetEntry(symbol, false, false);
+                var assignedProperties = entry?.properties?.Keys;
+                var declaredProperties = ModelProperty.GetDeclaredPropertiesForType(symbol.MutableType);
+                if (valueSymbol != null)
+                {
+                    foreach (var oppositeProperty in property.OppositeProperties)
+                    {
+                        this.RemoveValueFromOppositeProperty(symbol, property, oppositeProperty, list, valueSymbol);
+                    }
+                }
+                if (assignedProperties.Contains(property.SubtypedProperty) || declaredProperties.Contains(property.SubtypedProperty))
+                {
+                    this.RemoveValueFromSubtypedProperty(symbol, property, property.SubtypedProperty, list, value);
+                }
+                foreach (var subtypingProperty in property.SubtypingProperties)
+                {
+                    if (assignedProperties.Contains(subtypingProperty) || declaredProperties.Contains(subtypingProperty))
+                    {
+                        this.RemoveValueFromSubtypingProperty(symbol, property, subtypingProperty, list, value);
+                    }
+                }
+                foreach (var subsettingProperty in property.SubsettingProperties)
+                {
+                    if (assignedProperties.Contains(subsettingProperty) || declaredProperties.Contains(subsettingProperty))
+                    {
+                        this.RemoveValueFromSubsettingProperty(symbol, property, subsettingProperty, list, value);
+                    }
+                }
+            }
         }
 
-        private void AddValueToOppositeProperty(GreenSymbol symbol, ModelProperty property, ModelProperty oppositeProperty, GreenList list, object value)
+        private void AddValueToOppositeProperty(GreenSymbol symbol, ModelProperty property, ModelProperty oppositeProperty, GreenList list, GreenSymbol value)
         {
-            this.redModel.InvalidateProperty(symbol, oppositeProperty);
-            // TODO
+            this.AddValue(value, oppositeProperty, symbol);
         }
 
-        private void RemoveValueFromOppositeProperty(GreenSymbol symbol, ModelProperty property, ModelProperty oppositeProperty, GreenList list, object value)
+        private void RemoveValueFromOppositeProperty(GreenSymbol symbol, ModelProperty property, ModelProperty oppositeProperty, GreenList list, GreenSymbol value)
         {
-            this.redModel.InvalidateProperty(symbol, oppositeProperty);
-            // TODO
-        }
-
-        private void AddValueToRedefiningProperty(GreenSymbol symbol, ModelProperty property, ModelProperty redefiningProperty, GreenList list, object value)
-        {
-            this.redModel.InvalidateProperty(symbol, redefiningProperty);
-            // TODO
-        }
-
-        private void RemoveValueFromRedefiningProperty(GreenSymbol symbol, ModelProperty property, ModelProperty redefiningProperty, GreenList list, object value)
-        {
-            this.redModel.InvalidateProperty(symbol, redefiningProperty);
-            // TODO
-        }
-
-        private void AddValueToRedefinedProperty(GreenSymbol symbol, ModelProperty property, ModelProperty redefinedProperty, GreenList list, object value)
-        {
-            this.redModel.InvalidateProperty(symbol, redefinedProperty);
-            // TODO
-        }
-
-        private void RemoveValueFromRedefinedProperty(GreenSymbol symbol, ModelProperty property, ModelProperty redefinedProperty, GreenList list, object value)
-        {
-            this.redModel.InvalidateProperty(symbol, redefinedProperty);
-            // TODO
+            this.RemoveValue(value, oppositeProperty, symbol);
         }
 
         private void AddValueToSubsettedProperty(GreenSymbol symbol, ModelProperty property, ModelProperty subsettedProperty, GreenList list, object value)
         {
-            this.redModel.InvalidateProperty(symbol, subsettedProperty);
-            // TODO
+            this.AddValue(symbol, subsettedProperty, value);
         }
 
         private void RemoveValueFromSubsettingProperty(GreenSymbol symbol, ModelProperty property, ModelProperty subsettingProperty, GreenList list, object value)
         {
-            this.redModel.InvalidateProperty(symbol, subsettingProperty);
-            // TODO
+            this.RemoveValue(symbol, subsettingProperty, value);
+        }
+
+        private void AddValueToSubtypingProperty(GreenSymbol symbol, ModelProperty property, ModelProperty subtypingProperty, GreenList list, object value)
+        {
+            if (subtypingProperty.IsAssignableFrom(value.GetType()))
+            {
+                this.AddValue(symbol, subtypingProperty, value);
+            }
+        }
+
+        private void RemoveValueFromSubtypingProperty(GreenSymbol symbol, ModelProperty property, ModelProperty subtypingProperty, GreenList list, object value)
+        {
+            if (subtypingProperty.IsAssignableFrom(value.GetType()))
+            {
+                this.RemoveValue(symbol, subtypingProperty, value);
+            }
+        }
+
+        private void AddValueToSubtypedProperty(GreenSymbol symbol, ModelProperty property, ModelProperty subtypedProperty, GreenList list, object value)
+        {
+            this.AddValue(symbol, subtypedProperty, value);
+        }
+
+        private void RemoveValueFromSubtypedProperty(GreenSymbol symbol, ModelProperty property, ModelProperty subtypedProperty, GreenList list, object value)
+        {
+            this.RemoveValue(symbol, subtypedProperty, value);
         }
 
         internal void Commit(GreenModelTransaction transaction)

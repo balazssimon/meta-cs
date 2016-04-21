@@ -69,6 +69,10 @@ namespace MetaDslx.Core.Immutable4
 
     internal class GreenParent : GreenSymbol
     {
+        public override Type ImmutableType { get { return typeof(ImmutableParent); } }
+
+        public override Type MutableType { get { return typeof(Parent); } }
+
         public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutableParentImpl(this, model);
@@ -81,6 +85,10 @@ namespace MetaDslx.Core.Immutable4
     }
     internal class GreenChild : GreenSymbol
     {
+        public override Type ImmutableType { get { return typeof(ImmutableChild); } }
+
+        public override Type MutableType { get { return typeof(Child); } }
+
         public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutableChildImpl(this, model);
