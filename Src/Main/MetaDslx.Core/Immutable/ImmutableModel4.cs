@@ -568,6 +568,33 @@ namespace MetaDslx.Core.Immutable4
             }
         }
 
+        public void Clear()
+        {
+            this.Model.ClearList(this);
+        }
+
+        public bool Contains(object item)
+        {
+            this.CacheItems();
+            return this.cachedItems.Contains(item);
+        }
+
+        public int IndexOf(object item)
+        {
+            this.CacheItems();
+            return this.cachedItems.IndexOf(item);
+        }
+
+        public void Insert(int index, object item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotSupportedException();
+        }
+
         public override IEnumerator<object> GetEnumerator()
         {
             this.CacheItems();
@@ -601,7 +628,8 @@ namespace MetaDslx.Core.Immutable4
 
             set
             {
-                throw new NotImplementedException();
+                this.RemoveAt(index);
+                this.Insert(index, value);
             }
         }
 
@@ -609,7 +637,7 @@ namespace MetaDslx.Core.Immutable4
         {
             get
             {
-                throw new NotImplementedException();
+                return this.wrapped.Count;
             }
         }
 
@@ -617,7 +645,7 @@ namespace MetaDslx.Core.Immutable4
         {
             get
             {
-                throw new NotImplementedException();
+                return false;
             }
         }
 
@@ -633,17 +661,23 @@ namespace MetaDslx.Core.Immutable4
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            this.wrapped.Clear();
         }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return this.wrapped.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            if (arrayIndex + this.wrapped.Count > array.Length) throw new ArgumentException("Not enough space in array.");
+            for (int i = 0; i < this.wrapped.Count; i++)
+            {
+                array[arrayIndex + i] = this[i];
+            }
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -656,12 +690,12 @@ namespace MetaDslx.Core.Immutable4
 
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            return this.wrapped.IndexOf(item);
         }
 
         public void Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            this.wrapped.Insert(index, item);
         }
 
         public bool Remove(T item)
@@ -671,12 +705,12 @@ namespace MetaDslx.Core.Immutable4
 
         public void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            this.wrapped.RemoveAt(index);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.GetEnumerator();
         }
     }
 
@@ -867,16 +901,19 @@ namespace MetaDslx.Core.Immutable4
 
         public bool Add(RedSymbol value)
         {
+            if (value == null) return false;
             return this.Model.AddListItem(this, value);
         }
 
         public bool AddLazy(Func<RedSymbol> lazy)
         {
+            if (lazy == null) return false;
             return this.Model.AddListItem(this, new GreenLazySymbol(lazy));
         }
 
         public bool Remove(RedSymbol value)
         {
+            if (value == null) return false;
             return this.Model.RemoveListItem(this, value);
         }
 
@@ -896,6 +933,37 @@ namespace MetaDslx.Core.Immutable4
                 this.CacheItems();
                 return this.cachedItems.Count;
             }
+        }
+
+        public void Clear()
+        {
+            this.Model.ClearList(this);
+        }
+
+        public bool Contains(RedSymbol item)
+        {
+            if (item == null) return false;
+            this.CacheItems();
+            MutableRedSymbol symbol = this.Model.ToRedSymbol(((RedSymbolBase)item).Green);
+            return this.cachedItems.Contains(symbol);
+        }
+
+        public int IndexOf(RedSymbol item)
+        {
+            if (item == null) return -1;
+            this.CacheItems();
+            MutableRedSymbol symbol = this.Model.ToRedSymbol(((RedSymbolBase)item).Green);
+            return this.cachedItems.IndexOf(symbol);
+        }
+
+        public void Insert(int index, RedSymbol item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotSupportedException();
         }
 
         public IEnumerator<MutableRedSymbol> GetEnumerator()
@@ -937,7 +1005,8 @@ namespace MetaDslx.Core.Immutable4
 
             set
             {
-                throw new NotImplementedException();
+                this.RemoveAt(index);
+                this.Insert(index, value);
             }
         }
 
@@ -953,7 +1022,7 @@ namespace MetaDslx.Core.Immutable4
         {
             get
             {
-                throw new NotImplementedException();
+                return false;
             }
         }
 
@@ -969,17 +1038,23 @@ namespace MetaDslx.Core.Immutable4
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            this.wrapped.Clear();
         }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return this.wrapped.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            if (arrayIndex + this.wrapped.Count > array.Length) throw new ArgumentException("Not enough space in array.");
+            for (int i = 0; i < this.wrapped.Count; i++)
+            {
+                array[arrayIndex + i] = this[i];
+            }
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -992,12 +1067,12 @@ namespace MetaDslx.Core.Immutable4
 
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            return this.wrapped.IndexOf(item);
         }
 
         public void Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            this.wrapped.Insert(index, item);
         }
 
         public bool Remove(T item)
@@ -1007,12 +1082,12 @@ namespace MetaDslx.Core.Immutable4
 
         public void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            this.wrapped.RemoveAt(index);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.GetEnumerator();
         }
     }
 
@@ -1052,6 +1127,18 @@ namespace MetaDslx.Core.Immutable4
         {
             if (this.symbols == null) return null;
             else return this.symbols.ToDictionary(entry => entry.Key, entry => (GreenSymbolEntry)null);
+        }
+
+        internal virtual Dictionary<GreenSymbol, GreenSymbolEntry> CloneSymbolsWithEntries()
+        {
+            if (this.symbols == null) return null;
+            else return new Dictionary<GreenSymbol, GreenSymbolEntry>(this.symbols);
+        }
+
+        internal virtual Dictionary<GreenSymbol, GreenSymbolEntry> DeepCloneSymbolsWithEntries()
+        {
+            if (this.symbols == null) return null;
+            else return this.symbols.ToDictionary(entry => entry.Key, entry => entry.Value?.Clone());
         }
 
         internal virtual GreenSymbolEntry GetEntry(GreenSymbol symbol, bool forWriting, bool createIfNotExists)
@@ -1170,6 +1257,7 @@ namespace MetaDslx.Core.Immutable4
             this.baseModel = baseModel;
             this.redModel = redModel;
             this.redSymbols = null;
+            this.lazyItems = null;
         }
 
         internal GreenModelTransaction(GreenModelTransaction baseTransaction, MutableRedModel redModel)
@@ -1179,7 +1267,8 @@ namespace MetaDslx.Core.Immutable4
             this.baseModel = baseTransaction;
             this.redModel = redModel;
             this.allowLazyEval = baseTransaction.allowLazyEval;
-            this.redSymbols = baseTransaction.redSymbols != null ? new Dictionary<GreenSymbol, MutableRedSymbol>(baseTransaction.redSymbols) : null;
+            this.redSymbols = null;
+            this.lazyItems = null;
         }
 
         internal GreenModel BaseModel { get { return this.baseModel; } }
@@ -1189,7 +1278,7 @@ namespace MetaDslx.Core.Immutable4
         {
             get
             {
-                return this.symbols != null;
+                return this.symbols != null && (!this.ParentTransaction?.IsChanged ?? false);
             }
         }
 
@@ -1204,14 +1293,28 @@ namespace MetaDslx.Core.Immutable4
             return new GreenModelTransaction(this, model);
         }
 
-        public MutableRedSymbol GetRedSymbol(GreenSymbol green)
+        internal bool TryGetRedSymbol(GreenSymbol green, out MutableRedSymbol red)
         {
-            if (!this.ContainsSymbol(green))
+            if (this.redSymbols != null && this.redSymbols.TryGetValue(green, out red))
+            {
+                return true;
+            }
+            if (this.ParentTransaction != null && this.ParentTransaction.TryGetRedSymbol(green, out red))
+            {
+                return true;
+            }
+            red = null;
+            return false;
+        }
+
+        internal MutableRedSymbol GetRedSymbol(GreenSymbol green)
+        {
+            if (!(green is GreenLazySymbol) && !this.ContainsSymbol(green))
             {
                 return null;
             }
             MutableRedSymbol red;
-            if (this.redSymbols != null && this.redSymbols.TryGetValue(green, out red))
+            if (this.TryGetRedSymbol(green, out red))
             {
                 return red;
             }
@@ -1285,7 +1388,7 @@ namespace MetaDslx.Core.Immutable4
 
         internal void AddSymbol(GreenSymbol green)
         {
-            if (!this.ContainsSymbol(green))
+            if (!(green is GreenLazySymbol) && !this.ContainsSymbol(green))
             {
                 this.CloneBaseModel();
                 this.symbols.Add(green, new GreenSymbolEntry());
@@ -1294,7 +1397,7 @@ namespace MetaDslx.Core.Immutable4
 
         internal void RemoveSymbol(GreenSymbol green)
         {
-            if (this.ContainsSymbol(green))
+            if (!(green is GreenLazySymbol) && this.ContainsSymbol(green))
             {
                 this.CloneBaseModel();
                 GreenSymbolEntry entry = this.GetEntry(green, false, false);
@@ -1312,10 +1415,24 @@ namespace MetaDslx.Core.Immutable4
             }
         }
 
+        internal bool TryGetLazyItem(GreenLazyItem lazy, out object value)
+        {
+            if (this.lazyItems != null && this.lazyItems.TryGetValue(lazy, out value))
+            {
+                return true;
+            }
+            if (this.ParentTransaction != null && this.ParentTransaction.TryGetLazyItem(lazy, out value))
+            {
+                return true;
+            }
+            value = null;
+            return false;
+        }
+
         internal object GetLazyItem(GreenLazyItem lazy)
         {
             object value;
-            if (this.lazyItems != null && this.lazyItems.TryGetValue(lazy, out value))
+            if (this.TryGetLazyItem(lazy, out value))
             {
                 return value;
             }
@@ -1355,6 +1472,47 @@ namespace MetaDslx.Core.Immutable4
                 return true;
             }
             return false;
+        }
+
+        internal void ClearList(GreenSymbol symbol, ModelProperty property)
+        {
+            Debug.Assert(symbol != null);
+            Debug.Assert(property != null);
+            if (property.IsCollection)
+            {
+                object collection;
+                if (this.TryGetValue(symbol, property, true, out collection))
+                {
+                    if (collection is GreenValueList)
+                    {
+                        GreenValueList list = (GreenValueList)collection;
+                        var copy = list.ToList();
+                        foreach (var item in copy)
+                        {
+                            list.Remove(item);
+                            this.RemoveValueFromRelatedProperties(symbol, property, list, item);
+                        }
+                    }
+                    else if (collection is GreenSymbolList)
+                    {
+                        GreenSymbolList list = (GreenSymbolList)collection;
+                        var copy = list.ToList();
+                        foreach (var item in copy)
+                        {
+                            list.Remove(item);
+                            this.RemoveValueFromRelatedProperties(symbol, property, list, item);
+                        }
+                    }
+                    else
+                    {
+                        throw new ModelException("Property value must be a collection.");
+                    }
+                }
+                else
+                {
+                    //throw new ModelException("Property value is not set: it must initialized with a collection.");
+                }
+            }
         }
 
         internal bool AddValue(GreenSymbol symbol, ModelProperty property, object value)
@@ -1455,7 +1613,7 @@ namespace MetaDslx.Core.Immutable4
                 }
                 else
                 {
-                    throw new ModelException("Property value is not set: it must initialized with a collection.");
+                    //throw new ModelException("Property value is not set: it must initialized with a collection.");
                 }
             }
             else
@@ -1472,8 +1630,8 @@ namespace MetaDslx.Core.Immutable4
                         //throw new ModelException("Trying to remove invalid property value.");
                     }
                 }
-                return false;
             }
+            return false;
         }
 
         private void AddValueToRelatedProperties(GreenSymbol symbol, ModelProperty property, GreenList list, object value)
@@ -1540,20 +1698,100 @@ namespace MetaDslx.Core.Immutable4
 
         internal void Commit(GreenModelTransaction transaction)
         {
-            this.redSymbols = transaction.redSymbols;
-            this.lazyItems = transaction.lazyItems;
-            // TODO
+            if (transaction.redSymbols != null)
+            {
+                if (this.redSymbols == null)
+                {
+                    this.redSymbols = transaction.redSymbols;
+                }
+                else
+                {
+                    foreach (var redSymbol in transaction.redSymbols)
+                    {
+                        this.redSymbols[redSymbol.Key] = redSymbol.Value;
+                    }
+                }
+            }
+            if (transaction.lazyItems != null)
+            {
+                if (this.lazyItems == null)
+                {
+                    this.lazyItems = transaction.lazyItems;
+                }
+                else
+                {
+                    foreach (var lazyItem in transaction.lazyItems)
+                    {
+                        this.lazyItems[lazyItem.Key] = lazyItem.Value;
+                    }
+                }
+            }
+            if (transaction.symbols != null)
+            {
+                if (this.symbols == null)
+                {
+                    this.symbols = transaction.symbols;
+                }
+                else
+                {
+                    foreach (var symbol in transaction.symbols)
+                    {
+                        if (symbol.Value != null)
+                        {
+                            this.symbols[symbol.Key] = symbol.Value;
+                        }
+                    }
+                }
+            }
         }
 
         internal void Rollback(GreenModelTransaction transaction)
         {
-            // TODO
+            if (transaction.symbols != null)
+            {
+                foreach (var symbol in transaction.symbols)
+                {
+                    if (symbol.Value != null)
+                    {
+                        GreenSymbolEntry entry = symbol.Value;
+                        foreach (var prop in entry.properties.Keys)
+                        {
+                            this.redModel.InvalidateProperty(symbol.Key, prop);
+                        }
+                    }
+                }
+            }
         }
 
         internal GreenModel Fork()
         {
-            // TODO
-            throw new NotImplementedException();
+            List<GreenModelTransaction> transactions = new List<GreenModelTransaction>();
+            GreenModelTransaction tx = this;
+            while(tx != null)
+            {
+                transactions.Insert(0, tx);
+                tx = tx.ParentTransaction;
+            }
+            GreenModel originalGreenModel = transactions[0].BaseModel;
+            if (!this.IsChanged)
+            {
+                return originalGreenModel;
+            }
+            Dictionary<GreenSymbol, GreenSymbolEntry> symbols = originalGreenModel.CloneSymbolsWithEntries();
+            foreach (var transaction in transactions)
+            {
+                if (transaction.symbols != null)
+                {
+                    foreach (var entry in transaction.symbols)
+                    {
+                        if (entry.Value != null)
+                        {
+                            symbols[entry.Key] = entry.Value.Clone();
+                        }
+                    }
+                }
+            }
+            return new GreenModel(symbols);
         }
     }
 
@@ -1748,20 +1986,71 @@ namespace MetaDslx.Core.Immutable4
 
         internal GreenModelTransaction Transaction { get { return this.currentTransaction; } }
 
+        internal object ToGreenValue(object value)
+        {
+            if (value is RedSymbolBase)
+            {
+                return ((RedSymbolBase)value).Green;
+            }
+            else if (value is RedValueList)
+            {
+                return ((RedValueList)value).Green;
+            }
+            else if (value is RedSymbolList)
+            {
+                return ((RedSymbolList)value).Green;
+            }
+            return value;
+        }
+
+        internal object ToRedValue(object value)
+        {
+            if (value is GreenSymbol)
+            {
+                return this.GetRedSymbol((GreenSymbol)value);
+            }
+            else if (value is GreenLazyItem)
+            {
+                return this.GetLazyItem((GreenLazyItem)value);
+            }
+            else if (value is GreenValueList)
+            {
+                return this.GetRedValueList((GreenValueList)value);
+            }
+            else if (value is GreenSymbolList)
+            {
+                return this.GetRedSymbolList((GreenSymbolList)value);
+            }
+            else
+            {
+                return value;
+            }
+        }
+
+        internal GreenSymbol ToGreenSymbol(RedSymbol value)
+        {
+            return ((RedSymbolBase)value).Green;
+        }
+
+        internal MutableRedSymbol ToRedSymbol(GreenSymbol value)
+        {
+            return this.GetRedSymbol(value);
+        }
+
         public MutableRedSymbol AddGreenSymbol(GreenSymbol green)
         {
             this.currentTransaction.AddSymbol(green);
-            return this.GetRedSymbol(green);
+            return this.ToRedSymbol(green);
         }
 
         public MutableRedSymbol AddSymbol(RedSymbol symbol)
         {
-            return this.AddGreenSymbol(((RedSymbolBase)symbol).Green);
+            return this.AddGreenSymbol(this.ToGreenSymbol(symbol));
         }
 
         public void RemoveSymbol(RedSymbol symbol)
         {
-            this.currentTransaction.RemoveSymbol(((RedSymbolBase)symbol).Green);
+            this.currentTransaction.RemoveSymbol(this.ToGreenSymbol(symbol));
         }
 
         public RedModelTransaction BeginTransaction()
@@ -1837,32 +2126,14 @@ namespace MetaDslx.Core.Immutable4
         internal object GetValue(RedSymbolBase symbol, ModelProperty property)
         {
             object greenObject = this.currentTransaction.GetValue(symbol.Green, property);
-            if (greenObject is GreenSymbol)
-            {
-                return this.GetRedSymbol((GreenSymbol)greenObject);
-            }
-            else if (greenObject is GreenLazyItem)
-            {
-                return this.GetLazyItem((GreenLazyItem)greenObject);
-            }
-            else if (greenObject is GreenValueList)
-            {
-                return this.GetRedValueList((GreenValueList)greenObject);
-            }
-            else if (greenObject is GreenSymbolList)
-            {
-                return this.GetRedSymbolList((GreenSymbolList)greenObject);
-            }
-            else
-            {
-                return greenObject;
-            }
+            return this.ToRedValue(greenObject);
         }
 
         internal void UpdateList(RedSymbolBase symbol, ModelProperty property, MutableRedValueList list)
         {
             object greenObject = this.currentTransaction.GetValue(symbol.Green, property);
             if (list.Green == greenObject) return;
+            Debug.Assert(greenObject is GreenValueList);
             if (greenObject is GreenValueList)
             {
                 list.SetGreen((GreenValueList)greenObject);
@@ -1873,6 +2144,7 @@ namespace MetaDslx.Core.Immutable4
         {
             object greenObject = this.currentTransaction.GetValue(symbol.Green, property);
             if (list.Green == greenObject) return;
+            Debug.Assert(greenObject is GreenSymbolList);
             if (greenObject is GreenSymbolList)
             {
                 list.SetGreen((GreenSymbolList)greenObject);
@@ -1881,18 +2153,7 @@ namespace MetaDslx.Core.Immutable4
 
         internal bool SetValue(MutableRedSymbol symbol, ModelProperty property, object value)
         {
-            if (value is RedSymbolBase)
-            {
-                value = ((RedSymbolBase)value).Green;
-            }
-            else if (value is RedValueList)
-            {
-                value = ((RedValueList)value).Green;
-            }
-            else if (value is RedSymbolList)
-            {
-                value = ((RedSymbolList)value).Green;
-            }
+            value = this.ToGreenValue(value);
             object oldValue;
             return this.currentTransaction.SetValue(symbol.Green, property, value, out oldValue);
         }
@@ -1910,15 +2171,7 @@ namespace MetaDslx.Core.Immutable4
             List<object> result = new List<object>();
             foreach (var greenObject in list.Green)
             {
-                object redObject = greenObject;
-                if (greenObject is GreenSymbol)
-                {
-                    redObject = this.GetRedSymbol((GreenSymbol)greenObject);
-                }
-                else if (greenObject is GreenLazyItem)
-                {
-                    redObject = this.GetLazyItem((GreenLazyItem)greenObject);
-                }
+                object redObject = this.ToRedValue(greenObject);
                 if (redObject != null && (allowMultipleItems || !result.Contains(redObject)))
                 {
                     result.Add(redObject);
@@ -1933,7 +2186,7 @@ namespace MetaDslx.Core.Immutable4
             List<MutableRedSymbol> result = new List<MutableRedSymbol>();
             foreach (var greenSymbol in list.Green)
             {
-                MutableRedSymbol redSymbol = this.GetRedSymbol(greenSymbol);
+                MutableRedSymbol redSymbol = this.ToRedSymbol(greenSymbol);
                 if (redSymbol != null && (allowMultipleItems || !result.Contains(redSymbol)))
                 {
                     result.Add(redSymbol);
@@ -1942,19 +2195,29 @@ namespace MetaDslx.Core.Immutable4
             Interlocked.CompareExchange(ref items, result, null);
         }
 
+        internal void ClearList(MutableRedValueList list)
+        {
+            this.currentTransaction.ClearList(list.Green.Parent, list.Green.Property);
+        }
+
+        internal void ClearList(MutableRedSymbolList list)
+        {
+            this.currentTransaction.ClearList(list.Green.Parent, list.Green.Property);
+        }
+
         internal bool AddListItem(MutableRedValueList list, object item)
         {
-            return this.currentTransaction.AddValue(list.Green.Parent, list.Green.Property, item);
+            return this.currentTransaction.AddValue(list.Green.Parent, list.Green.Property, this.ToGreenValue(item));
         }
 
         internal bool RemoveListItem(MutableRedValueList list, object item)
         {
-            return this.currentTransaction.RemoveValue(list.Green.Parent, list.Green.Property, item);
+            return this.currentTransaction.RemoveValue(list.Green.Parent, list.Green.Property, this.ToGreenValue(item));
         }
 
         internal bool AddListItem(MutableRedSymbolList list, RedSymbol item)
         {
-            return this.currentTransaction.AddValue(list.Green.Parent, list.Green.Property, item);
+            return this.currentTransaction.AddValue(list.Green.Parent, list.Green.Property, this.ToGreenSymbol(item));
         }
 
         internal bool AddListItem(MutableRedSymbolList list, GreenLazySymbol item)
@@ -1964,7 +2227,7 @@ namespace MetaDslx.Core.Immutable4
 
         internal bool RemoveListItem(MutableRedSymbolList list, RedSymbol item)
         {
-            return this.currentTransaction.RemoveValue(list.Green.Parent, list.Green.Property, item);
+            return this.currentTransaction.RemoveValue(list.Green.Parent, list.Green.Property, this.ToGreenSymbol(item));
         }
 
         internal void InvalidateProperty(GreenSymbol symbol, ModelProperty property)
