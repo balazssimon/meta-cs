@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Core.Immutable5
+namespace MetaDslx.Core.Immutable
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
     public class OppositeAttribute : Attribute
@@ -71,6 +71,14 @@ namespace MetaDslx.Core.Immutable5
     }
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public class NonUniqueAttribute : Attribute
+    {
+        public NonUniqueAttribute()
+        {
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class ContainmentAttribute : Attribute
     {
         public ContainmentAttribute()
@@ -84,15 +92,16 @@ namespace MetaDslx.Core.Immutable5
         IsReadonly = 0x0001,
         IsCollection = 0x0002,
         IsSymbol = 0x0004,
-        IsContainment = 0x0008,
-        HasAnnotations = 0x0010,
-        HasOppositeProperties = 0x0020,
-        HasSubsettedProperties = 0x0040,
-        HasSubsettingProperties = 0x0080,
-        HasSubtypedProperties = 0x0100,
-        HasSubtypingProperties = 0x0200,
-        HasRedefinedProperties = 0x0400,
-        HasRedefiningProperties = 0x0800,
+        IsNonUnique = 0x0008,
+        IsContainment = 0x0010,
+        HasAnnotations = 0x0020,
+        HasOppositeProperties = 0x0040,
+        HasSubsettedProperties = 0x0080,
+        HasSubsettingProperties = 0x0100,
+        HasSubtypedProperties = 0x0200,
+        HasSubtypingProperties = 0x0400,
+        HasRedefinedProperties = 0x0800,
+        HasRedefiningProperties = 0x1000,
         HasAffectedProperties = HasOppositeProperties | HasSubsettedProperties | HasSubsettingProperties |
             HasSubtypedProperties | HasSubtypingProperties | HasRedefinedProperties | HasRedefiningProperties,
         HasAddAffectedProperties = HasOppositeProperties | HasSubsettingProperties | HasSubtypingProperties | 
@@ -190,11 +199,13 @@ namespace MetaDslx.Core.Immutable5
         public ModelPropertyTypeInfo MutableTypeInfo { get { return this.mutableTypeInfo; } }
 
         public bool IsSymbol { get { return this.flags.HasFlag(ModelPropertyFlags.IsSymbol); } }
+        public bool IsNonUnique { get { return this.flags.HasFlag(ModelPropertyFlags.IsNonUnique); } }
         public bool IsCollection { get { return this.flags.HasFlag(ModelPropertyFlags.IsCollection); } }
 
-        public bool HasAffectedProperties { get { return (this.flags | ModelPropertyFlags.HasAffectedProperties) != 0; } }
-        public bool HasAddAffectedProperties { get { return (this.flags | ModelPropertyFlags.HasAddAffectedProperties) != 0; } }
-        public bool HasRemoveAffectedProperties { get { return (this.flags | ModelPropertyFlags.HasRemoveAffectedProperties) != 0; } }
+        public bool HasAffectedProperties { get { return (this.flags & ModelPropertyFlags.HasAffectedProperties) != 0; } }
+        public bool HasAddAffectedProperties { get { return (this.flags & ModelPropertyFlags.HasAddAffectedProperties) != 0; } }
+        public bool HasRemoveAffectedProperties { get { return (this.flags & ModelPropertyFlags.HasRemoveAffectedProperties) != 0; } }
+        public bool HasOppositeProperties { get { return (this.flags & ModelPropertyFlags.HasOppositeProperties) != 0; } }
 
         public bool IsReadonly
         {
@@ -354,6 +365,10 @@ namespace MetaDslx.Core.Immutable5
                     else if (attribute is ReadonlyAttribute)
                     {
                         this.flags |= ModelPropertyFlags.IsReadonly;
+                    }
+                    else if (attribute is NonUniqueAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.IsNonUnique;
                     }
                     else if (attribute is ContainmentAttribute)
                     {
@@ -681,7 +696,7 @@ namespace MetaDslx.Core.Immutable5
                 }
             }
             typeCache = new TypeCache();
-            HashSet<ModelProperty> allProperties = new HashSet<ModelProperty>();
+            typeCache.allProperties = new List<ModelProperty>();
             Dictionary<string, ModelProperty> propertyList;
             lock (ModelProperty.ownedProperties)
             {
@@ -691,30 +706,23 @@ namespace MetaDslx.Core.Immutable5
             {
                 lock (propertyList)
                 {
+                    typeCache.allProperties.AddRange(propertyList.Values);
                     typeCache.declaredProperties.AddRange(propertyList.Values);
-                    allProperties.UnionWith(propertyList.Values);
-                    foreach (var prop in propertyList.Values)
-                    {
-                        if (!typeCache.properties.Any(p => p.Name == prop.Name))
-                        {
-                            typeCache.properties.Add(prop);
-                        }
-                    }
+                    typeCache.properties.AddRange(propertyList.Values);
                 }
             }
             foreach (var super in type.GetInterfaces())
             {
                 var superProperties = ModelProperty.GetCachedType(super).allProperties;
-                allProperties.UnionWith(superProperties);
                 foreach (var prop in superProperties)
                 {
+                    typeCache.allProperties.Add(prop);
                     if (!typeCache.properties.Any(p => p.Name == prop.Name))
                     {
                         typeCache.properties.Add(prop);
                     }
                 }
             }
-            typeCache.allProperties.AddRange(allProperties);
             lock (ModelProperty.cachedTypes)
             {
                 ModelProperty.cachedTypes[type] = typeCache;

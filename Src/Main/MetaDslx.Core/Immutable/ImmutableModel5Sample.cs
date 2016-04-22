@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Core.Immutable5
+namespace MetaDslx.Core.Immutable
 {
 
 }

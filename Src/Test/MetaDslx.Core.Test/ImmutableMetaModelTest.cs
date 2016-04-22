@@ -4,6 +4,7 @@ using MetaDslx.Core.Immutable;
 
 namespace MetaDslx.Core.Test
 {
+    /*
     [TestClass]
     public class ImmutableMetaModelTest
     {
@@ -34,4 +35,5 @@ namespace MetaDslx.Core.Test
             Assert.AreEqual("h1", iw1.Husband.Name);
         }
     }
+    */
 }

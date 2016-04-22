@@ -1408,6 +1408,16 @@ namespace MetaDslx.Core.Immutable4
             else return this.baseModel.CloneSymbols();
         }
 
+        internal override Dictionary<GreenSymbol, GreenSymbolEntry> CloneSymbolsWithEntries()
+        {
+            Dictionary<GreenSymbol, GreenSymbolEntry> result = new Dictionary<GreenSymbol, GreenSymbolEntry>();
+            foreach (var symbol in this.GetSymbols())
+            {
+                result.Add(symbol, this.GetEntry(symbol, true, false));
+            }
+            return result;
+        }
+
         internal void AddSymbol(GreenSymbol green)
         {
             if (!(green is GreenLazySymbol) && !this.ContainsSymbol(green))

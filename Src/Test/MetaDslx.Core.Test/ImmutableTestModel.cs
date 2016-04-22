@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace MetaDslx.Core.Test
 {
+    /*
     public class ImmutableTestModelFactory
     {
         public ImmutableHusband CreateHusband(ref ImmutableModel model)
@@ -438,4 +439,5 @@ namespace MetaDslx.Core.Test
             }
         }
     }
+    */
 }
