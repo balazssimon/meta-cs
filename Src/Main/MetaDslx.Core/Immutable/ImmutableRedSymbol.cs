@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
@@ -41,10 +42,39 @@ namespace MetaDslx.Core.Immutable
         }
 
         public new ImmutableRedModel MModel { get { return (ImmutableRedModel)this.MModel; } }
+
+        public T GetValue<T>(ModelProperty property, ref T value)
+            where T : class
+        {
+            T result = value;
+            if (result == null)
+            {
+                result = (T)this.MModel.GetValue(this, property);
+                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            }
+            return result;
+        }
+
+        public ImmutableRedList<T> GetValueList<T>(ModelProperty property, ref ImmutableRedList<T> value)
+        {
+            ImmutableRedList<T> result = value;
+            if (result == null)
+            {
+                ImmutableRedList wrapped = this.MModel.GetValue(this, property) as ImmutableRedList;
+                if (wrapped != null)
+                {
+                    result = new ImmutableRedList<T>(wrapped);
+                    result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+                }
+            }
+            return result;
+        }
     }
 
     public abstract class MutableRedSymbolBase : RedSymbolBase, MutableRedSymbol
     {
+        internal HashSet<ModelProperty> invalidatedProperties;
+
         protected MutableRedSymbolBase(GreenSymbol green, MutableRedModel model)
             : base(green, model)
         {
@@ -58,6 +88,25 @@ namespace MetaDslx.Core.Immutable
         public abstract bool MLazyAddRange(ModelProperty property, Func<IEnumerable<object>> value);
         public abstract bool MLazySetChild(ModelProperty child, ModelProperty property, Func<object> value);
         public abstract bool MRemove(ModelProperty property, object value);
+
+        internal void InvalidateProperty(ModelProperty property)
+        {
+            if (this.invalidatedProperties == null)
+            {
+                this.invalidatedProperties = new HashSet<ModelProperty>();
+            }
+            this.invalidatedProperties.Add(property);
+        }
+
+        private bool ClearInvalidatedProperty(ModelProperty property)
+        {
+            if (this.invalidatedProperties != null && this.invalidatedProperties.Contains(property))
+            {
+                this.invalidatedProperties.Remove(property);
+                return true;
+            }
+            return false;
+        }
     }
 
 }
