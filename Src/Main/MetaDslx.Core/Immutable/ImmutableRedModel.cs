@@ -194,11 +194,7 @@ namespace MetaDslx.Core.Immutable
 
         internal object ToRedValue(object value)
         {
-            if (value is GreenLazySymbol)
-            {
-                return null;
-            }
-            else if (value is GreenLazyValue)
+            if (value is GreenLazyValue)
             {
                 return null;
             }
@@ -231,21 +227,21 @@ namespace MetaDslx.Core.Immutable
         {
             value = this.ToGreenValue(value);
             object oldValue;
-            return this.currentTransaction.SetValue(symbol.Green, property, value, out oldValue);
+            return this.currentTransaction.SetValue(symbol.Green, property, false, value, out oldValue);
         }
 
         internal bool SetLazyValue(MutableRedSymbolBase symbol, ModelProperty property, Func<object> value)
         {
             if (value == null) return false;
             object oldValue;
-            return this.currentTransaction.SetValue(symbol.Green, property, new GreenLazyValue(value), out oldValue);
+            return this.currentTransaction.SetValue(symbol.Green, property, false, new GreenLazyValue(value), out oldValue);
         }
 
         internal bool SetLazySymbol(MutableRedSymbolBase symbol, ModelProperty property, Func<RedSymbol> value)
         {
             if (value == null) return false;
             object oldValue;
-            return this.currentTransaction.SetValue(symbol.Green, property, new GreenLazyValue(value), out oldValue);
+            return this.currentTransaction.SetValue(symbol.Green, property, false, new GreenLazyValue(value), out oldValue);
         }
 
         internal bool AddListItem(MutableRedList list, object item)

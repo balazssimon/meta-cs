@@ -86,6 +86,7 @@ namespace MetaDslx.Core.Immutable
         public abstract bool MAddRange(ModelProperty property, IEnumerable<object> value);
         public abstract bool MLazyAdd(ModelProperty property, Func<object> value);
         public abstract bool MLazyAddRange(ModelProperty property, Func<IEnumerable<object>> value);
+        public abstract bool MLazyAddRange(ModelProperty property, IEnumerable<Func<object>> value);
         public abstract bool MLazySetChild(ModelProperty child, ModelProperty property, Func<object> value);
         public abstract bool MRemove(ModelProperty property, object value);
 

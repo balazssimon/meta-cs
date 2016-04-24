@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,6 +13,7 @@ namespace MetaDslx.Core.Immutable
 
     internal class GreenList : IReadOnlyList<object>
     {
+        private static readonly List<object> emptyList = new List<object>();
         private GreenSymbol parent;
         private ModelProperty property;
         private List<object> items;
@@ -37,7 +39,8 @@ namespace MetaDslx.Core.Immutable
         public int Count { get { return this.items.Count; } }
         public object this[int index] { get { return this.items[index]; } }
 
-        public List<object> LazyItems { get { return this.lazyItems; } }
+        internal bool HasLazyItems { get { return this.lazyItems != null && this.lazyItems.Count > 0; } }
+        internal IReadOnlyList<object> LazyItems { get { return this.lazyItems ?? GreenList.emptyList; } }
 
         public IEnumerator<object> GetEnumerator()
         {
@@ -51,11 +54,7 @@ namespace MetaDslx.Core.Immutable
 
         internal bool Add(object item)
         {
-            if (item is GreenLazySymbol || item is GreenLazyValue)
-            {
-                if (this.lazyItems == null) this.lazyItems = new List<object>();
-                this.lazyItems.Add(item);
-            }
+            Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
             if (this.property.IsNonUnique || !this.items.Contains(item))
             {
                 this.items.Add(item);
@@ -76,11 +75,7 @@ namespace MetaDslx.Core.Immutable
 
         internal bool Insert(int index, object item)
         {
-            if (item is GreenLazySymbol || item is GreenLazyValue)
-            {
-                if (this.lazyItems == null) this.lazyItems = new List<object>();
-                this.lazyItems.Add(item);
-            }
+            Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
             if (this.property.IsNonUnique || !this.items.Contains(item))
             {
                 this.items.Insert(index, item);
@@ -102,6 +97,13 @@ namespace MetaDslx.Core.Immutable
         internal bool RemoveAll(object item)
         {
             return this.items.RemoveAll(i => i == item) > 0;
+        }
+
+        internal void AddLazy(object item)
+        {
+            Debug.Assert(item is GreenLazyValue || item is GreenLazyList);
+            Interlocked.CompareExchange(ref this.lazyItems, new List<object>(), null);
+            this.lazyItems.Add(item);
         }
     }
 
@@ -374,6 +376,11 @@ namespace MetaDslx.Core.Immutable
         public void LazyAddRange(Func<IEnumerable<T>> lazy)
         {
             this.wrapped.LazyAddRange(() => (IEnumerable<object>)lazy());
+        }
+
+        public void LazyAddRange(IEnumerable<Func<T>> lazy)
+        {
+            this.wrapped.LazyAddRange(() => lazy.Select(f => (object)f()));
         }
 
         public void Clear()
