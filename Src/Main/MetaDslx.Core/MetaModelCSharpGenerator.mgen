@@ -203,14 +203,14 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 ["[OppositeAttribute(typeof("][p.Class.CSharpFullDescriptorName()]["), \""][p.Name]["\")]"]
 [end if]
 [loop(p:prop.SubsettedProperties)]
-	[if(cls.GetAllSuperClasses(false).Contains(p.Class))]
+	[if(cls.GetAllSuperClasses(true).Contains(p.Class))]
 ["[SubsetsAttribute(typeof("][p.Class.CSharpFullDescriptorName()]["), \""][p.Name]["\")]"]
 	[else]
 // ERROR: subsetted property '[p.CSharpFullDescriptorName()]' must be a property of an ancestor class
 	[end if]
 [end if]
 [loop(p:prop.RedefinedProperties)]
-	[if(cls.GetAllSuperClasses(false).Contains(p.Class))]
+	[if(cls.GetAllSuperClasses(true).Contains(p.Class))]
 ["[RedefinesAttribute(typeof("][p.Class.CSharpFullDescriptorName()]["), \""][p.Name]["\")]"]
 	[else]
 // ERROR: redefined property '[p.CSharpFullDescriptorName()]' must be a property of an ancestor class

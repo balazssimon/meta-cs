@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_MetaModelCSharpGenerator_1654274007;
-    namespace __Hidden_MetaModelCSharpGenerator_1654274007
+    using __Hidden_MetaModelCSharpGenerator_887326073;
+    namespace __Hidden_MetaModelCSharpGenerator_887326073
     {
         internal static class __Extensions
         {
@@ -1335,7 +1335,7 @@ namespace MetaDslx.Core //1:1
                 {
                     ++__loop19_iteration;
                     var p = __tmp14.p;
-                    if (cls.GetAllSuperClasses(false).Contains(p.Class)) //206:3
+                    if (cls.GetAllSuperClasses(true).Contains(p.Class)) //206:3
                     {
                         StringBuilder __tmp16 = new StringBuilder();
                         __tmp16.Append("[SubsetsAttribute(typeof(");
@@ -1447,7 +1447,7 @@ namespace MetaDslx.Core //1:1
                 {
                     ++__loop20_iteration;
                     var p = __tmp25.p;
-                    if (cls.GetAllSuperClasses(false).Contains(p.Class)) //213:3
+                    if (cls.GetAllSuperClasses(true).Contains(p.Class)) //213:3
                     {
                         StringBuilder __tmp27 = new StringBuilder();
                         __tmp27.Append("[RedefinesAttribute(typeof(");
