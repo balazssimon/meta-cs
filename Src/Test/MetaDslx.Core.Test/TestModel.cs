@@ -296,5 +296,4 @@ namespace MetaDslx.Core.Test
             set { this.MSet(PetX.OwnerProperty, value); }
         }
     }
-
 }

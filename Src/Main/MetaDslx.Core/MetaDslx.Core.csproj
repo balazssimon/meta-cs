@@ -63,6 +63,7 @@
     <Compile Include="Immutable\ImmutableRedModel.cs" />
     <Compile Include="Immutable\ImmutableModel5Sample.cs" />
     <Compile Include="Immutable\ImmutableRedSymbol.cs" />
+    <Compile Include="Immutable\TransactionalCollections.cs" />
     <Compile Include="MetaImplementation.cs" />
     <Compile Include="MetaModel.cs">
       <AutoGen>True</AutoGen>
