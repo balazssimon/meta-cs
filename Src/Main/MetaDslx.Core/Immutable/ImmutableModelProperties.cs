@@ -79,6 +79,14 @@ namespace MetaDslx.Core.Immutable
     }
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public class NonNullAttribute : Attribute
+    {
+        public NonNullAttribute()
+        {
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class ContainmentAttribute : Attribute
     {
         public ContainmentAttribute()
@@ -93,15 +101,16 @@ namespace MetaDslx.Core.Immutable
         IsCollection = 0x0002,
         IsSymbol = 0x0004,
         IsNonUnique = 0x0008,
-        IsContainment = 0x0010,
-        HasAnnotations = 0x0020,
-        HasOppositeProperties = 0x0040,
-        HasSubsettedProperties = 0x0080,
-        HasSubsettingProperties = 0x0100,
-        HasSubtypedProperties = 0x0200,
-        HasSubtypingProperties = 0x0400,
-        HasRedefinedProperties = 0x0800,
-        HasRedefiningProperties = 0x1000,
+        IsNonNull = 0x0010,
+        IsContainment = 0x0020,
+        HasAnnotations = 0x0040,
+        HasOppositeProperties = 0x0080,
+        HasSubsettedProperties = 0x0100,
+        HasSubsettingProperties = 0x0200,
+        HasSubtypedProperties = 0x0400,
+        HasSubtypingProperties = 0x0800,
+        HasRedefinedProperties = 0x1000,
+        HasRedefiningProperties = 0x2000,
         HasAffectedProperties = HasOppositeProperties | HasSubsettedProperties | HasSubsettingProperties |
             HasSubtypedProperties | HasSubtypingProperties | HasRedefinedProperties | HasRedefiningProperties,
         HasAddAffectedProperties = HasOppositeProperties | HasSubsettingProperties | HasSubtypingProperties | 
@@ -151,8 +160,6 @@ namespace MetaDslx.Core.Immutable
         private bool initialized = false;
         private ModelPropertyFlags flags;
 
-        private List<object> annotations;
-
         private HashSet<ModelProperty> oppositeProperties;
         private HashSet<ModelProperty> subsettedProperties;
         private HashSet<ModelProperty> subsettingProperties;
@@ -200,6 +207,7 @@ namespace MetaDslx.Core.Immutable
 
         public bool IsSymbol { get { return this.flags.HasFlag(ModelPropertyFlags.IsSymbol); } }
         public bool IsNonUnique { get { return this.flags.HasFlag(ModelPropertyFlags.IsNonUnique); } }
+        public bool IsNonNull { get { return this.flags.HasFlag(ModelPropertyFlags.IsNonNull); } }
         public bool IsCollection { get { return this.flags.HasFlag(ModelPropertyFlags.IsCollection); } }
 
         public bool HasAffectedProperties { get { return (this.flags & ModelPropertyFlags.HasAffectedProperties) != 0; } }
@@ -331,8 +339,7 @@ namespace MetaDslx.Core.Immutable
             FieldInfo info = this.DeclaringType.GetField(this.DeclaredName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (info != null)
             {
-                this.annotations.AddRange(info.GetCustomAttributes());
-                foreach (var attribute in this.annotations)
+                foreach (var attribute in info.GetCustomAttributes())
                 {
                     if (attribute is OppositeAttribute)
                     {
@@ -369,6 +376,10 @@ namespace MetaDslx.Core.Immutable
                     else if (attribute is NonUniqueAttribute)
                     {
                         this.flags |= ModelPropertyFlags.IsNonUnique;
+                    }
+                    else if (attribute is NonNullAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.IsNonNull;
                     }
                     else if (attribute is ContainmentAttribute)
                     {

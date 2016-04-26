@@ -9,28 +9,45 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
-    // GREEN:
+    internal interface IInternalReadOnlyCollection
+    {
+        GreenList Green { get; }
+    }
 
+    internal interface IInternalCollection : IInternalReadOnlyCollection
+    {
+        void InternalAdd(object value);
+        void InternalRemove(object value);
+    }
+
+    internal interface IInternalList : IInternalCollection
+    {
+        void InternalInsert(int index, object value);
+        void InternalReplace(int index, object value);
+        void InternalRemoveAt(int index);
+    }
+
+    // GREEN:
     internal class GreenList : IReadOnlyList<object>
     {
-        private static readonly List<object> emptyList = new List<object>();
+        private static readonly TxList<object> emptyList = new TxList<object>();
         private GreenSymbol parent;
         private ModelProperty property;
-        private List<object> items;
-        private List<object> lazyItems;
+        private TxList<object> items;
+        private TxList<object> lazyItems;
 
         internal GreenList(GreenSymbol parent, ModelProperty property)
         {
             this.parent = parent;
             this.property = property;
-            this.items = new List<object>();
+            this.items = new TxList<object>();
         }
 
         internal GreenList(GreenList other)
         {
             this.parent = other.parent;
             this.property = other.property;
-            this.items = new List<object>(other.items);
+            this.items = new TxList<object>(other.items);
         }
 
         internal GreenSymbol Parent { get { return this.parent; } }
@@ -55,6 +72,8 @@ namespace MetaDslx.Core.Immutable
         internal bool Add(object item)
         {
             Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
+            Debug.Assert(property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType()));
+            if (this.property.IsNonNull && item == null) return false;
             if (this.property.IsNonUnique || !this.items.Contains(item))
             {
                 this.items.Add(item);
@@ -76,12 +95,19 @@ namespace MetaDslx.Core.Immutable
         internal bool Insert(int index, object item)
         {
             Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
+            Debug.Assert(property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType()));
+            if (this.property.IsNonNull && item == null) return false;
             if (this.property.IsNonUnique || !this.items.Contains(item))
             {
                 this.items.Insert(index, item);
                 return true;
             }
             return false;
+        }
+
+        internal int IndexOf(object item)
+        {
+            return this.items.IndexOf(item);
         }
 
         internal bool RemoveAt(int index, object item)
@@ -94,27 +120,36 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        internal bool RemoveAll(object item)
-        {
-            return this.items.RemoveAll(i => i == item) > 0;
-        }
-
         internal void AddLazy(object item)
         {
             Debug.Assert(item is GreenLazyValue || item is GreenLazyList);
-            Interlocked.CompareExchange(ref this.lazyItems, new List<object>(), null);
+            Interlocked.CompareExchange(ref this.lazyItems, new TxList<object>(), null);
             this.lazyItems.Add(item);
+        }
+
+        internal bool RemoveAll(object item)
+        {
+            bool result = false;
+            for (int i = this.items.Count-1; i >= 0; i++)
+            {
+                if (this.items[i] == item)
+                {
+                    this.items.Remove(i);
+                    result = true;
+                }
+            }
+            return result;
         }
     }
 
     // RED:
 
     // thread-safe
-    public sealed class ImmutableRedList : IReadOnlyList<object>
+    public sealed class ImmutableRedList<T> : IReadOnlyList<T>, IInternalReadOnlyCollection
     {
         private GreenList green;
         private ImmutableRedModel model;
-        private List<object> cachedItems = null;
+        private List<T> cachedItems = null;
 
         internal ImmutableRedList(GreenList green, ImmutableRedModel model)
         {
@@ -122,15 +157,15 @@ namespace MetaDslx.Core.Immutable
             this.model = model;
         }
 
-        internal GreenList Green { get { return this.green; } }
+        GreenList IInternalReadOnlyCollection.Green { get { return this.green; } }
         public ModelProperty Property { get { return this.green.Property; } }
         public ImmutableRedModel Model { get { return this.model; } }
 
-        public object this[int index]
+        public T this[int index]
         {
             get
             {
-                this.CacheItems();
+                if (this.cachedItems == null) this.CacheItems();
                 return this.cachedItems[index];
             }
         }
@@ -139,21 +174,23 @@ namespace MetaDslx.Core.Immutable
         {
             get
             {
-                this.CacheItems();
-                return this.cachedItems.Count;
+                return this.green.Count;
             }
         }
 
-        public bool Contains(object item)
+        public bool Contains(T item)
         {
-            this.CacheItems();
-            return this.cachedItems.Contains(item);
+            object value = this.model.ToGreenValue(item);
+            return this.green.Contains(item);
         }
 
-        public IEnumerator<object> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
-            this.CacheItems();
-            return this.cachedItems.GetEnumerator();
+            if (this.cachedItems == null) this.CacheItems();
+            foreach (var item in this.cachedItems)
+            {
+                yield return item;
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -164,114 +201,66 @@ namespace MetaDslx.Core.Immutable
         internal void CacheItems()
         {
             if (this.cachedItems != null) return;
-            this.model.CreateListItems(this, ref this.cachedItems);
+            Interlocked.CompareExchange(ref this.cachedItems, this.model.CreateListItems<T>(this), null);
         }
     }
 
-    public sealed class ImmutableRedList<T> : ImmutableModelList<T>
-    {
-        private ImmutableRedList wrapped;
-
-        internal ImmutableRedList(ImmutableRedList wrapped)
-        {
-            this.wrapped = wrapped;
-        }
-
-        public T this[int index]
-        {
-            get
-            {
-                return (T)this.wrapped[index];
-            }
-        }
-
-        public int Count
-        {
-            get
-            {
-                return this.wrapped.Count;
-            }
-        }
-
-        public bool Contains(T item)
-        {
-            return this.wrapped.Contains(item);
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            foreach (var item in this.wrapped)
-            {
-                yield return (T)item;
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-    }
 
     // NOT thread-safe
-    public sealed class MutableRedList : IList<object>
+    public sealed class MutableRedList<T> : IList<T>
     {
         private GreenList green;
-        private ModelProperty property;
         private MutableRedModel model;
-        private List<object> cachedItems = null;
 
-        internal MutableRedList(GreenList green, ModelProperty property, MutableRedModel model)
+        internal MutableRedList(GreenList green, MutableRedModel model)
         {
             this.green = green;
-            this.property = property;
             this.model = model;
         }
 
         internal GreenList Green { get { return this.green; } }
-        public ModelProperty Property { get { return this.property; } }
         public MutableRedModel Model { get { return this.model; } }
 
-        internal void SetGreen(GreenList green)
+        public void Add(T item)
         {
-            Interlocked.Exchange(ref this.green, green);
-            this.Invalidate();
+            this.model.AddItem(this.green, this.model.ToGreenValue(item));
         }
 
-        internal void Invalidate()
+        public void LazyAdd(Func<T> lazy)
         {
-            Interlocked.Exchange(ref this.cachedItems, null);
+            if (lazy == null) return;
+            this.model.AddLazyItem(this.green, new GreenLazyValue(() => lazy()));
         }
 
-        public void Add(object value)
+        public void LazyAddRange(Func<IEnumerable<T>> lazy)
         {
-            this.model.AddListItem(this, value);
+            if (lazy == null) return;
+            this.model.AddLazyItem(this.green, new GreenLazyList(() => lazy().Select(v => (object)v)));
         }
 
-        public void LazyAdd(Func<object> lazy)
+        public void LazyAddRange(IEnumerable<Func<T>> lazy)
         {
-            this.model.AddListItem(this, new GreenLazyValue(lazy));
+            if (lazy == null) return;
+            foreach (var item in lazy)
+            {
+                this.LazyAdd(item);
+            }
         }
 
-        public void LazyAddRange(Func<IEnumerable<object>> lazy)
+        public bool Remove(T item)
         {
-            this.model.AddListItem(this, new GreenLazyList(lazy));
+            return this.model.RemoveItem(this.green, this.model.ToGreenValue(item));
         }
 
-        public bool Remove(object value)
-        {
-            return this.model.RemoveListItem(this, value);
-        }
-
-        public object this[int index]
+        public T this[int index]
         {
             get
             {
-                this.CacheItems();
-                return this.cachedItems[index];
+                return (T)this.model.ToRedValue(this.green[index]);
             }
             set
             {
-                throw new NotSupportedException();
+                this.model.ReplaceItem(this.green, index, this.model.ToGreenValue(value));
             }
         }
 
@@ -279,8 +268,7 @@ namespace MetaDslx.Core.Immutable
         {
             get
             {
-                this.CacheItems();
-                return this.cachedItems.Count;
+                return this.green.Count;
             }
         }
 
@@ -288,142 +276,43 @@ namespace MetaDslx.Core.Immutable
 
         public void Clear()
         {
-            throw new NotSupportedException();
-        }
-
-        public bool Contains(object item)
-        {
-            this.CacheItems();
-            return this.cachedItems.Contains(item);
-        }
-
-        public int IndexOf(object item)
-        {
-            this.CacheItems();
-            return this.cachedItems.IndexOf(item);
-        }
-
-        public void Insert(int index, object item)
-        {
-            throw new NotSupportedException();
-        }
-
-        public void RemoveAt(int index)
-        {
-            throw new NotSupportedException();
-        }
-
-        public IEnumerator<object> GetEnumerator()
-        {
-            this.CacheItems();
-            return this.cachedItems.GetEnumerator();
-        }
-
-        internal void CacheItems()
-        {
-            if (this.cachedItems != null) return;
-            this.model.CreateListItems(this, ref this.cachedItems);
-        }
-
-        public void CopyTo(object[] array, int arrayIndex)
-        {
-            throw new NotSupportedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-    }
-
-    public sealed class MutableRedValueList<T> : ModelList<T>
-    {
-        private MutableRedList wrapped;
-
-        internal MutableRedValueList(MutableRedList wrapped)
-        {
-            this.wrapped = wrapped;
-        }
-
-        internal MutableRedList Wrapped { get { return this.wrapped; } }
-
-        public T this[int index]
-        {
-            get
-            {
-                return (T)this.wrapped[index];
-            }
-            set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        public int Count { get { return this.wrapped.Count; } }
-
-        public bool IsReadOnly { get { return false; } }
-
-        public void Add(T item)
-        {
-            this.wrapped.Add(item);
-        }
-
-        public void LazyAdd(Func<T> lazy)
-        {
-            this.wrapped.LazyAdd(() => lazy());
-        }
-
-        public void LazyAddRange(Func<IEnumerable<T>> lazy)
-        {
-            this.wrapped.LazyAddRange(() => (IEnumerable<object>)lazy());
-        }
-
-        public void LazyAddRange(IEnumerable<Func<T>> lazy)
-        {
-            this.wrapped.LazyAddRange(() => lazy.Select(f => (object)f()));
-        }
-
-        public void Clear()
-        {
-            this.wrapped.Clear();
+            this.model.ClearList(this.green);
         }
 
         public bool Contains(T item)
         {
-            return this.wrapped.Contains(item);
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            throw new NotSupportedException();
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            foreach (var item in this.wrapped)
-            {
-                yield return (T)item;
-            }
+            object greenValue = this.model.ToGreenValue(item);
+            return this.green.Contains(greenValue);
         }
 
         public int IndexOf(T item)
         {
-            return this.wrapped.IndexOf(item);
+            object greenValue = this.model.ToGreenValue(item);
+            return this.green.IndexOf(greenValue);
         }
 
         public void Insert(int index, T item)
         {
-            this.wrapped.Insert(index, item);
-        }
-
-        public bool Remove(T item)
-        {
-            return this.wrapped.Remove(item);
+            this.model.InsertItem(this.green, index, this.model.ToGreenValue(item));
         }
 
         public void RemoveAt(int index)
         {
-            this.wrapped.RemoveAt(index);
+            this.model.RemoveItemAt(this.green, index);
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            foreach (var item in this.green)
+            {
+                yield return (T)this.model.ToRedValue(item);
+            }
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            // TODO
+            throw new NotSupportedException();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

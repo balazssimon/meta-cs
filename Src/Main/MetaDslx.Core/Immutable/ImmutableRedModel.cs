@@ -11,17 +11,35 @@ namespace MetaDslx.Core.Immutable
     public sealed class ImmutableRedModel : RedModel
     {
         private GreenModel green;
+        private bool cached;
         private Dictionary<GreenSymbol, ImmutableRedSymbol> symbols;
-        private Dictionary<GreenLazyValue, object> lazyItems;
 
         internal ImmutableRedModel(GreenModel green)
         {
             this.green = green;
-            this.symbols = new Dictionary<GreenSymbol, ImmutableRedSymbol>();
-            this.lazyItems = new Dictionary<GreenLazyValue, object>();
+            this.symbols = null;
+            this.cached = false;
         }
 
-        public ImmutableRedSymbol GetRedSymbol(GreenSymbol green)
+        internal object ToGreenValue(object redValue)
+        {
+            if (redValue is RedSymbolBase)
+            {
+                return ((RedSymbolBase)redValue).Green;
+            }
+            return redValue;
+        }
+
+        internal object ToRedValue(object redValue)
+        {
+            if (redValue is GreenSymbol)
+            {
+                return this.GetRedSymbol((GreenSymbol)redValue);
+            }
+            return redValue;
+        }
+
+        internal ImmutableRedSymbol GetRedSymbol(GreenSymbol green)
         {
             if (!this.green.ContainsSymbol(green))
             {
@@ -50,77 +68,78 @@ namespace MetaDslx.Core.Immutable
                 }
             }
         }
-        private ImmutableRedList GetRedSymbolList(GreenList green)
-        {
-            if (!this.green.ContainsSymbol(green.Parent))
-            {
-                return null;
-            }
-            return new ImmutableRedList(green, this);
-        }
 
         internal object GetValue(RedSymbolBase symbol, ModelProperty property)
         {
+            Debug.Assert(!property.IsCollection);
             object greenObject = this.green.GetValue(symbol.Green, property);
-            // TODO: lazy
-            if (greenObject is GreenSymbol)
+            return this.ToRedValue(greenObject);
+        }
+
+        internal ImmutableRedList<T> GetList<T>(RedSymbolBase symbol, ModelProperty property)
+        {
+            Debug.Assert(property.IsCollection);
+            object greenObject = this.green.GetValue(symbol.Green, property);
+            if (greenObject is GreenList)
             {
-                return this.GetRedSymbol((GreenSymbol)greenObject);
+                return new ImmutableRedList<T>((GreenList)greenObject, this);
             }
             else
             {
-                return greenObject;
+                return null;
             }
         }
 
-        internal void CreateListItems(ImmutableRedList list, ref List<object> items)
+        internal List<T> CreateListItems<T>(IInternalReadOnlyCollection list)
         {
-            bool allowMultipleItems = list.Property.IsNonUnique;
-            List<object> result = new List<object>();
+            List<T> result = new List<T>();
             foreach (var greenObject in list.Green)
             {
                 object redObject = greenObject;
-                if (greenObject is GreenLazyList)
+                if (greenObject is GreenSymbol)
                 {
-                    var redItems = ((GreenLazyList)greenObject).CreateValues(this);
-                    foreach (var redItem in redItems)
-                    {
-                        if (redItem != null && (allowMultipleItems || !result.Contains(redItem)))
-                        {
-                            result.Add(redItem);
-                        }
-                    }
+                    redObject = this.GetRedSymbol((GreenSymbol)greenObject);
+                    Debug.Assert(redObject != null);
                 }
-                else
-                {
-                    if (greenObject is GreenSymbol)
-                    {
-                        redObject = this.GetRedSymbol((GreenSymbol)greenObject);
-                    }
-                    else if (greenObject is GreenLazyValue)
-                    {
-                        redObject = ((GreenLazyValue)greenObject).CreateValue(this);
-                    }
-                    if (redObject != null && (allowMultipleItems || !result.Contains(redObject)))
-                    {
-                        result.Add(redObject);
-                    }
-                }
+                result.Add((T)redObject);
             }
-            Interlocked.CompareExchange(ref items, result, null);
+            return result;
         }
 
         public MutableRedModel ToMutable()
         {
             return new MutableRedModel(this.green, this);
         }
+
+        public IEnumerable<ImmutableRedSymbol> Symbols
+        {
+            get
+            {
+                if (!this.cached) this.CacheSymbols();
+                return this.symbols.Values;
+            }
+        }
+
+        private void CacheSymbols()
+        {
+            if (this.cached) return;
+            lock(this)
+            {
+                if (this.cached) return;
+                this.symbols = new Dictionary<GreenSymbol, ImmutableRedSymbol>();
+                foreach (var greenSymbol in this.green.Symbols)
+                {
+                    this.GetRedSymbol(greenSymbol);
+                }
+            }
+        }
     }
 
     public sealed class MutableRedModel : RedModel
     {
-        private GreenModelTransaction rootTransaction;
-        private GreenModelTransaction currentTransaction;
+        private GreenModelTransaction transaction;
         private ImmutableRedModel originalImmutableModel;
+        private bool finished = false;
 
         public MutableRedModel()
             : this(new GreenModel(), null)
@@ -135,52 +154,13 @@ namespace MetaDslx.Core.Immutable
         internal MutableRedModel(GreenModel green, ImmutableRedModel originalImmutableModel)
         {
             this.originalImmutableModel = originalImmutableModel;
-            this.currentTransaction = green.BeginTransaction(this);
-            this.rootTransaction = this.currentTransaction;
+            this.transaction = green.BeginTransaction(this);
         }
-
-        internal GreenModelTransaction Transaction { get { return this.currentTransaction; } }
 
         public RedModelTransaction BeginTransaction()
         {
-            this.currentTransaction = this.currentTransaction.BeginTransaction(this);
-            return new RedModelTransaction(this, this.currentTransaction);
-        }
-
-        internal void CommitTransaction(RedModelTransaction transaction)
-        {
-            if (this.currentTransaction == this.rootTransaction) return;
-            if (transaction.Green != this.currentTransaction)
-            {
-                throw new ModelException("Invalid transaction.");
-            }
-            this.currentTransaction = transaction.Green.ParentTransaction;
-            if (this.currentTransaction == null)
-            {
-                this.currentTransaction = this.rootTransaction;
-            }
-            else
-            {
-                this.currentTransaction.Commit(transaction.Green);
-            }
-        }
-
-        internal void RollbackTransaction(RedModelTransaction transaction)
-        {
-            if (this.currentTransaction == this.rootTransaction) return;
-            if (transaction.Green != this.currentTransaction)
-            {
-                throw new ModelException("Invalid transaction.");
-            }
-            this.currentTransaction = transaction.Green.ParentTransaction;
-            if (this.currentTransaction == null)
-            {
-                this.currentTransaction = this.rootTransaction;
-            }
-            else
-            {
-                this.currentTransaction.Rollback(transaction.Green);
-            }
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return new RedModelTransaction(this);
         }
 
         internal object ToGreenValue(object value)
@@ -214,98 +194,102 @@ namespace MetaDslx.Core.Immutable
 
         public MutableRedSymbolBase GetRedSymbol(GreenSymbol green)
         {
-            return this.currentTransaction.GetRedSymbol(green);
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.GetRedSymbol(green);
         }
 
-        internal object GetValue(RedSymbolBase symbol, ModelProperty property)
+        internal object GetValue(MutableRedSymbolBase symbol, ModelProperty property)
         {
-            object greenObject = this.currentTransaction.GetValue(symbol.Green, property);
+            Debug.Assert(!property.IsCollection);
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            object greenObject = this.transaction.GetValue(symbol.Green, property);
             return this.ToRedValue(greenObject);
         }
 
-        internal bool SetValue(MutableRedSymbolBase symbol, ModelProperty property, object value)
+        internal MutableRedList<T> GetList<T>(RedSymbolBase symbol, ModelProperty property)
         {
-            value = this.ToGreenValue(value);
-            object oldValue;
-            return this.currentTransaction.SetValue(symbol.Green, property, false, value, out oldValue);
-        }
-
-        internal bool SetLazyValue(MutableRedSymbolBase symbol, ModelProperty property, Func<object> value)
-        {
-            if (value == null) return false;
-            object oldValue;
-            return this.currentTransaction.SetValue(symbol.Green, property, false, new GreenLazyValue(value), out oldValue);
-        }
-
-        internal bool SetLazySymbol(MutableRedSymbolBase symbol, ModelProperty property, Func<RedSymbol> value)
-        {
-            if (value == null) return false;
-            object oldValue;
-            return this.currentTransaction.SetValue(symbol.Green, property, false, new GreenLazyValue(value), out oldValue);
-        }
-
-        internal bool AddListItem(MutableRedList list, object item)
-        {
-            return this.currentTransaction.AddValue(list.Green.Parent, list.Green.Property, this.ToGreenValue(item));
-        }
-
-        internal bool RemoveListItem(MutableRedList list, object item)
-        {
-            return this.currentTransaction.RemoveValue(list.Green.Parent, list.Green.Property, this.ToGreenValue(item));
-        }
-
-        internal void CreateListItems(MutableRedList list, ref List<object> items)
-        {
-            bool allowMultipleItems = list.Property.IsNonUnique;
-            List<object> result = new List<object>();
-            foreach (var greenObject in list.Green)
-            {
-                object redObject = greenObject;
-                if (greenObject is GreenLazyList)
-                {
-                    // TODO: cache items
-                    var redItems = ((GreenLazyList)greenObject).CreateValues(this);
-                    foreach (var redItem in redItems)
-                    {
-                        if (redItem != null && (allowMultipleItems || !result.Contains(redItem)))
-                        {
-                            result.Add(redItem);
-                        }
-                    }
-                }
-                else
-                {
-                    if (greenObject is GreenSymbol)
-                    {
-                        redObject = this.GetRedSymbol((GreenSymbol)greenObject);
-                    }
-                    else if (greenObject is GreenLazyValue)
-                    {
-                        // TODO: cache
-                        redObject = ((GreenLazyValue)greenObject).CreateValue(this);
-                    }
-                    if (redObject != null && (allowMultipleItems || !result.Contains(redObject)))
-                    {
-                        result.Add(redObject);
-                    }
-                }
-            }
-            Interlocked.CompareExchange(ref items, result, null);
-        }
-
-        internal void UpdateList(RedSymbolBase symbol, ModelProperty property, MutableRedList list)
-        {
-            object greenObject = this.currentTransaction.GetValue(symbol.Green, property);
-            if (list.Green == greenObject) return;
-            Debug.Assert(greenObject is GreenList);
+            Debug.Assert(property.IsCollection);
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            object greenObject = this.transaction.GetValue(symbol.Green, property);
             if (greenObject is GreenList)
             {
-                list.SetGreen((GreenList)greenObject);
+                return new MutableRedList<T>((GreenList)greenObject, this);
             }
+            else
+            {
+                return null;
+            }
+        }
+
+        internal bool SetValue(MutableRedSymbolBase symbol, ModelProperty property, object redValue)
+        {
+            Debug.Assert(!property.IsCollection);
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            object oldValue;
+            object greenValue = this.ToGreenValue(redValue);
+            return this.transaction.SetValue(symbol.Green, property, false, greenValue, out oldValue);
+        }
+
+        internal bool SetLazyValue(MutableRedSymbolBase symbol, ModelProperty property, Func<object> redLazy)
+        {
+            Debug.Assert(!property.IsCollection);
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (redLazy == null) return false;
+            object oldValue;
+            return this.transaction.SetValue(symbol.Green, property, false, new GreenLazyValue(redLazy), out oldValue);
+        }
+
+        internal bool AddItem(GreenList collection, object greenItem)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.AddItem(collection.Parent, collection.Property, -1, false, greenItem);
+        }
+
+        internal bool AddLazyItem(GreenList collection, object greenLazyItem)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.AddItem(collection.Parent, collection.Property, -1, false, greenLazyItem);
+        }
+
+        internal bool RemoveItem(GreenList collection, object greenItem)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.RemoveItem(collection.Parent, collection.Property, -1, false, greenItem);
+        }
+
+        internal bool RemoveAllItems(GreenList collection, object greenItem)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.RemoveItem(collection.Parent, collection.Property, -1, true, greenItem);
+        }
+
+        internal bool InsertItem(GreenList collection, int index, object greenItem)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.AddItem(collection.Parent, collection.Property, index, false, greenItem);
+        }
+
+        internal bool ReplaceItem(GreenList collection, int index, object greenItem)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.AddItem(collection.Parent, collection.Property, index, true, greenItem);
+        }
+
+        internal bool RemoveItemAt(GreenList collection, int index)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.RemoveItem(collection.Parent, collection.Property, index, false, null);
+        }
+
+        internal bool ClearList(GreenList collection)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.ClearList(collection.Parent, collection.Property);
         }
 
         internal void InvalidateProperty(GreenSymbol symbol, ModelProperty property)
         {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
             MutableRedSymbolBase redSymbol = this.GetRedSymbol(symbol);
             if (redSymbol != null)
             {
@@ -313,55 +297,56 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        internal GreenModel Fork()
+        public ImmutableRedModel ToImmutable(bool finish = true)
         {
-            return this.currentTransaction.Fork();
-        }
-
-        public ImmutableRedModel ToImmutable()
-        {
-            if (this.currentTransaction.IsChanged)
+            if (finish) this.finished = true;
+            if (this.transaction.IsChanged)
             {
-                return new ImmutableRedModel(this.Fork());
+                if (this.finished)
+                {
+                    return new ImmutableRedModel(this.transaction.AsGreenModel());
+                }
+                else
+                {
+                    return new ImmutableRedModel(this.transaction.Fork());
+                }
             }
             else
             {
                 if (this.originalImmutableModel != null) return this.originalImmutableModel;
-                else return new ImmutableRedModel(this.currentTransaction.ParentModel);
+                else return new ImmutableRedModel(this.transaction.ParentModel);
             }
         }
+
     }
 
     public sealed class RedModelTransaction : IDisposable
     {
-        private bool commited;
-        private GreenModelTransaction green;
         private MutableRedModel model;
+        private CollectionTxScope txScope;
 
-        internal RedModelTransaction(MutableRedModel model, GreenModelTransaction green)
+        internal RedModelTransaction(MutableRedModel model)
         {
             this.model = model;
-            this.green = green;
-            this.commited = false;
+            this.txScope = new CollectionTxScope();
         }
 
-        internal GreenModelTransaction Green { get { return this.green; } }
         internal MutableRedModel Model { get { return this.model; } }
+        internal TransactionContexState State { get { return this.txScope.State; } }
 
         public void Commit()
         {
-            this.commited = true;
+            this.txScope.Commit();
         }
 
         public void Rollback()
         {
-            this.commited = false;
+            this.txScope.Rollback();
         }
 
         public void Dispose()
         {
-            if (this.commited) model.CommitTransaction(this);
-            else model.RollbackTransaction(this);
+            this.txScope.Dispose();
         }
     }
 }

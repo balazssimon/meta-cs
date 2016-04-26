@@ -43,7 +43,7 @@ namespace MetaDslx.Core.Immutable
 
         public new ImmutableRedModel MModel { get { return (ImmutableRedModel)this.MModel; } }
 
-        public T GetValue<T>(ModelProperty property, ref T value)
+        protected T GetValue<T>(ModelProperty property, ref T value)
             where T : class
         {
             T result = value;
@@ -55,17 +55,13 @@ namespace MetaDslx.Core.Immutable
             return result;
         }
 
-        public ImmutableRedList<T> GetValueList<T>(ModelProperty property, ref ImmutableRedList<T> value)
+        protected ImmutableRedList<T> GetList<T>(ModelProperty property, ref ImmutableRedList<T> value)
         {
             ImmutableRedList<T> result = value;
             if (result == null)
             {
-                ImmutableRedList wrapped = this.MModel.GetValue(this, property) as ImmutableRedList;
-                if (wrapped != null)
-                {
-                    result = new ImmutableRedList<T>(wrapped);
-                    result = Interlocked.CompareExchange(ref value, result, null) ?? result;
-                }
+                result = this.MModel.GetList<T>(this, property);
+                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
             }
             return result;
         }
