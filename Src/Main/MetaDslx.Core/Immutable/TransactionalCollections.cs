@@ -917,6 +917,7 @@ namespace MetaDslx.Core.Collections.Transactional
 
     public class CollectionTxContext : IDisposable
     {
+        internal static bool disableRollback = false;
         internal static DummyCollectionTxContext dummy = new DummyCollectionTxContext();
         internal static ThreadLocal<List<CollectionTxContext>> contexts = new ThreadLocal<List<CollectionTxContext>>(() => new List<CollectionTxContext>());
         private TransactionPropagation propagation;
@@ -990,9 +991,12 @@ namespace MetaDslx.Core.Collections.Transactional
                 }
                 else if (rollback)
                 {
-                    for (int i = this.commands.Count - 1; i >= 0; i--)
+                    if (!CollectionTxContext.disableRollback)
                     {
-                        this.commands[i].Apply();
+                        for (int i = this.commands.Count - 1; i >= 0; i--)
+                        {
+                            this.commands[i].Apply();
+                        }
                     }
                 }
                 this.commands.Clear();
