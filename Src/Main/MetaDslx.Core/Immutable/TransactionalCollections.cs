@@ -7,14 +7,29 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Core.Immutable
+namespace MetaDslx.Core.Collections.Transactional
 {
-    internal interface ITransactional
+    public enum TransactionPropagation
+    {
+        NestedTx,
+        NewTx,
+        DisableTx
+    }
+
+    public enum TransactionContexState
+    {
+        Commited,
+        RolledBack,
+        Disposing,
+        Disposed
+    }
+
+    public interface ITransactionalCollection
     {
         void Apply(TxCommand command);
     }
 
-    internal enum TxCommandKind
+    public enum TxCommandKind
     {
         Add,
         Remove,
@@ -22,18 +37,18 @@ namespace MetaDslx.Core.Immutable
         Clear
     }
 
-    internal abstract class TxCommand
+    public abstract class TxCommand
     {
-        private ITransactional target;
+        private ITransactionalCollection target;
         private TxCommandKind kind;
 
-        public TxCommand(ITransactional target, TxCommandKind kind)
+        public TxCommand(ITransactionalCollection target, TxCommandKind kind)
         {
             this.target = target;
             this.kind = kind;
         }
 
-        public ITransactional Target { get { return this.target; } }
+        public ITransactionalCollection Target { get { return this.target; } }
         public TxCommandKind Kind { get { return this.kind; } }
 
         public void Apply()
@@ -42,11 +57,11 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    internal class ValueTxCommand<T> : TxCommand
+    public class ValueTxCommand<T> : TxCommand
     {
         private T value;
 
-        public ValueTxCommand(ITransactional target, TxCommandKind kind, T value)
+        public ValueTxCommand(ITransactionalCollection target, TxCommandKind kind, T value)
             : base(target, kind)
         {
             Debug.Assert(kind == TxCommandKind.Replace || kind == TxCommandKind.Clear);
@@ -56,11 +71,11 @@ namespace MetaDslx.Core.Immutable
         public T Value { get { return this.value; } }
     }
 
-    internal class HashSetTxCommand<T> : TxCommand
+    public class HashSetTxCommand<T> : TxCommand
     {
         private T item;
 
-        public HashSetTxCommand(ITransactional target, TxCommandKind kind, T item)
+        public HashSetTxCommand(ITransactionalCollection target, TxCommandKind kind, T item)
             : base(target, kind)
         {
             Debug.Assert(kind == TxCommandKind.Add || kind == TxCommandKind.Remove);
@@ -70,11 +85,11 @@ namespace MetaDslx.Core.Immutable
         public T Item { get { return this.item; } }
     }
 
-    internal class HashSetMultiTxCommand<T> : TxCommand
+    public class HashSetMultiTxCommand<T> : TxCommand
     {
         private HashSet<T> items;
 
-        public HashSetMultiTxCommand(ITransactional target, TxCommandKind kind, HashSet<T> items)
+        public HashSetMultiTxCommand(ITransactionalCollection target, TxCommandKind kind, HashSet<T> items)
             : base(target, kind)
         {
             this.items = items;
@@ -83,12 +98,12 @@ namespace MetaDslx.Core.Immutable
         public HashSet<T> Items { get { return this.items; } }
     }
 
-    internal class ListTxCommand<T> : TxCommand
+    public class ListTxCommand<T> : TxCommand
     {
         private int index;
         private T item;
 
-        public ListTxCommand(ITransactional target, TxCommandKind kind, int index, T item)
+        public ListTxCommand(ITransactionalCollection target, TxCommandKind kind, int index, T item)
             : base(target, kind)
         {
             Debug.Assert(index >= 0);
@@ -100,11 +115,11 @@ namespace MetaDslx.Core.Immutable
         public T Item { get { return this.item; } }
     }
 
-    internal class ListMultiTxCommand<T> : TxCommand
+    public class ListMultiTxCommand<T> : TxCommand
     {
         private List<T> items;
 
-        public ListMultiTxCommand(ITransactional target, TxCommandKind kind, List<T> items)
+        public ListMultiTxCommand(ITransactionalCollection target, TxCommandKind kind, List<T> items)
             : base(target, kind)
         {
             Debug.Assert(kind == TxCommandKind.Replace);
@@ -114,12 +129,12 @@ namespace MetaDslx.Core.Immutable
         public List<T> Items { get { return this.items; } }
     }
 
-    internal class DictionaryTxCommand<TKey, TValue> : TxCommand
+    public class DictionaryTxCommand<TKey, TValue> : TxCommand
     {
         private TKey key;
         private TValue value;
 
-        public DictionaryTxCommand(ITransactional target, TxCommandKind kind, TKey key, TValue value)
+        public DictionaryTxCommand(ITransactionalCollection target, TxCommandKind kind, TKey key, TValue value)
             : base(target, kind)
         {
             this.key = key;
@@ -130,11 +145,11 @@ namespace MetaDslx.Core.Immutable
         public TValue Value { get { return this.value; } }
     }
 
-    internal class DictionaryMultiTxCommand<TKey, TValue> : TxCommand
+    public class DictionaryMultiTxCommand<TKey, TValue> : TxCommand
     {
         private Dictionary<TKey, TValue> entries;
 
-        public DictionaryMultiTxCommand(ITransactional target, TxCommandKind kind, Dictionary<TKey, TValue> entries)
+        public DictionaryMultiTxCommand(ITransactionalCollection target, TxCommandKind kind, Dictionary<TKey, TValue> entries)
             : base(target, kind)
         {
             Debug.Assert(kind == TxCommandKind.Replace);
@@ -144,7 +159,7 @@ namespace MetaDslx.Core.Immutable
         public Dictionary<TKey, TValue> Entries { get { return this.entries; } }
     }
 
-    internal class TxValue<T> : ITransactional
+    public class TxValue<T> : ITransactionalCollection
     {
         private T value;
 
@@ -197,7 +212,7 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    internal class TxHashSet<T> : ISet<T>, ITransactional
+    public class TxHashSet<T> : ISet<T>, ITransactionalCollection
     {
         private HashSet<T> items;
 
@@ -294,6 +309,14 @@ namespace MetaDslx.Core.Immutable
             else
             {
                 return this.items.Add(item);
+            }
+        }
+
+        public void AddRange(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                this.Add(item);
             }
         }
 
@@ -464,7 +487,7 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    internal class TxList<T> : IList<T>, IReadOnlyList<T>, ITransactional
+    public class TxList<T> : IList<T>, IReadOnlyList<T>, ITransactionalCollection
     {
         private List<T> items;
 
@@ -577,6 +600,14 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
+        public void AddRange(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                this.Add(item);
+            }
+        }
+
         public void Clear()
         {
             if (CollectionTxContext.HasTransaction)
@@ -661,7 +692,7 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    internal class TxDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ICollection<KeyValuePair<TKey, TValue>>, ITransactional
+    public class TxDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ICollection<KeyValuePair<TKey, TValue>>, ITransactionalCollection
     {
         private Dictionary<TKey, TValue> entries;
 
@@ -884,25 +915,24 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    internal enum TransactionContexState
-    {
-        Commited,
-        RolledBack,
-        Disposing,
-        Disposed
-    }
-
-    internal class CollectionTxContext : IDisposable
+    public class CollectionTxContext : IDisposable
     {
         internal static DummyCollectionTxContext dummy = new DummyCollectionTxContext();
         internal static ThreadLocal<List<CollectionTxContext>> contexts = new ThreadLocal<List<CollectionTxContext>>(() => new List<CollectionTxContext>());
+        private TransactionPropagation propagation;
         private TransactionContexState state;
         private List<TxCommand> commands;
 
-        public CollectionTxContext()
+        internal CollectionTxContext(TransactionPropagation propagation)
         {
+            this.propagation = propagation;
             this.state = TransactionContexState.RolledBack;
             this.commands = null;
+        }
+
+        public TransactionPropagation Propagation
+        {
+            get { return this.propagation; }
         }
 
         public TransactionContexState State
@@ -910,8 +940,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.state; }
         }
 
-        public virtual void AddCommand(TxCommand command)
+        internal IReadOnlyList<TxCommand> Commands
         {
+            get { return this.commands; }
+        }
+
+        public void AddCommand(TxCommand command)
+        {
+            if (this.propagation == TransactionPropagation.DisableTx) return;
             if (this.commands == null) this.commands = new List<TxCommand>();
             this.commands.Add(command);
         }
@@ -935,14 +971,31 @@ namespace MetaDslx.Core.Immutable
         public void Dispose()
         {
             if (this.state == TransactionContexState.Disposing || this.state == TransactionContexState.Disposed) return;
+            bool commit = this.state == TransactionContexState.Commited;
             bool rollback = this.state == TransactionContexState.RolledBack;
             this.state = TransactionContexState.Disposing;
-            if (rollback)
+            if (this.commands != null)
             {
-                for (int i = this.commands.Count - 1; i >= 0; i--)
+                if (commit)
                 {
-                    this.commands[i].Apply();
+                    CollectionTxContext parent = CollectionTxContext.Current;
+                    if (this.Propagation == TransactionPropagation.NestedTx && parent.Propagation != TransactionPropagation.DisableTx)
+                    {
+                        if (this.commands.Count > 0)
+                        {
+                            if (parent.commands == null) parent.commands = new List<TxCommand>();
+                            parent.commands.AddRange(this.commands);
+                        }
+                    }
                 }
+                else if (rollback)
+                {
+                    for (int i = this.commands.Count - 1; i >= 0; i--)
+                    {
+                        this.commands[i].Apply();
+                    }
+                }
+                this.commands.Clear();
             }
             this.state = TransactionContexState.Disposed;
         }
@@ -966,19 +1019,19 @@ namespace MetaDslx.Core.Immutable
 
     internal class DummyCollectionTxContext : CollectionTxContext
     {
-        public override void AddCommand(TxCommand command)
+        internal DummyCollectionTxContext()
+            : base(TransactionPropagation.DisableTx)
         {
-            return;
         }
     }
 
-    internal class CollectionTxScope : IDisposable
+    public class CollectionTxScope : IDisposable
     {
         private CollectionTxContext context;
 
-        public CollectionTxScope()
+        public CollectionTxScope(TransactionPropagation propagation = TransactionPropagation.NestedTx)
         {
-            this.context = new CollectionTxContext();
+            this.context = new CollectionTxContext(propagation);
             CollectionTxContext.contexts.Value.Insert(0, this.context);
         }
 

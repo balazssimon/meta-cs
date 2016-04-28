@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetaDslx.Core.Collections.Transactional;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,7 +9,14 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
-    public sealed class ImmutableRedModel : RedModel
+    public enum LazyEvaluationMode
+    {
+        Evaluate,
+        ThrowException,
+        ReturnNull
+    }
+
+    public sealed class ImmutableRedModel 
     {
         private GreenModel green;
         private bool cached;
@@ -21,11 +29,45 @@ namespace MetaDslx.Core.Immutable
             this.cached = false;
         }
 
+        public ImmutableRedSymbol GetSymbol(ImmutableRedSymbol symbol)
+        {
+            return this.GetRedSymbol(((ImmutableRedSymbolBase)symbol).Green);
+        }
+
+        public ImmutableRedSymbol GetSymbol(MutableRedSymbol symbol)
+        {
+            return this.GetRedSymbol(((MutableRedSymbolBase)symbol).Green);
+        }
+
+        public bool ContainsSymbol(ImmutableRedSymbol symbol)
+        {
+            return this.green.ContainsSymbol(((ImmutableRedSymbolBase)symbol).Green);
+        }
+
+        public bool ContainsSymbol(MutableRedSymbol symbol)
+        {
+            return this.green.ContainsSymbol(((MutableRedSymbolBase)symbol).Green);
+        }
+
+        public MutableRedModel ToMutable()
+        {
+            return new MutableRedModel(this.green, this);
+        }
+
+        public IEnumerable<ImmutableRedSymbol> Symbols
+        {
+            get
+            {
+                if (!this.cached) this.CacheSymbols();
+                return this.symbols.Values;
+            }
+        }
+
         internal object ToGreenValue(object redValue)
         {
-            if (redValue is RedSymbolBase)
+            if (redValue is ImmutableRedSymbolBase)
             {
-                return ((RedSymbolBase)redValue).Green;
+                return ((ImmutableRedSymbolBase)redValue).Green;
             }
             return redValue;
         }
@@ -35,6 +77,10 @@ namespace MetaDslx.Core.Immutable
             if (redValue is GreenSymbol)
             {
                 return this.GetRedSymbol((GreenSymbol)redValue);
+            }
+            else if (redValue == GreenModelTransaction.Unassigned)
+            {
+                return null;
             }
             return redValue;
         }
@@ -69,14 +115,14 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        internal object GetValue(RedSymbolBase symbol, ModelProperty property)
+        internal object GetValue(ImmutableRedSymbolBase symbol, ModelProperty property)
         {
             Debug.Assert(!property.IsCollection);
             object greenObject = this.green.GetValue(symbol.Green, property);
             return this.ToRedValue(greenObject);
         }
 
-        internal ImmutableRedList<T> GetList<T>(RedSymbolBase symbol, ModelProperty property)
+        internal ImmutableRedList<T> GetList<T>(ImmutableRedSymbolBase symbol, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
             object greenObject = this.green.GetValue(symbol.Green, property);
@@ -106,24 +152,10 @@ namespace MetaDslx.Core.Immutable
             return result;
         }
 
-        public MutableRedModel ToMutable()
-        {
-            return new MutableRedModel(this.green, this);
-        }
-
-        public IEnumerable<ImmutableRedSymbol> Symbols
-        {
-            get
-            {
-                if (!this.cached) this.CacheSymbols();
-                return this.symbols.Values;
-            }
-        }
-
         private void CacheSymbols()
         {
             if (this.cached) return;
-            lock(this)
+            lock (this)
             {
                 if (this.cached) return;
                 this.symbols = new Dictionary<GreenSymbol, ImmutableRedSymbol>();
@@ -133,12 +165,79 @@ namespace MetaDslx.Core.Immutable
                 }
             }
         }
+
+        internal ImmutableRedSymbol MParent(ImmutableRedSymbolBase redSymbol)
+        {
+            return this.GetRedSymbol(this.green.MParent(redSymbol.Green));
+        }
+
+        internal IEnumerable<ImmutableRedSymbol> MChildren(ImmutableRedSymbolBase redSymbol)
+        {
+            foreach (var child in this.green.MChildren(redSymbol.Green))
+            {
+                yield return this.GetRedSymbol(child);
+            } 
+        }
+
+        internal IReadOnlyList<ModelProperty> MProperties(ImmutableRedSymbolBase redSymbol)
+        {
+            return ModelProperty.GetPropertiesForType(redSymbol.GetType());
+        }
+
+        internal IReadOnlyList<ModelProperty> MAllProperties(ImmutableRedSymbolBase redSymbol)
+        {
+            return this.green.MAllProperties(redSymbol.Green);
+        }
+
+        internal object MGet(ImmutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            if (property.IsCollection)
+            {
+                return this.GetList<object>(redSymbol, property);
+            }
+            else
+            {
+                return this.GetValue(redSymbol, property);
+            }
+        }
+
+        internal bool MIsSet(ImmutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            return this.green.MIsSet(redSymbol.Green, property);
+        }
+
+        internal ModelProperty MGetProperty(ImmutableRedSymbolBase redSymbol, string name)
+        {
+            return ModelProperty.GetPropertiesForType(redSymbol.GetType()).FirstOrDefault(p => p.Name == name);
+        }
+
+        internal IReadOnlyList<ModelProperty> MGetAllProperties(ImmutableRedSymbolBase redSymbol, string name)
+        {
+            return this.green.MGetAllProperties(redSymbol.Green, name);
+        }
+
+        internal bool MHasLazy(ImmutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            return this.green.MHasLazy(redSymbol.Green, property);
+        }
+
+        internal bool MIsAttached(ImmutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            return !ModelProperty.GetDeclaredPropertiesForType(redSymbol.GetType()).Contains(property);
+        }
+
+        internal bool MTryGet(ImmutableRedSymbolBase redSymbol, ModelProperty property, out object value)
+        {
+            return this.green.MTryGet(redSymbol.Green, property, out value);
+        }
     }
 
-    public sealed class MutableRedModel : RedModel
+    public sealed class MutableRedModel 
     {
+        private GreenModel green;
         private GreenModelTransaction transaction;
         private ImmutableRedModel originalImmutableModel;
+
         private bool finished = false;
 
         public MutableRedModel()
@@ -153,8 +252,15 @@ namespace MetaDslx.Core.Immutable
 
         internal MutableRedModel(GreenModel green, ImmutableRedModel originalImmutableModel)
         {
+            this.green = green;
             this.originalImmutableModel = originalImmutableModel;
             this.transaction = green.BeginTransaction(this);
+        }
+
+        public LazyEvaluationMode LazyMode
+        {
+            get { return this.transaction.LazyMode; }
+            set { this.transaction.LazyMode = value; }
         }
 
         public RedModelTransaction BeginTransaction()
@@ -163,11 +269,93 @@ namespace MetaDslx.Core.Immutable
             return new RedModelTransaction(this);
         }
 
+        public MutableRedSymbol GetSymbol(ImmutableRedSymbol symbol)
+        {
+            return this.GetRedSymbol(((ImmutableRedSymbolBase)symbol).Green);
+        }
+
+        public MutableRedSymbol GetSymbol(MutableRedSymbol symbol)
+        {
+            return this.GetRedSymbol(((MutableRedSymbolBase)symbol).Green);
+        }
+
+        public bool ContainsSymbol(ImmutableRedSymbol symbol)
+        {
+            return this.green.ContainsSymbol(((ImmutableRedSymbolBase)symbol).Green);
+        }
+
+        public bool ContainsSymbol(MutableRedSymbol symbol)
+        {
+            return this.green.ContainsSymbol(((MutableRedSymbolBase)symbol).Green);
+        }
+
+        public void AddSymbol(ImmutableRedSymbol symbol)
+        {
+            this.transaction.AddSymbol(((ImmutableRedSymbolBase)symbol).Green);
+        }
+
+        public void RemoveSymbol(ImmutableRedSymbol symbol)
+        {
+            this.transaction.RemoveSymbol(((ImmutableRedSymbolBase)symbol).Green);
+        }
+
+        public void AddSymbol(MutableRedSymbol symbol)
+        {
+            this.transaction.AddSymbol(((MutableRedSymbolBase)symbol).Green);
+        }
+
+        public void RemoveSymbol(MutableRedSymbol symbol)
+        {
+            this.transaction.RemoveSymbol(((MutableRedSymbolBase)symbol).Green);
+        }
+
+        public void EvaluateLazy()
+        {
+            using (CollectionTxScope scope = new CollectionTxScope())
+            {
+                foreach (var symbol in this.transaction.Symbols)
+                {
+                    this.transaction.MEvaluateLazy(symbol);
+                }
+                scope.Commit();
+            }
+        }
+
+        public ImmutableRedModel ToImmutable(bool finish = true)
+        {
+            if (finish) this.finished = true;
+            if (this.transaction.IsChanged)
+            {
+                if (this.finished)
+                {
+                    return new ImmutableRedModel(this.transaction.AsGreenModel());
+                }
+                else
+                {
+                    return new ImmutableRedModel(this.transaction.Fork());
+                }
+            }
+            else
+            {
+                if (this.originalImmutableModel != null) return this.originalImmutableModel;
+                else return new ImmutableRedModel(this.transaction.ParentModel);
+            }
+        }
+
+        internal MutableRedSymbolBase GetRedSymbol(GreenSymbol green)
+        {
+            return this.transaction.GetRedSymbol(green);
+        }
+
         internal object ToGreenValue(object value)
         {
-            if (value is RedSymbolBase)
+            if (value is MutableRedSymbolBase)
             {
-                return ((RedSymbolBase)value).Green;
+                return ((MutableRedSymbolBase)value).Green;
+            }
+            else if (value == GreenModelTransaction.Unassigned)
+            {
+                return null;
             }
             return value;
         }
@@ -192,25 +380,35 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        public MutableRedSymbolBase GetRedSymbol(GreenSymbol green)
-        {
-            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
-            return this.transaction.GetRedSymbol(green);
-        }
-
         internal object GetValue(MutableRedSymbolBase symbol, ModelProperty property)
         {
             Debug.Assert(!property.IsCollection);
-            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
-            object greenObject = this.transaction.GetValue(symbol.Green, property);
+            object greenObject;
+            if (this.LazyMode == LazyEvaluationMode.ReturnNull)
+            {
+                greenObject = this.transaction.GetValue(symbol.Green, property);
+            }
+            else
+            {
+                if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead, or, if the model is only read, change the lazy evaluation mode to '"+nameof(LazyEvaluationMode.ReturnNull)+"'.");
+                greenObject = this.transaction.GetValueWithLazyEval(symbol.Green, property);
+            }
             return this.ToRedValue(greenObject);
         }
 
-        internal MutableRedList<T> GetList<T>(RedSymbolBase symbol, ModelProperty property)
+        internal MutableRedList<T> GetList<T>(MutableRedSymbolBase symbol, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
-            object greenObject = this.transaction.GetValue(symbol.Green, property);
+            object greenObject;
+            if (this.LazyMode == LazyEvaluationMode.ReturnNull)
+            {
+                greenObject = this.transaction.GetValue(symbol.Green, property);
+            }
+            else
+            {
+                if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead, or, if the model is only read, change the lazy evaluation mode to '" + nameof(LazyEvaluationMode.ReturnNull) + "'.");
+                greenObject = this.transaction.GetValueWithLazyEval(symbol.Green, property);
+            }
             if (greenObject is GreenList)
             {
                 return new MutableRedList<T>((GreenList)greenObject, this);
@@ -281,10 +479,16 @@ namespace MetaDslx.Core.Immutable
             return this.transaction.RemoveItem(collection.Parent, collection.Property, index, false, null);
         }
 
-        internal bool ClearList(GreenList collection)
+        internal bool ClearItems(GreenList collection)
         {
             if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
-            return this.transaction.ClearList(collection.Parent, collection.Property);
+            return this.transaction.ClearItems(collection.Parent, collection.Property);
+        }
+
+        internal bool ClearLazyItems(GreenList collection)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.ClearLazyItems(collection.Parent, collection.Property);
         }
 
         internal void InvalidateProperty(GreenSymbol symbol, ModelProperty property)
@@ -297,27 +501,257 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        public ImmutableRedModel ToImmutable(bool finish = true)
+        internal MutableRedSymbol MParent(MutableRedSymbolBase redSymbol)
         {
-            if (finish) this.finished = true;
-            if (this.transaction.IsChanged)
+            return this.GetRedSymbol(this.transaction.MParent(redSymbol.Green));
+        }
+
+        internal IEnumerable<MutableRedSymbol> MChildren(MutableRedSymbolBase redSymbol)
+        {
+            foreach (var child in this.transaction.MChildren(redSymbol.Green))
             {
-                if (this.finished)
-                {
-                    return new ImmutableRedModel(this.transaction.AsGreenModel());
-                }
-                else
-                {
-                    return new ImmutableRedModel(this.transaction.Fork());
-                }
-            }
-            else
-            {
-                if (this.originalImmutableModel != null) return this.originalImmutableModel;
-                else return new ImmutableRedModel(this.transaction.ParentModel);
+                yield return this.GetRedSymbol(child);
             }
         }
 
+        internal IReadOnlyList<ModelProperty> MProperties(MutableRedSymbolBase redSymbol)
+        {
+            return ModelProperty.GetPropertiesForType(redSymbol.GetType());
+        }
+
+        internal IReadOnlyList<ModelProperty> MAllProperties(MutableRedSymbolBase redSymbol)
+        {
+            return this.transaction.MAllProperties(redSymbol.Green);
+        }
+
+        internal object MGet(MutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            if (property.IsCollection)
+            {
+                return this.GetList<object>(redSymbol, property);
+            }
+            else
+            {
+                return this.GetValue(redSymbol, property);
+            }
+        }
+
+        internal bool MIsSet(MutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            return this.transaction.MIsSet(redSymbol.Green, property);
+        }
+
+        internal ModelProperty MGetProperty(MutableRedSymbolBase redSymbol, string name)
+        {
+            return ModelProperty.GetPropertiesForType(redSymbol.GetType()).FirstOrDefault(p => p.Name == name);
+        }
+
+        internal IReadOnlyList<ModelProperty> MGetAllProperties(MutableRedSymbolBase redSymbol, string name)
+        {
+            return this.transaction.MGetAllProperties(redSymbol.Green, name);
+        }
+
+        internal bool MHasLazy(MutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            return this.transaction.MHasLazy(redSymbol.Green, property);
+        }
+
+        internal bool MIsAttached(MutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            return !ModelProperty.GetDeclaredPropertiesForType(redSymbol.GetType()).Contains(property);
+        }
+
+        internal bool MTryGet(MutableRedSymbolBase redSymbol, ModelProperty property, out object value)
+        {
+            return this.transaction.MTryGet(redSymbol.Green, property, out value);
+        }
+
+        internal bool MAdd(MutableRedSymbolBase redSymbol, ModelProperty property, object value)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (property.IsCollection)
+            {
+                return this.transaction.AddItem(redSymbol.Green, property, -1, false, this.ToGreenValue(value));
+            }
+            else
+            {
+                object oldValue;
+                bool result = this.transaction.SetValue(redSymbol.Green, property, false, this.ToGreenValue(value), out oldValue);
+                return result;
+            }
+        }
+
+        internal bool MClear(MutableRedSymbolBase redSymbol, ModelProperty property, bool clearLazy)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (property.IsCollection)
+            {
+                return this.transaction.ClearItems(redSymbol.Green, property) && (!clearLazy || this.transaction.ClearLazyItems(redSymbol.Green, property));
+            }
+            else
+            {
+                object oldValue;
+                bool result = this.transaction.SetValue(redSymbol.Green, property, false, null, out oldValue);
+                return result;
+            }
+        }
+
+        internal bool MClearLazy(MutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (this.MHasLazy(redSymbol, property))
+            {
+                if (property.IsCollection)
+                {
+                    return this.transaction.ClearLazyItems(redSymbol.Green, property);
+                }
+                else
+                {
+                    object oldValue;
+                    bool result = this.transaction.SetValue(redSymbol.Green, property, true, GreenModelTransaction.Unassigned, out oldValue);
+                    return result;
+                }
+            }
+            return false;
+        }
+
+        internal bool MReset(MutableRedSymbolBase redSymbol, ModelProperty property, object value)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (property.IsCollection)
+            {
+                return this.transaction.ClearItems(redSymbol.Green, property);
+            }
+            else
+            {
+                object oldValue;
+                return this.transaction.SetValue(redSymbol.Green, property, true, value, out oldValue);
+            }
+        }
+
+        internal bool MAddRange(MutableRedSymbolBase redSymbol, ModelProperty property, IEnumerable<object> values)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            return this.transaction.AddItems(redSymbol.Green, property, values);
+        }
+
+        internal bool MAttachProperty(MutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.MAttachProperty(redSymbol.Green, property);
+        }
+
+        internal bool MDetachProperty(MutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.MDetachProperty(redSymbol.Green, property);
+        }
+
+        internal bool MLazyAdd(MutableRedSymbolBase redSymbol, ModelProperty property, Func<object> value)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (property.IsCollection)
+            {
+                return this.transaction.AddItem(redSymbol.Green, property, -1, false, new GreenLazyValue(value));
+            }
+            else
+            {
+                object oldValue;
+                bool result = this.transaction.SetValue(redSymbol.Green, property, false, new GreenLazyValue(value), out oldValue);
+                return result;
+            }
+        }
+
+        internal bool MLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty property, Func<IEnumerable<object>> values)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            return this.transaction.AddItem(redSymbol.Green, property, -1, false, new GreenLazyList(values));
+        }
+
+        internal bool MLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty property, IEnumerable<Func<object>> values)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            bool result = false;
+            foreach (var value in values)
+            {
+                result |= this.transaction.AddItem(redSymbol.Green, property, -1, false, new GreenLazyValue(value));
+            }
+            return result;
+        }
+
+        internal void MEvaluateLazy(MutableRedSymbolBase redSymbol)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            this.transaction.MEvaluateLazy(redSymbol.Green);
+        }
+
+        internal bool MChildLazySet(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<object> value)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (property.IsCollection) throw new ModelException("The property must not be a collection.");
+            return this.transaction.MChildLazySet(redSymbol.Green, child, property, value);
+        }
+
+        internal bool MChildLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            return this.transaction.MChildLazyAddRange(redSymbol.Green, child, property, values);
+        }
+
+        internal bool MChildLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            return this.transaction.MChildLazyAddRange(redSymbol.Green, child, property, values);
+        }
+
+        internal bool MChildLazyClear(MutableRedSymbolBase redSymbol, ModelProperty child)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.MChildLazyClear(redSymbol.Green, child);
+        }
+
+        internal bool MChildLazyClear(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            return this.transaction.MChildLazyClear(redSymbol.Green, child, property);
+        }
+
+        internal bool MRemove(MutableRedSymbolBase redSymbol, ModelProperty property, object value, bool removeAll)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (property.IsCollection)
+            {
+                return this.transaction.RemoveItem(redSymbol.Green, property, -1, removeAll, value);
+            }
+            else
+            {
+                object oldValue;
+                if (this.MTryGet(redSymbol, property, out oldValue) && oldValue == value && oldValue != null)
+                {
+                    return this.transaction.SetValue(redSymbol.Green, property, false, null, out oldValue);
+                }
+            }
+            return false;
+        }
+
+        internal void MUnset(MutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
+            if (property.IsCollection)
+            {
+                this.transaction.ClearItems(redSymbol.Green, property);
+            }
+            else
+            {
+                object oldValue;
+                this.transaction.SetValue(redSymbol.Green, property, true, GreenModelTransaction.Unassigned, out oldValue);
+            }
+        }
     }
 
     public sealed class RedModelTransaction : IDisposable

@@ -19,37 +19,61 @@ namespace MetaDslx.Core.Immutable
     // RED interface:
 
     // Symbol:
-
-    public interface RedSymbol
+    public interface ImmutableRedSymbol
     {
         object MMetaModel { get; }
         object MMetaClass { get; }
-        RedModel MModel { get; }
-        RedSymbol MParent { get; }
-        IReadOnlyList<RedSymbol> MChildren { get; }
-        IEnumerable<ModelProperty> MProperties { get; }
-        IEnumerable<ModelProperty> MAllProperties { get; }
+
+        ImmutableRedModel MModel { get; }
+        ImmutableRedSymbol MParent { get; }
+        IEnumerable<ImmutableRedSymbol> MChildren { get; }
+        IReadOnlyList<ModelProperty> MProperties { get; }
+        IReadOnlyList<ModelProperty> MAllProperties { get; }
+        bool MTryGet(ModelProperty property, out object value);
         object MGet(ModelProperty property);
         bool MIsSet(ModelProperty property);
+        bool MIsAttached(ModelProperty property);
+        bool MHasLazy(ModelProperty property);
         ModelProperty MGetProperty(string name);
-        IEnumerable<ModelProperty> MGetAllProperties(string name);
+        IReadOnlyList<ModelProperty> MGetAllProperties(string name);
     }
 
-    public interface ImmutableRedSymbol : RedSymbol
+    public interface MutableRedSymbol
     {
-        new ImmutableRedModel MModel { get; }
-    }
+        object MMetaModel { get; }
+        object MMetaClass { get; }
 
-    public interface MutableRedSymbol : RedSymbol
-    {
-        new MutableRedModel MModel { get; }
+        MutableRedModel MModel { get; }
+        MutableRedSymbol MParent { get; }
+        IEnumerable<MutableRedSymbol> MChildren { get; }
+        IReadOnlyList<ModelProperty> MProperties { get; }
+        IReadOnlyList<ModelProperty> MAllProperties { get; }
+        bool MTryGet(ModelProperty property, out object value);
+        object MGet(ModelProperty property);
+        bool MIsSet(ModelProperty property);
+        bool MIsAttached(ModelProperty property);
+        bool MHasLazy(ModelProperty property);
+        ModelProperty MGetProperty(string name);
+        IReadOnlyList<ModelProperty> MGetAllProperties(string name);
+
+        bool MAttachProperty(ModelProperty property);
+        bool MDetachProperty(ModelProperty property);
+        void MUnset(ModelProperty property);
         bool MAdd(ModelProperty property, object value);
+        bool MClear(ModelProperty property, bool clearLazy = true);
+        bool MClearLazy(ModelProperty property);
+        bool MReset(ModelProperty property, object value);
         bool MLazyAdd(ModelProperty property, Func<object> value);
         bool MAddRange(ModelProperty property, IEnumerable<object> value);
-        bool MLazyAddRange(ModelProperty property, Func<IEnumerable<object>> value);
-        bool MLazyAddRange(ModelProperty property, IEnumerable<Func<object>> value);
-        bool MRemove(ModelProperty property, object value);
-        bool MLazySetChild(ModelProperty child, ModelProperty property, Func<object> value);
+        bool MLazyAddRange(ModelProperty property, Func<IEnumerable<object>> values);
+        bool MLazyAddRange(ModelProperty property, IEnumerable<Func<object>> values);
+        bool MRemove(ModelProperty property, object value, bool removeAll = false);
+        bool MChildLazySet(ModelProperty child, ModelProperty property, Func<object> value);
+        bool MChildLazyAddRange(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values);
+        bool MChildLazyAddRange(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values);
+        bool MChildLazyClear(ModelProperty child);
+        bool MChildLazyClear(ModelProperty child, ModelProperty property);
+        void MEvaluateLazy();
     }
 
     // List:
@@ -57,6 +81,7 @@ namespace MetaDslx.Core.Immutable
     public interface ImmutableModelList<T> : IReadOnlyList<T>
     {
         bool Contains(T item);
+        bool HasLazy();
     }
 
     public interface ModelList<T> : IList<T>
@@ -64,13 +89,9 @@ namespace MetaDslx.Core.Immutable
         void LazyAdd(Func<T> lazy);
         void LazyAddRange(Func<IEnumerable<T>> lazy);
         void LazyAddRange(IEnumerable<Func<T>> lazy);
+        bool HasLazy();
+        void ClearLazy();
     }
 
-    // Model:
-
-    public interface RedModel
-    {
-
-    }
 
 }

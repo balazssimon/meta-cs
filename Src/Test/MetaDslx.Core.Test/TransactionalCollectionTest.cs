@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MetaDslx.Core.Immutable;
+using MetaDslx.Core.Collections.Transactional;
 
 namespace MetaDslx.Core.Test
 {

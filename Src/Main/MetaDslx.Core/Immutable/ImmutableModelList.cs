@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetaDslx.Core.Collections.Transactional;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -48,6 +49,7 @@ namespace MetaDslx.Core.Immutable
             this.parent = other.parent;
             this.property = other.property;
             this.items = new TxList<object>(other.items);
+            this.lazyItems = other.lazyItems != null ? new TxList<object>(other.lazyItems) : null;
         }
 
         internal GreenSymbol Parent { get { return this.parent; } }
@@ -140,12 +142,17 @@ namespace MetaDslx.Core.Immutable
             }
             return result;
         }
+
+        internal void ClearLazyItems()
+        {
+            this.lazyItems.Clear();
+        }
     }
 
     // RED:
 
     // thread-safe
-    public sealed class ImmutableRedList<T> : IReadOnlyList<T>, IInternalReadOnlyCollection
+    public sealed class ImmutableRedList<T> : ImmutableModelList<T>, IReadOnlyList<T>, IInternalReadOnlyCollection
     {
         private GreenList green;
         private ImmutableRedModel model;
@@ -203,11 +210,16 @@ namespace MetaDslx.Core.Immutable
             if (this.cachedItems != null) return;
             Interlocked.CompareExchange(ref this.cachedItems, this.model.CreateListItems<T>(this), null);
         }
+
+        public bool HasLazy()
+        {
+            return this.green.HasLazyItems;
+        }
     }
 
 
     // NOT thread-safe
-    public sealed class MutableRedList<T> : IList<T>
+    public sealed class MutableRedList<T> : ModelList<T>, IList<T>
     {
         private GreenList green;
         private MutableRedModel model;
@@ -276,7 +288,7 @@ namespace MetaDslx.Core.Immutable
 
         public void Clear()
         {
-            this.model.ClearList(this.green);
+            this.model.ClearItems(this.green);
         }
 
         public bool Contains(T item)
@@ -318,6 +330,16 @@ namespace MetaDslx.Core.Immutable
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        public bool HasLazy()
+        {
+            return this.green.HasLazyItems;
+        }
+
+        public void ClearLazy()
+        {
+            this.model.ClearLazyItems(this.green);
         }
     }
 
