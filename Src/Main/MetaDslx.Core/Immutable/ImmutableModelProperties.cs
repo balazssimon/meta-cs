@@ -394,20 +394,19 @@ namespace MetaDslx.Core.Immutable
             if (modelProperty == null) return;
             lock (this)
             {
-                HashSet<ModelProperty> props = new HashSet<ModelProperty>(this.oppositeProperties);
+                HashSet<ModelProperty> props = new HashSet<ModelProperty>();
+                if (this.oppositeProperties != null) props.UnionWith(this.oppositeProperties);
                 props.Add(modelProperty);
                 Interlocked.Exchange(ref this.oppositeProperties, props);
                 this.flags |= ModelPropertyFlags.HasOppositeProperties;
             }
             lock (modelProperty)
             {
-                if (!modelProperty.oppositeProperties.Contains(this))
-                {
-                    HashSet<ModelProperty> props = new HashSet<ModelProperty>(modelProperty.oppositeProperties);
-                    props.Add(this);
-                    Interlocked.Exchange(ref modelProperty.oppositeProperties, props);
-                    modelProperty.flags |= ModelPropertyFlags.HasOppositeProperties;
-                }
+                HashSet<ModelProperty> props = new HashSet<ModelProperty>();
+                if (modelProperty.oppositeProperties != null) props.UnionWith(modelProperty.oppositeProperties);
+                props.Add(this);
+                Interlocked.Exchange(ref modelProperty.oppositeProperties, props);
+                modelProperty.flags |= ModelPropertyFlags.HasOppositeProperties;
             }
         }
 
@@ -416,14 +415,16 @@ namespace MetaDslx.Core.Immutable
             if (modelProperty == null) return;
             lock (this)
             {
-                HashSet<ModelProperty> props = new HashSet<ModelProperty>(this.subsettedProperties);
+                HashSet<ModelProperty> props = new HashSet<ModelProperty>();
+                if (this.subsettedProperties != null) props.UnionWith(this.subsettedProperties);
                 props.Add(modelProperty);
                 Interlocked.Exchange(ref this.subsettedProperties, props);
                 this.flags |= ModelPropertyFlags.HasSubsettedProperties;
             }
             lock (modelProperty)
             {
-                HashSet<ModelProperty> props = new HashSet<ModelProperty>(modelProperty.subsettingProperties);
+                HashSet<ModelProperty> props = new HashSet<ModelProperty>();
+                if (modelProperty.subsettingProperties != null) props.UnionWith(modelProperty.subsettingProperties);
                 props.Add(this);
                 Interlocked.Exchange(ref modelProperty.subsettingProperties, props);
                 modelProperty.flags |= ModelPropertyFlags.HasSubsettingProperties;
@@ -437,14 +438,16 @@ namespace MetaDslx.Core.Immutable
             if (modelProperty == null) return;
             lock (this)
             {
-                HashSet<ModelProperty> props = new HashSet<ModelProperty>(this.subtypedProperties);
+                HashSet<ModelProperty> props = new HashSet<ModelProperty>();
+                if (this.subtypedProperties != null) props.UnionWith(this.subtypedProperties);
                 props.Add(modelProperty);
                 Interlocked.Exchange(ref this.subtypedProperties, props);
                 this.flags |= ModelPropertyFlags.HasSubtypedProperties;
             }
             lock (modelProperty)
             {
-                HashSet<ModelProperty> props = new HashSet<ModelProperty>(modelProperty.subtypingProperties);
+                HashSet<ModelProperty> props = new HashSet<ModelProperty>();
+                if (modelProperty.subtypingProperties != null) props.UnionWith(modelProperty.subtypingProperties);
                 props.Add(this);
                 Interlocked.Exchange(ref modelProperty.subtypingProperties, props);
                 modelProperty.flags |= ModelPropertyFlags.HasSubtypingProperties;
@@ -460,14 +463,16 @@ namespace MetaDslx.Core.Immutable
             if (modelProperty == null) return;
             lock (this)
             {
-                HashSet<ModelProperty> props = new HashSet<ModelProperty>(this.redefinedProperties);
+                HashSet<ModelProperty> props = new HashSet<ModelProperty>();
+                if (this.redefinedProperties != null) props.UnionWith(this.redefinedProperties);
                 props.Add(modelProperty);
                 Interlocked.Exchange(ref this.redefinedProperties, props);
                 this.flags |= ModelPropertyFlags.HasRedefinedProperties;
             }
             lock (modelProperty)
             {
-                HashSet<ModelProperty> props = new HashSet<ModelProperty>(modelProperty.redefiningProperties);
+                HashSet<ModelProperty> props = new HashSet<ModelProperty>();
+                if (modelProperty.redefiningProperties != null) props.UnionWith(modelProperty.redefiningProperties);
                 props.Add(this);
                 Interlocked.Exchange(ref modelProperty.redefiningProperties, props);
                 modelProperty.flags |= ModelPropertyFlags.HasRedefiningProperties;

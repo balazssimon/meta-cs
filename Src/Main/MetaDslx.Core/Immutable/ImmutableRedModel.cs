@@ -25,7 +25,7 @@ namespace MetaDslx.Core.Immutable
         internal ImmutableRedModel(GreenModel green)
         {
             this.green = green;
-            this.symbols = null;
+            this.symbols = new Dictionary<GreenSymbol, ImmutableRedSymbol>();
             this.cached = false;
         }
 
@@ -74,13 +74,13 @@ namespace MetaDslx.Core.Immutable
 
         internal object ToRedValue(object redValue)
         {
-            if (redValue is GreenSymbol)
-            {
-                return this.GetRedSymbol((GreenSymbol)redValue);
-            }
-            else if (redValue == GreenModelTransaction.Unassigned)
+            if (redValue == GreenModelTransaction.Unassigned)
             {
                 return null;
+            }
+            else if (redValue is GreenSymbol)
+            {
+                return this.GetRedSymbol((GreenSymbol)redValue);
             }
             return redValue;
         }
@@ -158,7 +158,6 @@ namespace MetaDslx.Core.Immutable
             lock (this)
             {
                 if (this.cached) return;
-                this.symbols = new Dictionary<GreenSymbol, ImmutableRedSymbol>();
                 foreach (var greenSymbol in this.green.Symbols)
                 {
                     this.GetRedSymbol(greenSymbol);
@@ -289,6 +288,12 @@ namespace MetaDslx.Core.Immutable
             return this.green.ContainsSymbol(((MutableRedSymbolBase)symbol).Green);
         }
 
+        public MutableRedSymbol AddSymbol(GreenSymbol symbol)
+        {
+            this.transaction.AddSymbol(symbol);
+            return this.GetRedSymbol(symbol);
+        }
+
         public void AddSymbol(ImmutableRedSymbol symbol)
         {
             this.transaction.AddSymbol(((ImmutableRedSymbolBase)symbol).Green);
@@ -353,16 +358,16 @@ namespace MetaDslx.Core.Immutable
             {
                 return ((MutableRedSymbolBase)value).Green;
             }
-            else if (value == GreenModelTransaction.Unassigned)
-            {
-                return null;
-            }
             return value;
         }
 
         internal object ToRedValue(object value)
         {
-            if (value is GreenLazyValue)
+            if (value == GreenModelTransaction.Unassigned)
+            {
+                return null;
+            }
+            else if (value is GreenLazyValue)
             {
                 return null;
             }

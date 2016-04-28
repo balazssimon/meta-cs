@@ -138,6 +138,19 @@ namespace MetaDslx.Core.Immutable
             return result;
         }
 
+        protected void SetValue<T>(ModelProperty property, ref T target, T value)
+            where T : class
+        {
+            if (value is MutableRedSymbolBase && ((MutableRedSymbolBase)(object)value).model != this.model)
+            {
+                value = (T)this.model.ToRedValue(this.model.ToGreenValue(value));
+            }
+            if (this.model.SetValue(this, property, value))
+            {
+                Interlocked.Exchange(ref target, value);
+            }
+        }
+
         protected MutableRedList<T> GetList<T>(ModelProperty property, ref MutableRedList<T> value)
         {
             MutableRedList<T> result = value;

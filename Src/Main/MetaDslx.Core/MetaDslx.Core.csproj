@@ -55,7 +55,6 @@
     <Compile Include="Immutable\ImmutableModelList.cs" />
     <Compile Include="Immutable\ImmutableModelProperties.cs" />
     <Compile Include="Immutable\ImmutableRedModel.cs" />
-    <Compile Include="Immutable\ImmutableModelSample.cs" />
     <Compile Include="Immutable\ImmutableRedSymbol.cs" />
     <Compile Include="Immutable\TransactionalCollections.cs" />
     <Compile Include="MetaImplementation.cs" />

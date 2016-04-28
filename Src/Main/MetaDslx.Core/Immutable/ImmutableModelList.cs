@@ -74,7 +74,8 @@ namespace MetaDslx.Core.Immutable
         internal bool Add(object item)
         {
             Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
-            Debug.Assert(property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType()));
+            Debug.Assert(((item is GreenSymbol) && property.MutableTypeInfo.Type.IsAssignableFrom(((GreenSymbol)item).MutableType)) ||
+                (!(item is GreenSymbol) && property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType())));
             if (this.property.IsNonNull && item == null) return false;
             if (this.property.IsNonUnique || !this.items.Contains(item))
             {
@@ -97,7 +98,8 @@ namespace MetaDslx.Core.Immutable
         internal bool Insert(int index, object item)
         {
             Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
-            Debug.Assert(property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType()));
+            Debug.Assert(((item is GreenSymbol) && property.MutableTypeInfo.Type.IsAssignableFrom(((GreenSymbol)item).MutableType)) ||
+                (!(item is GreenSymbol) && property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType())));
             if (this.property.IsNonNull && item == null) return false;
             if (this.property.IsNonUnique || !this.items.Contains(item))
             {
