@@ -332,7 +332,7 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        private void Init()
+        internal void Init()
         {
             if (this.initialized) return;
             this.initialized = true;
@@ -367,7 +367,7 @@ namespace MetaDslx.Core.Immutable
                         RedefinesAttribute redefinesAttribute = (RedefinesAttribute)attribute;
                         RuntimeHelpers.RunClassConstructor(redefinesAttribute.DeclaringType.TypeHandle);
                         ModelProperty modelProperty = ModelProperty.Find(redefinesAttribute.DeclaringType, redefinesAttribute.PropertyName);
-                        this.RegisterSubsettedProperty(modelProperty);
+                        this.RegisterRedefinedProperty(modelProperty);
                     }
                     else if (attribute is ReadonlyAttribute)
                     {
@@ -764,6 +764,11 @@ namespace MetaDslx.Core.Immutable
         public override string ToString()
         {
             return this.DeclaringType.FullName + "." + this.DeclaredName;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.DeclaringType.GetHashCode() * 59 + this.DeclaredName.GetHashCode();
         }
 
         private class TypeCache

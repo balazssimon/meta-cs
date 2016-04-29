@@ -58,6 +58,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ImmutableInheritanceTest.cs" />
     <Compile Include="InheritancePropertyTest.cs" />
     <Compile Include="TestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

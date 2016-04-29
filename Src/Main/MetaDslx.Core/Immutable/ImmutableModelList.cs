@@ -74,9 +74,24 @@ namespace MetaDslx.Core.Immutable
         internal bool Add(object item)
         {
             Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
-            Debug.Assert(((item is GreenSymbol) && property.MutableTypeInfo.Type.IsAssignableFrom(((GreenSymbol)item).MutableType)) ||
-                (!(item is GreenSymbol) && property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType())));
-            if (this.property.IsNonNull && item == null) return false;
+            if (item is GreenSymbol)
+            {
+                if (!property.MutableTypeInfo.Type.IsAssignableFrom(((GreenSymbol)item).MutableType))
+                {
+                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", ((GreenSymbol)item).MutableType, property.MutableTypeInfo.Type));
+                }
+            }
+            else 
+            {
+                if (!property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType()))
+                {
+                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", item.GetType(), property.MutableTypeInfo.Type));
+                }
+            }
+            if (this.property.IsNonNull && item == null)
+            {
+                throw new ModelException(string.Format("Cannot add null to collection of non-null types '{0}'.", property.MutableTypeInfo.Type));
+            }
             if (this.property.IsNonUnique || !this.items.Contains(item))
             {
                 this.items.Add(item);
@@ -98,9 +113,24 @@ namespace MetaDslx.Core.Immutable
         internal bool Insert(int index, object item)
         {
             Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
-            Debug.Assert(((item is GreenSymbol) && property.MutableTypeInfo.Type.IsAssignableFrom(((GreenSymbol)item).MutableType)) ||
-                (!(item is GreenSymbol) && property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType())));
-            if (this.property.IsNonNull && item == null) return false;
+            if (item is GreenSymbol)
+            {
+                if (!property.MutableTypeInfo.Type.IsAssignableFrom(((GreenSymbol)item).MutableType))
+                {
+                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", ((GreenSymbol)item).MutableType, property.MutableTypeInfo.Type));
+                }
+            }
+            else
+            {
+                if (!property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType()))
+                {
+                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", item.GetType(), property.MutableTypeInfo.Type));
+                }
+            }
+            if (this.property.IsNonNull && item == null)
+            {
+                throw new ModelException(string.Format("Cannot add null to collection of non-null types '{0}'.", property.MutableTypeInfo.Type));
+            }
             if (this.property.IsNonUnique || !this.items.Contains(item))
             {
                 this.items.Insert(index, item);
@@ -345,4 +375,87 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
+    internal class ImmutableReadOnlyRedList<T> : IReadOnlyList<T>
+        where T : ImmutableRedSymbolBase
+    {
+        private IReadOnlyList<GreenSymbol> greenList;
+        private ImmutableRedModel model;
+
+        public ImmutableReadOnlyRedList(IReadOnlyList<GreenSymbol> greenList, ImmutableRedModel model)
+        {
+            this.greenList = greenList;
+            this.model = model;
+        }
+
+        public T this[int index]
+        {
+            get
+            {
+                return (T)this.model.GetRedSymbol(this.greenList[index]);
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                return this.greenList.Count;
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            foreach (var item in greenList)
+            {
+                yield return (T)this.model.GetRedSymbol(item);
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+    }
+
+    internal class MutableReadOnlyRedList<T> : IReadOnlyList<T>
+        where T : MutableRedSymbolBase
+    {
+        private IReadOnlyList<GreenSymbol> greenList;
+        private MutableRedModel model;
+
+        public MutableReadOnlyRedList(IReadOnlyList<GreenSymbol> greenList, MutableRedModel model)
+        {
+            this.greenList = greenList;
+            this.model = model;
+        }
+
+        public T this[int index]
+        {
+            get
+            {
+                return (T)this.model.GetRedSymbol(this.greenList[index]);
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                return this.greenList.Count;
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            foreach (var item in greenList)
+            {
+                yield return (T)this.model.GetRedSymbol(item);
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+    }
 }

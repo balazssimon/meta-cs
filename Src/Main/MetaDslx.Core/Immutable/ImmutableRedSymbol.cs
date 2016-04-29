@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetaDslx.Core.Collections.Transactional;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,7 +60,7 @@ namespace MetaDslx.Core.Immutable
                 return this.model.MParent(this);
             }
         }
-        public IEnumerable<ImmutableRedSymbol> MChildren
+        public IReadOnlyList<ImmutableRedSymbol> MChildren
         {
             get
             {
@@ -111,19 +112,39 @@ namespace MetaDslx.Core.Immutable
         {
             return this.model.MIsAttached(this, property);
         }
+
+        public override int GetHashCode()
+        {
+            return this.green.GetHashCode();
+        }
+
+        RedModel RedSymbol.MModel
+        {
+            get { return this.MModel; }
+        }
+
+        RedSymbol RedSymbol.MParent
+        {
+            get { return this.MParent; }
+        }
+
+        IReadOnlyList<RedSymbol> RedSymbol.MChildren
+        {
+            get { return this.MChildren; }
+        }
     }
 
     public abstract class MutableRedSymbolBase : MutableRedSymbol
     {
         private GreenSymbol green;
         private MutableRedModel model;
-
-        internal HashSet<ModelProperty> invalidatedProperties;
+        private HashSet<ModelProperty> invalidatedProperties;
 
         protected MutableRedSymbolBase(GreenSymbol green, MutableRedModel model)
         {
             this.green = green;
             this.model = model;
+            //this.invalidatedProperties = new HashSet<ModelProperty>();
         }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
@@ -133,9 +154,9 @@ namespace MetaDslx.Core.Immutable
             if (result == null)
             {
                 result = (T)this.model.GetValue(this, property);
-                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+                result = Interlocked.CompareExchange(ref value, result, null);
             }
-            return result;
+            return value;
         }
 
         protected void SetValue<T>(ModelProperty property, ref T target, T value)
@@ -147,7 +168,7 @@ namespace MetaDslx.Core.Immutable
             }
             if (this.model.SetValue(this, property, value))
             {
-                Interlocked.Exchange(ref target, value);
+                //Interlocked.Exchange(ref target, value);
             }
         }
 
@@ -181,7 +202,7 @@ namespace MetaDslx.Core.Immutable
                 return this.model.MParent(this);
             }
         }
-        public IEnumerable<MutableRedSymbol> MChildren
+        public IReadOnlyList<MutableRedSymbol> MChildren
         {
             get
             {
@@ -307,25 +328,58 @@ namespace MetaDslx.Core.Immutable
             this.model.MUnset(this, property);
         }
 
-        internal void InvalidateProperty(ModelProperty property)
+        internal void InternalInvalidateProperty(ModelProperty property)
         {
-            if (this.invalidatedProperties == null)
+            /*if (!this.invalidatedProperties.Contains(property))
             {
-                this.invalidatedProperties = new HashSet<ModelProperty>();
-            }
-            this.invalidatedProperties.Add(property);
+                this.invalidatedProperties.Add(property);
+            }*/
+            this.InvalidateProperty(property);
         }
 
+        protected abstract void InvalidateProperty(ModelProperty property);
+
+        /*internal void InvalidateProperty(ModelProperty property)
+        {
+            lock(this.invalidatedProperties)
+            {
+                if (!this.invalidatedProperties.Contains(property))
+                {
+                    this.invalidatedProperties.Add(property);
+                }
+            }
+        }*/
+        /*
         private bool ClearInvalidatedProperty(ModelProperty property)
         {
-            if (this.invalidatedProperties != null && this.invalidatedProperties.Contains(property))
+            if (this.invalidatedProperties.Contains(property))
             {
                 this.invalidatedProperties.Remove(property);
                 return true;
             }
             return false;
         }
+        */
 
+        public override int GetHashCode()
+        {
+            return this.green.GetHashCode();
+        }
+
+        RedModel RedSymbol.MModel
+        {
+            get { return this.MModel; }
+        }
+
+        RedSymbol RedSymbol.MParent
+        {
+            get { return this.MParent; }
+        }
+
+        IReadOnlyList<RedSymbol> RedSymbol.MChildren
+        {
+            get { return this.MChildren; }
+        }
     }
 
 }

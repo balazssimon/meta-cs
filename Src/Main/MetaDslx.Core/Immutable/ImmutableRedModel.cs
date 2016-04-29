@@ -16,7 +16,7 @@ namespace MetaDslx.Core.Immutable
         ReturnNull
     }
 
-    public sealed class ImmutableRedModel 
+    public sealed class ImmutableRedModel : RedModel
     {
         private GreenModel green;
         private bool cached;
@@ -29,24 +29,30 @@ namespace MetaDslx.Core.Immutable
             this.cached = false;
         }
 
-        public ImmutableRedSymbol GetSymbol(ImmutableRedSymbol symbol)
+        public ImmutableRedSymbol GetSymbol(RedSymbol symbol)
         {
-            return this.GetRedSymbol(((ImmutableRedSymbolBase)symbol).Green);
-        }
-
-        public ImmutableRedSymbol GetSymbol(MutableRedSymbol symbol)
-        {
-            return this.GetRedSymbol(((MutableRedSymbolBase)symbol).Green);
+            if (symbol is ImmutableRedSymbolBase)
+            {
+                return this.GetRedSymbol(((ImmutableRedSymbolBase)symbol).Green);
+            }
+            if (symbol is MutableRedSymbolBase)
+            {
+                return this.GetRedSymbol(((MutableRedSymbolBase)symbol).Green);
+            }
+            return null;
         }
 
         public bool ContainsSymbol(ImmutableRedSymbol symbol)
         {
-            return this.green.ContainsSymbol(((ImmutableRedSymbolBase)symbol).Green);
-        }
-
-        public bool ContainsSymbol(MutableRedSymbol symbol)
-        {
-            return this.green.ContainsSymbol(((MutableRedSymbolBase)symbol).Green);
+            if (symbol is ImmutableRedSymbolBase)
+            {
+                return this.green.ContainsSymbol(((ImmutableRedSymbolBase)symbol).Green);
+            }
+            if (symbol is MutableRedSymbolBase)
+            {
+                return this.green.ContainsSymbol(((MutableRedSymbolBase)symbol).Green);
+            }
+            return false;
         }
 
         public MutableRedModel ToMutable()
@@ -170,12 +176,9 @@ namespace MetaDslx.Core.Immutable
             return this.GetRedSymbol(this.green.MParent(redSymbol.Green));
         }
 
-        internal IEnumerable<ImmutableRedSymbol> MChildren(ImmutableRedSymbolBase redSymbol)
+        internal IReadOnlyList<ImmutableRedSymbol> MChildren(ImmutableRedSymbolBase redSymbol)
         {
-            foreach (var child in this.green.MChildren(redSymbol.Green))
-            {
-                yield return this.GetRedSymbol(child);
-            } 
+            return new ImmutableReadOnlyRedList<ImmutableRedSymbolBase>(this.green.MChildren(redSymbol.Green), this);
         }
 
         internal IReadOnlyList<ModelProperty> MProperties(ImmutableRedSymbolBase redSymbol)
@@ -231,7 +234,7 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    public sealed class MutableRedModel 
+    public sealed class MutableRedModel : RedModel
     {
         private GreenModel green;
         private GreenModelTransaction transaction;
@@ -268,24 +271,30 @@ namespace MetaDslx.Core.Immutable
             return new RedModelTransaction(this);
         }
 
-        public MutableRedSymbol GetSymbol(ImmutableRedSymbol symbol)
+        public MutableRedSymbol GetSymbol(RedSymbol symbol)
         {
-            return this.GetRedSymbol(((ImmutableRedSymbolBase)symbol).Green);
-        }
-
-        public MutableRedSymbol GetSymbol(MutableRedSymbol symbol)
-        {
-            return this.GetRedSymbol(((MutableRedSymbolBase)symbol).Green);
+            if (symbol is ImmutableRedSymbolBase)
+            {
+                return this.GetRedSymbol(((ImmutableRedSymbolBase)symbol).Green);
+            }
+            if (symbol is MutableRedSymbolBase)
+            {
+                return this.GetRedSymbol(((MutableRedSymbolBase)symbol).Green);
+            }
+            return null;
         }
 
         public bool ContainsSymbol(ImmutableRedSymbol symbol)
         {
-            return this.green.ContainsSymbol(((ImmutableRedSymbolBase)symbol).Green);
-        }
-
-        public bool ContainsSymbol(MutableRedSymbol symbol)
-        {
-            return this.green.ContainsSymbol(((MutableRedSymbolBase)symbol).Green);
+            if (symbol is ImmutableRedSymbolBase)
+            {
+                return this.green.ContainsSymbol(((ImmutableRedSymbolBase)symbol).Green);
+            }
+            if (symbol is MutableRedSymbolBase)
+            {
+                return this.green.ContainsSymbol(((MutableRedSymbolBase)symbol).Green);
+            }
+            return false;
         }
 
         public MutableRedSymbol AddSymbol(GreenSymbol symbol)
@@ -294,24 +303,28 @@ namespace MetaDslx.Core.Immutable
             return this.GetRedSymbol(symbol);
         }
 
-        public void AddSymbol(ImmutableRedSymbol symbol)
+        public void AddSymbol(RedSymbol symbol)
         {
-            this.transaction.AddSymbol(((ImmutableRedSymbolBase)symbol).Green);
+            if (symbol is ImmutableRedSymbolBase)
+            {
+                this.transaction.AddSymbol(((ImmutableRedSymbolBase)symbol).Green);
+            }
+            if (symbol is MutableRedSymbolBase)
+            {
+                this.transaction.AddSymbol(((MutableRedSymbolBase)symbol).Green);
+            }
         }
 
-        public void RemoveSymbol(ImmutableRedSymbol symbol)
+        public void RemoveSymbol(RedSymbol symbol)
         {
-            this.transaction.RemoveSymbol(((ImmutableRedSymbolBase)symbol).Green);
-        }
-
-        public void AddSymbol(MutableRedSymbol symbol)
-        {
-            this.transaction.AddSymbol(((MutableRedSymbolBase)symbol).Green);
-        }
-
-        public void RemoveSymbol(MutableRedSymbol symbol)
-        {
-            this.transaction.RemoveSymbol(((MutableRedSymbolBase)symbol).Green);
+            if (symbol is ImmutableRedSymbolBase)
+            {
+                this.transaction.RemoveSymbol(((ImmutableRedSymbolBase)symbol).Green);
+            }
+            if (symbol is MutableRedSymbolBase)
+            {
+                this.transaction.RemoveSymbol(((MutableRedSymbolBase)symbol).Green);
+            }
         }
 
         public void EvaluateLazy()
@@ -496,14 +509,15 @@ namespace MetaDslx.Core.Immutable
             return this.transaction.ClearLazyItems(collection.Parent, collection.Property);
         }
 
-        internal void InvalidateProperty(GreenSymbol symbol, ModelProperty property)
+        internal MutableRedSymbolBase InvalidateProperty(GreenSymbol symbol, ModelProperty property)
         {
             if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
             MutableRedSymbolBase redSymbol = this.GetRedSymbol(symbol);
             if (redSymbol != null)
             {
-                redSymbol.InvalidateProperty(property);
+                redSymbol.InternalInvalidateProperty(property);
             }
+            return redSymbol;
         }
 
         internal MutableRedSymbol MParent(MutableRedSymbolBase redSymbol)
@@ -511,12 +525,9 @@ namespace MetaDslx.Core.Immutable
             return this.GetRedSymbol(this.transaction.MParent(redSymbol.Green));
         }
 
-        internal IEnumerable<MutableRedSymbol> MChildren(MutableRedSymbolBase redSymbol)
+        internal IReadOnlyList<MutableRedSymbol> MChildren(MutableRedSymbolBase redSymbol)
         {
-            foreach (var child in this.transaction.MChildren(redSymbol.Green))
-            {
-                yield return this.GetRedSymbol(child);
-            }
+            return new MutableReadOnlyRedList<MutableRedSymbolBase>(this.transaction.MChildren(redSymbol.Green), this);
         }
 
         internal IReadOnlyList<ModelProperty> MProperties(MutableRedSymbolBase redSymbol)
