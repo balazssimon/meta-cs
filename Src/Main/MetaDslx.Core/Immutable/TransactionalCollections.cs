@@ -203,7 +203,7 @@ namespace MetaDslx.Core.Collections.Transactional
             }
             set
             {
-                if (CollectionTxContext.HasTransaction)
+                if (CollectionTxContext.HasTransaction && ((this.value == null && value != null) || (this.value != null && value == null) || !this.value.Equals(value)))
                 {
                     CollectionTxContext.Current.AddCommand(new ValueTxCommand<T>(this, TxCommandKind.Replace, this.value));
                 }

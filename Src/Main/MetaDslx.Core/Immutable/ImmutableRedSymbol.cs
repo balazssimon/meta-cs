@@ -10,10 +10,10 @@ namespace MetaDslx.Core.Immutable
 {
     public abstract class ImmutableRedSymbolBase : ImmutableRedSymbol
     {
-        private GreenSymbol green;
+        private SymbolId green;
         private ImmutableRedModel model;
 
-        protected ImmutableRedSymbolBase(GreenSymbol green, ImmutableRedModel model)
+        protected ImmutableRedSymbolBase(SymbolId green, ImmutableRedModel model)
         {
             this.green = green;
             this.model = model;
@@ -45,7 +45,7 @@ namespace MetaDslx.Core.Immutable
         public abstract object MMetaModel { get; }
         public abstract object MMetaClass { get; }
 
-        internal GreenSymbol Green { get { return this.green; } }
+        internal SymbolId Green { get { return this.green; } }
         public ImmutableRedModel MModel
         {
             get
@@ -136,14 +136,16 @@ namespace MetaDslx.Core.Immutable
 
     public abstract class MutableRedSymbolBase : MutableRedSymbol
     {
-        private GreenSymbol green;
+        private string id;
+        private SymbolId green;
         private MutableRedModel model;
         private HashSet<ModelProperty> invalidatedProperties;
 
-        protected MutableRedSymbolBase(GreenSymbol green, MutableRedModel model)
+        protected MutableRedSymbolBase(SymbolId green, MutableRedModel model)
         {
             this.green = green;
             this.model = model;
+            this.id = Guid.NewGuid().ToString();
             //this.invalidatedProperties = new HashSet<ModelProperty>();
         }
 
@@ -151,7 +153,8 @@ namespace MetaDslx.Core.Immutable
             where T : class
         {
             T result = value;
-            if (result == null)
+            //if (result == null)
+            if (this.ClearInvalidatedProperty(property))
             {
                 result = (T)this.model.GetValue(this, property);
                 result = Interlocked.CompareExchange(ref value, result, null);
@@ -186,7 +189,7 @@ namespace MetaDslx.Core.Immutable
         public abstract object MMetaModel { get; }
         public abstract object MMetaClass { get; }
 
-        internal GreenSymbol Green { get { return this.green; } }
+        internal SymbolId Green { get { return this.green; } }
 
         public MutableRedModel MModel
         {
@@ -330,11 +333,16 @@ namespace MetaDslx.Core.Immutable
 
         internal void InternalInvalidateProperty(ModelProperty property)
         {
+            if (this.invalidatedProperties == null)
+            {
+                this.invalidatedProperties = new HashSet<ModelProperty>();
+            }
+            this.invalidatedProperties.Add(property);
             /*if (!this.invalidatedProperties.Contains(property))
             {
                 this.invalidatedProperties.Add(property);
             }*/
-            this.InvalidateProperty(property);
+            //this.InvalidateProperty(property);
         }
 
         protected abstract void InvalidateProperty(ModelProperty property);
@@ -349,17 +357,17 @@ namespace MetaDslx.Core.Immutable
                 }
             }
         }*/
-        /*
+        
         private bool ClearInvalidatedProperty(ModelProperty property)
         {
-            if (this.invalidatedProperties.Contains(property))
+            if (this.invalidatedProperties != null && this.invalidatedProperties.Contains(property))
             {
                 this.invalidatedProperties.Remove(property);
                 return true;
             }
             return false;
         }
-        */
+        
 
         public override int GetHashCode()
         {

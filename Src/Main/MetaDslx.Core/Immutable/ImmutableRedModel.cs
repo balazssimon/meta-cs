@@ -20,12 +20,12 @@ namespace MetaDslx.Core.Immutable
     {
         private GreenModel green;
         private bool cached;
-        private Dictionary<GreenSymbol, ImmutableRedSymbol> symbols;
+        private Dictionary<SymbolId, ImmutableRedSymbol> symbols;
 
         internal ImmutableRedModel(GreenModel green)
         {
             this.green = green;
-            this.symbols = new Dictionary<GreenSymbol, ImmutableRedSymbol>();
+            this.symbols = new Dictionary<SymbolId, ImmutableRedSymbol>();
             this.cached = false;
         }
 
@@ -84,14 +84,14 @@ namespace MetaDslx.Core.Immutable
             {
                 return null;
             }
-            else if (redValue is GreenSymbol)
+            else if (redValue is SymbolId)
             {
-                return this.GetRedSymbol((GreenSymbol)redValue);
+                return this.GetRedSymbol((SymbolId)redValue);
             }
             return redValue;
         }
 
-        internal ImmutableRedSymbol GetRedSymbol(GreenSymbol green)
+        internal ImmutableRedSymbol GetRedSymbol(SymbolId green)
         {
             if (!this.green.ContainsSymbol(green))
             {
@@ -148,9 +148,9 @@ namespace MetaDslx.Core.Immutable
             foreach (var greenObject in list.Green)
             {
                 object redObject = greenObject;
-                if (greenObject is GreenSymbol)
+                if (greenObject is SymbolId)
                 {
-                    redObject = this.GetRedSymbol((GreenSymbol)greenObject);
+                    redObject = this.GetRedSymbol((SymbolId)greenObject);
                     Debug.Assert(redObject != null);
                 }
                 result.Add((T)redObject);
@@ -297,7 +297,7 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        public MutableRedSymbol AddSymbol(GreenSymbol symbol)
+        public MutableRedSymbol AddSymbol(SymbolId symbol)
         {
             this.transaction.AddSymbol(symbol);
             return this.GetRedSymbol(symbol);
@@ -360,7 +360,7 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        internal MutableRedSymbolBase GetRedSymbol(GreenSymbol green)
+        internal MutableRedSymbolBase GetRedSymbol(SymbolId green)
         {
             return this.transaction.GetRedSymbol(green);
         }
@@ -388,9 +388,9 @@ namespace MetaDslx.Core.Immutable
             {
                 return null;
             }
-            else if (value is GreenSymbol)
+            else if (value is SymbolId)
             {
-                return this.GetRedSymbol((GreenSymbol)value);
+                return this.GetRedSymbol((SymbolId)value);
             }
             else
             {
@@ -509,7 +509,7 @@ namespace MetaDslx.Core.Immutable
             return this.transaction.ClearLazyItems(collection.Parent, collection.Property);
         }
 
-        internal MutableRedSymbolBase InvalidateProperty(GreenSymbol symbol, ModelProperty property)
+        internal MutableRedSymbolBase InvalidateProperty(SymbolId symbol, ModelProperty property)
         {
             if (this.finished) throw new ModelException("Cannot change a finished mutable model. Create a new one instead.");
             MutableRedSymbolBase redSymbol = this.GetRedSymbol(symbol);

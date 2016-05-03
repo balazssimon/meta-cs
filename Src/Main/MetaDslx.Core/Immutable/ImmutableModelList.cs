@@ -32,12 +32,12 @@ namespace MetaDslx.Core.Immutable
     internal class GreenList : IReadOnlyList<object>
     {
         private static readonly TxList<object> emptyList = new TxList<object>();
-        private GreenSymbol parent;
+        private SymbolId parent;
         private ModelProperty property;
         private TxList<object> items;
         private TxList<object> lazyItems;
 
-        internal GreenList(GreenSymbol parent, ModelProperty property)
+        internal GreenList(SymbolId parent, ModelProperty property)
         {
             this.parent = parent;
             this.property = property;
@@ -52,7 +52,7 @@ namespace MetaDslx.Core.Immutable
             this.lazyItems = other.lazyItems != null ? new TxList<object>(other.lazyItems) : null;
         }
 
-        internal GreenSymbol Parent { get { return this.parent; } }
+        internal SymbolId Parent { get { return this.parent; } }
         internal ModelProperty Property { get { return this.property; } }
 
         public int Count { get { return this.items.Count; } }
@@ -74,11 +74,11 @@ namespace MetaDslx.Core.Immutable
         internal bool Add(object item)
         {
             Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
-            if (item is GreenSymbol)
+            if (item is SymbolId)
             {
-                if (!property.MutableTypeInfo.Type.IsAssignableFrom(((GreenSymbol)item).MutableType))
+                if (!property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)item).MutableType))
                 {
-                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", ((GreenSymbol)item).MutableType, property.MutableTypeInfo.Type));
+                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", ((SymbolId)item).MutableType, property.MutableTypeInfo.Type));
                 }
             }
             else 
@@ -113,11 +113,11 @@ namespace MetaDslx.Core.Immutable
         internal bool Insert(int index, object item)
         {
             Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
-            if (item is GreenSymbol)
+            if (item is SymbolId)
             {
-                if (!property.MutableTypeInfo.Type.IsAssignableFrom(((GreenSymbol)item).MutableType))
+                if (!property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)item).MutableType))
                 {
-                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", ((GreenSymbol)item).MutableType, property.MutableTypeInfo.Type));
+                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", ((SymbolId)item).MutableType, property.MutableTypeInfo.Type));
                 }
             }
             else
@@ -135,6 +135,11 @@ namespace MetaDslx.Core.Immutable
             {
                 this.items.Insert(index, item);
                 return true;
+            }
+            else
+            {
+                this.items.Remove(item);
+                this.items.Insert(index, item);
             }
             return false;
         }
@@ -265,6 +270,14 @@ namespace MetaDslx.Core.Immutable
         internal GreenList Green { get { return this.green; } }
         public MutableRedModel Model { get { return this.model; } }
 
+        internal void UpdateGreen(GreenList value)
+        {
+            if (value != this.green && value != null)
+            {
+                Interlocked.Exchange(ref this.green, value);
+            }
+        }
+
         public void Add(T item)
         {
             this.model.AddItem(this.green, this.model.ToGreenValue(item));
@@ -378,10 +391,10 @@ namespace MetaDslx.Core.Immutable
     internal class ImmutableReadOnlyRedList<T> : IReadOnlyList<T>
         where T : ImmutableRedSymbolBase
     {
-        private IReadOnlyList<GreenSymbol> greenList;
+        private IReadOnlyList<SymbolId> greenList;
         private ImmutableRedModel model;
 
-        public ImmutableReadOnlyRedList(IReadOnlyList<GreenSymbol> greenList, ImmutableRedModel model)
+        public ImmutableReadOnlyRedList(IReadOnlyList<SymbolId> greenList, ImmutableRedModel model)
         {
             this.greenList = greenList;
             this.model = model;
@@ -420,10 +433,10 @@ namespace MetaDslx.Core.Immutable
     internal class MutableReadOnlyRedList<T> : IReadOnlyList<T>
         where T : MutableRedSymbolBase
     {
-        private IReadOnlyList<GreenSymbol> greenList;
+        private IReadOnlyList<SymbolId> greenList;
         private MutableRedModel model;
 
-        public MutableReadOnlyRedList(IReadOnlyList<GreenSymbol> greenList, MutableRedModel model)
+        public MutableReadOnlyRedList(IReadOnlyList<SymbolId> greenList, MutableRedModel model)
         {
             this.greenList = greenList;
             this.model = model;

@@ -8,10 +8,10 @@ namespace MetaDslx.Core.Immutable
 {
     // GREEN interface:
 
-    public abstract class GreenSymbol
+    public abstract class SymbolId
     {
         private string id;
-        public GreenSymbol()
+        public SymbolId()
         {
             this.id = Guid.NewGuid().ToString();
         }
@@ -27,8 +27,8 @@ namespace MetaDslx.Core.Immutable
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GreenSymbol)) return false;
-            return ((GreenSymbol)obj).id == this.id;
+            if (!(obj is SymbolId)) return false;
+            return ((SymbolId)obj).id == this.id;
         }
     }
 
