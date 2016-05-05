@@ -730,10 +730,16 @@ namespace MetaDslx.Core.Immutable
             return this.green.MTryGet(redSymbol.Green, property, out value);
         }
 
-        internal bool MAdd(MutableRedSymbolBase redSymbol, ModelProperty property, object value)
+        internal bool MAttachProperty(MutableRedSymbolBase redSymbol, ModelProperty property)
         {
             this.model.EnsureWritable();
-            return this.green.MAdd(redSymbol.Green, property, this.ToGreenValue(value));
+            return this.green.MAttachProperty(redSymbol.Green, property);
+        }
+
+        internal bool MDetachProperty(MutableRedSymbolBase redSymbol, ModelProperty property)
+        {
+            this.model.EnsureWritable();
+            return this.green.MDetachProperty(redSymbol.Green, property);
         }
 
         internal bool MClear(MutableRedSymbolBase redSymbol, ModelProperty property, bool clearLazy)
@@ -748,62 +754,37 @@ namespace MetaDslx.Core.Immutable
             return this.green.MClearLazy(redSymbol.Green, property);
         }
 
-        internal bool MReset(MutableRedSymbolBase redSymbol, ModelProperty property, object value)
+        internal bool MAdd(MutableRedSymbolBase redSymbol, ModelProperty property, object value, bool reset)
         {
             this.model.EnsureWritable();
-            return this.green.MReset(redSymbol.Green, property, value);
+            return this.green.MAdd(redSymbol.Green, property, this.ToGreenValue(value), reset);
         }
 
-        internal bool MAddRange(MutableRedSymbolBase redSymbol, ModelProperty property, IEnumerable<object> values)
+        internal bool MLazyAdd(MutableRedSymbolBase redSymbol, ModelProperty property, Func<object> value, bool reset)
+        {
+            this.model.EnsureWritable();
+            return this.green.MLazyAdd(redSymbol.Green, property, new GreenLazyValue(value), reset);
+        }
+
+        internal bool MAddRange(MutableRedSymbolBase redSymbol, ModelProperty property, IEnumerable<object> values, bool reset)
         {
             this.model.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.AddItems(redSymbol.Green, property, values);
+            return this.green.MAddRange(redSymbol.Green, property, values.Select(v => this.ToGreenValue(v)), reset);
         }
 
-        internal bool MAttachProperty(MutableRedSymbolBase redSymbol, ModelProperty property)
-        {
-            this.model.EnsureWritable();
-            return this.green.MAttachProperty(redSymbol.Green, property);
-        }
-
-        internal bool MDetachProperty(MutableRedSymbolBase redSymbol, ModelProperty property)
-        {
-            this.model.EnsureWritable();
-            return this.green.MDetachProperty(redSymbol.Green, property);
-        }
-
-        internal bool MLazyAdd(MutableRedSymbolBase redSymbol, ModelProperty property, Func<object> value)
-        {
-            this.model.EnsureWritable();
-            if (property.IsCollection)
-            {
-                return this.green.AddItem(redSymbol.Green, property, -1, false, new GreenLazyValue(value));
-            }
-            else
-            {
-                bool result = this.green.SetValue(redSymbol.Green, property, false, new GreenLazyValue(value));
-                return result;
-            }
-        }
-
-        internal bool MLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty property, Func<IEnumerable<object>> values)
+        internal bool MLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty property, Func<IEnumerable<object>> values, bool reset)
         {
             this.model.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.AddItem(redSymbol.Green, property, -1, false, new GreenLazyList(values));
+            return this.green.MLazyAddRange(redSymbol.Green, property, new GreenLazyList(values), reset);
         }
 
-        internal bool MLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty property, IEnumerable<Func<object>> values)
+        internal bool MLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty property, IEnumerable<Func<object>> values, bool reset)
         {
             this.model.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            bool result = false;
-            foreach (var value in values)
-            {
-                result |= this.green.AddItem(redSymbol.Green, property, -1, false, new GreenLazyValue(value));
-            }
-            return result;
+            return this.green.MLazyAddRange(redSymbol.Green, property, values.Select(v => new GreenLazyValue(v)), reset);
         }
 
         internal void MEvaluateLazy(MutableRedSymbolBase redSymbol)
@@ -812,25 +793,25 @@ namespace MetaDslx.Core.Immutable
             this.green.MEvaluateLazy(redSymbol.Green);
         }
 
-        internal bool MChildLazySet(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<object> value)
+        internal bool MChildLazyAdd(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<object> value, bool reset)
         {
             this.model.EnsureWritable();
             if (property.IsCollection) throw new ModelException("The property must not be a collection.");
-            return this.green.MChildLazySet(redSymbol.Green, child, property, new GreenLazyValue(value));
+            return this.green.MChildLazySet(redSymbol.Green, child, property, new GreenLazyValue(value), reset);
         }
 
-        internal bool MChildLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values)
+        internal bool MChildLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset)
         {
             this.model.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.MChildLazyAddRange(redSymbol.Green, child, property, new GreenLazyList(values));
+            return this.green.MChildLazyAddRange(redSymbol.Green, child, property, new GreenLazyList(values), reset);
         }
 
-        internal bool MChildLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values)
+        internal bool MChildLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset)
         {
             this.model.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.MChildLazyAddRange(redSymbol.Green, child, property, values.Select(v => new GreenLazyValue(v)));
+            return this.green.MChildLazyAddRange(redSymbol.Green, child, property, values.Select(v => new GreenLazyValue(v)), reset);
         }
 
         internal bool MChildLazyClear(MutableRedSymbolBase redSymbol, ModelProperty child)

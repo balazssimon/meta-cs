@@ -31,9 +31,14 @@ namespace MetaDslx.Core.Immutable.Test
             properties.Add(Pet.NameProperty);
             properties.Add(Pet.OwnerProperty);
             properties.Add(Dog.FriendProperty);
+
+            foreach (var property in properties)
+            {
+                property.Init();
+            }
         }
 
-        internal static void StaticInit()
+        public static void Init()
         {
 
         }
@@ -162,7 +167,7 @@ namespace MetaDslx.Core.Immutable.Test
 
         public TestModelFactory(MutableRedModel model)
         {
-            TestModelDescriptor.StaticInit();
+            TestModelDescriptor.Init();
             this.model = model;
             var parts = this.model.Parts.ToList();
             if (parts.Count != 1)
@@ -174,7 +179,7 @@ namespace MetaDslx.Core.Immutable.Test
 
         public TestModelFactory(MutableRedModel model, MutableRedModelPart part)
         {
-            TestModelDescriptor.StaticInit();
+            TestModelDescriptor.Init();
             this.model = model;
             if (!model.Parts.Contains(part))
             {

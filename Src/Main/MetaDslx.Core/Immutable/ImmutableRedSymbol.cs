@@ -278,25 +278,9 @@ namespace MetaDslx.Core.Immutable
             return this.part.MIsAttached(this, property);
         }
 
-        public bool MAdd(ModelProperty property, object value)
+        public void MEvaluateLazy()
         {
-            return this.part.MAdd(this, property, value);
-        }
-        public bool MClear(ModelProperty property, bool clearLazy = true)
-        {
-            return this.part.MClear(this, property, clearLazy);
-        }
-        public bool MClearLazy(ModelProperty property)
-        {
-            return this.part.MClearLazy(this, property);
-        }
-        public bool MReset(ModelProperty property, object value)
-        {
-            return this.part.MReset(this, property, value);
-        }
-        public bool MAddRange(ModelProperty property, IEnumerable<object> value)
-        {
-            return this.part.MAddRange(this, property, value);
+            this.part.MEvaluateLazy(this);
         }
         public bool MAttachProperty(ModelProperty property)
         {
@@ -306,33 +290,45 @@ namespace MetaDslx.Core.Immutable
         {
             return this.part.MDetachProperty(this, property);
         }
-        public void MEvaluateLazy()
+        public bool MClear(ModelProperty property, bool clearLazy = true)
         {
-            this.part.MEvaluateLazy(this);
+            return this.part.MClear(this, property, clearLazy);
         }
-        public bool MLazyAdd(ModelProperty property, Func<object> value)
+        public bool MClearLazy(ModelProperty property)
         {
-            return this.part.MLazyAdd(this, property, value);
+            return this.part.MClearLazy(this, property);
         }
-        public bool MLazyAddRange(ModelProperty property, Func<IEnumerable<object>> values)
+        public bool MAdd(ModelProperty property, object value, bool reset = false)
         {
-            return this.part.MLazyAddRange(this, property, values);
+            return this.part.MAdd(this, property, value, reset);
         }
-        public bool MLazyAddRange(ModelProperty property, IEnumerable<Func<object>> values)
+        public bool MLazyAdd(ModelProperty property, Func<object> value, bool reset = false)
         {
-            return this.part.MLazyAddRange(this, property, values);
+            return this.part.MLazyAdd(this, property, value, reset);
         }
-        public bool MChildLazySet(ModelProperty child, ModelProperty property, Func<object> value)
+        public bool MAddRange(ModelProperty property, IEnumerable<object> value, bool reset = false)
         {
-            return this.part.MChildLazySet(this, child, property, value);
+            return this.part.MAddRange(this, property, value, reset);
         }
-        public bool MChildLazyAddRange(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values)
+        public bool MLazyAddRange(ModelProperty property, Func<IEnumerable<object>> values, bool reset = false)
         {
-            return this.part.MChildLazyAddRange(this, child, property, values);
+            return this.part.MLazyAddRange(this, property, values, reset);
         }
-        public bool MChildLazyAddRange(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values)
+        public bool MLazyAddRange(ModelProperty property, IEnumerable<Func<object>> values, bool reset = false)
         {
-            return this.part.MChildLazyAddRange(this, child, property, values);
+            return this.part.MLazyAddRange(this, property, values, reset);
+        }
+        public bool MChildLazyAdd(ModelProperty child, ModelProperty property, Func<object> value, bool reset = false)
+        {
+            return this.part.MChildLazyAdd(this, child, property, value, reset);
+        }
+        public bool MChildLazyAddRange(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset = false)
+        {
+            return this.part.MChildLazyAddRange(this, child, property, values, reset);
+        }
+        public bool MChildLazyAddRange(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset = false)
+        {
+            return this.part.MChildLazyAddRange(this, child, property, values, reset);
         }
         public bool MChildLazyClear(ModelProperty child)
         {
