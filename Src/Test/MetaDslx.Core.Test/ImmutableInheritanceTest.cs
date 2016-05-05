@@ -39,6 +39,7 @@ namespace MetaDslx.Core.Immutable.Test
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ModelException))]
         public void TestPersonDogStatic1()
         {
             MutableRedModel model = new MutableRedModel();
@@ -52,6 +53,7 @@ namespace MetaDslx.Core.Immutable.Test
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ModelException))]
         public void TestPersonDogStatic2()
         {
             MutableRedModel model = new MutableRedModel();

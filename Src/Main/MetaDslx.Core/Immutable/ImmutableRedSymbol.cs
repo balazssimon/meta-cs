@@ -10,11 +10,13 @@ namespace MetaDslx.Core.Immutable
 {
     public abstract class ImmutableRedSymbolBase : ImmutableRedSymbol
     {
+        private string id;
         private SymbolId green;
         private ImmutableRedModelPart part;
 
         protected ImmutableRedSymbolBase(SymbolId green, ImmutableRedModelPart part)
         {
+            this.id = Guid.NewGuid().ToString();
             this.green = green;
             this.part = part;
         }
@@ -155,9 +157,9 @@ namespace MetaDslx.Core.Immutable
 
         protected MutableRedSymbolBase(SymbolId green, MutableRedModelPart part)
         {
+            this.id = Guid.NewGuid().ToString();
             this.green = green;
             this.part = part;
-            this.id = Guid.NewGuid().ToString();
             //this.invalidatedProperties = new HashSet<ModelProperty>();
         }
 
@@ -165,10 +167,10 @@ namespace MetaDslx.Core.Immutable
             where T : class
         {
             T result = value;
-            if (result == null)
+            //if (result == null)
             {
                 result = (T)this.part.GetValue(this, property);
-                result = Interlocked.CompareExchange(ref value, result, null);
+                result = Interlocked.Exchange(ref value, result);
             }
             return value;
         }

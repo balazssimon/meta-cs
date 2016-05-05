@@ -113,9 +113,19 @@ namespace MetaDslx.Core.Immutable
             get { return this.parent.Value; }
         }
 
-        public IList<SymbolId> Children
+        public IReadOnlyList<SymbolId> Children
         {
             get { return this.children; }
+        }
+
+        public ICollection<ModelProperty> Properties
+        {
+            get { return this.properties.Keys; }
+        }
+
+        public ICollection<ModelProperty> AttachedProperties
+        {
+            get { return this.attachedProperties; }
         }
 
         public bool AddProperty(GreenModelPart modelPart, ModelProperty property)
@@ -123,6 +133,7 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(!modelPart.IsReadOnly);
             if (!this.properties.ContainsKey(property))
             {
+                property.Init();
                 this.properties.Add(property, Unassigned);
                 if (property.IsCollection)
                 {
@@ -180,10 +191,27 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        public bool IsAssigned(ModelProperty property)
+        public bool HasValue(ModelProperty property)
         {
             object value;
             return this.TryGetValueCore(property, false, false, false, out value);
+        }
+
+        public bool HasLazyValue(ModelProperty property)
+        {
+            object value;
+            if (this.TryGetValueCore(property, false, true, false, out value))
+            {
+                if (value is GreenLazyValue)
+                {
+                    return true;
+                }
+                else if (value is GreenList)
+                {
+                    return ((GreenList)value).HasLazyItems;
+                }
+            }
+            return false;
         }
 
         public object GetValue(ModelProperty property)
@@ -198,8 +226,8 @@ namespace MetaDslx.Core.Immutable
 
         public object GetValue(GreenModelPart modelPart, ModelProperty property, bool lazyEval)
         {
-            Debug.Assert(!modelPart.IsReadOnly);
             if (!lazyEval) return this.GetValue(property);
+            Debug.Assert(!modelPart.IsReadOnly);
             // TODO: lazy eval related properties
             object value;
             if (this.TryGetValueCore(property, false, true, false, out value))
@@ -239,7 +267,7 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        public bool ClearLazyValues(GreenModelPart modelPart, ModelProperty property)
+        public bool ClearLazyValue(GreenModelPart modelPart, ModelProperty property)
         {
             Debug.Assert(!modelPart.IsReadOnly);
             if (!this.properties.ContainsKey(property)) return false;
@@ -506,7 +534,7 @@ namespace MetaDslx.Core.Immutable
                 }
                 else if (createIfNotExists && property.IsCollection)
                 {
-                    foreach (var redefProp in property.RedefinedProperties)
+                    /*foreach (var redefProp in property.RedefinedProperties)
                     {
                         object redefValue;
                         if (this.properties.TryGetValue(redefProp, out redefValue) && redefValue != Unassigned)
@@ -523,7 +551,7 @@ namespace MetaDslx.Core.Immutable
                             this.properties[property] = redefValue;
                             return true;
                         }
-                    }
+                    }*/
                     value = new GreenList(this.id, property);
                     this.properties[property] = value;
                     return true;
@@ -558,6 +586,7 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(!(value is RedSymbol));
             Debug.Assert(!(oldValue is GreenLazyList));
             Debug.Assert(!(oldValue is RedSymbol));
+            if (value == oldValue) return false;
             if (!reassign)
             {
                 if (property.IsReadonly && oldValue != Unassigned)
@@ -589,7 +618,16 @@ namespace MetaDslx.Core.Immutable
                     modelPart.UnregisterLazyValue(this.id, property);
                 }
             }
-            this.properties[property] = value;
+            if (value == null || value == Unassigned ||
+                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).MutableType))) ||
+                (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))))
+            {
+                this.properties[property] = value;
+            }
+            else
+            {
+                throw new ModelException("Value of type '"+value.GetType()+"' cannot be assigned to property "+ this.id + "::" + property + " of type '"+ property.MutableTypeInfo.Type+"'.");
+            }
             if (value != null && value != Unassigned)
             {
                 if (value is SymbolId)
@@ -618,7 +656,7 @@ namespace MetaDslx.Core.Immutable
                     modelPart.RegisterLazyValue(this.id, property);
                 }
             }
-            return false;
+            return true;
         }
 
         private bool AddValueCore(GreenModelPart modelPart, ModelProperty property, GreenList list, int index, object value)
@@ -849,14 +887,14 @@ namespace MetaDslx.Core.Immutable
                                     GreenList oldOppList = oldOppValue as GreenList;
                                     if (oldOppList != null && !oldOppList.Contains(this.id))
                                     {
-                                        oppSymbol.SlowAddValueCore(modelPart, oppProp, oldOppList, -1, this, null, change.newOpposite);
+                                        oppSymbol.SlowAddValueCore(modelPart, oppProp, oldOppList, -1, this.id, null, change.newOpposite);
                                     }
                                 }
                                 else
                                 {
                                     if (oldOppValue != this)
                                     {
-                                        oppSymbol.SlowAddValueCore(modelPart, oppProp, null, -1, this, oldOppValue, change.newOpposite);
+                                        oppSymbol.SlowAddValueCore(modelPart, oppProp, null, -1, this.id, oldOppValue, change.newOpposite);
                                     }
                                 }
                             }
@@ -917,7 +955,7 @@ namespace MetaDslx.Core.Immutable
                         {
                             foreach (var oppProp in property.OppositeProperties)
                             {
-                                oppSymbol.SlowRemoveValueCore(modelPart, oppProp, null, -1, removeAll, value, change.oldOpposite);
+                                oppSymbol.SlowRemoveValueCore(modelPart, oppProp, null, -1, removeAll, this.id, change.oldOpposite);
                             }
                         }
                     }
@@ -1246,6 +1284,189 @@ namespace MetaDslx.Core.Immutable
             // TODO
         }
 
+        internal SymbolId MParent(SymbolId id)
+        {
+            GreenSymbol symbol = this.GetSymbol(id, true);
+            if (symbol != null)
+            {
+                return symbol.Parent;
+            }
+            return null;
+        }
+
+        internal IReadOnlyList<SymbolId> MChildren(SymbolId id)
+        {
+            GreenSymbol symbol = this.GetSymbol(id, true);
+            if (symbol != null)
+            {
+                return symbol.Children;
+            }
+            return null;
+        }
+
+        internal IReadOnlyList<ModelProperty> MAllProperties(SymbolId id)
+        {
+            GreenSymbol symbol = this.GetSymbol(id, true);
+            if (symbol != null)
+            {
+                ICollection<ModelProperty> attachedProperties = symbol.AttachedProperties;
+                if (attachedProperties != null && attachedProperties.Count > 0)
+                {
+                    List<ModelProperty> result = new List<ModelProperty>(ModelProperty.GetDeclaredPropertiesForType(id.MutableType));
+                    result.AddRange(attachedProperties);
+                    return result;
+                }
+                else
+                {
+                    return ModelProperty.GetDeclaredPropertiesForType(id.MutableType);
+                }
+            }
+            return null;
+        }
+
+        internal bool MIsSet(SymbolId id, ModelProperty property)
+        {
+            GreenSymbol symbol = this.GetSymbol(id, true);
+            if (symbol != null)
+            {
+                return symbol.HasValue(property);
+            }
+            return false;
+        }
+
+        internal IReadOnlyList<ModelProperty> MGetAllProperties(SymbolId id, string name)
+        {
+            GreenSymbol symbol = this.GetSymbol(id, true);
+            if (symbol != null)
+            {
+                ICollection<ModelProperty> attachedProperties = symbol.AttachedProperties;
+                if (attachedProperties != null && attachedProperties.Count > 0)
+                {
+                    List<ModelProperty> result = new List<ModelProperty>(ModelProperty.GetDeclaredPropertiesForType(id.MutableType).Where(p => p.Name == name));
+                    result.AddRange(attachedProperties.Where(p => p.Name == name));
+                    return result;
+                }
+                else
+                {
+                    return ModelProperty.GetDeclaredPropertiesForType(id.MutableType).Where(p => p.Name == name).ToList();
+                }
+            }
+            return null;
+        }
+
+        internal bool MHasLazy(SymbolId id, ModelProperty property)
+        {
+            GreenSymbol symbol = this.GetSymbol(id, true);
+            if (symbol != null)
+            {
+                return symbol.HasLazyValue(property);
+            }
+            return false;
+        }
+
+        internal bool MTryGet(SymbolId id, ModelProperty property, out object value)
+        {
+            GreenSymbol symbol = this.GetSymbol(id, true);
+            if (symbol != null)
+            {
+                return symbol.TryGetValue(property, out value);
+            }
+            value = null;
+            return false;
+        }
+
+        internal bool MAdd(SymbolId id, ModelProperty property, object value)
+        {
+            if (property.IsCollection)
+            {
+                return this.AddItem(id, property, -1, false, value);
+            }
+            else
+            {
+                bool result = this.SetValue(id, property, false, value);
+                return result;
+            }
+        }
+
+        internal bool MClear(SymbolId id, ModelProperty property, bool clearLazy)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool MClearLazy(SymbolId id, ModelProperty property)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool MReset(SymbolId id, ModelProperty property, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool AddItems(SymbolId id, ModelProperty property, IEnumerable<object> values)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool MAttachProperty(SymbolId id, ModelProperty property)
+        {
+            GreenSymbol symbol = this.GetSymbol(id, true);
+            if (symbol != null)
+            {
+                return symbol.AddProperty(this, property);
+            }
+            return false;
+        }
+
+        internal bool MDetachProperty(SymbolId id, ModelProperty property)
+        {
+            GreenSymbol symbol = this.GetSymbol(id, true);
+            if (symbol != null)
+            {
+                return symbol.RemoveProperty(this, property);
+            }
+            return false;
+        }
+
+        internal void MEvaluateLazy(SymbolId id)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool MChildLazySet(SymbolId id, ModelProperty child, ModelProperty property, GreenLazyValue value)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool MChildLazyAddRange(SymbolId id, ModelProperty child, ModelProperty property, GreenLazyList values)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool MChildLazyAddRange(SymbolId id, ModelProperty child, ModelProperty property, IEnumerable<GreenLazyValue> values)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool MChildLazyClear(SymbolId id, ModelProperty child)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool MChildLazyClear(SymbolId id, ModelProperty child, ModelProperty property)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool MRemove(SymbolId id, ModelProperty property, object value, bool removeAll)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void MUnset(SymbolId id, ModelProperty property)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     internal class GreenModel

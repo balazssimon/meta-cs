@@ -9,6 +9,35 @@ namespace MetaDslx.Core.Immutable.Test
     using System.Threading;
     public static class TestModelDescriptor
     {
+        private static List<ModelProperty> properties = new List<ModelProperty>();
+
+        static TestModelDescriptor()
+        {
+            properties.Add(Husband.NameProperty);
+            properties.Add(Husband.WifeProperty);
+            properties.Add(Wife.NameProperty);
+            properties.Add(Wife.HusbandProperty);
+            properties.Add(ListChild.NameProperty);
+            properties.Add(ListChild.ParentProperty);
+            properties.Add(ListParent.NameProperty);
+            properties.Add(ListParent.ChildrenProperty);
+            properties.Add(User.NameProperty);
+            properties.Add(User.RolesProperty);
+            properties.Add(Role.NameProperty);
+            properties.Add(Role.UsersProperty);
+            properties.Add(Person.NameProperty);
+            properties.Add(Person.PetsProperty);
+            properties.Add(Student.DogsProperty);
+            properties.Add(Pet.NameProperty);
+            properties.Add(Pet.OwnerProperty);
+            properties.Add(Dog.FriendProperty);
+        }
+
+        internal static void StaticInit()
+        {
+
+        }
+
         public static class Husband
         {
             public static readonly ModelProperty NameProperty =
@@ -133,6 +162,7 @@ namespace MetaDslx.Core.Immutable.Test
 
         public TestModelFactory(MutableRedModel model)
         {
+            TestModelDescriptor.StaticInit();
             this.model = model;
             var parts = this.model.Parts.ToList();
             if (parts.Count != 1)
@@ -144,6 +174,7 @@ namespace MetaDslx.Core.Immutable.Test
 
         public TestModelFactory(MutableRedModel model, MutableRedModelPart part)
         {
+            TestModelDescriptor.StaticInit();
             this.model = model;
             if (!model.Parts.Contains(part))
             {

@@ -82,6 +82,7 @@ namespace MetaDslx.Core.Immutable
 
         internal ImmutableRedSymbol GetRedSymbol(SymbolId green)
         {
+            if (green == null) return null;
             if (!this.cachedSymbols) this.CacheSymbols();
             ImmutableRedSymbol red;
             if (this.symbols.TryGetValue(green, out red))
@@ -93,32 +94,13 @@ namespace MetaDslx.Core.Immutable
 
         private ImmutableRedSymbol GetRedSymbol(ImmutableRedModelPart part, SymbolId green)
         {
-            if (!this.green.ContainsSymbol(green))
-            {
-                return null;
-            }
             ImmutableRedSymbol red;
-            lock (this)
+            if (!this.symbols.TryGetValue(green, out red))
             {
-                if (this.symbols.TryGetValue(green, out red))
-                {
-                    return red;
-                }
+                red = green.CreateImmutableRed(part);
+                this.symbols.Add(green, red);
             }
-            red = green.CreateImmutableRed(part);
-            lock (this)
-            {
-                ImmutableRedSymbol oldRed;
-                if (this.symbols.TryGetValue(green, out oldRed))
-                {
-                    return oldRed;
-                }
-                else
-                {
-                    this.symbols.Add(green, red);
-                    return red;
-                }
-            }
+            return red;
         }
 
         private void CacheParts()
@@ -127,6 +109,7 @@ namespace MetaDslx.Core.Immutable
             lock (this)
             {
                 if (this.cachedParts) return;
+                this.cachedParts = true;
                 this.parts = new Dictionary<GreenModelPart, ImmutableRedModelPart>();
                 foreach (var greenPart in this.green.GetParts())
                 {
@@ -144,6 +127,7 @@ namespace MetaDslx.Core.Immutable
             lock (this)
             {
                 if (this.cachedSymbols) return;
+                this.cachedSymbols = true;
                 this.symbols = new Dictionary<SymbolId, ImmutableRedSymbol>();
                 foreach (var part in this.parts)
                 {
@@ -270,6 +254,7 @@ namespace MetaDslx.Core.Immutable
 
         internal MutableRedSymbol GetRedSymbol(SymbolId green)
         {
+            if (green == null) return null;
             if (!this.cachedSymbols) this.CacheSymbols();
             MutableRedSymbol red;
             if (this.symbols.TryGetValue(green, out red))
@@ -281,6 +266,7 @@ namespace MetaDslx.Core.Immutable
 
         internal MutableRedSymbol GetRedSymbol(MutableRedModelPart part, SymbolId green)
         {
+            if (green == null) return null;
             if (!this.green.ContainsSymbol(green))
             {
                 return null;
@@ -337,7 +323,7 @@ namespace MetaDslx.Core.Immutable
 
         internal ImmutableRedModelPart(GreenModelPart green, ImmutableRedModel model)
         {
-            if (!this.green.IsReadOnly) throw new ModelException("The green model must be read-only.");
+            if (!green.IsReadOnly) throw new ModelException("The green model must be read-only.");
             this.green = green;
             this.model = model;
         }
@@ -747,62 +733,25 @@ namespace MetaDslx.Core.Immutable
         internal bool MAdd(MutableRedSymbolBase redSymbol, ModelProperty property, object value)
         {
             this.model.EnsureWritable();
-            if (property.IsCollection)
-            {
-                return this.green.AddItem(redSymbol.Green, property, -1, false, this.ToGreenValue(value));
-            }
-            else
-            {
-                bool result = this.green.SetValue(redSymbol.Green, property, false, this.ToGreenValue(value));
-                return result;
-            }
+            return this.green.MAdd(redSymbol.Green, property, this.ToGreenValue(value));
         }
 
         internal bool MClear(MutableRedSymbolBase redSymbol, ModelProperty property, bool clearLazy)
         {
             this.model.EnsureWritable();
-            if (property.IsCollection)
-            {
-                return this.green.ClearItems(redSymbol.Green, property) && (!clearLazy || this.green.ClearLazyItems(redSymbol.Green, property));
-            }
-            else
-            {
-                bool result = this.green.SetValue(redSymbol.Green, property, false, null);
-                return result;
-            }
+            return this.green.MClear(redSymbol.Green, property, clearLazy);
         }
 
         internal bool MClearLazy(MutableRedSymbolBase redSymbol, ModelProperty property)
         {
             this.model.EnsureWritable();
-            if (this.MHasLazy(redSymbol, property))
-            {
-                if (property.IsCollection)
-                {
-                    return this.green.ClearLazyItems(redSymbol.Green, property);
-                }
-                else
-                {
-                    object oldValue;
-                    bool result = this.green.SetValue(redSymbol.Green, property, true, GreenModelTransaction.Unassigned, out oldValue);
-                    return result;
-                }
-            }
-            return false;
+            return this.green.MClearLazy(redSymbol.Green, property);
         }
 
         internal bool MReset(MutableRedSymbolBase redSymbol, ModelProperty property, object value)
         {
             this.model.EnsureWritable();
-            if (property.IsCollection)
-            {
-                return this.green.ClearItems(redSymbol.Green, property);
-            }
-            else
-            {
-                object oldValue;
-                return this.green.SetValue(redSymbol.Green, property, true, value, out oldValue);
-            }
+            return this.green.MReset(redSymbol.Green, property, value);
         }
 
         internal bool MAddRange(MutableRedSymbolBase redSymbol, ModelProperty property, IEnumerable<object> values)
@@ -833,8 +782,7 @@ namespace MetaDslx.Core.Immutable
             }
             else
             {
-                object oldValue;
-                bool result = this.green.SetValue(redSymbol.Green, property, false, new GreenLazyValue(value), out oldValue);
+                bool result = this.green.SetValue(redSymbol.Green, property, false, new GreenLazyValue(value));
                 return result;
             }
         }
@@ -868,21 +816,21 @@ namespace MetaDslx.Core.Immutable
         {
             this.model.EnsureWritable();
             if (property.IsCollection) throw new ModelException("The property must not be a collection.");
-            return this.green.MChildLazySet(redSymbol.Green, child, property, value);
+            return this.green.MChildLazySet(redSymbol.Green, child, property, new GreenLazyValue(value));
         }
 
         internal bool MChildLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values)
         {
             this.model.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.MChildLazyAddRange(redSymbol.Green, child, property, values);
+            return this.green.MChildLazyAddRange(redSymbol.Green, child, property, new GreenLazyList(values));
         }
 
         internal bool MChildLazyAddRange(MutableRedSymbolBase redSymbol, ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values)
         {
             this.model.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.MChildLazyAddRange(redSymbol.Green, child, property, values);
+            return this.green.MChildLazyAddRange(redSymbol.Green, child, property, values.Select(v => new GreenLazyValue(v)));
         }
 
         internal bool MChildLazyClear(MutableRedSymbolBase redSymbol, ModelProperty child)
@@ -900,33 +848,13 @@ namespace MetaDslx.Core.Immutable
         internal bool MRemove(MutableRedSymbolBase redSymbol, ModelProperty property, object value, bool removeAll)
         {
             this.model.EnsureWritable();
-            if (property.IsCollection)
-            {
-                return this.green.RemoveItem(redSymbol.Green, property, -1, removeAll, value);
-            }
-            else
-            {
-                object oldValue;
-                if (this.MTryGet(redSymbol, property, out oldValue) && oldValue == value && oldValue != null)
-                {
-                    return this.green.SetValue(redSymbol.Green, property, false, null, out oldValue);
-                }
-            }
-            return false;
+            return this.green.MRemove(redSymbol.Green, property, value, removeAll);
         }
 
         internal void MUnset(MutableRedSymbolBase redSymbol, ModelProperty property)
         {
             this.model.EnsureWritable();
-            if (property.IsCollection)
-            {
-                this.green.ClearItems(redSymbol.Green, property);
-            }
-            else
-            {
-                object oldValue;
-                this.green.SetValue(redSymbol.Green, property, true, GreenModelTransaction.Unassigned, out oldValue);
-            }
+            this.green.MUnset(redSymbol.Green, property);
         }
 
     }

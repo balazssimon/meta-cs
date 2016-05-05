@@ -205,15 +205,15 @@ namespace MetaDslx.Core.Immutable
         public ModelPropertyTypeInfo ImmutableTypeInfo { get { return this.immutableTypeInfo; } }
         public ModelPropertyTypeInfo MutableTypeInfo { get { return this.mutableTypeInfo; } }
 
-        public bool IsSymbol { get { return this.flags.HasFlag(ModelPropertyFlags.IsSymbol); } }
-        public bool IsNonUnique { get { return this.flags.HasFlag(ModelPropertyFlags.IsNonUnique); } }
-        public bool IsNonNull { get { return this.flags.HasFlag(ModelPropertyFlags.IsNonNull); } }
+        public bool IsSymbol { get { if (!this.initialized) this.Init(); return this.flags.HasFlag(ModelPropertyFlags.IsSymbol); } }
+        public bool IsNonUnique { get { if (!this.initialized) this.Init(); return this.flags.HasFlag(ModelPropertyFlags.IsNonUnique); } }
+        public bool IsNonNull { get { if (!this.initialized) this.Init(); return this.flags.HasFlag(ModelPropertyFlags.IsNonNull); } }
         public bool IsCollection { get { return this.flags.HasFlag(ModelPropertyFlags.IsCollection); } }
 
-        public bool HasAffectedProperties { get { return (this.flags & ModelPropertyFlags.HasAffectedProperties) != 0; } }
-        public bool HasAddAffectedProperties { get { return (this.flags & ModelPropertyFlags.HasAddAffectedProperties) != 0; } }
-        public bool HasRemoveAffectedProperties { get { return (this.flags & ModelPropertyFlags.HasRemoveAffectedProperties) != 0; } }
-        public bool HasOppositeProperties { get { return (this.flags & ModelPropertyFlags.HasOppositeProperties) != 0; } }
+        public bool HasAffectedProperties { get { if (!this.initialized) this.Init(); return (this.flags & ModelPropertyFlags.HasAffectedProperties) != 0; } }
+        public bool HasAddAffectedProperties { get { if (!this.initialized) this.Init(); return (this.flags & ModelPropertyFlags.HasAddAffectedProperties) != 0; } }
+        public bool HasRemoveAffectedProperties { get { if (!this.initialized) this.Init(); return (this.flags & ModelPropertyFlags.HasRemoveAffectedProperties) != 0; } }
+        public bool HasOppositeProperties { get { if (!this.initialized) this.Init(); return (this.flags & ModelPropertyFlags.HasOppositeProperties) != 0; } }
 
         public bool IsReadonly
         {
