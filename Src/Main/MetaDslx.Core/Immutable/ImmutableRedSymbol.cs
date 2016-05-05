@@ -11,12 +11,12 @@ namespace MetaDslx.Core.Immutable
     public abstract class ImmutableRedSymbolBase : ImmutableRedSymbol
     {
         private SymbolId green;
-        private ImmutableRedModel model;
+        private ImmutableRedModelPart part;
 
-        protected ImmutableRedSymbolBase(SymbolId green, ImmutableRedModel model)
+        protected ImmutableRedSymbolBase(SymbolId green, ImmutableRedModelPart part)
         {
             this.green = green;
-            this.model = model;
+            this.part = part;
         }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
@@ -25,7 +25,7 @@ namespace MetaDslx.Core.Immutable
             T result = value;
             if (result == null)
             {
-                result = (T)this.model.GetValue(this, property);
+                result = (T)this.part.GetValue(this, property);
                 result = Interlocked.CompareExchange(ref value, result, null) ?? result;
             }
             return result;
@@ -36,7 +36,7 @@ namespace MetaDslx.Core.Immutable
             ImmutableRedList<T> result = value;
             if (result == null)
             {
-                result = this.model.GetList<T>(this, property);
+                result = this.part.GetList<T>(this, property);
                 result = Interlocked.CompareExchange(ref value, result, null) ?? result;
             }
             return result;
@@ -50,67 +50,74 @@ namespace MetaDslx.Core.Immutable
         {
             get
             {
-                return this.model;
+                return this.part.Model;
+            }
+        }
+        public ImmutableRedModelPart MModelPart
+        {
+            get
+            {
+                return this.part;
             }
         }
         public ImmutableRedSymbol MParent
         {
             get
             {
-                return this.model.MParent(this);
+                return this.part.MParent(this);
             }
         }
         public IReadOnlyList<ImmutableRedSymbol> MChildren
         {
             get
             {
-                return this.model.MChildren(this);
+                return this.part.MChildren(this);
             }
         }
         public IReadOnlyList<ModelProperty> MProperties
         {
             get
             {
-                return this.model.MProperties(this);
+                return this.part.MProperties(this);
             }
         }
         public IReadOnlyList<ModelProperty> MAllProperties
         {
             get
             {
-                return this.model.MAllProperties(this);
+                return this.part.MAllProperties(this);
             }
         }
 
         public object MGet(ModelProperty property)
         {
-            return this.model.MGet(this, property);
+            return this.part.MGet(this, property);
         }
         public bool MIsSet(ModelProperty property)
         {
-            return this.model.MIsSet(this, property);
+            return this.part.MIsSet(this, property);
         }
         public ModelProperty MGetProperty(string name)
         {
-            return this.model.MGetProperty(this, name);
+            return this.part.MGetProperty(this, name);
         }
         public IReadOnlyList<ModelProperty> MGetAllProperties(string name)
         {
-            return this.model.MGetAllProperties(this, name);
+            return this.part.MGetAllProperties(this, name);
         }
         public bool MTryGet(ModelProperty property, out object value)
         {
-            bool result = this.model.MTryGet(this, property, out value);
-            value = this.model.ToRedValue(value);
+            bool result = this.part.MTryGet(this, property, out value);
+            value = this.part.ToRedValue(value);
             return result;
         }
         public bool MHasLazy(ModelProperty property)
         {
-            return this.model.MHasLazy(this, property);
+            return this.part.MHasLazy(this, property);
         }
         public bool MIsAttached(ModelProperty property)
         {
-            return this.model.MIsAttached(this, property);
+            return this.part.MIsAttached(this, property);
         }
 
         public override int GetHashCode()
@@ -121,6 +128,11 @@ namespace MetaDslx.Core.Immutable
         RedModel RedSymbol.MModel
         {
             get { return this.MModel; }
+        }
+
+        RedModelPart RedSymbol.MModelPart
+        {
+            get { return this.MModelPart; }
         }
 
         RedSymbol RedSymbol.MParent
@@ -138,13 +150,13 @@ namespace MetaDslx.Core.Immutable
     {
         private string id;
         private SymbolId green;
-        private MutableRedModel model;
+        private MutableRedModelPart part;
         private HashSet<ModelProperty> invalidatedProperties;
 
-        protected MutableRedSymbolBase(SymbolId green, MutableRedModel model)
+        protected MutableRedSymbolBase(SymbolId green, MutableRedModelPart part)
         {
             this.green = green;
-            this.model = model;
+            this.part = part;
             this.id = Guid.NewGuid().ToString();
             //this.invalidatedProperties = new HashSet<ModelProperty>();
         }
@@ -153,10 +165,9 @@ namespace MetaDslx.Core.Immutable
             where T : class
         {
             T result = value;
-            //if (result == null)
-            if (this.ClearInvalidatedProperty(property))
+            if (result == null)
             {
-                result = (T)this.model.GetValue(this, property);
+                result = (T)this.part.GetValue(this, property);
                 result = Interlocked.CompareExchange(ref value, result, null);
             }
             return value;
@@ -165,11 +176,11 @@ namespace MetaDslx.Core.Immutable
         protected void SetValue<T>(ModelProperty property, ref T target, T value)
             where T : class
         {
-            if (value is MutableRedSymbolBase && ((MutableRedSymbolBase)(object)value).model != this.model)
+            if (value is MutableRedSymbolBase && ((MutableRedSymbolBase)(object)value).part != this.part)
             {
-                value = (T)this.model.ToRedValue(this.model.ToGreenValue(value));
+                value = (T)this.part.ToRedValue(this.part.ToGreenValue(value));
             }
-            if (this.model.SetValue(this, property, value))
+            if (this.part.SetValue(this, property, value))
             {
                 //Interlocked.Exchange(ref target, value);
             }
@@ -180,7 +191,7 @@ namespace MetaDslx.Core.Immutable
             MutableRedList<T> result = value;
             if (result == null)
             {
-                result = this.model.GetList<T>(this, property);
+                result = this.part.GetList<T>(this, property, result);
                 result = Interlocked.CompareExchange(ref value, result, null) ?? result;
             }
             return result;
@@ -195,179 +206,148 @@ namespace MetaDslx.Core.Immutable
         {
             get
             {
-                return this.model;
+                return this.part.Model;
+            }
+        }
+        public MutableRedModelPart MModelPart
+        {
+            get
+            {
+                return this.part;
             }
         }
         public MutableRedSymbol MParent
         {
             get
             {
-                return this.model.MParent(this);
+                return this.part.MParent(this);
             }
         }
         public IReadOnlyList<MutableRedSymbol> MChildren
         {
             get
             {
-                return this.model.MChildren(this);
+                return this.part.MChildren(this);
             }
         }
         public IReadOnlyList<ModelProperty> MProperties
         {
             get
             {
-                return this.model.MProperties(this);
+                return this.part.MProperties(this);
             }
         }
         public IReadOnlyList<ModelProperty> MAllProperties
         {
             get
             {
-                return this.model.MAllProperties(this);
+                return this.part.MAllProperties(this);
             }
         }
 
         public object MGet(ModelProperty property)
         {
-            return this.model.MGet(this, property);
+            return this.part.MGet(this, property);
         }
         public bool MIsSet(ModelProperty property)
         {
-            return this.model.MIsSet(this, property);
+            return this.part.MIsSet(this, property);
         }
         public ModelProperty MGetProperty(string name)
         {
-            return this.model.MGetProperty(this, name);
+            return this.part.MGetProperty(this, name);
         }
         public IReadOnlyList<ModelProperty> MGetAllProperties(string name)
         {
-            return this.model.MGetAllProperties(this, name);
+            return this.part.MGetAllProperties(this, name);
         }
         public bool MTryGet(ModelProperty property, out object value)
         {
-            bool result = this.model.MTryGet(this, property, out value);
-            value = this.model.ToRedValue(value);
+            bool result = this.part.MTryGet(this, property, out value);
+            value = this.part.ToRedValue(value);
             return result;
         }
         public bool MHasLazy(ModelProperty property)
         {
-            return this.model.MHasLazy(this, property);
+            return this.part.MHasLazy(this, property);
         }
         public bool MIsAttached(ModelProperty property)
         {
-            return this.model.MIsAttached(this, property);
+            return this.part.MIsAttached(this, property);
         }
 
         public bool MAdd(ModelProperty property, object value)
         {
-            return this.model.MAdd(this, property, value);
+            return this.part.MAdd(this, property, value);
         }
         public bool MClear(ModelProperty property, bool clearLazy = true)
         {
-            return this.model.MClear(this, property, clearLazy);
+            return this.part.MClear(this, property, clearLazy);
         }
         public bool MClearLazy(ModelProperty property)
         {
-            return this.model.MClearLazy(this, property);
+            return this.part.MClearLazy(this, property);
         }
         public bool MReset(ModelProperty property, object value)
         {
-            return this.model.MReset(this, property, value);
+            return this.part.MReset(this, property, value);
         }
         public bool MAddRange(ModelProperty property, IEnumerable<object> value)
         {
-            return this.model.MAddRange(this, property, value);
+            return this.part.MAddRange(this, property, value);
         }
         public bool MAttachProperty(ModelProperty property)
         {
-            return this.model.MAttachProperty(this, property);
+            return this.part.MAttachProperty(this, property);
         }
         public bool MDetachProperty(ModelProperty property)
         {
-            return this.model.MDetachProperty(this, property);
+            return this.part.MDetachProperty(this, property);
         }
         public void MEvaluateLazy()
         {
-            this.model.MEvaluateLazy(this);
+            this.part.MEvaluateLazy(this);
         }
         public bool MLazyAdd(ModelProperty property, Func<object> value)
         {
-            return this.model.MLazyAdd(this, property, value);
+            return this.part.MLazyAdd(this, property, value);
         }
         public bool MLazyAddRange(ModelProperty property, Func<IEnumerable<object>> values)
         {
-            return this.model.MLazyAddRange(this, property, values);
+            return this.part.MLazyAddRange(this, property, values);
         }
         public bool MLazyAddRange(ModelProperty property, IEnumerable<Func<object>> values)
         {
-            return this.model.MLazyAddRange(this, property, values);
+            return this.part.MLazyAddRange(this, property, values);
         }
         public bool MChildLazySet(ModelProperty child, ModelProperty property, Func<object> value)
         {
-            return this.model.MChildLazySet(this, child, property, value);
+            return this.part.MChildLazySet(this, child, property, value);
         }
         public bool MChildLazyAddRange(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values)
         {
-            return this.model.MChildLazyAddRange(this, child, property, values);
+            return this.part.MChildLazyAddRange(this, child, property, values);
         }
         public bool MChildLazyAddRange(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values)
         {
-            return this.model.MChildLazyAddRange(this, child, property, values);
+            return this.part.MChildLazyAddRange(this, child, property, values);
         }
         public bool MChildLazyClear(ModelProperty child)
         {
-            return this.model.MChildLazyClear(this, child);
+            return this.part.MChildLazyClear(this, child);
         }
         public bool MChildLazyClear(ModelProperty child, ModelProperty property)
         {
-            return this.model.MChildLazyClear(this, child, property);
+            return this.part.MChildLazyClear(this, child, property);
         }
         public bool MRemove(ModelProperty property, object value, bool removeAll = false)
         {
-            return this.model.MRemove(this, property, value, removeAll);
+            return this.part.MRemove(this, property, value, removeAll);
         }
         public void MUnset(ModelProperty property)
         {
-            this.model.MUnset(this, property);
+            this.part.MUnset(this, property);
         }
-
-        internal void InternalInvalidateProperty(ModelProperty property)
-        {
-            if (this.invalidatedProperties == null)
-            {
-                this.invalidatedProperties = new HashSet<ModelProperty>();
-            }
-            this.invalidatedProperties.Add(property);
-            /*if (!this.invalidatedProperties.Contains(property))
-            {
-                this.invalidatedProperties.Add(property);
-            }*/
-            //this.InvalidateProperty(property);
-        }
-
-        protected abstract void InvalidateProperty(ModelProperty property);
-
-        /*internal void InvalidateProperty(ModelProperty property)
-        {
-            lock(this.invalidatedProperties)
-            {
-                if (!this.invalidatedProperties.Contains(property))
-                {
-                    this.invalidatedProperties.Add(property);
-                }
-            }
-        }*/
-        
-        private bool ClearInvalidatedProperty(ModelProperty property)
-        {
-            if (this.invalidatedProperties != null && this.invalidatedProperties.Contains(property))
-            {
-                this.invalidatedProperties.Remove(property);
-                return true;
-            }
-            return false;
-        }
-        
 
         public override int GetHashCode()
         {
@@ -377,6 +357,11 @@ namespace MetaDslx.Core.Immutable
         RedModel RedSymbol.MModel
         {
             get { return this.MModel; }
+        }
+
+        RedModelPart RedSymbol.MModelPart
+        {
+            get { return this.MModelPart; }
         }
 
         RedSymbol RedSymbol.MParent

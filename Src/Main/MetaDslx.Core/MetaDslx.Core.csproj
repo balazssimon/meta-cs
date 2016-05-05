@@ -50,7 +50,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
     </Compile>
-    <Compile Include="Immutable\ImmutableGreenModel0.cs" />
     <Compile Include="Immutable\ImmutableGreenModel.cs" />
     <Compile Include="Immutable\ImmutableModel.cs" />
     <Compile Include="Immutable\ImmutableModelList.cs" />

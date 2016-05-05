@@ -194,3 +194,20 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+/Install/MetaDslx.VisualStudio.vsix
+/Install/MetaDslx.VisualStudio.dll
+/Install/MetaDslx.Core.dll
+/Install/MetaDslx.Compiler.dll
+/Install/MetaDslx-v0.6.1-alpha.zip
+/Install/MetaDslx-v0.6-alpha.zip
+/Install/MetaDslx-v0.5-alpha.zip
+/Install/MetaDslx-v0.4-alpha.zip
+/Install/MetaDslx-v0.3-alpha.zip
+/Install/MetaDslx-v0.2-alpha.zip
+/Install/MetaDslx-v0.1-alpha.zip
+/Install/Antlr4.Runtime.dll
+/Src/Prototypes/Antlr4RedGreenTree/InternalToPublic.txt
+/Src/Main/MetaDslx.VisualStudio/startup.txt
+/Src/Main/MetaDslx.Core/MetaModel.java
+/Src/Main/MetaDslx.Compiler/MetaGenerator/MetaGeneratorCompiler0.cs
+/Src/Main/MetaDslx.Core/Immutable/ImmutableGreenModel0.cs

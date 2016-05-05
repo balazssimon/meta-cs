@@ -17,8 +17,8 @@ namespace MetaDslx.Core.Immutable
         }
         public abstract Type ImmutableType { get; }
         public abstract Type MutableType { get; }
-        public abstract ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model);
-        public abstract MutableRedSymbol CreateMutableRed(MutableRedModel model);
+        public abstract ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart part);
+        public abstract MutableRedSymbol CreateMutableRed(MutableRedModelPart part);
 
         public override int GetHashCode()
         {
@@ -40,6 +40,7 @@ namespace MetaDslx.Core.Immutable
         object MMetaClass { get; }
 
         RedModel MModel { get; }
+        RedModelPart MModelPart { get; }
         RedSymbol MParent { get; }
         IReadOnlyList<RedSymbol> MChildren { get; }
     }
@@ -48,6 +49,7 @@ namespace MetaDslx.Core.Immutable
     public interface ImmutableRedSymbol : RedSymbol
     {
         new ImmutableRedModel MModel { get; }
+        new ImmutableRedModelPart MModelPart { get; }
         new ImmutableRedSymbol MParent { get; }
         new IReadOnlyList<ImmutableRedSymbol> MChildren { get; }
         IReadOnlyList<ModelProperty> MProperties { get; }
@@ -64,6 +66,7 @@ namespace MetaDslx.Core.Immutable
     public interface MutableRedSymbol : RedSymbol
     {
         new MutableRedModel MModel { get; }
+        new MutableRedModelPart MModelPart { get; }
         new MutableRedSymbol MParent { get; }
         new IReadOnlyList<MutableRedSymbol> MChildren { get; }
         IReadOnlyList<ModelProperty> MProperties { get; }
@@ -114,6 +117,11 @@ namespace MetaDslx.Core.Immutable
     }
 
     // Model:
+
+    public interface RedModelPart
+    {
+
+    }
 
     public interface RedModel
     {
