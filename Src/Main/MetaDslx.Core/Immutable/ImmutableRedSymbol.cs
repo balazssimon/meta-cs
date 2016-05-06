@@ -204,6 +204,11 @@ namespace MetaDslx.Core.Immutable
 
         internal SymbolId Green { get { return this.green; } }
 
+        public void Created()
+        {
+            this.part.CreatedSymbol(this);
+        }
+
         public MutableRedModel MModel
         {
             get

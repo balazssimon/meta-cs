@@ -10,7 +10,61 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
-    // GREEN:
+    // TODO:
+    internal class GreenDerivedValue
+    {
+        private Func<object> lazy;
+
+        internal GreenDerivedValue(Func<object> lazy)
+        {
+            this.lazy = lazy;
+        }
+
+        internal object CreateValue(GreenModelPart part)
+        {
+            object value = lazy();
+            if (value is MutableRedSymbolBase)
+            {
+                return ((MutableRedSymbolBase)value).Green;
+            }
+            else if (value is ImmutableRedSymbolBase)
+            {
+                return ((ImmutableRedSymbolBase)value).Green;
+            }
+            return value;
+        }
+    }
+
+    // TODO:
+    internal class GreenDerivedList
+    {
+        private Func<IEnumerable<object>> lazy;
+
+        internal GreenDerivedList(Func<IEnumerable<object>> lazy)
+        {
+            this.lazy = lazy;
+        }
+
+        internal List<object> CreateValues(GreenModelPart part)
+        {
+            List<object> result = new List<object>();
+            foreach (var item in lazy())
+            {
+                object value = item;
+                if (value is MutableRedSymbolBase)
+                {
+                    value = ((MutableRedSymbolBase)value).Green;
+                }
+                else if (value is ImmutableRedSymbolBase)
+                {
+                    value = ((ImmutableRedSymbolBase)value).Green;
+                }
+                result.Add(value);
+            }
+            return result;
+        }
+    }
+
     internal class GreenLazyValue
     {
         private Func<object> lazy;
@@ -107,6 +161,12 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
+    internal enum GreenSymbolState
+    {
+        Creating,
+        Created
+    }
+
     // TODO: memory optimization
     internal class GreenSymbol
     {
@@ -115,6 +175,7 @@ namespace MetaDslx.Core.Immutable
 
         private SymbolId id;
         private GreenModelPart modelPart;
+        private GreenSymbolState state;
         private TxValue<SymbolId> parent;
         private TxHashSet<ModelProperty> childProperties;
         private TxList<SymbolId> children;
@@ -128,6 +189,7 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(id != null);
             this.id = id;
             this.modelPart = modelPart;
+            this.state = GreenSymbolState.Creating;
             this.parent = new TxValue<SymbolId>();
             this.childProperties = new TxHashSet<ModelProperty>();
             this.children = new TxList<SymbolId>();
@@ -142,6 +204,7 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(other != null);
             this.id = other.id;
             this.modelPart = modelPart;
+            this.state = other.state;
             this.parent = new TxValue<SymbolId>(other.parent.Value);
             this.childProperties = new TxHashSet<ModelProperty>(other.childProperties);
             this.children = new TxList<SymbolId>(other.children);
@@ -174,6 +237,11 @@ namespace MetaDslx.Core.Immutable
         public ICollection<ModelProperty> AttachedProperties
         {
             get { return this.attachedProperties; }
+        }
+
+        internal void Created()
+        {
+            this.state = GreenSymbolState.Created;
         }
 
         public bool AddProperty(ModelProperty property)
@@ -579,7 +647,7 @@ namespace MetaDslx.Core.Immutable
             object initValue;
             if (initValues.TryGetValue(property, out initValue))
             {
-                if (!reassign)
+                if (this.state == GreenSymbolState.Created && !reassign)
                 {
                     throw new ModelException("Cannot reassign the child initializer: " + this.id + "::" + child + "::" + property);
                 }
@@ -740,8 +808,12 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(!(oldValue is GreenLazyList));
             Debug.Assert(!(oldValue is RedSymbol));
             if (value == oldValue) return false;
-            if (!reassign)
+            if (this.state == GreenSymbolState.Created && !reassign)
             {
+                if (property.IsDerived && oldValue != Unassigned)
+                {
+                    throw new ModelException("Cannot reassign a derived property: " + this.id + "::" + property);
+                }
                 if (property.IsReadonly && oldValue != Unassigned)
                 {
                     throw new ModelException("Cannot reassign a read-only property: " + this.id + "::" + property);
@@ -1728,6 +1800,15 @@ namespace MetaDslx.Core.Immutable
                         symbol.GetValue(property, true);
                     }
                 }
+            }
+        }
+
+        internal void CreatedSymbol(SymbolId id)
+        {
+            GreenSymbol symbol = this.GetSymbol(id, true);
+            if (symbol != null)
+            {
+                symbol.Created();
             }
         }
     }

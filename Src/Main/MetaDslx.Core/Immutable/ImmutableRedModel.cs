@@ -838,6 +838,11 @@ namespace MetaDslx.Core.Immutable
             this.green.MUnset(redSymbol.Green, property);
         }
 
+        internal void CreatedSymbol(MutableRedSymbolBase redSymbol)
+        {
+            this.model.EnsureWritable();
+            this.green.CreatedSymbol(redSymbol.Green);
+        }
     }
 
     public sealed class RedModelTransaction : IDisposable

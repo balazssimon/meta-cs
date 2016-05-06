@@ -205,52 +205,72 @@ namespace MetaDslx.Core.Immutable.Test
 
         public Husband Husband()
         {
-            return (Husband)part.AddSymbol(new GreenHusband());
+            var symbol = (Husband)part.AddSymbol(new GreenHusband());
+            ((MutableRedSymbolBase)symbol).Created();
+            return symbol;
         }
 
         public Wife Wife()
         {
-            return (Wife)part.AddSymbol(new GreenWife());
+            var symbol = (Wife)part.AddSymbol(new GreenWife());
+            ((MutableRedSymbolBase)symbol).Created();
+            return symbol;
         }
 
         public ListChild ListChild()
         {
-            return (ListChild)part.AddSymbol(new GreenListChild());
+            var symbol = (ListChild)part.AddSymbol(new GreenListChild());
+            ((MutableRedSymbolBase)symbol).Created();
+            return symbol;
         }
 
         public ListParent ListParent()
         {
-            return (ListParent)part.AddSymbol(new GreenListParent());
+            var symbol = (ListParent)part.AddSymbol(new GreenListParent());
+            ((MutableRedSymbolBase)symbol).Created();
+            return symbol;
         }
 
         public User User()
         {
-            return (User)part.AddSymbol(new GreenUser());
+            var symbol = (User)part.AddSymbol(new GreenUser());
+            ((MutableRedSymbolBase)symbol).Created();
+            return symbol;
         }
 
         public Role Role()
         {
-            return (Role)part.AddSymbol(new GreenRole());
+            var symbol = (Role)part.AddSymbol(new GreenRole());
+            ((MutableRedSymbolBase)symbol).Created();
+            return symbol;
         }
 
         public Person Person()
         {
-            return (Person)part.AddSymbol(new GreenPerson());
+            var symbol = (Person)part.AddSymbol(new GreenPerson());
+            ((MutableRedSymbolBase)symbol).Created();
+            return symbol;
         }
 
         public Student Student()
         {
-            return (Student)part.AddSymbol(new GreenStudent());
+            var symbol = (Student)part.AddSymbol(new GreenStudent());
+            ((MutableRedSymbolBase)symbol).Created();
+            return symbol;
         }
 
         public Pet Pet()
         {
-            return (Pet)part.AddSymbol(new GreenPet());
+            var symbol = (Pet)part.AddSymbol(new GreenPet());
+            ((MutableRedSymbolBase)symbol).Created();
+            return symbol;
         }
 
         public Dog Dog()
         {
-            return (Dog)part.AddSymbol(new GreenDog());
+            var symbol = (Dog)part.AddSymbol(new GreenDog());
+            ((MutableRedSymbolBase)symbol).Created();
+            return symbol;
         }
     }
 

@@ -71,6 +71,14 @@ namespace MetaDslx.Core.Immutable
     }
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public class DerivedAttribute : Attribute
+    {
+        public DerivedAttribute()
+        {
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class NonUniqueAttribute : Attribute
     {
         public NonUniqueAttribute()
@@ -98,19 +106,20 @@ namespace MetaDslx.Core.Immutable
     public enum ModelPropertyFlags : uint
     {
         IsReadonly = 0x0001,
-        IsCollection = 0x0002,
-        IsSymbol = 0x0004,
-        IsNonUnique = 0x0008,
-        IsNonNull = 0x0010,
-        IsContainment = 0x0020,
-        HasAnnotations = 0x0040,
-        HasOppositeProperties = 0x0080,
-        HasSubsettedProperties = 0x0100,
-        HasSubsettingProperties = 0x0200,
-        HasSubtypedProperties = 0x0400,
-        HasSubtypingProperties = 0x0800,
-        HasRedefinedProperties = 0x1000,
-        HasRedefiningProperties = 0x2000,
+        IsDerived = 0x0002,
+        IsCollection = 0x0004,
+        IsSymbol = 0x0008,
+        IsNonUnique = 0x0010,
+        IsNonNull = 0x0020,
+        IsContainment = 0x0040,
+        HasAnnotations = 0x0080,
+        HasOppositeProperties = 0x0100,
+        HasSubsettedProperties = 0x0200,
+        HasSubsettingProperties = 0x0400,
+        HasSubtypedProperties = 0x0800,
+        HasSubtypingProperties = 0x1000,
+        HasRedefinedProperties = 0x2000,
+        HasRedefiningProperties = 0x4000,
         HasAffectedProperties = HasOppositeProperties | HasSubsettedProperties | HasSubsettingProperties |
             HasSubtypedProperties | HasSubtypingProperties | HasRedefinedProperties | HasRedefiningProperties,
         HasAddAffectedProperties = HasOppositeProperties | HasSubsettingProperties | HasSubtypingProperties | 
@@ -221,6 +230,15 @@ namespace MetaDslx.Core.Immutable
             {
                 if (!this.initialized) this.Init();
                 return this.flags.HasFlag(ModelPropertyFlags.IsReadonly);
+            }
+        }
+
+        public bool IsDerived
+        {
+            get
+            {
+                if (!this.initialized) this.Init();
+                return this.flags.HasFlag(ModelPropertyFlags.IsDerived);
             }
         }
 
@@ -372,6 +390,10 @@ namespace MetaDslx.Core.Immutable
                     else if (attribute is ReadonlyAttribute)
                     {
                         this.flags |= ModelPropertyFlags.IsReadonly;
+                    }
+                    else if (attribute is DerivedAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.IsDerived;
                     }
                     else if (attribute is NonUniqueAttribute)
                     {
