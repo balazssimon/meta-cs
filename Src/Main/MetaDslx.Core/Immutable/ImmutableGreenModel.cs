@@ -19,16 +19,16 @@ namespace MetaDslx.Core.Immutable
             this.lazy = lazy;
         }
 
-        internal object CreateValue(MutableRedModelPart part)
+        internal object CreateValue(GreenModelPart part)
         {
             object value = lazy();
             if (value is MutableRedSymbolBase)
             {
-                return part.Model.GetRedSymbol(((MutableRedSymbolBase)value).Green);
+                return ((MutableRedSymbolBase)value).Green;
             }
             else if (value is ImmutableRedSymbolBase)
             {
-                return part.Model.GetRedSymbol(((ImmutableRedSymbolBase)value).Green);
+                return ((ImmutableRedSymbolBase)value).Green;
             }
             return value;
         }
@@ -43,7 +43,7 @@ namespace MetaDslx.Core.Immutable
             this.lazy = lazy;
         }
 
-        internal List<object> CreateValues(MutableRedModelPart part)
+        internal List<object> CreateValues(GreenModelPart part)
         {
             List<object> result = new List<object>();
             foreach (var item in lazy())
@@ -51,11 +51,11 @@ namespace MetaDslx.Core.Immutable
                 object value = item;
                 if (value is MutableRedSymbolBase)
                 {
-                    value = part.Model.GetRedSymbol(((MutableRedSymbolBase)value).Green);
+                    value = ((MutableRedSymbolBase)value).Green;
                 }
                 else if (value is ImmutableRedSymbolBase)
                 {
-                    value = part.Model.GetRedSymbol(((ImmutableRedSymbolBase)value).Green);
+                    value = ((ImmutableRedSymbolBase)value).Green;
                 }
                 result.Add(value);
             }
@@ -228,23 +228,67 @@ namespace MetaDslx.Core.Immutable
 
         public object GetValue(ModelProperty property, bool lazyEval)
         {
-            if (!lazyEval) return this.GetValue(property);
-            Debug.Assert(!this.modelPart.IsReadOnly);
+            if (lazyEval)
+            {
+                Debug.Assert(!this.modelPart.IsReadOnly);
+                if (property.HasRemoveAffectedProperties)
+                {
+                    foreach (var prop in property.RemoveAffectedProperties)
+                    {
+                        this.LazyEvalCore(prop);
+                    }
+                }
+                this.LazyEvalCore(property);
+            }
+            return this.GetValue(property);
+        }
+
+        private object LazyEvalCore(ModelProperty property)
+        {
             object lazyValue;
+            // TODO: check circular dependency
             if (this.TryGetValueCore(property, false, true, false, out lazyValue))
             {
                 if (lazyValue is GreenLazyValue)
                 {
-                    // TODO
-                    //object value = ((GreenLazyValue)lazyValue).CreateValue(this.modelPart);
+                    object value = this.LazyEvalValue((GreenLazyValue)lazyValue);
+                    this.SetValue(property, true, value);
+                    return value;
                 }
                 else if (lazyValue is GreenList)
                 {
-
+                    GreenList list = (GreenList)lazyValue;
+                    var lazyItems = list.LazyItems;
+                    list.ClearLazyItems();
+                    foreach (var lazyItem in lazyItems)
+                    {
+                        if (lazyItem is GreenLazyValue)
+                        {
+                            object value = this.LazyEvalValue((GreenLazyValue)lazyItem);
+                            list.Add(value);
+                            return value;
+                        }
+                        else if (lazyItem is GreenLazyList)
+                        {
+                            List<object> values = this.LazyEvalValue((GreenLazyList)lazyItem);
+                            list.AddRange(values);
+                            return list;
+                        }
+                    }
                 }
                 return lazyValue;
             }
             return null;
+        }
+
+        internal object LazyEvalValue(GreenLazyValue lazyValue)
+        {
+            return lazyValue.CreateValue(this.modelPart);
+        }
+
+        internal List<object> LazyEvalValue(GreenLazyList lazyList)
+        {
+            return lazyList.CreateValues(this.modelPart);
         }
 
         public GreenLazyValue GetLazyValue(ModelProperty property)
@@ -324,7 +368,7 @@ namespace MetaDslx.Core.Immutable
                 }
                 else
                 {
-                    return this.SlowAddValueCore(property, null, -1, value, oldValue, null);
+                    return this.SlowAddValueCore(property, null, -1, reassign, value, oldValue, null);
                 }
             }
             return false;
@@ -343,7 +387,8 @@ namespace MetaDslx.Core.Immutable
             }
             else
             {
-                return this.SlowAddValueCore(property, null, index, value, null, null);
+                if (replace) this.SlowRemoveValueCore(property, null, index, false, value, null);
+                return this.SlowAddValueCore(property, null, index, false, value, Unassigned, null);
             }
         }
 
@@ -377,7 +422,7 @@ namespace MetaDslx.Core.Immutable
                     }
                     else
                     {
-                        result |= this.SlowAddValueCore(property, list, -1, value, null, null);
+                        result |= this.SlowAddValueCore(property, list, -1, false, value, Unassigned, null);
                     }
                 }
             }
@@ -810,7 +855,7 @@ namespace MetaDslx.Core.Immutable
             return result;
         }
 
-        private bool SlowAddValueCore(ModelProperty property, GreenList list, int index, object value, object oldValue, ChangeInfo change)
+        private bool SlowAddValueCore(ModelProperty property, GreenList list, int index, bool reassign, object value, object oldValue, ChangeInfo change)
         {
             Debug.Assert(!(value is GreenLazyValue || value is GreenLazyList || value is GreenList));
             if (!this.properties.ContainsKey(property)) return false;
@@ -834,7 +879,7 @@ namespace MetaDslx.Core.Immutable
                 }
                 else
                 {
-                    removed = this.SetValueCore(property, false, null, oldValue);
+                    removed = this.SetValueCore(property, reassign, null, oldValue);
                 }
                 if (removed)
                 {
@@ -877,7 +922,7 @@ namespace MetaDslx.Core.Immutable
             }
             else
             {
-                result = this.SetValueCore(property, false, value, null);
+                result = this.SetValueCore(property, reassign, value, null);
             }
             if (result && !(value is GreenLazyValue || value is GreenLazyList))
             {
@@ -885,7 +930,7 @@ namespace MetaDslx.Core.Immutable
                 {
                     foreach (var addProp in property.AddAffectedProperties)
                     {
-                        this.SlowAddValueCore(addProp, null, -1, value, null, change);
+                        this.SlowAddValueCore(addProp, null, -1, reassign, value, null, change);
                     }
                     foreach (var addProp in property.AddAffectedOptionalProperties)
                     {
@@ -893,7 +938,7 @@ namespace MetaDslx.Core.Immutable
                             ((value is SymbolId) && (addProp.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).MutableType))) ||
                             (!(value is SymbolId) && (addProp.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))))
                         {
-                            this.SlowAddValueCore(addProp, null, -1, value, null, change);
+                            this.SlowAddValueCore(addProp, null, -1, reassign, value, null, change);
                         }
                     }
                 }
@@ -913,14 +958,14 @@ namespace MetaDslx.Core.Immutable
                                     GreenList oldOppList = oldOppValue as GreenList;
                                     if (oldOppList != null && !oldOppList.Contains(this.id))
                                     {
-                                        oppSymbol.SlowAddValueCore(oppProp, oldOppList, -1, this.id, null, change.newOpposite);
+                                        oppSymbol.SlowAddValueCore(oppProp, oldOppList, -1, reassign, this.id, null, change.newOpposite);
                                     }
                                 }
                                 else
                                 {
                                     if (oldOppValue != this)
                                     {
-                                        oppSymbol.SlowAddValueCore(oppProp, null, -1, this.id, oldOppValue, change.newOpposite);
+                                        oppSymbol.SlowAddValueCore(oppProp, null, -1, reassign, this.id, oldOppValue, change.newOpposite);
                                     }
                                 }
                             }

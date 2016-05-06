@@ -100,6 +100,16 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
+        internal bool AddRange(IEnumerable<object> items)
+        {
+            bool result = false;
+            foreach (var item in items)
+            {
+                result |= this.Add(item);
+            }
+            return result;
+        }
+
         internal bool Remove(object item)
         {
             return this.items.Remove(item);
