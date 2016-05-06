@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
@@ -63,10 +64,54 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
+    public sealed class LazyEvalEntry : IEquatable<LazyEvalEntry>
+    {
+        private SymbolId symbol;
+        private ModelProperty property;
+
+        public LazyEvalEntry(SymbolId symbol, ModelProperty property)
+        {
+            this.symbol = symbol;
+            this.property = property;
+        }
+
+        public SymbolId Symbol { get { return this.symbol; } }
+        public ModelProperty Property { get { return this.property; } }
+
+        public bool Equals(LazyEvalEntry other)
+        {
+            if (other == null) return false;
+            return this.symbol == other.symbol && this.property == other.property;
+        }
+    }
+
+    public class LazyEvalException : ModelException
+    {
+        private List<LazyEvalEntry> evalStack;
+
+        public LazyEvalException(string message, List<LazyEvalEntry> evalStack)
+            : base(message)
+        {
+            this.evalStack = evalStack;
+        }
+
+        public LazyEvalException(string message, List<LazyEvalEntry> evalStack, Exception innerException)
+            : base(message, innerException)
+        {
+            this.evalStack = evalStack;
+        }
+
+        public IReadOnlyList<LazyEvalEntry> EvalStack
+        {
+            get { return this.evalStack; }
+        }
+    }
+
     // TODO: memory optimization
     internal class GreenSymbol
     {
         private static object Unassigned = new object();
+        private static ThreadLocal<TxList<LazyEvalEntry>> lazyEvalStack = new ThreadLocal<TxList<LazyEvalEntry>>(() => new TxList<LazyEvalEntry>());
 
         private SymbolId id;
         private GreenModelPart modelPart;
@@ -246,7 +291,17 @@ namespace MetaDslx.Core.Immutable
         private object LazyEvalCore(ModelProperty property)
         {
             object lazyValue;
-            // TODO: check circular dependency
+            LazyEvalEntry entry = new LazyEvalEntry(this.id, property);
+            int entryIndex = lazyEvalStack.Value.IndexOf(entry);
+            if (entryIndex >= 0)
+            {
+                List<LazyEvalEntry> stack = new List<LazyEvalEntry>();
+                for (int i = entryIndex, n = lazyEvalStack.Value.Count; i < n; i++)
+                {
+                    stack.Add(lazyEvalStack.Value[i]);
+                }
+                throw new LazyEvalException("Circular dependency between lazy values.", stack);
+            }
             if (this.TryGetValueCore(property, false, true, false, out lazyValue))
             {
                 if (lazyValue is GreenLazyValue)
@@ -283,12 +338,26 @@ namespace MetaDslx.Core.Immutable
 
         internal object LazyEvalValue(GreenLazyValue lazyValue)
         {
-            return lazyValue.CreateValue(this.modelPart);
+            try
+            {
+                return lazyValue.CreateValue(this.modelPart);
+            }
+            catch(Exception ex)
+            {
+                throw new LazyEvalException("An exception was thrown by the lazy evalator.", lazyEvalStack.Value.ToList(), ex);
+            }
         }
 
         internal List<object> LazyEvalValue(GreenLazyList lazyList)
         {
-            return lazyList.CreateValues(this.modelPart);
+            try
+            {
+                return lazyList.CreateValues(this.modelPart);
+            }
+            catch (Exception ex)
+            {
+                throw new LazyEvalException("An exception was thrown by the lazy evalator.", lazyEvalStack.Value.ToList(), ex);
+            }
         }
 
         public GreenLazyValue GetLazyValue(ModelProperty property)
