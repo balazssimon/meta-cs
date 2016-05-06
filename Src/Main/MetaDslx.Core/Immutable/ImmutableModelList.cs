@@ -192,7 +192,10 @@ namespace MetaDslx.Core.Immutable
 
         internal void ClearLazyItems()
         {
-            this.lazyItems.Clear();
+            if (this.lazyItems != null)
+            {
+                this.lazyItems.Clear();
+            }
         }
     }
 
