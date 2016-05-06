@@ -31,6 +31,8 @@ namespace MetaDslx.Core.Immutable
             this.cachedSymbols = false;
         }
 
+        internal GreenModel Green { get { return this.green; } }
+
         public IEnumerable<ImmutableRedSymbol> Symbols
         {
             get
@@ -202,26 +204,33 @@ namespace MetaDslx.Core.Immutable
             if (this.IsReadOnly) throw new ModelException("Cannot change a read-only mutable model. Create a new one instead.");
             using (CollectionTxScope scope = new CollectionTxScope())
             {
-                this.green.EvaluateLazyValues();
+                this.green.EvaluateLazyValues(false);
                 scope.Commit();
             }
         }
 
-        public ImmutableRedModel ToImmutable(bool finish = true)
+        public ImmutableRedModel ToImmutable(bool finish = true, bool evalLazy = false, bool evalDerived = false)
         {
             if (this.green.IsChanged || this.green.BaseModel == null)
             {
-                return new ImmutableRedModel(this.green.Fork(finish));
+                return new ImmutableRedModel(this.green.Fork(finish, evalLazy, evalDerived));
             }
             else
             {
                 if (this.originalImmutableModel != null)
                 {
-                    return this.originalImmutableModel;
+                    if (this.originalImmutableModel.Green.HasLazyValues && (evalLazy || evalDerived))
+                    {
+                        return new ImmutableRedModel(this.originalImmutableModel.Green.Fork(false, evalLazy, evalDerived));
+                    }
+                    else
+                    {
+                        return this.originalImmutableModel;
+                    }
                 }
                 else
                 {
-                    return new ImmutableRedModel(this.green.BaseModel.Fork(false));
+                    return new ImmutableRedModel(this.green.BaseModel.Fork(false, evalLazy, evalDerived));
                 }
             }
         }
@@ -312,6 +321,7 @@ namespace MetaDslx.Core.Immutable
                         this.GetRedSymbol(part.Value, greenSymbol);
                     }
                 }
+                this.cachedSymbols = true;
             }
         }
     }

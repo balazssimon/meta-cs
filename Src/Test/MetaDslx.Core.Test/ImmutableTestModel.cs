@@ -498,6 +498,12 @@ namespace MetaDslx.Core.Immutable.Test
         Wife Wife { get; set; }
     }
 
+    public interface HusbandBuilder : Husband
+    {
+        Func<string> NameLazy { get; set; }
+        Func<Wife> WifeLazy { get; set; }
+    }
+
     public interface Wife : RedSymbol
     {
         string Name { get; set; }
@@ -873,7 +879,7 @@ namespace MetaDslx.Core.Immutable.Test
         }
     }
 
-    public class HusbandImpl : MutableRedSymbolBase, Husband
+    public class HusbandImpl : MutableRedSymbolBase, Husband, HusbandBuilder
     {
         public HusbandImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
@@ -903,10 +909,22 @@ namespace MetaDslx.Core.Immutable.Test
             set { this.SetValue(TestModelDescriptor.Husband.NameProperty, value); }
         }
 
+        public Func<string> NameLazy
+        {
+            get { return this.GetLazyValue<string>(TestModelDescriptor.Husband.NameProperty); }
+            set { this.SetLazyValue(TestModelDescriptor.Husband.NameProperty, value); }
+        }
+
         public Wife Wife
         {
             get { return this.GetValue<Wife>(TestModelDescriptor.Husband.WifeProperty); }
             set { this.SetValue(TestModelDescriptor.Husband.WifeProperty, value); }
+        }
+
+        public Func<Wife> WifeLazy
+        {
+            get { return this.GetLazyValue<Wife>(TestModelDescriptor.Husband.WifeProperty); }
+            set { this.SetLazyValue(TestModelDescriptor.Husband.WifeProperty, value); }
         }
 
     }
