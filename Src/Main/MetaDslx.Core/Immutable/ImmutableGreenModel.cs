@@ -344,7 +344,7 @@ namespace MetaDslx.Core.Immutable
             }
             catch(Exception ex)
             {
-                throw new LazyEvalException("An exception was thrown by the lazy evalator.", lazyEvalStack.Value.ToList(), ex);
+                throw new LazyEvalException("An exception was thrown by the lazy evaluator.", lazyEvalStack.Value.ToList(), ex);
             }
         }
 
@@ -356,7 +356,7 @@ namespace MetaDslx.Core.Immutable
             }
             catch (Exception ex)
             {
-                throw new LazyEvalException("An exception was thrown by the lazy evalator.", lazyEvalStack.Value.ToList(), ex);
+                throw new LazyEvalException("An exception was thrown by the lazy evaluator.", lazyEvalStack.Value.ToList(), ex);
             }
         }
 
