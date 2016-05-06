@@ -151,52 +151,50 @@ namespace MetaDslx.Core.Immutable
     public abstract class MutableRedSymbolBase : MutableRedSymbol
     {
         private string id;
+        private bool created;
         private SymbolId green;
         private MutableRedModelPart part;
-        private HashSet<ModelProperty> invalidatedProperties;
 
         protected MutableRedSymbolBase(SymbolId green, MutableRedModelPart part)
         {
             this.id = Guid.NewGuid().ToString();
             this.green = green;
             this.part = part;
-            //this.invalidatedProperties = new HashSet<ModelProperty>();
         }
 
-        protected T GetValue<T>(ModelProperty property, ref T value)
+        protected T GetValue<T>(ModelProperty property)
             where T : class
         {
-            T result = value;
-            //if (result == null)
-            {
-                result = (T)this.part.GetValue(this, property);
-                result = Interlocked.Exchange(ref value, result);
-            }
-            return value;
+            return (T)this.part.GetValue(this, property);
         }
 
-        protected void SetValue<T>(ModelProperty property, ref T target, T value)
+        protected void SetValue<T>(ModelProperty property, T value)
             where T : class
         {
             if (value is MutableRedSymbolBase && ((MutableRedSymbolBase)(object)value).part != this.part)
             {
                 value = (T)this.part.ToRedValue(this.part.ToGreenValue(value));
             }
-            if (this.part.SetValue(this, property, value))
-            {
-                //Interlocked.Exchange(ref target, value);
-            }
+            this.part.SetValue(this, property, value, !this.MIsCreated);
+        }
+
+        protected Func<T> GetLazyValue<T>(ModelProperty property)
+            where T : class
+        {
+            return (Func<T>)this.part.GetLazyValue(this, property);
+        }
+
+        protected void SetLazyValue<T>(ModelProperty property, Func<T> value)
+            where T : class
+        {
+            this.part.SetLazyValue(this, property, value, !this.MIsCreated);
         }
 
         protected MutableRedList<T> GetList<T>(ModelProperty property, ref MutableRedList<T> value)
         {
-            MutableRedList<T> result = value;
-            if (result == null)
-            {
-                result = this.part.GetList<T>(this, property, result);
-                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
-            }
-            return result;
+            MutableRedList<T> result = this.part.GetList(this, property, value);
+            Interlocked.Exchange(ref value, result);
+            return value;
         }
 
         public abstract object MMetaModel { get; }
@@ -204,9 +202,29 @@ namespace MetaDslx.Core.Immutable
 
         internal SymbolId Green { get { return this.green; } }
 
-        public void Created()
+        public void MInit()
         {
-            this.part.CreatedSymbol(this);
+            if (this.MIsCreated) return;
+            this.MDoInit();
+        }
+
+        protected abstract void MDoInit();
+
+        public bool MIsCreated
+        {
+            get
+            {
+                if (!this.created)
+                {
+                    this.created = this.part.MIsCreated(this);
+                }
+                return this.created;
+            }
+        }
+
+        public void MMakeCreated()
+        {
+            this.part.MMakeCreated(this);
         }
 
         public MutableRedModel MModel

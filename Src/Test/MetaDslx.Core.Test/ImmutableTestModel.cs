@@ -188,88 +188,88 @@ namespace MetaDslx.Core.Immutable.Test
             this.part = part;
         }
 
-        public MutableRedSymbol Create(string type)
+        public MutableRedSymbol Create(string type, ReferenceMode referenceMode = ReferenceMode.Default)
         {
             switch (type)
             {
-                case "Husband": return (MutableRedSymbol)this.Husband();
-                case "Wife": return (MutableRedSymbol)this.Wife();
-                case "ListChild": return (MutableRedSymbol)this.ListChild();
-                case "ListParent": return (MutableRedSymbol)this.ListParent();
-                case "User": return (MutableRedSymbol)this.User();
-                case "Role": return (MutableRedSymbol)this.Role();
+                case "Husband": return (MutableRedSymbol)this.Husband(referenceMode);
+                case "Wife": return (MutableRedSymbol)this.Wife(referenceMode);
+                case "ListChild": return (MutableRedSymbol)this.ListChild(referenceMode);
+                case "ListParent": return (MutableRedSymbol)this.ListParent(referenceMode);
+                case "User": return (MutableRedSymbol)this.User(referenceMode);
+                case "Role": return (MutableRedSymbol)this.Role(referenceMode);
                 default:
                     return null;
             }
         }
 
-        public Husband Husband()
+        public Husband Husband(ReferenceMode referenceMode = ReferenceMode.Default)
         {
-            var symbol = (Husband)part.AddSymbol(new GreenHusband());
-            ((MutableRedSymbolBase)symbol).Created();
+            var symbol = (Husband)part.AddSymbol(new GreenHusband(), referenceMode);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
 
-        public Wife Wife()
+        public Wife Wife(ReferenceMode referenceMode = ReferenceMode.Default)
         {
-            var symbol = (Wife)part.AddSymbol(new GreenWife());
-            ((MutableRedSymbolBase)symbol).Created();
+            var symbol = (Wife)part.AddSymbol(new GreenWife(), referenceMode);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
 
-        public ListChild ListChild()
+        public ListChild ListChild(ReferenceMode referenceMode = ReferenceMode.Default)
         {
-            var symbol = (ListChild)part.AddSymbol(new GreenListChild());
-            ((MutableRedSymbolBase)symbol).Created();
+            var symbol = (ListChild)part.AddSymbol(new GreenListChild(), referenceMode);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
 
-        public ListParent ListParent()
+        public ListParent ListParent(ReferenceMode referenceMode = ReferenceMode.Default)
         {
-            var symbol = (ListParent)part.AddSymbol(new GreenListParent());
-            ((MutableRedSymbolBase)symbol).Created();
+            var symbol = (ListParent)part.AddSymbol(new GreenListParent(), referenceMode);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
 
-        public User User()
+        public User User(ReferenceMode referenceMode = ReferenceMode.Default)
         {
-            var symbol = (User)part.AddSymbol(new GreenUser());
-            ((MutableRedSymbolBase)symbol).Created();
+            var symbol = (User)part.AddSymbol(new GreenUser(), referenceMode);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
 
-        public Role Role()
+        public Role Role(ReferenceMode referenceMode = ReferenceMode.Default)
         {
-            var symbol = (Role)part.AddSymbol(new GreenRole());
-            ((MutableRedSymbolBase)symbol).Created();
+            var symbol = (Role)part.AddSymbol(new GreenRole(), referenceMode);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
 
-        public Person Person()
+        public Person Person(ReferenceMode referenceMode = ReferenceMode.Default)
         {
-            var symbol = (Person)part.AddSymbol(new GreenPerson());
-            ((MutableRedSymbolBase)symbol).Created();
+            var symbol = (Person)part.AddSymbol(new GreenPerson(), referenceMode);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
 
-        public Student Student()
+        public Student Student(ReferenceMode referenceMode = ReferenceMode.Default)
         {
-            var symbol = (Student)part.AddSymbol(new GreenStudent());
-            ((MutableRedSymbolBase)symbol).Created();
+            var symbol = (Student)part.AddSymbol(new GreenStudent(), referenceMode);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
 
-        public Pet Pet()
+        public Pet Pet(ReferenceMode referenceMode = ReferenceMode.Default)
         {
-            var symbol = (Pet)part.AddSymbol(new GreenPet());
-            ((MutableRedSymbolBase)symbol).Created();
+            var symbol = (Pet)part.AddSymbol(new GreenPet(), referenceMode);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
 
-        public Dog Dog()
+        public Dog Dog(ReferenceMode referenceMode = ReferenceMode.Default)
         {
-            var symbol = (Dog)part.AddSymbol(new GreenDog());
-            ((MutableRedSymbolBase)symbol).Created();
+            var symbol = (Dog)part.AddSymbol(new GreenDog(), referenceMode);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
     }
@@ -875,14 +875,16 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class HusbandImpl : MutableRedSymbolBase, Husband
     {
-        private string name;
-        private Wife wife;
-
         public HusbandImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Husband.NameProperty);
             this.MAttachProperty(TestModelDescriptor.Husband.WifeProperty);
+            this.MInit();
+        }
+
+        protected override void MDoInit()
+        {
         }
 
         public override object MMetaClass
@@ -897,28 +899,30 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Husband.NameProperty, ref this.name); }
-            set { this.SetValue(TestModelDescriptor.Husband.NameProperty, ref this.name, value); }
+            get { return this.GetValue<string>(TestModelDescriptor.Husband.NameProperty); }
+            set { this.SetValue(TestModelDescriptor.Husband.NameProperty, value); }
         }
 
         public Wife Wife
         {
-            get { return this.GetValue(TestModelDescriptor.Husband.WifeProperty, ref this.wife); }
-            set { this.SetValue(TestModelDescriptor.Husband.WifeProperty, ref this.wife, value); }
+            get { return this.GetValue<Wife>(TestModelDescriptor.Husband.WifeProperty); }
+            set { this.SetValue(TestModelDescriptor.Husband.WifeProperty, value); }
         }
 
     }
 
     public class WifeImpl : MutableRedSymbolBase, Wife
     {
-        private string name;
-        private Husband husband;
-
         public WifeImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Wife.NameProperty);
             this.MAttachProperty(TestModelDescriptor.Wife.HusbandProperty);
+            this.MInit();
+        }
+
+        protected override void MDoInit()
+        {
         }
 
         public override object MMetaClass
@@ -933,27 +937,29 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Wife.NameProperty, ref this.name); }
-            set { this.SetValue(TestModelDescriptor.Wife.NameProperty, ref this.name, value); }
+            get { return this.GetValue<string>(TestModelDescriptor.Wife.NameProperty); }
+            set { this.SetValue(TestModelDescriptor.Wife.NameProperty, value); }
         }
 
         public Husband Husband
         {
-            get { return this.GetValue(TestModelDescriptor.Wife.HusbandProperty, ref this.husband); }
-            set { this.SetValue(TestModelDescriptor.Wife.HusbandProperty, ref this.husband, value); }
+            get { return this.GetValue<Husband>(TestModelDescriptor.Wife.HusbandProperty); }
+            set { this.SetValue(TestModelDescriptor.Wife.HusbandProperty, value); }
         }
     }
 
     public class ListChildImpl : MutableRedSymbolBase, ListChild
     {
-        private string name;
-        private ListParent parent;
-
         public ListChildImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.ListChild.NameProperty);
             this.MAttachProperty(TestModelDescriptor.ListChild.ParentProperty);
+            this.MInit();
+        }
+
+        protected override void MDoInit()
+        {
         }
 
         public override object MMetaClass
@@ -968,20 +974,19 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.ListChild.NameProperty, ref this.name); }
-            set { this.SetValue(TestModelDescriptor.ListChild.NameProperty, ref this.name, value); }
+            get { return this.GetValue<string>(TestModelDescriptor.ListChild.NameProperty); }
+            set { this.SetValue(TestModelDescriptor.ListChild.NameProperty, value); }
         }
 
         public ListParent Parent
         {
-            get { return this.GetValue(TestModelDescriptor.ListChild.ParentProperty, ref this.parent); }
-            set { this.SetValue(TestModelDescriptor.ListChild.ParentProperty, ref this.parent, value); }
+            get { return this.GetValue<ListParent>(TestModelDescriptor.ListChild.ParentProperty); }
+            set { this.SetValue(TestModelDescriptor.ListChild.ParentProperty, value); }
         }
     }
 
     public class ListParentImpl : MutableRedSymbolBase, ListParent
     {
-        private string name;
         private MutableRedList<ListChild> children;
 
         public ListParentImpl(SymbolId green, MutableRedModelPart model)
@@ -989,6 +994,11 @@ namespace MetaDslx.Core.Immutable.Test
         {
             this.MAttachProperty(TestModelDescriptor.ListParent.NameProperty);
             this.MAttachProperty(TestModelDescriptor.ListParent.ChildrenProperty);
+            this.MInit();
+        }
+
+        protected override void MDoInit()
+        {
         }
 
         public override object MMetaClass
@@ -1003,8 +1013,8 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.ListParent.NameProperty, ref this.name); }
-            set { this.SetValue(TestModelDescriptor.ListParent.NameProperty, ref this.name, value); }
+            get { return this.GetValue<string>(TestModelDescriptor.ListParent.NameProperty); }
+            set { this.SetValue(TestModelDescriptor.ListParent.NameProperty, value); }
         }
 
         public ModelList<ListChild> Children
@@ -1016,7 +1026,6 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class UserImpl : MutableRedSymbolBase, User
     {
-        private string name;
         private MutableRedList<Role> roles;
 
         public UserImpl(SymbolId green, MutableRedModelPart model)
@@ -1024,6 +1033,11 @@ namespace MetaDslx.Core.Immutable.Test
         {
             this.MAttachProperty(TestModelDescriptor.User.NameProperty);
             this.MAttachProperty(TestModelDescriptor.User.RolesProperty);
+            this.MInit();
+        }
+
+        protected override void MDoInit()
+        {
         }
 
         public override object MMetaClass
@@ -1038,8 +1052,8 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.User.NameProperty, ref this.name); }
-            set { this.SetValue(TestModelDescriptor.User.NameProperty, ref this.name, value); }
+            get { return this.GetValue<string>(TestModelDescriptor.User.NameProperty); }
+            set { this.SetValue(TestModelDescriptor.User.NameProperty, value); }
         }
 
         public ModelList<Role> Roles
@@ -1051,7 +1065,6 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class RoleImpl : MutableRedSymbolBase, Role
     {
-        private string name;
         private MutableRedList<User> roles;
 
         public RoleImpl(SymbolId green, MutableRedModelPart model)
@@ -1059,6 +1072,11 @@ namespace MetaDslx.Core.Immutable.Test
         {
             this.MAttachProperty(TestModelDescriptor.Role.NameProperty);
             this.MAttachProperty(TestModelDescriptor.Role.UsersProperty);
+            this.MInit();
+        }
+
+        protected override void MDoInit()
+        {
         }
 
         public override object MMetaClass
@@ -1073,8 +1091,8 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Role.NameProperty, ref this.name); }
-            set { this.SetValue(TestModelDescriptor.Role.NameProperty, ref this.name, value); }
+            get { return this.GetValue<string>(TestModelDescriptor.Role.NameProperty); }
+            set { this.SetValue(TestModelDescriptor.Role.NameProperty, value); }
         }
 
         public ModelList<User> Users
@@ -1086,7 +1104,6 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class PersonImpl : MutableRedSymbolBase, Person
     {
-        private string name;
         private MutableRedList<Pet> pets;
 
         public PersonImpl(SymbolId green, MutableRedModelPart model)
@@ -1094,6 +1111,11 @@ namespace MetaDslx.Core.Immutable.Test
         {
             this.MAttachProperty(TestModelDescriptor.Person.NameProperty);
             this.MAttachProperty(TestModelDescriptor.Person.PetsProperty);
+            this.MInit();
+        }
+
+        protected override void MDoInit()
+        {
         }
 
         public override object MMetaClass
@@ -1108,8 +1130,8 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Person.NameProperty, ref this.name); }
-            set { this.SetValue(TestModelDescriptor.Person.NameProperty, ref this.name, value); }
+            get { return this.GetValue<string>(TestModelDescriptor.Person.NameProperty); }
+            set { this.SetValue(TestModelDescriptor.Person.NameProperty, value); }
         }
 
         public ModelList<Pet> Pets
@@ -1121,7 +1143,6 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class StudentImpl : MutableRedSymbolBase, Student
     {
-        private string name;
         private MutableRedList<Pet> pets;
         private MutableRedList<Dog> dogs;
 
@@ -1131,6 +1152,11 @@ namespace MetaDslx.Core.Immutable.Test
             this.MAttachProperty(TestModelDescriptor.Person.NameProperty);
             this.MAttachProperty(TestModelDescriptor.Person.PetsProperty);
             this.MAttachProperty(TestModelDescriptor.Student.DogsProperty);
+            this.MInit();
+        }
+
+        protected override void MDoInit()
+        {
         }
 
         public override object MMetaClass
@@ -1145,8 +1171,8 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Person.NameProperty, ref this.name); }
-            set { this.SetValue(TestModelDescriptor.Person.NameProperty, ref this.name, value); }
+            get { return this.GetValue<string>(TestModelDescriptor.Person.NameProperty); }
+            set { this.SetValue(TestModelDescriptor.Person.NameProperty, value); }
         }
 
         public ModelList<Pet> Pets
@@ -1163,14 +1189,16 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class PetImpl : MutableRedSymbolBase, Pet
     {
-        private string name;
-        private Person owner;
-
         public PetImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Pet.NameProperty);
             this.MAttachProperty(TestModelDescriptor.Pet.OwnerProperty);
+            this.MInit();
+        }
+
+        protected override void MDoInit()
+        {
         }
 
         public override object MMetaClass
@@ -1185,29 +1213,30 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Pet.NameProperty, ref this.name); }
-            set { this.SetValue(TestModelDescriptor.Pet.NameProperty, ref this.name, value); }
+            get { return this.GetValue<string>(TestModelDescriptor.Pet.NameProperty); }
+            set { this.SetValue(TestModelDescriptor.Pet.NameProperty, value); }
         }
 
         public Person Owner
         {
-            get { return this.GetValue(TestModelDescriptor.Pet.OwnerProperty, ref this.owner); }
-            set { this.SetValue(TestModelDescriptor.Pet.OwnerProperty, ref this.owner, value); }
+            get { return this.GetValue<Person>(TestModelDescriptor.Pet.OwnerProperty); }
+            set { this.SetValue(TestModelDescriptor.Pet.OwnerProperty, value); }
         }
     }
 
     public class DogImpl : MutableRedSymbolBase, Dog
     {
-        private string name;
-        private Person owner;
-        private Student friend;
-
         public DogImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Pet.NameProperty);
             this.MAttachProperty(TestModelDescriptor.Pet.OwnerProperty);
             this.MAttachProperty(TestModelDescriptor.Dog.FriendProperty);
+            this.MInit();
+        }
+
+        protected override void MDoInit()
+        {
         }
 
         public override object MMetaClass
@@ -1222,20 +1251,20 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Pet.NameProperty, ref this.name); }
-            set { this.SetValue(TestModelDescriptor.Pet.NameProperty, ref this.name, value); }
+            get { return this.GetValue<string>(TestModelDescriptor.Pet.NameProperty); }
+            set { this.SetValue(TestModelDescriptor.Pet.NameProperty, value); }
         }
 
         public Person Owner
         {
-            get { return this.GetValue(TestModelDescriptor.Pet.OwnerProperty, ref this.owner); }
-            set { this.SetValue(TestModelDescriptor.Pet.OwnerProperty, ref this.owner, value); }
+            get { return this.GetValue<Person>(TestModelDescriptor.Pet.OwnerProperty); }
+            set { this.SetValue(TestModelDescriptor.Pet.OwnerProperty, value); }
         }
 
         public Student Friend
         {
-            get { return this.GetValue(TestModelDescriptor.Dog.FriendProperty, ref this.friend); }
-            set { this.SetValue(TestModelDescriptor.Dog.FriendProperty, ref this.friend, value); }
+            get { return this.GetValue<Student>(TestModelDescriptor.Dog.FriendProperty); }
+            set { this.SetValue(TestModelDescriptor.Dog.FriendProperty, value); }
         }
 
     }

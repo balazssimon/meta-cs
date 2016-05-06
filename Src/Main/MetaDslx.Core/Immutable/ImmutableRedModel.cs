@@ -451,6 +451,11 @@ namespace MetaDslx.Core.Immutable
             {
                 return ((ImmutableRedSymbolBase)value).Green;
             }
+            else if (value is MutableRedSymbolBase)
+            {
+                Debug.Assert(false);
+                return ((MutableRedSymbolBase)value).Green;
+            }
             return value;
         }
 
@@ -495,7 +500,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.model; }
         }
 
-        public bool ContainsSymbol(ImmutableRedSymbol symbol)
+        public bool ContainsSymbol(RedSymbol symbol)
         {
             if (symbol is ImmutableRedSymbolBase)
             {
@@ -508,10 +513,10 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        public MutableRedSymbol AddSymbol(SymbolId symbol)
+        public MutableRedSymbol AddSymbol(SymbolId symbol, ReferenceMode referenceMode = ReferenceMode.Default)
         {
             this.model.EnsureWritable();
-            this.green.AddSymbol(symbol);
+            this.green.AddSymbol(symbol, referenceMode);
             return this.model.GetRedSymbol(this, symbol);
         }
 
@@ -567,6 +572,14 @@ namespace MetaDslx.Core.Immutable
             return this.ToRedValue(greenObject);
         }
 
+        internal Func<object> GetLazyValue(MutableRedSymbolBase symbol, ModelProperty property)
+        {
+            Debug.Assert(!property.IsCollection);
+            GreenLazyValue lazyValue = this.green.GetLazyValue(symbol.Green, property);
+            if (lazyValue != null) return lazyValue.Lazy;
+            else return null;
+        }
+
         internal MutableRedList<T> GetList<T>(MutableRedSymbolBase symbol, ModelProperty property, MutableRedList<T> redList)
         {
             Debug.Assert(property.IsCollection);
@@ -598,20 +611,20 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        internal bool SetValue(MutableRedSymbolBase symbol, ModelProperty property, object redValue)
+        internal bool SetValue(MutableRedSymbolBase symbol, ModelProperty property, object redValue, bool reassign)
         {
             Debug.Assert(!property.IsCollection);
             this.model.EnsureWritable();
             object greenValue = this.ToGreenValue(redValue);
-            return this.green.SetValue(symbol.Green, property, false, greenValue);
+            return this.green.SetValue(symbol.Green, property, reassign, greenValue);
         }
 
-        internal bool SetLazyValue(MutableRedSymbolBase symbol, ModelProperty property, Func<object> redLazy)
+        internal bool SetLazyValue(MutableRedSymbolBase symbol, ModelProperty property, Func<object> redLazy, bool reassign)
         {
             Debug.Assert(!property.IsCollection);
             this.model.EnsureWritable();
             if (redLazy == null) return false;
-            return this.green.SetValue(symbol.Green, property, false, new GreenLazyValue(redLazy));
+            return this.green.SetValue(symbol.Green, property, reassign, new GreenLazyValue(redLazy));
         }
 
         internal bool AddItem(GreenList collection, object greenItem)
@@ -838,10 +851,15 @@ namespace MetaDslx.Core.Immutable
             this.green.MUnset(redSymbol.Green, property);
         }
 
-        internal void CreatedSymbol(MutableRedSymbolBase redSymbol)
+        internal bool MIsCreated(MutableRedSymbolBase redSymbol)
+        {
+            return this.green.MIsCreated(redSymbol.Green);
+        }
+
+        internal void MMakeCreated(MutableRedSymbolBase redSymbol)
         {
             this.model.EnsureWritable();
-            this.green.CreatedSymbol(redSymbol.Green);
+            this.green.MMakeCreated(redSymbol.Green);
         }
     }
 

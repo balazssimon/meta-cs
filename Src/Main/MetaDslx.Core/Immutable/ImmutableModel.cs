@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
+    public enum ReferenceMode
+    {
+        Default,
+        StrongReference,
+        WeakReference
+    }
+    
     // GREEN interface:
 
     public abstract class SymbolId
