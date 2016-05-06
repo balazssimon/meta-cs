@@ -111,7 +111,7 @@ namespace MetaDslx.Core.Immutable
     internal class GreenSymbol
     {
         private static object Unassigned = new object();
-        private static ThreadLocal<TxList<LazyEvalEntry>> lazyEvalStack = new ThreadLocal<TxList<LazyEvalEntry>>(() => new TxList<LazyEvalEntry>());
+        private static ThreadLocal<List<LazyEvalEntry>> lazyEvalStack = new ThreadLocal<List<LazyEvalEntry>>(() => new List<LazyEvalEntry>());
 
         private SymbolId id;
         private GreenModelPart modelPart;
@@ -302,38 +302,46 @@ namespace MetaDslx.Core.Immutable
                 }
                 throw new LazyEvalException("Circular dependency between lazy values.", stack);
             }
-            if (this.TryGetValueCore(property, false, true, false, out lazyValue))
+            try
             {
-                if (lazyValue is GreenLazyValue)
+                lazyEvalStack.Value.Add(entry);
+                if (this.TryGetValueCore(property, false, true, false, out lazyValue))
                 {
-                    object value = this.LazyEvalValue((GreenLazyValue)lazyValue);
-                    this.SetValue(property, true, value);
-                    return value;
-                }
-                else if (lazyValue is GreenList)
-                {
-                    GreenList list = (GreenList)lazyValue;
-                    var lazyItems = list.LazyItems;
-                    list.ClearLazyItems();
-                    foreach (var lazyItem in lazyItems)
+                    if (lazyValue is GreenLazyValue)
                     {
-                        if (lazyItem is GreenLazyValue)
+                        object value = this.LazyEvalValue((GreenLazyValue)lazyValue);
+                        this.SetValue(property, true, value);
+                        return value;
+                    }
+                    else if (lazyValue is GreenList)
+                    {
+                        GreenList list = (GreenList)lazyValue;
+                        var lazyItems = list.LazyItems;
+                        list.ClearLazyItems();
+                        foreach (var lazyItem in lazyItems)
                         {
-                            object value = this.LazyEvalValue((GreenLazyValue)lazyItem);
-                            list.Add(value);
-                            return value;
-                        }
-                        else if (lazyItem is GreenLazyList)
-                        {
-                            List<object> values = this.LazyEvalValue((GreenLazyList)lazyItem);
-                            list.AddRange(values);
-                            return list;
+                            if (lazyItem is GreenLazyValue)
+                            {
+                                object value = this.LazyEvalValue((GreenLazyValue)lazyItem);
+                                list.Add(value);
+                                return value;
+                            }
+                            else if (lazyItem is GreenLazyList)
+                            {
+                                List<object> values = this.LazyEvalValue((GreenLazyList)lazyItem);
+                                list.AddRange(values);
+                                return list;
+                            }
                         }
                     }
+                    return lazyValue;
                 }
-                return lazyValue;
+                return null;
             }
-            return null;
+            finally
+            {
+                lazyEvalStack.Value.RemoveAt(lazyEvalStack.Value.Count - 1);
+            }
         }
 
         internal object LazyEvalValue(GreenLazyValue lazyValue)
