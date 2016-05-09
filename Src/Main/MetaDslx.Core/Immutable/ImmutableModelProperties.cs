@@ -435,6 +435,11 @@ namespace MetaDslx.Core.Immutable
         private void RegisterSubsettedProperty(ModelProperty modelProperty)
         {
             if (modelProperty == null) return;
+            if ((modelProperty.IsCollection && !this.IsCollection) ||
+                (!modelProperty.IsCollection && this.IsCollection))
+            {
+                throw new ModelException("The subsetted property '"+modelProperty+"' must have the same cardinality as the subsetting property '"+this+"'");
+            }
             lock (this)
             {
                 HashSet<ModelProperty> props = new HashSet<ModelProperty>();
@@ -453,11 +458,21 @@ namespace MetaDslx.Core.Immutable
             }
             this.RegisterAddAffectedProperty(modelProperty, false);
             modelProperty.RegisterRemoveAffectedProperty(this, false);
+            if (!this.IsCollection || !modelProperty.IsCollection)
+            {
+                modelProperty.RegisterAddAffectedProperty(this, false);
+                this.RegisterRemoveAffectedProperty(modelProperty, false);
+            }
         }
 
         private void RegisterSubtypedProperty(ModelProperty modelProperty)
         {
             if (modelProperty == null) return;
+            if ((modelProperty.IsCollection && !this.IsCollection) ||
+                (!modelProperty.IsCollection && this.IsCollection))
+            {
+                throw new ModelException("The subtyped property '" + modelProperty + "' must have the same cardinality as the subtyping property '" + this + "'");
+            }
             lock (this)
             {
                 HashSet<ModelProperty> props = new HashSet<ModelProperty>();
@@ -483,6 +498,11 @@ namespace MetaDslx.Core.Immutable
         private void RegisterRedefinedProperty(ModelProperty modelProperty)
         {
             if (modelProperty == null) return;
+            if ((modelProperty.IsCollection && !this.IsCollection) ||
+                (!modelProperty.IsCollection && this.IsCollection))
+            {
+                throw new ModelException("The redefined property '" + modelProperty + "' must have the same cardinality as the redefining property '" + this + "'");
+            }
             lock (this)
             {
                 HashSet<ModelProperty> props = new HashSet<ModelProperty>();
