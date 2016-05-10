@@ -1266,7 +1266,6 @@ namespace MetaDslx.Core.Immutable
         private GreenModelPart baseModelPart;
         private TxValue<bool> changed;
         private TxDictionary<SymbolId, GreenSymbol> symbols;
-        private ConditionalWeakTable<SymbolId, GreenSymbol> weakSymbols;
         private TxDictionary<ModelProperty, TxHashSet<SymbolId>> lazyIndex;
 
         internal GreenModelPart(GreenModel model)
@@ -1274,7 +1273,6 @@ namespace MetaDslx.Core.Immutable
             this.model = model;
             this.changed = new TxValue<bool>(false);
             this.symbols = new TxDictionary<SymbolId, GreenSymbol>();
-            this.weakSymbols = new ConditionalWeakTable<SymbolId, GreenSymbol>();
             this.lazyIndex = new TxDictionary<ModelProperty, TxHashSet<SymbolId>>();
         }
 
@@ -1286,7 +1284,6 @@ namespace MetaDslx.Core.Immutable
             this.symbols = deepCopy ?
                 new TxDictionary<SymbolId, GreenSymbol>(baseModelPart.symbols, symbol => new GreenSymbol(this, symbol)) :
                 new TxDictionary<SymbolId, GreenSymbol>(baseModelPart.symbols, symbol => null);
-            this.weakSymbols = new ConditionalWeakTable<SymbolId, GreenSymbol>();
             this.lazyIndex = new TxDictionary<ModelProperty, TxHashSet<SymbolId>>(baseModelPart.lazyIndex, symbols => new TxHashSet<SymbolId>(symbols));
         }
 
@@ -1355,46 +1352,6 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        internal bool TryGetWeakSymbol(SymbolId id, bool forWriting, bool lookupInModel, out GreenSymbol symbol, out bool readOnly)
-        {
-            Debug.Assert(id != null);
-            if (this.weakSymbols.TryGetValue(id, out symbol))
-            {
-                if (symbol != null)
-                {
-                    readOnly = this.model.IsReadOnly;
-                    return true;
-                }
-            }
-            GreenSymbol baseSymbol;
-            if (this.baseModelPart != null && this.baseModelPart.TryGetWeakSymbol(id, false, lookupInModel, out baseSymbol, out readOnly))
-            {
-                if (forWriting)
-                {
-                    symbol = new GreenSymbol(this, baseSymbol);
-                    this.weakSymbols.Add(id, symbol);
-                    this.changed.Value = true;
-                    readOnly = false;
-                }
-                else
-                {
-                    symbol = baseSymbol;
-                    readOnly = true;
-                }
-                return true;
-            }
-            if (lookupInModel)
-            {
-                if (this.model.ModelPartCrossReference)
-                {
-                    return this.model.TryGetWeakSymbol(this, id, forWriting, out symbol, out readOnly);
-                }
-            }
-            symbol = null;
-            readOnly = true;
-            return false;
-        }
-
         private GreenSymbol GetSymbol(SymbolId id, bool forWriting)
         {
             GreenSymbol symbol;
@@ -1404,26 +1361,14 @@ namespace MetaDslx.Core.Immutable
                 if (readOnly && forWriting) return null;
                 return symbol;
             }
-            if (this.TryGetWeakSymbol(id, forWriting, false, out symbol, out readOnly))
-            {
-                if (readOnly && forWriting) return null;
-                return symbol;
-            }
             return null;
         }
 
-        internal void AddSymbol(SymbolId id, ReferenceMode refMode)
+        internal void AddSymbol(SymbolId id)
         {
             Debug.Assert(id != null);
             if (this.model.ContainsSymbol(id)) return;
-            if (refMode == ReferenceMode.WeakReference)
-            {
-                this.weakSymbols.Add(id, new GreenSymbol(this, id));
-            }
-            else
-            {
-                this.symbols.Add(id, new GreenSymbol(this, id));
-            }
+            this.symbols.Add(id, new GreenSymbol(this, id));
         }
 
         internal void RemoveSymbol(SymbolId id)
@@ -1471,7 +1416,7 @@ namespace MetaDslx.Core.Immutable
         internal bool ContainsSymbol(SymbolId id)
         {
             GreenSymbol weakSymbol;
-            return this.symbols.ContainsKey(id) || this.weakSymbols.TryGetValue(id, out weakSymbol);
+            return this.symbols.ContainsKey(id);
         }
 
         internal object GetValue(SymbolId id, ModelProperty property, bool lazyEval)
@@ -1986,37 +1931,6 @@ namespace MetaDslx.Core.Immutable
                     if (part != callerModelPart)
                     {
                         if (part.TryGetSymbol(id, forWriting, false, out symbol, out readOnly))
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-            symbol = null;
-            readOnly = true;
-            return false;
-        }
-
-        internal bool TryGetWeakSymbol(GreenModelPart callerModelPart, SymbolId id, bool forWriting, out GreenSymbol symbol, out bool readOnly)
-        {
-            //Debug.Assert(!this.readOnly || !forWriting);
-            if (this.singlePart.Value != null)
-            {
-                if (this.singlePart.Value != callerModelPart)
-                {
-                    if (this.singlePart.Value.TryGetWeakSymbol(id, forWriting, false, out symbol, out readOnly))
-                    {
-                        return true;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var part in this.parts)
-                {
-                    if (part != callerModelPart)
-                    {
-                        if (part.TryGetWeakSymbol(id, forWriting, false, out symbol, out readOnly))
                         {
                             return true;
                         }

@@ -133,4 +133,54 @@ namespace MetaDslx.Core.Immutable
     {
 
     }
+
+    public abstract class ModelFactory
+    {
+        private MutableRedModel model;
+        private MutableRedModelPart part;
+
+        public ModelFactory()
+        {
+            this.model = new MutableRedModel();
+            var parts = this.model.Parts.ToList();
+            if (parts.Count != 1)
+            {
+                throw new ModelException("The model must have exactly one part.");
+            }
+            this.part = parts[0];
+        }
+
+        public ModelFactory(MutableRedModel model)
+        {
+            this.model = model;
+            var parts = this.model.Parts.ToList();
+            if (parts.Count != 1)
+            {
+                throw new ModelException("The model must have exactly one part.");
+            }
+            this.part = parts[0];
+        }
+
+        public ModelFactory(MutableRedModel model, MutableRedModelPart part)
+        {
+            this.model = model;
+            if (!model.Parts.Contains(part))
+            {
+                throw new ModelException("The model must contain the given part.");
+            }
+            this.part = part;
+        }
+
+        public MutableRedModel Model { get { return this.model; } }
+        public MutableRedModelPart ModelPart { get { return this.part; } }
+
+        protected MutableRedSymbol AddSymbol(SymbolId id)
+        {
+            MutableRedSymbol symbol = this.part.AddSymbol(id);
+            ((MutableRedSymbolBase)symbol).MMakeCreated();
+            return symbol;
+        }
+
+        public abstract MutableRedSymbol Create(string type);
+    }
 }

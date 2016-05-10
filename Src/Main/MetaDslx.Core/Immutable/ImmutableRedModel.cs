@@ -523,10 +523,10 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        public MutableRedSymbol AddSymbol(SymbolId symbol, ReferenceMode referenceMode = ReferenceMode.Default)
+        public MutableRedSymbol AddSymbol(SymbolId symbol)
         {
             this.model.EnsureWritable();
-            this.green.AddSymbol(symbol, referenceMode);
+            this.green.AddSymbol(symbol);
             return this.model.GetRedSymbol(this, symbol);
         }
 

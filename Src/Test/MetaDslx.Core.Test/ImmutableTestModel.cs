@@ -160,117 +160,88 @@ namespace MetaDslx.Core.Immutable.Test
         }
     }
 
-    public class TestModelFactory
+    public class TestModelFactory : ModelFactory
     {
-        private MutableRedModel model;
-        private MutableRedModelPart part;
+        public TestModelFactory()
+            : base()
+        {
+        }
 
         public TestModelFactory(MutableRedModel model)
+            : base(model)
         {
             TestModelDescriptor.Init();
-            this.model = model;
-            var parts = this.model.Parts.ToList();
-            if (parts.Count != 1)
-            {
-                throw new ModelException("The model must have exactly one part.");
-            }
-            this.part = parts[0];
         }
 
         public TestModelFactory(MutableRedModel model, MutableRedModelPart part)
+            : base(model, part)
         {
             TestModelDescriptor.Init();
-            this.model = model;
-            if (!model.Parts.Contains(part))
-            {
-                throw new ModelException("The model must contain the given part.");
-            }
-            this.part = part;
         }
 
-        public MutableRedSymbol Create(string type, ReferenceMode referenceMode = ReferenceMode.Default)
+        public override MutableRedSymbol Create(string type)
         {
             switch (type)
             {
-                case "Husband": return (MutableRedSymbol)this.Husband(referenceMode);
-                case "Wife": return (MutableRedSymbol)this.Wife(referenceMode);
-                case "ListChild": return (MutableRedSymbol)this.ListChild(referenceMode);
-                case "ListParent": return (MutableRedSymbol)this.ListParent(referenceMode);
-                case "User": return (MutableRedSymbol)this.User(referenceMode);
-                case "Role": return (MutableRedSymbol)this.Role(referenceMode);
+                case "Husband": return (MutableRedSymbol)this.Husband();
+                case "Wife": return (MutableRedSymbol)this.Wife();
+                case "ListChild": return (MutableRedSymbol)this.ListChild();
+                case "ListParent": return (MutableRedSymbol)this.ListParent();
+                case "User": return (MutableRedSymbol)this.User();
+                case "Role": return (MutableRedSymbol)this.Role();
                 default:
-                    return null;
+                    throw new ModelException("Unknown type name: " + type);
             }
         }
 
-        public Husband Husband(ReferenceMode referenceMode = ReferenceMode.Default)
+        public Husband Husband()
         {
-            var symbol = (Husband)part.AddSymbol(new GreenHusband(), referenceMode);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
-            return symbol;
+            return (Husband)this.AddSymbol(new GreenHusband());
         }
 
-        public Wife Wife(ReferenceMode referenceMode = ReferenceMode.Default)
+        public Wife Wife()
         {
-            var symbol = (Wife)part.AddSymbol(new GreenWife(), referenceMode);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
-            return symbol;
+            return (Wife)this.AddSymbol(new GreenWife());
         }
 
-        public ListChild ListChild(ReferenceMode referenceMode = ReferenceMode.Default)
+        public ListChild ListChild()
         {
-            var symbol = (ListChild)part.AddSymbol(new GreenListChild(), referenceMode);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
-            return symbol;
+            return (ListChild)this.AddSymbol(new GreenListChild());
         }
 
-        public ListParent ListParent(ReferenceMode referenceMode = ReferenceMode.Default)
+        public ListParent ListParent()
         {
-            var symbol = (ListParent)part.AddSymbol(new GreenListParent(), referenceMode);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
-            return symbol;
+            return (ListParent)this.AddSymbol(new GreenListParent());
         }
 
-        public User User(ReferenceMode referenceMode = ReferenceMode.Default)
+        public User User()
         {
-            var symbol = (User)part.AddSymbol(new GreenUser(), referenceMode);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
-            return symbol;
+            return (User)this.AddSymbol(new GreenUser());
         }
 
-        public Role Role(ReferenceMode referenceMode = ReferenceMode.Default)
+        public Role Role()
         {
-            var symbol = (Role)part.AddSymbol(new GreenRole(), referenceMode);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
-            return symbol;
+            return (Role)this.AddSymbol(new GreenRole());
         }
 
-        public Person Person(ReferenceMode referenceMode = ReferenceMode.Default)
+        public Person Person()
         {
-            var symbol = (Person)part.AddSymbol(new GreenPerson(), referenceMode);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
-            return symbol;
+            return (Person)this.AddSymbol(new GreenPerson());
         }
 
-        public Student Student(ReferenceMode referenceMode = ReferenceMode.Default)
+        public Student Student()
         {
-            var symbol = (Student)part.AddSymbol(new GreenStudent(), referenceMode);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
-            return symbol;
+            return (Student)this.AddSymbol(new GreenStudent());
         }
 
-        public Pet Pet(ReferenceMode referenceMode = ReferenceMode.Default)
+        public Pet Pet()
         {
-            var symbol = (Pet)part.AddSymbol(new GreenPet(), referenceMode);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
-            return symbol;
+            return (Pet)this.AddSymbol(new GreenPet());
         }
 
-        public Dog Dog(ReferenceMode referenceMode = ReferenceMode.Default)
+        public Dog Dog()
         {
-            var symbol = (Dog)part.AddSymbol(new GreenDog(), referenceMode);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
-            return symbol;
+            return (Dog)this.AddSymbol(new GreenDog());
         }
     }
 
