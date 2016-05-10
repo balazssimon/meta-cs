@@ -550,12 +550,12 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Husband.NameProperty, ref this.name); }
+            get { return this.GetReference(TestModelDescriptor.Husband.NameProperty, ref this.name); }
         }
 
         public ImmutableWife Wife
         {
-            get { return this.GetValue(TestModelDescriptor.Husband.WifeProperty, ref this.wife); }
+            get { return this.GetReference(TestModelDescriptor.Husband.WifeProperty, ref this.wife); }
         }
     }
 
@@ -581,12 +581,12 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Wife.NameProperty, ref this.name); }
+            get { return this.GetReference(TestModelDescriptor.Wife.NameProperty, ref this.name); }
         }
 
         public ImmutableHusband Husband
         {
-            get { return this.GetValue(TestModelDescriptor.Wife.HusbandProperty, ref this.husband); }
+            get { return this.GetReference(TestModelDescriptor.Wife.HusbandProperty, ref this.husband); }
         }
     }
 
@@ -612,19 +612,19 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.ListChild.NameProperty, ref this.name); }
+            get { return this.GetReference(TestModelDescriptor.ListChild.NameProperty, ref this.name); }
         }
 
         public ImmutableListParent Parent
         {
-            get { return this.GetValue(TestModelDescriptor.ListChild.ParentProperty, ref this.parent); }
+            get { return this.GetReference(TestModelDescriptor.ListChild.ParentProperty, ref this.parent); }
         }
     }
 
     public class ImmutableListParentImpl : ImmutableRedSymbolBase, ImmutableListParent
     {
         private string name;
-        private ImmutableRedList<ImmutableListChild> children;
+        private ImmutableModelList<ImmutableListChild> children;
 
         public ImmutableListParentImpl(SymbolId green, ImmutableRedModelPart model)
             : base(green, model)
@@ -643,7 +643,7 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.ListParent.NameProperty, ref this.name); }
+            get { return this.GetReference(TestModelDescriptor.ListParent.NameProperty, ref this.name); }
         }
 
         public ImmutableModelList<ImmutableListChild> Children
@@ -655,7 +655,7 @@ namespace MetaDslx.Core.Immutable.Test
     public class ImmutableUserImpl : ImmutableRedSymbolBase, ImmutableUser
     {
         private string name;
-        private ImmutableRedList<ImmutableRole> roles;
+        private ImmutableModelList<ImmutableRole> roles;
 
         public ImmutableUserImpl(SymbolId green, ImmutableRedModelPart model)
             : base(green, model)
@@ -674,7 +674,7 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.User.NameProperty, ref this.name); }
+            get { return this.GetReference(TestModelDescriptor.User.NameProperty, ref this.name); }
         }
 
         public ImmutableModelList<ImmutableRole> Roles
@@ -686,7 +686,7 @@ namespace MetaDslx.Core.Immutable.Test
     public class ImmutableRoleImpl : ImmutableRedSymbolBase, ImmutableRole
     {
         private string name;
-        private ImmutableRedList<ImmutableUser> users;
+        private ImmutableModelList<ImmutableUser> users;
 
         public ImmutableRoleImpl(SymbolId green, ImmutableRedModelPart model)
             : base(green, model)
@@ -705,7 +705,7 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Role.NameProperty, ref this.name); }
+            get { return this.GetReference(TestModelDescriptor.Role.NameProperty, ref this.name); }
         }
 
         public ImmutableModelList<ImmutableUser> Users
@@ -717,7 +717,7 @@ namespace MetaDslx.Core.Immutable.Test
     public class ImmutablePersonImpl : ImmutableRedSymbolBase, ImmutablePerson
     {
         private string name;
-        private ImmutableRedList<ImmutablePet> pets;
+        private ImmutableModelList<ImmutablePet> pets;
 
         public ImmutablePersonImpl(SymbolId green, ImmutableRedModelPart model)
             : base(green, model)
@@ -736,7 +736,7 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Person.NameProperty, ref this.name); }
+            get { return this.GetReference(TestModelDescriptor.Person.NameProperty, ref this.name); }
         }
 
         public ImmutableModelList<ImmutablePet> Pets
@@ -748,8 +748,8 @@ namespace MetaDslx.Core.Immutable.Test
     public class ImmutableStudentImpl : ImmutableRedSymbolBase, ImmutableStudent
     {
         private string name;
-        private ImmutableRedList<ImmutablePet> pets;
-        private ImmutableRedList<ImmutableDog> dogs;
+        private ImmutableModelList<ImmutablePet> pets;
+        private ImmutableModelList<ImmutableDog> dogs;
 
         public ImmutableStudentImpl(SymbolId green, ImmutableRedModelPart model)
             : base(green, model)
@@ -768,7 +768,7 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Person.NameProperty, ref this.name); }
+            get { return this.GetReference(TestModelDescriptor.Person.NameProperty, ref this.name); }
         }
 
         public ImmutableModelList<ImmutablePet> Pets
@@ -804,12 +804,12 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Pet.NameProperty, ref this.name); }
+            get { return this.GetReference(TestModelDescriptor.Pet.NameProperty, ref this.name); }
         }
 
         public ImmutablePerson Owner
         {
-            get { return this.GetValue(TestModelDescriptor.Pet.OwnerProperty, ref this.owner); }
+            get { return this.GetReference(TestModelDescriptor.Pet.OwnerProperty, ref this.owner); }
         }
     }
 
@@ -836,17 +836,17 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue(TestModelDescriptor.Pet.NameProperty, ref this.name); }
+            get { return this.GetReference(TestModelDescriptor.Pet.NameProperty, ref this.name); }
         }
 
         public ImmutablePerson Owner
         {
-            get { return this.GetValue(TestModelDescriptor.Pet.OwnerProperty, ref this.owner); }
+            get { return this.GetReference(TestModelDescriptor.Pet.OwnerProperty, ref this.owner); }
         }
 
         public ImmutableStudent Friend
         {
-            get { return this.GetValue(TestModelDescriptor.Dog.FriendProperty, ref this.friend); }
+            get { return this.GetReference(TestModelDescriptor.Dog.FriendProperty, ref this.friend); }
         }
     }
 
@@ -876,26 +876,26 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue<string>(TestModelDescriptor.Husband.NameProperty); }
-            set { this.SetValue(TestModelDescriptor.Husband.NameProperty, value); }
+            get { return this.GetReference<string>(TestModelDescriptor.Husband.NameProperty); }
+            set { this.SetReference(TestModelDescriptor.Husband.NameProperty, value); }
         }
 
         public Func<string> NameLazy
         {
-            get { return this.GetLazyValue<string>(TestModelDescriptor.Husband.NameProperty); }
-            set { this.SetLazyValue(TestModelDescriptor.Husband.NameProperty, value); }
+            get { return this.GetLazyReference<string>(TestModelDescriptor.Husband.NameProperty); }
+            set { this.SetLazyReference(TestModelDescriptor.Husband.NameProperty, value); }
         }
 
         public Wife Wife
         {
-            get { return this.GetValue<Wife>(TestModelDescriptor.Husband.WifeProperty); }
-            set { this.SetValue(TestModelDescriptor.Husband.WifeProperty, value); }
+            get { return this.GetReference<Wife>(TestModelDescriptor.Husband.WifeProperty); }
+            set { this.SetReference(TestModelDescriptor.Husband.WifeProperty, value); }
         }
 
         public Func<Wife> WifeLazy
         {
-            get { return this.GetLazyValue<Wife>(TestModelDescriptor.Husband.WifeProperty); }
-            set { this.SetLazyValue(TestModelDescriptor.Husband.WifeProperty, value); }
+            get { return this.GetLazyReference<Wife>(TestModelDescriptor.Husband.WifeProperty); }
+            set { this.SetLazyReference(TestModelDescriptor.Husband.WifeProperty, value); }
         }
 
     }
@@ -926,14 +926,14 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue<string>(TestModelDescriptor.Wife.NameProperty); }
-            set { this.SetValue(TestModelDescriptor.Wife.NameProperty, value); }
+            get { return this.GetReference<string>(TestModelDescriptor.Wife.NameProperty); }
+            set { this.SetReference(TestModelDescriptor.Wife.NameProperty, value); }
         }
 
         public Husband Husband
         {
-            get { return this.GetValue<Husband>(TestModelDescriptor.Wife.HusbandProperty); }
-            set { this.SetValue(TestModelDescriptor.Wife.HusbandProperty, value); }
+            get { return this.GetReference<Husband>(TestModelDescriptor.Wife.HusbandProperty); }
+            set { this.SetReference(TestModelDescriptor.Wife.HusbandProperty, value); }
         }
     }
 
@@ -963,20 +963,20 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue<string>(TestModelDescriptor.ListChild.NameProperty); }
-            set { this.SetValue(TestModelDescriptor.ListChild.NameProperty, value); }
+            get { return this.GetReference<string>(TestModelDescriptor.ListChild.NameProperty); }
+            set { this.SetReference(TestModelDescriptor.ListChild.NameProperty, value); }
         }
 
         public ListParent Parent
         {
-            get { return this.GetValue<ListParent>(TestModelDescriptor.ListChild.ParentProperty); }
-            set { this.SetValue(TestModelDescriptor.ListChild.ParentProperty, value); }
+            get { return this.GetReference<ListParent>(TestModelDescriptor.ListChild.ParentProperty); }
+            set { this.SetReference(TestModelDescriptor.ListChild.ParentProperty, value); }
         }
     }
 
     public class ListParentImpl : MutableRedSymbolBase, ListParent
     {
-        private MutableRedList<ListChild> children;
+        private ModelList<ListChild> children;
 
         public ListParentImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
@@ -1002,8 +1002,8 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue<string>(TestModelDescriptor.ListParent.NameProperty); }
-            set { this.SetValue(TestModelDescriptor.ListParent.NameProperty, value); }
+            get { return this.GetReference<string>(TestModelDescriptor.ListParent.NameProperty); }
+            set { this.SetReference(TestModelDescriptor.ListParent.NameProperty, value); }
         }
 
         public ModelList<ListChild> Children
@@ -1015,7 +1015,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class UserImpl : MutableRedSymbolBase, User
     {
-        private MutableRedList<Role> roles;
+        private ModelList<Role> roles;
 
         public UserImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
@@ -1041,8 +1041,8 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue<string>(TestModelDescriptor.User.NameProperty); }
-            set { this.SetValue(TestModelDescriptor.User.NameProperty, value); }
+            get { return this.GetReference<string>(TestModelDescriptor.User.NameProperty); }
+            set { this.SetReference(TestModelDescriptor.User.NameProperty, value); }
         }
 
         public ModelList<Role> Roles
@@ -1054,7 +1054,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class RoleImpl : MutableRedSymbolBase, Role
     {
-        private MutableRedList<User> roles;
+        private ModelList<User> roles;
 
         public RoleImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
@@ -1080,8 +1080,8 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue<string>(TestModelDescriptor.Role.NameProperty); }
-            set { this.SetValue(TestModelDescriptor.Role.NameProperty, value); }
+            get { return this.GetReference<string>(TestModelDescriptor.Role.NameProperty); }
+            set { this.SetReference(TestModelDescriptor.Role.NameProperty, value); }
         }
 
         public ModelList<User> Users
@@ -1093,7 +1093,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class PersonImpl : MutableRedSymbolBase, Person
     {
-        private MutableRedList<Pet> pets;
+        private ModelList<Pet> pets;
 
         public PersonImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
@@ -1119,8 +1119,8 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue<string>(TestModelDescriptor.Person.NameProperty); }
-            set { this.SetValue(TestModelDescriptor.Person.NameProperty, value); }
+            get { return this.GetReference<string>(TestModelDescriptor.Person.NameProperty); }
+            set { this.SetReference(TestModelDescriptor.Person.NameProperty, value); }
         }
 
         public ModelList<Pet> Pets
@@ -1132,8 +1132,8 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class StudentImpl : MutableRedSymbolBase, Student
     {
-        private MutableRedList<Pet> pets;
-        private MutableRedList<Dog> dogs;
+        private ModelList<Pet> pets;
+        private ModelList<Dog> dogs;
 
         public StudentImpl(SymbolId green, MutableRedModelPart model)
             : base(green, model)
@@ -1160,8 +1160,8 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue<string>(TestModelDescriptor.Person.NameProperty); }
-            set { this.SetValue(TestModelDescriptor.Person.NameProperty, value); }
+            get { return this.GetReference<string>(TestModelDescriptor.Person.NameProperty); }
+            set { this.SetReference(TestModelDescriptor.Person.NameProperty, value); }
         }
 
         public ModelList<Pet> Pets
@@ -1202,14 +1202,14 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue<string>(TestModelDescriptor.Pet.NameProperty); }
-            set { this.SetValue(TestModelDescriptor.Pet.NameProperty, value); }
+            get { return this.GetReference<string>(TestModelDescriptor.Pet.NameProperty); }
+            set { this.SetReference(TestModelDescriptor.Pet.NameProperty, value); }
         }
 
         public Person Owner
         {
-            get { return this.GetValue<Person>(TestModelDescriptor.Pet.OwnerProperty); }
-            set { this.SetValue(TestModelDescriptor.Pet.OwnerProperty, value); }
+            get { return this.GetReference<Person>(TestModelDescriptor.Pet.OwnerProperty); }
+            set { this.SetReference(TestModelDescriptor.Pet.OwnerProperty, value); }
         }
     }
 
@@ -1240,20 +1240,20 @@ namespace MetaDslx.Core.Immutable.Test
 
         public string Name
         {
-            get { return this.GetValue<string>(TestModelDescriptor.Pet.NameProperty); }
-            set { this.SetValue(TestModelDescriptor.Pet.NameProperty, value); }
+            get { return this.GetReference<string>(TestModelDescriptor.Pet.NameProperty); }
+            set { this.SetReference(TestModelDescriptor.Pet.NameProperty, value); }
         }
 
         public Person Owner
         {
-            get { return this.GetValue<Person>(TestModelDescriptor.Pet.OwnerProperty); }
-            set { this.SetValue(TestModelDescriptor.Pet.OwnerProperty, value); }
+            get { return this.GetReference<Person>(TestModelDescriptor.Pet.OwnerProperty); }
+            set { this.SetReference(TestModelDescriptor.Pet.OwnerProperty, value); }
         }
 
         public Student Friend
         {
-            get { return this.GetValue<Student>(TestModelDescriptor.Dog.FriendProperty); }
-            set { this.SetValue(TestModelDescriptor.Dog.FriendProperty, value); }
+            get { return this.GetReference<Student>(TestModelDescriptor.Dog.FriendProperty); }
+            set { this.SetReference(TestModelDescriptor.Dog.FriendProperty, value); }
         }
 
     }

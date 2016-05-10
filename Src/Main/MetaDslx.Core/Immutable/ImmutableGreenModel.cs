@@ -1415,7 +1415,6 @@ namespace MetaDslx.Core.Immutable
 
         internal bool ContainsSymbol(SymbolId id)
         {
-            GreenSymbol weakSymbol;
             return this.symbols.ContainsKey(id);
         }
 

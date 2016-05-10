@@ -22,6 +22,18 @@ namespace MetaDslx.Core.Immutable
         }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
+            where T : struct
+        {
+            if (default(T).Equals(value))
+            {
+                object valueObj = this.part.GetValue(this, property);
+                if (valueObj == null) value = default(T);
+                else value = (T)valueObj;
+            }
+            return value;
+        }
+
+        protected T GetReference<T>(ModelProperty property, ref T value)
             where T : class
         {
             T result = value;
@@ -33,9 +45,9 @@ namespace MetaDslx.Core.Immutable
             return result;
         }
 
-        protected ImmutableRedList<T> GetList<T>(ModelProperty property, ref ImmutableRedList<T> value)
+        protected ImmutableModelList<T> GetList<T>(ModelProperty property, ref ImmutableModelList<T> value)
         {
-            ImmutableRedList<T> result = value;
+            ImmutableModelList<T> result = value;
             if (result == null)
             {
                 result = this.part.GetList<T>(this, property);
@@ -163,12 +175,26 @@ namespace MetaDslx.Core.Immutable
         }
 
         protected T GetValue<T>(ModelProperty property)
+            where T : struct
+        {
+            object valueObj = this.part.GetValue(this, property);
+            if (valueObj == null) return default(T);
+            else return (T)valueObj;
+        }
+
+        protected void SetValue<T>(ModelProperty property, T value)
+            where T : struct
+        {
+            this.part.SetValue(this, property, value, !this.MIsCreated);
+        }
+
+        protected T GetReference<T>(ModelProperty property)
             where T : class
         {
             return (T)this.part.GetValue(this, property);
         }
 
-        protected void SetValue<T>(ModelProperty property, T value)
+        protected void SetReference<T>(ModelProperty property, T value)
             where T : class
         {
             if (value is MutableRedSymbolBase && ((MutableRedSymbolBase)(object)value).part != this.part)
@@ -179,20 +205,32 @@ namespace MetaDslx.Core.Immutable
         }
 
         protected Func<T> GetLazyValue<T>(ModelProperty property)
+            where T : struct
+        {
+            return (Func<T>)(object)this.part.GetLazyValue(this, property);
+        }
+
+        protected void SetLazyValue<T>(ModelProperty property, Func<T> value)
+            where T : struct
+        {
+            this.part.SetLazyValue(this, property, (Func<object>)(object)value, !this.MIsCreated);
+        }
+
+        protected Func<T> GetLazyReference<T>(ModelProperty property)
             where T : class
         {
             return (Func<T>)this.part.GetLazyValue(this, property);
         }
 
-        protected void SetLazyValue<T>(ModelProperty property, Func<T> value)
+        protected void SetLazyReference<T>(ModelProperty property, Func<T> value)
             where T : class
         {
             this.part.SetLazyValue(this, property, value, !this.MIsCreated);
         }
 
-        protected MutableRedList<T> GetList<T>(ModelProperty property, ref MutableRedList<T> value)
+        protected ModelList<T> GetList<T>(ModelProperty property, ref ModelList<T> value)
         {
-            MutableRedList<T> result = this.part.GetList(this, property, value);
+            ModelList<T> result = this.part.GetList(this, property, value);
             Interlocked.Exchange(ref value, result);
             return value;
         }

@@ -139,6 +139,16 @@ namespace MetaDslx.TempConsole
                     }
                 }
                 //*/
+                //*
+                using (ModelContextScope scope = new ModelContextScope(MetaInstance.Model))
+                {
+                    ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(ModelContext.Current.Model.Instances);
+                    using (StreamWriter writer = new StreamWriter(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.cs"))
+                    {
+                        writer.WriteLine(generator.Generate());
+                    }
+                }
+                //*/
                 //PrintScope("", (ModelObject)MetaDescriptor.MetaModel.GetMetaClass().Namespace.Parent);
                 /*
                 Console.WriteLine("----");

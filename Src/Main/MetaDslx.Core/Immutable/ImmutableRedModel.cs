@@ -590,7 +590,7 @@ namespace MetaDslx.Core.Immutable
             else return null;
         }
 
-        internal MutableRedList<T> GetList<T>(MutableRedSymbolBase symbol, ModelProperty property, MutableRedList<T> redList)
+        internal ModelList<T> GetList<T>(MutableRedSymbolBase symbol, ModelProperty property, ModelList<T> modelList)
         {
             Debug.Assert(property.IsCollection);
             object greenObject;
@@ -605,6 +605,7 @@ namespace MetaDslx.Core.Immutable
             }
             if (greenObject is GreenList)
             {
+                MutableRedList<T> redList = modelList as MutableRedList<T>;
                 if (redList == null)
                 {
                     return new MutableRedList<T>((GreenList)greenObject, this);

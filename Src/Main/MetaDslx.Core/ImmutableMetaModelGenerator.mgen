@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.Core;
+using System.Diagnostics;
 ^
 	[loop(Instances->mm:typeof(MetaModel))]
 [GenerateMetamodel(mm)]
@@ -17,7 +18,7 @@ using MetaDslx.Core;
 end template
 
 template GenerateMetamodel(MetaModel model)
-namespace [model.Namespace.CSharpName()]
+namespace [model.Namespace.CSharpName(ClassKind.Immutable)]
 {
     [GenerateMetaModelDescriptor(model)]
 	[loop(model->Namespace->Declarations->enm:typeof(MetaEnum))]
@@ -63,12 +64,28 @@ function string GetAncestors(MetaClass cls, ClassKind classKind)
 		result += delim+super.CSharpFullName(classKind);
 	end loop
 	if (result == "") 
-		result = "global::MetaDslx.Core.Immutable.RedSymbol";
+		result = " : global::MetaDslx.Core.Immutable.RedSymbol";
 	end if
 	return result;
 end function
 
 template GenerateImmutableInterface(MetaClass cls)
+internal class [cls.CSharpName(ClassKind.Immutable)]Id : SymbolId
+{
+    public override Type ImmutableType { get { return typeof([cls.CSharpName(ClassKind.Immutable)]); } }
+    public override Type MutableType { get { return typeof([cls.CSharpName(ClassKind.Builder)]); } }
+^
+    public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+    {
+        return new [cls.CSharpImplName(ClassKind.Immutable)](this, model);
+    }
+^
+    public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+    {
+        return new [cls.CSharpImplName(ClassKind.Builder)](this, model);
+    }
+}
+^
 [GenerateAnnotations(cls)]
 public interface [cls.CSharpName(ClassKind.Immutable)][GetAncestors(cls, ClassKind.Immutable)]
 {
@@ -114,6 +131,12 @@ new \
 	[else]
 [prop.Type.CSharpFullPublicName(ClassKind.Builder)] [prop.Name] { get; }
 	[end if]
+[if(!(prop.Type is MetaCollectionType))]
+	[if (prop.Class.GetAllSuperPropertyNames().Contains(prop.Name))]
+new \
+	[end if]
+Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Name]Lazy { get; set; }
+[end if]
 end template
 
 template GenerateBuilderField(MetaProperty prop)
@@ -138,7 +161,7 @@ function string GetImplParameters(MetaClass cls, MetaOperation op)
 end function
 
 function string GetImplParameters(MetaEnum enm, MetaOperation op)
-	string result = enm.CSharpFullName()+" @this";
+	string result = enm.CSharpFullName(ClassKind.Immutable)+" @this";
 	string delim = ", ";
 	loop(op->param:Parameters)
 		result += delim+param.Type.CSharpFullPublicName(ClassKind.Immutable)+" "+param.Name;
@@ -147,7 +170,7 @@ function string GetImplParameters(MetaEnum enm, MetaOperation op)
 end function
 
 function string GetEnumImplParameters(MetaEnum enm, MetaOperation op)
-	string result = "this "+enm.CSharpFullName()+" @this";
+	string result = "this "+enm.CSharpFullName(ClassKind.Immutable)+" @this";
 	string delim = ", ";
 	loop(op->param:Parameters)
 		result += delim+param.Type.CSharpFullPublicName(ClassKind.Immutable)+" "+param.Name;
@@ -180,7 +203,7 @@ end template
 template GenerateImmutableInterfaceImpl(MetaModel model, MetaClass cls)
 internal class [cls.CSharpImplName(ClassKind.Immutable)] : global::MetaDslx.Core.Immutable.ImmutableRedSymbolBase, [cls.CSharpFullName(ClassKind.Immutable)]
 {
-    [loop(cls->prop:Properties)]
+    [loop(cls->prop:GetAllFinalProperties())]
     [GenerateImmutableField(prop)]
 	[end loop]
 ^
@@ -189,12 +212,12 @@ internal class [cls.CSharpImplName(ClassKind.Immutable)] : global::MetaDslx.Core
     {
     }
 ^
-    public override global::MetaDslx.Core.Immutable.MetaModel MMetaModel
+    public override object MMetaModel
     {
         get { return null;/*[cls.Model.CSharpFullInstanceName()];*/ }
     }
 ^
-    public override global::MetaDslx.Core.Immutable.ImmutableRedSymbol MMetaClass
+    public override object MMetaClass
     {
         get { return null; /*[cls.CSharpFullInstanceName()];*/ }
     }
@@ -212,7 +235,7 @@ end template
 template GenerateBuilderInterfaceImpl(MetaModel model, MetaClass cls)
 internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, [cls.CSharpFullName(ClassKind.Builder)]
 {
-    [loop(cls->prop:Properties where prop.Type is MetaCollectionType)]
+    [loop(cls->prop:GetAllFinalProperties() where prop.Type is MetaCollectionType)]
     [GenerateBuilderField(prop)]
 	[end loop]
 ^
@@ -220,21 +243,22 @@ internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.I
 		: base(id, model)
     {
 		[loop(cls->prop:GetAllProperties())]
-        this.MAttachProperty([prop.CSharpFullDescriptorName()]);
+        this.MAttachProperty([prop.CSharpFullDescriptorName(ClassKind.Immutable)]);
 		[end loop]
         this.MInit();
     }
 ^
     protected override void MDoInit()
     {
+		[model.Name]ImplementationProvider.Implementation.[cls.CSharpName()](this);
     }
 ^
-    public override global::MetaDslx.Core.MetaModel MMetaModel
+    public override object MMetaModel
     {
         get { return null;/*[cls.Model.CSharpFullInstanceName()];*/ }
     }
 ^
-    public override global::MetaDslx.Core.Immutable.MutableRedSymbol MMetaClass
+    public override object MMetaClass
     {
         get { return null;/*[cls.CSharpFullInstanceName()];*/ }
     }
@@ -259,14 +283,14 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 ["[OppositeAttribute(typeof("][p.Class.CSharpFullDescriptorName()]["), \""][p.Name]["\")]"]
 [end if]
 [loop(p:prop.SubsettedProperties)]
-	[if(cls.GetAllSuperClasses(false).Contains(p.Class))]
+	[if(cls.GetAllSuperClasses(true).Contains(p.Class))]
 ["[SubsetsAttribute(typeof("][p.Class.CSharpFullDescriptorName()]["), \""][p.Name]["\")]"]
 	[else]
 // ERROR: subsetted property '[p.CSharpFullDescriptorName()]' must be a property of an ancestor class
 	[end if]
 [end if]
 [loop(p:prop.RedefinedProperties)]
-	[if(cls.GetAllSuperClasses(false).Contains(p.Class))]
+	[if(cls.GetAllSuperClasses(true).Contains(p.Class))]
 ["[RedefinesAttribute(typeof("][p.Class.CSharpFullDescriptorName()]["), \""][p.Name]["\")]"]
 	[else]
 // ERROR: redefined property '[p.CSharpFullDescriptorName()]' must be a property of an ancestor class
@@ -275,16 +299,14 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 [if (prop.Type is MetaCollectionType)]
 	[MetaCollectionType collType = (MetaCollectionType)prop.Type]
 public static readonly global::MetaDslx.Core.Immutable.ModelProperty [prop.Name]Property =
-    global::MetaDslx.Core.Immutable.ModelProperty.Register("[prop.Name]", typeof([prop.Class.Model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()])
+    global::MetaDslx.Core.Immutable.ModelProperty.Register("[prop.Name]", typeof([prop.Class.Model.CSharpDescriptorName()].[prop.Class.CSharpName()]),
         new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpFullPublicName(ClassKind.Immutable)]), typeof([prop.Type.CSharpFullPublicName(ClassKind.Immutable)]), typeof([prop.Class.CSharpFullName(ClassKind.Immutable)])),
-        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpFullPublicName(ClassKind.Builder)]), typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)]), typeof([prop.Class.CSharpFullName(ClassKind.Builder)])),
-		() => [prop.Class.Model.CSharpFullName()]Instance.[prop.Class.CSharpName()]_[prop.Name]Property);
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpFullPublicName(ClassKind.Builder)]), typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)]), typeof([prop.Class.CSharpFullName(ClassKind.Builder)])));
 [else]
 public static readonly global::MetaDslx.Core.Immutable.ModelProperty [prop.Name]Property =
-    global::MetaDslx.Core.Immutable.ModelProperty.Register("[prop.Name]", typeof([prop.Class.Model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()])
-        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName()]), null, typeof([prop.Class.CSharpFullName(ClassKind.Immutable)])),
-        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName()]), null, typeof([prop.Class.CSharpFullName(ClassKind.Builder)])),
-		() => [prop.Class.Model.CSharpFullName()]Instance.[prop.Class.CSharpName()]_[prop.Name]Property);
+    global::MetaDslx.Core.Immutable.ModelProperty.Register("[prop.Name]", typeof([prop.Class.Model.CSharpDescriptorName()].[prop.Class.CSharpName()]),
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName(ClassKind.Immutable)]), null, typeof([prop.Class.CSharpFullName(ClassKind.Immutable)])),
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)]), null, typeof([prop.Class.CSharpFullName(ClassKind.Builder)])));
 [end if]
 [end if]
 ^
@@ -292,35 +314,68 @@ end template
 
 template GenerateImmutablePropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
 ^
-[if (cls.Properties.Contains(prop))]
-[prop.Type.CSharpFullPublicName(ClassKind.Immutable)] [prop.Name]
+[if (cls.GetAllFinalProperties().Contains(prop))]
+public [prop.Type.CSharpFullPublicName(ClassKind.Immutable)] [prop.Name]
+{
+    [if(prop.Type is MetaCollectionType)]
+    get { return this.GetList<[((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.Immutable)]>([prop.CSharpFullDescriptorName(ClassKind.Immutable)], ref _[prop.Name]); }
+	[else if (prop.Type.IsReferenceType())]
+    get { return this.GetReference<[prop.Type.CSharpFullPublicName(ClassKind.Immutable)]>([prop.CSharpFullDescriptorName(ClassKind.Immutable)], ref _[prop.Name]); }
+	[else]
+    get { return this.GetValue<[prop.Type.CSharpFullPublicName(ClassKind.Immutable)]>([prop.CSharpFullDescriptorName(ClassKind.Immutable)], ref _[prop.Name]); }
+	[end if]
+}
 [else]
 ["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
 [prop.Type.CSharpFullPublicName(ClassKind.Immutable)] [prop.Class.CSharpFullName(ClassKind.Immutable)].[prop.Name]
-[end if]
 {
-    get { return this.GetValue([prop.CSharpFullDescriptorName()], ref _[prop.Name]); }
+    get { return this.[prop.Name]; }
 }
+[end if]
 end template
 
 template GenerateBuilderPropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
 ^
-[if (cls.Properties.Contains(prop))]
-[prop.Type.CSharpFullPublicName()] [prop.Name]
+[if (cls.GetAllFinalProperties().Contains(prop))]
+public [prop.Type.CSharpFullPublicName(ClassKind.Builder)] [prop.Name]
 [else]
 ["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
-[prop.Type.CSharpFullPublicName()] [prop.Class.CSharpFullName(ClassKind.Builder)].[prop.Name]
+[prop.Type.CSharpFullPublicName(ClassKind.Builder)] [prop.Class.CSharpFullName(ClassKind.Builder)].[prop.Name]
 [end if]
 {
     [if(prop.Type is MetaCollectionType)]
-    get { return this.GetList([prop.CSharpFullDescriptorName()], ref [prop.Name]); }
+    get { return this.GetList<[((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.Builder)]>([prop.CSharpFullDescriptorName(ClassKind.Builder)], ref _[prop.Name]); }
+	[else if (prop.Type.IsReferenceType())]
+    get { return this.GetReference<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]>([prop.CSharpFullDescriptorName(ClassKind.Builder)]); }
 	[else]
-    get { return this.GetValue<[prop.Type.CSharpFullPublicName()]>([prop.CSharpFullDescriptorName()]); }
+    get { return this.GetValue<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]>([prop.CSharpFullDescriptorName(ClassKind.Builder)]); }
 	[end if]
 	[if((prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) && !(prop.Type is MetaCollectionType))]
-    set { this.SetValue([prop.CSharpFullDescriptorName()], value); }
+		[if (prop.Type.IsReferenceType())]
+    set { this.SetReference<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]>([prop.CSharpFullDescriptorName(ClassKind.Builder)], value); }
+		[else]
+    set { this.SetValue<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]>([prop.CSharpFullDescriptorName(ClassKind.Builder)], value); }
+		[end if]
 	[end if]
 }
+[if(!(prop.Type is MetaCollectionType))]
+^
+	[if (cls.GetAllFinalProperties().Contains(prop))]
+public Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Name]Lazy
+	[else]
+["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Class.CSharpFullName(ClassKind.Builder)].[prop.Name]Lazy
+	[end if]
+{
+		[if (prop.Type.IsReferenceType())]
+    get { return this.GetLazyReference<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]>([prop.CSharpFullDescriptorName(ClassKind.Builder)]); }
+    set { this.SetLazyReference([prop.CSharpFullDescriptorName(ClassKind.Builder)], value); }
+		[else]
+    get { return this.GetLazyValue<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]>([prop.CSharpFullDescriptorName(ClassKind.Builder)]); }
+    set { this.SetLazyValue([prop.CSharpFullDescriptorName(ClassKind.Builder)], value); }
+		[end if]
+}
+[end if]
 end template
 
 function string GetReturn(MetaOperation op)
@@ -335,7 +390,7 @@ template GenerateOperationImpl(MetaModel model, MetaOperation op)
 ^
 [op.ReturnType.CSharpFullPublicName(ClassKind.Immutable)] [op.Parent.CSharpFullName(ClassKind.Immutable)].[op.Name]([GetParameters(op, false)])
 {
-    [GetReturn(op)][model.CSharpFullImplementationName()].[op.Parent.CSharpName()]_[op.Name]([GetImplCallParameterNames(op)]);
+    [GetReturn(op)][model.CSharpFullImplementationName(ClassKind.Immutable)].[op.Parent.CSharpName()]_[op.Name]([GetImplCallParameterNames(op)]);
 }
 end template
 
@@ -359,19 +414,19 @@ template GenerateMetaModelDescriptor(MetaModel model)
 public static class [model.CSharpDescriptorName()]
 {
 	private static global::System.Collections.Generic.List<global::MetaDslx.Core.Immutable.ModelProperty> properties = new global::System.Collections.Generic.List<global::MetaDslx.Core.Immutable.ModelProperty>();
-
+^
     static [model.CSharpDescriptorName()]()
     {
     [loop(model->Namespace->Declarations->cls:typeof(MetaClass)->prop:Properties)]
         properties.Add([cls.CSharpName()].[prop.Name]Property);
     [end loop]
-
+^
         foreach (var property in properties)
         {
             property.Init();
         }
     }
-
+^
     public static void Init()
     {
 
@@ -436,7 +491,7 @@ internal static class [model.Name]ImplementationProvider
 public static class [enm.Name]Extensions
 {
     [loop(enm->op:Operations)]
-    public static [op.ReturnType.CSharpFullPublicName()] [op.Name]([GetEnumImplParameters(enm, op)])
+    public static [op.ReturnType.CSharpFullPublicName(ClassKind.Immutable)] [op.Name]([GetEnumImplParameters(enm, op)])
     {
         [GetReturn(op)][model.Name]ImplementationProvider.Implementation.[op.Parent.CSharpName()]_[op.Name]([GetEnumImplCallParameterNames(op)]);
     }
@@ -467,10 +522,10 @@ internal abstract class [model.Name]ImplementationBase
 	[end if]
 	[end loop]
     /// </summary>
-    public virtual void [cls.CSharpName()]_[cls.CSharpName()]([cls.CSharpName()] @this)
+    public virtual void [cls.CSharpName()]([cls.CSharpName(ClassKind.Builder)] @this)
     {
 		[loop(cls->sup:SuperClasses)]
-        this.[sup.CSharpName()]_[sup.CSharpName()](@this);
+        this.[sup.CSharpName()](@this);
 		[end loop]
     }
     [loop(cls->prop:Properties)]
@@ -481,7 +536,7 @@ internal abstract class [model.Name]ImplementationBase
     /// <summary>
     /// Returns the value of the derived property: [cls.CSharpName()].[prop.Name]
     /// </summary>
-    public virtual [prop.Type.CSharpFullPublicName()] [cls.CSharpName()]_[prop.Name]([cls.CSharpName()] @this)
+    public virtual [prop.Type.CSharpFullPublicName(ClassKind.Builder)] [cls.CSharpName()]_[prop.Name]([cls.CSharpName(ClassKind.Builder)] @this)
     {
         throw new NotImplementedException();
     }
@@ -490,7 +545,7 @@ internal abstract class [model.Name]ImplementationBase
     /// <summary>
     /// Returns the value of the lazy property: [cls.CSharpName()].[prop.Name]
     /// </summary>
-    public virtual [prop.Type.CSharpFullPublicName()] [cls.CSharpName()]_[prop.Name]([cls.CSharpName()] @this)
+    public virtual [prop.Type.CSharpFullPublicName(ClassKind.Builder)] [cls.CSharpName()]_[prop.Name]([cls.CSharpName(ClassKind.Builder)] @this)
     {
         throw new NotImplementedException();
     }
@@ -502,7 +557,7 @@ internal abstract class [model.Name]ImplementationBase
     /// <summary>
     /// Implements the operation: [cls.CSharpName()].[op.Name]()
     /// </summary>
-    public virtual [op.ReturnType.CSharpFullPublicName()] [cls.CSharpName()]_[op.Name]([GetImplParameters(cls, op)])
+    public virtual [op.ReturnType.CSharpFullPublicName(ClassKind.Immutable)] [cls.CSharpName()]_[op.Name]([GetImplParameters(cls, op)])
     {
         throw new NotImplementedException();
     }
@@ -515,7 +570,7 @@ internal abstract class [model.Name]ImplementationBase
     /// <summary>
     /// Implements the operation: [enm.CSharpName()].[op.Name]
     /// </summary>
-    public virtual [op.ReturnType.CSharpFullPublicName()] [enm.CSharpName()]_[op.Name]([GetImplParameters(enm, op)])
+    public virtual [op.ReturnType.CSharpFullPublicName(ClassKind.Immutable)] [enm.CSharpName()]_[op.Name]([GetImplParameters(enm, op)])
     {
         throw new NotImplementedException();
     }
