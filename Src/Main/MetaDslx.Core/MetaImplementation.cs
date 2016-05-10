@@ -309,7 +309,7 @@ namespace MetaDslx.Core
 
     internal static class MetaModelExtensions
     {
-        private const string ImmutablePrefix = "Immutable";
+        private const string ImmutablePrefix = "Immutable.";
 
         private static string GetPrefix(bool immutable)
         {

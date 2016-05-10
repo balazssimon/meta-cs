@@ -56,10 +56,25 @@ function string GetAncestors(MetaClass cls, bool immutable)
 		result += delim+super.CSharpFullName(immutable);
 	end loop
 	if (result == "") 
-		result = "global::MetaDslx.Core.IModelObject";
+		result = "global::MetaDslx.Core.Immutable.RedSymbol";
 	end if
 	return result;
 end function
+
+template GenerateImmutableInterface(MetaClass cls)
+[GenerateAnnotations(cls)]
+public interface [cls.CSharpName()][GetAncestors(cls, true)]
+{
+    [loop(cls->prop:Properties)]
+    [GenerateImmutableProperty(prop)]
+	[end loop]
+^
+    [loop(cls->op:Operations)]
+    [GenerateImmutableOperation(op)]
+	[end loop]
+}
+^
+end template
 
 template GenerateInterface(MetaClass cls)
 [GenerateAnnotations(cls)]
@@ -76,6 +91,13 @@ public interface [cls.CSharpName()][GetAncestors(cls, false)]
 ^
 end template
 
+template GenerateImmutableProperty(MetaProperty prop)
+[if (prop.Class.GetAllSuperPropertyNames().Contains(prop.Name))]
+new \
+[end if]
+[prop.Type.CSharpFullPublicName(true)] [prop.Name] { get; }
+end template
+
 template GenerateProperty(MetaProperty prop)
 [if (prop.Class.GetAllSuperPropertyNames().Contains(prop.Name))]
 new \
@@ -87,13 +109,18 @@ new \
 	[end if]
 end template
 
+function string GetImmutableParameters(MetaOperation op, bool defaultValues)
+	string result = "";
+	loop(op->param:Parameters; string delim = ""; delim = ", ")
+		result += delim+param.Type.CSharpFullPublicName(true)+" "+param.Name;
+	end loop
+	return result;
+end function
+
 function string GetParameters(MetaOperation op, bool defaultValues)
 	string result = "";
 	loop(op->param:Parameters; string delim = ""; delim = ", ")
 		result += delim+param.Type.CSharpFullPublicName()+" "+param.Name;
-/*		if (defaultValues && param.DefaultValue != null)
-			result += " = "+param.DefaultValue;
-		end if*/
 	end loop
 	return result;
 end function
@@ -143,16 +170,61 @@ function string GetImplCallParameterNames(MetaOperation op)
 	return result;
 end function
 
+template GenerateImmutableOperation(MetaOperation op)
+[op.ReturnType.CSharpFullPublicName(true)] [op.Name]([GetImmutableParameters(op, true)]);
+end template
+
 template GenerateOperation(MetaOperation op)
 [op.ReturnType.CSharpFullPublicName()] [op.Name]([GetParameters(op, true)]);
 end template
 
-template GenerateInterfaceImpl(MetaModel model, MetaClass cls)
-internal class [cls.CSharpImplName()] : ModelObject, [cls.CSharpFullName()]
+template GenerateImmutableInterfaceImpl(MetaModel model, MetaClass cls)
+internal class [cls.CSharpImplName()] : global::MetaDslx.Core.Immutable.ImmutableRedSymbolBase, [cls.CSharpFullName()]
 {
-    static [cls.CSharpImplName()]()
+    [loop(cls->prop:GetAllProperties())]
+    [GenerateImmutablePropertyImpl(model, cls, prop)]
+	[end loop]
+^
+    internal [cls.CSharpImplName()](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+		: base(id, model)
     {
-        [cls.Model.CSharpFullDescriptorName()].StaticInit();
+    }
+^
+    public override global::MetaDslx.Core.Immutable.MetaModel MMetaModel
+    {
+        get { return [cls.Model.CSharpFullInstanceName()]; }
+    }
+^
+    public override global::MetaDslx.Core.Immutable.ImmutableRedSymbol MMetaClass
+    {
+        get { return [cls.CSharpFullInstanceName()]; }
+    }
+^
+    [loop(cls->prop:GetAllProperties())]
+    [GenerateImmutablePropertyImpl(model, cls, prop)]
+	[end loop]
+    [loop(cls->op:GetAllOperations())]
+    [GenerateImmutableOperationImpl(model, op)]
+	[end loop]
+}
+^
+end template
+
+template GenerateInterfaceImpl(MetaModel model, MetaClass cls)
+internal class [cls.CSharpImplName()] : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, [cls.CSharpFullName()]
+{
+    internal [cls.CSharpImplName()](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+		: base(id, model)
+    {
+		[loop(cls->prop:GetAllProperties())]
+        this.MAttachProperty([prop.CSharpFullDescriptorName()]);
+		[end loop]
+        this.MInit();
+    }
+^
+    protected override void MDoInit()
+    {
+        [GenerateInitImpl(model, cls)]
     }
 ^
     public override global::MetaDslx.Core.MetaModel MMetaModel
@@ -160,12 +232,11 @@ internal class [cls.CSharpImplName()] : ModelObject, [cls.CSharpFullName()]
         get { return [cls.Model.CSharpFullInstanceName()]; }
     }
 ^
-    public override global::MetaDslx.Core.MetaClass MMetaClass
+    public override global::MetaDslx.Core.Immutable.MutableRedSymbol MMetaClass
     {
         get { return [cls.CSharpFullInstanceName()]; }
     }
 ^
-    [GenerateConstructorImpl(model, cls)]
     [loop(cls->prop:GetAllProperties())]
     [GeneratePropertyImpl(model, cls, prop)]
 	[end loop]
@@ -202,10 +273,27 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 // ERROR: redefined property '[p.CSharpFullDescriptorName()]' must be a property of an ancestor class
 	[end if]
 [end if]
-public static readonly ModelProperty [prop.Name]Property =
-    ModelProperty.Register("[prop.Name]", typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Class.CSharpFullName()]), typeof([prop.Class.Model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()]), new Lazy<global::MetaDslx.Core.MetaProperty>(() => [prop.Class.Model.CSharpFullName()]Instance.[prop.Class.CSharpName()]_[prop.Name]Property, LazyThreadSafetyMode.ExecutionAndPublication));
+public static readonly global::MetaDslx.Core.Immutable.ModelProperty [prop.Name]Property =
+    global::MetaDslx.Core.Immutable.ModelProperty.Register("[prop.Name]", typeof([prop.Class.Model.CSharpFullName()]Descriptor.[prop.Class.CSharpName()])
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Class.CSharpFullName(true)])),
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Type.CSharpFullPublicName()]), typeof([prop.Class.CSharpFullName(false)])),
+		() => [prop.Class.Model.CSharpFullName()]Instance.[prop.Class.CSharpName()]_[prop.Name]Property);
 [end if]
 ^
+end template
+
+template GenerateImmutablePropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
+^
+[prop.Type.CSharpFullPublicName(true)] [prop.Class.CSharpFullName(true)].[prop.Name]
+{
+    get 
+    {
+        return this.GetValue([prop.Type.CSharpFullPublicName()], ref [this.prop.Name.ToCamelCase()]);
+    }
+	[if((prop.Kind == MetaPropertyKind.Normal || prop.Kind == MetaPropertyKind.Containment) && !(prop.Type is MetaCollectionType))]
+    set { this.MSet([prop.CSharpFullDescriptorName()], value); }
+	[end if]
+}
 end template
 
 template GeneratePropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
