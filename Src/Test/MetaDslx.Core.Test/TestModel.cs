@@ -151,7 +151,6 @@ namespace MetaDslx.Core.Test
             this.MSet(Student.DogsProperty, new ModelSet<Dog>(this, Student.DogsProperty));
         }
 
-        [RedefinesAttribute(typeof(Person), "Pets")]
         [OppositeAttribute(typeof(Dog), "Friend")]
         public static readonly ModelProperty DogsProperty =
             ModelProperty.Register("Dogs", typeof(ModelSet<Dog>), typeof(Student));
@@ -185,7 +184,6 @@ namespace MetaDslx.Core.Test
         {
         }
 
-        [RedefinesAttribute(typeof(Pet), "Owner")]
         [OppositeAttribute(typeof(Student), "Dogs")]
         public static readonly ModelProperty FriendProperty =
             ModelProperty.Register("Friend", typeof(Student), typeof(Dog));
@@ -226,7 +224,7 @@ namespace MetaDslx.Core.Test
 
         [OppositeAttribute(typeof(PetX), "Owner")]
         public static readonly ModelProperty PetsProperty =
-            ModelProperty.Register("Pets", typeof(ICollection<IPetX>), typeof(IPersonX), typeof(PersonX));
+            ModelProperty.Register("Pets", typeof(ICollection<IPetX>), typeof(PersonX));
 
         public ICollection<IPetX> Pets
         {
@@ -244,7 +242,7 @@ namespace MetaDslx.Core.Test
 
         [OppositeAttribute(typeof(DogX), "Friend")]
         public static readonly ModelProperty DogsProperty =
-            ModelProperty.Register("Dogs", typeof(ICollection<IDogX>), typeof(IStudentX), typeof(StudentX));
+            ModelProperty.Register("Dogs", typeof(ICollection<IDogX>), typeof(StudentX));
 
         public ICollection<IDogX> Dogs
         {
@@ -265,7 +263,7 @@ namespace MetaDslx.Core.Test
 
         [OppositeAttribute(typeof(PersonX), "Pets")]
         public static readonly ModelProperty OwnerProperty =
-            ModelProperty.Register("Owner", typeof(IPersonX), typeof(IPetX), typeof(PetX));
+            ModelProperty.Register("Owner", typeof(IPersonX), typeof(PetX));
 
         public IPersonX Owner
         {
@@ -282,7 +280,7 @@ namespace MetaDslx.Core.Test
 
         [OppositeAttribute(typeof(StudentX), "Dogs")]
         public static readonly ModelProperty FriendProperty =
-            ModelProperty.Register("Friend", typeof(IStudentX), typeof(IDogX), typeof(DogX));
+            ModelProperty.Register("Friend", typeof(IStudentX), typeof(DogX));
 
         public IStudentX Friend
         {
@@ -296,4 +294,5 @@ namespace MetaDslx.Core.Test
             set { this.MSet(PetX.OwnerProperty, value); }
         }
     }
+
 }

@@ -73,9 +73,16 @@ namespace MetaDslx.Core
                 object item = this.items[index];
                 this.items[index] = null;
                 this.Owner.MOnRemoveValue(this.OwnerProperty, item, true);
-                item = value;
-                this.items[index] = value;
-                this.Owner.MOnAddValue(this.OwnerProperty, item, true);
+                if (this.items.Contains(value))
+                {
+                    this.items.RemoveAt(index);
+                }
+                else
+                {
+                    item = value;
+                    this.items[index] = value;
+                    this.Owner.MOnAddValue(this.OwnerProperty, item, true);
+                }
             }
         }
 
@@ -159,7 +166,7 @@ namespace MetaDslx.Core
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator()
+        public new IEnumerator<T> GetEnumerator()
         {
             this.MFlushLazyItems();
             return this.items.GetEnumerator();
@@ -208,6 +215,10 @@ namespace MetaDslx.Core
             return false;
         }
 
+        public override IEnumerator<object> MGetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
     }
 
     public class ModelMultiList<T> : ModelCollection, IList<T>
@@ -367,7 +378,7 @@ namespace MetaDslx.Core
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator()
+        public new IEnumerator<T> GetEnumerator()
         {
             this.MFlushLazyItems();
             return this.items.GetEnumerator();
@@ -417,6 +428,11 @@ namespace MetaDslx.Core
                 }
             }
             return false;
+        }
+
+        public override IEnumerator<object> MGetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

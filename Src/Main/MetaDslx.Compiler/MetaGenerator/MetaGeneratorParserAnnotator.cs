@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +7,9 @@ using MetaDslx.Core;
 using MetaDslx.Compiler;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+
+// The variable '...' is assigned but its value is never used
+#pragma warning disable 0219
 
 namespace MetaDslx.Compiler
 {
@@ -49,19 +52,12 @@ namespace MetaDslx.Compiler
                     {
                         if (sta.HasName)
                         {
-                            ModelContext ctx = ModelContext.Current;
-                            if (ctx != null)
+                            ModelCompilerContext.RequireContext();
+                            IModelCompiler compiler = ModelCompilerContext.Current;
+                            string name = compiler.NameProvider.GetName(node);
+                            if (sta.Name == name)
                             {
-                                IModelCompiler compiler = ModelContext.Current.Compiler;
-                                string name = compiler.NameProvider.GetName(node);
-                                if (sta.Name == name)
-                                {
-                                    this.OverrideSymbolType(node, sta.SymbolType);
-                                }
-                            }
-                            else
-                            {
-                                throw new InvalidOperationException("ModelContext is missing. Define a ModelContextScope.");
+                                this.OverrideSymbolType(node, sta.SymbolType);
                             }
                         }
                         else
@@ -86,7 +82,7 @@ namespace MetaDslx.Compiler
                 {
                     foreach (var treeAnnot in treeAnnotList)
                     {
-                        SymbolTypedAnnotation sta = treeAnnot as SymbolTypedAnnotation;
+                        SymbolBasedAnnotation sta = treeAnnot as SymbolBasedAnnotation;
                         if (sta != null)
                         {
                             set = true;
@@ -1493,4 +1489,3 @@ namespace MetaDslx.Compiler
         }
     }
 }
-

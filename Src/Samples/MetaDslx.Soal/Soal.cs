@@ -1519,18 +1519,21 @@ namespace MetaDslx.Soal
 				WsProtocolBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 				WsAddressingBindingElement = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaClass();
 	
+				((ModelObject)tmp1).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.ParentProperty);
+				((ModelObject)tmp1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.ParentProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				
+				((ModelObject)tmp1).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.MetaModelProperty);
+				((ModelObject)tmp1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.MetaModelProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.NamespacesProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp1).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "MetaDslx", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp1).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.ParentProperty);
-				((ModelObject)tmp1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.ParentProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp1).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.MetaModelProperty);
-				((ModelObject)tmp1).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.MetaModelProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)tmp2).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.ParentProperty);
+				((ModelObject)tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.ParentProperty, new Lazy<object>(() => tmp1, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)tmp2).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.MetaModelProperty);
+				((ModelObject)tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.MetaModelProperty, new Lazy<object>(() => tmp3, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.DeclarationsProperty, new Lazy<object>(() => tmp4, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.DeclarationsProperty, new Lazy<object>(() => tmp5, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -1591,34 +1594,26 @@ namespace MetaDslx.Soal
 				((ModelObject)tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.DeclarationsProperty, new Lazy<object>(() => WsAddressingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp2).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Soal", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp2).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.ParentProperty);
-				((ModelObject)tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.ParentProperty, new Lazy<object>(() => tmp1, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp2).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.MetaModelProperty);
-				((ModelObject)tmp2).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamespace.MetaModelProperty, new Lazy<object>(() => tmp3, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp3).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp3).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Soal", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp3).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaModel.NamespaceProperty);
-				((ModelObject)tmp3).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaModel.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp3).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaModel.UriProperty);
 				((ModelObject)tmp3).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaModel.UriProperty, new Lazy<object>(() => "http://MetaDslx.Soal/1.0", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp3).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaModel.NamespaceProperty);
+				((ModelObject)tmp3).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaModel.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp3).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp3).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Soal", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp4).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp4).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Object", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp4).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp4).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp4).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp81 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp82 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp81).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp82, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp81).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp81).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp81).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp81).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp81).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp81).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp81).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp82, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp81).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp81).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp81).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp81).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp81).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp81).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp82).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp82).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp81, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp82).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1627,35 +1622,35 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp83 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp83).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp83).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "object", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp83).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp83).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp83).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp83).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp83).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp83).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp83).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp83).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp83).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp83).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp82).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp83, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp82).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp82).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp4).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp81, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp4).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp4).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp4).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp4).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp4).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp4).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Object", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp5).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp5).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "String", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp5).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp5).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp5).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp84 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp85 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp84).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp85, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp84).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp84).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp84).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp84).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp84).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp84).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp84).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp85, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp84).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp84).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp84).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp84).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp84).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp84).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp85).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp85).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp84, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp85).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1664,35 +1659,35 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp86 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp86).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp86).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "string", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp86).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp86).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp86).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp86).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp86).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp86).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp86).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp86).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp86).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp86).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp85).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp86, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp85).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp85).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp5).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp84, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp5).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp5).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp5).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp5).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp5).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp5).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "String", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp6).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp6).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Int", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp6).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp6).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp6).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp87 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp88 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp87).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp88, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp87).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp87).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp87).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp87).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp87).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp87).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp87).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp88, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp87).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp87).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp87).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp87).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp87).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp87).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp88).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp88).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp87, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp88).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1701,35 +1696,35 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp89 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp89).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp89).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "int", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp89).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp89).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp89).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp89).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp89).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp89).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp89).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp89).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp89).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp89).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp88).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp89, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp88).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp88).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp6).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp87, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp6).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp6).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp6).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp6).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp6).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp6).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Int", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp7).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp7).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Long", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp7).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp7).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp7).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp90 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp91 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp90).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp91, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp90).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp90).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp90).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp90).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp90).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp90).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp90).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp91, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp90).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp90).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp90).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp90).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp90).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp90).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp91).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp91).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp90, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp91).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1738,35 +1733,35 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp92 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp92).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp92).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "long", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp92).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp92).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp92).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp92).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp92).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp92).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp92).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp92).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp92).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp92).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp91).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp92, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp91).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp91).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp7).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp90, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp7).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp7).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp7).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp7).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp7).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp7).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Long", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp8).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp8).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Float", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp8).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp8).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp8).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp93 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp94 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp93).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp94, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp93).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp93).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp93).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp93).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp93).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp93).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp93).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp94, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp93).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp93).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp93).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp93).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp93).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp93).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp94).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp94).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp93, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp94).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1775,35 +1770,35 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp95 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp95).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp95).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "float", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp95).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp95).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp95).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp95).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp95).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp95).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp95).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp95).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp95).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp95).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp94).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp95, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp94).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp94).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp8).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp93, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp8).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp8).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp8).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp8).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp8).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp8).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Float", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp9).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp9).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Double", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp9).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp9).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp9).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp96 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp97 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp96).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp97, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp96).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp96).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp96).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp96).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp96).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp96).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp96).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp97, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp96).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp96).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp96).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp96).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp96).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp96).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp97).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp97).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp96, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp97).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1812,35 +1807,35 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp98 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp98).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp98).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "double", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp98).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp98).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp98).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp98).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp98).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp98).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp98).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp98).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp98).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp98).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp97).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp98, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp97).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp97).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp9).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp96, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp9).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp9).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp9).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp9).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp9).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp9).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Double", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp10).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp10).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Byte", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp10).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp10).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp10).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp99 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp100 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp99).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp100, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp99).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp99).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp99).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp99).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp99).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp99).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp99).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp100, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp99).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp99).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp99).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp99).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp99).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp99).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp100).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp100).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp99, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp100).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1849,35 +1844,35 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp101 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp101).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp101).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "byte", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp101).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp101).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp101).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp101).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp101).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp101).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp101).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp101).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp101).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp101).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp100).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp101, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp100).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp100).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp10).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp99, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp10).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp10).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp10).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp10).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp10).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp10).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Byte", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp11).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp11).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Bool", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp11).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp11).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp11).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp102 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp103 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp102).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp103, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp102).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp102).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp102).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp102).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp102).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp102).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp102).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp103, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp102).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp102).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp102).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp102).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp102).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp102).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp103).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp103).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp102, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp103).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1886,35 +1881,35 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp104 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp104).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp104).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "bool", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp104).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp104).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp104).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp104).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp104).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp104).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp104).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp104).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp104).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp104).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp103).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp104, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp103).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp103).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp11).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp102, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp11).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp11).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp11).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp11).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp11).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp11).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Bool", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp12).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp12).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Void", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp12).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp12).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp12).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp105 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp106 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp105).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp106, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp105).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp105).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp105).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp105).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp105).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp105).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp105).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp106, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp105).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp105).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp105).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp105).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp105).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp105).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp106).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp106).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp105, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp106).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1923,35 +1918,35 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp107 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp107).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp107).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "void", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp107).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp107).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp107).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp107).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp107).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp107).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp107).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp107).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp107).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp107).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp106).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp107, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp106).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp106).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp12).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp105, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp12).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp12).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp12).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp12).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp12).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp12).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Void", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp13).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp13).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "DateTime", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp13).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp13).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp13).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp108 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp109 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp108).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp109, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp108).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp108).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp108).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp108).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp108).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp108).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp108).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp109, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp108).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp108).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp108).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp108).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp108).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp108).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp109).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp109).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp108, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp109).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1960,35 +1955,35 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp110 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp110).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp110).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "DateTime", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp110).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp110).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp110).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp110).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp110).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp110).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp110).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp110).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp110).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp110).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp109).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp110, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp109).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp109).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp13).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp108, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp13).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp13).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp13).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp13).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp13).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp13).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "DateTime", LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)tmp14).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp14).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "TimeSpan", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp14).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)tmp14).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp14).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty);
 				global::MetaDslx.Core.MetaNewExpression tmp111 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewExpression();
 				global::MetaDslx.Core.MetaNewPropertyInitializer tmp112 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNewPropertyInitializer();
-				((ModelObject)tmp111).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp112, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp111).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
 				((ModelObject)tmp111).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp111).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp111).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp111).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp111).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp111).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, new Lazy<object>(() => tmp112, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp111).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp111).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp111).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp111).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp111).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp111).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp112).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
 				((ModelObject)tmp112).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, new Lazy<object>(() => tmp111, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp112).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty);
@@ -1997,31 +1992,39 @@ namespace MetaDslx.Soal
 				global::MetaDslx.Core.MetaConstantExpression tmp113 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaConstantExpression();
 				((ModelObject)tmp113).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				((ModelObject)tmp113).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => "TimeSpan", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp113).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp113).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp113).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp113).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp113).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp113).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp113).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp113).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp113).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp113).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp112).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp113, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp112).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp112).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp14).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstant.ValueProperty, new Lazy<object>(() => tmp111, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp14).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp14).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => PrimitiveType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp14).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)tmp14).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp14).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp14).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "TimeSpan", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)NamedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)NamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)NamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => NamedElement_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)NamedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)NamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "NamedElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NamedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)NamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NamedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)NamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)NamedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)NamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NamedElement_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp15, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)NamedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)NamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)NamedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)NamedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "NamedElement", LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)NamedElement_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)NamedElement_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)NamedElement_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)NamedElement_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2029,28 +2032,28 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)NamedElement_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)NamedElement_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Name", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NamedElement_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)NamedElement_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)NamedElement_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)NamedElement_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NamedElement_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)NamedElement_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)NamedElement_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp15, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp15).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp15).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Name", LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)TypedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)TypedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)TypedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => TypedElement_TypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)TypedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)TypedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "TypedElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)TypedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)TypedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)TypedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)TypedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)TypedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)TypedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)TypedElement_TypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp16, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)TypedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)TypedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)TypedElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)TypedElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "TypedElement", LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)TypedElement_TypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)TypedElement_TypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)TypedElement_TypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)TypedElement_TypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => TypedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2058,43 +2061,43 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)TypedElement_TypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)TypedElement_TypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Type", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)TypedElement_TypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)TypedElement_TypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => TypedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)TypedElement_TypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)TypedElement_TypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)TypedElement_TypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)TypedElement_TypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)TypedElement_TypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp16, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp16).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp16).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Type", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoalType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp17, LazyThreadSafetyMode.ExecutionAndPublication));
-				
-				
-				
-				((ModelObject)SoalType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)SoalType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "SoalType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoalType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)SoalType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)SoalType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
 				((ModelObject)SoalType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				
+				
 				((ModelObject)SoalType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)SoalType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoalType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)SoalType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoalType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)SoalType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "SoalType", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoalType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp17, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp17).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp17).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Type", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp20, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Namespace_DeclarationsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Namespace).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Namespace", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Namespace).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Namespace).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Namespace).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Namespace_DeclarationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp18, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Namespace", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp20, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace_DeclarationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Namespace_DeclarationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace_DeclarationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Namespace_DeclarationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Namespace_DeclarationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Declaration_NamespaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
@@ -2102,12 +2105,9 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Namespace_DeclarationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Namespace_DeclarationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Declarations", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Namespace_DeclarationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Namespace_DeclarationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Namespace_DeclarationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Namespace_DeclarationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Namespace_DeclarationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Namespace_DeclarationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp19, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Namespace_DeclarationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp18, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp18).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp18).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -2118,19 +2118,22 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)tmp20).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp20).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Scope", LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Declaration).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Declaration).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Declaration).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Declaration).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Declaration_NamespaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Declaration).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Declaration).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Declaration", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Declaration).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Declaration).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Declaration).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Declaration).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Declaration).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Declaration).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Declaration).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Declaration).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Declaration).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Declaration).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Declaration", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Declaration_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Declaration_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Declaration_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Declaration_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Declaration_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Namespace_DeclarationsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
@@ -2138,145 +2141,145 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Declaration_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Declaration_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Namespace", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Declaration_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Declaration_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Declaration_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Declaration_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Declaration_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Declaration_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)ArrayType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)ArrayType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)ArrayType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)ArrayType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => ArrayType_InnerTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)ArrayType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => ArrayType_NamespaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)ArrayType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)ArrayType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ArrayType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)ArrayType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)ArrayType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)ArrayType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)ArrayType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => tmp21, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)ArrayType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)ArrayType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)ArrayType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)ArrayType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)ArrayType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)ArrayType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ArrayType", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)tmp21).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty);
+				((ModelObject)tmp21).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty, new Lazy<object>(() => ArrayType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp21).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.InitializersProperty, new Lazy<object>(() => tmp22, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp21).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp21).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ArrayType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp21).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty);
-				((ModelObject)tmp21).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty, new Lazy<object>(() => ArrayType, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp22).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty);
 				((ModelObject)tmp22).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, new Lazy<object>(() => tmp21, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp22).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty);
 				((ModelObject)tmp22).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, new Lazy<object>(() => "Namespace", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp22).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty);
-				((ModelObject)tmp22).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp23, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp22).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty);
 				((ModelObject)tmp22).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, new Lazy<object>(() => ArrayType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp22).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp22).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, new Lazy<object>(() => ArrayType_NamespaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp22).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty);
+				((ModelObject)tmp22).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp23, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp23).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ConditionProperty);
 				((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ConditionProperty, new Lazy<object>(() => tmp24, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp23).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty);
+				((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp23).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ThenProperty);
 				((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ThenProperty, new Lazy<object>(() => tmp26, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp23).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ElseProperty);
 				((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ElseProperty, new Lazy<object>(() => tmp30, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp23).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp23).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp23).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp23).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty);
-				((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp24).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty);
-				((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty, new Lazy<object>(() => tmp25, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp24).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp24).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp24).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
-				((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp23).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp23).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp23).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp24).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.TypeReferenceProperty);
 				((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.TypeReferenceProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)tmp24).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty);
+				((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty, new Lazy<object>(() => tmp25, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp24).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
+				((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp24).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp24).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp24).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp25).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty);
 				((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty, new Lazy<object>(() => "InnerType", LazyThreadSafetyMode.ExecutionAndPublication));
-				// global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
-				((ModelObject)tmp25).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
-				((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ArrayType_InnerTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp25).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp25).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp25).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
-				((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp25).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
 				((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				// global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
+				((ModelObject)tmp25).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
+				((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ArrayType_InnerTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp25).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
+				((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp25).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp25).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp25).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp26).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression.ExpressionProperty);
 				((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression.ExpressionProperty, new Lazy<object>(() => tmp27, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp26).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression.NameProperty);
 				((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression.NameProperty, new Lazy<object>(() => "Namespace", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp26).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
+				((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				// global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
 				((ModelObject)tmp26).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
 				((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => Declaration_NamespaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp26).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp26).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp26).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp26).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
-				((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp26).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp26).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp26).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp27).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBracketExpression.ExpressionProperty);
 				((ModelObject)tmp27).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBracketExpression.ExpressionProperty, new Lazy<object>(() => tmp28, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp27).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp27).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp27).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp27).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.None	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp27).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp27).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp27).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp27).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.None	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp27).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp27).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp27).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
 				((ModelObject)tmp27).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp28).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty);
-				((ModelObject)tmp28).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, new Lazy<object>(() => tmp29, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp28).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty);
 				((ModelObject)tmp28).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp28).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp28).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp28).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp28).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.None	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp28).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty);
+				((ModelObject)tmp28).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, new Lazy<object>(() => tmp29, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp28).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp28).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)tmp28).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp28).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.None	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp28).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp28).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp29).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty);
 				((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty, new Lazy<object>(() => "InnerType", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp29).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
+				((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				// global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
 				((ModelObject)tmp29).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
 				((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => ArrayType_InnerTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp29).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp29).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp29).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp29).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
-				((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp29).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp29).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp29).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp30).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				global::MetaDslx.Core.MetaNullExpression tmp114 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNullExpression();
-				((ModelObject)tmp114).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp114).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp114).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp114).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp114).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
 				((ModelObject)tmp114).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp114).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp114).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp30).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => tmp114, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp30).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp30).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp30).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp30).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp30).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp30).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)tmp30).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp30).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp30).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp30).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)ArrayType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)ArrayType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)ArrayType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)ArrayType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => ArrayType, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2284,13 +2287,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)ArrayType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)ArrayType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "InnerType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)ArrayType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)ArrayType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => ArrayType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)ArrayType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)ArrayType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)ArrayType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)ArrayType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)ArrayType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)ArrayType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Derived, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)ArrayType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)ArrayType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => ArrayType, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2298,145 +2301,145 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)ArrayType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)ArrayType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Namespace", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)ArrayType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)ArrayType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => ArrayType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)ArrayType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)ArrayType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Derived, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)ArrayType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)ArrayType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)NullableType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)NullableType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)NullableType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)NullableType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => NullableType_InnerTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)NullableType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => NullableType_NamespaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)NullableType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)NullableType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "NullableType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NullableType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)NullableType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)NullableType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)NullableType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => tmp31, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NullableType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)NullableType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)NullableType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)NullableType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)NullableType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)NullableType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "NullableType", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)tmp31).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty);
+				((ModelObject)tmp31).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty, new Lazy<object>(() => NullableType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp31).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.InitializersProperty, new Lazy<object>(() => tmp32, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp31).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp31).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "NullableType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp31).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty);
-				((ModelObject)tmp31).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty, new Lazy<object>(() => NullableType, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp32).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty);
 				((ModelObject)tmp32).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, new Lazy<object>(() => tmp31, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp32).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty);
 				((ModelObject)tmp32).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, new Lazy<object>(() => "Namespace", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp32).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty);
-				((ModelObject)tmp32).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp33, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp32).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty);
 				((ModelObject)tmp32).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, new Lazy<object>(() => NullableType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp32).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp32).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, new Lazy<object>(() => NullableType_NamespaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp32).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty);
+				((ModelObject)tmp32).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp33, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp33).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ConditionProperty);
 				((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ConditionProperty, new Lazy<object>(() => tmp34, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp33).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty);
+				((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp33).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ThenProperty);
 				((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ThenProperty, new Lazy<object>(() => tmp36, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp33).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ElseProperty);
 				((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.ElseProperty, new Lazy<object>(() => tmp40, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp33).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp33).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp33).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp33).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty);
-				((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp34).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty);
-				((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty, new Lazy<object>(() => tmp35, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp34).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp34).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp34).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
-				((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp33).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp33).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp33).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp34).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.TypeReferenceProperty);
 				((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.TypeReferenceProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)tmp34).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty);
+				((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty, new Lazy<object>(() => tmp35, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp34).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
+				((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp34).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp34).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp34).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp35).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty);
 				((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty, new Lazy<object>(() => "InnerType", LazyThreadSafetyMode.ExecutionAndPublication));
-				// global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
-				((ModelObject)tmp35).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
-				((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => NullableType_InnerTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp35).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp35).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp35).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
-				((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp35).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
 				((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				// global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
+				((ModelObject)tmp35).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
+				((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => NullableType_InnerTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp35).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
+				((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp35).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp35).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp35).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp36).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression.ExpressionProperty);
 				((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression.ExpressionProperty, new Lazy<object>(() => tmp37, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp36).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression.NameProperty);
 				((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaMemberAccessExpression.NameProperty, new Lazy<object>(() => "Namespace", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp36).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
+				((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				// global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
 				((ModelObject)tmp36).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
 				((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => Declaration_NamespaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp36).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp36).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp36).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp36).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
-				((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp36).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp36).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp36).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp37).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBracketExpression.ExpressionProperty);
 				((ModelObject)tmp37).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBracketExpression.ExpressionProperty, new Lazy<object>(() => tmp38, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp37).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp37).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp37).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp37).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.None	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp37).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp37).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp37).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp37).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.None	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp37).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp37).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp37).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
 				((ModelObject)tmp37).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => false, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp38).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty);
-				((ModelObject)tmp38).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, new Lazy<object>(() => tmp39, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp38).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty);
 				((ModelObject)tmp38).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp38).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp38).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp38).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp38).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.None	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp38).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty);
+				((ModelObject)tmp38).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, new Lazy<object>(() => tmp39, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp38).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp38).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)tmp38).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp38).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.None	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp38).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp38).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp39).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty);
 				((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty, new Lazy<object>(() => "InnerType", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp39).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
+				((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				// global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
 				((ModelObject)tmp39).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
 				((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => NullableType_InnerTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp39).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp39).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp39).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp39).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
-				((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp39).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp39).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp39).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp40).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty);
 				global::MetaDslx.Core.MetaNullExpression tmp115 = global::MetaDslx.Core.MetaFactory.Instance.CreateMetaNullExpression();
-				((ModelObject)tmp115).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp115).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp115).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp115).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp115).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
 				((ModelObject)tmp115).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp115).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp115).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp40).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstantExpression.ValueProperty, new Lazy<object>(() => tmp115, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp40).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp40).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp40).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp40).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp40).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
 				((ModelObject)tmp40).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)tmp40).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp40).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp40).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp40).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Any	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)NullableType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)NullableType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)NullableType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)NullableType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => NullableType, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2444,13 +2447,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)NullableType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)NullableType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "InnerType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NullableType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)NullableType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => NullableType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)NullableType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)NullableType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NullableType_InnerTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)NullableType_InnerTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)NullableType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)NullableType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Derived, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)NullableType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)NullableType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => NullableType, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2458,39 +2461,39 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)NullableType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)NullableType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Namespace", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NullableType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)NullableType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => NullableType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)NullableType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)NullableType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Derived, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)NullableType_NamespaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)NullableType_NamespaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Namespace, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)PrimitiveType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)PrimitiveType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "PrimitiveType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)PrimitiveType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)PrimitiveType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)PrimitiveType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp43, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)PrimitiveType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)PrimitiveType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)PrimitiveType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "PrimitiveType", LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)Enum).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Enum_EnumLiteralsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Enum).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Enum", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Enum).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Enum).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Enum).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Enum_EnumLiteralsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp41, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Enum).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Enum).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Enum", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Enum).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp43, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Enum_EnumLiteralsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Enum_EnumLiteralsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Enum_EnumLiteralsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Enum_EnumLiteralsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Enum, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Enum_EnumLiteralsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => EnumLiteral_EnumProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
@@ -2498,12 +2501,9 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Enum_EnumLiteralsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Enum_EnumLiteralsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "EnumLiterals", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Enum_EnumLiteralsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Enum_EnumLiteralsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Enum, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Enum_EnumLiteralsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Enum_EnumLiteralsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Enum_EnumLiteralsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Enum_EnumLiteralsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp42, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Enum_EnumLiteralsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp41, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp41).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp41).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -2514,50 +2514,53 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)tmp43).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp43).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Scope", LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)EnumLiteral).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)EnumLiteral).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)EnumLiteral).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)EnumLiteral).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => TypedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)EnumLiteral).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => EnumLiteral_EnumProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)EnumLiteral).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)EnumLiteral).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "EnumLiteral", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)EnumLiteral).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)EnumLiteral).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)EnumLiteral).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)EnumLiteral).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => tmp44, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)EnumLiteral).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)EnumLiteral).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)EnumLiteral).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)EnumLiteral).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)EnumLiteral).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)EnumLiteral).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "EnumLiteral", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)tmp44).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty);
+				((ModelObject)tmp44).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty, new Lazy<object>(() => EnumLiteral, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp44).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.InitializersProperty, new Lazy<object>(() => tmp45, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp44).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp44).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "EnumLiteral", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp44).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty);
-				((ModelObject)tmp44).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty, new Lazy<object>(() => EnumLiteral, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp45).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty);
 				((ModelObject)tmp45).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, new Lazy<object>(() => tmp44, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp45).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty);
 				((ModelObject)tmp45).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, new Lazy<object>(() => "Type", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp45).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty);
-				((ModelObject)tmp45).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp46, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp45).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty);
 				((ModelObject)tmp45).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, new Lazy<object>(() => EnumLiteral, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp45).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyProperty);
 				((ModelObject)tmp45).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, new Lazy<object>(() => TypedElement_TypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)tmp45).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty);
+				((ModelObject)tmp45).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer.ValueProperty, new Lazy<object>(() => tmp46, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp46).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty);
 				((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaIdentifierExpression.NameProperty, new Lazy<object>(() => "Enum", LazyThreadSafetyMode.ExecutionAndPublication));
-				// global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
-				((ModelObject)tmp46).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
-				((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => EnumLiteral_EnumProperty, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp46).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
-				((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Enum, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp46).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
-				((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp46).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
-				((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp46).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
 				((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				// global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionsProperty = System.Collections.Generic.List`1[MetaDslx.Core.ModelObject]
+				((ModelObject)tmp46).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty);
+				((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaBoundExpression.DefinitionProperty, new Lazy<object>(() => EnumLiteral_EnumProperty, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp46).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
+				((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.NoTypeErrorProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp46).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty);
+				((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaExpression.ExpectedTypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp46).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
+				((ModelObject)tmp46).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Enum, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)EnumLiteral_EnumProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)EnumLiteral_EnumProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)EnumLiteral_EnumProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)EnumLiteral_EnumProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => EnumLiteral, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)EnumLiteral_EnumProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Enum_EnumLiteralsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
@@ -2565,26 +2568,26 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)EnumLiteral_EnumProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)EnumLiteral_EnumProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Enum", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)EnumLiteral_EnumProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)EnumLiteral_EnumProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => EnumLiteral, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)EnumLiteral_EnumProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)EnumLiteral_EnumProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Enum, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)EnumLiteral_EnumProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)EnumLiteral_EnumProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp49, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)StructuredType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => StructuredType_PropertiesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)StructuredType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "StructuredType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)StructuredType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)StructuredType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)StructuredType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)StructuredType_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp47, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)StructuredType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)StructuredType).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "StructuredType", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)StructuredType).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp49, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)StructuredType_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)StructuredType_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)StructuredType_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)StructuredType_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => StructuredType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)StructuredType_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Property_ParentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
@@ -2592,12 +2595,9 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)StructuredType_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)StructuredType_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Properties", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)StructuredType_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)StructuredType_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => StructuredType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)StructuredType_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)StructuredType_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)StructuredType_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)StructuredType_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp48, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)StructuredType_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp47, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp47).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp47).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -2608,20 +2608,23 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)tmp49).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp49).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Scope", LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Property).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Property).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Property).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Property).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => TypedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Property).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Property_ParentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Property).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Property).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Property", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Property).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Property).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Property).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Property).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Property).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Property).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Property).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Property).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Property).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Property).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Property", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Property_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Property_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Property_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Property_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Property, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Property_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => StructuredType_PropertiesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
@@ -2629,25 +2632,25 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Property_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Property_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Parent", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Property_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Property_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Property, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Property_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Property_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => StructuredType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Property_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Property_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Struct).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Struct).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Struct).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => StructuredType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Struct).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Struct_BaseTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Struct).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Struct).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Struct", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Struct).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Struct).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Struct).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Struct).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Struct).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Struct).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Struct_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp50, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Struct).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Struct).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Struct).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Struct).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Struct", LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)Struct_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Struct_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Struct_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Struct_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Struct, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2655,28 +2658,28 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Struct_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Struct_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "BaseType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Struct_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Struct_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Struct, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Struct_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Struct_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Struct, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Struct_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Struct_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Struct_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp50, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp50).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp50).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "InheritedScope", LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Exception).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Exception).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Exception).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => StructuredType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Exception).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Exception_BaseTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Exception).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Exception).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Exception", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Exception).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Exception).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Exception).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Exception).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Exception).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Exception).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Exception_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp51, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Exception).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Exception).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Exception).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Exception).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Exception", LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)Exception_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Exception_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Exception_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Exception_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Exception, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2684,28 +2687,28 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Exception_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Exception_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "BaseType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Exception_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Exception_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Exception, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Exception_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Exception_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Exception, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Exception_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Exception_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Exception_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp51, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp51).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp51).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "InheritedScope", LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Entity).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Entity).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Entity).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => StructuredType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Entity).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Entity_BaseTypeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Entity).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Entity).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Entity", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Entity).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Entity).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Entity).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Entity).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Entity).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Entity).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Entity_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp52, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Entity).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Entity).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Entity).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Entity).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Entity", LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)Entity_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Entity_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Entity_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Entity_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Entity, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2713,29 +2716,29 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Entity_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Entity_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "BaseType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Entity_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Entity_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Entity, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Entity_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Entity_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Entity, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Entity_BaseTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Entity_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Entity_BaseTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp52, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp52).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp52).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "InheritedScope", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp55, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Interface).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Interface_OperationsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Interface).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Interface", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Interface).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Interface).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Interface).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp53, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Interface).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Interface).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Interface", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Interface).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp55, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Interface_OperationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Interface_OperationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Interface, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Operation_ParentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
@@ -2743,12 +2746,9 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Interface_OperationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Operations", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Interface_OperationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Interface, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Interface_OperationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Interface_OperationsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp54, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Interface_OperationsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp53, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp53).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp53).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -2759,19 +2759,22 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)tmp55).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp55).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Scope", LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Database).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Database).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Database).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Interface, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Database).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Database_EntitiesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Database).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Database).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Database", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Database).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Database).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Database).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Database).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Database).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Database).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Database_EntitiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp56, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Database).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Database).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Database).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Database).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Database", LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)Database_EntitiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Database_EntitiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Database_EntitiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Database_EntitiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Database, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2779,12 +2782,9 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Database_EntitiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Database_EntitiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Entities", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Database_EntitiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Database_EntitiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Database, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Database_EntitiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Database_EntitiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp57, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Database_EntitiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Database_EntitiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Database_EntitiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp56, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp56).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp56).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -2792,7 +2792,8 @@ namespace MetaDslx.Soal
 				((ModelObject)tmp57).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp57).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp57).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Entity, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Operation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_ParentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_IsOnewayProperty, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -2800,15 +2801,17 @@ namespace MetaDslx.Soal
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_ParametersProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Operation_ExceptionsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Operation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Operation", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Operation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Operation", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Operation_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Interface_OperationsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
@@ -2816,13 +2819,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Operation_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Parent", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Interface, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ParentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Operation_ParentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Operation_IsOnewayProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Operation_IsOnewayProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_IsOnewayProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Operation_IsOnewayProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2830,13 +2833,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Operation_IsOnewayProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Operation_IsOnewayProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "IsOneway", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_IsOnewayProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Operation_IsOnewayProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation_IsOnewayProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Operation_IsOnewayProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_IsOnewayProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Operation_IsOnewayProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Operation_ReturnTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Operation_ReturnTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_ReturnTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Operation_ReturnTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2844,13 +2847,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Operation_ReturnTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Operation_ReturnTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ReturnType", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ReturnTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Operation_ReturnTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation_ReturnTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Operation_ReturnTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoalType, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ReturnTypeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Operation_ReturnTypeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Operation_ParametersProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Operation_ParametersProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_ParametersProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Operation_ParametersProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation_ParametersProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Parameter_OperationProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
@@ -2858,17 +2861,17 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Operation_ParametersProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Operation_ParametersProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Parameters", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ParametersProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Operation_ParametersProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ParametersProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Operation_ParametersProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation_ParametersProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Operation_ParametersProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp58, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp58).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)tmp58).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp58).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp58).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Parameter, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Operation_ExceptionsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Operation_ExceptionsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Operation_ExceptionsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Operation_ExceptionsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2876,30 +2879,30 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Operation_ExceptionsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Operation_ExceptionsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Exceptions", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ExceptionsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Operation_ExceptionsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Operation_ExceptionsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Operation_ExceptionsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp59, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Operation_ExceptionsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Operation_ExceptionsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp59).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)tmp59).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp59).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp59).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Exception, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Parameter).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Parameter).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Parameter).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Parameter).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => TypedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Parameter).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Parameter_OperationProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Parameter).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Parameter).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Parameter", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Parameter).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Parameter).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Parameter).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Parameter).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Parameter).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Parameter).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Parameter).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Parameter).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Parameter).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Parameter).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Parameter", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Parameter_OperationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Parameter_OperationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Parameter_OperationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Parameter_OperationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Parameter, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Parameter_OperationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.OppositePropertiesProperty, new Lazy<object>(() => Operation_ParametersProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
@@ -2907,13 +2910,11 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Parameter_OperationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Parameter_OperationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Operation", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Parameter_OperationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Parameter_OperationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Parameter, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Parameter_OperationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Parameter_OperationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Operation, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Parameter_OperationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Parameter_OperationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp67, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)Component).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => StructuredType, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Component_BaseComponentProperty, LazyThreadSafetyMode.ExecutionAndPublication));
@@ -2924,15 +2925,17 @@ namespace MetaDslx.Soal
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Component_ImplementationProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Component_LanguageProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Component).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Component", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_BaseComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp60, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Component", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp67, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_BaseComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Component_BaseComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_BaseComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Component_BaseComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2940,16 +2943,16 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Component_BaseComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Component_BaseComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "BaseComponent", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_BaseComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Component_BaseComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_BaseComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Component_BaseComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_BaseComponentProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Component_BaseComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_BaseComponentProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp60, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp60).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp60).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "InheritedScope", LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Component_IsAbstractProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Component_IsAbstractProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_IsAbstractProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Component_IsAbstractProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2957,13 +2960,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Component_IsAbstractProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Component_IsAbstractProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "IsAbstract", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_IsAbstractProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Component_IsAbstractProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_IsAbstractProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Component_IsAbstractProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_IsAbstractProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Component_IsAbstractProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp61, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2971,12 +2974,9 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Services", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ServicesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp62, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_ServicesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp61, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp61).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp61).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -2984,7 +2984,10 @@ namespace MetaDslx.Soal
 				((ModelObject)tmp62).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp62).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp62).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Service, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp63, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_ReferencesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_ReferencesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -2992,12 +2995,9 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Component_ReferencesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "References", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_ReferencesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_ReferencesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ReferencesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp64, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_ReferencesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp63, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp63).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp63).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -3005,7 +3005,10 @@ namespace MetaDslx.Soal
 				((ModelObject)tmp64).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp64).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp64).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Reference, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp65, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Component_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Component_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3013,12 +3016,9 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Component_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Component_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Properties", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Component_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Component_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_PropertiesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Component_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp66, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_PropertiesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp65, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp65).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp65).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -3026,7 +3026,10 @@ namespace MetaDslx.Soal
 				((ModelObject)tmp66).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp66).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp66).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Property, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Component_ImplementationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Component_ImplementationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_ImplementationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Component_ImplementationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3034,13 +3037,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Component_ImplementationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Component_ImplementationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Implementation", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_ImplementationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Component_ImplementationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_ImplementationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Component_ImplementationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_ImplementationProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Component_ImplementationProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Implementation, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Component_LanguageProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Component_LanguageProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Component_LanguageProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Component_LanguageProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3048,29 +3051,29 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Component_LanguageProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Component_LanguageProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Language", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_LanguageProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Component_LanguageProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Component_LanguageProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Component_LanguageProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Component_LanguageProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Component_LanguageProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Language, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				
 				((ModelObject)tmp67).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp67).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Scope", LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Composite).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Composite).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Composite).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Composite).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Composite_ComponentsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Composite).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Composite_WiresProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Composite).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Composite).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Composite", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Composite).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Composite).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Composite).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Composite).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Composite).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Composite).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Composite_ComponentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp68, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Composite).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Composite).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Composite).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Composite).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Composite", LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)Composite_ComponentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Composite_ComponentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Composite_ComponentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Composite_ComponentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Composite, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3078,12 +3081,9 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Composite_ComponentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Composite_ComponentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Components", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Composite_ComponentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Composite_ComponentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Composite, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Composite_ComponentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Composite_ComponentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp69, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Composite_ComponentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Composite_ComponentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Composite_ComponentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp68, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp68).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp68).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ScopeEntry", LazyThreadSafetyMode.ExecutionAndPublication));
@@ -3091,7 +3091,10 @@ namespace MetaDslx.Soal
 				((ModelObject)tmp69).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp69).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp69).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Component, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Composite_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Composite_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Composite_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Composite_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Composite, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3099,42 +3102,42 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Composite_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Composite_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Wires", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Composite_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Composite_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Composite, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Composite_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Composite_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Composite_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Composite_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp70, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp70).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)tmp70).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp70).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp70).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Wire, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Assembly).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Assembly).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Assembly).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Composite, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)Assembly).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Assembly).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Assembly", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Assembly).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Assembly).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Assembly).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Assembly).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Assembly).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Assembly).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Assembly).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Assembly).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Assembly).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Assembly).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Assembly", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Wire).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Wire).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)Wire).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Wire_SourceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Wire).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Wire_TargetProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Wire).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Wire).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Wire", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Wire).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Wire).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Wire).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Wire).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Wire).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Wire).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Wire).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Wire).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Wire).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Wire).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Wire", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Wire_SourceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Wire_SourceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Wire_SourceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Wire_SourceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Wire, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3142,13 +3145,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Wire_SourceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Wire_SourceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Source", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Wire_SourceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Wire_SourceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Wire, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Wire_SourceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Wire_SourceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Wire_SourceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Wire_SourceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Wire_TargetProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Wire_TargetProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Wire_TargetProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Wire_TargetProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Wire, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3156,34 +3159,34 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Wire_TargetProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Wire_TargetProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Target", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Wire_TargetProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Wire_TargetProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Wire, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Wire_TargetProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Wire_TargetProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Wire_TargetProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Wire_TargetProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)InterfaceReference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => InterfaceReference_NameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => InterfaceReference_OptionalNameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => InterfaceReference_InterfaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => InterfaceReference_BindingProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)InterfaceReference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "InterfaceReference", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)InterfaceReference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => tmp71, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)InterfaceReference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)InterfaceReference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)InterfaceReference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "InterfaceReference", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)tmp71).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty);
+				((ModelObject)tmp71).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp71).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp71).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "InterfaceReference", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp71).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty);
-				((ModelObject)tmp71).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ParentProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp72, LazyThreadSafetyMode.ExecutionAndPublication));
+				
+				((ModelObject)InterfaceReference_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)InterfaceReference_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Derived, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)InterfaceReference_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)InterfaceReference_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3191,16 +3194,16 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)InterfaceReference_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)InterfaceReference_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Name", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)InterfaceReference_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)InterfaceReference_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Derived, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)InterfaceReference_NameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)InterfaceReference_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)InterfaceReference_NameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, new Lazy<object>(() => tmp72, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)tmp72).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)tmp72).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Name", LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)InterfaceReference_OptionalNameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)InterfaceReference_OptionalNameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)InterfaceReference_OptionalNameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)InterfaceReference_OptionalNameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3208,13 +3211,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)InterfaceReference_OptionalNameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)InterfaceReference_OptionalNameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "OptionalName", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference_OptionalNameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)InterfaceReference_OptionalNameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)InterfaceReference_OptionalNameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)InterfaceReference_OptionalNameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference_OptionalNameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)InterfaceReference_OptionalNameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)InterfaceReference_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)InterfaceReference_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)InterfaceReference_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)InterfaceReference_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3222,13 +3225,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)InterfaceReference_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)InterfaceReference_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Interface", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)InterfaceReference_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)InterfaceReference_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)InterfaceReference_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Interface, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)InterfaceReference_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)InterfaceReference_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)InterfaceReference_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)InterfaceReference_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)InterfaceReference_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3236,74 +3239,74 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)InterfaceReference_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)InterfaceReference_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Binding", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)InterfaceReference_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)InterfaceReference_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)InterfaceReference_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Binding, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)InterfaceReference_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)InterfaceReference_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Service).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Service).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Service).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)Service).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Service).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Service", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Service).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Service).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Service).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Service).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Service).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Service).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Service).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Service).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Service).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Service).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Service", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Reference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Reference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Reference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => InterfaceReference, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)Reference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Reference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Reference", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Reference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Reference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Reference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Reference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Reference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Reference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Reference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Reference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Reference).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Reference).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Reference", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Implementation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Implementation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Implementation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)Implementation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Implementation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Implementation", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Implementation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Implementation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Implementation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Implementation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Implementation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Implementation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Implementation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Implementation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Implementation).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Implementation).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Implementation", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Language).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Language).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Language).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)Language).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Language).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Language", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Language).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Language).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Language).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Language).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Language).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Language).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Language).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Language).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Language).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Language).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Language", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Deployment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Deployment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Deployment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Deployment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Deployment_EnvironmentsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Deployment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Deployment_WiresProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Deployment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Deployment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Deployment", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Deployment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Deployment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Deployment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Deployment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Deployment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Deployment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Deployment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Deployment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Deployment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Deployment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Deployment", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Deployment_EnvironmentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Deployment_EnvironmentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Deployment_EnvironmentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Deployment_EnvironmentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Deployment, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3311,17 +3314,17 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Deployment_EnvironmentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Deployment_EnvironmentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Environments", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Deployment_EnvironmentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Deployment_EnvironmentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Deployment, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Deployment_EnvironmentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Deployment_EnvironmentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Deployment_EnvironmentsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Deployment_EnvironmentsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp73, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp73).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)tmp73).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp73).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp73).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Environment, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Deployment_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Deployment_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Deployment_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Deployment_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Deployment, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3329,31 +3332,31 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Deployment_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Deployment_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Wires", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Deployment_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Deployment_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Deployment, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Deployment_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Deployment_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Deployment_WiresProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Deployment_WiresProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp74, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp74).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)tmp74).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp74).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp74).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Wire, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Environment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Environment_RuntimeProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Environment_DatabasesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Environment_AssembliesProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Environment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Environment", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Environment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Environment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Environment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Environment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Environment).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Environment).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Environment", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Environment_RuntimeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Environment_RuntimeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Environment_RuntimeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Environment_RuntimeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Environment, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3361,13 +3364,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Environment_RuntimeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Environment_RuntimeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Runtime", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Environment_RuntimeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Environment_RuntimeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Environment, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Environment_RuntimeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Environment_RuntimeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Environment_RuntimeProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Environment_RuntimeProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Runtime, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Environment_DatabasesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Environment_DatabasesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Environment_DatabasesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Environment_DatabasesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Environment, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3375,17 +3378,17 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Environment_DatabasesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Environment_DatabasesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Databases", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Environment_DatabasesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Environment_DatabasesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Environment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Environment_DatabasesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Environment_DatabasesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp75, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Environment_DatabasesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Environment_DatabasesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp75).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)tmp75).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp75).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp75).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Database, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Environment_AssembliesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Environment_AssembliesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Environment_AssembliesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Environment_AssembliesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Environment, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3393,43 +3396,43 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Environment_AssembliesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Environment_AssembliesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Assemblies", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Environment_AssembliesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Environment_AssembliesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Environment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Environment_AssembliesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Environment_AssembliesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp76, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Environment_AssembliesProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Environment_AssembliesProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp76).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)tmp76).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp76).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp76).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => Assembly, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Runtime).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Runtime).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Runtime).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)Runtime).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Runtime).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Runtime", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Runtime).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Runtime).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Runtime).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Runtime).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Runtime).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Runtime).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Runtime).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Runtime).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Runtime).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Runtime).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Runtime", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Binding).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Binding_TransportProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Binding_EncodingsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Binding_ProtocolsProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Binding).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Binding", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Binding).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Binding).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Binding).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Binding).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Binding).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Binding).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Binding", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Binding_TransportProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Binding_TransportProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Binding_TransportProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Binding_TransportProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Binding, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3437,13 +3440,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Binding_TransportProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Binding_TransportProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Transport", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Binding_TransportProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Binding_TransportProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Binding, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Binding_TransportProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Binding_TransportProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Binding_TransportProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Binding_TransportProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => TransportBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Binding_EncodingsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Binding_EncodingsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Binding_EncodingsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Binding_EncodingsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Binding, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3451,17 +3454,17 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Binding_EncodingsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Binding_EncodingsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Encodings", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Binding_EncodingsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Binding_EncodingsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Binding, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Binding_EncodingsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Binding_EncodingsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Binding_EncodingsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Binding_EncodingsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp77, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp77).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)tmp77).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp77).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp77).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => EncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Binding_ProtocolsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Binding_ProtocolsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Binding_ProtocolsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Binding_ProtocolsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Binding, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3469,31 +3472,31 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Binding_ProtocolsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Binding_ProtocolsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Protocols", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Binding_ProtocolsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Binding_ProtocolsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Binding, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Binding_ProtocolsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Binding_ProtocolsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Binding_ProtocolsProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Binding_ProtocolsProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => tmp78, LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp78).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty);
 				((ModelObject)tmp78).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaCollectionKind.List, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp78).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty);
 				((ModelObject)tmp78).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.InnerTypeProperty, new Lazy<object>(() => ProtocolBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)Endpoint).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => Declaration, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Endpoint_InterfaceProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Endpoint_BindingProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => Endpoint_AddressProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)Endpoint).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Endpoint", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Endpoint).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Endpoint).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Endpoint).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Endpoint).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Endpoint).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)Endpoint).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Endpoint", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Endpoint_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Endpoint_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Endpoint_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Endpoint_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Endpoint, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3501,13 +3504,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Endpoint_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Endpoint_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Interface", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Endpoint_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Endpoint_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Endpoint, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Endpoint_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Endpoint_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Interface, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Endpoint_InterfaceProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Endpoint_InterfaceProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Endpoint_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Endpoint_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Endpoint_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Endpoint_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Endpoint, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3515,13 +3518,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Endpoint_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Endpoint_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Binding", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Endpoint_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Endpoint_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Endpoint, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Endpoint_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Endpoint_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => Binding, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Endpoint_BindingProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Endpoint_BindingProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)Endpoint_AddressProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)Endpoint_AddressProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)Endpoint_AddressProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)Endpoint_AddressProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Endpoint, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3529,130 +3532,130 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)Endpoint_AddressProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)Endpoint_AddressProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Address", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Endpoint_AddressProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)Endpoint_AddressProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => Endpoint, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)Endpoint_AddressProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)Endpoint_AddressProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)Endpoint_AddressProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)Endpoint_AddressProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)BindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)BindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)BindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => NamedElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)BindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)BindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "BindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)BindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)BindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)BindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)BindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)BindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)BindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)BindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)BindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)BindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)BindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "BindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)TransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)TransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)TransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => BindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)TransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)TransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "TransportBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)TransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)TransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)TransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)TransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)TransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)TransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)TransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)TransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)TransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)TransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "TransportBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)EncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)EncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)EncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => BindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)EncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)EncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "EncodingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)EncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)EncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)EncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)EncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)EncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)EncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)EncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)EncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)EncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)EncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "EncodingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)ProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)ProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)ProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => BindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)ProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)ProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ProtocolBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)ProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)ProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)ProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)ProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)ProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)ProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)ProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)ProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)ProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)ProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "ProtocolBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)HttpTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => TransportBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)HttpTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "HttpTransportBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)HttpTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)HttpTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)HttpTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)HttpTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)HttpTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)HttpTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "HttpTransportBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)RestTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)RestTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)RestTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => TransportBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)RestTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)RestTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "RestTransportBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)RestTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)RestTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)RestTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)RestTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)RestTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)RestTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)RestTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)RestTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)RestTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)RestTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "RestTransportBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)WebSocketTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)WebSocketTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)WebSocketTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => TransportBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)WebSocketTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)WebSocketTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "WebSocketTransportBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)WebSocketTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)WebSocketTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)WebSocketTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)WebSocketTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)WebSocketTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)WebSocketTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)WebSocketTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)WebSocketTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)WebSocketTransportBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)WebSocketTransportBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "WebSocketTransportBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				((ModelObject)SoapVersion).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaEnum.EnumLiteralsProperty, new Lazy<object>(() => tmp79, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)SoapVersion).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaEnum.EnumLiteralsProperty, new Lazy<object>(() => tmp80, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)SoapVersion).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)SoapVersion).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "SoapVersion", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)SoapVersion).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
 				((ModelObject)SoapVersion).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp79).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp79).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Soap11", LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoapVersion).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)SoapVersion).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "SoapVersion", LazyThreadSafetyMode.ExecutionAndPublication));
+				
 				((ModelObject)tmp79).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaEnumLiteral.EnumProperty);
 				((ModelObject)tmp79).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaEnumLiteral.EnumProperty, new Lazy<object>(() => SoapVersion, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp79).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp79).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Soap11", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp79).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp79).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoapVersion, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)tmp80).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)tmp80).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Soap12", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp80).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaEnumLiteral.EnumProperty);
 				((ModelObject)tmp80).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaEnumLiteral.EnumProperty, new Lazy<object>(() => SoapVersion, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)tmp80).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)tmp80).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Soap12", LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)tmp80).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)tmp80).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoapVersion, LazyThreadSafetyMode.ExecutionAndPublication));
-				
+				((ModelObject)SoapEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => EncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => SoapEncodingBindingElement_VersionProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.PropertiesProperty, new Lazy<object>(() => SoapEncodingBindingElement_MtomEnabledProperty, LazyThreadSafetyMode.ExecutionAndPublication));
 				
-				((ModelObject)SoapEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "SoapEncodingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoapEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoapEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)SoapEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoapEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoapEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)SoapEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "SoapEncodingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)SoapEncodingBindingElement_VersionProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)SoapEncodingBindingElement_VersionProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoapEncodingBindingElement_VersionProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)SoapEncodingBindingElement_VersionProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => SoapEncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3660,13 +3663,13 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)SoapEncodingBindingElement_VersionProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)SoapEncodingBindingElement_VersionProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "Version", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoapEncodingBindingElement_VersionProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)SoapEncodingBindingElement_VersionProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => SoapEncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)SoapEncodingBindingElement_VersionProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)SoapEncodingBindingElement_VersionProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => SoapVersion, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoapEncodingBindingElement_VersionProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)SoapEncodingBindingElement_VersionProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
+				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
+				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => SoapEncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
 				
@@ -3674,65 +3677,59 @@ namespace MetaDslx.Soal
 				
 				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
 				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "MtomEnabled", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => SoapEncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.Bool	, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)SoapEncodingBindingElement_MtomEnabledProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)XmlEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)XmlEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)XmlEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => EncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)XmlEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)XmlEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "XmlEncodingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)XmlEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)XmlEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)XmlEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)XmlEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)XmlEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)XmlEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)XmlEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)XmlEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)XmlEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)XmlEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "XmlEncodingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)JsonEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)JsonEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)JsonEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => EncodingBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)JsonEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)JsonEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "JsonEncodingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)JsonEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)JsonEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)JsonEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)JsonEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)JsonEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)JsonEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)JsonEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)JsonEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)JsonEncodingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)JsonEncodingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "JsonEncodingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)WsProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)WsProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)WsProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => ProtocolBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)WsProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)WsProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "WsProtocolBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)WsProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)WsProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)WsProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)WsProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => true, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)WsProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)WsProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)WsProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)WsProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)WsProtocolBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)WsProtocolBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "WsProtocolBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
 				
+				((ModelObject)WsAddressingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
+				((ModelObject)WsAddressingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)WsAddressingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.SuperClassesProperty, new Lazy<object>(() => WsProtocolBindingElement, LazyThreadSafetyMode.ExecutionAndPublication));
 				
 				
-				((ModelObject)WsAddressingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
-				((ModelObject)WsAddressingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "WsAddressingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)WsAddressingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
-				((ModelObject)WsAddressingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
-				((ModelObject)WsAddressingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty);
-				((ModelObject)WsAddressingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.IsAbstractProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)WsAddressingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty);
 				((ModelObject)WsAddressingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaClass.ConstructorProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)WsAddressingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty);
+				((ModelObject)WsAddressingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.NamespaceProperty, new Lazy<object>(() => tmp2, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)WsAddressingBindingElement).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);
+				((ModelObject)WsAddressingBindingElement).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty, new Lazy<object>(() => "WsAddressingBindingElement", LazyThreadSafetyMode.ExecutionAndPublication));
+				
 	
-	            foreach (var mo in ModelContext.Current.Model.Instances)
-	            {
-	                mo.MEvalLazyValues();
-	            }
+	            SoalInstance.model.EvalLazyValues();
 			}
 	    }
 	}
@@ -3888,15 +3885,14 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Declaration> global::MetaDslx.Soal.Namespace.Declarations
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Namespace.DeclarationsProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Declaration>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Declaration>);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
         
         global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
@@ -3910,14 +3906,15 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Declaration> global::MetaDslx.Soal.Namespace.Declarations
+        string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Namespace.DeclarationsProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Declaration>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Declaration>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
             }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -3951,17 +3948,6 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-        }
-        
         global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
         {
             get 
@@ -3971,6 +3957,17 @@ namespace MetaDslx.Soal
                 else return default(global::MetaDslx.Soal.Namespace);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
+        }
+        
+        string global::MetaDslx.Soal.NamedElement.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -4154,15 +4151,14 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.EnumLiteral> global::MetaDslx.Soal.Enum.EnumLiterals
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Enum.EnumLiteralsProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.EnumLiteral>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.EnumLiteral>);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
         
         global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
@@ -4176,14 +4172,15 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.EnumLiteral> global::MetaDslx.Soal.Enum.EnumLiterals
+        string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Enum.EnumLiteralsProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.EnumLiteral>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.EnumLiteral>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
             }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -4218,6 +4215,17 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
+        global::MetaDslx.Soal.Enum global::MetaDslx.Soal.EnumLiteral.Enum
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.EnumLiteral.EnumProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Enum)result;
+                else return default(global::MetaDslx.Soal.Enum);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.EnumLiteral.EnumProperty, value); }
+        }
+        
         string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
@@ -4238,17 +4246,6 @@ namespace MetaDslx.Soal
                 else return default(global::MetaDslx.Soal.SoalType);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.TypedElement.TypeProperty, value); }
-        }
-        
-        global::MetaDslx.Soal.Enum global::MetaDslx.Soal.EnumLiteral.Enum
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.EnumLiteral.EnumProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Enum)result;
-                else return default(global::MetaDslx.Soal.Enum);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.EnumLiteral.EnumProperty, value); }
         }
     }
     
@@ -4283,15 +4280,14 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
         
         global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
@@ -4305,14 +4301,15 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
+        string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
             }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -4346,6 +4343,17 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
+        global::MetaDslx.Soal.StructuredType global::MetaDslx.Soal.Property.Parent
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Property.ParentProperty); 
+                if (result != null) return (global::MetaDslx.Soal.StructuredType)result;
+                else return default(global::MetaDslx.Soal.StructuredType);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Property.ParentProperty, value); }
+        }
+        
         string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
@@ -4366,17 +4374,6 @@ namespace MetaDslx.Soal
                 else return default(global::MetaDslx.Soal.SoalType);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.TypedElement.TypeProperty, value); }
-        }
-        
-        global::MetaDslx.Soal.StructuredType global::MetaDslx.Soal.Property.Parent
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Property.ParentProperty); 
-                if (result != null) return (global::MetaDslx.Soal.StructuredType)result;
-                else return default(global::MetaDslx.Soal.StructuredType);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Property.ParentProperty, value); }
         }
     }
     
@@ -4411,15 +4408,25 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
+        global::MetaDslx.Soal.Struct global::MetaDslx.Soal.Struct.BaseType
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Struct.BaseTypeProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Struct)result;
+                else return default(global::MetaDslx.Soal.Struct);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Struct.BaseTypeProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
+            }
         }
         
         global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
@@ -4433,25 +4440,15 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
+        string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
             }
-        }
-        
-        global::MetaDslx.Soal.Struct global::MetaDslx.Soal.Struct.BaseType
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Struct.BaseTypeProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Struct)result;
-                else return default(global::MetaDslx.Soal.Struct);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Struct.BaseTypeProperty, value); }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -4486,15 +4483,25 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
+        global::MetaDslx.Soal.Exception global::MetaDslx.Soal.Exception.BaseType
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Exception.BaseTypeProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Exception)result;
+                else return default(global::MetaDslx.Soal.Exception);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Exception.BaseTypeProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
+            }
         }
         
         global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
@@ -4508,25 +4515,15 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
+        string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
             }
-        }
-        
-        global::MetaDslx.Soal.Exception global::MetaDslx.Soal.Exception.BaseType
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Exception.BaseTypeProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Exception)result;
-                else return default(global::MetaDslx.Soal.Exception);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Exception.BaseTypeProperty, value); }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -4561,15 +4558,25 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
+        global::MetaDslx.Soal.Entity global::MetaDslx.Soal.Entity.BaseType
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Entity.BaseTypeProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Entity)result;
+                else return default(global::MetaDslx.Soal.Entity);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Entity.BaseTypeProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
+            }
         }
         
         global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
@@ -4583,25 +4590,15 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
+        string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
             }
-        }
-        
-        global::MetaDslx.Soal.Entity global::MetaDslx.Soal.Entity.BaseType
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Entity.BaseTypeProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Entity)result;
-                else return default(global::MetaDslx.Soal.Entity);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Entity.BaseTypeProperty, value); }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -4636,15 +4633,14 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation> global::MetaDslx.Soal.Interface.Operations
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Interface.OperationsProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation>);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
         
         global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
@@ -4658,14 +4654,15 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation> global::MetaDslx.Soal.Interface.Operations
+        string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Interface.OperationsProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
             }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -4695,21 +4692,30 @@ namespace MetaDslx.Soal
     
         public DatabaseImpl() 
         {
-            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Interface.OperationsProperty, new global::MetaDslx.Core.ModelList<Operation>(this, global::MetaDslx.Soal.SoalDescriptor.Interface.OperationsProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Database.EntitiesProperty, new global::MetaDslx.Core.ModelList<Entity>(this, global::MetaDslx.Soal.SoalDescriptor.Database.EntitiesProperty));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Interface.OperationsProperty, new global::MetaDslx.Core.ModelList<Operation>(this, global::MetaDslx.Soal.SoalDescriptor.Interface.OperationsProperty));
             global::MetaDslx.Soal.SoalImplementationProvider.Implementation.Database_Database(this);
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Entity> global::MetaDslx.Soal.Database.Entities
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Database.EntitiesProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Entity>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Entity>);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation> global::MetaDslx.Soal.Interface.Operations
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Interface.OperationsProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation>);
+            }
         }
         
         global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
@@ -4723,24 +4729,15 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation> global::MetaDslx.Soal.Interface.Operations
+        string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Interface.OperationsProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Operation>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
             }
-        }
-        
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Entity> global::MetaDslx.Soal.Database.Entities
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Database.EntitiesProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Entity>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Entity>);
-            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -4778,17 +4775,6 @@ namespace MetaDslx.Soal
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Operation.ExceptionsProperty, new global::MetaDslx.Core.ModelList<Exception>(this, global::MetaDslx.Soal.SoalDescriptor.Operation.ExceptionsProperty));
             global::MetaDslx.Soal.SoalImplementationProvider.Implementation.Operation_Operation(this);
             this.MMakeDefault();
-        }
-        
-        string global::MetaDslx.Soal.NamedElement.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
         
         global::MetaDslx.Soal.Interface global::MetaDslx.Soal.Operation.Parent
@@ -4843,6 +4829,17 @@ namespace MetaDslx.Soal
                 else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Exception>);
             }
         }
+        
+        string global::MetaDslx.Soal.NamedElement.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+        }
     }
     
     
@@ -4875,6 +4872,17 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
+        global::MetaDslx.Soal.Operation global::MetaDslx.Soal.Parameter.Operation
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Parameter.OperationProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Operation)result;
+                else return default(global::MetaDslx.Soal.Operation);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Parameter.OperationProperty, value); }
+        }
+        
         string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
@@ -4895,17 +4903,6 @@ namespace MetaDslx.Soal
                 else return default(global::MetaDslx.Soal.SoalType);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.TypedElement.TypeProperty, value); }
-        }
-        
-        global::MetaDslx.Soal.Operation global::MetaDslx.Soal.Parameter.Operation
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Parameter.OperationProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Operation)result;
-                else return default(global::MetaDslx.Soal.Operation);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Parameter.OperationProperty, value); }
         }
     }
     
@@ -4941,44 +4938,12 @@ namespace MetaDslx.Soal
     
         public ComponentImpl() 
         {
-            this.MSet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, new global::MetaDslx.Core.ModelList<Service>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty, new global::MetaDslx.Core.ModelList<Reference>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty));
             global::MetaDslx.Soal.SoalImplementationProvider.Implementation.Component_Component(this);
             this.MMakeDefault();
-        }
-        
-        string global::MetaDslx.Soal.NamedElement.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-        }
-        
-        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
-                else return default(global::MetaDslx.Soal.Namespace);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
-        }
-        
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
-            }
         }
         
         global::MetaDslx.Soal.Component global::MetaDslx.Soal.Component.BaseComponent
@@ -5053,6 +5018,38 @@ namespace MetaDslx.Soal
                 else return default(global::MetaDslx.Soal.Language);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.LanguageProperty, value); }
+        }
+        
+        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
+                else return default(global::MetaDslx.Soal.Namespace);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
+        }
+        
+        string global::MetaDslx.Soal.NamedElement.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
+            }
         }
     }
     
@@ -5083,45 +5080,33 @@ namespace MetaDslx.Soal
     
         public CompositeImpl() 
         {
-            this.MSet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty, new global::MetaDslx.Core.ModelList<Component>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty, new global::MetaDslx.Core.ModelList<Wire>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, new global::MetaDslx.Core.ModelList<Service>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty, new global::MetaDslx.Core.ModelList<Reference>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty));
-            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty, new global::MetaDslx.Core.ModelList<Component>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty));
-            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty, new global::MetaDslx.Core.ModelList<Wire>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty));
             global::MetaDslx.Soal.SoalImplementationProvider.Implementation.Composite_Composite(this);
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component> global::MetaDslx.Soal.Composite.Components
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component>);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
         
-        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire> global::MetaDslx.Soal.Composite.Wires
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
-                else return default(global::MetaDslx.Soal.Namespace);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
-        }
-        
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire>);
             }
         }
         
@@ -5199,23 +5184,35 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.LanguageProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component> global::MetaDslx.Soal.Composite.Components
+        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
+                else return default(global::MetaDslx.Soal.Namespace);
             }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire> global::MetaDslx.Soal.Composite.Wires
+        string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
             }
         }
     }
@@ -5245,45 +5242,33 @@ namespace MetaDslx.Soal
     
         public AssemblyImpl() 
         {
-            this.MSet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty, new global::MetaDslx.Core.ModelList<Component>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty, new global::MetaDslx.Core.ModelList<Wire>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, new global::MetaDslx.Core.ModelList<Service>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty, new global::MetaDslx.Core.ModelList<Reference>(this, global::MetaDslx.Soal.SoalDescriptor.Component.ReferencesProperty));
             this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty));
-            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty, new global::MetaDslx.Core.ModelList<Component>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty));
-            this.MSet(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty, new global::MetaDslx.Core.ModelList<Wire>(this, global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty));
+            this.MSet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, new global::MetaDslx.Core.ModelList<Property>(this, global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty));
             global::MetaDslx.Soal.SoalImplementationProvider.Implementation.Assembly_Assembly(this);
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component> global::MetaDslx.Soal.Composite.Components
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component>);
             }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
         
-        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire> global::MetaDslx.Soal.Composite.Wires
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
-                else return default(global::MetaDslx.Soal.Namespace);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
-        }
-        
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire>);
             }
         }
         
@@ -5361,23 +5346,35 @@ namespace MetaDslx.Soal
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Component.LanguageProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component> global::MetaDslx.Soal.Composite.Components
+        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Composite.ComponentsProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Component>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
+                else return default(global::MetaDslx.Soal.Namespace);
             }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
         }
         
-        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire> global::MetaDslx.Soal.Composite.Wires
+        string global::MetaDslx.Soal.NamedElement.Name
         {
             get 
             {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty); 
-                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire>)result;
-                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire>);
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+        }
+        
+        global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property> global::MetaDslx.Soal.StructuredType.Properties
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty); 
+                if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>)result;
+                else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Property>);
             }
         }
     }
@@ -5777,28 +5774,6 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-        }
-        
-        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
-                else return default(global::MetaDslx.Soal.Namespace);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
-        }
-        
         global::System.Collections.Generic.IList<global::MetaDslx.Soal.Environment> global::MetaDslx.Soal.Deployment.Environments
         {
             get 
@@ -5817,6 +5792,28 @@ namespace MetaDslx.Soal
                 if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire>)result;
                 else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Wire>);
             }
+        }
+        
+        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
+                else return default(global::MetaDslx.Soal.Namespace);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
+        }
+        
+        string global::MetaDslx.Soal.NamedElement.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -5854,17 +5851,6 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-        }
-        
         global::MetaDslx.Soal.Runtime global::MetaDslx.Soal.Environment.Runtime
         {
             get 
@@ -5894,6 +5880,17 @@ namespace MetaDslx.Soal
                 if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.Assembly>)result;
                 else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.Assembly>);
             }
+        }
+        
+        string global::MetaDslx.Soal.NamedElement.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -5972,28 +5969,6 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-        }
-        
-        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
-                else return default(global::MetaDslx.Soal.Namespace);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
-        }
-        
         global::MetaDslx.Soal.TransportBindingElement global::MetaDslx.Soal.Binding.Transport
         {
             get 
@@ -6023,6 +5998,28 @@ namespace MetaDslx.Soal
                 if (result != null) return (global::System.Collections.Generic.IList<global::MetaDslx.Soal.ProtocolBindingElement>)result;
                 else return default(global::System.Collections.Generic.IList<global::MetaDslx.Soal.ProtocolBindingElement>);
             }
+        }
+        
+        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
+                else return default(global::MetaDslx.Soal.Namespace);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
+        }
+        
+        string global::MetaDslx.Soal.NamedElement.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -6058,28 +6055,6 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-        }
-        
-        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
-                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
-                else return default(global::MetaDslx.Soal.Namespace);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
-        }
-        
         global::MetaDslx.Soal.Interface global::MetaDslx.Soal.Endpoint.Interface
         {
             get 
@@ -6111,6 +6086,28 @@ namespace MetaDslx.Soal
                 else return default(string);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Endpoint.AddressProperty, value); }
+        }
+        
+        global::MetaDslx.Soal.Namespace global::MetaDslx.Soal.Declaration.Namespace
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); 
+                if (result != null) return (global::MetaDslx.Soal.Namespace)result;
+                else return default(global::MetaDslx.Soal.Namespace);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
+        }
+        
+        string global::MetaDslx.Soal.NamedElement.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -6432,17 +6429,6 @@ namespace MetaDslx.Soal
             this.MMakeDefault();
         }
         
-        string global::MetaDslx.Soal.NamedElement.Name
-        {
-            get 
-            {
-                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
-                if (result != null) return (string)result;
-                else return default(string);
-            }
-            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-        }
-        
         global::MetaDslx.Soal.SoapVersion global::MetaDslx.Soal.SoapEncodingBindingElement.Version
         {
             get 
@@ -6463,6 +6449,17 @@ namespace MetaDslx.Soal
                 else return default(bool);
             }
             set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomEnabledProperty, value); }
+        }
+        
+        string global::MetaDslx.Soal.NamedElement.Name
+        {
+            get 
+            {
+                object result = this.MGet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); 
+                if (result != null) return (string)result;
+                else return default(string);
+            }
+            set { this.MSet(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
         }
     }
     
@@ -7152,7 +7149,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Namespace()
     	/// Direct superclasses: global::MetaDslx.Soal.Declaration
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration
+    	/// All superclasses: global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void Namespace_Namespace(Namespace @this)
         {
@@ -7203,7 +7200,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Enum()
     	/// Direct superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration
-    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration
+    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void Enum_Enum(Enum @this)
         {
@@ -7225,7 +7222,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: StructuredType()
     	/// Direct superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration
-    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration
+    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void StructuredType_StructuredType(StructuredType @this)
         {
@@ -7247,7 +7244,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Struct()
     	/// Direct superclasses: global::MetaDslx.Soal.StructuredType
-    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.StructuredType
+    	/// All superclasses: global::MetaDslx.Soal.StructuredType, global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void Struct_Struct(Struct @this)
         {
@@ -7257,7 +7254,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Exception()
     	/// Direct superclasses: global::MetaDslx.Soal.StructuredType
-    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.StructuredType
+    	/// All superclasses: global::MetaDslx.Soal.StructuredType, global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void Exception_Exception(Exception @this)
         {
@@ -7267,7 +7264,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Entity()
     	/// Direct superclasses: global::MetaDslx.Soal.StructuredType
-    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.StructuredType
+    	/// All superclasses: global::MetaDslx.Soal.StructuredType, global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void Entity_Entity(Entity @this)
         {
@@ -7277,7 +7274,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Interface()
     	/// Direct superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration
-    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration
+    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void Interface_Interface(Interface @this)
         {
@@ -7288,7 +7285,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Database()
     	/// Direct superclasses: global::MetaDslx.Soal.Interface
-    	/// All superclasses: global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.Interface
+    	/// All superclasses: global::MetaDslx.Soal.Interface, global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void Database_Database(Database @this)
         {
@@ -7319,7 +7316,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Component()
     	/// Direct superclasses: global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.StructuredType
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.StructuredType
+    	/// All superclasses: global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.StructuredType, global::MetaDslx.Soal.SoalType
         /// </summary>
         public virtual void Component_Component(Component @this)
         {
@@ -7330,7 +7327,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Composite()
     	/// Direct superclasses: global::MetaDslx.Soal.Component
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.StructuredType, global::MetaDslx.Soal.Component
+    	/// All superclasses: global::MetaDslx.Soal.Component, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.StructuredType, global::MetaDslx.Soal.SoalType
         /// </summary>
         public virtual void Composite_Composite(Composite @this)
         {
@@ -7340,7 +7337,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Assembly()
     	/// Direct superclasses: global::MetaDslx.Soal.Composite
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.SoalType, global::MetaDslx.Soal.StructuredType, global::MetaDslx.Soal.Component, global::MetaDslx.Soal.Composite
+    	/// All superclasses: global::MetaDslx.Soal.Composite, global::MetaDslx.Soal.Component, global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.StructuredType, global::MetaDslx.Soal.SoalType
         /// </summary>
         public virtual void Assembly_Assembly(Assembly @this)
         {
@@ -7412,7 +7409,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Deployment()
     	/// Direct superclasses: global::MetaDslx.Soal.Declaration
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration
+    	/// All superclasses: global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void Deployment_Deployment(Deployment @this)
         {
@@ -7442,7 +7439,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Binding()
     	/// Direct superclasses: global::MetaDslx.Soal.Declaration
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration
+    	/// All superclasses: global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void Binding_Binding(Binding @this)
         {
@@ -7452,7 +7449,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: Endpoint()
     	/// Direct superclasses: global::MetaDslx.Soal.Declaration
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.Declaration
+    	/// All superclasses: global::MetaDslx.Soal.Declaration, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void Endpoint_Endpoint(Endpoint @this)
         {
@@ -7472,7 +7469,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: TransportBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.BindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement
+    	/// All superclasses: global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void TransportBindingElement_TransportBindingElement(TransportBindingElement @this)
         {
@@ -7482,7 +7479,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: EncodingBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.BindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement
+    	/// All superclasses: global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void EncodingBindingElement_EncodingBindingElement(EncodingBindingElement @this)
         {
@@ -7492,7 +7489,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: ProtocolBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.BindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement
+    	/// All superclasses: global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void ProtocolBindingElement_ProtocolBindingElement(ProtocolBindingElement @this)
         {
@@ -7502,7 +7499,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: HttpTransportBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.TransportBindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.TransportBindingElement
+    	/// All superclasses: global::MetaDslx.Soal.TransportBindingElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void HttpTransportBindingElement_HttpTransportBindingElement(HttpTransportBindingElement @this)
         {
@@ -7512,7 +7509,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: RestTransportBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.TransportBindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.TransportBindingElement
+    	/// All superclasses: global::MetaDslx.Soal.TransportBindingElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void RestTransportBindingElement_RestTransportBindingElement(RestTransportBindingElement @this)
         {
@@ -7522,7 +7519,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: WebSocketTransportBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.TransportBindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.TransportBindingElement
+    	/// All superclasses: global::MetaDslx.Soal.TransportBindingElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void WebSocketTransportBindingElement_WebSocketTransportBindingElement(WebSocketTransportBindingElement @this)
         {
@@ -7532,7 +7529,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: SoapEncodingBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.EncodingBindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.EncodingBindingElement
+    	/// All superclasses: global::MetaDslx.Soal.EncodingBindingElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void SoapEncodingBindingElement_SoapEncodingBindingElement(SoapEncodingBindingElement @this)
         {
@@ -7542,7 +7539,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: XmlEncodingBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.EncodingBindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.EncodingBindingElement
+    	/// All superclasses: global::MetaDslx.Soal.EncodingBindingElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void XmlEncodingBindingElement_XmlEncodingBindingElement(XmlEncodingBindingElement @this)
         {
@@ -7552,7 +7549,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: JsonEncodingBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.EncodingBindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.EncodingBindingElement
+    	/// All superclasses: global::MetaDslx.Soal.EncodingBindingElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void JsonEncodingBindingElement_JsonEncodingBindingElement(JsonEncodingBindingElement @this)
         {
@@ -7562,7 +7559,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: WsProtocolBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.ProtocolBindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.ProtocolBindingElement
+    	/// All superclasses: global::MetaDslx.Soal.ProtocolBindingElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void WsProtocolBindingElement_WsProtocolBindingElement(WsProtocolBindingElement @this)
         {
@@ -7572,7 +7569,7 @@ namespace MetaDslx.Soal
         /// <summary>
     	/// Implements the constructor: WsAddressingBindingElement()
     	/// Direct superclasses: global::MetaDslx.Soal.WsProtocolBindingElement
-    	/// All superclasses: global::MetaDslx.Soal.NamedElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.ProtocolBindingElement, global::MetaDslx.Soal.WsProtocolBindingElement
+    	/// All superclasses: global::MetaDslx.Soal.WsProtocolBindingElement, global::MetaDslx.Soal.ProtocolBindingElement, global::MetaDslx.Soal.BindingElement, global::MetaDslx.Soal.NamedElement
         /// </summary>
         public virtual void WsAddressingBindingElement_WsAddressingBindingElement(WsAddressingBindingElement @this)
         {

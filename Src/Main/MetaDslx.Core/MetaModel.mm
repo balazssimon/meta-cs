@@ -1,9 +1,8 @@
 ﻿namespace MetaDslx.Core
 {
+	metamodel Meta(Uri="http://metadslx.core/1.0"); 
 
-	metamodel Meta(Uri="http://metadslx.core/1.0");
-
-	const MetaPrimitiveType Object = new MetaPrimitiveType() { Name = "object" };
+	const MetaPrimitiveType Object = new MetaPrimitiveType() { Name = "object" }; 
 	const MetaPrimitiveType String = new MetaPrimitiveType() { Name = "string" };
 	const MetaPrimitiveType Int = new MetaPrimitiveType() { Name = "int" };
 	const MetaPrimitiveType Long = new MetaPrimitiveType() { Name = "long" };
@@ -16,6 +15,7 @@
 	const MetaPrimitiveType Any = new MetaPrimitiveType() { Name = "*any*" };
 	const MetaPrimitiveType Error = new MetaPrimitiveType() { Name = "*error*" };
 	const MetaPrimitiveType ModelObject = new MetaPrimitiveType() { Name = "ModelObject" };
+	const MetaPrimitiveType DefinitionList = new MetaPrimitiveType() { Name = "DefinitionList" };
 	const MetaCollectionType ModelObjectList = new MetaCollectionType() { InnerType = typeof(ModelObject) };
 
 
@@ -33,43 +33,42 @@
 	extern MetaType balance(MetaType left, MetaType right);
 
 	[BuiltInName(Name="Resolve1")]
-	extern list<ModelObject> resolve(string name);
+	extern DefinitionList resolve(string name);
 	[BuiltInName(Name="Resolve2")]
-	extern list<ModelObject> resolve(ModelObject context, string name);
+	extern DefinitionList resolve(ModelObject context, string name);
 	[BuiltInName(Name="ResolveType1")]
-	extern list<ModelObject> resolve_type(string name);
+	extern DefinitionList resolve_type(string name);
 	[BuiltInName(Name="ResolveType2")]
-	extern list<ModelObject> resolve_type(ModelObject context, string name);
+	extern DefinitionList resolve_type(ModelObject context, string name);
 	[BuiltInName(Name="ResolveName1")]
-	extern list<ModelObject> resolve_name(string name);
+	extern DefinitionList resolve_name(string name);
 	[BuiltInName(Name="ResolveName2")]
-	extern list<ModelObject> resolve_name(ModelObject context, string name);
+	extern DefinitionList resolve_name(ModelObject context, string name);
 
+	[BuiltInName(Name="ToDefinitionList")]
+	extern DefinitionList definition_list(ModelObject definition);
+	
 	[BuiltInName(Name="Bind1")]
-	extern ModelObject bind(ModelObject symbol);
+	extern ModelObject bind(DefinitionList definitions);
 	[BuiltInName(Name="Bind2")]
-	extern ModelObject bind(list<ModelObject> symbols);
-	[BuiltInName(Name="Bind3")]
-	extern ModelObject bind(ModelObject context, ModelObject symbol);
-	[BuiltInName(Name="Bind4")]
-	extern ModelObject bind(ModelObject context, list<ModelObject> symbols);
-
-	[BuiltInName(Name="SelectOfType1")]
-	extern list<ModelObject> select_of_type(ModelObject symbol, MetaType type);
-	[BuiltInName(Name="SelectOfType2")]
-	extern list<ModelObject> select_of_type(list<ModelObject> symbols, MetaType type);
-	[BuiltInName(Name="SelectOfName1")]
-	extern list<ModelObject> select_of_name(ModelObject symbol, string name);
-	[BuiltInName(Name="SelectOfName2")]
-	extern list<ModelObject> select_of_name(list<ModelObject> symbols, string name);
+	extern ModelObject bind(ModelObject context, DefinitionList definitions);
 		
-
+	/*
+	Represents an annotated element.
+	*/
 	abstract class MetaAnnotatedElement
 	{
-		containment list<MetaAnnotation> Annotations;
+		// List of annotations
+		containment list<MetaAnnotation> Annotations; 
 	}
 
-	abstract class MetaNamedElement
+	abstract class MetaDocumentedElement
+	{
+		string Documentation;
+		list<string> GetDocumentationLines();
+	}
+
+	abstract class MetaNamedElement : MetaDocumentedElement
 	{
 		[Name]
 		string Name;
@@ -195,8 +194,10 @@
 		list<MetaClass> GetAllSuperClasses();
 		list<MetaProperty> GetAllProperties();
 		list<MetaOperation> GetAllOperations();
+		list<MetaProperty> GetAllImplementedProperties();
+		list<MetaOperation> GetAllImplementedOperations();
 	}
-
+	
 	class MetaFunctionType : MetaType
 	{
 		multi_list<MetaType> ParameterTypes;
@@ -234,7 +235,7 @@
 			Value.ExpectedType = Type;
 		}
 
-		MetaExpression Value;
+		containment MetaExpression Value;
 	}
 
 	class MetaConstructor : MetaNamedElement, MetaAnnotatedElement
@@ -346,13 +347,13 @@
 		MetaBoundExpression()
 		{
 			UniqueDefinition = true;
-			Definition = bind(Definitions);
+			Definition = UniqueDefinition ? bind(this, Definitions) : null;
 			Type = get_type(Definition);
 		}
 
 		inherited bool UniqueDefinition;
 		containment list<MetaExpression> Arguments;
-		synthetized list<ModelObject> Definitions;
+		synthetized DefinitionList Definitions;
 		synthetized ModelObject Definition;
 	}
 
@@ -458,7 +459,6 @@
 
 		MetaMemberAccessExpression()
 		{
-			Expression.[MetaBoundExpression]UniqueDefinition = false;
 			Expression.ExpectedType = typeof(none);
 			Definitions = resolve_name(Expression.Type, Name);
 		}
@@ -472,7 +472,7 @@
 		{
 			Expression.[MetaBoundExpression]UniqueDefinition = false;
 			Expression.ExpectedType = typeof(none);
-			Definitions = Expression is MetaBoundExpression ? select_of_type(((MetaBoundExpression)Expression).Definitions, typeof(MetaFunctionType)) : null; // TODO
+			Definitions = Expression is MetaBoundExpression ? ((MetaBoundExpression)Expression).Definitions : definition_list(Expression.Type);
 			Type = get_return_type(Definition);
 		}
 	}	
@@ -485,7 +485,7 @@
 		{
 			Expression.[MetaBoundExpression]UniqueDefinition = false;
 			Expression.ExpectedType = typeof(none);
-			Definitions = Expression is MetaBoundExpression ? select_of_name(select_of_type(((MetaBoundExpression)Expression).Definitions, typeof(MetaFunctionType)), "operator[]") : null; // TODO
+			Definitions = Expression is MetaBoundExpression ? ((MetaBoundExpression)Expression).Definitions : definition_list(Expression.Type); 
 		}
 	}	
 

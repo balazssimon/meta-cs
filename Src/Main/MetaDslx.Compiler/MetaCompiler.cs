@@ -34,13 +34,13 @@ namespace MetaDslx.Compiler
         public const int Number = 12;
     }
 
-    public abstract class SymbolTypedAnnotation
+    public abstract class SymbolBasedAnnotation
     {
         public Type SymbolType { get; set; }
         public bool OverrideSymbolType { get; set; }
     }
 
-    public class TypeDefAnnotation : SymbolTypedAnnotation
+    public class TypeDefAnnotation : SymbolBasedAnnotation
     {
         public TypeDefAnnotation()
         {
@@ -51,7 +51,7 @@ namespace MetaDslx.Compiler
         public bool Scope { get; set; }
     }
 
-    public class NameDefAnnotation : SymbolTypedAnnotation
+    public class NameDefAnnotation : SymbolBasedAnnotation
     {
         public string NestingProperty { get; set; }
         public bool Merge { get; set; }
@@ -64,10 +64,10 @@ namespace MetaDslx.Compiler
         public NameUseAnnotation()
         {
             this.SymbolTypes = new List<Type>();
-            this.ResolveFlags = ResolveFlags.All;
+            this.Location = ResolutionLocation.All;
         }
         public List<Type> SymbolTypes { get; set; }
-        public ResolveFlags ResolveFlags { get; set; }
+        public ResolutionLocation Location { get; set; }
     }
 
     public class TypeUseAnnotation
@@ -75,27 +75,27 @@ namespace MetaDslx.Compiler
         public TypeUseAnnotation()
         {
             this.SymbolTypes = new List<Type>();
-            this.ResolveFlags = ResolveFlags.All;
+            this.Location = ResolutionLocation.All;
         }
         public List<Type> SymbolTypes { get; set; }
-        public ResolveFlags ResolveFlags { get; set; }
+        public ResolutionLocation Location { get; set; }
     }
 
-    public class TypeCtrAnnotation : SymbolTypedAnnotation
+    public class TypeCtrAnnotation : SymbolBasedAnnotation
     {
         public TypeCtrAnnotation()
         {
         }
     }
 
-    public class NameCtrAnnotation : SymbolTypedAnnotation
+    public class NameCtrAnnotation : SymbolBasedAnnotation
     {
         public NameCtrAnnotation()
         {
         }
     }
 
-    public class ScopeAnnotation : SymbolTypedAnnotation
+    public class ScopeAnnotation : SymbolBasedAnnotation
     {
     }
 
@@ -146,6 +146,13 @@ namespace MetaDslx.Compiler
             set { this.value = value; this.HasValue = true; }
         }
         public bool HasValue { get; set; }
+        private Type type;
+        public Type Type
+        {
+            get { return this.type; }
+            set { this.type = value; this.HasType = true; }
+        }
+        public bool HasType { get; set; }
     }
 
     public enum EnumValueCase
@@ -187,7 +194,7 @@ namespace MetaDslx.Compiler
         public bool HasValue { get; set; }
     }
 
-    public class SymbolAnnotation : SymbolTypedAnnotation
+    public class SymbolAnnotation : SymbolBasedAnnotation
     {
         public bool NoScope { get; set; }
     }
@@ -212,10 +219,14 @@ namespace MetaDslx.Compiler
 
     public class PropertyAnnotation
     {
-        private object value;
+        public PropertyAnnotation()
+        {
+            this.SymbolTypes = new List<Type>();
+        }
 
         public List<Type> SymbolTypes { get; set; }
         public string Name { get; set; }
+        private object value;
         public object Value
         {
             get { return this.value; }
@@ -224,33 +235,62 @@ namespace MetaDslx.Compiler
         public bool HasValue { get; set; }
     }
 
-    public abstract class MetaCompiler : IModelCompiler, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
+    public enum TriviaPosition
+    {
+        Any,
+        Leading,
+        Trailing
+    }
+
+    public class TriviaAnnotation
+    {
+        public TriviaAnnotation()
+        {
+            this.SymbolTypes = new List<Type>();
+        }
+
+        public List<Type> SymbolTypes { get; set; }
+
+        private string property;
+        public string Property
+        {
+            get { return this.property; }
+            set { this.property = value; this.HasProperty = true; }
+        }
+        public bool HasProperty { get; set; }
+        public TriviaPosition Position { get; set; }
+    }
+
+
+
+    public interface IAntlr4Compiler : IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
+    {
+        CommonTokenStream CommonTokenStream { get; }
+    }
+
+    public abstract class MetaCompiler : IModelCompiler, IAntlr4Compiler
     {
         public ModelCompilerDiagnostics Diagnostics { get; private set; }
-        public string OutputDirectory { get; set; }
         public string FileName { get; private set; }
         public string Source { get; private set; }
         public string DefaultNamespace { get; set; }
-        public bool GenerateOutput { get; set; }
-        public RootScope GlobalScope
-        {
-            get;
-            protected set;
-        }
+        public RootScope GlobalScope { get; protected set; }
+        public Model Model { get; protected set; }
+        public ITriviaProvider TriviaProvider { get; protected set; }
         public INameProvider NameProvider { get; protected set; }
         public ITypeProvider TypeProvider { get; protected set; }
         public IResolutionProvider ResolutionProvider { get; protected set; }
         public IBindingProvider BindingProvider { get; protected set; }
 
-        public MetaCompiler(string source, string outputDirectory, string fileName)
+        public MetaCompiler(string source, string fileName)
         {
             this.Diagnostics = new ModelCompilerDiagnostics();
             this.Source = source;
             this.FileName = fileName;
-            this.OutputDirectory = outputDirectory;
-            this.GenerateOutput = true;
             this.GlobalScope = new RootScope();
+            this.Model = new Model();
             this.Data = new MetaCompilerData(this);
+            this.TriviaProvider = new Antlr4DefaultTriviaProvider(this);
             this.NameProvider = new Antlr4DefaultNameProvider();
             this.TypeProvider = new DefaultTypeProvider();
             this.ResolutionProvider = new DefaultResolutionProvider();
@@ -259,7 +299,8 @@ namespace MetaDslx.Compiler
 
         public void Compile()
         {
-            using (new ModelContextScope(this))
+            using (new ModelContextScope(this.Model))
+            using (new ModelCompilerContextScope(this))
             {
                 this.DoCompile();
             }
@@ -276,7 +317,7 @@ namespace MetaDslx.Compiler
             }
             else
             {
-                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(line, charPositionInLine+1, line, charPositionInLine+1));
+                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(line, charPositionInLine + 1, line, charPositionInLine + 1));
             }
         }
 
@@ -288,17 +329,18 @@ namespace MetaDslx.Compiler
             }
             else
             {
-                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(line, charPositionInLine+1, line, charPositionInLine+1));
+                this.Diagnostics.AddError(msg, this.FileName, new Antlr4TextSpan(line, charPositionInLine + 1, line, charPositionInLine + 1));
             }
         }
 
         public MetaCompilerData Data { get; protected set; }
-        public abstract List<object> LexerAnnotations { get; protected set; }
-        public abstract List<object> ParserAnnotations { get; protected set; }
-        public abstract Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
-        public abstract Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
-        public abstract Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
-        public abstract Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
+        public CommonTokenStream CommonTokenStream { get; protected set; }
+        public List<object> LexerAnnotations { get; protected set; }
+        public List<object> ParserAnnotations { get; protected set; }
+        public Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
+        public Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
+        public Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
+        public Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
 
     }
 
@@ -427,7 +469,7 @@ namespace MetaDslx.Compiler
                 typeof(QualifiedNameAnnotation),
             };
 
-        public MetaCompiler Compiler { get; private set; }
+        protected MetaCompiler Compiler { get; private set; }
         protected ModelFactory ModelFactory { get; private set; }
 
         public MetaCompilerPhase(MetaCompiler compiler)
@@ -686,7 +728,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        public virtual void VisitChildren(IParseTree node)
+        protected virtual void VisitChildren(IParseTree node)
         {
             if (!this.IsVisitBoundary(node))
             {
@@ -704,14 +746,10 @@ namespace MetaDslx.Compiler
 
         protected virtual void HandleProperties(IParseTree node)
         {
-            //ValueAnnotation va = this.GetAnnotationFor<ValueAnnotation>(node);
-            //if (va == null)
+            List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).Where(pa => !string.IsNullOrEmpty(pa.Name) && !pa.HasValue).ToList();
+            foreach (var pa in pas)
             {
-                List<PropertyAnnotation> pas = this.GetAnnotationsFor<PropertyAnnotation>(node).Where(pa => !string.IsNullOrEmpty(pa.Name) && !pa.HasValue).ToList();
-                foreach (var pa in pas)
-                {
-                    this.AddProperty(node, pa);
-                }
+                this.AddProperty(node, pa);
             }
         }
 
@@ -898,7 +936,7 @@ namespace MetaDslx.Compiler
             if (symbol == null) return false;
             if (propertyAnnotation == null) return false;
             bool symbolOK = false;
-            if (propertyAnnotation.SymbolTypes == null || propertyAnnotation.SymbolTypes.Count == 0)
+            if (propertyAnnotation.SymbolTypes.Count == 0)
             {
                 symbolOK = true;
             }
@@ -915,7 +953,7 @@ namespace MetaDslx.Compiler
             }
             if (symbolOK)
             {
-                ModelObject mo = symbol as ModelObject;
+                ModelObject mo = symbol;
                 ModelProperty prop = mo.MFindProperties(propertyAnnotation.Name).FirstOrDefault();
                 if (prop != null)
                 {
@@ -1003,7 +1041,7 @@ namespace MetaDslx.Compiler
         {
             if (symbol == null) return false;
             bool success = false;
-            foreach (var prop in symbol.MGetAllProperties())
+            foreach (var prop in symbol.MGetProperties())
             {
                 if (prop.Annotations.Any(a => a is NameAttribute))
                 {
@@ -1023,7 +1061,7 @@ namespace MetaDslx.Compiler
             if (symbol == null) return false;
             int counter = 0;
             object result = null;
-            foreach (var prop in symbol.MGetAllProperties())
+            foreach (var prop in symbol.MGetProperties())
             {
                 if (prop.Annotations.Any(a => a is NameAttribute))
                 {
@@ -1052,7 +1090,7 @@ namespace MetaDslx.Compiler
             if (propertyAnnotation == null) return false;
             ModelProperty prop = symbol.MFindProperty(propertyAnnotation.Name);
             if (prop == null) return false;
-            return prop.Annotations.Any(a => a is NameAttribute);
+            return prop.IsMetaName();
         }
     }
 
@@ -1352,11 +1390,11 @@ namespace MetaDslx.Compiler
                     this.SymbolStack[i] = newSymbol;
                 }
             }
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
+            Model model = ModelContext.Current;
+            if (model != null)
             {
-                ctx.Model.RemoveInstance(oldSymbol);
-                ctx.Model.AddInstance(newSymbol);
+                model.RemoveInstance(oldSymbol);
+                model.AddInstance(newSymbol);
             }
         }
 
@@ -1491,6 +1529,7 @@ namespace MetaDslx.Compiler
         {
             this.HandleNames(node);
             this.HandlePropertyValues(node);
+            this.HandleTrivia(node);
             base.HandleNode(node);
         }
 
@@ -1517,35 +1556,35 @@ namespace MetaDslx.Compiler
                 if (tua != null)
                 {
                     List<IParseTree> names = this.GetNames(node);
-                    List<string> nameStrings = names.Select(n => this.GetName(n)).ToList();
                     ModelObject activeScopeSymbol = this.ActiveScopeSymbol;
                     ModelObject activeSymbol = this.ActiveSymbol;
                     PropertyAnnotation activeProperty = this.ActiveProperty;
+                    ResolutionInfo ri = new ResolutionInfo();
+                    ri.Kind = ResolveKind.Type;
+                    ri.Scopes.Add(activeScopeSymbol);
+                    ri.QualifiedNameNodes.AddRange(names);
+                    ri.Location = tua.Location;
+                    ri.SymbolTypes.AddRange(tua.SymbolTypes);
                     Func<ModelObject> lazySymbol =
-                        () =>
-                            this.Compiler.BindingProvider.Bind(null,
-                            this.FilterByTypes(
-                                this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Type, nameStrings, new ResolutionInfo() { Node = node }, tua.ResolveFlags),
-                                tua.SymbolTypes),
-                            new BindingInfo() { Node = node });
-                    Lazy<object> lazyValue = new Lazy<object>(lazySymbol, LazyThreadSafetyMode.ExecutionAndPublication);
+                        () => this.Compiler.BindingProvider.Bind(null, this.Compiler.ResolutionProvider.Resolve(ri));
+                    Lazy <object> lazyValue = new Lazy<object>(lazySymbol, LazyThreadSafetyMode.ExecutionAndPublication);
                     this.SetLazyProperty(node, activeSymbol, activeProperty, lazyValue);
                     this.Data.RegisterLazySymbol(node, lazyValue);
                 }
                 if (nua != null)
                 {
                     List<IParseTree> names = this.GetNames(node);
-                    List<string> nameStrings = names.Select(n => this.GetName(n)).ToList();
                     ModelObject activeScopeSymbol = this.ActiveScopeSymbol;
                     ModelObject activeSymbol = this.ActiveSymbol;
                     PropertyAnnotation activeProperty = this.ActiveProperty;
+                    ResolutionInfo ri = new ResolutionInfo();
+                    ri.Kind = ResolveKind.Name;
+                    ri.Scopes.Add(activeScopeSymbol);
+                    ri.QualifiedNameNodes.AddRange(names);
+                    ri.Location = nua.Location;
+                    ri.SymbolTypes.AddRange(nua.SymbolTypes);
                     Func<ModelObject> lazySymbol =
-                        () =>
-                            this.Compiler.BindingProvider.Bind(null,
-                            this.FilterByTypes(
-                                this.Compiler.ResolutionProvider.Resolve(new ModelObject[] { activeScopeSymbol }, ResolveKind.Name, nameStrings, new ResolutionInfo() { Node = node }, nua.ResolveFlags),
-                                nua.SymbolTypes),
-                            new BindingInfo() { Node = node });
+                        () => this.Compiler.BindingProvider.Bind(null, this.Compiler.ResolutionProvider.Resolve(ri));
                     Lazy<object> lazyValue = new Lazy<object>(lazySymbol, LazyThreadSafetyMode.ExecutionAndPublication);
                     this.SetLazyProperty(node, activeSymbol, activeProperty, lazyValue);
                     this.Data.RegisterLazySymbol(node, lazyValue);
@@ -1648,7 +1687,7 @@ namespace MetaDslx.Compiler
                                 }
                                 else
                                 {
-                                    object value = this.Compiler.NameProvider.GetValue(node);
+                                    object value = this.Compiler.NameProvider.GetValue(node, va.Type);
                                     this.SetProperty(node, this.ActiveSymbol, pa, value);
                                 }
                             }
@@ -1661,7 +1700,7 @@ namespace MetaDslx.Compiler
                             }
                             else
                             {
-                                object value = this.Compiler.NameProvider.GetValue(node);
+                                object value = this.Compiler.NameProvider.GetValue(node, va.Type);
                                 this.SetProperty(node, this.ActiveSymbol, pa, value);
                             }
                         }
@@ -1733,6 +1772,77 @@ namespace MetaDslx.Compiler
                         if (symbol != null)
                         {
                             this.SetProperty(node, this.ParentSymbol, pa, symbol);
+                        }
+                    }
+                }
+            }
+        }
+
+        protected virtual void HandleTrivia(IParseTree node)
+        {
+            ModelObject symbol = this.CurrentSymbol;
+            if (symbol != null)
+            {
+                bool retrievedTrivia = false;
+                string leadingTrivia = null;
+                string trailingTrivia = null;
+                IEnumerable<TriviaAnnotation> tas = this.GetAnnotationsFor<TriviaAnnotation>(node);
+                foreach (var ta in tas)
+                {
+                    if (ta.Property != null)
+                    {
+                        bool symbolOK = false;
+                        if (ta.SymbolTypes == null || ta.SymbolTypes.Count == 0)
+                        {
+                            symbolOK = true;
+                        }
+                        else
+                        {
+                            foreach (var symbolType in ta.SymbolTypes)
+                            {
+                                if (symbolType.IsAssignableFrom(symbol.GetType()))
+                                {
+                                    symbolOK = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (symbolOK)
+                        {
+                            ModelProperty prop = symbol.MFindProperty(ta.Property);
+                            if (prop != null)
+                            {
+
+                                if (!retrievedTrivia)
+                                {
+                                    leadingTrivia = this.Compiler.TriviaProvider.GetLeadingTrivia(symbol);
+                                    trailingTrivia = this.Compiler.TriviaProvider.GetTrailingTrivia(symbol);
+                                    retrievedTrivia = true;
+                                }
+                                string trivia = null;
+                                switch (ta.Position)
+                                {
+                                    case TriviaPosition.Any:
+                                        trivia = leadingTrivia;
+                                        if (trivia == null)
+                                        {
+                                            trivia = trailingTrivia;
+                                        }
+                                        break;
+                                    case TriviaPosition.Leading:
+                                        trivia = leadingTrivia;
+                                        break;
+                                    case TriviaPosition.Trailing:
+                                        trivia = trailingTrivia;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                if (!string.IsNullOrWhiteSpace(trivia))
+                                {
+                                    symbol.MAdd(prop, trivia);
+                                }
+                            }
                         }
                     }
                 }

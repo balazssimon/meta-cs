@@ -12,23 +12,12 @@ namespace MetaDslx.Compiler
 
     public class MetaModelCompiler : MetaModelCompilerBase
     {
-        public MetaModelCompiler(string source, string outputDirectory, string fileName)
-            : base(source, outputDirectory, fileName)
+        public MetaModelCompiler(string source, string fileName)
+            : base(source, fileName)
         {
             this.GlobalScope.AddMetaBuiltInEntries();
         }
 
-        protected override void DoCompile()
-        {
-            base.DoCompile();
-            if (this.GenerateOutput && !this.Diagnostics.HasErrors())
-            {
-                MetaModelGenerator generator = new MetaModelGenerator(ModelContext.Current.Model.Instances);
-                this.GeneratedSource = generator.Generate();
-            }
-        }
-
-        public string GeneratedSource { get; private set; }
     }
 
 

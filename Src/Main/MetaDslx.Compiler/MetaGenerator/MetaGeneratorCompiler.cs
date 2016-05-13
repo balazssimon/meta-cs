@@ -18,8 +18,8 @@ namespace MetaDslx.Compiler
 
     public class MetaGeneratorCompiler : MetaCompiler
     {
-        public MetaGeneratorCompiler(string source, string outputDirectory, string fileName)
-            : base(source, outputDirectory, fileName)
+        public MetaGeneratorCompiler(string source, string fileName)
+            : base(source, fileName)
         {
         }
 
@@ -28,40 +28,53 @@ namespace MetaDslx.Compiler
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = new MetaGeneratorLexer(inputStream);
             this.Lexer.AddErrorListener(this);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(this.Lexer);
-            this.Parser = new MetaGeneratorParser(commonTokenStream);
+            this.CommonTokenStream = new CommonTokenStream(this.Lexer);
+            this.Parser = new MetaGeneratorParser(this.CommonTokenStream);
             this.Parser.AddErrorListener(this);
             this.ParseTree = this.Parser.main();
-            MetaModelParserAnnotator annotator = new MetaModelParserAnnotator();
-            annotator.Visit(this.ParseTree);
-
-            if (this.GenerateOutput)
-            {
-                StringBuilder sb = new StringBuilder();
-                var ul = new MetaGenCSharpUsingVisitor(sb);
-                ul.Visit(this.ParseTree);
-                ul.Close();
-                var cl = new MetaGenCSharpClassVisitor(sb);
-                cl.Loops = ul.Loops;
-                cl.HasLoops = ul.HasLoops;
-                cl.Visit(this.ParseTree);
-                cl.Close();
-                this.GeneratedSource = sb.ToString();
-            }
         }
 
         public MetaGeneratorParser.MainContext ParseTree { get; private set; }
         public MetaGeneratorLexer Lexer { get; private set; }
         public MetaGeneratorParser Parser { get; private set; }
-        public CommonTokenStream CommonTokenStream { get; private set; }
-        public string GeneratedSource { get; private set; }
+    }
 
-        public override List<object> LexerAnnotations { get; protected set; }
-        public override List<object> ParserAnnotations { get; protected set; }
-        public override Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
-        public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
-        public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
-        public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
+    public class MetaGeneratorGenerator
+    {
+        private bool generated = false;
+        private string generatedSource = null;
+        public MetaGeneratorParser.MainContext ParseTree { get; private set; }
+        public string GeneratedSource
+        {
+            get
+            {
+                if (!this.generated)
+                {
+                    this.generatedSource = this.Generate();
+                    this.generated = true;
+                }
+                return this.generatedSource;
+            }
+        }
+
+        public MetaGeneratorGenerator(MetaGeneratorParser.MainContext parseTree)
+        {
+            this.ParseTree = parseTree;
+        }
+
+        public string Generate()
+        {
+            StringBuilder sb = new StringBuilder();
+            var ul = new MetaGenCSharpUsingVisitor(sb);
+            ul.Visit(this.ParseTree);
+            ul.Close();
+            var cl = new MetaGenCSharpClassVisitor(sb);
+            cl.Loops = ul.Loops;
+            cl.HasLoops = ul.HasLoops;
+            cl.Visit(this.ParseTree);
+            cl.Close();
+            return sb.ToString();
+        }
     }
 
     internal class LoopInfo
@@ -98,16 +111,6 @@ namespace MetaDslx.Compiler
         {
             if (prc == null || prc.Start == null) return string.Empty;
             return string.Format("//{0}:{1}", prc.Start.Line, prc.Start.Column+1);
-        }
-
-        public static Stream ToStream(this string text)
-        {
-            MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
-            writer.Write(text);
-            writer.Flush();
-            stream.Position = 0;
-            return stream;
         }
     }
 
@@ -160,14 +163,16 @@ namespace MetaDslx.Compiler
 
         protected void WriteLine(string text = "")
         {
-            sb.Append(indent);
-            sb.AppendLine(text);
+            this.WriteIndent();
+            this.Write(text);
+            this.AppendLine();
         }
 
         protected void WriteLine(string format, params object[] args)
         {
-            sb.Append(indent);
-            sb.AppendLine(string.Format(format, args));
+            this.WriteIndent();
+            this.Write(format, args);
+            this.AppendLine();
         }
 
         public virtual void Close()
@@ -328,6 +333,63 @@ namespace MetaDslx.Compiler
 
         public override void Close()
         {
+            WriteLine("private class StringBuilder");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("private bool newLine;");
+            WriteLine("private System.Text.StringBuilder builder = new System.Text.StringBuilder();");
+            WriteLine("");
+            WriteLine("public StringBuilder()");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("this.newLine = true;");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("");
+            WriteLine("public void Append(string str)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("if (str == null) return;");
+            WriteLine("if (!string.IsNullOrEmpty(str))");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("this.newLine = false;");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("builder.Append(str);");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("");
+            WriteLine("public void Append(object obj)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("if (obj == null) return;");
+            WriteLine("string text = obj.ToString();");
+            WriteLine("this.Append(text);");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("");
+            WriteLine("public void AppendLine(bool force = false)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("if (force || !this.newLine)");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("builder.AppendLine();");
+            WriteLine("this.newLine = true;");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
+            WriteLine("");
+            WriteLine("public override string ToString()");
+            WriteLine("{");
+            IncIndent();
+            WriteLine("return builder.ToString();");
+            DecIndent();
+            WriteLine("}");
+            DecIndent();
+            WriteLine("}");
             DecIndent();
             WriteLine("}");
             DecIndent();
@@ -1028,7 +1090,7 @@ namespace MetaDslx.Compiler
         public override object VisitLambdaExpression(MetaGeneratorParser.LambdaExpressionContext context)
         {
             Visit(context.GetChild(0));
-            Write(" {0} ", context.GetChild(1).GetText());
+            Write(" => ");
             Visit(context.GetChild(2));
             return null;
         }
@@ -1082,24 +1144,6 @@ namespace MetaDslx.Compiler
         public override object VisitExplicitParameter(MetaGeneratorParser.ExplicitParameterContext context)
         {
             Write("{0} {1}", context.typeReference().GetText(), context.identifier().GetText());
-            return null;
-        }
-
-        private string GetFunctionCallName(MetaGeneratorParser.TemplateStatementStartEndContext statementStartEnd)
-        {
-            MetaGeneratorParser.TemplateStatementContext statement = statementStartEnd.templateStatement();
-            if (statement != null && statement.expressionStatement() != null)
-            {
-                MetaGeneratorParser.ExpressionContext expression = statement.expressionStatement().expression();
-                if (expression is MetaGeneratorParser.FunctionCallExpressionContext)
-                {
-                    MetaGeneratorParser.FunctionCallExpressionContext call = expression as MetaGeneratorParser.FunctionCallExpressionContext;
-                    if (call.expression() is MetaGeneratorParser.IdentifierExpressionContext)
-                    {
-                        return call.expression().GetText();
-                    }
-                }
-            }
             return null;
         }
 
@@ -1185,98 +1229,6 @@ namespace MetaDslx.Compiler
                     }
                 }
             }
-            else if (statementCount == 0 && outputExpressionCount > 0)
-            {
-                int startIndex = 0;
-                int endIndex = lastIndex;
-                string prefix = NewTmp() + "Prefix";
-                string suffix = NewTmp() + "Suffix";
-                if (lastIndex >= 1)
-                {
-                    MetaGeneratorParser.TemplateOutputContext output;
-                    output = context.children[0] as MetaGeneratorParser.TemplateOutputContext;
-                    if (output != null)
-                    {
-                        WriteLine("string {0} = \"{1}\"; {2}", prefix, EscapeText(output.GetText()), output.ToComment());
-                        startIndex = 1;
-                    }
-                    else
-                    {
-                        WriteLine("string {0} = string.Empty; {1}", prefix, output.ToComment());
-                    }
-                    output = context.children[lastIndex] as MetaGeneratorParser.TemplateOutputContext;
-                    if (output != null)
-                    {
-                        WriteLine("string {0} = \"{1}\"; {2}", suffix, EscapeText(output.GetText()), output.ToComment());
-                        endIndex = lastIndex - 1;
-                    }
-                    else
-                    {
-                        WriteLine("string {0} = string.Empty; {1}", suffix, output.ToComment());
-                    }
-                }
-                else
-                {
-                    WriteLine("string {0} = string.Empty;", prefix);
-                    WriteLine("string {0} = string.Empty;", suffix);
-                }
-                for (int i = startIndex; i <= endIndex; ++i)
-                {
-                    var child = context.children[i];
-                    string tmp = NewTmp();
-                    bool closeBraces = false;
-                    if (child is MetaGeneratorParser.TemplateOutputContext)
-                    {
-                        MetaGeneratorParser.TemplateOutputContext output = child as MetaGeneratorParser.TemplateOutputContext;
-                        WriteLine("string {0}Line = \"{1}\"; {2}", tmp, EscapeText(output.GetText()), output.ToComment());
-                    }
-                    else if (child is MetaGeneratorParser.TemplateStatementStartEndContext)
-                    {
-                        MetaGeneratorParser.TemplateStatementStartEndContext statement = child as MetaGeneratorParser.TemplateStatementStartEndContext;
-                        if (statement.templateStatement() != null)
-                        {
-                            closeBraces = true;
-                            WriteLine("StringBuilder {0} = new StringBuilder();", tmp);
-                            VisitTemplateStatement(statement.templateStatement(), tmp);
-                            WriteLine("using(StreamReader {0}Reader = new StreamReader(this.__ToStream({0}.ToString())))", tmp);
-                            WriteLine("{");
-                            IncIndent();
-                            WriteLine("bool {0}_first = true;", tmp);
-                            WriteLine("while({0}_first || !{0}Reader.EndOfStream)", tmp);
-                            WriteLine("{");
-                            IncIndent();
-                            WriteLine("{0}_first = false;", tmp);
-                            WriteLine("string {0}Line = {0}Reader.ReadLine();", tmp);
-                            WriteLine("if ({0}Line == null)", tmp);
-                            WriteLine("{");
-                            IncIndent();
-                            WriteLine("{0}Line = {1};", tmp, "\"\"");
-                            DecIndent();
-                            WriteLine("}");
-                        }
-                    }
-                    if (i == startIndex)
-                    {
-                        WriteLine("__out.Append({0});", prefix);
-                    }
-                    WriteLine("__out.Append({0}Line);", tmp);
-                    if (i == endIndex)
-                    {
-                        WriteLine("__out.Append({0});", suffix);
-                        if (forceNewLine || !noNewLine)
-                        {
-                            VisitTemplateLineEnd(context.templateLineEnd());
-                        }
-                    }
-                    if (closeBraces)
-                    {
-                        DecIndent();
-                        WriteLine("}");
-                        DecIndent();
-                        WriteLine("}");
-                    }
-                }
-            }
             else if (statementCount > 0 && (outputExpressionCount == 0 && nonWhitespaceOutputCount == 0))
             {
                 for (int i = 0; i <= lastIndex; ++i)
@@ -1290,6 +1242,98 @@ namespace MetaDslx.Compiler
                 if (forceNewLine)
                 {
                     VisitTemplateLineEnd(context.templateLineEnd());
+                }
+            }
+            else if (outputExpressionCount > 0)
+            {
+                int startIndex = 0;
+                int endIndex = lastIndex;
+                string prefix = NewTmp() + "Prefix";
+                string prefixText = null;
+                if (lastIndex >= 1)
+                {
+                    MetaGeneratorParser.TemplateOutputContext output;
+                    output = context.children[0] as MetaGeneratorParser.TemplateOutputContext;
+                    if (output != null)
+                    {
+                        prefixText = output.GetText();
+                    }
+                    if (prefixText != null && string.IsNullOrWhiteSpace(prefixText))
+                    {
+                        WriteLine("string {0} = \"{1}\"; {2}", prefix, EscapeText(prefixText), output.ToComment());
+                        startIndex = 1;
+                    }
+                }
+                for (int i = startIndex; i <= endIndex; ++i)
+                {
+                    var child = context.children[i];
+                    string tmp = NewTmp();
+                    bool hasOutput = false;
+                    bool closeBraces = false;
+                    if (child is MetaGeneratorParser.TemplateOutputContext)
+                    {
+                        MetaGeneratorParser.TemplateOutputContext output = child as MetaGeneratorParser.TemplateOutputContext;
+                        WriteLine("string {0}Line = \"{1}\"; {2}", tmp, EscapeText(output.GetText()), output.ToComment());
+                        hasOutput = true;
+                    }
+                    else if (child is MetaGeneratorParser.TemplateStatementStartEndContext)
+                    {
+                        MetaGeneratorParser.TemplateStatementStartEndContext statement = child as MetaGeneratorParser.TemplateStatementStartEndContext;
+                        if (statement.templateStatement() != null)
+                        {
+                            if (IsTemplateOutputExpression(statement))
+                            {
+                                closeBraces = true;
+                                WriteLine("StringBuilder {0} = new StringBuilder();", tmp);
+                                VisitTemplateStatement(statement.templateStatement(), tmp);
+                                WriteLine("using(StreamReader {0}Reader = new StreamReader(this.__ToStream({0}.ToString())))", tmp);
+                                WriteLine("{");
+                                IncIndent();
+                                WriteLine("bool {0}_first = true;", tmp);
+                                WriteLine("bool {0}_last = {0}Reader.EndOfStream;", tmp);
+                                WriteLine("while({0}_first || !{0}_last)", tmp);
+                                WriteLine("{");
+                                IncIndent();
+                                WriteLine("{0}_first = false;", tmp);
+                                WriteLine("string {0}Line = {0}Reader.ReadLine();", tmp);
+                                WriteLine("{0}_last = {0}Reader.EndOfStream;", tmp);
+                                hasOutput = true;
+                            }
+                            else
+                            {
+                                Visit(statement);
+                            }
+                        }
+                    }
+                    if (startIndex > 0 && i == startIndex)
+                    {
+                        WriteLine("__out.Append({0});", prefix);
+                    }
+                    if (hasOutput)
+                    {
+                        WriteLine("if ({0}Line != null) __out.Append({0}Line);", tmp);
+                        if (closeBraces)
+                        {
+                            WriteLine("if (!{0}_last) __out.AppendLine(true);", tmp);
+                        }
+                    }
+                    if (i == endIndex)
+                    {
+                        if (forceNewLine || !noNewLine)
+                        {
+                            VisitTemplateLineEnd(context.templateLineEnd());
+                        }
+                    }
+                    if (hasOutput)
+                    {
+                        if (closeBraces)
+                        {
+                            DecIndent();
+                            WriteLine("}");
+                            DecIndent();
+                            WriteLine("}");
+                        }
+                    }
                 }
             }
             else
@@ -1322,23 +1366,29 @@ namespace MetaDslx.Compiler
         {
             if (context.TemplateCrLf() != null)
             {
-                if (!context.TemplateCrLf().GetText().StartsWith("\\"))
+                string lineBreakText = context.TemplateCrLf().GetText();
+                string force = lineBreakText.StartsWith("^") ? "true" : "false";
+                if (!lineBreakText.StartsWith("\\"))
                 {
-                    WriteLine("{0}.AppendLine(); {1}", output, context.ToComment());
+                    WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }
             }
             else if (context.TemplateLineBreak() != null)
             {
+                string lineBreakText = context.TemplateLineBreak().GetText();
+                string force = lineBreakText.StartsWith("^") ? "true" : "false";
                 if (!context.TemplateLineBreak().GetText().StartsWith("\\"))
                 {
-                    WriteLine("{0}.AppendLine(); {1}", output, context.ToComment());
+                    WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }
             }
             else if (context.TemplateLineControl() != null)
             {
+                string lineBreakText = context.TemplateLineControl().GetText();
+                string force = lineBreakText.StartsWith("^") ? "true" : "false";
                 if (!context.TemplateLineControl().GetText().StartsWith("\\"))
                 {
-                    WriteLine("{0}.AppendLine(); {1}", output, context.ToComment());
+                    WriteLine("{0}.AppendLine({2}); {1}", output, context.ToComment(), force);
                 }
             }
             return null;

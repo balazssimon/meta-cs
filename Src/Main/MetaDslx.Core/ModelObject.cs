@@ -29,10 +29,9 @@ namespace MetaDslx.Core
         {
             if (addToModelContext)
             {
-                ModelContext ctx = ModelContext.Current;
-                if (ctx != null)
+                if (ModelContext.HasContext())
                 {
-                    ctx.Model.AddInstance(this);
+                    ModelContext.Current.AddInstance(this);
                 }
             }
             this.MetaID = Guid.NewGuid().ToString();
@@ -51,6 +50,8 @@ namespace MetaDslx.Core
         {
             get { return null; }
         }
+
+        public Model MModel { get; internal set; }
 
         public void MEvalLazyValues()
         {
@@ -136,7 +137,7 @@ namespace MetaDslx.Core
             object oldValue;
             if (this.values.TryGetValue(property, out oldValue))
             {
-                if (oldValue is ModelCollection)
+                if (property.IsCollection && oldValue is ModelCollection)
                 {
                     ((ModelCollection)oldValue).Clear();
                 }
@@ -159,7 +160,7 @@ namespace MetaDslx.Core
             object oldValue;
             if (this.values.TryGetValue(property, out oldValue))
             {
-                if (oldValue is ModelCollection)
+                if (property.IsCollection)
                 {
                     throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
                 }
@@ -214,7 +215,7 @@ namespace MetaDslx.Core
             if (this.values.TryGetValue(property, out oldValue))
             {
                 if (newValue == oldValue) return;
-                if (oldValue is ModelCollection || newValue is ModelCollection)
+                if (property.IsCollection)
                 {
                     throw new ModelException("Error in '" + this.ToString() + "'. Cannot reassign a collection property '" + property.ToString() + "'. Consider adding the items instead.");
                 }
@@ -254,10 +255,10 @@ namespace MetaDslx.Core
                     {
                         if (ex.Message != null && ex.Message.Contains("ValueFactory"))
                         {
-                            ModelContext ctx = ModelContext.Current;
-                            if (ctx != null)
+                            IModelCompiler compiler = ModelCompilerContext.Current;
+                            if (compiler != null)
                             {
-                                ctx.Compiler.Diagnostics.AddWarning("The property '" + property + "' of '"+this+"' was accessed in a circular dependency.", ctx.Compiler.FileName, this, true);
+                                compiler.Diagnostics.AddWarning("The property '" + property + "' of '"+this+"' was accessed in a circular dependency.", compiler.FileName, this, true);
                             }
                             return null;
                         }
@@ -281,9 +282,29 @@ namespace MetaDslx.Core
             return null;
         }
 
-        public IEnumerable<ModelProperty> MGetAllProperties()
+        public ISet<ModelProperty> MGetProperties()
         {
-            HashSet<ModelProperty> result = new HashSet<ModelProperty>();
+            HashSet<ModelProperty> result = new HashSet<ModelProperty>(ModelProperty.GetPropertiesForType(this.GetType()));
+            foreach (ModelProperty prop in this.values.Keys)
+            {
+                if (!result.Any(p => p.Name == prop.Name))
+                {
+                    result.Add(prop);
+                }
+            }
+            foreach (ModelProperty prop in this.initializers.Keys)
+            {
+                if (!result.Any(p => p.Name == prop.Name))
+                {
+                    result.Add(prop);
+                }
+            }
+            return result;
+        }
+
+        public ISet<ModelProperty> MGetAllProperties()
+        {
+            HashSet<ModelProperty> result = new HashSet<ModelProperty>(ModelProperty.GetAllPropertiesForType(this.GetType()));
             foreach (ModelProperty prop in this.values.Keys)
             {
                 result.Add(prop);
@@ -292,14 +313,12 @@ namespace MetaDslx.Core
             {
                 result.Add(prop);
             }
-            Type type = this.GetType();
-            result.UnionWith(ModelProperty.GetAllPropertiesForType(type));
             return result;
         }
 
         public ModelProperty MFindProperty(string name)
         {
-            return this.SelectSingleProperty(this.MFindProperties(name));
+            return this.MGetProperties().FirstOrDefault(p => p.Name == name);
         }
 
         public IEnumerable<ModelProperty> MFindProperties(string name)
@@ -309,14 +328,6 @@ namespace MetaDslx.Core
                 where p.Name == name
                 select p;
             return results.ToList();
-        }
-
-        private ModelProperty SelectSingleProperty(IEnumerable<ModelProperty> properties)
-        {
-            List<ModelProperty> results = properties.ToList();
-            if (results.Count == 0) return null;
-            if (results.Count == 1) return results[0];
-            throw new ModelException("More than one property named '"+results[0].Name+"' found in "+this.ToString());
         }
 
         public string MetaID
@@ -419,8 +430,8 @@ namespace MetaDslx.Core
                     }
                 }
 
-                List<ModelProperty> allProperies = this.MGetAllProperties().ToList();
-                List<ModelProperty> cachedSubsettedProperties = property.SubsettedProperties.ToList();
+                var allProperies = this.MGetAllProperties();
+                var cachedSubsettedProperties = property.SubsettedProperties;
                 foreach (ModelProperty subsettedProperty in cachedSubsettedProperties)
                 {
                     if (allProperies.Contains(subsettedProperty))
@@ -430,7 +441,7 @@ namespace MetaDslx.Core
                 }
                 if (addRemoveDir != AddRemoveDirection.Redefined)
                 {
-                    List<ModelProperty> cachedRedefiningProperties = property.RedefiningProperties.ToList();
+                    var cachedRedefiningProperties = property.RedefiningProperties;
                     foreach (ModelProperty redefiningProperty in cachedRedefiningProperties)
                     {
                         if (allProperies.Contains(redefiningProperty))
@@ -441,7 +452,7 @@ namespace MetaDslx.Core
                 }
                 if (addRemoveDir != AddRemoveDirection.Redefining)
                 {
-                    List<ModelProperty> cachedRedefinedProperties = property.RedefinedProperties.ToList();
+                    var cachedRedefinedProperties = property.RedefinedProperties;
                     foreach (ModelProperty redefinedProperty in cachedRedefinedProperties)
                     {
                         if (allProperies.Contains(redefinedProperty))
@@ -450,13 +461,13 @@ namespace MetaDslx.Core
                         }
                     }
                 }
-                List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
-                if (cachedOppositeProperties.Count > 0)
+                var cachedOppositeProperties = property.OppositeProperties;
+                if (cachedOppositeProperties.Any())
                 {
                     ModelObject oppositeObject = value as ModelObject;
                     if (oppositeObject != null)
                     {
-                        List<ModelProperty> allOppositeProperies = oppositeObject.MGetAllProperties().ToList();
+                        var allOppositeProperies = oppositeObject.MGetAllProperties();
                         foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
                         {
                             if (allOppositeProperies.Contains(oppositeProperty))
@@ -467,7 +478,7 @@ namespace MetaDslx.Core
                     }
                     else
                     {
-                        throw new ModelException("Error adding the current object " + this.GetType().Name + "." + property.Name + " to the opposite object. The current object must be a descendant of " + typeof(ModelObject) + ".");
+                        throw new ModelException("Error adding the current object " + this.GetType().Name + "." + property.Name + " to the opposite object. The current value must be a descendant of " + typeof(ModelObject) + ".");
                     }
                 }
             }
@@ -501,64 +512,65 @@ namespace MetaDslx.Core
             {
                 if (property.IsContainment)
                 {
-                    ModelObject mofObjectValue = value as ModelObject;
-                    if (mofObjectValue != null)
+                    ModelObject modelObjectValue = value as ModelObject;
+                    if (modelObjectValue != null)
                     {
-                        mofObjectValue.MParent = null;
+                        modelObjectValue.MParent = null;
                     }
                 }
-                List<ModelProperty> cachedSubsettingProperties = property.SubsettingProperties.ToList();
+
+                var allProperies = this.MGetAllProperties();
+                var cachedSubsettingProperties = property.SubsettingProperties;
                 foreach (ModelProperty subsettingProperty in cachedSubsettingProperties)
                 {
-                    this.MOnRemoveValue(subsettingProperty, value, true);
+                    if (allProperies.Contains(subsettingProperty))
+                    {
+                        this.MOnRemoveValue(subsettingProperty, value, true);
+                    }
                 }
                 if (addRemoveDir != AddRemoveDirection.Redefined)
                 {
-                    List<ModelProperty> cachedRedefiningProperties = property.RedefiningProperties.ToList();
+                    var cachedRedefiningProperties = property.RedefiningProperties;
                     foreach (ModelProperty redefiningProperty in cachedRedefiningProperties)
                     {
-                        this.MOnRemoveValue(redefiningProperty, value, true, AddRemoveDirection.Redefining);
+                        if (allProperies.Contains(redefiningProperty))
+                        {
+                            this.MOnRemoveValue(redefiningProperty, value, true, AddRemoveDirection.Redefining);
+                        }
                     }
                 }
                 if (addRemoveDir != AddRemoveDirection.Redefining)
                 {
-                    List<ModelProperty> cachedRedefinedProperties = property.RedefinedProperties.ToList();
+                    var cachedRedefinedProperties = property.RedefinedProperties;
                     foreach (ModelProperty redefinedProperty in cachedRedefinedProperties)
                     {
-                        this.MOnRemoveValue(redefinedProperty, value, true, AddRemoveDirection.Redefined);
+                        if (allProperies.Contains(redefinedProperty))
+                        {
+                            this.MOnRemoveValue(redefinedProperty, value, true, AddRemoveDirection.Redefined);
+                        }
                     }
                 }
-                List<ModelProperty> cachedOppositeProperties = property.OppositeProperties.ToList();
-                foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
+                var cachedOppositeProperties = property.OppositeProperties;
+                if (cachedOppositeProperties.Any())
                 {
                     ModelObject oppositeObject = value as ModelObject;
                     if (oppositeObject != null)
                     {
-                        oppositeObject.MOnRemoveValue(oppositeProperty, this, false);
+                        var allOppositeProperies = oppositeObject.MGetAllProperties();
+                        foreach (ModelProperty oppositeProperty in cachedOppositeProperties)
+                        {
+                            if (allOppositeProperies.Contains(oppositeProperty))
+                            {
+                                oppositeObject.MOnRemoveValue(oppositeProperty, this, false);
+                            }
+                        }
                     }
                     else
                     {
-                        throw new ModelException("Error removing value of " + this.GetType().Name + "." + property.Name + ": the value of the opposite property "+oppositeProperty+" must be a descendant of " + typeof(ModelObject) + ".");
+                        throw new ModelException("Error removing value of " + this.GetType().Name + "." + property.Name + " from the opposite object. The current value must be a descendant of " + typeof(ModelObject) + ".");
                     }
                 }
             }
-        }
-
-        public override string ToString()
-        {
-            string typeName = this.GetType().Name;
-            if (typeName.EndsWith("Impl")) typeName = typeName.Substring(0, typeName.Length - 4);
-            string name = this.MetaID;
-            if (this.nameProperty != null)
-            {
-                object nameValue = this.MGet(this.nameProperty);
-                if (nameValue != null)
-                {
-                    name = nameValue.ToString();
-                    return typeName + "(" + name + ")"; 
-                }
-            }
-            return typeName + "[" + name + "]";
         }
 
         private ModelObject parent;
@@ -600,6 +612,23 @@ namespace MetaDslx.Core
             }
         }
 
+        public override string ToString()
+        {
+            string typeName = this.GetType().Name;
+            if (typeName.EndsWith("Impl")) typeName = typeName.Substring(0, typeName.Length - 4);
+            string name = this.MetaID;
+            if (this.nameProperty != null)
+            {
+                object nameValue = this.MGet(this.nameProperty);
+                if (nameValue != null)
+                {
+                    name = nameValue.ToString();
+                    return typeName + "(" + name + ")";
+                }
+            }
+            return typeName + "[" + name + "]";
+        }
+
         private HashSet<ModelObject> FindAllObjectsByID(string ID)
         {
             HashSet<ModelObject> result = new HashSet<ModelObject>();
@@ -613,6 +642,11 @@ namespace MetaDslx.Core
                 result.UnionWith(childResults);
             }
             return result;
+        }
+
+        public HashSet<ModelObject> MFindAllObjectsByID(string ID)
+        {
+            return this.FindAllObjectsByID(ID);
         }
 
         public ModelObject MFindObjectByID(string ID)

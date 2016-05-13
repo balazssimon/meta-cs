@@ -64,15 +64,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MetaModel.mm</DependentUpon>
     </Compile>
-    <Compile Include="MetaModelGenerator.cs">
+    <Compile Include="MetaModelCSharpGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MetaModelGenerator.mgen</DependentUpon>
+      <DependentUpon>MetaModelCSharpGenerator.mgen</DependentUpon>
+    </Compile>
+    <Compile Include="MetaModelJavaGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelJavaGenerator.mgen</DependentUpon>
     </Compile>
     <Compile Include="ModelCollection.cs" />
     <Compile Include="ModelCompiler.cs" />
     <Compile Include="ModelContext.cs" />
     <Compile Include="ModelException.cs" />
+    <Compile Include="ModelExchange.cs" />
     <Compile Include="ModelFactory.cs" />
     <Compile Include="ModelList.cs" />
     <Compile Include="ModelObject.cs" />
@@ -91,9 +97,13 @@
       <Generator>MetaModelGenerator</Generator>
       <LastGenOutput>MetaModel.cs</LastGenOutput>
     </None>
-    <None Include="MetaModelGenerator.mgen">
+    <None Include="MetaModelCSharpGenerator.mgen">
       <Generator>MetaGenerator</Generator>
-      <LastGenOutput>MetaModelGenerator.cs</LastGenOutput>
+      <LastGenOutput>MetaModelCSharpGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="MetaModelJavaGenerator.mgen">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>MetaModelJavaGenerator.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -49,19 +49,12 @@ namespace MetaDslx.Soal
                     {
                         if (sta.HasName)
                         {
-                            ModelContext ctx = ModelContext.Current;
-                            if (ctx != null)
+                            ModelCompilerContext.RequireContext();
+                            IModelCompiler compiler = ModelCompilerContext.Current;
+                            string name = compiler.NameProvider.GetName(node);
+                            if (sta.Name == name)
                             {
-                                IModelCompiler compiler = ModelContext.Current.Compiler;
-                                string name = compiler.NameProvider.GetName(node);
-                                if (sta.Name == name)
-                                {
-                                    this.OverrideSymbolType(node, sta.SymbolType);
-                                }
-                            }
-                            else
-                            {
-                                throw new InvalidOperationException("ModelContext is missing. Define a ModelContextScope.");
+                                this.OverrideSymbolType(node, sta.SymbolType);
                             }
                         }
                         else
@@ -86,7 +79,7 @@ namespace MetaDslx.Soal
                 {
                     foreach (var treeAnnot in treeAnnotList)
                     {
-                        SymbolTypedAnnotation sta = treeAnnot as SymbolTypedAnnotation;
+                        SymbolBasedAnnotation sta = treeAnnot as SymbolBasedAnnotation;
                         if (sta != null)
                         {
                             set = true;
@@ -198,7 +191,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp5);
                 TypeUseAnnotation __tmp6 = new TypeUseAnnotation();
                 __tmp6.SymbolTypes.Add(typeof(Struct));
-                __tmp6.ResolveFlags = ResolveFlags.Parent;
+                __tmp6.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp6);
             }
             this.HandleSymbolType(context);
@@ -230,7 +223,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp8);
                 TypeUseAnnotation __tmp9 = new TypeUseAnnotation();
                 __tmp9.SymbolTypes.Add(typeof(Exception));
-                __tmp9.ResolveFlags = ResolveFlags.Parent;
+                __tmp9.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp9);
             }
             this.HandleSymbolType(context);
@@ -262,7 +255,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp11);
                 TypeUseAnnotation __tmp12 = new TypeUseAnnotation();
                 __tmp12.SymbolTypes.Add(typeof(Entity));
-                __tmp12.ResolveFlags = ResolveFlags.Parent;
+                __tmp12.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp12);
             }
             this.HandleSymbolType(context);
@@ -467,7 +460,7 @@ namespace MetaDslx.Soal
                 elemAnnotList.Add(__tmp29);
                 TypeUseAnnotation __tmp30 = new TypeUseAnnotation();
                 __tmp30.SymbolTypes.Add(typeof(Component));
-                __tmp30.ResolveFlags = ResolveFlags.Parent;
+                __tmp30.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp30);
             }
             this.HandleSymbolType(context);
@@ -713,7 +706,7 @@ namespace MetaDslx.Soal
                 TypeUseAnnotation __tmp55 = new TypeUseAnnotation();
                 __tmp55.SymbolTypes.Add(typeof(Component));
                 __tmp55.SymbolTypes.Add(typeof(Composite));
-                __tmp55.ResolveFlags = ResolveFlags.Parent;
+                __tmp55.Location = ResolutionLocation.Parent;
                 elemAnnotList.Add(__tmp55);
             }
             this.HandleSymbolType(context);
@@ -1828,8 +1821,8 @@ namespace MetaDslx.Soal
     }
     public abstract class SoalCompilerBase : MetaCompiler
     {
-        public SoalCompilerBase(string source, string outputDirectory, string fileName)
-            : base(source, outputDirectory, fileName)
+        public SoalCompilerBase(string source, string fileName)
+            : base(source, fileName)
         {
         }
         
@@ -1838,8 +1831,8 @@ namespace MetaDslx.Soal
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = new SoalLexer(inputStream);
             this.Lexer.AddErrorListener(this);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(this.Lexer);
-            this.Parser = new SoalParser(commonTokenStream);
+            this.CommonTokenStream = new CommonTokenStream(this.Lexer);
+            this.Parser = new SoalParser(this.CommonTokenStream);
             this.Parser.AddErrorListener(this);
             this.ParseTree = this.Parser.main();
             SoalParserAnnotator annotator = new SoalParserAnnotator();
@@ -1875,13 +1868,5 @@ namespace MetaDslx.Soal
         public SoalParser.MainContext ParseTree { get; private set; }
         public SoalLexer Lexer { get; private set; }
         public SoalParser Parser { get; private set; }
-        public CommonTokenStream CommonTokenStream { get; private set; }
-        
-        public override List<object> LexerAnnotations { get; protected set; }
-        public override List<object> ParserAnnotations { get; protected set; }
-        public override Dictionary<int, List<object>> ModeAnnotations { get; protected set; }
-        public override Dictionary<int, List<object>> TokenAnnotations { get; protected set; }
-        public override Dictionary<Type, List<object>> RuleAnnotations { get; protected set; }
-        public override Dictionary<object, List<object>> TreeAnnotations { get; protected set; }
     }
 }

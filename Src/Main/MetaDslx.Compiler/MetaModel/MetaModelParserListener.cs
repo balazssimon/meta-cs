@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\wmfgwrhf.fuw\MetaModelParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\myxjdut1.33a\MetaModelParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -856,6 +856,16 @@ public interface IMetaModelParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitNullCoalescingExpression([NotNull] MetaModelParser.NullCoalescingExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaModelParser.literalExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLiteralExpression([NotNull] MetaModelParser.LiteralExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaModelParser.literalExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLiteralExpression([NotNull] MetaModelParser.LiteralExpressionContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>newObjectExpression</c>
 	/// labeled alternative in <see cref="MetaModelParser.newExpression"/>.

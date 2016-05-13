@@ -100,7 +100,7 @@ namespace MetaDslx.Core
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator()
+        public new IEnumerator<T> GetEnumerator()
         {
             this.MFlushLazyItems();
             return this.items.GetEnumerator();
@@ -144,6 +144,10 @@ namespace MetaDslx.Core
 
         #endregion
 
+        public override IEnumerator<object> MGetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
     }
 
 
@@ -157,7 +161,7 @@ namespace MetaDslx.Core
         {
             if (ownerProperty.OppositeProperties.Count() > 0)
             {
-                throw new InvalidOperationException("Multi sets cannot have opposite properties.");
+                throw new ModelException("Multi sets cannot have opposite properties.");
             }
             this.items = new List<T>();
         }
@@ -167,7 +171,7 @@ namespace MetaDslx.Core
         {
             if (ownerProperty.OppositeProperties.Count() > 0)
             {
-                throw new InvalidOperationException("Multi sets cannot have opposite properties.");
+                throw new ModelException("Multi sets cannot have opposite properties.");
             }
             this.items = new List<T>();
             foreach (var value in values)
@@ -251,7 +255,7 @@ namespace MetaDslx.Core
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator()
+        public new IEnumerator<T> GetEnumerator()
         {
             this.MFlushLazyItems();
             return this.items.GetEnumerator();
@@ -300,6 +304,10 @@ namespace MetaDslx.Core
 
         #endregion
 
+        public override IEnumerator<object> MGetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
     }
 
 }

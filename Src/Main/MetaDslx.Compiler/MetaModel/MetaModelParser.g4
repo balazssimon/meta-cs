@@ -29,10 +29,12 @@ annotationParam :                        identifier TAssign                  exp
 
 
                                                                         
+                      
 namespaceDeclaration: annotation* KNamespace qualifiedName TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
                     
                    
+                      
 metamodelDeclaration: annotation* KMetamodel identifier (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
 
 metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
@@ -44,23 +46,27 @@ declaration : enumDeclaration | classDeclaration | associationDeclaration | cons
 
                         
                   
+                      
 enumDeclaration : annotation* KEnum identifier TOpenBrace                         enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
                          
+                      
 enumValue : annotation* identifier;
 enumMemberDeclaration :                       operationDeclaration;
 
                         
                    
+                      
 classDeclaration : annotation*                                       KAbstract? KClass identifier (TColon                         classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor :                                                                 qualifiedName;
+classAncestor :                                                                   qualifiedName;
 classMemberDeclaration 
 	:                       fieldDeclaration 
 	|                       operationDeclaration
 	|                        constructorDeclaration
 	;
 
+                      
                       
 fieldDeclaration : annotation*                 fieldModifier?                 typeReference identifier (redefinitions | subsettings)? TSemicolon;
 fieldModifier 
@@ -79,10 +85,12 @@ nameUseList :                        qualifiedName (TComma qualifiedName)*;
 
                         
                       
+                      
 constDeclaration : KConst                 typeReference identifier (TAssign                  expressionOrNewExpression)? TSemicolon;
 
                         
                                                      
+                      
 functionDeclaration : annotation* KExtern                       returnType identifier TOpenParen                       parameterList? TCloseParen TSemicolon;
 
         
@@ -134,13 +142,16 @@ collectionKind
 	;
 
                        
+                      
 operationDeclaration : annotation* KStatic?                       returnType identifier TOpenParen                       parameterList? TCloseParen TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
                        
+                      
 parameter : annotation*                 typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
 
                          
+                      
 constructorDeclaration : annotation* identifier TOpenParen TCloseParen TOpenBrace                         initializerDeclaration* TCloseBrace;
 
 initializerDeclaration 
@@ -169,7 +180,7 @@ expression
     | KTypeof TOpenParen                          typeOfReference TCloseParen #typeofExpression                                  
 	| TOpenParen expression TCloseParen #bracketExpression                                   
 	| KThis #thisExpression                                
-	| value=literal #constantExpression                                    
+	| value=literalExpression #constantExpression                                    
 	|        name=identifier #identifierExpression                                      
     | expression TOpenBracket                      expressionList TCloseBracket #indexerExpression                                   
     | expression TOpenParen                      expressionList? TCloseParen #functionCallExpression                                        
@@ -192,6 +203,15 @@ expression
     | left=expression TQuestionQuestion right=expression #nullCoalescingExpression                                          
     | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression                                       
     | left=expression operator=assignmentOperator right=expression #assignmentExpression 
+	;
+
+literalExpression 
+    :                             nullLiteral
+	|        booleanLiteral
+	|        integerLiteral
+	|        decimalLiteral
+	|        scientificLiteral
+    |        stringLiteral
 	;
 
        
@@ -282,7 +302,7 @@ identifier : IdentifierNormal | IdentifierVerbatim;
 
 // Literals
 literal 
-    :                             nullLiteral
+    :        nullLiteral
 	|        booleanLiteral
 	|        integerLiteral
 	|        decimalLiteral

@@ -538,8 +538,7 @@ namespace MetaDslx.VisualStudio
                     // Store results in the AuthoringScope object.
                     string fileName = Path.GetFileName(req.FileName);
                     string outputDir = Path.GetDirectoryName(req.FileName);
-                    MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(req.Text, outputDir, fileName);
-                    compiler.GenerateOutput = false;
+                    MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(req.Text, fileName);
                     compiler.Compile();
                     foreach (var msg in compiler.Diagnostics.GetMessages())
                     {

@@ -118,16 +118,37 @@ namespace MetaDslx.TempConsole
                 /*
                 Console.WriteLine("----");
                 CompileGenerator(
-                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.mgen",
-                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelGenerator.cs"
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelCSharpGenerator.mgen",
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelCSharpGenerator.cs"
+                    );
+                //*/
+                /*
+                Console.WriteLine("----");
+                CompileGenerator(
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelJavaGenerator.mgen",
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModelJavaGenerator.cs"
                     );
                 //*/
                 /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
-                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel.cs"
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel1.cs"
                     );
+                //*/
+                /*
+                CompileMeta(
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
+                    @"..\..\..\..\Main\MetaDslx.Core\MetaModel.java",
+                    true
+                    );
+                //*/
+                //*
+                Console.WriteLine("----");
+                CompileMeta(
+                    @"k:\VersionControl\soal-java\src\metadslx.soal.runtime\src\main\resources\Soal.mm",
+                    @"Soal.java",
+                    true);
                 //*/
                 /*
                 using (ModelContextScope scope = new ModelContextScope(MetaInstance.Model))
@@ -155,6 +176,13 @@ namespace MetaDslx.TempConsole
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Compiler\LanguageService\MetaLanguageServiceGenerator.mgen",
                     @"..\..\..\..\Main\MetaDslx.Compiler\LanguageService\MetaLanguageServiceGenerator.cs"
+                    );
+                //*/
+                /*
+                Console.WriteLine("----");
+                CompileGenerator(
+                    @"..\..\..\..\..\..\soal-cs\src\Main\MetaDslx.Soal\SoalPrinter.mgen",
+                    @"..\..\..\..\..\..\soal-cs\src\Main\MetaDslx.Soal\SoalPrinter.cs"
                     );
                 //*/
                 /*
@@ -188,8 +216,8 @@ namespace MetaDslx.TempConsole
                 source = reader.ReadToEnd();
             }
             AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(source, outputDirectory, fileName);
-            //compiler.DefaultNamespace = "MetaDslx.Compiler";
-            compiler.DefaultNamespace = "MetaDslx.Soal";
+            compiler.DefaultNamespace = "MetaDslx.Compiler";
+            //compiler.DefaultNamespace = "MetaDslx.Soal";
             compiler.Compile();
             string outputFileName = Path.Combine(outputDirectory, antlr4FileName + "Annotator.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))
@@ -222,43 +250,102 @@ namespace MetaDslx.TempConsole
                 }
             }
         }
-        
-        private static void CompileMeta(string fileName, string outputFileName)
+
+        private static void SaveToFile(string fileName, string source)
+        {
+            using (StreamWriter writer = new StreamWriter(fileName))
+            {
+                writer.WriteLine(source);
+            }
+        }
+
+        private static void CompileMeta(string fileName, string outputFileName, bool javaOutput = false)
         {
             //Meta.MetaTypedElement.StaticInit();
             //Console.WriteLine(Meta.MetaTypedElement.TypeProperty);
             //Meta.StaticInit();
             //Console.WriteLine(Meta.Model);
                         
-            Model model = new Model();
-            using (new ModelContextScope(model))
+            //Model model = new Model();
+            //using (new ModelContextScope(model))
             {
                 string source;
                 using (StreamReader reader = new StreamReader(fileName))
                 {
                     source = reader.ReadToEnd();
                 }
-                MetaModelCompiler compiler = new MetaModelCompiler(source, ".", fileName);
+                MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
                 compiler.Compile();
-                using (StreamWriter writer = new StreamWriter(outputFileName))
+                Model model = compiler.Model;
+                if (!compiler.Diagnostics.HasErrors())
                 {
-                    writer.WriteLine(compiler.GeneratedSource);
+                    ModelExchange.SaveToFile("MetaModel.xmi", model);
+                    using (StreamWriter writer = new StreamWriter(outputFileName))
+                    {
+                        if (javaOutput)
+                        {
+                            MetaModelJavaGenerator mmjg = new MetaModelJavaGenerator(model.Instances);
+                            string javaSource = mmjg.Generate();
+                            writer.WriteLine(javaSource);
+                            string javaDir = @"k:\VersionControl\soal-java\src\metadslx.soal.runtime\src\generated\java\metadslx\languages\soal\";
+                            //string javaDir = @"k:\VersionControl\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
+                            //string javaDir = @"c:\Users\Balazs\Documents\git\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
+                            MetaModel mm = (MetaModel)model.Instances.FirstOrDefault(obj => obj is MetaModel);
+                            SaveToFile(javaDir + mm.Name + "Descriptor.java", mmjg.GenerateMetaModelDescriptor(mm));
+                            SaveToFile(javaDir + mm.Name + "Instance.java", mmjg.GenerateMetaModelInstance(mm));
+                            foreach (var enm in mm.Namespace.Declarations.OfType<MetaEnum>())
+                            {
+                                SaveToFile(javaDir + enm.Name + ".java", mmjg.GenerateEnum(enm));
+                            }
+                            foreach (var cls in mm.Namespace.Declarations.OfType<MetaClass>())
+                            {
+                                SaveToFile(javaDir + cls.Name + ".java", mmjg.GenerateInterface(cls));
+                                SaveToFile(javaDir + cls.Name + "Impl.java", mmjg.GenerateInterfaceImpl(mm, cls));
+                            }
+                            SaveToFile(javaDir + mm.Name + "Factory.java", mmjg.GenerateFactory(mm));
+                            SaveToFile(javaDir + mm.Name + "ImplementationProvider.java", mmjg.GenerateImplementationProvider(mm));
+                            SaveToFile(javaDir + mm.Name + "ImplementationBase.java", mmjg.GenerateImplementationBase(mm));
+                        }
+                        else
+                        {
+                            MetaModelCSharpGenerator generator = new MetaModelCSharpGenerator(model.Instances);
+                            writer.WriteLine(generator.Generate());
+                        }
+                    }
                 }
                 //PrintScope("", compiler.GlobalScope);
                 Console.WriteLine("=");
 
                 using (StreamWriter writer = new StreamWriter("symbols.txt"))
                 {
-                    foreach (var symbol in ModelContext.Current.Model.Instances)
+                    foreach (var symbol in model.Instances)
                     {
                         ModelObject mo = symbol as ModelObject;
                         if (mo != null)
                         {
                             writer.WriteLine(mo);
                             Console.WriteLine(mo);
+                            string leading = compiler.TriviaProvider.GetLeadingTrivia(mo);
+                            string trailing = compiler.TriviaProvider.GetTrailingTrivia(mo);
+                            if (!string.IsNullOrWhiteSpace(leading))
+                            {
+                                writer.WriteLine("  Leading trivia: "+leading);
+                                Console.WriteLine("  Leading trivia: "+ leading);
+                            }
+                            if (!string.IsNullOrWhiteSpace(trailing))
+                            {
+                                writer.WriteLine("  Trailing trivia: "+ trailing);
+                                Console.WriteLine("  Trailing trivia: "+trailing);
+                            }
                             writer.WriteLine("  Parent=" + mo.MParent);
                             Console.WriteLine("  Parent=" + mo.MParent);
                             ModelProperty mp;
+                            mp = mo.MFindProperty("Documentation");
+                            if (mp != null)
+                            {
+                                writer.WriteLine("  Documentation=" + mo.MGet(mp));
+                                Console.WriteLine("  Documentation=" + mo.MGet(mp));
+                            }
                             mp = mo.MFindProperty("Name");
                             if (mp != null)
                             {
@@ -364,11 +451,12 @@ namespace MetaDslx.TempConsole
             {
                 source = reader.ReadToEnd();
             }
-            MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(source, ".", fileName);
+            MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(source, fileName);
             compiler.Compile();
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
-                writer.WriteLine(compiler.GeneratedSource);
+                MetaGeneratorGenerator generator = new MetaGeneratorGenerator(compiler.ParseTree);
+                writer.WriteLine(generator.GeneratedSource);
             }
             using (StreamWriter writer = new StreamWriter("messages_gen.txt"))
             {

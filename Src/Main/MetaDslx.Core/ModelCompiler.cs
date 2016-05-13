@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace MetaDslx.Core
 {
     [Flags]
-    public enum ResolveFlags
+    public enum ResolutionLocation
     {
         Children = 1,
         Inherited = 2,
@@ -34,27 +35,88 @@ namespace MetaDslx.Core
 
     public class ResolutionInfo
     {
+        public ResolveKind Kind { get; set; }
+        public List<ModelObject> Scopes { get; private set; }
+        public List<object> QualifiedNameNodes { get; private set; }
+        public int Position { get; set; }
+        public ResolutionLocation Location { get; set; }
+        public List<Type> SymbolTypes { get; private set; }
+
         public ResolutionInfo()
         {
+            this.Kind = ResolveKind.NameOrType;
+            this.Scopes = new List<ModelObject>();
+            this.QualifiedNameNodes = new List<object>();
             this.Position = -1;
+            this.Location = ResolutionLocation.All;
+            this.SymbolTypes = new List<Type>();
         }
 
-        public object Node { get; set; }
-        public int Position { get; set; }
-        public IEnumerable<Type> SymbolTypes { get; set; }
+        public ResolutionInfo(IEnumerable<ModelObject> scopes, ResolveKind kind, IEnumerable<object> qualifiedNameNodes, int position, ResolutionLocation location, IEnumerable<Type> symbolTypes)
+            : this()
+        {
+            this.Kind = kind;
+            this.Scopes.AddRange(scopes);
+            this.QualifiedNameNodes.AddRange(qualifiedNameNodes);
+            this.Position = position;
+            this.Location = location;
+            this.SymbolTypes.AddRange(symbolTypes);
+        }
+
+        public ResolutionInfo(ModelObject scope, ResolveKind kind, Object nameNode, int position, ResolutionLocation location)
+            : this()
+        {
+            this.Kind = kind;
+            this.Scopes.Add(scope);
+            this.QualifiedNameNodes.Add(nameNode);
+            this.Position = position;
+            this.Location = location;
+        }
+
+        public ResolutionInfo(ModelObject scope, ResolveKind kind, Object nameNode)
+            : this()
+        {
+            this.Kind = kind;
+            this.Scopes.Add(scope);
+            this.QualifiedNameNodes.Add(nameNode);
+        }
     }
 
     public class BindingInfo
     {
-        public object Node { get; set; }
+        public ResolutionInfo ResolutionInfo { get; private set; }
+        public List<ModelObject> ResolvedObjects { get; private set; }
+        public string Name { get; private set; }
+        public object Node { get; private set; }
+        public bool ResolutionError { get; private set; }
+
+        public BindingInfo(ResolutionInfo resolutionInfo, string name, object node, bool resolutionError)
+        {
+            this.ResolutionInfo = resolutionInfo;
+            this.ResolutionError = resolutionError;
+            this.ResolvedObjects = new List<ModelObject>();
+        }
+
+        public static BindingInfo CreateFromDefinitions(params ModelObject[] definitions)
+        {
+            BindingInfo result = new BindingInfo(new ResolutionInfo(), null, null, false);
+            result.ResolvedObjects.AddRange(definitions);
+            return result;
+        }
+    }
+
+    public interface ITriviaProvider
+    {
+        string GetLeadingTrivia(object node);
+        string GetTrailingTrivia(object node);
     }
 
     public interface INameProvider
     {
         string GetName(object node);
         string GetNameOf(ModelObject symbol);
-        object GetValue(object node);
-        IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject node);
+        object GetValue(object node, Type type);
+        IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject symbol);
         TextSpan GetTreeNodeTextSpan(object node);
     }
 
@@ -71,16 +133,15 @@ namespace MetaDslx.Core
 
     public interface IResolutionProvider
     {
-        ModelObject GetParentScope(ModelObject obj);
-        ModelObject GetCurrentScope(ModelObject obj);
-        ModelObject GetCurrentTypeScopeOf(ModelObject obj);
-        IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, List<string> qualifiedName, ResolutionInfo info, ResolveFlags flags);
-        IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, string name, ResolutionInfo info, ResolveFlags flags);
+        ModelObject GetParentScope(ModelObject symbol);
+        ModelObject GetCurrentScope(ModelObject symbol);
+        ModelObject GetCurrentTypeScopeOf(ModelObject symbol);
+        BindingInfo Resolve(ResolutionInfo info);
     }
 
     public interface IBindingProvider
     {
-        ModelObject Bind(ModelObject context, IEnumerable<ModelObject> alternatives, BindingInfo info);
+        ModelObject Bind(ModelObject context, BindingInfo info);
     }
 
     public interface IModelCompiler
@@ -89,6 +150,8 @@ namespace MetaDslx.Core
         string FileName { get; }
         string Source { get; }
         RootScope GlobalScope { get; }
+        Model Model { get; }
+        ITriviaProvider TriviaProvider { get; }
         INameProvider NameProvider { get; }
         ITypeProvider TypeProvider { get; }
         IResolutionProvider ResolutionProvider { get; }
@@ -106,11 +169,11 @@ namespace MetaDslx.Core
 
     public class DiagnosticMessage : IComparable<DiagnosticMessage>, IEquatable<DiagnosticMessage>
     {
-        public string FileName { get; set; }
-        public TextSpan TextSpan { get; set; }
-        public string Message { get; set; }
-        public Severity Severity { get; set; }
-        public bool IsLog { get; set; }
+        public string FileName { get; internal set; }
+        public TextSpan TextSpan { get; internal set; }
+        public string Message { get; internal set; }
+        public Severity Severity { get; internal set; }
+        public bool IsLog { get; internal set; }
 
         public int CompareTo(DiagnosticMessage other)
         {
@@ -214,6 +277,11 @@ namespace MetaDslx.Core
         private bool hasWarnings = false;
         private List<DiagnosticMessage> sortedMessages;
 
+        public ModelCompilerDiagnostics()
+        {
+            this.messages = new List<DiagnosticMessage>();
+        }
+
         public bool HasErrors()
         {
             return this.hasErrors;
@@ -243,22 +311,19 @@ namespace MetaDslx.Core
             return this.sortedMessages.Where(m => (m.Severity | severity) == m.Severity && (!m.IsLog || includeLog));
         }
 
-        public ModelCompilerDiagnostics()
-        {
-            this.messages = new List<DiagnosticMessage>();
-        }
-
         public void AddMessage(Severity severity, string message, string fileName, ModelObject symbol, bool isLog = false)
         {
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
+            bool added = false;
+            IModelCompiler compiler = ModelCompilerContext.Current;
+            if (compiler != null)
             {
-                foreach (var textSpan in ctx.Compiler.NameProvider.GetSymbolTextSpans(symbol))
+                foreach (var textSpan in compiler.NameProvider.GetSymbolTextSpans(symbol))
                 {
                     this.AddMessage(severity, message, fileName, textSpan, isLog);
+                    added = true;
                 }
             }
-            else
+            if (!added)
             {
                 this.AddMessage(severity, message, fileName, new TextSpan(), isLog);
             }
@@ -267,10 +332,10 @@ namespace MetaDslx.Core
         public void AddMessage(Severity severity, string message, string fileName, object node, bool isLog = false)
         {
             TextSpan textSpan = null;
-            ModelContext ctx = ModelContext.Current;
-            if (ctx != null)
+            IModelCompiler compiler = ModelCompilerContext.Current;
+            if (compiler != null)
             {
-                textSpan = ctx.Compiler.NameProvider.GetTreeNodeTextSpan(node);
+                textSpan = compiler.NameProvider.GetTreeNodeTextSpan(node);
             }
             else
             {
@@ -347,6 +412,19 @@ namespace MetaDslx.Core
         }
     }
 
+    public class DefaultTriviaProvider : ITriviaProvider
+    {
+        public virtual string GetLeadingTrivia(object node)
+        {
+            return null;
+        }
+
+        public virtual string GetTrailingTrivia(object node)
+        {
+            return null;
+        }
+    }
+
     public class DefaultNameProvider : INameProvider
     {
         public virtual string GetName(object node)
@@ -355,16 +433,10 @@ namespace MetaDslx.Core
             return node.ToString();
         }
 
-        public virtual object GetValue(object node)
-        {
-            if (node == null) return null;
-            return node.ToString();
-        }
-
         public string GetNameOf(ModelObject symbol)
         {
             if (symbol == null) return null;
-            foreach (var prop in symbol.MGetAllProperties())
+            foreach (var prop in symbol.MGetProperties())
             {
                 if (prop.IsMetaName())
                 {
@@ -375,6 +447,59 @@ namespace MetaDslx.Core
                 }
             }
             return null;
+        }
+
+        public virtual object GetValue(object node, Type type)
+        {
+            if (node == null) return null;
+            string value = node.ToString();
+            if (type == null)
+            {
+                if (value == "null") return null;
+                bool boolValue;
+                if (bool.TryParse(value, out boolValue))
+                {
+                    return boolValue;
+                }
+                int intValue;
+                if (int.TryParse(value, out intValue))
+                {
+                    return intValue;
+                }
+                long longValue;
+                if (long.TryParse(value, out longValue))
+                {
+                    return longValue;
+                }
+                float floatValue;
+                if (float.TryParse(value, out floatValue))
+                {
+                    return floatValue;
+                }
+                double doubleValue;
+                if (double.TryParse(value, out doubleValue))
+                {
+                    return doubleValue;
+                }
+                return value;
+            }
+            else
+            {
+                TypeConverter converter = TypeDescriptor.GetConverter(type);
+                if (converter != null)
+                {
+                    try
+                    {
+                        object result = converter.ConvertFromInvariantString(value);
+                        return result;
+                    }
+                    catch (Exception)
+                    {
+                        return value;
+                    }
+                }
+            }
+            return value;
         }
 
         public virtual IEnumerable<TextSpan> GetSymbolTextSpans(ModelObject symbol)
@@ -393,9 +518,12 @@ namespace MetaDslx.Core
             {
                 object symbolTreeNodes = symbol.MGet(MetaScopeEntryProperties.SymbolTreeNodesProperty);
                 IList<object> symbolTreeNodeList = symbolTreeNodes as IList<object>;
-                foreach (var symbolTreeNode in symbolTreeNodeList)
+                if (symbolTreeNodes != null)
                 {
-                    result.Add(this.GetTreeNodeTextSpan(symbolTreeNode));
+                    foreach (var symbolTreeNode in symbolTreeNodeList)
+                    {
+                        result.Add(this.GetTreeNodeTextSpan(symbolTreeNode));
+                    }
                 }
             }
             return result;
@@ -679,6 +807,7 @@ namespace MetaDslx.Core
 
         public MetaType GetTypeOf(object value)
         {
+            if (value == null) return MetaInstance.Object;
             ModelObject symbol = value as ModelObject;
             if (symbol != null) return this.GetTypeOf(symbol);
             if (value is string) return MetaInstance.String;
@@ -706,8 +835,8 @@ namespace MetaDslx.Core
             bool result = this.IsAssignableFrom((ModelObject)expr.ExpectedType, (ModelObject)expr.Type);
             if (!result)
             {
-                ModelContext ctx = ModelContext.Current;
-                if (ctx != null)
+                IModelCompiler compiler = ModelCompilerContext.Current;
+                if (compiler != null)
                 {
                     if (expr.ExpectedType == MetaInstance.None)
                     {
@@ -715,15 +844,15 @@ namespace MetaDslx.Core
                     }
                     else  if (expr.ExpectedType == null)
                     {
-                        ctx.Compiler.Diagnostics.AddError("The expression has no expected type.", ctx.Compiler.FileName, symbol);
+                        compiler.Diagnostics.AddError("The expression has no expected type.", compiler.FileName, symbol);
                     }
                     else if (expr.Type == null)
                     {
-                        ctx.Compiler.Diagnostics.AddError("The expression has no type.", ctx.Compiler.FileName, symbol);
+                        compiler.Diagnostics.AddError("The expression has no type.", compiler.FileName, symbol);
                     }
                     else
                     {
-                        ctx.Compiler.Diagnostics.AddError("'" + expr.ExpectedType + "' type expected, but expression has type '" + expr.Type + "'.", ctx.Compiler.FileName, symbol);
+                        compiler.Diagnostics.AddError("'" + expr.ExpectedType + "' type expected, but expression has type '" + expr.Type + "'.", compiler.FileName, symbol);
                     }
                 }
             }
@@ -733,134 +862,139 @@ namespace MetaDslx.Core
 
     public class DefaultResolutionProvider : IResolutionProvider
     {
-        public virtual ModelObject GetParentScope(ModelObject obj)
+        public virtual ModelObject GetParentScope(ModelObject symbol)
         {
-            ModelContext ctx = ModelContext.Current;
+            IModelCompiler compiler = ModelCompilerContext.Current;
             ModelObject result = null;
-            if (ctx != null)
+            if (compiler != null)
             {
-                result = ModelContext.Current.Compiler.GlobalScope;
+                result = compiler.GlobalScope;
             }
-            if (obj != null)
+            if (symbol != null)
             {
-                obj = obj.MParent;
+                symbol = symbol.MParent;
             }
-            while(obj != null && !obj.IsMetaScope())
+            while(symbol != null && !symbol.IsMetaScope())
             {
-                obj = obj.MParent;
+                symbol = symbol.MParent;
             }
-            if (obj != null)
+            if (symbol != null)
             {
-                result = obj;
+                result = symbol;
             }
             return result;
         }
 
-        public virtual ModelObject GetCurrentScope(ModelObject obj)
+        public virtual ModelObject GetCurrentScope(ModelObject symbol)
         {
-            ModelContext ctx = ModelContext.Current;
+            IModelCompiler compiler = ModelCompilerContext.Current;
             ModelObject result = null;
-            if (ctx != null)
+            if (compiler != null)
             {
-                result = ModelContext.Current.Compiler.GlobalScope;
+                result = compiler.GlobalScope;
             }
-            while (obj != null && !obj.IsMetaScope())
+            while (symbol != null && !symbol.IsMetaScope())
             {
-                obj = obj.MParent;
+                symbol = symbol.MParent;
             }
-            if (obj != null)
+            if (symbol != null)
             {
-                result = obj;
+                result = symbol;
             }
             return result;
         }
 
-        public virtual ModelObject GetCurrentTypeScopeOf(ModelObject obj)
+        public virtual ModelObject GetCurrentTypeScopeOf(ModelObject symbol)
         {
-            ModelContext ctx = ModelContext.Current;
+            IModelCompiler compiler = ModelCompilerContext.Current;
             ModelObject result = null;
-            if (ctx != null)
+            if (compiler != null)
             {
-                result = ModelContext.Current.Compiler.GlobalScope;
+                result = compiler.GlobalScope;
             }
-            while (obj != null && !obj.IsMetaScope() && !obj.IsMetaType())
+            while (symbol != null && !symbol.IsMetaScope() && !symbol.IsMetaType())
             {
-                obj = obj.MParent;
+                symbol = symbol.MParent;
             }
-            if (obj != null)
+            if (symbol != null)
             {
-                result = obj;
+                result = symbol;
             }
             return result;
         }
 
-        public virtual IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, List<string> qualifiedName, ResolutionInfo info, ResolveFlags flags)
+        public virtual BindingInfo Resolve(ResolutionInfo resolutionInfo)
         {
-            if (qualifiedName.Count == 0)
+            if (resolutionInfo == null || resolutionInfo.QualifiedNameNodes.Count == 0) new BindingInfo(resolutionInfo, null, null, true);
+            List<ModelObject> currentResult = resolutionInfo.Scopes;
+            string name = null;
+            object node = null;
+            bool first = true;
+            bool last = true;
+            for (int i = 0; i < resolutionInfo.QualifiedNameNodes.Count; i++)
             {
-                return new ModelObject[0];
+                node = resolutionInfo.QualifiedNameNodes[i];
+                if (node is string)
+                {
+                    name = (string)node;
+                }
+                else
+                {
+                    name = ModelCompilerContext.Current.NameProvider.GetName(node);
+                }
+                first = i == 0;
+                last = i == resolutionInfo.QualifiedNameNodes.Count - 1;
+                currentResult = this.Resolve(currentResult, last ? resolutionInfo.Kind : ResolveKind.NameOrType, name, first ? resolutionInfo.Position : -1, first ? resolutionInfo.Location : ResolutionLocation.Scope, last ? resolutionInfo.SymbolTypes : null);
             }
-            if (qualifiedName.Count == 1)
+            if (currentResult.Count == 0)
             {
-                return this.Resolve(scopes, kind, qualifiedName[0], info, flags);
+                IModelCompiler compiler = ModelCompilerContext.Current;
+                if (compiler != null)
+                {
+                    string nameKind = null;
+                    switch (last ? resolutionInfo.Kind : ResolveKind.NameOrType)
+                    {
+                        case ResolveKind.Name:
+                            nameKind = "name";
+                            break;
+                        case ResolveKind.Type:
+                            nameKind = "type";
+                            break;
+                        default:
+                            nameKind = "name or type";
+                            break;
+                    }
+                    compiler.Diagnostics.AddError("Could not resolve " + nameKind + " '" + name + "'.", compiler.FileName, node);
+                }
             }
-            List<ModelObject> result = new List<ModelObject>();
-            ResolutionInfo firstInfo =
-                new ResolutionInfo()
-                {
-                    Node = info.Node,
-                    Position = info.Position,
-                    SymbolTypes = null
-                };
-            ResolutionInfo middleInfo =
-                new ResolutionInfo()
-                {
-                    Node = info.Node,
-                    Position = -1,
-                    SymbolTypes = null
-                };
-            ResolutionInfo lastInfo =
-                new ResolutionInfo()
-                {
-                    Node = info.Node,
-                    Position = -1,
-                    SymbolTypes = info.SymbolTypes
-                };
-            IEnumerable<ModelObject> currentResult = scopes;
-            for (int i = 0; i < qualifiedName.Count; i++)
-            {
-                string name = qualifiedName[i];
-                bool first = i == 0;
-                bool last = i == qualifiedName.Count - 1;
-                currentResult = this.Resolve(currentResult, last ? kind : ResolveKind.NameOrType, name, last ? lastInfo : (first ? firstInfo : middleInfo), first ? flags : ResolveFlags.Scope);
-            }
-            result.AddRange(currentResult);
+            BindingInfo result = new BindingInfo(resolutionInfo, name, node, currentResult.Count == 0);
+            result.ResolvedObjects.AddRange(currentResult);
             return result;
         }
 
-        public virtual IEnumerable<ModelObject> Resolve(IEnumerable<ModelObject> scopes, ResolveKind kind, string name, ResolutionInfo info, ResolveFlags flags)
+        protected virtual List<ModelObject> Resolve(List<ModelObject> scopes, ResolveKind kind, string name, int position, ResolutionLocation location, List<Type> symbolTypes)
         {
             List<ModelObject> result = new List<ModelObject>();
             foreach (var scope in scopes)
             {
-                if (flags.HasFlag(ResolveFlags.Children))
+                if (location.HasFlag(ResolutionLocation.Children))
                 {
-                    result.AddRange(this.ResolveEntries(this.GetEntries<ScopeEntryAttribute>(scope), kind, name, info));
+                    result.AddRange(this.ResolveEntries(this.GetEntries<ScopeEntryAttribute>(scope), kind, name, position, symbolTypes));
                 }
-                if (flags.HasFlag(ResolveFlags.Inherited))
+                if (location.HasFlag(ResolutionLocation.Inherited))
                 {
-                    result.AddRange(this.Resolve(this.GetScopes<InheritedScopeAttribute>(scope), kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, ResolveFlags.Scope));
+                    result.AddRange(this.Resolve(this.GetScopes<InheritedScopeAttribute>(scope), kind, name, -1, ResolutionLocation.Scope, symbolTypes));
                 }
-                if (flags.HasFlag(ResolveFlags.Imported))
+                if (location.HasFlag(ResolutionLocation.Imported))
                 {
-                    result.AddRange(this.Resolve(this.GetScopes<ImportedScopeAttribute>(scope), kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, ResolveFlags.Scope));
+                    result.AddRange(this.Resolve(this.GetScopes<ImportedScopeAttribute>(scope), kind, name, -1, ResolutionLocation.Scope, symbolTypes));
                 }
-                if (flags.HasFlag(ResolveFlags.ImportedScope))
+                if (location.HasFlag(ResolutionLocation.ImportedScope))
                 {
-                    result.AddRange(this.ResolveEntries(this.GetEntries<ImportedEntryAttribute>(scope), kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }));
+                    result.AddRange(this.ResolveEntries(this.GetEntries<ImportedEntryAttribute>(scope), kind, name, -1, symbolTypes));
                 }
             }
-            if (flags.HasFlag(ResolveFlags.Parent) && result.Count == 0)
+            if (location.HasFlag(ResolutionLocation.Parent) && result.Count == 0)
             {
                 List<ModelObject> parentScopes = new List<ModelObject>();
                 foreach (var scope in scopes)
@@ -873,7 +1007,7 @@ namespace MetaDslx.Core
                 }
                 if (parentScopes.Count > 0)
                 {
-                    result.AddRange(this.Resolve(parentScopes, kind, name, new ResolutionInfo() { Node = info.Node, SymbolTypes = info.SymbolTypes }, ResolveFlags.All));
+                    result.AddRange(this.Resolve(parentScopes, kind, name, -1, ResolutionLocation.All, symbolTypes));
                 }
             }
             return result;
@@ -883,9 +1017,9 @@ namespace MetaDslx.Core
         {
             if (entry != null)
             {
-                foreach (var prop in entry.MGetAllProperties())
+                foreach (var prop in entry.MGetProperties())
                 {
-                    if (prop.Annotations.Any(a => a is NameAttribute))
+                    if (prop.IsMetaName())
                     {
                         if (entry.MIsValueCreated(prop))
                         {
@@ -912,7 +1046,43 @@ namespace MetaDslx.Core
             return parent;
         }
 
-        protected virtual IEnumerable<ModelObject> GetScopes<T>(ModelObject scope)
+        protected virtual List<ModelObject> GetScopes<T>(ModelObject scope)
+            where T : Attribute
+        {
+            List<ModelObject> result = new List<ModelObject>();
+            if (scope == null) return result;
+            foreach (var prop in scope.MGetAllProperties())
+            {
+                if (prop.Annotations.Any(a => a is T))
+                {
+                    object entry = scope.MGet(prop);
+                    ModelCollection scopeEntries = entry as ModelCollection;
+                    if (scopeEntries != null)
+                    {
+                        IEnumerable<object> scopeEntryList = scopeEntries as IEnumerable<object>;
+                        foreach (var scopeEntry in scopeEntryList)
+                        {
+                            ModelObject scopeEntryObject = scopeEntry as ModelObject;
+                            if (scopeEntryObject != null && scopeEntryObject.IsMetaScope())
+                            {
+                                result.Add(scopeEntryObject);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ModelObject entryObject = entry as ModelObject;
+                        if (entryObject != null && entryObject.IsMetaScope())
+                        {
+                            result.Add(entryObject);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        protected virtual List<ModelObject> GetEntries<T>(ModelObject scope)
             where T : Attribute
         {
             List<ModelObject> result = new List<ModelObject>();
@@ -948,43 +1118,7 @@ namespace MetaDslx.Core
             return result;
         }
 
-        protected virtual IEnumerable<ModelObject> GetEntries<T>(ModelObject scope)
-            where T : Attribute
-        {
-            List<ModelObject> result = new List<ModelObject>();
-            if (scope == null) return result;
-            foreach (var prop in scope.MGetAllProperties())
-            {
-                if (prop.Annotations.Any(a => a is T))
-                {
-                    object entry = scope.MGet(prop);
-                    ModelCollection scopeEntries = entry as ModelCollection;
-                    if (scopeEntries != null)
-                    {
-                        IEnumerable<object> scopeEntryList = scopeEntries as IEnumerable<object>;
-                        foreach (var scopeEntry in scopeEntryList)
-                        {
-                            ModelObject scopeEntryObject = scopeEntry as ModelObject;
-                            if (scopeEntryObject != null)
-                            {
-                                result.Add(scopeEntryObject);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        ModelObject entryObject = entry as ModelObject;
-                        if (entryObject != null)
-                        {
-                            result.Add(entryObject);
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-
-        protected virtual IEnumerable<ModelObject> ResolveEntries(IEnumerable<ModelObject> entries, ResolveKind kind, string name, ResolutionInfo info)
+        protected virtual List<ModelObject> ResolveEntries(IEnumerable<ModelObject> entries, ResolveKind kind, string name, int position, List<Type> symbolTypes)
         {
             List<ModelObject> result = new List<ModelObject>();
             if (name == null) return result;
@@ -996,7 +1130,26 @@ namespace MetaDslx.Core
                     if ((kind.HasFlag(ResolveKind.Type) && entryObject.IsMetaType())
                         || (kind.HasFlag(ResolveKind.Name) && !entryObject.IsMetaType()))
                     {
-                        result.Add(entryObject);
+                        bool typeOK = false;
+                        if (symbolTypes != null && symbolTypes.Count > 0)
+                        {
+                            foreach (var symbolType in symbolTypes)
+                            {
+                                if (symbolType.IsAssignableFrom(entryObject.GetType()))
+                                {
+                                    typeOK = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            typeOK = true;
+                        }
+                        if (typeOK)
+                        {
+                            result.Add(entryObject);
+                        }
                     }
                 }
             }
@@ -1010,7 +1163,7 @@ namespace MetaDslx.Core
         protected virtual void SelectBestAlternative(List<ModelObject> alternativeList, MetaFunctionCallExpression call)
         {
             if (alternativeList.Count <= 1) return;
-            ModelContext ctx = ModelContext.Current;
+            IModelCompiler compiler = ModelCompilerContext.Current;
             for (int i = 0; i < alternativeList.Count; i++)
             {
                 ModelObject alternative = alternativeList[i];
@@ -1026,7 +1179,7 @@ namespace MetaDslx.Core
                         {
                             MetaType paramType = ft.ParameterTypes[j];
                             MetaType argType = call.Arguments[j].Type;
-                            if (!ctx.Compiler.TypeProvider.IsAssignableFrom((ModelObject)paramType, (ModelObject)argType))
+                            if (!compiler.TypeProvider.IsAssignableFrom((ModelObject)paramType, (ModelObject)argType))
                             {
                                 goodAlternative = false;
                             }
@@ -1055,7 +1208,7 @@ namespace MetaDslx.Core
                         {
                             MetaType paramType = ft.ParameterTypes[j];
                             MetaType argType = call.Arguments[j].Type;
-                            if (!ctx.Compiler.TypeProvider.Equals((ModelObject)paramType, (ModelObject)argType))
+                            if (!compiler.TypeProvider.Equals((ModelObject)paramType, (ModelObject)argType))
                             {
                                 goodAlternative = false;
                             }
@@ -1070,10 +1223,26 @@ namespace MetaDslx.Core
             }
         }
 
-        public virtual ModelObject Bind(ModelObject context, IEnumerable<ModelObject> alternatives, BindingInfo info)
+        protected virtual string GetKindName(ResolutionInfo resolutionInfo)
         {
-            ModelContext ctx = ModelContext.Current;
-            List<ModelObject> alternativeList = alternatives.ToList();
+            if (resolutionInfo == null) return "name or type";
+            switch (resolutionInfo.Kind)
+            {
+                case ResolveKind.Name:
+                    return "name";
+                case ResolveKind.Type:
+                    return "type";
+                default:
+                    return "name or type";
+            }
+        }
+
+        public virtual ModelObject Bind(ModelObject context, BindingInfo bindingInfo)
+        {
+            if (bindingInfo == null) return null;
+            if (bindingInfo.ResolutionError) return null;
+            IModelCompiler compiler = ModelCompilerContext.Current;
+            List<ModelObject> alternativeList = bindingInfo.ResolvedObjects;
             MetaFunctionCallExpression fce = context as MetaFunctionCallExpression;
             if (fce != null)
             {
@@ -1096,43 +1265,17 @@ namespace MetaDslx.Core
             }
             if (alternativeList.Count == 0)
             {
-                if (ctx != null)
+                if (compiler != null)
                 {
-                    if (info.Node != null)
-                    {
-                        ctx.Compiler.Diagnostics.AddError("Cannot resolve name or type.", ctx.Compiler.FileName, info.Node);
-                    }
-                    else
-                    {
-                        ctx.Compiler.Diagnostics.AddError("Cannot resolve name or type.", ctx.Compiler.FileName, context);
-                    }
+                    compiler.Diagnostics.AddError("Cannot resolve " + this.GetKindName(bindingInfo.ResolutionInfo) + " '"+bindingInfo.Name+"'.", compiler.FileName, bindingInfo.Node ?? context);
                 }
                 return null;
             }
             else if (alternativeList.Count > 1)
             {
-                bool mustHaveUniqueDefinition = true;
-                if (context != null)
+                if (compiler != null)
                 {
-                    object mustHaveUniqueDefinitionObject = context.MGet(MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
-                    if (mustHaveUniqueDefinitionObject != null)
-                    {
-                        mustHaveUniqueDefinition = (bool)mustHaveUniqueDefinitionObject;
-                    }
-                }
-                if (mustHaveUniqueDefinition)
-                {
-                    if (ctx != null)
-                    {
-                        if (info.Node != null)
-                        {
-                            ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, info.Node);
-                        }
-                        else
-                        {
-                            ctx.Compiler.Diagnostics.AddError("Ambiguous name or type.", ctx.Compiler.FileName, context);
-                        }
-                    }
+                    compiler.Diagnostics.AddError("Ambiguous " + this.GetKindName(bindingInfo.ResolutionInfo) + " '" + bindingInfo.Name + "'.", compiler.FileName, bindingInfo.Node ?? context);
                 }
                 return null;
             }
@@ -1155,7 +1298,7 @@ namespace MetaDslx.Core
                         }
                         else
                         {
-                            ctx.Compiler.Diagnostics.AddError("The number of formal and actual parameters are different.", ctx.Compiler.FileName, context);
+                            compiler.Diagnostics.AddError("The number of formal and actual parameters are different.", compiler.FileName, context);
                         }
                     }
                 }
@@ -1171,7 +1314,8 @@ namespace MetaDslx.Core
         {
             this.Diagnostics = new ModelCompilerDiagnostics();
             this.GlobalScope = new RootScope();
-            this.GlobalScope.AddMetaBuiltInEntries();
+            this.Model = new Model();
+            this.TriviaProvider = new DefaultTriviaProvider();
             this.NameProvider = new DefaultNameProvider();
             this.TypeProvider = new DefaultTypeProvider();
             this.ResolutionProvider = new DefaultResolutionProvider();
@@ -1182,6 +1326,8 @@ namespace MetaDslx.Core
         public virtual string FileName { get; protected set; }
         public virtual string Source { get; protected set; }
         public virtual RootScope GlobalScope { get; protected set; }
+        public virtual Model Model { get; protected set; }
+        public virtual ITriviaProvider TriviaProvider { get; protected set; }
         public virtual INameProvider NameProvider { get; protected set; }
         public virtual ITypeProvider TypeProvider { get; protected set; }
         public virtual IResolutionProvider ResolutionProvider { get; protected set; }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD license"]
  *  Copyright (c) 2014 Terence Parr
  *  Copyright (c) 2014 Sam Harwell
@@ -55,7 +55,6 @@ tokens {
 	 *  between [..arg actions..] and [charsets]. Char sets can only occur in
 	 *  lexical rules and arg actions cannot occur.
 	 */
-	 
     private static int INVALID_TYPE = -1;
 
     private int _currentRuleType = INVALID_TYPE;
@@ -387,4 +386,3 @@ mode BLOCK_COMMENT_MODE;
 	                                
 	BLOCK_COMMENT : '*/' -> mode(DEFAULT_MODE), channel(HIDDEN);
 	BLOCK_COMMENT_STAR : '*' -> more, channel(HIDDEN);
-

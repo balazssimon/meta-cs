@@ -10,13 +10,15 @@ namespace MetaDslx.Core
 {
     public class ModelProperty
     {
-        internal static Dictionary<System.Type, Dictionary<string, ModelProperty>> declaredProperties;
-        internal static Dictionary<System.Type, Dictionary<string, ModelProperty>> properties;
+        private static Dictionary<System.Type, Dictionary<string, ModelProperty>> declaredProperties;
+        private static Dictionary<System.Type, Dictionary<string, ModelProperty>> properties;
+        private static Dictionary<System.Type, PropertyCache> cachedProperties;
 
         static ModelProperty()
         {
             ModelProperty.declaredProperties = new Dictionary<System.Type, Dictionary<string, ModelProperty>>();
             ModelProperty.properties = new Dictionary<System.Type, Dictionary<string, ModelProperty>>();
+            ModelProperty.cachedProperties = new Dictionary<Type, PropertyCache>();
         }
 
         private bool initialized = false;
@@ -26,11 +28,15 @@ namespace MetaDslx.Core
         private List<ModelProperty> subsettingProperties;
         private List<ModelProperty> redefinedProperties;
         private List<ModelProperty> redefiningProperties;
+        private List<ModelProperty> cachedOppositeProperties;
+        private List<ModelProperty> cachedSubsettedProperties;
+        private List<ModelProperty> cachedSubsettingProperties;
+        private List<ModelProperty> cachedRedefinedProperties;
+        private List<ModelProperty> cachedRedefiningProperties;
         private bool isReadonly = false;
         private bool isContainment = false;
         private System.Type itemType = null;
         private bool isCollection = false;
-        private bool isModelObject = false;
         private Lazy<MetaProperty> metaProperty = null;
 
         protected ModelProperty(string name, System.Type type, System.Type owningType, string declaredName, System.Type declaringType, Lazy<MetaProperty> metaProperty)
@@ -77,7 +83,11 @@ namespace MetaDslx.Core
             get
             {
                 if (!this.initialized) this.Init();
-                return this.oppositeProperties;
+                if (this.cachedOppositeProperties == null)
+                {
+                    this.cachedOppositeProperties = new List<ModelProperty>(this.oppositeProperties);
+                }
+                return this.cachedOppositeProperties;
             }
         }
 
@@ -86,7 +96,11 @@ namespace MetaDslx.Core
             get
             {
                 if (!this.initialized) this.Init();
-                return this.subsettedProperties;
+                if (this.cachedSubsettedProperties == null)
+                {
+                    this.cachedSubsettedProperties = new List<ModelProperty>(this.subsettedProperties);
+                }
+                return this.cachedSubsettedProperties;
             }
         }
 
@@ -95,7 +109,11 @@ namespace MetaDslx.Core
             get
             {
                 if (!this.initialized) this.Init();
-                return this.subsettingProperties;
+                if (this.cachedSubsettingProperties == null)
+                {
+                    this.cachedSubsettingProperties = new List<ModelProperty>(this.subsettingProperties);
+                }
+                return this.cachedSubsettingProperties;
             }
         }
         
@@ -104,7 +122,11 @@ namespace MetaDslx.Core
             get
             {
                 if (!this.initialized) this.Init();
-                return this.redefinedProperties;
+                if (this.cachedRedefinedProperties == null)
+                {
+                    this.cachedRedefinedProperties = new List<ModelProperty>(this.redefinedProperties);
+                }
+                return this.cachedRedefinedProperties;
             }
         }
 
@@ -113,7 +135,11 @@ namespace MetaDslx.Core
             get
             {
                 if (!this.initialized) this.Init();
-                return this.redefiningProperties;
+                if (this.cachedRedefiningProperties == null)
+                {
+                    this.cachedRedefiningProperties = new List<ModelProperty>(this.redefiningProperties);
+                }
+                return this.cachedRedefiningProperties;
             }
         }
 
@@ -145,15 +171,6 @@ namespace MetaDslx.Core
             }
         }
 
-        public bool IsModelObject
-        {
-            get
-            {
-                if (!this.initialized) this.Init();
-                return this.isModelObject;
-            }
-        }
-
         public System.Type ItemType
         {
             get
@@ -179,12 +196,7 @@ namespace MetaDslx.Core
                     {
                         this.isCollection = true;
                         this.itemType = lastGenericArgument;
-                        this.isModelObject = typeof(IModelObject).IsAssignableFrom(this.itemType);
                     }
-                }
-                else
-                {
-                    this.isModelObject = typeof(IModelObject).IsAssignableFrom(this.Type);
                 }
                 foreach (var attribute in info.GetCustomAttributes(typeof(OppositeAttribute), true))
                 {
@@ -196,6 +208,7 @@ namespace MetaDslx.Core
                         if (modelProperty != null)
                         {
                             this.oppositeProperties.Add(modelProperty);
+                            this.cachedOppositeProperties = null;
                         }
                     }
                 }
@@ -209,7 +222,9 @@ namespace MetaDslx.Core
                         if (modelProperty != null)
                         {
                             this.subsettedProperties.Add(modelProperty);
+                            this.cachedSubsettedProperties = null;
                             modelProperty.subsettingProperties.Add(this);
+                            modelProperty.cachedSubsettingProperties = null;
                         }
                     }
                 }
@@ -223,7 +238,9 @@ namespace MetaDslx.Core
                         if (modelProperty != null)
                         {
                             this.redefinedProperties.Add(modelProperty);
+                            this.cachedRedefinedProperties = null;
                             modelProperty.redefiningProperties.Add(this);
+                            modelProperty.cachedRedefiningProperties = null;
                         }
                     }
                 }
@@ -264,31 +281,6 @@ namespace MetaDslx.Core
             return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", owningType, null));
         }
 
-        public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName)
-        {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, owningType, null));
-        }
-
-        public static ModelProperty Register(string name, System.Type type, System.Type owningType, System.Type declaringType)
-        {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", declaringType, null));
-        }
-
-        public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName, System.Type declaringType)
-        {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, declaringType, null));
-        }
-
-        public static ModelProperty Register(string name, System.Type type, System.Type owningType, Lazy<MetaProperty> metaProperty)
-        {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", owningType, metaProperty));
-        }
-
-        public static ModelProperty Register(string name, System.Type type, System.Type owningType, string declaredName, Lazy<MetaProperty> metaProperty)
-        {
-            return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, declaredName, owningType, metaProperty));
-        }
-
         public static ModelProperty Register(string name, System.Type type, System.Type owningType, System.Type declaringType, Lazy<MetaProperty> metaProperty)
         {
             return ModelProperty.RegisterProperty(new ModelProperty(name, type, owningType, name + "Property", declaringType, metaProperty));
@@ -313,6 +305,50 @@ namespace MetaDslx.Core
             return null;
         }
 
+        private static void ClearCache()
+        {
+            ModelProperty.cachedProperties = new Dictionary<System.Type, PropertyCache>();
+        }
+
+        private static PropertyCache GetCachedProperties(System.Type type)
+        {
+            RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+            PropertyCache propertyCache;
+            if (!ModelProperty.cachedProperties.TryGetValue(type, out propertyCache))
+            {
+                propertyCache = new PropertyCache();
+                ModelProperty.cachedProperties.Add(type, propertyCache);
+                HashSet<ModelProperty> allProperties = new HashSet<ModelProperty>();
+                Dictionary<string, ModelProperty> propertyList;
+                if (ModelProperty.properties.TryGetValue(type, out propertyList))
+                {
+                    propertyCache.DeclaredProperties.AddRange(propertyList.Values);
+                    allProperties.UnionWith(propertyList.Values);
+                    foreach (var prop in propertyList.Values)
+                    {
+                        if (!propertyCache.Properties.Any(p => p.Name == prop.Name))
+                        {
+                            propertyCache.Properties.Add(prop);
+                        }
+                    }
+                }
+                foreach (var super in type.GetInterfaces())
+                {
+                    var superProperties = ModelProperty.GetCachedProperties(super).AllProperties;
+                    allProperties.UnionWith(superProperties);
+                    foreach (var prop in superProperties)
+                    {
+                        if (!propertyCache.Properties.Any(p => p.Name == prop.Name))
+                        {
+                            propertyCache.Properties.Add(prop);
+                        }
+                    }
+                }
+                propertyCache.AllProperties.AddRange(allProperties);
+            }
+            return propertyCache;
+        }
+
         protected static ModelProperty RegisterProperty(ModelProperty property)
         {
             Dictionary<string, ModelProperty> propertyList;
@@ -325,49 +361,35 @@ namespace MetaDslx.Core
             {
                 throw new ModelException("Property '" + property + "' is already registered as '" + propertyList[property.Name] + "'.");
             }
-            propertyList.Add(property.Name, property);
-            if (!ModelProperty.declaredProperties.TryGetValue(property.DeclaringType, out propertyList))
+            Dictionary<string, ModelProperty> declaredPropertyList;
+            if (!ModelProperty.declaredProperties.TryGetValue(property.DeclaringType, out declaredPropertyList))
             {
-                propertyList = new Dictionary<string, ModelProperty>();
-                ModelProperty.declaredProperties.Add(property.DeclaringType, propertyList);
+                declaredPropertyList = new Dictionary<string, ModelProperty>();
+                ModelProperty.declaredProperties.Add(property.DeclaringType, declaredPropertyList);
             }
-            if (propertyList.ContainsKey(property.Name))
+            if (declaredPropertyList.ContainsKey(property.Name))
             {
-                throw new ModelException("Property '" + property + "' is already declared as '" + propertyList[property.Name] + "'.");
+                throw new ModelException("Property '" + property + "' is already declared as '" + declaredPropertyList[property.Name] + "'.");
             }
             propertyList.Add(property.Name, property);
+            declaredPropertyList.Add(property.Name, property);
+            ModelProperty.ClearCache();
             return property;
         }
 
         public static IEnumerable<ModelProperty> GetPropertiesForType(System.Type owningType)
         {
-            Dictionary<string, ModelProperty> propertyList;
-            RuntimeHelpers.RunClassConstructor(owningType.TypeHandle);
-            if (ModelProperty.properties.TryGetValue(owningType, out propertyList))
-            {
-                return propertyList.Values;
-            }
-            return new ModelProperty[0];
+            return ModelProperty.GetCachedProperties(owningType).Properties;
+        }
+
+        public static IEnumerable<ModelProperty> GetDeclaredPropertiesForType(System.Type owningType)
+        {
+            return ModelProperty.GetCachedProperties(owningType).DeclaredProperties;
         }
 
         public static IEnumerable<ModelProperty> GetAllPropertiesForType(System.Type owningType)
         {
-            HashSet<ModelProperty> result = new HashSet<ModelProperty>();
-            Dictionary<string, ModelProperty> propertyList;
-            RuntimeHelpers.RunClassConstructor(owningType.TypeHandle);
-            if (ModelProperty.properties.TryGetValue(owningType, out propertyList))
-            {
-                result.UnionWith(propertyList.Values);
-            }
-            if (owningType.BaseType != null && owningType.BaseType != typeof(ModelObject))
-            {
-                result.UnionWith(ModelProperty.GetAllPropertiesForType(owningType.BaseType));
-            }
-            foreach (var super in owningType.GetInterfaces())
-            {
-                result.UnionWith(ModelProperty.GetAllPropertiesForType(super));
-            }
-            return result;
+            return ModelProperty.GetCachedProperties(owningType).AllProperties;
         }
 
         public override string ToString()
@@ -399,6 +421,20 @@ namespace MetaDslx.Core
             if (baseType == null) return false;
 
             return IsAssignableToGenericType(baseType, genericType);
+        }
+
+        private class PropertyCache
+        {
+            public PropertyCache()
+            {
+                this.Properties = new List<ModelProperty>();
+                this.DeclaredProperties = new List<ModelProperty>();
+                this.AllProperties = new List<ModelProperty>();
+            }
+
+            public List<ModelProperty> DeclaredProperties { get; private set; }
+            public List<ModelProperty> Properties { get; private set; }
+            public List<ModelProperty> AllProperties { get; private set; }
         }
     }
 }
