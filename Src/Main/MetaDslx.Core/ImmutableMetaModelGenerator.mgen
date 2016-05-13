@@ -63,7 +63,7 @@ function string GetAncestors(MetaClass cls, ClassKind classKind)
 	loop(cls->super:SuperClasses; string delim = " : "; delim = ", ")
 		result += delim+super.CSharpFullName(classKind);
 	end loop
-	if (result == "") 
+	if (result == "" && classKind != ClassKind.ChildBuilder) 
 		result = " : global::MetaDslx.Core.Immutable.RedSymbol";
 	end if
 	return result;
@@ -108,6 +108,13 @@ public interface [cls.CSharpName(ClassKind.Builder)][GetAncestors(cls, ClassKind
 	[end loop]
 }
 ^
+public interface [cls.CSharpName(ClassKind.ChildBuilder)][GetAncestors(cls, ClassKind.ChildBuilder)]
+{
+    [loop(cls->prop:Properties)]
+    [GenerateChildBuilderProperty(prop)]
+	[end loop]
+}
+^
 end template
 
 template GenerateImmutableProperty(MetaProperty prop)
@@ -137,16 +144,35 @@ new \
 	[end if]
 Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Name]Lazy { get; set; }
 [end if]
+[if(prop.Kind == MetaPropertyKind.Containment && (((prop.Type is MetaCollectionType) && (((MetaCollectionType)prop.Type).InnerType is MetaClass)) || (!(prop.Type is MetaCollectionType) && prop.Type is MetaClass)))]
+	[if (prop.Class.GetAllSuperPropertyNames().Contains(prop.Name))]
+new \
+	[end if]
+	[if (prop.Type is MetaCollectionType)]
+[((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Name]LazyChild { get; }
+	[else]
+[prop.Type.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Name]LazyChild { get; }
+	[end if]
+[end if]
+end template
+
+template GenerateChildBuilderProperty(MetaProperty prop)
+[if(!(prop.Type is MetaCollectionType))]
+	[if (prop.Class.GetAllSuperPropertyNames().Contains(prop.Name))]
+new \
+	[end if]
+Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Name] { set; }
+[end if]
 end template
 
 template GenerateBuilderField(MetaProperty prop)
 private [prop.Type.CSharpFullPublicName(ClassKind.Builder)] _[prop.Name];
 end template
 
-function string GetParameters(MetaOperation op, bool defaultValues)
+function string GetParameters(MetaFunction op, ClassKind classKind)
 	string result = "";
 	loop(op->param:Parameters; string delim = ""; delim = ", ")
-		result += delim+param.Type.CSharpFullPublicName(ClassKind.Immutable)+" "+param.Name;
+		result += delim+param.Type.CSharpFullPublicName(classKind)+" "+param.Name;
 	end loop
 	return result;
 end function
@@ -197,7 +223,7 @@ function string GetImplCallParameterNames(MetaOperation op)
 end function
 
 template GenerateOperation(MetaOperation op)
-[op.ReturnType.CSharpFullPublicName(ClassKind.Immutable)] [op.Name]([GetParameters(op, true)]);
+[op.ReturnType.CSharpFullPublicName(ClassKind.Immutable)] [op.Name]([GetParameters(op, ClassKind.Immutable)]);
 end template
 
 template GenerateImmutableInterfaceImpl(MetaModel model, MetaClass cls)
@@ -265,6 +291,18 @@ internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.I
 ^
     [loop(cls->prop:GetAllProperties())]
     [GenerateBuilderPropertyImpl(model, cls, prop)]
+	[end loop]
+}
+^
+public class [cls.CSharpImplName(ClassKind.ChildBuilder)] : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, [cls.CSharpFullName(ClassKind.ChildBuilder)]
+{
+    internal [cls.CSharpImplName(ClassKind.ChildBuilder)](global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+		: base(parent, property)
+    {
+    }
+^
+    [loop(cls->prop:GetAllProperties())]
+    [GenerateChildBuilderPropertyImpl(model, cls, prop)]
 	[end loop]
 }
 ^
@@ -376,6 +414,51 @@ Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Class.CSharpFull
 		[end if]
 }
 [end if]
+[if(prop.Kind == MetaPropertyKind.Containment && (((prop.Type is MetaCollectionType) && (((MetaCollectionType)prop.Type).InnerType is MetaClass)) || (!(prop.Type is MetaCollectionType) && prop.Type is MetaClass)))]
+^
+["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+	[if (cls.GetAllFinalProperties().Contains(prop))]
+		[if (prop.Type is MetaCollectionType)]
+public [((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Name]LazyChild
+		[else]
+public [prop.Type.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Name]LazyChild
+		[end if]
+	[else]
+		[if (prop.Type is MetaCollectionType)]
+[((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Class.CSharpFullName(ClassKind.Builder)].[prop.Name]LazyChild
+		[else]
+[prop.Type.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Class.CSharpFullName(ClassKind.Builder)].[prop.Name]LazyChild
+		[end if]
+	[end if]
+		[if (prop.Type is MetaCollectionType)]
+{
+    get { return new [((MetaClass)((MetaCollectionType)prop.Type).InnerType).CSharpFullName(ClassKind.ChildBuilder)]Impl(this, [prop.CSharpFullDescriptorName(ClassKind.Builder)]); }
+}
+		[else]
+{
+    get { return new [((MetaClass)prop.Type).CSharpFullName(ClassKind.ChildBuilder)]Impl(this, [prop.CSharpFullDescriptorName(ClassKind.Builder)]); }
+}
+		[end if]
+[end if]
+end template
+
+template GenerateChildBuilderPropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
+[if(!(prop.Type is MetaCollectionType))]
+^
+["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
+	[if (cls.GetAllFinalProperties().Contains(prop))]
+public Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Name]
+	[else]
+Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Class.CSharpFullName(ClassKind.ChildBuilder)].[prop.Name]
+	[end if]
+{
+		[if (prop.Type.IsReferenceType())]
+    set { this.MParent.MChildLazyAdd(this.MProperty, [prop.CSharpFullDescriptorName(ClassKind.Builder)], value); }
+		[else]
+    set { this.MParent.MChildLazyAdd(this.MProperty, [prop.CSharpFullDescriptorName(ClassKind.Builder)], () => value); }
+		[end if]
+}
+[end if]
 end template
 
 function string GetReturn(MetaOperation op)
@@ -388,7 +471,7 @@ end function
 
 template GenerateOperationImpl(MetaModel model, MetaOperation op)
 ^
-[op.ReturnType.CSharpFullPublicName(ClassKind.Immutable)] [op.Parent.CSharpFullName(ClassKind.Immutable)].[op.Name]([GetParameters(op, false)])
+[op.ReturnType.CSharpFullPublicName(ClassKind.Immutable)] [op.Parent.CSharpFullName(ClassKind.Immutable)].[op.Name]([GetParameters(op, ClassKind.Immutable)])
 {
     [GetReturn(op)][model.CSharpFullImplementationName(ClassKind.Immutable)].[op.Parent.CSharpName()]_[op.Name]([GetImplCallParameterNames(op)]);
 }
@@ -509,49 +592,42 @@ internal abstract class [model.Name]ImplementationBase
 	[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
     /// <summary>
 	/// Implements the constructor: [cls.CSharpName()]()
+    /// </summary>
 	[if (hasloop(cls->sup:SuperClasses))]
 	/// Direct superclasses: [GetSuperClasses(cls)]
 	/// All superclasses: [GetAllSuperClasses(cls)]
 	[end if]
-	[if (hasloop(cls->prop:GetAllProperties() where prop.Kind == MetaPropertyKind.Readonly))]
+	[if (hasloop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly))]
     /// Initializes the following readonly properties:
-	[end if]
-    [loop(cls->prop:GetAllProperties())]
-	[if (prop.Kind == MetaPropertyKind.Readonly)]
-    ///    [prop.Class.Name].[prop.Name]
-	[end if]
+	/// <ul>
+    [loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly)]
+    ///     <li>[prop.Name]</li>
 	[end loop]
-    /// </summary>
+	/// </ul>
+	[end if]
+	[if (hasloop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Lazy))]
+    /// Initializes the following lazy properties:
+	/// <ul>
+    [loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Lazy)]
+    ///     <li>[prop.Name]</li>
+	[end loop]
+	/// </ul>
+	[end if]
+	[if (hasloop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Derived))]
+    /// Initializes the following derived properties:
+	/// <ul>
+    [loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Derived)]
+    ///     <li>[prop.Name]</li>
+	[end loop]
+	/// </ul>
+	[end if]
     public virtual void [cls.CSharpName()]([cls.CSharpName(ClassKind.Builder)] @this)
     {
 		[loop(cls->sup:SuperClasses)]
         this.[sup.CSharpName()](@this);
 		[end loop]
+		[GenerateInitImplementation(model, cls)]
     }
-    [loop(cls->prop:Properties)]
-		[MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop)]
-		[if (synInit == null)]
-			[if (prop.Kind == MetaPropertyKind.Derived)]
-^
-    /// <summary>
-    /// Returns the value of the derived property: [cls.CSharpName()].[prop.Name]
-    /// </summary>
-    public virtual [prop.Type.CSharpFullPublicName(ClassKind.Builder)] [cls.CSharpName()]_[prop.Name]([cls.CSharpName(ClassKind.Builder)] @this)
-    {
-        throw new NotImplementedException();
-    }
-			[else if (prop.Kind == MetaPropertyKind.Lazy)]
-^
-    /// <summary>
-    /// Returns the value of the lazy property: [cls.CSharpName()].[prop.Name]
-    /// </summary>
-    public virtual [prop.Type.CSharpFullPublicName(ClassKind.Builder)] [cls.CSharpName()]_[prop.Name]([cls.CSharpName(ClassKind.Builder)] @this)
-    {
-        throw new NotImplementedException();
-    }
-			[end if]
-		[end if]
-	[end loop]
     [loop(cls->op:Operations)]
 ^
     /// <summary>
@@ -576,6 +652,10 @@ internal abstract class [model.Name]ImplementationBase
     }
 	[end loop]
 ^
+	[end loop]
+^
+	[loop(model->Namespace->Declarations->func:typeof(MetaFunction))]
+	[GenerateFunction(func, ClassKind.Builder)]
 	[end loop]
 }
 ^
@@ -605,7 +685,7 @@ public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.Model
 		[model.CSharpDescriptorName()].Init();
     }
 ^
-    public override MutableRedSymbol Create(string type)
+    public override global::MetaDslx.Core.Immutable.MutableRedSymbol Create(string type)
     {
         switch (type)
         {
@@ -624,9 +704,12 @@ public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.Model
     /// <summary>
     /// Creates a new instance of [cls.CSharpName()].
     /// </summary>
-    public [cls.CSharpName(ClassKind.Builder)] [cls.CSharpName()]()
+    public [cls.CSharpName(ClassKind.Builder)] [cls.CSharpName()](params global::MetaDslx.Core.Immutable.PropertyInit["[]"] propertyInitializers)
 	{
-		return ([cls.CSharpName(ClassKind.Builder)])this.AddSymbol(new [cls.CSharpName(ClassKind.Id)]());
+		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new [cls.CSharpName(ClassKind.Id)]());
+		symbol.MInitProperties(propertyInitializers);
+		symbol.MMakeCreated();
+		return ([cls.CSharpName(ClassKind.Builder)])symbol;
 	}
 		[end if]
 	[end loop]
@@ -634,3 +717,208 @@ public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.Model
 ^
 end template
 
+template GenerateFunction(MetaFunction func, ClassKind classKind)
+public abstract [func.ReturnType.CSharpFullPublicName(classKind)] [func.Name]([GetParameters(func, classKind)]);
+end template
+
+template GenerateInitImplementation(MetaModel model, MetaClass cls)
+[loop(cls->prop:Properties)]
+	[MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop)]
+	[if (synInit != null)]
+		[if (ModelContext.Current.Compiler.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType)]
+@this.[prop.Name].ClearLazy();
+			[if (synInit.Value.Type is MetaCollectionType)]
+@this.[prop.Name].LazyAddRange([GenerateExpression(synInit.Value)]);
+			[else]
+@this.[prop.Name].LazyAdd([GenerateExpression(synInit.Value)]);
+			[end if]
+		[else]
+@this.[prop.Name]Lazy = () => ([prop.Type.CSharpFullName(ClassKind.Builder)])[GenerateExpression(synInit.Value)];
+		[end if]
+	[end if]
+[end loop]
+[loop(cls->Constructor->Initializers->init:typeof(MetaInheritedPropertyInitializer))]
+	[if (init.Object != null && init.Property != null)]
+		[if (init.Value.Type is MetaCollectionType)]
+@this.[init.ObjectName]LazyChild.[init.PropertyName] = () => [GenerateExpression(init.Value)];
+		[else]
+@this.[init.ObjectName]LazyChild.[init.PropertyName] = () => [GenerateExpression(init.Value)];
+		[end if]
+	[end if]
+[end loop]
+end template
+
+template GenerateExpression(MetaExpression expr)
+[switch (expr)]
+[type as MetaBracketExpression:]([GenerateExpression(expr.Expression)])\
+[type as MetaThisExpression:]@this\
+[type as MetaNullExpression:]null\
+[type as MetaTypeAsExpression:][GenerateExpression(expr.Expression)] as [expr.TypeReference.CSharpName(ClassKind.Builder)]\
+[type as MetaTypeCastExpression:]([expr.TypeReference.CSharpName(ClassKind.Builder)])[GenerateExpression(expr.Expression)]\
+[type as MetaTypeCheckExpression:][GenerateExpression(expr.Expression)] is [expr.TypeReference.CSharpName(ClassKind.Builder)]\
+[type as MetaTypeOfExpression:][GenerateTypeOf(expr)]\
+[type as MetaConditionalExpression:][GenerateExpression(expr.Condition)] ? [GenerateExpression(expr.Then)] : [GenerateExpression(expr.Else)]\
+[type as MetaConstantExpression:][GetCSharpValue(expr.Value)]\
+[type as MetaIdentifierExpression:][GenerateIdentifierExpression(expr)]\
+[type as MetaMemberAccessExpression:][GenerateExpression(expr.Expression)].[expr.Name]\
+[type as MetaFunctionCallExpression:][GenerateFunctionCall(expr)]\
+[type as MetaIndexerExpression:][GenerateIndexerCall(expr)]\
+[type as MetaOperatorExpression:][GenerateOperator(expr)]\
+[type as MetaNewExpression:]new [expr.TypeReference.Model.CSharpFullFactoryName(ClassKind.Immutable)](this.MModelPart).[expr.TypeReference.CSharpName(ClassKind.Immutable)]([GenerateNewPropertyInitializers(expr)])\
+[type as MetaNewCollectionExpression:]new List<Func<object>>() { [GenerateNewCollectionValues(expr)] }\
+[default:]***unknown expression type***
+[end switch]
+end template
+
+template GenerateIdentifierExpression(MetaIdentifierExpression expr)
+[if (expr.Definition is MetaProperty)]
+@this.[expr.Name]\
+[else]
+[expr.Name]\
+[end if]
+end template
+
+function bool SameFunction(MetaGlobalFunction mfunc1, MetaGlobalFunction mfunc2)
+	return mfunc1.Name == mfunc2.Name && ModelContext.Current.Compiler.TypeProvider.Equals((ModelObject)mfunc1.Type, (ModelObject)mfunc2.Type);
+end function
+
+template GenerateFunctionCall(MetaFunctionCallExpression call)
+[if (call.Definition is MetaGlobalFunction && SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.TypeOf))][GenerateTypeOf(call.Arguments[0])]\
+[else]this.[GenerateExpression(call.Expression)]([GenerateCallArguments(call, "")])\
+[end if]
+end template
+
+template GenerateIndexerCall(MetaIndexerExpression call)
+[GenerateExpression(call.Expression)]["["][GenerateCallArguments(call, "")]["]"]\
+end template
+
+template GenerateTypeOf(object expr)
+[switch(expr)]
+[type as MetaPrimitiveType:]
+[switch(expr.Name)]
+[case "*none*":]MetaInstance.None\
+[case "*error*":]MetaInstance.Error\
+[case "*any*":]MetaInstance.Any\
+[case "object":]MetaInstance.Object\
+[case "string":]MetaInstance.String\
+[case "int":]MetaInstance.Int\
+[case "long":]MetaInstance.Long\
+[case "float":]MetaInstance.Float\
+[case "double":]MetaInstance.Double\
+[case "byte":]MetaInstance.Byte\
+[case "bool":]MetaInstance.Bool\
+[case "void":]MetaInstance.Void\
+[case "ModelObject":]MetaInstance.ModelObject\
+[case "ModelObjectList":]MetaInstance.ModelObjectList\
+[end switch]
+[type as MetaTypeOfExpression:][GenerateTypeOf(expr.TypeReference)]\
+[type as MetaClass:][expr.CSharpFullDescriptorName(ClassKind.Immutable)].MetaClass\
+[type as MetaCollectionType:][expr.CSharpFullName(ClassKind.Immutable)]\
+[default:]***error***\
+[end switch]
+end template
+
+template GenerateCallArguments(MetaBoundExpression call, string prefix)
+[loop(call->arg:Arguments; string delim = ""; delim = ", ")]
+[delim][prefix][GenerateExpression(arg)]\
+[end loop]
+end template
+
+template GenerateOperator(MetaOperatorExpression expr)
+[switch (expr)]
+[type as MetaUnaryExpression:]
+	[if (expr is MetaPostIncrementAssignExpression || expr is MetaPostDecrementAssignExpression)]
+[GenerateExpression(expr.Expression)][GetCSharpOperator(expr)]\
+	[else]
+[GetCSharpOperator(expr)][GenerateExpression(expr.Expression)]\
+	[end if]
+[type as MetaBinaryExpression:]
+[GenerateExpression(expr.Left)][GetCSharpOperator(expr)][GenerateExpression(expr.Right)]\
+[end switch]
+end template
+
+template GenerateNewPropertyInitializers(MetaNewExpression expr)
+[if (hasloop(expr->pi:PropertyInitializers))]
+[loop(expr->pi:PropertyInitializers; string delim = ""; delim = ", ")]
+[delim]new PropertyInit([pi.Property.CSharpFullDescriptorName(ClassKind.Immutable)], () => [GenerateExpression(pi.Value)])\
+[end loop]
+[end if]
+end template
+
+template GenerateNewCollectionValues(MetaNewCollectionExpression expr)
+[loop(expr->v:Values; string delim = ""; delim = ", \n")]
+[delim][GenerateExpression(v)]\
+[end loop]
+end template
+
+function string GetCSharpValue(object value)
+	if (value == null) return "null";
+	else if (value is bool && ((bool)value) == true) return "true";
+	else if (value is bool && ((bool)value) == false) return "false";
+	else if (value is string) return "\""+value.ToString()+"\"";
+	else if (value is MetaExpression) return GenerateExpression((MetaExpression)value);
+	else return value.ToString();
+	end if
+end function
+
+function string GetCSharpIdentifier(object value)
+	if (value == null) 
+		return null;
+	end if
+	if (value is MetaConstantExpression && ((MetaConstantExpression)value).Value != null)
+		return ((MetaConstantExpression)value).Value.ToString();
+	else if (value is string) 
+		return value.ToString();
+	else
+		return null;
+	end if
+end function
+
+function string GetCSharpOperator(MetaOperatorExpression expr)
+	switch(expr)
+		type as MetaUnaryPlusExpression: return "+";
+		type as MetaNegateExpression: return "-";
+		type as MetaOnesComplementExpression: return "~";
+		type as MetaNotExpression: return "!";
+		type as MetaPostIncrementAssignExpression: return "++";
+		type as MetaPostDecrementAssignExpression: return "--";
+		type as MetaPreIncrementAssignExpression: return "++";
+		type as MetaPreDecrementAssignExpression: return "--";
+		type as MetaMultiplyExpression: return "*";
+		type as MetaDivideExpression: return "/";
+		type as MetaModuloExpression: return "%";
+		type as MetaAddExpression: return "+";
+		type as MetaSubtractExpression: return "-";
+		type as MetaLeftShiftExpression: return "<<";
+		type as MetaRightShiftExpression: return ">>";
+		type as MetaLessThanExpression: return "<";
+		type as MetaLessThanOrEqualExpression: return "<=";
+		type as MetaGreaterThanExpression: return ">";
+		type as MetaGreaterThanOrEqualExpression: return ">=";
+		type as MetaEqualExpression: return "==";
+		type as MetaNotEqualExpression: return "!=";
+		type as MetaAndExpression: return "&";
+		type as MetaOrExpression: return "|";
+		type as MetaExclusiveOrExpression: return "^";
+		type as MetaAndAlsoExpression: return "&&";
+		type as MetaOrElseExpression: return "||";
+		type as MetaNullCoalescingExpression: return "??";
+		type as MetaMultiplyAssignExpression: return "*=";
+		type as MetaDivideAssignExpression: return "/=";
+		type as MetaModuloAssignExpression: return "%=";
+		type as MetaAddAssignExpression: return "+=";
+		type as MetaSubtractAssignExpression: return "-=";
+		type as MetaLeftShiftAssignExpression: return "<<=";
+		type as MetaRightShiftAssignExpression: return ">>=";
+		type as MetaAndAssignExpression: return "&=";
+		type as MetaExclusiveOrAssignExpression: return "^=";
+		type as MetaOrAssignExpression: return "|=";
+		default: return "";
+	end switch
+end function
+
+function string GetTypeName(MetaExpression expr)
+	if (expr is MetaTypeOfExpression) return ((MetaTypeOfExpression)expr).TypeReference.CSharpFullName(ClassKind.Immutable);
+	else return null;
+	end if
+end function

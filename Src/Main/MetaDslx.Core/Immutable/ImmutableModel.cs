@@ -177,10 +177,33 @@ namespace MetaDslx.Core.Immutable
         protected MutableRedSymbol AddSymbol(SymbolId id)
         {
             MutableRedSymbol symbol = this.part.AddSymbol(id);
-            ((MutableRedSymbolBase)symbol).MMakeCreated();
             return symbol;
         }
 
         public abstract MutableRedSymbol Create(string type);
+    }
+
+    public class PropertyInit
+    {
+        public ModelProperty Property { get; private set; }
+        public Func<object> Value { get; private set; }
+        public IEnumerable<Func<object>> Values { get; private set; }
+
+        public PropertyInit(ModelProperty property, Func<object> value)
+        {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            //if (property.IsCollection) throw new ArgumentException("Property '" + property + "' must not be a collection.", nameof(property));
+            this.Property = property;
+            this.Value = value;
+        }
+        public PropertyInit(ModelProperty property, IEnumerable<Func<object>> values)
+        {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (!property.IsCollection) throw new ArgumentException("Property '" + property + "' must be a collection.", nameof(property));
+            this.Property = property;
+            this.Values = values;
+        }
     }
 }

@@ -196,52 +196,72 @@ namespace MetaDslx.Core.Immutable.Test
 
         public Husband Husband()
         {
-            return (Husband)this.AddSymbol(new GreenHusband());
+            MutableRedSymbolBase symbol = (MutableRedSymbolBase)this.AddSymbol(new GreenHusband());
+            symbol.MMakeCreated();
+            return (Husband)symbol;
         }
 
         public Wife Wife()
         {
-            return (Wife)this.AddSymbol(new GreenWife());
+            MutableRedSymbolBase symbol = (MutableRedSymbolBase)this.AddSymbol(new GreenWife());
+            symbol.MMakeCreated();
+            return (Wife)symbol;
         }
 
         public ListChild ListChild()
         {
-            return (ListChild)this.AddSymbol(new GreenListChild());
+            MutableRedSymbolBase symbol = (MutableRedSymbolBase)this.AddSymbol(new GreenListChild());
+            symbol.MMakeCreated();
+            return (ListChild)symbol;
         }
 
         public ListParent ListParent()
         {
-            return (ListParent)this.AddSymbol(new GreenListParent());
+            MutableRedSymbolBase symbol = (MutableRedSymbolBase)this.AddSymbol(new GreenListParent());
+            symbol.MMakeCreated();
+            return (ListParent)symbol;
         }
 
         public User User()
         {
-            return (User)this.AddSymbol(new GreenUser());
+            MutableRedSymbolBase symbol = (MutableRedSymbolBase)this.AddSymbol(new GreenUser());
+            symbol.MMakeCreated();
+            return (User)symbol;
         }
 
         public Role Role()
         {
-            return (Role)this.AddSymbol(new GreenRole());
+            MutableRedSymbolBase symbol = (MutableRedSymbolBase)this.AddSymbol(new GreenRole());
+            symbol.MMakeCreated();
+            return (Role)symbol;
         }
 
         public Person Person()
         {
-            return (Person)this.AddSymbol(new GreenPerson());
+            MutableRedSymbolBase symbol = (MutableRedSymbolBase)this.AddSymbol(new GreenPerson());
+            symbol.MMakeCreated();
+            return (Person)symbol;
         }
 
         public Student Student()
         {
-            return (Student)this.AddSymbol(new GreenStudent());
+            MutableRedSymbolBase symbol = (MutableRedSymbolBase)this.AddSymbol(new GreenStudent());
+            symbol.MMakeCreated();
+            return (Student)symbol;
         }
 
         public Pet Pet()
         {
-            return (Pet)this.AddSymbol(new GreenPet());
+            MutableRedSymbolBase symbol = (MutableRedSymbolBase)this.AddSymbol(new GreenPet());
+            symbol.MMakeCreated();
+            return (Pet)symbol;
         }
 
         public Dog Dog()
         {
-            return (Dog)this.AddSymbol(new GreenDog());
+            MutableRedSymbolBase symbol = (MutableRedSymbolBase)this.AddSymbol(new GreenDog());
+            symbol.MMakeCreated();
+            return (Dog)symbol;
         }
     }
 
@@ -463,10 +483,10 @@ namespace MetaDslx.Core.Immutable.Test
         ImmutableStudent Friend { get; }
     }
 
-    public interface Husband : RedSymbol
+    public interface Husband : RedSymbol, ImmutableHusband
     {
-        string Name { get; set; }
-        Wife Wife { get; set; }
+        new string Name { get; set; }
+        new Wife Wife { get; set; }
     }
 
     public interface HusbandBuilder : Husband
@@ -884,6 +904,11 @@ namespace MetaDslx.Core.Immutable.Test
         {
             get { return this.GetLazyReference<string>(TestModelDescriptor.Husband.NameProperty); }
             set { this.SetLazyReference(TestModelDescriptor.Husband.NameProperty, value); }
+        }
+
+        ImmutableWife ImmutableHusband.Wife
+        {
+            get { return null; }
         }
 
         public Wife Wife

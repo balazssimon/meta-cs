@@ -608,6 +608,10 @@ namespace MetaDslx.Core.Immutable
         {
             Debug.Assert(!property.IsCollection);
             Debug.Assert(!this.modelPart.IsReadOnly);
+            if (!child.IsContainment)
+            {
+                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+            }
             TxDictionary<ModelProperty, object> initValues;
             if (!this.childInitializers.TryGetValue(child, out initValues))
             {
@@ -630,6 +634,10 @@ namespace MetaDslx.Core.Immutable
         {
             Debug.Assert(property.IsCollection);
             Debug.Assert(!this.modelPart.IsReadOnly);
+            if (!child.IsContainment)
+            {
+                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+            }
             TxDictionary<ModelProperty, object> initValues;
             if (!this.childInitializers.TryGetValue(child, out initValues))
             {
@@ -652,6 +660,10 @@ namespace MetaDslx.Core.Immutable
         {
             Debug.Assert(property.IsCollection);
             Debug.Assert(!this.modelPart.IsReadOnly);
+            if (!child.IsContainment)
+            {
+                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+            }
             TxDictionary<ModelProperty, object> initValues;
             if (!this.childInitializers.TryGetValue(child, out initValues))
             {
@@ -674,6 +686,10 @@ namespace MetaDslx.Core.Immutable
         {
             Debug.Assert(property.IsCollection);
             Debug.Assert(!this.modelPart.IsReadOnly);
+            if (!child.IsContainment)
+            {
+                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+            }
             TxDictionary<ModelProperty, object> initValues;
             if (!this.childInitializers.TryGetValue(child, out initValues))
             {
@@ -695,12 +711,20 @@ namespace MetaDslx.Core.Immutable
         public bool ChildClear(ModelProperty child)
         {
             Debug.Assert(!this.modelPart.IsReadOnly);
+            if (!child.IsContainment)
+            {
+                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+            }
             return this.childInitializers.Remove(child);
         }
 
         public bool ChildClear(ModelProperty child, ModelProperty property)
         {
             Debug.Assert(!this.modelPart.IsReadOnly);
+            if (!child.IsContainment)
+            {
+                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+            }
             TxDictionary<ModelProperty, object> initValues;
             if (this.childInitializers.TryGetValue(child, out initValues))
             {

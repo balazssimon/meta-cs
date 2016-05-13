@@ -731,14 +731,14 @@ namespace MetaDslx.Core.Immutable
             [ReadonlyAttribute]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty DefinitionsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Definitions", typeof(MetaDescriptor.MetaBoundExpression),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(ModelObject), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject>), typeof(global::MetaDslx.Core.Immutable.MetaBoundExpression)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(ModelObject), typeof(global::MetaDslx.Core.Immutable.ModelList<ModelObject>), typeof(global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(RedSymbol), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol>), typeof(global::MetaDslx.Core.Immutable.MetaBoundExpression)),
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(RedSymbol), typeof(global::MetaDslx.Core.Immutable.ModelList<RedSymbol>), typeof(global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)));
             
             [ReadonlyAttribute]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty DefinitionProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Definition", typeof(MetaDescriptor.MetaBoundExpression),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(ModelObject), null, typeof(global::MetaDslx.Core.Immutable.MetaBoundExpression)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(ModelObject), null, typeof(global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(RedSymbol), null, typeof(global::MetaDslx.Core.Immutable.MetaBoundExpression)),
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(RedSymbol), null, typeof(global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)));
             
         }
         
@@ -2220,8 +2220,8 @@ namespace MetaDslx.Core.Immutable
     {
         bool UniqueDefinition { get; }
         global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments { get; }
-        global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions { get; }
-        ModelObject Definition { get; }
+        global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions { get; }
+        RedSymbol Definition { get; }
     
     }
     
@@ -3599,6 +3599,12 @@ namespace MetaDslx.Core.Immutable
     public interface MetaAnnotatedElementBuilder : global::MetaDslx.Core.Immutable.RedSymbol
     {
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations { get; }
+        global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild { get; }
+    }
+    
+    public interface MetaAnnotatedElementLazyChildBuilder
+    {
+        
     }
     
     public interface MetaNamedElementBuilder : global::MetaDslx.Core.Immutable.RedSymbol
@@ -3607,25 +3613,50 @@ namespace MetaDslx.Core.Immutable
         Func<string> NameLazy { get; set; }
     }
     
+    public interface MetaNamedElementLazyChildBuilder
+    {
+        Func<string> Name { set; }
+    }
+    
     public interface MetaTypedElementBuilder : global::MetaDslx.Core.Immutable.RedSymbol
     {
         global::MetaDslx.Core.Immutable.MetaTypeBuilder Type { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeLazy { get; set; }
     }
     
+    public interface MetaTypedElementLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type { set; }
+    }
+    
     public interface MetaTypeBuilder : global::MetaDslx.Core.Immutable.RedSymbol
+    {
+    }
+    
+    public interface MetaTypeLazyChildBuilder
     {
     }
     
     public interface MetaAnnotationBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementBuilder
     {
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder> Properties { get; }
+        global::MetaDslx.Core.Immutable.MetaAnnotationPropertyLazyChildBuilder PropertiesLazyChild { get; }
+    }
+    
+    public interface MetaAnnotationLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder
+    {
+        
     }
     
     public interface MetaAnnotationPropertyBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementBuilder
     {
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ValueLazy { get; set; }
+    }
+    
+    public interface MetaAnnotationPropertyLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Value { set; }
     }
     
     public interface MetaNamespaceBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder
@@ -3635,8 +3666,20 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Usings { get; }
         global::MetaDslx.Core.Immutable.MetaModelBuilder MetaModel { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> MetaModelLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaModelLazyChildBuilder MetaModelLazyChild { get; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespaces { get; }
+        global::MetaDslx.Core.Immutable.MetaNamespaceLazyChildBuilder NamespacesLazyChild { get; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaDeclarationBuilder> Declarations { get; }
+        global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder DeclarationsLazyChild { get; }
+    }
+    
+    public interface MetaNamespaceLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Parent { set; }
+        
+        Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> MetaModel { set; }
+        
+        
     }
     
     public interface MetaDeclarationBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder
@@ -3647,12 +3690,24 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> ModelLazy { get; set; }
     }
     
+    public interface MetaDeclarationLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespace { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> Model { set; }
+    }
+    
     public interface MetaModelBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder
     {
         string Uri { get; set; }
         Func<string> UriLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> NamespaceLazy { get; set; }
+    }
+    
+    public interface MetaModelLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
+    {
+        Func<string> Uri { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespace { set; }
     }
     
     public interface MetaCollectionTypeBuilder : global::MetaDslx.Core.Immutable.MetaTypeBuilder
@@ -3663,20 +3718,43 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> InnerTypeLazy { get; set; }
     }
     
+    public interface MetaCollectionTypeLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaCollectionKind> Kind { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> InnerType { set; }
+    }
+    
     public interface MetaNullableTypeBuilder : global::MetaDslx.Core.Immutable.MetaTypeBuilder
     {
         global::MetaDslx.Core.Immutable.MetaTypeBuilder InnerType { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> InnerTypeLazy { get; set; }
     }
     
+    public interface MetaNullableTypeLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> InnerType { set; }
+    }
+    
     public interface MetaPrimitiveTypeBuilder : global::MetaDslx.Core.Immutable.MetaTypeBuilder, global::MetaDslx.Core.Immutable.MetaNamedElementBuilder
+    {
+    }
+    
+    public interface MetaPrimitiveTypeLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder
     {
     }
     
     public interface MetaEnumBuilder : global::MetaDslx.Core.Immutable.MetaTypeBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationBuilder
     {
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder> EnumLiterals { get; }
+        global::MetaDslx.Core.Immutable.MetaEnumLiteralLazyChildBuilder EnumLiteralsLazyChild { get; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder> Operations { get; }
+        global::MetaDslx.Core.Immutable.MetaOperationLazyChildBuilder OperationsLazyChild { get; }
+    }
+    
+    public interface MetaEnumLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder
+    {
+        
+        
     }
     
     public interface MetaEnumLiteralBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementBuilder, global::MetaDslx.Core.Immutable.MetaTypedElementBuilder
@@ -3685,15 +3763,32 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaEnumBuilder> EnumLazy { get; set; }
     }
     
+    public interface MetaEnumLiteralLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaEnumBuilder> Enum { set; }
+    }
+    
     public interface MetaClassBuilder : global::MetaDslx.Core.Immutable.MetaTypeBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationBuilder
     {
         bool IsAbstract { get; set; }
         Func<bool> IsAbstractLazy { get; set; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaClassBuilder> SuperClasses { get; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> Properties { get; }
+        global::MetaDslx.Core.Immutable.MetaPropertyLazyChildBuilder PropertiesLazyChild { get; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder> Operations { get; }
+        global::MetaDslx.Core.Immutable.MetaOperationLazyChildBuilder OperationsLazyChild { get; }
         global::MetaDslx.Core.Immutable.MetaConstructorBuilder Constructor { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaConstructorBuilder> ConstructorLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaConstructorLazyChildBuilder ConstructorLazyChild { get; }
+    }
+    
+    public interface MetaClassLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder
+    {
+        Func<bool> IsAbstract { set; }
+        
+        
+        
+        Func<global::MetaDslx.Core.Immutable.MetaConstructorBuilder> Constructor { set; }
     }
     
     public interface MetaFunctionTypeBuilder : global::MetaDslx.Core.Immutable.MetaTypeBuilder
@@ -3703,16 +3798,34 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ReturnTypeLazy { get; set; }
     }
     
+    public interface MetaFunctionTypeLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder
+    {
+        
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ReturnType { set; }
+    }
+    
     public interface MetaFunctionBuilder : global::MetaDslx.Core.Immutable.MetaTypedElementBuilder, global::MetaDslx.Core.Immutable.MetaNamedElementBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder
     {
         new global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder Type { get; }
         new Func<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder> TypeLazy { get; set; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder> Parameters { get; }
+        global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilder ParametersLazyChild { get; }
         global::MetaDslx.Core.Immutable.MetaTypeBuilder ReturnType { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ReturnTypeLazy { get; set; }
     }
     
+    public interface MetaFunctionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
+    {
+        new Func<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder> Type { set; }
+        
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ReturnType { set; }
+    }
+    
     public interface MetaGlobalFunctionBuilder : global::MetaDslx.Core.Immutable.MetaFunctionBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationBuilder
+    {
+    }
+    
+    public interface MetaGlobalFunctionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaFunctionLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder
     {
     }
     
@@ -3722,10 +3835,20 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ParentLazy { get; set; }
     }
     
+    public interface MetaOperationLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaFunctionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Parent { set; }
+    }
+    
     public interface MetaConstantBuilder : global::MetaDslx.Core.Immutable.MetaTypedElementBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationBuilder
     {
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ValueLazy { get; set; }
+    }
+    
+    public interface MetaConstantLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Value { set; }
     }
     
     public interface MetaConstructorBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder
@@ -3733,12 +3856,24 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaClassBuilder Parent { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> ParentLazy { get; set; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder> Initializers { get; }
+        global::MetaDslx.Core.Immutable.MetaPropertyInitializerLazyChildBuilder InitializersLazyChild { get; }
+    }
+    
+    public interface MetaConstructorLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> Parent { set; }
+        
     }
     
     public interface MetaParameterBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementBuilder, global::MetaDslx.Core.Immutable.MetaTypedElementBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder
     {
         global::MetaDslx.Core.Immutable.MetaFunctionBuilder Function { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaFunctionBuilder> FunctionLazy { get; set; }
+    }
+    
+    public interface MetaParameterLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaFunctionBuilder> Function { set; }
     }
     
     public interface MetaPropertyBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementBuilder, global::MetaDslx.Core.Immutable.MetaTypedElementBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder
@@ -3754,6 +3889,17 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> RedefiningProperties { get; }
     }
     
+    public interface MetaPropertyLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaPropertyKind> Kind { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> Class { set; }
+        
+        
+        
+        
+        
+    }
+    
     public interface MetaPropertyInitializerBuilder : global::MetaDslx.Core.Immutable.RedSymbol
     {
         global::MetaDslx.Core.Immutable.MetaConstructorBuilder Constructor { get; set; }
@@ -3766,9 +3912,23 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> PropertyLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ValueLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValueLazyChild { get; }
+    }
+    
+    public interface MetaPropertyInitializerLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaConstructorBuilder> Constructor { set; }
+        Func<string> PropertyName { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> PropertyContext { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> Property { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Value { set; }
     }
     
     public interface MetaSynthetizedPropertyInitializerBuilder : global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder
+    {
+    }
+    
+    public interface MetaSynthetizedPropertyInitializerLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaPropertyInitializerLazyChildBuilder
     {
     }
     
@@ -3780,6 +3940,12 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> ObjectLazy { get; set; }
     }
     
+    public interface MetaInheritedPropertyInitializerLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaPropertyInitializerLazyChildBuilder
+    {
+        Func<string> ObjectName { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> Object { set; }
+    }
+    
     public interface MetaExpressionBuilder : global::MetaDslx.Core.Immutable.MetaTypedElementBuilder
     {
         bool NoTypeError { get; }
@@ -3788,10 +3954,22 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedTypeLazy { get; set; }
     }
     
+    public interface MetaExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder
+    {
+        Func<bool> NoTypeError { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType { set; }
+    }
+    
     public interface MetaBracketExpressionBuilder : global::MetaDslx.Core.Immutable.MetaExpressionBuilder
     {
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    }
+    
+    public interface MetaBracketExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression { set; }
     }
     
     public interface MetaBoundExpressionBuilder : global::MetaDslx.Core.Immutable.MetaExpressionBuilder
@@ -3799,16 +3977,33 @@ namespace MetaDslx.Core.Immutable
         bool UniqueDefinition { get; }
         Func<bool> UniqueDefinitionLazy { get; set; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments { get; }
-        global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions { get; }
-        ModelObject Definition { get; }
-        Func<ModelObject> DefinitionLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild { get; }
+        global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions { get; }
+        RedSymbol Definition { get; }
+        Func<RedSymbol> DefinitionLazy { get; set; }
+    }
+    
+    public interface MetaBoundExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
+    {
+        Func<bool> UniqueDefinition { set; }
+        
+        
+        Func<RedSymbol> Definition { set; }
     }
     
     public interface MetaThisExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder
     {
     }
     
+    public interface MetaThisExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaNullExpressionBuilder : global::MetaDslx.Core.Immutable.MetaExpressionBuilder
+    {
+    }
+    
+    public interface MetaNullExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
     {
     }
     
@@ -3818,13 +4013,28 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReferenceLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    }
+    
+    public interface MetaTypeConversionExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReference { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression { set; }
     }
     
     public interface MetaTypeAsExpressionBuilder : global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder
     {
     }
     
+    public interface MetaTypeAsExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaTypeCastExpressionBuilder : global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder
+    {
+    }
+    
+    public interface MetaTypeCastExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionLazyChildBuilder
     {
     }
     
@@ -3834,6 +4044,13 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReferenceLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    }
+    
+    public interface MetaTypeCheckExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReference { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression { set; }
     }
     
     public interface MetaTypeOfExpressionBuilder : global::MetaDslx.Core.Immutable.MetaExpressionBuilder
@@ -3842,16 +4059,32 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReferenceLazy { get; set; }
     }
     
+    public interface MetaTypeOfExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReference { set; }
+    }
+    
     public interface MetaConditionalExpressionBuilder : global::MetaDslx.Core.Immutable.MetaExpressionBuilder
     {
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Condition { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ConditionLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ConditionLazyChild { get; }
         global::MetaDslx.Core.Immutable.MetaTypeBuilder BalancedType { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> BalancedTypeLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Then { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ThenLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ThenLazyChild { get; }
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Else { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ElseLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ElseLazyChild { get; }
+    }
+    
+    public interface MetaConditionalExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Condition { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> BalancedType { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Then { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Else { set; }
     }
     
     public interface MetaConstantExpressionBuilder : global::MetaDslx.Core.Immutable.MetaExpressionBuilder
@@ -3860,30 +4093,59 @@ namespace MetaDslx.Core.Immutable
         Func<object> ValueLazy { get; set; }
     }
     
+    public interface MetaConstantExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
+    {
+        Func<object> Value { set; }
+    }
+    
     public interface MetaIdentifierExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder
     {
         string Name { get; set; }
         Func<string> NameLazy { get; set; }
     }
     
+    public interface MetaIdentifierExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
+    {
+        Func<string> Name { set; }
+    }
+    
     public interface MetaMemberAccessExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder
     {
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
         string Name { get; set; }
         Func<string> NameLazy { get; set; }
+    }
+    
+    public interface MetaMemberAccessExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression { set; }
+        Func<string> Name { set; }
     }
     
     public interface MetaFunctionCallExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder
     {
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    }
+    
+    public interface MetaFunctionCallExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression { set; }
     }
     
     public interface MetaIndexerExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder
     {
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    }
+    
+    public interface MetaIndexerExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression { set; }
     }
     
     public interface MetaNewExpressionBuilder : global::MetaDslx.Core.Immutable.MetaExpressionBuilder
@@ -3891,6 +4153,13 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaClassBuilder TypeReference { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> TypeReferenceLazy { get; set; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder> PropertyInitializers { get; }
+        global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerLazyChildBuilder PropertyInitializersLazyChild { get; }
+    }
+    
+    public interface MetaNewExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> TypeReference { set; }
+        
     }
     
     public interface MetaNewPropertyInitializerBuilder : global::MetaDslx.Core.Immutable.RedSymbol
@@ -3905,11 +4174,26 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> PropertyLazy { get; set; }
     }
     
+    public interface MetaNewPropertyInitializerLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder> Parent { set; }
+        Func<string> PropertyName { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Value { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> Property { set; }
+    }
+    
     public interface MetaNewCollectionExpressionBuilder : global::MetaDslx.Core.Immutable.MetaExpressionBuilder
     {
         global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder TypeReference { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder> TypeReferenceLazy { get; set; }
         global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Values { get; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValuesLazyChild { get; }
+    }
+    
+    public interface MetaNewCollectionExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder> TypeReference { set; }
+        
     }
     
     public interface MetaOperatorExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder
@@ -3918,13 +4202,28 @@ namespace MetaDslx.Core.Immutable
         Func<string> NameLazy { get; set; }
     }
     
+    public interface MetaOperatorExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
+    {
+        Func<string> Name { set; }
+    }
+    
     public interface MetaUnaryExpressionBuilder : global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder
     {
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    }
+    
+    public interface MetaUnaryExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaOperatorExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression { set; }
     }
     
     public interface MetaUnaryPlusExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder
+    {
+    }
+    
+    public interface MetaUnaryPlusExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
     {
     }
     
@@ -3932,7 +4231,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaNegateExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaOnesComplementExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder
+    {
+    }
+    
+    public interface MetaOnesComplementExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
     {
     }
     
@@ -3940,7 +4247,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaNotExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaUnaryAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder
+    {
+    }
+    
+    public interface MetaUnaryAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
     {
     }
     
@@ -3948,7 +4263,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaPostIncrementAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaPostDecrementAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder
+    {
+    }
+    
+    public interface MetaPostDecrementAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionLazyChildBuilder
     {
     }
     
@@ -3956,7 +4279,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaPreIncrementAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaPreDecrementAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder
+    {
+    }
+    
+    public interface MetaPreDecrementAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionLazyChildBuilder
     {
     }
     
@@ -3964,11 +4295,23 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> LeftLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild { get; }
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> RightLazy { get; set; }
+        global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild { get; }
+    }
+    
+    public interface MetaBinaryExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaOperatorExpressionLazyChildBuilder
+    {
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left { set; }
+        Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right { set; }
     }
     
     public interface MetaBinaryArithmeticExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder
+    {
+    }
+    
+    public interface MetaBinaryArithmeticExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
     {
     }
     
@@ -3976,7 +4319,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaMultiplyExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaDivideExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
+    {
+    }
+    
+    public interface MetaDivideExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
     {
     }
     
@@ -3984,7 +4335,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaModuloExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaAddExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
+    {
+    }
+    
+    public interface MetaAddExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
     {
     }
     
@@ -3992,7 +4351,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaSubtractExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaLeftShiftExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
+    {
+    }
+    
+    public interface MetaLeftShiftExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
     {
     }
     
@@ -4000,7 +4367,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaRightShiftExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaBinaryComparisonExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder
+    {
+    }
+    
+    public interface MetaBinaryComparisonExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
     {
     }
     
@@ -4008,7 +4383,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaLessThanExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaLessThanOrEqualExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder
+    {
+    }
+    
+    public interface MetaLessThanOrEqualExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
     {
     }
     
@@ -4016,7 +4399,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaGreaterThanExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaGreaterThanOrEqualExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder
+    {
+    }
+    
+    public interface MetaGreaterThanOrEqualExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
     {
     }
     
@@ -4024,7 +4415,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaEqualExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaNotEqualExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder
+    {
+    }
+    
+    public interface MetaNotEqualExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
     {
     }
     
@@ -4032,7 +4431,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaBinaryLogicalExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaAndExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder
+    {
+    }
+    
+    public interface MetaAndExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
     {
     }
     
@@ -4040,7 +4447,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaOrExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaExclusiveOrExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder
+    {
+    }
+    
+    public interface MetaExclusiveOrExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
     {
     }
     
@@ -4048,7 +4463,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaAndAlsoExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaOrElseExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder
+    {
+    }
+    
+    public interface MetaOrElseExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
     {
     }
     
@@ -4056,7 +4479,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaNullCoalescingExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaAssignmentExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder
+    {
+    }
+    
+    public interface MetaAssignmentExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
     {
     }
     
@@ -4064,7 +4495,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaArithmeticAssignmentExpressionBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder
+    {
+    }
+    
+    public interface MetaArithmeticAssignmentExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionLazyChildBuilder
     {
     }
     
@@ -4072,7 +4511,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaMultiplyAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaDivideAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
+    {
+    }
+    
+    public interface MetaDivideAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
     {
     }
     
@@ -4080,7 +4527,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaModuloAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaAddAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
+    {
+    }
+    
+    public interface MetaAddAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
     {
     }
     
@@ -4088,7 +4543,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaSubtractAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaLeftShiftAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
+    {
+    }
+    
+    public interface MetaLeftShiftAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
     {
     }
     
@@ -4096,7 +4559,15 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaRightShiftAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaLogicalAssignmentExpressionBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder
+    {
+    }
+    
+    public interface MetaLogicalAssignmentExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionLazyChildBuilder
     {
     }
     
@@ -4104,11 +4575,23 @@ namespace MetaDslx.Core.Immutable
     {
     }
     
+    public interface MetaAndAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaExclusiveOrAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder
     {
     }
     
+    public interface MetaExclusiveOrAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionLazyChildBuilder
+    {
+    }
+    
     public interface MetaOrAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder
+    {
+    }
+    
+    public interface MetaOrAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionLazyChildBuilder
     {
     }
     
@@ -5502,9 +5985,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
     
         internal MetaBoundExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
     		: base(id, model)
@@ -5547,14 +6030,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
     }
     
@@ -5571,9 +6054,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
     
         internal MetaThisExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
     		: base(id, model)
@@ -5616,14 +6099,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
     }
     
@@ -6066,9 +6549,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
     
@@ -6113,14 +6596,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -6142,9 +6625,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaExpression _Expression;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6191,14 +6674,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
@@ -6225,9 +6708,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaExpression _Expression;
     
@@ -6272,14 +6755,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
@@ -6301,9 +6784,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaExpression _Expression;
     
@@ -6348,14 +6831,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
@@ -6535,9 +7018,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
     
@@ -6582,14 +7065,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -6611,9 +7094,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6660,14 +7143,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -6694,9 +7177,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6743,14 +7226,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -6777,9 +7260,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6826,14 +7309,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -6860,9 +7343,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6909,14 +7392,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -6943,9 +7426,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6992,14 +7475,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7026,9 +7509,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7075,14 +7558,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7109,9 +7592,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7158,14 +7641,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7192,9 +7675,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7241,14 +7724,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7275,9 +7758,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7324,14 +7807,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7358,9 +7841,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7407,14 +7890,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7441,9 +7924,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7492,14 +7975,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7531,9 +8014,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7582,14 +8065,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7621,9 +8104,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7672,14 +8155,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7711,9 +8194,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7762,14 +8245,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7801,9 +8284,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7852,14 +8335,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7891,9 +8374,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7942,14 +8425,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -7981,9 +8464,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8032,14 +8515,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8071,9 +8554,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8122,14 +8605,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8161,9 +8644,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8212,14 +8695,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8251,9 +8734,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8302,14 +8785,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8341,9 +8824,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8392,14 +8875,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8431,9 +8914,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8482,14 +8965,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8521,9 +9004,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8572,14 +9055,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8611,9 +9094,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8662,14 +9145,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8701,9 +9184,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8752,14 +9235,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8791,9 +9274,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8842,14 +9325,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8881,9 +9364,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8932,14 +9415,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -8971,9 +9454,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9022,14 +9505,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9061,9 +9544,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9112,14 +9595,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9151,9 +9634,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9202,14 +9685,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9241,9 +9724,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9292,14 +9775,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9331,9 +9814,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9382,14 +9865,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9421,9 +9904,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9472,14 +9955,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9511,9 +9994,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9562,14 +10045,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9601,9 +10084,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9652,14 +10135,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9691,9 +10174,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9742,14 +10225,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9781,9 +10264,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9832,14 +10315,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9871,9 +10354,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -9922,14 +10405,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -9961,9 +10444,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10012,14 +10495,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -10051,9 +10534,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10102,14 +10585,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -10141,9 +10624,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10192,14 +10675,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -10231,9 +10714,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10282,14 +10765,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -10321,9 +10804,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10372,14 +10855,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -10411,9 +10894,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10462,14 +10945,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -10501,9 +10984,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10552,14 +11035,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -10591,9 +11074,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10642,14 +11125,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -10681,9 +11164,9 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> _Arguments;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> _Definitions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ModelObject _Definition;
+        private RedSymbol _Definition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _Name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -10732,14 +11215,14 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ImmutableModelList<ModelObject> Definitions
+        public global::MetaDslx.Core.Immutable.ImmutableModelList<RedSymbol> Definitions
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public ModelObject Definition
+        public RedSymbol Definition
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref _Definition); }
         }
         
         public string Name
@@ -10789,6 +11272,22 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+    }
+    
+    public class MetaAnnotatedElementLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
+    {
+        internal MetaAnnotatedElementLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
     }
     
     internal class MetaNamedElementBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNamedElementBuilder
@@ -10827,6 +11326,21 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+    }
+    
+    public class MetaNamedElementLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder
+    {
+        internal MetaNamedElementLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
     }
     
@@ -10869,6 +11383,21 @@ namespace MetaDslx.Core.Immutable
         }
     }
     
+    public class MetaTypedElementLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder
+    {
+        internal MetaTypedElementLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+    }
+    
     internal class MetaTypeBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypeBuilder
     {
     
@@ -10891,6 +11420,15 @@ namespace MetaDslx.Core.Immutable
         public override object MMetaClass
         {
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaType;*/ }
+        }
+    
+    }
+    
+    public class MetaTypeLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder
+    {
+        internal MetaTypeLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
         }
     
     }
@@ -10939,6 +11477,28 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotation.PropertiesProperty, ref _Properties); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationPropertyLazyChildBuilder PropertiesLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationPropertyLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotation.PropertiesProperty); }
+        }
+    }
+    
+    public class MetaAnnotationLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder
+    {
+        internal MetaAnnotationLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
     }
     
     internal class MetaAnnotationPropertyBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder
@@ -10990,6 +11550,27 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotationProperty.ValueProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotationProperty.ValueProperty, value); }
+        }
+    }
+    
+    public class MetaAnnotationPropertyLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaAnnotationPropertyLazyChildBuilder
+    {
+        internal MetaAnnotationPropertyLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Value
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotationProperty.ValueProperty, value); }
         }
     }
     
@@ -11046,6 +11627,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Parent
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.ParentProperty); }
@@ -11075,15 +11662,64 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.MetaModelProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaModelLazyChildBuilder MetaModelLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaModelLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.MetaModelProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespaces
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.NamespacesProperty, ref _Namespaces); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaNamespaceLazyChildBuilder NamespacesLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaNamespaceLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.NamespacesProperty); }
         }
         
         public global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaDeclarationBuilder> Declarations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaDeclarationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.DeclarationsProperty, ref _Declarations); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder DeclarationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.DeclarationsProperty); }
+        }
+    }
+    
+    public class MetaNamespaceLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNamespaceLazyChildBuilder
+    {
+        internal MetaNamespaceLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Parent
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.ParentProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> MetaModel
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.MetaModelProperty, value); }
+        }
+        
+        
     }
     
     internal class MetaDeclarationBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaDeclarationBuilder
@@ -11133,6 +11769,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
@@ -11154,6 +11796,34 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaModelBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
+        }
+    }
+    
+    public class MetaDeclarationLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder
+    {
+        internal MetaDeclarationLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespace
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> Model
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
         }
     }
     
@@ -11204,6 +11874,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public string Uri
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.UriProperty); }
@@ -11226,6 +11902,34 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.NamespaceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.NamespaceProperty, value); }
+        }
+    }
+    
+    public class MetaModelLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaModelLazyChildBuilder
+    {
+        internal MetaModelLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Uri
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.UriProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespace
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.NamespaceProperty, value); }
         }
     }
     
@@ -11281,6 +11985,27 @@ namespace MetaDslx.Core.Immutable
         }
     }
     
+    public class MetaCollectionTypeLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaCollectionTypeLazyChildBuilder
+    {
+        internal MetaCollectionTypeLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaCollectionKind> Kind
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaCollectionType.KindProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> InnerType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaCollectionType.InnerTypeProperty, value); }
+        }
+    }
+    
     internal class MetaNullableTypeBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNullableTypeBuilder
     {
     
@@ -11320,6 +12045,21 @@ namespace MetaDslx.Core.Immutable
         }
     }
     
+    public class MetaNullableTypeLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNullableTypeLazyChildBuilder
+    {
+        internal MetaNullableTypeLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> InnerType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNullableType.InnerTypeProperty, value); }
+        }
+    }
+    
     internal class MetaPrimitiveTypeBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder
     {
     
@@ -11356,6 +12096,21 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+    }
+    
+    public class MetaPrimitiveTypeLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaPrimitiveTypeLazyChildBuilder
+    {
+        internal MetaPrimitiveTypeLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
     }
     
@@ -11410,6 +12165,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
@@ -11438,10 +12199,52 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum.EnumLiteralsProperty, ref _EnumLiterals); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaEnumLiteralLazyChildBuilder EnumLiteralsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaEnumLiteralLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum.EnumLiteralsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder> Operations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaOperationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum.OperationsProperty, ref _Operations); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaOperationLazyChildBuilder OperationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaOperationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum.OperationsProperty); }
+        }
+    }
+    
+    public class MetaEnumLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaEnumLazyChildBuilder
+    {
+        internal MetaEnumLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespace
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> Model
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
+        }
+        
+        
     }
     
     internal class MetaEnumLiteralBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder
@@ -11509,6 +12312,33 @@ namespace MetaDslx.Core.Immutable
         }
     }
     
+    public class MetaEnumLiteralLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaEnumLiteralLazyChildBuilder
+    {
+        internal MetaEnumLiteralLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaEnumBuilder> Enum
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnumLiteral.EnumProperty, value); }
+        }
+    }
+    
     internal class MetaClassBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaClassBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> _Annotations;
@@ -11564,6 +12394,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
@@ -11609,9 +12445,21 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.PropertiesProperty, ref _Properties); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaPropertyLazyChildBuilder PropertiesLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaPropertyLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.PropertiesProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder> Operations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaOperationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.OperationsProperty, ref _Operations); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaOperationLazyChildBuilder OperationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaOperationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.OperationsProperty); }
         }
         
         public global::MetaDslx.Core.Immutable.MetaConstructorBuilder Constructor
@@ -11624,6 +12472,55 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaConstructorBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.ConstructorProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.ConstructorProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaConstructorLazyChildBuilder ConstructorLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaConstructorLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.ConstructorProperty); }
+        }
+    }
+    
+    public class MetaClassLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaClassLazyChildBuilder
+    {
+        internal MetaClassLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespace
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> Model
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> IsAbstract
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.IsAbstractProperty, () => value); }
+        }
+        
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaConstructorBuilder> Constructor
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.ConstructorProperty, value); }
         }
     }
     
@@ -11670,6 +12567,22 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionType.ReturnTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionType.ReturnTypeProperty, value); }
+        }
+    }
+    
+    public class MetaFunctionTypeLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaFunctionTypeLazyChildBuilder
+    {
+        internal MetaFunctionTypeLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ReturnType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionType.ReturnTypeProperty, value); }
         }
     }
     
@@ -11737,6 +12650,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty); }
@@ -11753,6 +12672,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaParameterBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty, ref _Parameters); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilder ParametersLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ReturnType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty); }
@@ -11763,6 +12688,41 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty, value); }
+        }
+    }
+    
+    public class MetaFunctionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaFunctionLazyChildBuilder
+    {
+        internal MetaFunctionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder.Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ReturnType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty, value); }
         }
     }
     
@@ -11832,6 +12792,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty); }
@@ -11846,6 +12812,12 @@ namespace MetaDslx.Core.Immutable
         public global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder> Parameters
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaParameterBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty, ref _Parameters); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilder ParametersLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty); }
         }
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ReturnType
@@ -11881,6 +12853,53 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaModelBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
+        }
+    }
+    
+    public class MetaGlobalFunctionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaGlobalFunctionLazyChildBuilder
+    {
+        internal MetaGlobalFunctionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder.Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ReturnType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespace
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> Model
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
         }
     }
     
@@ -11949,6 +12968,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty); }
@@ -11963,6 +12988,12 @@ namespace MetaDslx.Core.Immutable
         public global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder> Parameters
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaParameterBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty, ref _Parameters); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilder ParametersLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty); }
         }
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ReturnType
@@ -11987,6 +13018,47 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperation.ParentProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperation.ParentProperty, value); }
+        }
+    }
+    
+    public class MetaOperationLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaOperationLazyChildBuilder
+    {
+        internal MetaOperationLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder.Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ReturnType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Parent
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperation.ParentProperty, value); }
         }
     }
     
@@ -12051,6 +13123,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
@@ -12084,6 +13162,46 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstant.ValueProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstant.ValueProperty, value); }
+        }
+    }
+    
+    public class MetaConstantLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaConstantLazyChildBuilder
+    {
+        internal MetaConstantLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespace
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> Model
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Value
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstant.ValueProperty, value); }
         }
     }
     
@@ -12135,6 +13253,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaClassBuilder Parent
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaClassBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor.ParentProperty); }
@@ -12151,6 +13275,35 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor.InitializersProperty, ref _Initializers); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaPropertyInitializerLazyChildBuilder InitializersLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaPropertyInitializerLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor.InitializersProperty); }
+        }
+    }
+    
+    public class MetaConstructorLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaConstructorLazyChildBuilder
+    {
+        internal MetaConstructorLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> Parent
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor.ParentProperty, value); }
+        }
+        
     }
     
     internal class MetaParameterBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaParameterBuilder
@@ -12212,6 +13365,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaFunctionBuilder Function
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaFunctionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaParameter.FunctionProperty); }
@@ -12222,6 +13381,34 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaFunctionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaParameter.FunctionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaParameter.FunctionProperty, value); }
+        }
+    }
+    
+    public class MetaParameterLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilder
+    {
+        internal MetaParameterLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaFunctionBuilder> Function
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaParameter.FunctionProperty, value); }
         }
     }
     
@@ -12295,6 +13482,12 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref _Annotations); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaPropertyKind Kind
         {
             get { return this.GetValue<global::MetaDslx.Core.Immutable.MetaPropertyKind>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.KindProperty); }
@@ -12343,6 +13536,45 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.RedefiningPropertiesProperty, ref _RedefiningProperties); }
         }
+    }
+    
+    public class MetaPropertyLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaPropertyLazyChildBuilder
+    {
+        internal MetaPropertyLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaPropertyKind> Kind
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.KindProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> Class
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.ClassProperty, value); }
+        }
+        
+        
+        
+        
+        
     }
     
     internal class MetaPropertyInitializerBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder
@@ -12434,6 +13666,51 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValueLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty); }
+        }
+    }
+    
+    public class MetaPropertyInitializerLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaPropertyInitializerLazyChildBuilder
+    {
+        internal MetaPropertyInitializerLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaConstructorBuilder> Constructor
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> PropertyName
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> PropertyContext
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> Property
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Value
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty, value); }
+        }
     }
     
     internal class MetaSynthetizedPropertyInitializerBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder
@@ -12524,6 +13801,51 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValueLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty); }
+        }
+    }
+    
+    public class MetaSynthetizedPropertyInitializerLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerLazyChildBuilder
+    {
+        internal MetaSynthetizedPropertyInitializerLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaConstructorBuilder> Constructor
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> PropertyName
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> PropertyContext
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> Property
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Value
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty, value); }
         }
     }
     
@@ -12619,6 +13941,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValueLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty); }
+        }
+        
         public string ObjectName
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectNameProperty); }
@@ -12641,6 +13969,57 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectProperty, value); }
+        }
+    }
+    
+    public class MetaInheritedPropertyInitializerLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerLazyChildBuilder
+    {
+        internal MetaInheritedPropertyInitializerLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaConstructorBuilder> Constructor
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> PropertyName
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> PropertyContext
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> Property
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Value
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ValueProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> ObjectName
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectNameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> Object
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectProperty, value); }
         }
     }
     
@@ -12704,6 +14083,33 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+    }
+    
+    public class MetaExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
+    {
+        internal MetaExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
     }
     
@@ -12781,12 +14187,51 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBracketExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBracketExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBracketExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaBracketExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaBracketExpressionLazyChildBuilder
+    {
+        internal MetaBracketExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBracketExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaBoundExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaBoundExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -12867,27 +14312,74 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+    }
+    
+    public class MetaBoundExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
+    {
+        internal MetaBoundExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
     }
     
     internal class MetaThisExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaThisExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -12968,20 +14460,67 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+    }
+    
+    public class MetaThisExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaThisExpressionLazyChildBuilder
+    {
+        internal MetaThisExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
     }
     
@@ -13045,6 +14584,33 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+    }
+    
+    public class MetaNullExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNullExpressionLazyChildBuilder
+    {
+        internal MetaNullExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
     }
     
@@ -13135,6 +14701,51 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaTypeConversionExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionLazyChildBuilder
+    {
+        internal MetaTypeConversionExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReference
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaTypeAsExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypeAsExpressionBuilder
@@ -13223,6 +14834,51 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaTypeAsExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaTypeAsExpressionLazyChildBuilder
+    {
+        internal MetaTypeAsExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReference
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, value); }
         }
     }
     
@@ -13313,6 +14969,51 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaTypeCastExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaTypeCastExpressionLazyChildBuilder
+    {
+        internal MetaTypeCastExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReference
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaTypeCheckExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypeCheckExpressionBuilder
@@ -13402,6 +15103,51 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaTypeCheckExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaTypeCheckExpressionLazyChildBuilder
+    {
+        internal MetaTypeCheckExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReference
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.TypeReferenceProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaTypeOfExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder
@@ -13477,6 +15223,39 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeOfExpression.TypeReferenceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeOfExpression.TypeReferenceProperty, value); }
+        }
+    }
+    
+    public class MetaTypeOfExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaTypeOfExpressionLazyChildBuilder
+    {
+        internal MetaTypeOfExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReference
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeOfExpression.TypeReferenceProperty, value); }
         }
     }
     
@@ -13558,6 +15337,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ConditionProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ConditionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ConditionProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder BalancedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty); }
@@ -13582,6 +15367,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ThenProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ThenLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ThenProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Else
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ElseProperty); }
@@ -13592,6 +15383,63 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ElseProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ElseProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ElseLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ElseProperty); }
+        }
+    }
+    
+    public class MetaConditionalExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaConditionalExpressionLazyChildBuilder
+    {
+        internal MetaConditionalExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Condition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ConditionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> BalancedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Then
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ThenProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Else
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ElseProperty, value); }
         }
     }
     
@@ -13671,10 +15519,43 @@ namespace MetaDslx.Core.Immutable
         }
     }
     
+    public class MetaConstantExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaConstantExpressionLazyChildBuilder
+    {
+        internal MetaConstantExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<object> Value
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstantExpression.ValueProperty, value); }
+        }
+    }
+    
     internal class MetaIdentifierExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaIdentifierExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -13756,19 +15637,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -13785,10 +15672,57 @@ namespace MetaDslx.Core.Immutable
         }
     }
     
+    public class MetaIdentifierExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaIdentifierExpressionLazyChildBuilder
+    {
+        internal MetaIdentifierExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIdentifierExpression.NameProperty, value); }
+        }
+    }
+    
     internal class MetaMemberAccessExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaMemberAccessExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -13871,19 +15805,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -13899,6 +15839,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.ExpressionProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.ExpressionProperty); }
+        }
+        
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.NameProperty); }
@@ -13912,10 +15858,63 @@ namespace MetaDslx.Core.Immutable
         }
     }
     
+    public class MetaMemberAccessExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionLazyChildBuilder
+    {
+        internal MetaMemberAccessExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.ExpressionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.NameProperty, value); }
+        }
+    }
+    
     internal class MetaFunctionCallExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaFunctionCallExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -13997,19 +15996,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -14024,12 +16029,65 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionCallExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionCallExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionCallExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaFunctionCallExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionLazyChildBuilder
+    {
+        internal MetaFunctionCallExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionCallExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaIndexerExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaIndexerExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaIndexerExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -14111,19 +16169,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -14137,6 +16201,59 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIndexerExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIndexerExpression.ExpressionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIndexerExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaIndexerExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaIndexerExpressionLazyChildBuilder
+    {
+        internal MetaIndexerExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIndexerExpression.ExpressionProperty, value); }
         }
     }
     
@@ -14221,6 +16338,46 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, ref _PropertyInitializers); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerLazyChildBuilder PropertyInitializersLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty); }
+        }
+    }
+    
+    public class MetaNewExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNewExpressionLazyChildBuilder
+    {
+        internal MetaNewExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> TypeReference
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, value); }
+        }
+        
     }
     
     internal class MetaNewPropertyInitializerBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder
@@ -14298,6 +16455,39 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, value); }
+        }
+    }
+    
+    public class MetaNewPropertyInitializerLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerLazyChildBuilder
+    {
+        internal MetaNewPropertyInitializerLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder> Parent
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> PropertyName
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Value
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> Property
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.PropertyProperty, value); }
         }
     }
     
@@ -14382,12 +16572,52 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewCollectionExpression.ValuesProperty, ref _Values); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValuesLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewCollectionExpression.ValuesProperty); }
+        }
+    }
+    
+    public class MetaNewCollectionExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNewCollectionExpressionLazyChildBuilder
+    {
+        internal MetaNewCollectionExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder> TypeReference
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewCollectionExpression.TypeReferenceProperty, value); }
+        }
+        
     }
     
     internal class MetaOperatorExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaOperatorExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -14469,19 +16699,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -14497,10 +16733,57 @@ namespace MetaDslx.Core.Immutable
         }
     }
     
+    public class MetaOperatorExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaOperatorExpressionLazyChildBuilder
+    {
+        internal MetaOperatorExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+    }
+    
     internal class MetaUnaryExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaUnaryExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -14583,19 +16866,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -14621,12 +16910,71 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaUnaryExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
+    {
+        internal MetaUnaryExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaUnaryPlusExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaUnaryPlusExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaUnaryPlusExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -14709,19 +17057,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -14747,12 +17101,71 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaUnaryPlusExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaUnaryPlusExpressionLazyChildBuilder
+    {
+        internal MetaUnaryPlusExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaNegateExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNegateExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaNegateExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -14835,19 +17248,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -14873,12 +17292,71 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaNegateExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNegateExpressionLazyChildBuilder
+    {
+        internal MetaNegateExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaOnesComplementExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaOnesComplementExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaOnesComplementExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -14961,19 +17439,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -14999,12 +17483,71 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaOnesComplementExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaOnesComplementExpressionLazyChildBuilder
+    {
+        internal MetaOnesComplementExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaNotExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNotExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaNotExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -15087,19 +17630,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -15125,12 +17674,71 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaNotExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNotExpressionLazyChildBuilder
+    {
+        internal MetaNotExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaUnaryAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaUnaryAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -15213,19 +17821,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -15251,12 +17865,71 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaUnaryAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionLazyChildBuilder
+    {
+        internal MetaUnaryAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaPostIncrementAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaPostIncrementAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaPostIncrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -15339,19 +18012,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -15377,12 +18056,71 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaPostIncrementAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaPostIncrementAssignExpressionLazyChildBuilder
+    {
+        internal MetaPostIncrementAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaPostDecrementAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaPostDecrementAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaPostDecrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -15465,19 +18203,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -15503,12 +18247,71 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaPostDecrementAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaPostDecrementAssignExpressionLazyChildBuilder
+    {
+        internal MetaPostDecrementAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaPreIncrementAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaPreIncrementAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaPreIncrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -15591,19 +18394,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -15629,12 +18438,71 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaPreIncrementAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaPreIncrementAssignExpressionLazyChildBuilder
+    {
+        internal MetaPreIncrementAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaPreDecrementAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaPreDecrementAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaPreDecrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -15717,19 +18585,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -15755,12 +18629,71 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
+        }
+    }
+    
+    public class MetaPreDecrementAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaPreDecrementAssignExpressionLazyChildBuilder
+    {
+        internal MetaPreDecrementAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Expression
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, value); }
+        }
     }
     
     internal class MetaBinaryExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaBinaryExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -15844,19 +18777,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -15883,6 +18822,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -15894,12 +18839,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaBinaryExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
+    {
+        internal MetaBinaryExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaBinaryArithmeticExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaBinaryArithmeticExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -15983,19 +18993,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -16022,6 +19038,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -16033,12 +19055,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaBinaryArithmeticExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
+    {
+        internal MetaBinaryArithmeticExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaMultiplyExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaMultiplyExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaMultiplyExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -16122,19 +19209,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -16161,6 +19254,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -16172,12 +19271,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaMultiplyExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaMultiplyExpressionLazyChildBuilder
+    {
+        internal MetaMultiplyExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaDivideExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaDivideExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaDivideExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -16261,19 +19425,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -16300,6 +19470,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -16311,12 +19487,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaDivideExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaDivideExpressionLazyChildBuilder
+    {
+        internal MetaDivideExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaModuloExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaModuloExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaModuloExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -16400,19 +19641,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -16439,6 +19686,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -16450,12 +19703,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaModuloExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaModuloExpressionLazyChildBuilder
+    {
+        internal MetaModuloExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaAddExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaAddExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaAddExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -16539,19 +19857,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -16578,6 +19902,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -16589,12 +19919,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaAddExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaAddExpressionLazyChildBuilder
+    {
+        internal MetaAddExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaSubtractExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaSubtractExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaSubtractExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -16678,19 +20073,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -16717,6 +20118,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -16728,12 +20135,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaSubtractExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaSubtractExpressionLazyChildBuilder
+    {
+        internal MetaSubtractExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaLeftShiftExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaLeftShiftExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaLeftShiftExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -16817,19 +20289,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -16856,6 +20334,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -16867,12 +20351,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaLeftShiftExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaLeftShiftExpressionLazyChildBuilder
+    {
+        internal MetaLeftShiftExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaRightShiftExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaRightShiftExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaRightShiftExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -16956,19 +20505,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -16995,6 +20550,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -17006,12 +20567,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaRightShiftExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaRightShiftExpressionLazyChildBuilder
+    {
+        internal MetaRightShiftExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaBinaryComparisonExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaBinaryComparisonExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -17095,19 +20721,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -17134,6 +20766,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -17145,12 +20783,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaBinaryComparisonExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
+    {
+        internal MetaBinaryComparisonExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaLessThanExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaLessThanExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaLessThanExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -17234,19 +20937,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -17273,6 +20982,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -17284,12 +20999,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaLessThanExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaLessThanExpressionLazyChildBuilder
+    {
+        internal MetaLessThanExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaLessThanOrEqualExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaLessThanOrEqualExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaLessThanOrEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -17373,19 +21153,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -17412,6 +21198,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -17423,12 +21215,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaLessThanOrEqualExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaLessThanOrEqualExpressionLazyChildBuilder
+    {
+        internal MetaLessThanOrEqualExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaGreaterThanExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaGreaterThanExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaGreaterThanExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -17512,19 +21369,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -17551,6 +21414,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -17562,12 +21431,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaGreaterThanExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaGreaterThanExpressionLazyChildBuilder
+    {
+        internal MetaGreaterThanExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaGreaterThanOrEqualExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaGreaterThanOrEqualExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaGreaterThanOrEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -17651,19 +21585,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -17690,6 +21630,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -17701,12 +21647,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaGreaterThanOrEqualExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaGreaterThanOrEqualExpressionLazyChildBuilder
+    {
+        internal MetaGreaterThanOrEqualExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaEqualExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaEqualExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -17790,19 +21801,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -17829,6 +21846,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -17840,12 +21863,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaEqualExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaEqualExpressionLazyChildBuilder
+    {
+        internal MetaEqualExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaNotEqualExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNotEqualExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaNotEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -17929,19 +22017,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -17968,6 +22062,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -17979,12 +22079,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaNotEqualExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNotEqualExpressionLazyChildBuilder
+    {
+        internal MetaNotEqualExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaBinaryLogicalExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaBinaryLogicalExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -18068,19 +22233,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -18107,6 +22278,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -18118,12 +22295,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaBinaryLogicalExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
+    {
+        internal MetaBinaryLogicalExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaAndExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaAndExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaAndExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -18207,19 +22449,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -18246,6 +22494,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -18257,12 +22511,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaAndExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaAndExpressionLazyChildBuilder
+    {
+        internal MetaAndExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaOrExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaOrExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaOrExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -18346,19 +22665,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -18385,6 +22710,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -18396,12 +22727,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaOrExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaOrExpressionLazyChildBuilder
+    {
+        internal MetaOrExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaExclusiveOrExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaExclusiveOrExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaExclusiveOrExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -18485,19 +22881,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -18524,6 +22926,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -18535,12 +22943,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaExclusiveOrExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaExclusiveOrExpressionLazyChildBuilder
+    {
+        internal MetaExclusiveOrExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaAndAlsoExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaAndAlsoExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaAndAlsoExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -18624,19 +23097,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -18663,6 +23142,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -18674,12 +23159,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaAndAlsoExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaAndAlsoExpressionLazyChildBuilder
+    {
+        internal MetaAndAlsoExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaOrElseExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaOrElseExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaOrElseExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -18763,19 +23313,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -18802,6 +23358,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -18813,12 +23375,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaOrElseExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaOrElseExpressionLazyChildBuilder
+    {
+        internal MetaOrElseExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaNullCoalescingExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNullCoalescingExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaNullCoalescingExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -18902,19 +23529,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -18941,6 +23574,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -18952,12 +23591,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaNullCoalescingExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaNullCoalescingExpressionLazyChildBuilder
+    {
+        internal MetaNullCoalescingExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaAssignmentExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaAssignmentExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -19041,19 +23745,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -19080,6 +23790,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -19091,12 +23807,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaAssignmentExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaAssignmentExpressionLazyChildBuilder
+    {
+        internal MetaAssignmentExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -19180,19 +23961,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -19219,6 +24006,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -19230,12 +24023,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaAssignExpressionLazyChildBuilder
+    {
+        internal MetaAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaArithmeticAssignmentExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaArithmeticAssignmentExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -19319,19 +24177,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -19358,6 +24222,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -19369,12 +24239,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaArithmeticAssignmentExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
+    {
+        internal MetaArithmeticAssignmentExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaMultiplyAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaMultiplyAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaMultiplyAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -19458,19 +24393,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -19497,6 +24438,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -19508,12 +24455,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaMultiplyAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaMultiplyAssignExpressionLazyChildBuilder
+    {
+        internal MetaMultiplyAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaDivideAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaDivideAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaDivideAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -19597,19 +24609,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -19636,6 +24654,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -19647,12 +24671,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaDivideAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaDivideAssignExpressionLazyChildBuilder
+    {
+        internal MetaDivideAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaModuloAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaModuloAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaModuloAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -19736,19 +24825,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -19775,6 +24870,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -19786,12 +24887,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaModuloAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaModuloAssignExpressionLazyChildBuilder
+    {
+        internal MetaModuloAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaAddAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaAddAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaAddAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -19875,19 +25041,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -19914,6 +25086,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -19925,12 +25103,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaAddAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaAddAssignExpressionLazyChildBuilder
+    {
+        internal MetaAddAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaSubtractAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaSubtractAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaSubtractAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -20014,19 +25257,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -20053,6 +25302,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -20064,12 +25319,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaSubtractAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaSubtractAssignExpressionLazyChildBuilder
+    {
+        internal MetaSubtractAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaLeftShiftAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaLeftShiftAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaLeftShiftAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -20153,19 +25473,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -20192,6 +25518,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -20203,12 +25535,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaLeftShiftAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaLeftShiftAssignExpressionLazyChildBuilder
+    {
+        internal MetaLeftShiftAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaRightShiftAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaRightShiftAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaRightShiftAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -20292,19 +25689,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -20331,6 +25734,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -20342,12 +25751,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaRightShiftAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaRightShiftAssignExpressionLazyChildBuilder
+    {
+        internal MetaRightShiftAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaLogicalAssignmentExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaLogicalAssignmentExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -20431,19 +25905,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -20470,6 +25950,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -20481,12 +25967,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaLogicalAssignmentExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionLazyChildBuilder
+    {
+        internal MetaLogicalAssignmentExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaAndAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaAndAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaAndAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -20570,19 +26121,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -20609,6 +26166,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -20620,12 +26183,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaAndAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaAndAssignExpressionLazyChildBuilder
+    {
+        internal MetaAndAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaExclusiveOrAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaExclusiveOrAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaExclusiveOrAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -20709,19 +26337,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -20748,6 +26382,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -20759,12 +26399,77 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaExclusiveOrAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaExclusiveOrAssignExpressionLazyChildBuilder
+    {
+        internal MetaExclusiveOrAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
     }
     
     internal class MetaOrAssignExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaOrAssignExpressionBuilder
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> _Arguments;
-        private global::MetaDslx.Core.Immutable.ModelList<ModelObject> _Definitions;
+        private global::MetaDslx.Core.Immutable.ModelList<RedSymbol> _Definitions;
     
         internal MetaOrAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
     		: base(id, model)
@@ -20848,19 +26553,25 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref _Arguments); }
         }
         
-        public global::MetaDslx.Core.Immutable.ModelList<ModelObject> Definitions
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ArgumentsLazyChild
         {
-            get { return this.GetList<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
         
-        public ModelObject Definition
+        public global::MetaDslx.Core.Immutable.ModelList<RedSymbol> Definitions
         {
-            get { return this.GetReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetList<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref _Definitions); }
         }
         
-        public Func<ModelObject> DefinitionLazy
+        public RedSymbol Definition
         {
-            get { return this.GetLazyReference<ModelObject>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+            get { return this.GetReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
+        }
+        
+        public Func<RedSymbol> DefinitionLazy
+        {
+            get { return this.GetLazyReference<RedSymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
         
@@ -20887,6 +26598,12 @@ namespace MetaDslx.Core.Immutable
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
         }
         
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder LeftLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
+        }
+        
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
@@ -20897,6 +26614,71 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild
+        {
+            get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
+        }
+    }
+    
+    public class MetaOrAssignExpressionLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaOrAssignExpressionLazyChildBuilder
+    {
+        internal MetaOrAssignExpressionLazyChildBuilderImpl(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    		: base(parent, property)
+        {
+        }
+    
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> Type
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> NoTypeError
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, () => value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedType
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<bool> UniqueDefinition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => value); }
+        }
+        
+        
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<RedSymbol> Definition
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<string> Name
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Left
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, value); }
+        }
+        
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Right
+        {
+            set { this.MParent.MChildLazyAdd(this.MProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, value); }
         }
     }
     
@@ -20923,7 +26705,7 @@ namespace MetaDslx.Core.Immutable
     		MetaDescriptor.Init();
         }
     
-        public override MutableRedSymbol Create(string type)
+        public override global::MetaDslx.Core.Immutable.MutableRedSymbol Create(string type)
         {
             switch (type)
             {
@@ -21008,585 +26790,804 @@ namespace MetaDslx.Core.Immutable
         /// <summary>
         /// Creates a new instance of MetaAnnotation.
         /// </summary>
-        public MetaAnnotationBuilder MetaAnnotation()
+        public MetaAnnotationBuilder MetaAnnotation(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaAnnotationBuilder)this.AddSymbol(new MetaAnnotationId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaAnnotationId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaAnnotationBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAnnotationProperty.
         /// </summary>
-        public MetaAnnotationPropertyBuilder MetaAnnotationProperty()
+        public MetaAnnotationPropertyBuilder MetaAnnotationProperty(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaAnnotationPropertyBuilder)this.AddSymbol(new MetaAnnotationPropertyId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaAnnotationPropertyId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaAnnotationPropertyBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNamespace.
         /// </summary>
-        public MetaNamespaceBuilder MetaNamespace()
+        public MetaNamespaceBuilder MetaNamespace(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaNamespaceBuilder)this.AddSymbol(new MetaNamespaceId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaNamespaceId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaNamespaceBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaModel.
         /// </summary>
-        public MetaModelBuilder MetaModel()
+        public MetaModelBuilder MetaModel(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaModelBuilder)this.AddSymbol(new MetaModelId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaModelId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaModelBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaCollectionType.
         /// </summary>
-        public MetaCollectionTypeBuilder MetaCollectionType()
+        public MetaCollectionTypeBuilder MetaCollectionType(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaCollectionTypeBuilder)this.AddSymbol(new MetaCollectionTypeId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaCollectionTypeId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaCollectionTypeBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNullableType.
         /// </summary>
-        public MetaNullableTypeBuilder MetaNullableType()
+        public MetaNullableTypeBuilder MetaNullableType(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaNullableTypeBuilder)this.AddSymbol(new MetaNullableTypeId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaNullableTypeId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaNullableTypeBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaPrimitiveType.
         /// </summary>
-        public MetaPrimitiveTypeBuilder MetaPrimitiveType()
+        public MetaPrimitiveTypeBuilder MetaPrimitiveType(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaPrimitiveTypeBuilder)this.AddSymbol(new MetaPrimitiveTypeId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaPrimitiveTypeId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaPrimitiveTypeBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaEnum.
         /// </summary>
-        public MetaEnumBuilder MetaEnum()
+        public MetaEnumBuilder MetaEnum(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaEnumBuilder)this.AddSymbol(new MetaEnumId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaEnumId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaEnumBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaEnumLiteral.
         /// </summary>
-        public MetaEnumLiteralBuilder MetaEnumLiteral()
+        public MetaEnumLiteralBuilder MetaEnumLiteral(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaEnumLiteralBuilder)this.AddSymbol(new MetaEnumLiteralId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaEnumLiteralId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaEnumLiteralBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaClass.
         /// </summary>
-        public MetaClassBuilder MetaClass()
+        public MetaClassBuilder MetaClass(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaClassBuilder)this.AddSymbol(new MetaClassId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaClassId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaClassBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaFunctionType.
         /// </summary>
-        public MetaFunctionTypeBuilder MetaFunctionType()
+        public MetaFunctionTypeBuilder MetaFunctionType(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaFunctionTypeBuilder)this.AddSymbol(new MetaFunctionTypeId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaFunctionTypeId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaFunctionTypeBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaGlobalFunction.
         /// </summary>
-        public MetaGlobalFunctionBuilder MetaGlobalFunction()
+        public MetaGlobalFunctionBuilder MetaGlobalFunction(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaGlobalFunctionBuilder)this.AddSymbol(new MetaGlobalFunctionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaGlobalFunctionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaGlobalFunctionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaOperation.
         /// </summary>
-        public MetaOperationBuilder MetaOperation()
+        public MetaOperationBuilder MetaOperation(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaOperationBuilder)this.AddSymbol(new MetaOperationId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaOperationId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaOperationBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaConstant.
         /// </summary>
-        public MetaConstantBuilder MetaConstant()
+        public MetaConstantBuilder MetaConstant(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaConstantBuilder)this.AddSymbol(new MetaConstantId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaConstantId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaConstantBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaConstructor.
         /// </summary>
-        public MetaConstructorBuilder MetaConstructor()
+        public MetaConstructorBuilder MetaConstructor(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaConstructorBuilder)this.AddSymbol(new MetaConstructorId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaConstructorId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaConstructorBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaParameter.
         /// </summary>
-        public MetaParameterBuilder MetaParameter()
+        public MetaParameterBuilder MetaParameter(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaParameterBuilder)this.AddSymbol(new MetaParameterId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaParameterId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaParameterBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaProperty.
         /// </summary>
-        public MetaPropertyBuilder MetaProperty()
+        public MetaPropertyBuilder MetaProperty(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaPropertyBuilder)this.AddSymbol(new MetaPropertyId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaPropertyId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaPropertyBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaSynthetizedPropertyInitializer.
         /// </summary>
-        public MetaSynthetizedPropertyInitializerBuilder MetaSynthetizedPropertyInitializer()
+        public MetaSynthetizedPropertyInitializerBuilder MetaSynthetizedPropertyInitializer(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaSynthetizedPropertyInitializerBuilder)this.AddSymbol(new MetaSynthetizedPropertyInitializerId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaSynthetizedPropertyInitializerId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaSynthetizedPropertyInitializerBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaInheritedPropertyInitializer.
         /// </summary>
-        public MetaInheritedPropertyInitializerBuilder MetaInheritedPropertyInitializer()
+        public MetaInheritedPropertyInitializerBuilder MetaInheritedPropertyInitializer(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaInheritedPropertyInitializerBuilder)this.AddSymbol(new MetaInheritedPropertyInitializerId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaInheritedPropertyInitializerId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaInheritedPropertyInitializerBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaBracketExpression.
         /// </summary>
-        public MetaBracketExpressionBuilder MetaBracketExpression()
+        public MetaBracketExpressionBuilder MetaBracketExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaBracketExpressionBuilder)this.AddSymbol(new MetaBracketExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaBracketExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaBracketExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaThisExpression.
         /// </summary>
-        public MetaThisExpressionBuilder MetaThisExpression()
+        public MetaThisExpressionBuilder MetaThisExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaThisExpressionBuilder)this.AddSymbol(new MetaThisExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaThisExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaThisExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNullExpression.
         /// </summary>
-        public MetaNullExpressionBuilder MetaNullExpression()
+        public MetaNullExpressionBuilder MetaNullExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaNullExpressionBuilder)this.AddSymbol(new MetaNullExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaNullExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaNullExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaTypeAsExpression.
         /// </summary>
-        public MetaTypeAsExpressionBuilder MetaTypeAsExpression()
+        public MetaTypeAsExpressionBuilder MetaTypeAsExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaTypeAsExpressionBuilder)this.AddSymbol(new MetaTypeAsExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaTypeAsExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaTypeAsExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaTypeCastExpression.
         /// </summary>
-        public MetaTypeCastExpressionBuilder MetaTypeCastExpression()
+        public MetaTypeCastExpressionBuilder MetaTypeCastExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaTypeCastExpressionBuilder)this.AddSymbol(new MetaTypeCastExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaTypeCastExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaTypeCastExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaTypeCheckExpression.
         /// </summary>
-        public MetaTypeCheckExpressionBuilder MetaTypeCheckExpression()
+        public MetaTypeCheckExpressionBuilder MetaTypeCheckExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaTypeCheckExpressionBuilder)this.AddSymbol(new MetaTypeCheckExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaTypeCheckExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaTypeCheckExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaTypeOfExpression.
         /// </summary>
-        public MetaTypeOfExpressionBuilder MetaTypeOfExpression()
+        public MetaTypeOfExpressionBuilder MetaTypeOfExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaTypeOfExpressionBuilder)this.AddSymbol(new MetaTypeOfExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaTypeOfExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaTypeOfExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaConditionalExpression.
         /// </summary>
-        public MetaConditionalExpressionBuilder MetaConditionalExpression()
+        public MetaConditionalExpressionBuilder MetaConditionalExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaConditionalExpressionBuilder)this.AddSymbol(new MetaConditionalExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaConditionalExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaConditionalExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaConstantExpression.
         /// </summary>
-        public MetaConstantExpressionBuilder MetaConstantExpression()
+        public MetaConstantExpressionBuilder MetaConstantExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaConstantExpressionBuilder)this.AddSymbol(new MetaConstantExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaConstantExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaConstantExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaIdentifierExpression.
         /// </summary>
-        public MetaIdentifierExpressionBuilder MetaIdentifierExpression()
+        public MetaIdentifierExpressionBuilder MetaIdentifierExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaIdentifierExpressionBuilder)this.AddSymbol(new MetaIdentifierExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaIdentifierExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaIdentifierExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaMemberAccessExpression.
         /// </summary>
-        public MetaMemberAccessExpressionBuilder MetaMemberAccessExpression()
+        public MetaMemberAccessExpressionBuilder MetaMemberAccessExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaMemberAccessExpressionBuilder)this.AddSymbol(new MetaMemberAccessExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaMemberAccessExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaMemberAccessExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaFunctionCallExpression.
         /// </summary>
-        public MetaFunctionCallExpressionBuilder MetaFunctionCallExpression()
+        public MetaFunctionCallExpressionBuilder MetaFunctionCallExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaFunctionCallExpressionBuilder)this.AddSymbol(new MetaFunctionCallExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaFunctionCallExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaFunctionCallExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaIndexerExpression.
         /// </summary>
-        public MetaIndexerExpressionBuilder MetaIndexerExpression()
+        public MetaIndexerExpressionBuilder MetaIndexerExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaIndexerExpressionBuilder)this.AddSymbol(new MetaIndexerExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaIndexerExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaIndexerExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNewExpression.
         /// </summary>
-        public MetaNewExpressionBuilder MetaNewExpression()
+        public MetaNewExpressionBuilder MetaNewExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaNewExpressionBuilder)this.AddSymbol(new MetaNewExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaNewExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaNewExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNewPropertyInitializer.
         /// </summary>
-        public MetaNewPropertyInitializerBuilder MetaNewPropertyInitializer()
+        public MetaNewPropertyInitializerBuilder MetaNewPropertyInitializer(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaNewPropertyInitializerBuilder)this.AddSymbol(new MetaNewPropertyInitializerId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaNewPropertyInitializerId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaNewPropertyInitializerBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNewCollectionExpression.
         /// </summary>
-        public MetaNewCollectionExpressionBuilder MetaNewCollectionExpression()
+        public MetaNewCollectionExpressionBuilder MetaNewCollectionExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaNewCollectionExpressionBuilder)this.AddSymbol(new MetaNewCollectionExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaNewCollectionExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaNewCollectionExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaUnaryPlusExpression.
         /// </summary>
-        public MetaUnaryPlusExpressionBuilder MetaUnaryPlusExpression()
+        public MetaUnaryPlusExpressionBuilder MetaUnaryPlusExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaUnaryPlusExpressionBuilder)this.AddSymbol(new MetaUnaryPlusExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaUnaryPlusExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaUnaryPlusExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNegateExpression.
         /// </summary>
-        public MetaNegateExpressionBuilder MetaNegateExpression()
+        public MetaNegateExpressionBuilder MetaNegateExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaNegateExpressionBuilder)this.AddSymbol(new MetaNegateExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaNegateExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaNegateExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaOnesComplementExpression.
         /// </summary>
-        public MetaOnesComplementExpressionBuilder MetaOnesComplementExpression()
+        public MetaOnesComplementExpressionBuilder MetaOnesComplementExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaOnesComplementExpressionBuilder)this.AddSymbol(new MetaOnesComplementExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaOnesComplementExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaOnesComplementExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNotExpression.
         /// </summary>
-        public MetaNotExpressionBuilder MetaNotExpression()
+        public MetaNotExpressionBuilder MetaNotExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaNotExpressionBuilder)this.AddSymbol(new MetaNotExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaNotExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaNotExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaPostIncrementAssignExpression.
         /// </summary>
-        public MetaPostIncrementAssignExpressionBuilder MetaPostIncrementAssignExpression()
+        public MetaPostIncrementAssignExpressionBuilder MetaPostIncrementAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaPostIncrementAssignExpressionBuilder)this.AddSymbol(new MetaPostIncrementAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaPostIncrementAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaPostIncrementAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaPostDecrementAssignExpression.
         /// </summary>
-        public MetaPostDecrementAssignExpressionBuilder MetaPostDecrementAssignExpression()
+        public MetaPostDecrementAssignExpressionBuilder MetaPostDecrementAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaPostDecrementAssignExpressionBuilder)this.AddSymbol(new MetaPostDecrementAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaPostDecrementAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaPostDecrementAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaPreIncrementAssignExpression.
         /// </summary>
-        public MetaPreIncrementAssignExpressionBuilder MetaPreIncrementAssignExpression()
+        public MetaPreIncrementAssignExpressionBuilder MetaPreIncrementAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaPreIncrementAssignExpressionBuilder)this.AddSymbol(new MetaPreIncrementAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaPreIncrementAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaPreIncrementAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaPreDecrementAssignExpression.
         /// </summary>
-        public MetaPreDecrementAssignExpressionBuilder MetaPreDecrementAssignExpression()
+        public MetaPreDecrementAssignExpressionBuilder MetaPreDecrementAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaPreDecrementAssignExpressionBuilder)this.AddSymbol(new MetaPreDecrementAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaPreDecrementAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaPreDecrementAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaMultiplyExpression.
         /// </summary>
-        public MetaMultiplyExpressionBuilder MetaMultiplyExpression()
+        public MetaMultiplyExpressionBuilder MetaMultiplyExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaMultiplyExpressionBuilder)this.AddSymbol(new MetaMultiplyExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaMultiplyExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaMultiplyExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaDivideExpression.
         /// </summary>
-        public MetaDivideExpressionBuilder MetaDivideExpression()
+        public MetaDivideExpressionBuilder MetaDivideExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaDivideExpressionBuilder)this.AddSymbol(new MetaDivideExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaDivideExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaDivideExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaModuloExpression.
         /// </summary>
-        public MetaModuloExpressionBuilder MetaModuloExpression()
+        public MetaModuloExpressionBuilder MetaModuloExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaModuloExpressionBuilder)this.AddSymbol(new MetaModuloExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaModuloExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaModuloExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAddExpression.
         /// </summary>
-        public MetaAddExpressionBuilder MetaAddExpression()
+        public MetaAddExpressionBuilder MetaAddExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaAddExpressionBuilder)this.AddSymbol(new MetaAddExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaAddExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaAddExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaSubtractExpression.
         /// </summary>
-        public MetaSubtractExpressionBuilder MetaSubtractExpression()
+        public MetaSubtractExpressionBuilder MetaSubtractExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaSubtractExpressionBuilder)this.AddSymbol(new MetaSubtractExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaSubtractExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaSubtractExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaLeftShiftExpression.
         /// </summary>
-        public MetaLeftShiftExpressionBuilder MetaLeftShiftExpression()
+        public MetaLeftShiftExpressionBuilder MetaLeftShiftExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaLeftShiftExpressionBuilder)this.AddSymbol(new MetaLeftShiftExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaLeftShiftExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaLeftShiftExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaRightShiftExpression.
         /// </summary>
-        public MetaRightShiftExpressionBuilder MetaRightShiftExpression()
+        public MetaRightShiftExpressionBuilder MetaRightShiftExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaRightShiftExpressionBuilder)this.AddSymbol(new MetaRightShiftExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaRightShiftExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaRightShiftExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaLessThanExpression.
         /// </summary>
-        public MetaLessThanExpressionBuilder MetaLessThanExpression()
+        public MetaLessThanExpressionBuilder MetaLessThanExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaLessThanExpressionBuilder)this.AddSymbol(new MetaLessThanExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaLessThanExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaLessThanExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaLessThanOrEqualExpression.
         /// </summary>
-        public MetaLessThanOrEqualExpressionBuilder MetaLessThanOrEqualExpression()
+        public MetaLessThanOrEqualExpressionBuilder MetaLessThanOrEqualExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaLessThanOrEqualExpressionBuilder)this.AddSymbol(new MetaLessThanOrEqualExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaLessThanOrEqualExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaLessThanOrEqualExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaGreaterThanExpression.
         /// </summary>
-        public MetaGreaterThanExpressionBuilder MetaGreaterThanExpression()
+        public MetaGreaterThanExpressionBuilder MetaGreaterThanExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaGreaterThanExpressionBuilder)this.AddSymbol(new MetaGreaterThanExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaGreaterThanExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaGreaterThanExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaGreaterThanOrEqualExpression.
         /// </summary>
-        public MetaGreaterThanOrEqualExpressionBuilder MetaGreaterThanOrEqualExpression()
+        public MetaGreaterThanOrEqualExpressionBuilder MetaGreaterThanOrEqualExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaGreaterThanOrEqualExpressionBuilder)this.AddSymbol(new MetaGreaterThanOrEqualExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaGreaterThanOrEqualExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaGreaterThanOrEqualExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaEqualExpression.
         /// </summary>
-        public MetaEqualExpressionBuilder MetaEqualExpression()
+        public MetaEqualExpressionBuilder MetaEqualExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaEqualExpressionBuilder)this.AddSymbol(new MetaEqualExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaEqualExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaEqualExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNotEqualExpression.
         /// </summary>
-        public MetaNotEqualExpressionBuilder MetaNotEqualExpression()
+        public MetaNotEqualExpressionBuilder MetaNotEqualExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaNotEqualExpressionBuilder)this.AddSymbol(new MetaNotEqualExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaNotEqualExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaNotEqualExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAndExpression.
         /// </summary>
-        public MetaAndExpressionBuilder MetaAndExpression()
+        public MetaAndExpressionBuilder MetaAndExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaAndExpressionBuilder)this.AddSymbol(new MetaAndExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaAndExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaAndExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaOrExpression.
         /// </summary>
-        public MetaOrExpressionBuilder MetaOrExpression()
+        public MetaOrExpressionBuilder MetaOrExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaOrExpressionBuilder)this.AddSymbol(new MetaOrExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaOrExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaOrExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaExclusiveOrExpression.
         /// </summary>
-        public MetaExclusiveOrExpressionBuilder MetaExclusiveOrExpression()
+        public MetaExclusiveOrExpressionBuilder MetaExclusiveOrExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaExclusiveOrExpressionBuilder)this.AddSymbol(new MetaExclusiveOrExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaExclusiveOrExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaExclusiveOrExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAndAlsoExpression.
         /// </summary>
-        public MetaAndAlsoExpressionBuilder MetaAndAlsoExpression()
+        public MetaAndAlsoExpressionBuilder MetaAndAlsoExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaAndAlsoExpressionBuilder)this.AddSymbol(new MetaAndAlsoExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaAndAlsoExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaAndAlsoExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaOrElseExpression.
         /// </summary>
-        public MetaOrElseExpressionBuilder MetaOrElseExpression()
+        public MetaOrElseExpressionBuilder MetaOrElseExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaOrElseExpressionBuilder)this.AddSymbol(new MetaOrElseExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaOrElseExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaOrElseExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaNullCoalescingExpression.
         /// </summary>
-        public MetaNullCoalescingExpressionBuilder MetaNullCoalescingExpression()
+        public MetaNullCoalescingExpressionBuilder MetaNullCoalescingExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaNullCoalescingExpressionBuilder)this.AddSymbol(new MetaNullCoalescingExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaNullCoalescingExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaNullCoalescingExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAssignExpression.
         /// </summary>
-        public MetaAssignExpressionBuilder MetaAssignExpression()
+        public MetaAssignExpressionBuilder MetaAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaAssignExpressionBuilder)this.AddSymbol(new MetaAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaMultiplyAssignExpression.
         /// </summary>
-        public MetaMultiplyAssignExpressionBuilder MetaMultiplyAssignExpression()
+        public MetaMultiplyAssignExpressionBuilder MetaMultiplyAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaMultiplyAssignExpressionBuilder)this.AddSymbol(new MetaMultiplyAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaMultiplyAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaMultiplyAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaDivideAssignExpression.
         /// </summary>
-        public MetaDivideAssignExpressionBuilder MetaDivideAssignExpression()
+        public MetaDivideAssignExpressionBuilder MetaDivideAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaDivideAssignExpressionBuilder)this.AddSymbol(new MetaDivideAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaDivideAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaDivideAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaModuloAssignExpression.
         /// </summary>
-        public MetaModuloAssignExpressionBuilder MetaModuloAssignExpression()
+        public MetaModuloAssignExpressionBuilder MetaModuloAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaModuloAssignExpressionBuilder)this.AddSymbol(new MetaModuloAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaModuloAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaModuloAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAddAssignExpression.
         /// </summary>
-        public MetaAddAssignExpressionBuilder MetaAddAssignExpression()
+        public MetaAddAssignExpressionBuilder MetaAddAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaAddAssignExpressionBuilder)this.AddSymbol(new MetaAddAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaAddAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaAddAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaSubtractAssignExpression.
         /// </summary>
-        public MetaSubtractAssignExpressionBuilder MetaSubtractAssignExpression()
+        public MetaSubtractAssignExpressionBuilder MetaSubtractAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaSubtractAssignExpressionBuilder)this.AddSymbol(new MetaSubtractAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaSubtractAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaSubtractAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaLeftShiftAssignExpression.
         /// </summary>
-        public MetaLeftShiftAssignExpressionBuilder MetaLeftShiftAssignExpression()
+        public MetaLeftShiftAssignExpressionBuilder MetaLeftShiftAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaLeftShiftAssignExpressionBuilder)this.AddSymbol(new MetaLeftShiftAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaLeftShiftAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaLeftShiftAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaRightShiftAssignExpression.
         /// </summary>
-        public MetaRightShiftAssignExpressionBuilder MetaRightShiftAssignExpression()
+        public MetaRightShiftAssignExpressionBuilder MetaRightShiftAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaRightShiftAssignExpressionBuilder)this.AddSymbol(new MetaRightShiftAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaRightShiftAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaRightShiftAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaAndAssignExpression.
         /// </summary>
-        public MetaAndAssignExpressionBuilder MetaAndAssignExpression()
+        public MetaAndAssignExpressionBuilder MetaAndAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaAndAssignExpressionBuilder)this.AddSymbol(new MetaAndAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaAndAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaAndAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaExclusiveOrAssignExpression.
         /// </summary>
-        public MetaExclusiveOrAssignExpressionBuilder MetaExclusiveOrAssignExpression()
+        public MetaExclusiveOrAssignExpressionBuilder MetaExclusiveOrAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaExclusiveOrAssignExpressionBuilder)this.AddSymbol(new MetaExclusiveOrAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaExclusiveOrAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaExclusiveOrAssignExpressionBuilder)symbol;
     	}
     
         /// <summary>
         /// Creates a new instance of MetaOrAssignExpression.
         /// </summary>
-        public MetaOrAssignExpressionBuilder MetaOrAssignExpression()
+        public MetaOrAssignExpressionBuilder MetaOrAssignExpression(params global::MetaDslx.Core.Immutable.PropertyInit[] propertyInitializers)
     	{
-    		return (MetaOrAssignExpressionBuilder)this.AddSymbol(new MetaOrAssignExpressionId());
+    		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new MetaOrAssignExpressionId());
+    		symbol.MInitProperties(propertyInitializers);
+    		symbol.MMakeCreated();
+    		return (MetaOrAssignExpressionBuilder)symbol;
     	}
     }
     
@@ -21622,6 +27623,7 @@ namespace MetaDslx.Core.Immutable
         /// </summary>
         public virtual void MetaAnnotatedElement(MetaAnnotatedElementBuilder @this)
         {
+    		
         }
     
         /// <summary>
@@ -21629,6 +27631,7 @@ namespace MetaDslx.Core.Immutable
         /// </summary>
         public virtual void MetaNamedElement(MetaNamedElementBuilder @this)
         {
+    		
         }
     
         /// <summary>
@@ -21636,6 +27639,7 @@ namespace MetaDslx.Core.Immutable
         /// </summary>
         public virtual void MetaTypedElement(MetaTypedElementBuilder @this)
         {
+    		
         }
     
         /// <summary>
@@ -21643,123 +27647,139 @@ namespace MetaDslx.Core.Immutable
         /// </summary>
         public virtual void MetaType(MetaTypeBuilder @this)
         {
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaAnnotation()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement
     	/// All superclasses: global::MetaDslx.Core.MetaNamedElement
-        /// </summary>
         public virtual void MetaAnnotation(MetaAnnotationBuilder @this)
         {
             this.MetaNamedElement(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaAnnotationProperty()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement
     	/// All superclasses: global::MetaDslx.Core.MetaNamedElement
-        /// </summary>
         public virtual void MetaAnnotationProperty(MetaAnnotationPropertyBuilder @this)
         {
             this.MetaNamedElement(@this);
+    		@this.ValueLazyChild.ExpectedType = () => MetaInstance.Any;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaNamespace()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
     	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
-        /// </summary>
         public virtual void MetaNamespace(MetaNamespaceBuilder @this)
         {
             this.MetaNamedElement(@this);
             this.MetaAnnotatedElement(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaDeclaration()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
     	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
-        /// </summary>
+        /// Initializes the following derived properties:
+    	/// <ul>
+        ///     <li>Model</li>
+    	/// </ul>
         public virtual void MetaDeclaration(MetaDeclarationBuilder @this)
         {
             this.MetaNamedElement(@this);
             this.MetaAnnotatedElement(@this);
+    		@this.ModelLazy = () => (global::MetaDslx.Core.Immutable.MetaModelBuilder)@this.Namespace.MetaModel;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaModel()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
     	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
-        /// </summary>
         public virtual void MetaModel(MetaModelBuilder @this)
         {
             this.MetaNamedElement(@this);
             this.MetaAnnotatedElement(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaCollectionType()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaType
     	/// All superclasses: global::MetaDslx.Core.MetaType
-        /// </summary>
         public virtual void MetaCollectionType(MetaCollectionTypeBuilder @this)
         {
             this.MetaType(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaNullableType()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaType
     	/// All superclasses: global::MetaDslx.Core.MetaType
-        /// </summary>
         public virtual void MetaNullableType(MetaNullableTypeBuilder @this)
         {
             this.MetaType(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaPrimitiveType()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaNamedElement
     	/// All superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaNamedElement
-        /// </summary>
         public virtual void MetaPrimitiveType(MetaPrimitiveTypeBuilder @this)
         {
             this.MetaType(@this);
             this.MetaNamedElement(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaEnum()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaDeclaration
     	/// All superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement, global::MetaDslx.Core.MetaDeclaration
-        /// </summary>
         public virtual void MetaEnum(MetaEnumBuilder @this)
         {
             this.MetaType(@this);
             this.MetaDeclaration(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaEnumLiteral()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement
     	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement
-        /// </summary>
         public virtual void MetaEnumLiteral(MetaEnumLiteralBuilder @this)
         {
             this.MetaNamedElement(@this);
             this.MetaTypedElement(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaClass()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaDeclaration
     	/// All superclasses: global::MetaDslx.Core.MetaType, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement, global::MetaDslx.Core.MetaDeclaration
-        /// </summary>
         public virtual void MetaClass(MetaClassBuilder @this)
         {
             this.MetaType(@this);
             this.MetaDeclaration(@this);
+    		
         }
     
         /// <summary>
@@ -21788,97 +27808,103 @@ namespace MetaDslx.Core.Immutable
     
         /// <summary>
     	/// Implements the constructor: MetaFunctionType()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaType
     	/// All superclasses: global::MetaDslx.Core.MetaType
-        /// </summary>
         public virtual void MetaFunctionType(MetaFunctionTypeBuilder @this)
         {
             this.MetaType(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaFunction()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
         /// Initializes the following readonly properties:
-        ///    MetaFunction.Type
-        /// </summary>
+    	/// <ul>
+        ///     <li>Type</li>
+    	/// </ul>
         public virtual void MetaFunction(MetaFunctionBuilder @this)
         {
             this.MetaTypedElement(@this);
             this.MetaNamedElement(@this);
             this.MetaAnnotatedElement(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaGlobalFunction()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaFunction, global::MetaDslx.Core.MetaDeclaration
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement, global::MetaDslx.Core.MetaFunction, global::MetaDslx.Core.MetaDeclaration
-        /// Initializes the following readonly properties:
-        ///    MetaFunction.Type
-        /// </summary>
         public virtual void MetaGlobalFunction(MetaGlobalFunctionBuilder @this)
         {
             this.MetaFunction(@this);
             this.MetaDeclaration(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaOperation()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaFunction
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement, global::MetaDslx.Core.MetaFunction
-        /// Initializes the following readonly properties:
-        ///    MetaFunction.Type
-        /// </summary>
         public virtual void MetaOperation(MetaOperationBuilder @this)
         {
             this.MetaFunction(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaConstant()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaDeclaration
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement, global::MetaDslx.Core.MetaDeclaration
-        /// </summary>
         public virtual void MetaConstant(MetaConstantBuilder @this)
         {
             this.MetaTypedElement(@this);
             this.MetaDeclaration(@this);
+    		@this.ValueLazyChild.ExpectedType = () => @this.Type;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaConstructor()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
     	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaAnnotatedElement
-        /// </summary>
         public virtual void MetaConstructor(MetaConstructorBuilder @this)
         {
             this.MetaNamedElement(@this);
             this.MetaAnnotatedElement(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaParameter()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaAnnotatedElement
     	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaAnnotatedElement
-        /// </summary>
         public virtual void MetaParameter(MetaParameterBuilder @this)
         {
             this.MetaNamedElement(@this);
             this.MetaTypedElement(@this);
             this.MetaAnnotatedElement(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaProperty()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaAnnotatedElement
     	/// All superclasses: global::MetaDslx.Core.MetaNamedElement, global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaAnnotatedElement
-        /// </summary>
         public virtual void MetaProperty(MetaPropertyBuilder @this)
         {
             this.MetaNamedElement(@this);
             this.MetaTypedElement(@this);
             this.MetaAnnotatedElement(@this);
+    		
         }
     
         /// <summary>
@@ -21886,230 +27912,228 @@ namespace MetaDslx.Core.Immutable
         /// </summary>
         public virtual void MetaPropertyInitializer(MetaPropertyInitializerBuilder @this)
         {
+    		@this.PropertyContextLazy = () => (global::MetaDslx.Core.Immutable.MetaClassBuilder)this.current_type(@this) as MetaClassBuilder;
+    		@this.PropertyLazy = () => (global::MetaDslx.Core.Immutable.MetaPropertyBuilder)this.bind(this.resolve_name(@this.PropertyContext, @this.PropertyName));
+    		@this.ValueLazyChild.ExpectedType = () => this.get_type(@this.Property);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaSynthetizedPropertyInitializer()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaPropertyInitializer
     	/// All superclasses: global::MetaDslx.Core.MetaPropertyInitializer
-        /// </summary>
         public virtual void MetaSynthetizedPropertyInitializer(MetaSynthetizedPropertyInitializerBuilder @this)
         {
             this.MetaPropertyInitializer(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaInheritedPropertyInitializer()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaPropertyInitializer
     	/// All superclasses: global::MetaDslx.Core.MetaPropertyInitializer
-        /// </summary>
         public virtual void MetaInheritedPropertyInitializer(MetaInheritedPropertyInitializerBuilder @this)
         {
             this.MetaPropertyInitializer(@this);
+    		@this.ObjectLazy = () => (global::MetaDslx.Core.Immutable.MetaPropertyBuilder)this.bind(this.resolve_name(@this.ObjectName));
         }
     
         /// <summary>
     	/// Implements the constructor: MetaExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaTypedElement
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement
         /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
+    	/// <ul>
+        ///     <li>NoTypeError</li>
+    	/// </ul>
         public virtual void MetaExpression(MetaExpressionBuilder @this)
         {
             this.MetaTypedElement(@this);
+    		@this.NoTypeErrorLazy = () => (bool)this.type_check(@this);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaBracketExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaBracketExpression(MetaBracketExpressionBuilder @this)
         {
             this.MetaExpression(@this);
+    		@this.ExpressionLazyChild.ExpectedType = () => @this.ExpectedType;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaBoundExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaBoundExpression(MetaBoundExpressionBuilder @this)
         {
             this.MetaExpression(@this);
+    		@this.UniqueDefinitionLazy = () => (bool)true;
+    		@this.DefinitionLazy = () => (RedSymbol)this.bind(@this.Definitions);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaThisExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBoundExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaThisExpression(MetaThisExpressionBuilder @this)
         {
             this.MetaBoundExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaNullExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaNullExpression(MetaNullExpressionBuilder @this)
         {
             this.MetaExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaTypeConversionExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaTypeConversionExpression(MetaTypeConversionExpressionBuilder @this)
         {
             this.MetaExpression(@this);
+    		@this.ExpressionLazyChild.ExpectedType = () => MetaInstance.Any;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaTypeAsExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaTypeConversionExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaTypeConversionExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaTypeAsExpression(MetaTypeAsExpressionBuilder @this)
         {
             this.MetaTypeConversionExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaTypeCastExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaTypeConversionExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaTypeConversionExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaTypeCastExpression(MetaTypeCastExpressionBuilder @this)
         {
             this.MetaTypeConversionExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaTypeCheckExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaTypeCheckExpression(MetaTypeCheckExpressionBuilder @this)
         {
             this.MetaExpression(@this);
+    		@this.ExpressionLazyChild.ExpectedType = () => MetaInstance.Any;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaTypeOfExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaTypeOfExpression(MetaTypeOfExpressionBuilder @this)
         {
             this.MetaExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaConditionalExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaConditionalExpression(MetaConditionalExpressionBuilder @this)
         {
             this.MetaExpression(@this);
+    		@this.ConditionLazyChild.ExpectedType = () => MetaInstance.Bool;
+    		@this.ThenLazyChild.ExpectedType = () => @this.ExpectedType;
+    		@this.ElseLazyChild.ExpectedType = () => @this.ExpectedType;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaConstantExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaConstantExpression(MetaConstantExpressionBuilder @this)
         {
             this.MetaExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaIdentifierExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBoundExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaIdentifierExpression(MetaIdentifierExpressionBuilder @this)
         {
             this.MetaBoundExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaMemberAccessExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBoundExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaMemberAccessExpression(MetaMemberAccessExpressionBuilder @this)
         {
             this.MetaBoundExpression(@this);
+    		@this.ExpressionLazyChild.UniqueDefinition = () => false;
+    		@this.ExpressionLazyChild.ExpectedType = () => MetaInstance.None;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaFunctionCallExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBoundExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaFunctionCallExpression(MetaFunctionCallExpressionBuilder @this)
         {
             this.MetaBoundExpression(@this);
+    		@this.ExpressionLazyChild.UniqueDefinition = () => false;
+    		@this.ExpressionLazyChild.ExpectedType = () => MetaInstance.None;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaIndexerExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBoundExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaIndexerExpression(MetaIndexerExpressionBuilder @this)
         {
             this.MetaBoundExpression(@this);
+    		@this.ExpressionLazyChild.UniqueDefinition = () => false;
+    		@this.ExpressionLazyChild.ExpectedType = () => MetaInstance.None;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaNewExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaNewExpression(MetaNewExpressionBuilder @this)
         {
             this.MetaExpression(@this);
+    		
         }
     
         /// <summary>
@@ -22117,646 +28141,577 @@ namespace MetaDslx.Core.Immutable
         /// </summary>
         public virtual void MetaNewPropertyInitializer(MetaNewPropertyInitializerBuilder @this)
         {
+    		@this.PropertyLazy = () => (global::MetaDslx.Core.Immutable.MetaPropertyBuilder)this.bind(this.resolve_name(@this.Parent.Type, @this.PropertyName));
+    		@this.ValueLazyChild.ExpectedType = () => this.get_type(@this.Property);
         }
     
         /// <summary>
     	/// Implements the constructor: MetaNewCollectionExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        /// </summary>
         public virtual void MetaNewCollectionExpression(MetaNewCollectionExpressionBuilder @this)
         {
             this.MetaExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaOperatorExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBoundExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression
         /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
+    	/// <ul>
+        ///     <li>Name</li>
+    	/// </ul>
         public virtual void MetaOperatorExpression(MetaOperatorExpressionBuilder @this)
         {
             this.MetaBoundExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaUnaryExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaOperatorExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaUnaryExpression(MetaUnaryExpressionBuilder @this)
         {
             this.MetaOperatorExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaUnaryPlusExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaUnaryExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaUnaryExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaUnaryPlusExpression(MetaUnaryPlusExpressionBuilder @this)
         {
             this.MetaUnaryExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaNegateExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaUnaryExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaUnaryExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaNegateExpression(MetaNegateExpressionBuilder @this)
         {
             this.MetaUnaryExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaOnesComplementExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaUnaryExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaUnaryExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaOnesComplementExpression(MetaOnesComplementExpressionBuilder @this)
         {
             this.MetaUnaryExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaNotExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaUnaryExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaUnaryExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaNotExpression(MetaNotExpressionBuilder @this)
         {
             this.MetaUnaryExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaUnaryAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaUnaryExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaUnaryExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaUnaryAssignExpression(MetaUnaryAssignExpressionBuilder @this)
         {
             this.MetaUnaryExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaPostIncrementAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaUnaryAssignExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaUnaryExpression, global::MetaDslx.Core.MetaUnaryAssignExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaPostIncrementAssignExpression(MetaPostIncrementAssignExpressionBuilder @this)
         {
             this.MetaUnaryAssignExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaPostDecrementAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaUnaryAssignExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaUnaryExpression, global::MetaDslx.Core.MetaUnaryAssignExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaPostDecrementAssignExpression(MetaPostDecrementAssignExpressionBuilder @this)
         {
             this.MetaUnaryAssignExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaPreIncrementAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaUnaryAssignExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaUnaryExpression, global::MetaDslx.Core.MetaUnaryAssignExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaPreIncrementAssignExpression(MetaPreIncrementAssignExpressionBuilder @this)
         {
             this.MetaUnaryAssignExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaPreDecrementAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaUnaryAssignExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaUnaryExpression, global::MetaDslx.Core.MetaUnaryAssignExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaPreDecrementAssignExpression(MetaPreDecrementAssignExpressionBuilder @this)
         {
             this.MetaUnaryAssignExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaBinaryExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaOperatorExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaBinaryExpression(MetaBinaryExpressionBuilder @this)
         {
             this.MetaOperatorExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaBinaryArithmeticExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaBinaryArithmeticExpression(MetaBinaryArithmeticExpressionBuilder @this)
         {
             this.MetaBinaryExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaMultiplyExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryArithmeticExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryArithmeticExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaMultiplyExpression(MetaMultiplyExpressionBuilder @this)
         {
             this.MetaBinaryArithmeticExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaDivideExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryArithmeticExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryArithmeticExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaDivideExpression(MetaDivideExpressionBuilder @this)
         {
             this.MetaBinaryArithmeticExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaModuloExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryArithmeticExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryArithmeticExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaModuloExpression(MetaModuloExpressionBuilder @this)
         {
             this.MetaBinaryArithmeticExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaAddExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryArithmeticExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryArithmeticExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaAddExpression(MetaAddExpressionBuilder @this)
         {
             this.MetaBinaryArithmeticExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaSubtractExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryArithmeticExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryArithmeticExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaSubtractExpression(MetaSubtractExpressionBuilder @this)
         {
             this.MetaBinaryArithmeticExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaLeftShiftExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryArithmeticExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryArithmeticExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaLeftShiftExpression(MetaLeftShiftExpressionBuilder @this)
         {
             this.MetaBinaryArithmeticExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaRightShiftExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryArithmeticExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryArithmeticExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaRightShiftExpression(MetaRightShiftExpressionBuilder @this)
         {
             this.MetaBinaryArithmeticExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaBinaryComparisonExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaBinaryComparisonExpression(MetaBinaryComparisonExpressionBuilder @this)
         {
             this.MetaBinaryExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaLessThanExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryComparisonExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryComparisonExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaLessThanExpression(MetaLessThanExpressionBuilder @this)
         {
             this.MetaBinaryComparisonExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaLessThanOrEqualExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryComparisonExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryComparisonExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaLessThanOrEqualExpression(MetaLessThanOrEqualExpressionBuilder @this)
         {
             this.MetaBinaryComparisonExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaGreaterThanExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryComparisonExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryComparisonExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaGreaterThanExpression(MetaGreaterThanExpressionBuilder @this)
         {
             this.MetaBinaryComparisonExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaGreaterThanOrEqualExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryComparisonExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryComparisonExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaGreaterThanOrEqualExpression(MetaGreaterThanOrEqualExpressionBuilder @this)
         {
             this.MetaBinaryComparisonExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaEqualExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryComparisonExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryComparisonExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaEqualExpression(MetaEqualExpressionBuilder @this)
         {
             this.MetaBinaryComparisonExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaNotEqualExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryComparisonExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryComparisonExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaNotEqualExpression(MetaNotEqualExpressionBuilder @this)
         {
             this.MetaBinaryComparisonExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaBinaryLogicalExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaBinaryLogicalExpression(MetaBinaryLogicalExpressionBuilder @this)
         {
             this.MetaBinaryExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaAndExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryLogicalExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryLogicalExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaAndExpression(MetaAndExpressionBuilder @this)
         {
             this.MetaBinaryLogicalExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaOrExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryLogicalExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryLogicalExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaOrExpression(MetaOrExpressionBuilder @this)
         {
             this.MetaBinaryLogicalExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaExclusiveOrExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryLogicalExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryLogicalExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaExclusiveOrExpression(MetaExclusiveOrExpressionBuilder @this)
         {
             this.MetaBinaryLogicalExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaAndAlsoExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryLogicalExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryLogicalExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaAndAlsoExpression(MetaAndAlsoExpressionBuilder @this)
         {
             this.MetaBinaryLogicalExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaOrElseExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryLogicalExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaBinaryLogicalExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaOrElseExpression(MetaOrElseExpressionBuilder @this)
         {
             this.MetaBinaryLogicalExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaNullCoalescingExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaNullCoalescingExpression(MetaNullCoalescingExpressionBuilder @this)
         {
             this.MetaBinaryExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaAssignmentExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaBinaryExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaAssignmentExpression(MetaAssignmentExpressionBuilder @this)
         {
             this.MetaBinaryExpression(@this);
+    		@this.LeftLazyChild.ExpectedType = () => @this.ExpectedType;
+    		@this.RightLazyChild.ExpectedType = () => @this.Type;
         }
     
         /// <summary>
     	/// Implements the constructor: MetaAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaAssignExpression(MetaAssignExpressionBuilder @this)
         {
             this.MetaAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaArithmeticAssignmentExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaArithmeticAssignmentExpression(MetaArithmeticAssignmentExpressionBuilder @this)
         {
             this.MetaAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaMultiplyAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaArithmeticAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression, global::MetaDslx.Core.MetaArithmeticAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaMultiplyAssignExpression(MetaMultiplyAssignExpressionBuilder @this)
         {
             this.MetaArithmeticAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaDivideAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaArithmeticAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression, global::MetaDslx.Core.MetaArithmeticAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaDivideAssignExpression(MetaDivideAssignExpressionBuilder @this)
         {
             this.MetaArithmeticAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaModuloAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaArithmeticAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression, global::MetaDslx.Core.MetaArithmeticAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaModuloAssignExpression(MetaModuloAssignExpressionBuilder @this)
         {
             this.MetaArithmeticAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaAddAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaArithmeticAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression, global::MetaDslx.Core.MetaArithmeticAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaAddAssignExpression(MetaAddAssignExpressionBuilder @this)
         {
             this.MetaArithmeticAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaSubtractAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaArithmeticAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression, global::MetaDslx.Core.MetaArithmeticAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaSubtractAssignExpression(MetaSubtractAssignExpressionBuilder @this)
         {
             this.MetaArithmeticAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaLeftShiftAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaArithmeticAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression, global::MetaDslx.Core.MetaArithmeticAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaLeftShiftAssignExpression(MetaLeftShiftAssignExpressionBuilder @this)
         {
             this.MetaArithmeticAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaRightShiftAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaArithmeticAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression, global::MetaDslx.Core.MetaArithmeticAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaRightShiftAssignExpression(MetaRightShiftAssignExpressionBuilder @this)
         {
             this.MetaArithmeticAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaLogicalAssignmentExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaLogicalAssignmentExpression(MetaLogicalAssignmentExpressionBuilder @this)
         {
             this.MetaAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaAndAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaLogicalAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression, global::MetaDslx.Core.MetaLogicalAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaAndAssignExpression(MetaAndAssignExpressionBuilder @this)
         {
             this.MetaLogicalAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaExclusiveOrAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaLogicalAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression, global::MetaDslx.Core.MetaLogicalAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaExclusiveOrAssignExpression(MetaExclusiveOrAssignExpressionBuilder @this)
         {
             this.MetaLogicalAssignmentExpression(@this);
+    		
         }
     
         /// <summary>
     	/// Implements the constructor: MetaOrAssignExpression()
+        /// </summary>
     	/// Direct superclasses: global::MetaDslx.Core.MetaLogicalAssignmentExpression
     	/// All superclasses: global::MetaDslx.Core.MetaTypedElement, global::MetaDslx.Core.MetaExpression, global::MetaDslx.Core.MetaBoundExpression, global::MetaDslx.Core.MetaOperatorExpression, global::MetaDslx.Core.MetaBinaryExpression, global::MetaDslx.Core.MetaAssignmentExpression, global::MetaDslx.Core.MetaLogicalAssignmentExpression
-        /// Initializes the following readonly properties:
-        ///    MetaExpression.NoTypeError
-        ///    MetaOperatorExpression.Name
-        /// </summary>
         public virtual void MetaOrAssignExpression(MetaOrAssignExpressionBuilder @this)
         {
             this.MetaLogicalAssignmentExpression(@this);
+    		
         }
     
     
     
+    
+    	public abstract global::MetaDslx.Core.Immutable.MetaTypeBuilder typeof(object type);
+    	public abstract global::MetaDslx.Core.Immutable.MetaTypeBuilder get_type(object value);
+    	public abstract global::MetaDslx.Core.Immutable.MetaTypeBuilder get_return_type(object value);
+    	public abstract global::MetaDslx.Core.Immutable.MetaTypeBuilder current_type(RedSymbol symbol);
+    	public abstract bool type_check(RedSymbol symbol);
+    	public abstract global::MetaDslx.Core.Immutable.MetaTypeBuilder balance(global::MetaDslx.Core.Immutable.MetaTypeBuilder left, global::MetaDslx.Core.Immutable.MetaTypeBuilder right);
+    	public abstract global::MetaDslx.Core.Immutable.ModelList<RedSymbol> resolve(string name);
+    	public abstract global::MetaDslx.Core.Immutable.ModelList<RedSymbol> resolve(RedSymbol context, string name);
+    	public abstract global::MetaDslx.Core.Immutable.ModelList<RedSymbol> resolve_type(string name);
+    	public abstract global::MetaDslx.Core.Immutable.ModelList<RedSymbol> resolve_type(RedSymbol context, string name);
+    	public abstract global::MetaDslx.Core.Immutable.ModelList<RedSymbol> resolve_name(string name);
+    	public abstract global::MetaDslx.Core.Immutable.ModelList<RedSymbol> resolve_name(RedSymbol context, string name);
+    	public abstract RedSymbol bind(RedSymbol symbol);
+    	public abstract RedSymbol bind(global::MetaDslx.Core.Immutable.ModelList<RedSymbol> symbols);
+    	public abstract RedSymbol bind(RedSymbol context, RedSymbol symbol);
+    	public abstract RedSymbol bind(RedSymbol context, global::MetaDslx.Core.Immutable.ModelList<RedSymbol> symbols);
+    	public abstract global::MetaDslx.Core.Immutable.ModelList<RedSymbol> select_of_type(RedSymbol symbol, global::MetaDslx.Core.Immutable.MetaTypeBuilder type);
+    	public abstract global::MetaDslx.Core.Immutable.ModelList<RedSymbol> select_of_type(global::MetaDslx.Core.Immutable.ModelList<RedSymbol> symbols, global::MetaDslx.Core.Immutable.MetaTypeBuilder type);
+    	public abstract global::MetaDslx.Core.Immutable.ModelList<RedSymbol> select_of_name(RedSymbol symbol, string name);
+    	public abstract global::MetaDslx.Core.Immutable.ModelList<RedSymbol> select_of_name(global::MetaDslx.Core.Immutable.ModelList<RedSymbol> symbols, string name);
     }
     
 }

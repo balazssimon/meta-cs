@@ -1,6 +1,7 @@
 ﻿using MetaDslx.Core.Collections.Transactional;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -248,6 +249,51 @@ namespace MetaDslx.Core.Immutable
 
         protected abstract void MDoInit();
 
+        public void MInitProperties(IEnumerable<PropertyInit> propertyInitializers)
+        {
+            if (this.MIsCreated) return;
+            foreach (var propInit in propertyInitializers)
+            {
+                if (propInit.Property.IsCollection)
+                {
+                    if (propInit.Values != null)
+                    {
+                        this.MLazyAddRange(propInit.Property, propInit.Values, true);
+                    }
+                    else if (propInit.Value != null)
+                    {
+                        this.MLazyAdd(propInit.Property, propInit.Value, true);
+                    }
+                    else
+                    {
+                        Debug.Assert(false);
+                    }
+                }
+                else
+                {
+                    if (propInit.Value != null)
+                    {
+                        this.MLazyAdd(propInit.Property, propInit.Value, true);
+                    }
+                    else
+                    {
+                        Debug.Assert(false);
+                    }
+                }
+            }
+        }
+
+        private void MCheckPropertyInitialization()
+        {
+            foreach (var prop in this.MAllProperties)
+            {
+                if (prop.IsReadonly || prop.IsDerived)
+                {
+                    if (!this.MIsSet(prop)) throw new ModelException("Property '"+prop+"' was not set in the type initializer.");
+                }
+            }
+        }
+
         public bool MIsCreated
         {
             get
@@ -263,6 +309,7 @@ namespace MetaDslx.Core.Immutable
         public void MMakeCreated()
         {
             this.part.MMakeCreated(this);
+            this.MCheckPropertyInitialization();
         }
 
         public MutableRedModel MModel
@@ -432,6 +479,18 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.MChildren; }
         }
+    }
+
+    public class LazyChildBuilderBase
+    {
+        public LazyChildBuilderBase(MutableRedSymbolBase parent, ModelProperty property)
+        {
+            this.MParent = parent;
+            this.MProperty = property;
+        }
+
+        public MutableRedSymbolBase MParent { get; private set; }
+        public ModelProperty MProperty { get; private set; }
     }
 
 }

@@ -93,7 +93,7 @@
 
 	class MetaAnnotationProperty : MetaNamedElement
 	{
-		MetaExpression Value;
+		containment MetaExpression Value;
 
 		MetaAnnotationProperty()
 		{
