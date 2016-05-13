@@ -36,9 +36,23 @@ namespace [model.Namespace.CSharpName(ClassKind.Immutable)]
 	[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
     [GenerateBuilderInterfaceImpl(model, cls)]
 	[end loop]
+	[GenerateMetaModelInstance(model)]
     [GenerateFactory(model)]
     [GenerateImplementationProvider(model)]
 }
+end template
+
+template GenerateDocumentation(MetaDocumentedElement elem)
+[IList<string> lines = elem.GetDocumentationLines()]
+[if (lines.Count > 0)]
+/**
+ * <summary>
+	[loop(line:lines)]
+ * [line]
+	[end loop]
+ * </summary>
+ */
+[end if]
 end template
 
 template GenerateAnnotations(MetaAnnotatedElement elem)
@@ -797,20 +811,20 @@ template GenerateTypeOf(object expr)
 [switch(expr)]
 [type as MetaPrimitiveType:]
 [switch(expr.Name)]
-[case "*none*":]MetaInstance.None\
-[case "*error*":]MetaInstance.Error\
-[case "*any*":]MetaInstance.Any\
-[case "object":]MetaInstance.Object\
-[case "string":]MetaInstance.String\
-[case "int":]MetaInstance.Int\
-[case "long":]MetaInstance.Long\
-[case "float":]MetaInstance.Float\
-[case "double":]MetaInstance.Double\
-[case "byte":]MetaInstance.Byte\
-[case "bool":]MetaInstance.Bool\
-[case "void":]MetaInstance.Void\
-[case "ModelObject":]MetaInstance.ModelObject\
-[case "ModelObjectList":]MetaInstance.ModelObjectList\
+[case "*none*":]global::MetaDslx.Core.Immutable.MetaInstance.None\
+[case "*error*":]global::MetaDslx.Core.Immutable.MetaInstance.Error\
+[case "*any*":]global::MetaDslx.Core.Immutable.MetaInstance.Any\
+[case "object":]global::MetaDslx.Core.Immutable.MetaInstance.Object\
+[case "string":]global::MetaDslx.Core.Immutable.MetaInstance.String\
+[case "int":]global::MetaDslx.Core.Immutable.MetaInstance.Int\
+[case "long":]global::MetaDslx.Core.Immutable.MetaInstance.Long\
+[case "float":]global::MetaDslx.Core.Immutable.MetaInstance.Float\
+[case "double":]global::MetaDslx.Core.Immutable.MetaInstance.Double\
+[case "byte":]global::MetaDslx.Core.Immutable.MetaInstance.Byte\
+[case "bool":]global::MetaDslx.Core.Immutable.MetaInstance.Bool\
+[case "void":]global::MetaDslx.Core.Immutable.MetaInstance.Void\
+[case "ModelObject":]global::MetaDslx.Core.Immutable.MetaInstance.ModelObject\
+[case "ModelObjectList":]global::MetaDslx.Core.Immutable.MetaInstance.ModelObjectList\
 [end switch]
 [type as MetaTypeOfExpression:][GenerateTypeOf(expr.TypeReference)]\
 [type as MetaClass:][expr.CSharpFullDescriptorName(ClassKind.Immutable)].MetaClass\
@@ -923,3 +937,57 @@ function string GetTypeName(MetaExpression expr)
 	else return null;
 	end if
 end function
+
+
+template GenerateModelConstant(MetaModel model, MetaConstant mconst)
+[GenerateDocumentation(mconst)]
+public static readonly [mconst.Type.CSharpFullName(ClassKind.Builder)] [mconst.Name];
+end template
+
+template GenerateModelConstantImpl(MetaModel model, MetaConstant mconst, Dictionary<ModelObject, string> mobjToTmp)
+[mconst.Name] = [GenerateExpression(mconst.Value)];
+end template
+
+
+template GenerateMetaModelInstance(MetaModel model)
+[Dictionary<ModelObject, string> mobjToName = model.GetNamedModelObjects()]
+public static class [model.CSharpInstancesName(ClassKind.Immutable)]
+{
+    private static global::MetaDslx.Core.Immutable.ImmutableRedModel model;
+^
+    public static global::MetaDslx.Core.Immutable.ImmutableRedModel Model
+    {
+        get { return [model.Name]Instance.model; }
+    }
+^
+    public static readonly global::MetaDslx.Core.Immutable.MetaModel Meta;
+^
+    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
+    [GenerateModelConstant(model, c)]
+    [end loop]
+^
+    [loop(mobj:Instances)]
+	[GenerateModelObjectInstanceDeclaration(mobj, mobjToName)]
+    [end loop]
+^
+    static [model.CSharpInstancesName()]()
+    {
+    }
+}
+end template
+
+template GenerateModelObjectInstanceDeclaration(ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
+[if (mobj != null && mobj.MMetaClass != null)]
+	[if (mobjToName.ContainsKey(mobj))]
+		[string name = mobjToName[mobj]]
+		[if (name.StartsWith("__"))]
+private static readonly global::MetaDslx.Core.Immutable.[mobj.MMetaClass.CSharpName(ClassKind.Builder)] [name];
+		[else]
+			[if (mobj is MetaDocumentedElement)]
+[GenerateDocumentation(((MetaDocumentedElement)mobj))]
+			[end if]
+public static readonly global::MetaDslx.Core.Immutable.[mobj.MMetaClass.CSharpName(ClassKind.Builder)] [name];
+		[end if]
+	[end if]
+[end if]
+end template
