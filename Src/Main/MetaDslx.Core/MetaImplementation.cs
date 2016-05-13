@@ -435,7 +435,7 @@ namespace MetaDslx.Core
             return result;
         }
 
-        public static string CSharpName(this MetaNamespace @this, ClassKind classKind)
+        public static string CSharpName(this MetaNamespace @this, ClassKind classKind = ClassKind.Normal)
         {
             if (@this == null) return string.Empty;
             string result = @this.Name;
@@ -471,7 +471,7 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                return primitive.Name == "string" || primitive.Name == "object" || primitive.Name == "ModelObject";
+                return primitive.Name == "string" || primitive.Name == "object" || primitive.Name == "ModelObject" || primitive.Name == "DefinitionList";
             }
             if (@this is MetaClass) return true;
             return false;
@@ -533,13 +533,29 @@ namespace MetaDslx.Core
             return GetPrefix(classKind) + ((MetaNamedElement)@this).Name + GetSuffix(classKind);
         }
 
+        public static string GetFieldName(this MetaProperty @this, MetaClass cls)
+        {
+            if (@this == null) return "";
+            var allProps = cls.GetAllProperties();
+            int counter = 0;
+            for (int i = 0; i < allProps.Count; i++)
+            {
+                if (allProps[i] == @this) break;
+                if (allProps[i].Name == @this.Name)
+                {
+                    ++counter;
+                }
+            }
+            return @this.Name.ToCamelCase()+counter;
+        }
+
         public static string ToCSharpType(this MetaPrimitiveType @this)
         {
             if (@this.Name == "DefinitionList") return "global::MetaDslx.Core.BindingInfo";
             return @this.Name;
         }
 
-        public static string CSharpFullName(this MetaType @this, ClassKind classKind)
+        public static string CSharpFullName(this MetaType @this, ClassKind classKind = ClassKind.Normal)
         {
             if (@this == null) return string.Empty;
             MetaCollectionType collection = @this as MetaCollectionType;

@@ -143,7 +143,7 @@ namespace MetaDslx.TempConsole
                     true
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"k:\VersionControl\soal-java\src\metadslx.soal.runtime\src\main\resources\Soal.mm",
@@ -163,7 +163,7 @@ namespace MetaDslx.TempConsole
                 //*
                 using (ModelContextScope scope = new ModelContextScope(MetaInstance.Model))
                 {
-                    ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(ModelContext.Current.Model.Instances);
+                    ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(ModelContext.Current.Instances);
                     using (StreamWriter writer = new StreamWriter(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.cs"))
                     {
                         writer.WriteLine(generator.Generate());

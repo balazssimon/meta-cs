@@ -1310,6 +1310,7 @@ namespace MetaDslx.Core
                 ModelProperty.Register("PropertyName", typeof(string), typeof(global::MetaDslx.Core.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer_PropertyNameProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
         	
+            [ContainmentAttribute]
             public static readonly ModelProperty ValueProperty =
                 ModelProperty.Register("Value", typeof(global::MetaDslx.Core.MetaExpression), typeof(global::MetaDslx.Core.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer), new Lazy<global::MetaDslx.Core.MetaProperty>(() => global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer_ValueProperty, LazyThreadSafetyMode.ExecutionAndPublication));
             
@@ -8968,7 +8969,7 @@ namespace MetaDslx.Core
 				((ModelObject)MetaNewPropertyInitializer_PropertyNameProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty);
 				((ModelObject)MetaNewPropertyInitializer_PropertyNameProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.TypeProperty, new Lazy<object>(() => 	MetaInstance.String	, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)MetaNewPropertyInitializer_ValueProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty);
-				((ModelObject)MetaNewPropertyInitializer_ValueProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => null, LazyThreadSafetyMode.ExecutionAndPublication));
+				((ModelObject)MetaNewPropertyInitializer_ValueProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.KindProperty, new Lazy<object>(() => global::MetaDslx.Core.MetaPropertyKind.Containment, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)MetaNewPropertyInitializer_ValueProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty);
 				((ModelObject)MetaNewPropertyInitializer_ValueProperty).MLazyAdd(global::MetaDslx.Core.MetaDescriptor.MetaProperty.ClassProperty, new Lazy<object>(() => MetaNewPropertyInitializer, LazyThreadSafetyMode.ExecutionAndPublication));
 				((ModelObject)MetaNewPropertyInitializer_ValueProperty).MUnSet(global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.NameProperty);

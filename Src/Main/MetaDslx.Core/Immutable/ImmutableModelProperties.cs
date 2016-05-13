@@ -350,7 +350,7 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        internal void Init()
+        public void Init()
         {
             if (this.initialized) return;
             this.initialized = true;

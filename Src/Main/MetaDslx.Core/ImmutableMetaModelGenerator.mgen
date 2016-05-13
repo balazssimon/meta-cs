@@ -124,9 +124,9 @@ new \
 [prop.Type.CSharpFullPublicName(ClassKind.Immutable)] [prop.Name] { get; }
 end template
 
-template GenerateImmutableField(MetaProperty prop)
+template GenerateImmutableField(MetaClass cls, MetaProperty prop)
 ["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
-private [prop.Type.CSharpFullPublicName(ClassKind.Immutable)] _[prop.Name];
+private [prop.Type.CSharpFullPublicName(ClassKind.Immutable)] [prop.GetFieldName(cls)];
 end template
 
 template GenerateBuilderProperty(MetaProperty prop)
@@ -165,8 +165,8 @@ Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Name] { set; }
 [end if]
 end template
 
-template GenerateBuilderField(MetaProperty prop)
-private [prop.Type.CSharpFullPublicName(ClassKind.Builder)] _[prop.Name];
+template GenerateBuilderField(MetaClass cls, MetaProperty prop)
+private [prop.Type.CSharpFullPublicName(ClassKind.Builder)] [prop.GetFieldName(cls)];
 end template
 
 function string GetParameters(MetaFunction op, ClassKind classKind)
@@ -229,8 +229,8 @@ end template
 template GenerateImmutableInterfaceImpl(MetaModel model, MetaClass cls)
 internal class [cls.CSharpImplName(ClassKind.Immutable)] : global::MetaDslx.Core.Immutable.ImmutableRedSymbolBase, [cls.CSharpFullName(ClassKind.Immutable)]
 {
-    [loop(cls->prop:GetAllFinalProperties())]
-    [GenerateImmutableField(prop)]
+    [loop(cls->prop:GetAllProperties())]
+    [GenerateImmutableField(cls, prop)]
 	[end loop]
 ^
     internal [cls.CSharpImplName()](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
@@ -261,8 +261,8 @@ end template
 template GenerateBuilderInterfaceImpl(MetaModel model, MetaClass cls)
 internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, [cls.CSharpFullName(ClassKind.Builder)]
 {
-    [loop(cls->prop:GetAllFinalProperties() where prop.Type is MetaCollectionType)]
-    [GenerateBuilderField(prop)]
+    [loop(cls->prop:GetAllProperties() where prop.Type is MetaCollectionType)]
+    [GenerateBuilderField(cls, prop)]
 	[end loop]
 ^
     internal [cls.CSharpImplName(ClassKind.Builder)](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
@@ -354,22 +354,19 @@ template GenerateImmutablePropertyImpl(MetaModel model, MetaClass cls, MetaPrope
 ^
 [if (cls.GetAllFinalProperties().Contains(prop))]
 public [prop.Type.CSharpFullPublicName(ClassKind.Immutable)] [prop.Name]
-{
-    [if(prop.Type is MetaCollectionType)]
-    get { return this.GetList<[((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.Immutable)]>([prop.CSharpFullDescriptorName(ClassKind.Immutable)], ref _[prop.Name]); }
-	[else if (prop.Type.IsReferenceType())]
-    get { return this.GetReference<[prop.Type.CSharpFullPublicName(ClassKind.Immutable)]>([prop.CSharpFullDescriptorName(ClassKind.Immutable)], ref _[prop.Name]); }
-	[else]
-    get { return this.GetValue<[prop.Type.CSharpFullPublicName(ClassKind.Immutable)]>([prop.CSharpFullDescriptorName(ClassKind.Immutable)], ref _[prop.Name]); }
-	[end if]
-}
 [else]
 ["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
 [prop.Type.CSharpFullPublicName(ClassKind.Immutable)] [prop.Class.CSharpFullName(ClassKind.Immutable)].[prop.Name]
-{
-    get { return this.[prop.Name]; }
-}
 [end if]
+{
+    [if(prop.Type is MetaCollectionType)]
+    get { return this.GetList<[((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.Immutable)]>([prop.CSharpFullDescriptorName(ClassKind.Immutable)], ref [prop.GetFieldName(cls)]); }
+	[else if (prop.Type.IsReferenceType())]
+    get { return this.GetReference<[prop.Type.CSharpFullPublicName(ClassKind.Immutable)]>([prop.CSharpFullDescriptorName(ClassKind.Immutable)], ref [prop.GetFieldName(cls)]); }
+	[else]
+    get { return this.GetValue<[prop.Type.CSharpFullPublicName(ClassKind.Immutable)]>([prop.CSharpFullDescriptorName(ClassKind.Immutable)], ref [prop.GetFieldName(cls)]); }
+	[end if]
+}
 end template
 
 template GenerateBuilderPropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
@@ -382,7 +379,7 @@ public [prop.Type.CSharpFullPublicName(ClassKind.Builder)] [prop.Name]
 [end if]
 {
     [if(prop.Type is MetaCollectionType)]
-    get { return this.GetList<[((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.Builder)]>([prop.CSharpFullDescriptorName(ClassKind.Builder)], ref _[prop.Name]); }
+    get { return this.GetList<[((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.Builder)]>([prop.CSharpFullDescriptorName(ClassKind.Builder)], ref [prop.GetFieldName(cls)]); }
 	[else if (prop.Type.IsReferenceType())]
     get { return this.GetReference<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]>([prop.CSharpFullDescriptorName(ClassKind.Builder)]); }
 	[else]
@@ -725,7 +722,7 @@ template GenerateInitImplementation(MetaModel model, MetaClass cls)
 [loop(cls->prop:Properties)]
 	[MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop)]
 	[if (synInit != null)]
-		[if (ModelContext.Current.Compiler.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType)]
+		[if (ModelCompilerContext.Current.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType)]
 @this.[prop.Name].ClearLazy();
 			[if (synInit.Value.Type is MetaCollectionType)]
 @this.[prop.Name].LazyAddRange([GenerateExpression(synInit.Value)]);
@@ -733,16 +730,20 @@ template GenerateInitImplementation(MetaModel model, MetaClass cls)
 @this.[prop.Name].LazyAdd([GenerateExpression(synInit.Value)]);
 			[end if]
 		[else]
-@this.[prop.Name]Lazy = () => ([prop.Type.CSharpFullName(ClassKind.Builder)])[GenerateExpression(synInit.Value)];
+@this.[prop.Name]Lazy = () => ([prop.Type.CSharpFullName(ClassKind.Builder)])([GenerateExpression(synInit.Value)]);
 		[end if]
 	[end if]
 [end loop]
 [loop(cls->Constructor->Initializers->init:typeof(MetaInheritedPropertyInitializer))]
 	[if (init.Object != null && init.Property != null)]
-		[if (init.Value.Type is MetaCollectionType)]
+		[if (((MetaClass)init.Object.Type).GetAllSuperClasses(true).Contains(init.PropertyContext))]
+			[if (init.Value.Type is MetaCollectionType)]
+@this.[init.ObjectName]LazyChild.[init.PropertyName] = () => [GenerateExpression(init.Value)]; 
+			[else]
 @this.[init.ObjectName]LazyChild.[init.PropertyName] = () => [GenerateExpression(init.Value)];
+			[end if]
 		[else]
-@this.[init.ObjectName]LazyChild.[init.PropertyName] = () => [GenerateExpression(init.Value)];
+((MutableRedSymbolBase)@this).MChildLazyAdd([init.Object.CSharpFullDescriptorName(ClassKind.Builder)], [init.Property.CSharpFullDescriptorName(ClassKind.Builder)], () => [GenerateExpression(init.Value)]);
 		[end if]
 	[end if]
 [end loop]
@@ -779,7 +780,7 @@ template GenerateIdentifierExpression(MetaIdentifierExpression expr)
 end template
 
 function bool SameFunction(MetaGlobalFunction mfunc1, MetaGlobalFunction mfunc2)
-	return mfunc1.Name == mfunc2.Name && ModelContext.Current.Compiler.TypeProvider.Equals((ModelObject)mfunc1.Type, (ModelObject)mfunc2.Type);
+	return mfunc1.Name == mfunc2.Name && ModelCompilerContext.Current.TypeProvider.Equals((ModelObject)mfunc1.Type, (ModelObject)mfunc2.Type);
 end function
 
 template GenerateFunctionCall(MetaFunctionCallExpression call)

@@ -504,7 +504,7 @@
 	{
 		MetaNewExpression Parent;
 		string PropertyName;
-		MetaExpression Value;
+		containment MetaExpression Value;
 		MetaProperty Property;
 
 		NewPropertyInitializer()
