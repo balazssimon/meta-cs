@@ -1577,12 +1577,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaAnnotatedElement); } }
         public override Type MutableType { get { return typeof(MetaAnnotatedElementBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaAnnotatedElementImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaAnnotatedElementBuilderImpl(this, model);
         }
@@ -1599,12 +1599,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaDocumentedElement); } }
         public override Type MutableType { get { return typeof(MetaDocumentedElementBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaDocumentedElementImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaDocumentedElementBuilderImpl(this, model);
         }
@@ -1622,12 +1622,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNamedElement); } }
         public override Type MutableType { get { return typeof(MetaNamedElementBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNamedElementImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNamedElementBuilderImpl(this, model);
         }
@@ -1644,12 +1644,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaTypedElement); } }
         public override Type MutableType { get { return typeof(MetaTypedElementBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaTypedElementImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaTypedElementBuilderImpl(this, model);
         }
@@ -1666,12 +1666,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaType); } }
         public override Type MutableType { get { return typeof(MetaTypeBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaTypeImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaTypeBuilderImpl(this, model);
         }
@@ -1688,12 +1688,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaAnnotation); } }
         public override Type MutableType { get { return typeof(MetaAnnotationBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaAnnotationImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaAnnotationBuilderImpl(this, model);
         }
@@ -1710,12 +1710,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaAnnotationProperty); } }
         public override Type MutableType { get { return typeof(MetaAnnotationPropertyBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaAnnotationPropertyImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaAnnotationPropertyBuilderImpl(this, model);
         }
@@ -1732,12 +1732,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNamespace); } }
         public override Type MutableType { get { return typeof(MetaNamespaceBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNamespaceImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNamespaceBuilderImpl(this, model);
         }
@@ -1759,12 +1759,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaDeclaration); } }
         public override Type MutableType { get { return typeof(MetaDeclarationBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaDeclarationImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaDeclarationBuilderImpl(this, model);
         }
@@ -1782,12 +1782,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaModel); } }
         public override Type MutableType { get { return typeof(MetaModelBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaModelImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaModelBuilderImpl(this, model);
         }
@@ -1805,12 +1805,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaCollectionType); } }
         public override Type MutableType { get { return typeof(MetaCollectionTypeBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaCollectionTypeImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaCollectionTypeBuilderImpl(this, model);
         }
@@ -1828,12 +1828,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNullableType); } }
         public override Type MutableType { get { return typeof(MetaNullableTypeBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNullableTypeImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNullableTypeBuilderImpl(this, model);
         }
@@ -1850,12 +1850,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaPrimitiveType); } }
         public override Type MutableType { get { return typeof(MetaPrimitiveTypeBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaPrimitiveTypeImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaPrimitiveTypeBuilderImpl(this, model);
         }
@@ -1871,12 +1871,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaEnum); } }
         public override Type MutableType { get { return typeof(MetaEnumBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaEnumImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaEnumBuilderImpl(this, model);
         }
@@ -1895,12 +1895,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaEnumLiteral); } }
         public override Type MutableType { get { return typeof(MetaEnumLiteralBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaEnumLiteralImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaEnumLiteralBuilderImpl(this, model);
         }
@@ -1917,12 +1917,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaClass); } }
         public override Type MutableType { get { return typeof(MetaClassBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaClassImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaClassBuilderImpl(this, model);
         }
@@ -1949,12 +1949,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaFunctionType); } }
         public override Type MutableType { get { return typeof(MetaFunctionTypeBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaFunctionTypeImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaFunctionTypeBuilderImpl(this, model);
         }
@@ -1972,12 +1972,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaFunction); } }
         public override Type MutableType { get { return typeof(MetaFunctionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaFunctionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaFunctionBuilderImpl(this, model);
         }
@@ -1996,12 +1996,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaGlobalFunction); } }
         public override Type MutableType { get { return typeof(MetaGlobalFunctionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaGlobalFunctionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaGlobalFunctionBuilderImpl(this, model);
         }
@@ -2017,12 +2017,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaOperation); } }
         public override Type MutableType { get { return typeof(MetaOperationBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaOperationImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaOperationBuilderImpl(this, model);
         }
@@ -2039,12 +2039,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaConstant); } }
         public override Type MutableType { get { return typeof(MetaConstantBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaConstantImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaConstantBuilderImpl(this, model);
         }
@@ -2061,12 +2061,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaConstructor); } }
         public override Type MutableType { get { return typeof(MetaConstructorBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaConstructorImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaConstructorBuilderImpl(this, model);
         }
@@ -2084,12 +2084,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaParameter); } }
         public override Type MutableType { get { return typeof(MetaParameterBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaParameterImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaParameterBuilderImpl(this, model);
         }
@@ -2106,12 +2106,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaProperty); } }
         public override Type MutableType { get { return typeof(MetaPropertyBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaPropertyImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaPropertyBuilderImpl(this, model);
         }
@@ -2134,12 +2134,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaPropertyInitializer); } }
         public override Type MutableType { get { return typeof(MetaPropertyInitializerBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaPropertyInitializerImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaPropertyInitializerBuilderImpl(this, model);
         }
@@ -2160,12 +2160,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaSynthetizedPropertyInitializer); } }
         public override Type MutableType { get { return typeof(MetaSynthetizedPropertyInitializerBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaSynthetizedPropertyInitializerImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaSynthetizedPropertyInitializerBuilderImpl(this, model);
         }
@@ -2181,12 +2181,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaInheritedPropertyInitializer); } }
         public override Type MutableType { get { return typeof(MetaInheritedPropertyInitializerBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaInheritedPropertyInitializerImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaInheritedPropertyInitializerBuilderImpl(this, model);
         }
@@ -2204,12 +2204,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaExpression); } }
         public override Type MutableType { get { return typeof(MetaExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaExpressionBuilderImpl(this, model);
         }
@@ -2227,12 +2227,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaBracketExpression); } }
         public override Type MutableType { get { return typeof(MetaBracketExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaBracketExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaBracketExpressionBuilderImpl(this, model);
         }
@@ -2249,12 +2249,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaBoundExpression); } }
         public override Type MutableType { get { return typeof(MetaBoundExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaBoundExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaBoundExpressionBuilderImpl(this, model);
         }
@@ -2274,12 +2274,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaThisExpression); } }
         public override Type MutableType { get { return typeof(MetaThisExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaThisExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaThisExpressionBuilderImpl(this, model);
         }
@@ -2295,12 +2295,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNullExpression); } }
         public override Type MutableType { get { return typeof(MetaNullExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNullExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNullExpressionBuilderImpl(this, model);
         }
@@ -2316,12 +2316,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaTypeConversionExpression); } }
         public override Type MutableType { get { return typeof(MetaTypeConversionExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaTypeConversionExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaTypeConversionExpressionBuilderImpl(this, model);
         }
@@ -2339,12 +2339,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaTypeAsExpression); } }
         public override Type MutableType { get { return typeof(MetaTypeAsExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaTypeAsExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaTypeAsExpressionBuilderImpl(this, model);
         }
@@ -2360,12 +2360,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaTypeCastExpression); } }
         public override Type MutableType { get { return typeof(MetaTypeCastExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaTypeCastExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaTypeCastExpressionBuilderImpl(this, model);
         }
@@ -2381,12 +2381,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaTypeCheckExpression); } }
         public override Type MutableType { get { return typeof(MetaTypeCheckExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaTypeCheckExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaTypeCheckExpressionBuilderImpl(this, model);
         }
@@ -2404,12 +2404,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaTypeOfExpression); } }
         public override Type MutableType { get { return typeof(MetaTypeOfExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaTypeOfExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaTypeOfExpressionBuilderImpl(this, model);
         }
@@ -2426,12 +2426,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaConditionalExpression); } }
         public override Type MutableType { get { return typeof(MetaConditionalExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaConditionalExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaConditionalExpressionBuilderImpl(this, model);
         }
@@ -2451,12 +2451,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaConstantExpression); } }
         public override Type MutableType { get { return typeof(MetaConstantExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaConstantExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaConstantExpressionBuilderImpl(this, model);
         }
@@ -2473,12 +2473,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaIdentifierExpression); } }
         public override Type MutableType { get { return typeof(MetaIdentifierExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaIdentifierExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaIdentifierExpressionBuilderImpl(this, model);
         }
@@ -2495,12 +2495,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaMemberAccessExpression); } }
         public override Type MutableType { get { return typeof(MetaMemberAccessExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaMemberAccessExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaMemberAccessExpressionBuilderImpl(this, model);
         }
@@ -2518,12 +2518,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaFunctionCallExpression); } }
         public override Type MutableType { get { return typeof(MetaFunctionCallExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaFunctionCallExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaFunctionCallExpressionBuilderImpl(this, model);
         }
@@ -2540,12 +2540,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaIndexerExpression); } }
         public override Type MutableType { get { return typeof(MetaIndexerExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaIndexerExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaIndexerExpressionBuilderImpl(this, model);
         }
@@ -2562,12 +2562,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNewExpression); } }
         public override Type MutableType { get { return typeof(MetaNewExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNewExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNewExpressionBuilderImpl(this, model);
         }
@@ -2585,12 +2585,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNewPropertyInitializer); } }
         public override Type MutableType { get { return typeof(MetaNewPropertyInitializerBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNewPropertyInitializerImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNewPropertyInitializerBuilderImpl(this, model);
         }
@@ -2610,12 +2610,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNewCollectionExpression); } }
         public override Type MutableType { get { return typeof(MetaNewCollectionExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNewCollectionExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNewCollectionExpressionBuilderImpl(this, model);
         }
@@ -2633,12 +2633,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaOperatorExpression); } }
         public override Type MutableType { get { return typeof(MetaOperatorExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaOperatorExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaOperatorExpressionBuilderImpl(this, model);
         }
@@ -2655,12 +2655,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaUnaryExpression); } }
         public override Type MutableType { get { return typeof(MetaUnaryExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaUnaryExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaUnaryExpressionBuilderImpl(this, model);
         }
@@ -2677,12 +2677,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaUnaryPlusExpression); } }
         public override Type MutableType { get { return typeof(MetaUnaryPlusExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaUnaryPlusExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaUnaryPlusExpressionBuilderImpl(this, model);
         }
@@ -2698,12 +2698,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNegateExpression); } }
         public override Type MutableType { get { return typeof(MetaNegateExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNegateExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNegateExpressionBuilderImpl(this, model);
         }
@@ -2719,12 +2719,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaOnesComplementExpression); } }
         public override Type MutableType { get { return typeof(MetaOnesComplementExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaOnesComplementExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaOnesComplementExpressionBuilderImpl(this, model);
         }
@@ -2740,12 +2740,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNotExpression); } }
         public override Type MutableType { get { return typeof(MetaNotExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNotExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNotExpressionBuilderImpl(this, model);
         }
@@ -2761,12 +2761,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaUnaryAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaUnaryAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaUnaryAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaUnaryAssignExpressionBuilderImpl(this, model);
         }
@@ -2782,12 +2782,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaPostIncrementAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaPostIncrementAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaPostIncrementAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaPostIncrementAssignExpressionBuilderImpl(this, model);
         }
@@ -2803,12 +2803,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaPostDecrementAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaPostDecrementAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaPostDecrementAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaPostDecrementAssignExpressionBuilderImpl(this, model);
         }
@@ -2824,12 +2824,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaPreIncrementAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaPreIncrementAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaPreIncrementAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaPreIncrementAssignExpressionBuilderImpl(this, model);
         }
@@ -2845,12 +2845,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaPreDecrementAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaPreDecrementAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaPreDecrementAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaPreDecrementAssignExpressionBuilderImpl(this, model);
         }
@@ -2866,12 +2866,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaBinaryExpression); } }
         public override Type MutableType { get { return typeof(MetaBinaryExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaBinaryExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaBinaryExpressionBuilderImpl(this, model);
         }
@@ -2889,12 +2889,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaBinaryArithmeticExpression); } }
         public override Type MutableType { get { return typeof(MetaBinaryArithmeticExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaBinaryArithmeticExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaBinaryArithmeticExpressionBuilderImpl(this, model);
         }
@@ -2910,12 +2910,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaMultiplyExpression); } }
         public override Type MutableType { get { return typeof(MetaMultiplyExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaMultiplyExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaMultiplyExpressionBuilderImpl(this, model);
         }
@@ -2931,12 +2931,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaDivideExpression); } }
         public override Type MutableType { get { return typeof(MetaDivideExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaDivideExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaDivideExpressionBuilderImpl(this, model);
         }
@@ -2952,12 +2952,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaModuloExpression); } }
         public override Type MutableType { get { return typeof(MetaModuloExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaModuloExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaModuloExpressionBuilderImpl(this, model);
         }
@@ -2973,12 +2973,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaAddExpression); } }
         public override Type MutableType { get { return typeof(MetaAddExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaAddExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaAddExpressionBuilderImpl(this, model);
         }
@@ -2994,12 +2994,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaSubtractExpression); } }
         public override Type MutableType { get { return typeof(MetaSubtractExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaSubtractExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaSubtractExpressionBuilderImpl(this, model);
         }
@@ -3015,12 +3015,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaLeftShiftExpression); } }
         public override Type MutableType { get { return typeof(MetaLeftShiftExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaLeftShiftExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaLeftShiftExpressionBuilderImpl(this, model);
         }
@@ -3036,12 +3036,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaRightShiftExpression); } }
         public override Type MutableType { get { return typeof(MetaRightShiftExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaRightShiftExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaRightShiftExpressionBuilderImpl(this, model);
         }
@@ -3057,12 +3057,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaBinaryComparisonExpression); } }
         public override Type MutableType { get { return typeof(MetaBinaryComparisonExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaBinaryComparisonExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaBinaryComparisonExpressionBuilderImpl(this, model);
         }
@@ -3078,12 +3078,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaLessThanExpression); } }
         public override Type MutableType { get { return typeof(MetaLessThanExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaLessThanExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaLessThanExpressionBuilderImpl(this, model);
         }
@@ -3099,12 +3099,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaLessThanOrEqualExpression); } }
         public override Type MutableType { get { return typeof(MetaLessThanOrEqualExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaLessThanOrEqualExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaLessThanOrEqualExpressionBuilderImpl(this, model);
         }
@@ -3120,12 +3120,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaGreaterThanExpression); } }
         public override Type MutableType { get { return typeof(MetaGreaterThanExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaGreaterThanExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaGreaterThanExpressionBuilderImpl(this, model);
         }
@@ -3141,12 +3141,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaGreaterThanOrEqualExpression); } }
         public override Type MutableType { get { return typeof(MetaGreaterThanOrEqualExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaGreaterThanOrEqualExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaGreaterThanOrEqualExpressionBuilderImpl(this, model);
         }
@@ -3162,12 +3162,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaEqualExpression); } }
         public override Type MutableType { get { return typeof(MetaEqualExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaEqualExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaEqualExpressionBuilderImpl(this, model);
         }
@@ -3183,12 +3183,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNotEqualExpression); } }
         public override Type MutableType { get { return typeof(MetaNotEqualExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNotEqualExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNotEqualExpressionBuilderImpl(this, model);
         }
@@ -3204,12 +3204,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaBinaryLogicalExpression); } }
         public override Type MutableType { get { return typeof(MetaBinaryLogicalExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaBinaryLogicalExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaBinaryLogicalExpressionBuilderImpl(this, model);
         }
@@ -3225,12 +3225,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaAndExpression); } }
         public override Type MutableType { get { return typeof(MetaAndExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaAndExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaAndExpressionBuilderImpl(this, model);
         }
@@ -3246,12 +3246,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaOrExpression); } }
         public override Type MutableType { get { return typeof(MetaOrExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaOrExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaOrExpressionBuilderImpl(this, model);
         }
@@ -3267,12 +3267,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaExclusiveOrExpression); } }
         public override Type MutableType { get { return typeof(MetaExclusiveOrExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaExclusiveOrExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaExclusiveOrExpressionBuilderImpl(this, model);
         }
@@ -3288,12 +3288,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaAndAlsoExpression); } }
         public override Type MutableType { get { return typeof(MetaAndAlsoExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaAndAlsoExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaAndAlsoExpressionBuilderImpl(this, model);
         }
@@ -3309,12 +3309,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaOrElseExpression); } }
         public override Type MutableType { get { return typeof(MetaOrElseExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaOrElseExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaOrElseExpressionBuilderImpl(this, model);
         }
@@ -3330,12 +3330,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaNullCoalescingExpression); } }
         public override Type MutableType { get { return typeof(MetaNullCoalescingExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaNullCoalescingExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaNullCoalescingExpressionBuilderImpl(this, model);
         }
@@ -3351,12 +3351,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaAssignmentExpression); } }
         public override Type MutableType { get { return typeof(MetaAssignmentExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaAssignmentExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaAssignmentExpressionBuilderImpl(this, model);
         }
@@ -3372,12 +3372,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaAssignExpressionBuilderImpl(this, model);
         }
@@ -3393,12 +3393,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaArithmeticAssignmentExpression); } }
         public override Type MutableType { get { return typeof(MetaArithmeticAssignmentExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaArithmeticAssignmentExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaArithmeticAssignmentExpressionBuilderImpl(this, model);
         }
@@ -3414,12 +3414,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaMultiplyAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaMultiplyAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaMultiplyAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaMultiplyAssignExpressionBuilderImpl(this, model);
         }
@@ -3435,12 +3435,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaDivideAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaDivideAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaDivideAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaDivideAssignExpressionBuilderImpl(this, model);
         }
@@ -3456,12 +3456,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaModuloAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaModuloAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaModuloAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaModuloAssignExpressionBuilderImpl(this, model);
         }
@@ -3477,12 +3477,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaAddAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaAddAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaAddAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaAddAssignExpressionBuilderImpl(this, model);
         }
@@ -3498,12 +3498,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaSubtractAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaSubtractAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaSubtractAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaSubtractAssignExpressionBuilderImpl(this, model);
         }
@@ -3519,12 +3519,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaLeftShiftAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaLeftShiftAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaLeftShiftAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaLeftShiftAssignExpressionBuilderImpl(this, model);
         }
@@ -3540,12 +3540,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaRightShiftAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaRightShiftAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaRightShiftAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaRightShiftAssignExpressionBuilderImpl(this, model);
         }
@@ -3561,12 +3561,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaLogicalAssignmentExpression); } }
         public override Type MutableType { get { return typeof(MetaLogicalAssignmentExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaLogicalAssignmentExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaLogicalAssignmentExpressionBuilderImpl(this, model);
         }
@@ -3582,12 +3582,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaAndAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaAndAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaAndAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaAndAssignExpressionBuilderImpl(this, model);
         }
@@ -3603,12 +3603,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaExclusiveOrAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaExclusiveOrAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaExclusiveOrAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaExclusiveOrAssignExpressionBuilderImpl(this, model);
         }
@@ -3624,12 +3624,12 @@ namespace MetaDslx.Core.Immutable
         public override Type ImmutableType { get { return typeof(MetaOrAssignExpression); } }
         public override Type MutableType { get { return typeof(MetaOrAssignExpressionBuilder); } }
     
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new MetaOrAssignExpressionImpl(this, model);
         }
     
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new MetaOrAssignExpressionBuilderImpl(this, model);
         }
@@ -4659,7 +4659,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaAnnotatedElementImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaAnnotatedElementImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -4686,7 +4686,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string documentation0;
     
-        internal MetaDocumentedElementImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaDocumentedElementImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -4720,7 +4720,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string documentation0;
     
-        internal MetaNamedElementImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNamedElementImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -4757,7 +4757,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaTypedElementImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaTypedElementImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -4782,7 +4782,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaTypeImpl : global::MetaDslx.Core.Immutable.ImmutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaType
     {
     
-        internal MetaTypeImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaTypeImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -4808,7 +4808,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string documentation0;
     
-        internal MetaAnnotationImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaAnnotationImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -4854,7 +4854,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string documentation0;
     
-        internal MetaAnnotationPropertyImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaAnnotationPropertyImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -4910,7 +4910,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaNamespaceImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNamespaceImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -4985,7 +4985,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaDeclarationImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaDeclarationImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5045,7 +5045,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaModelImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaModelImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5099,7 +5099,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType innerType0;
     
-        internal MetaCollectionTypeImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaCollectionTypeImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5131,7 +5131,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType innerType0;
     
-        internal MetaNullableTypeImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNullableTypeImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5160,7 +5160,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string documentation0;
     
-        internal MetaPrimitiveTypeImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaPrimitiveTypeImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5209,7 +5209,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaEnumImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaEnumImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5277,7 +5277,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaEnumLiteralImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaEnumLiteralImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5342,7 +5342,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaClassImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaClassImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5446,7 +5446,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType returnType0;
     
-        internal MetaFunctionTypeImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaFunctionTypeImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5490,7 +5490,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaFunctionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaFunctionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5569,7 +5569,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaModel model0;
     
-        internal MetaGlobalFunctionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaGlobalFunctionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5656,7 +5656,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaOperationImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaOperationImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5736,7 +5736,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaConstantImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaConstantImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5806,7 +5806,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaConstructorImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaConstructorImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5866,7 +5866,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaParameterImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaParameterImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -5938,7 +5938,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> annotations0;
     
-        internal MetaPropertyImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaPropertyImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6028,7 +6028,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaExpression value0;
     
-        internal MetaPropertyInitializerImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaPropertyInitializerImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6083,7 +6083,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaExpression value0;
     
-        internal MetaSynthetizedPropertyInitializerImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaSynthetizedPropertyInitializerImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6142,7 +6142,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaExpression value0;
     
-        internal MetaInheritedPropertyInitializerImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaInheritedPropertyInitializerImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6203,7 +6203,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6246,7 +6246,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaBracketExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaBracketExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6300,7 +6300,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaBoundExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaBoundExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6369,7 +6369,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaThisExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaThisExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6430,7 +6430,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaNullExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNullExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6475,7 +6475,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaTypeConversionExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaTypeConversionExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6530,7 +6530,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaTypeAsExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaTypeAsExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6585,7 +6585,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaTypeCastExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaTypeCastExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6640,7 +6640,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaTypeCheckExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaTypeCheckExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6693,7 +6693,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaTypeOfExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaTypeOfExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6747,7 +6747,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaConditionalExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaConditionalExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6810,7 +6810,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaConstantExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaConstantExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6866,7 +6866,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaIdentifierExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaIdentifierExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -6944,7 +6944,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaMemberAccessExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaMemberAccessExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7025,7 +7025,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaFunctionCallExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaFunctionCallExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7101,7 +7101,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaIndexerExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaIndexerExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7171,7 +7171,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaNewExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNewExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7224,7 +7224,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaProperty property0;
     
-        internal MetaNewPropertyInitializerImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNewPropertyInitializerImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7274,7 +7274,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaNewCollectionExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNewCollectionExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7335,7 +7335,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaOperatorExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaOperatorExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7413,7 +7413,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaUnaryExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaUnaryExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7496,7 +7496,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaUnaryPlusExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaUnaryPlusExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7579,7 +7579,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaNegateExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNegateExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7662,7 +7662,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaOnesComplementExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaOnesComplementExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7745,7 +7745,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaNotExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNotExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7828,7 +7828,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaUnaryAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaUnaryAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7911,7 +7911,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaPostIncrementAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaPostIncrementAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -7994,7 +7994,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaPostDecrementAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaPostDecrementAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8077,7 +8077,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaPreIncrementAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaPreIncrementAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8160,7 +8160,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaPreDecrementAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaPreDecrementAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8245,7 +8245,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaBinaryExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaBinaryExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8335,7 +8335,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaBinaryArithmeticExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaBinaryArithmeticExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8425,7 +8425,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaMultiplyExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaMultiplyExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8515,7 +8515,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaDivideExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaDivideExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8605,7 +8605,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaModuloExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaModuloExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8695,7 +8695,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaAddExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaAddExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8785,7 +8785,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaSubtractExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaSubtractExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8875,7 +8875,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaLeftShiftExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaLeftShiftExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -8965,7 +8965,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaRightShiftExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaRightShiftExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9055,7 +9055,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaBinaryComparisonExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaBinaryComparisonExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9145,7 +9145,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaLessThanExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaLessThanExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9235,7 +9235,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaLessThanOrEqualExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaLessThanOrEqualExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9325,7 +9325,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaGreaterThanExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaGreaterThanExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9415,7 +9415,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaGreaterThanOrEqualExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaGreaterThanOrEqualExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9505,7 +9505,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaEqualExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaEqualExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9595,7 +9595,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaNotEqualExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNotEqualExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9685,7 +9685,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaBinaryLogicalExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaBinaryLogicalExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9775,7 +9775,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaAndExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaAndExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9865,7 +9865,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaOrExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaOrExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -9955,7 +9955,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaExclusiveOrExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaExclusiveOrExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10045,7 +10045,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaAndAlsoExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaAndAlsoExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10135,7 +10135,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaOrElseExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaOrElseExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10225,7 +10225,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaNullCoalescingExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaNullCoalescingExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10315,7 +10315,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaAssignmentExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaAssignmentExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10405,7 +10405,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10495,7 +10495,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaArithmeticAssignmentExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaArithmeticAssignmentExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10585,7 +10585,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaMultiplyAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaMultiplyAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10675,7 +10675,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaDivideAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaDivideAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10765,7 +10765,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaModuloAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaModuloAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10855,7 +10855,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaAddAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaAddAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -10945,7 +10945,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaSubtractAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaSubtractAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -11035,7 +11035,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaLeftShiftAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaLeftShiftAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -11125,7 +11125,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaRightShiftAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaRightShiftAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -11215,7 +11215,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaLogicalAssignmentExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaLogicalAssignmentExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -11305,7 +11305,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaAndAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaAndAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -11395,7 +11395,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaExclusiveOrAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaExclusiveOrAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -11485,7 +11485,7 @@ namespace MetaDslx.Core.Immutable
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private global::MetaDslx.Core.Immutable.MetaType type0;
     
-        internal MetaOrAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+        internal MetaOrAssignExpressionImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
     		: base(id, model)
         {
         }
@@ -11556,7 +11556,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaAnnotatedElementBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaAnnotatedElementBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty);
@@ -11604,7 +11604,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaDocumentedElementBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder
     {
     
-        internal MetaDocumentedElementBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaDocumentedElementBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty);
@@ -11658,7 +11658,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaNamedElementBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNamedElementBuilder
     {
     
-        internal MetaNamedElementBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNamedElementBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty);
@@ -11731,7 +11731,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaTypedElementBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypedElementBuilder
     {
     
-        internal MetaTypedElementBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaTypedElementBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty);
@@ -11785,7 +11785,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaTypeBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypeBuilder
     {
     
-        internal MetaTypeBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaTypeBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MInit();
@@ -11821,7 +11821,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder> properties0;
     
-        internal MetaAnnotationBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaAnnotationBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotation.PropertiesProperty);
@@ -11907,7 +11907,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaAnnotationPropertyBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder
     {
     
-        internal MetaAnnotationPropertyBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaAnnotationPropertyBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotationProperty.ValueProperty);
@@ -12009,7 +12009,7 @@ namespace MetaDslx.Core.Immutable
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaDeclarationBuilder> declarations0;
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaNamespaceBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNamespaceBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.ParentProperty);
@@ -12173,7 +12173,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaDeclarationBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaDeclarationBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty);
@@ -12297,7 +12297,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaModelBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaModelBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.UriProperty);
@@ -12421,7 +12421,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaCollectionTypeBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder
     {
     
-        internal MetaCollectionTypeBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaCollectionTypeBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaCollectionType.KindProperty);
@@ -12494,7 +12494,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaNullableTypeBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNullableTypeBuilder
     {
     
-        internal MetaNullableTypeBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNullableTypeBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNullableType.InnerTypeProperty);
@@ -12548,7 +12548,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaPrimitiveTypeBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder
     {
     
-        internal MetaPrimitiveTypeBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaPrimitiveTypeBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty);
@@ -12624,7 +12624,7 @@ namespace MetaDslx.Core.Immutable
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder> operations0;
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaEnumBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaEnumBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum.EnumLiteralsProperty);
@@ -12773,7 +12773,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaEnumLiteralBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder
     {
     
-        internal MetaEnumLiteralBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaEnumLiteralBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnumLiteral.EnumProperty);
@@ -12888,7 +12888,7 @@ namespace MetaDslx.Core.Immutable
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder> operations0;
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaClassBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaClassBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.IsAbstractProperty);
@@ -13089,7 +13089,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaTypeBuilder> parameterTypes0;
     
-        internal MetaFunctionTypeBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaFunctionTypeBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionType.ParameterTypesProperty);
@@ -13152,7 +13152,7 @@ namespace MetaDslx.Core.Immutable
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder> parameters0;
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaFunctionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaFunctionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty);
@@ -13311,7 +13311,7 @@ namespace MetaDslx.Core.Immutable
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder> parameters0;
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaGlobalFunctionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaGlobalFunctionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty);
@@ -13507,7 +13507,7 @@ namespace MetaDslx.Core.Immutable
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder> parameters0;
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaOperationBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaOperationBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperation.ParentProperty);
@@ -13684,7 +13684,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaConstantBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaConstantBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstant.ValueProperty);
@@ -13853,7 +13853,7 @@ namespace MetaDslx.Core.Immutable
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder> initializers0;
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaConstructorBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaConstructorBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor.ParentProperty);
@@ -13972,7 +13972,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaParameterBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaParameterBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaParameter.FunctionProperty);
@@ -14102,7 +14102,7 @@ namespace MetaDslx.Core.Immutable
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> redefiningProperties0;
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> annotations0;
     
-        internal MetaPropertyBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaPropertyBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.KindProperty);
@@ -14280,7 +14280,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaPropertyInitializerBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder
     {
     
-        internal MetaPropertyInitializerBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaPropertyInitializerBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty);
@@ -14416,7 +14416,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaSynthetizedPropertyInitializerBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder
     {
     
-        internal MetaSynthetizedPropertyInitializerBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaSynthetizedPropertyInitializerBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty);
@@ -14552,7 +14552,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaInheritedPropertyInitializerBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder
     {
     
-        internal MetaInheritedPropertyInitializerBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaInheritedPropertyInitializerBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectNameProperty);
@@ -14726,7 +14726,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaExpressionBuilder
     {
     
-        internal MetaExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
@@ -14816,7 +14816,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaBracketExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaBracketExpressionBuilder
     {
     
-        internal MetaBracketExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaBracketExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBracketExpression.ExpressionProperty);
@@ -14932,7 +14932,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaBoundExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaBoundExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
@@ -15090,7 +15090,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaThisExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaThisExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty);
@@ -15247,7 +15247,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaNullExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNullExpressionBuilder
     {
     
-        internal MetaNullExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNullExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty);
@@ -15337,7 +15337,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaTypeConversionExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder
     {
     
-        internal MetaTypeConversionExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaTypeConversionExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty);
@@ -15471,7 +15471,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaTypeAsExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypeAsExpressionBuilder
     {
     
-        internal MetaTypeAsExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaTypeAsExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty);
@@ -15605,7 +15605,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaTypeCastExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypeCastExpressionBuilder
     {
     
-        internal MetaTypeCastExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaTypeCastExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty);
@@ -15739,7 +15739,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaTypeCheckExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypeCheckExpressionBuilder
     {
     
-        internal MetaTypeCheckExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaTypeCheckExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.TypeReferenceProperty);
@@ -15873,7 +15873,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaTypeOfExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder
     {
     
-        internal MetaTypeOfExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaTypeOfExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeOfExpression.TypeReferenceProperty);
@@ -15982,7 +15982,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaConditionalExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaConditionalExpressionBuilder
     {
     
-        internal MetaConditionalExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaConditionalExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ConditionProperty);
@@ -16166,7 +16166,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaConstantExpressionBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder
     {
     
-        internal MetaConstantExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaConstantExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstantExpression.ValueProperty);
@@ -16276,7 +16276,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaIdentifierExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaIdentifierExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIdentifierExpression.NameProperty);
@@ -16453,7 +16453,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaMemberAccessExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaMemberAccessExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.ExpressionProperty);
@@ -16655,7 +16655,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaFunctionCallExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaFunctionCallExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionCallExpression.ExpressionProperty);
@@ -16838,7 +16838,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaIndexerExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaIndexerExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIndexerExpression.ExpressionProperty);
@@ -17021,7 +17021,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder> propertyInitializers0;
     
-        internal MetaNewExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNewExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewExpression.TypeReferenceProperty);
@@ -17143,7 +17143,7 @@ namespace MetaDslx.Core.Immutable
     internal class MetaNewPropertyInitializerBuilderImpl : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder
     {
     
-        internal MetaNewPropertyInitializerBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNewPropertyInitializerBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty);
@@ -17261,7 +17261,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> values0;
     
-        internal MetaNewCollectionExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNewCollectionExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewCollectionExpression.TypeReferenceProperty);
@@ -17384,7 +17384,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaOperatorExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaOperatorExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty);
@@ -17560,7 +17560,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaUnaryExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaUnaryExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty);
@@ -17761,7 +17761,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaUnaryPlusExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaUnaryPlusExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty);
@@ -17962,7 +17962,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaNegateExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNegateExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty);
@@ -18163,7 +18163,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaOnesComplementExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaOnesComplementExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty);
@@ -18364,7 +18364,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaNotExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNotExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty);
@@ -18565,7 +18565,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaUnaryAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaUnaryAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty);
@@ -18766,7 +18766,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaPostIncrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaPostIncrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty);
@@ -18967,7 +18967,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaPostDecrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaPostDecrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty);
@@ -19168,7 +19168,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaPreIncrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaPreIncrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty);
@@ -19369,7 +19369,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaPreDecrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaPreDecrementAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty);
@@ -19570,7 +19570,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaBinaryExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaBinaryExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -19796,7 +19796,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaBinaryArithmeticExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaBinaryArithmeticExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -20022,7 +20022,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaMultiplyExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaMultiplyExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -20248,7 +20248,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaDivideExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaDivideExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -20474,7 +20474,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaModuloExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaModuloExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -20700,7 +20700,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaAddExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaAddExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -20926,7 +20926,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaSubtractExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaSubtractExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -21152,7 +21152,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaLeftShiftExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaLeftShiftExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -21378,7 +21378,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaRightShiftExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaRightShiftExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -21604,7 +21604,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaBinaryComparisonExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaBinaryComparisonExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -21830,7 +21830,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaLessThanExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaLessThanExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -22056,7 +22056,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaLessThanOrEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaLessThanOrEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -22282,7 +22282,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaGreaterThanExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaGreaterThanExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -22508,7 +22508,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaGreaterThanOrEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaGreaterThanOrEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -22734,7 +22734,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -22960,7 +22960,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaNotEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNotEqualExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -23186,7 +23186,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaBinaryLogicalExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaBinaryLogicalExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -23412,7 +23412,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaAndExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaAndExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -23638,7 +23638,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaOrExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaOrExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -23864,7 +23864,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaExclusiveOrExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaExclusiveOrExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -24090,7 +24090,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaAndAlsoExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaAndAlsoExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -24316,7 +24316,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaOrElseExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaOrElseExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -24542,7 +24542,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaNullCoalescingExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaNullCoalescingExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -24768,7 +24768,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaAssignmentExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaAssignmentExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -24994,7 +24994,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -25220,7 +25220,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaArithmeticAssignmentExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaArithmeticAssignmentExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -25446,7 +25446,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaMultiplyAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaMultiplyAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -25672,7 +25672,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaDivideAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaDivideAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -25898,7 +25898,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaModuloAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaModuloAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -26124,7 +26124,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaAddAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaAddAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -26350,7 +26350,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaSubtractAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaSubtractAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -26576,7 +26576,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaLeftShiftAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaLeftShiftAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -26802,7 +26802,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaRightShiftAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaRightShiftAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -27028,7 +27028,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaLogicalAssignmentExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaLogicalAssignmentExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -27254,7 +27254,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaAndAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaAndAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -27480,7 +27480,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaExclusiveOrAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaExclusiveOrAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -27706,7 +27706,7 @@ namespace MetaDslx.Core.Immutable
     {
         private global::MetaDslx.Core.Immutable.ModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> arguments0;
     
-        internal MetaOrAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+        internal MetaOrAssignExpressionBuilderImpl(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
     		: base(id, model)
         {
             this.MAttachProperty(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty);
@@ -28742,12 +28742,6 @@ namespace MetaDslx.Core.Immutable
     
         public MetaFactory(global::MetaDslx.Core.Immutable.MutableRedModel model)
             : base(model)
-        {
-    		MetaDescriptor.Init();
-        }
-    
-        public MetaFactory(global::MetaDslx.Core.Immutable.MutableRedModel model, global::MetaDslx.Core.Immutable.MutableRedModelPart part)
-            : base(model, part)
         {
     		MetaDescriptor.Init();
         }

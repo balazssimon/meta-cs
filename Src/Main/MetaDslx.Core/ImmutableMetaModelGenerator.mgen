@@ -89,12 +89,12 @@ internal class [cls.CSharpName(ClassKind.Immutable)]Id : SymbolId
     public override Type ImmutableType { get { return typeof([cls.CSharpName(ClassKind.Immutable)]); } }
     public override Type MutableType { get { return typeof([cls.CSharpName(ClassKind.Builder)]); } }
 ^
-    public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+    public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
     {
         return new [cls.CSharpImplName(ClassKind.Immutable)](this, model);
     }
 ^
-    public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+    public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
     {
         return new [cls.CSharpImplName(ClassKind.Builder)](this, model);
     }
@@ -247,7 +247,7 @@ internal class [cls.CSharpImplName(ClassKind.Immutable)] : global::MetaDslx.Core
     [GenerateImmutableField(cls, prop)]
 	[end loop]
 ^
-    internal [cls.CSharpImplName()](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModelPart model)
+    internal [cls.CSharpImplName()](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
 		: base(id, model)
     {
     }
@@ -279,7 +279,7 @@ internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.I
     [GenerateBuilderField(cls, prop)]
 	[end loop]
 ^
-    internal [cls.CSharpImplName(ClassKind.Builder)](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModelPart model)
+    internal [cls.CSharpImplName(ClassKind.Builder)](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
 		: base(id, model)
     {
 		[loop(cls->prop:GetAllProperties())]
@@ -686,12 +686,6 @@ public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.Model
 ^
     public [model.CSharpFactoryName()](global::MetaDslx.Core.Immutable.MutableRedModel model)
         : base(model)
-    {
-		[model.CSharpDescriptorName()].Init();
-    }
-^
-    public [model.CSharpFactoryName()](global::MetaDslx.Core.Immutable.MutableRedModel model, global::MetaDslx.Core.Immutable.MutableRedModelPart part)
-        : base(model, part)
     {
 		[model.CSharpDescriptorName()].Init();
     }
