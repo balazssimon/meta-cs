@@ -194,7 +194,7 @@ namespace MetaDslx.Core.Immutable
             this.declaringType = declaringType;
             this.immutableTypeInfo = immutableTypeInfo;
             this.mutableTypeInfo = mutableTypeInfo;
-            if (typeof(ImmutableRedSymbolBase).IsAssignableFrom(immutableTypeInfo.Type) && typeof(MutableRedSymbolBase).IsAssignableFrom(mutableTypeInfo.Type))
+            if (typeof(ImmutableSymbolBase).IsAssignableFrom(immutableTypeInfo.Type) && typeof(MutableSymbolBase).IsAssignableFrom(mutableTypeInfo.Type))
             {
                 this.flags |= ModelPropertyFlags.IsSymbol;
             }

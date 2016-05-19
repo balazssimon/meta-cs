@@ -78,7 +78,7 @@ function string GetAncestors(MetaClass cls, ClassKind classKind)
 		result += delim+super.CSharpFullName(classKind);
 	end loop
 	if (result == "" && classKind != ClassKind.ChildBuilder) 
-		result = " : global::MetaDslx.Core.Immutable.RedSymbol";
+		result = " : global::MetaDslx.Core.Immutable.ISymbol";
 	end if
 	return result;
 end function
@@ -89,12 +89,12 @@ internal class [cls.CSharpName(ClassKind.Immutable)]Id : SymbolId
     public override Type ImmutableType { get { return typeof([cls.CSharpName(ClassKind.Immutable)]); } }
     public override Type MutableType { get { return typeof([cls.CSharpName(ClassKind.Builder)]); } }
 ^
-    public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
+    public override IImmutableSymbol CreateImmutable(ImmutableModel model)
     {
         return new [cls.CSharpImplName(ClassKind.Immutable)](this, model);
     }
 ^
-    public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
+    public override IMutableSymbol CreateMutable(MutableModel model)
     {
         return new [cls.CSharpImplName(ClassKind.Builder)](this, model);
     }
@@ -241,13 +241,13 @@ template GenerateOperation(MetaOperation op)
 end template
 
 template GenerateImmutableInterfaceImpl(MetaModel model, MetaClass cls)
-internal class [cls.CSharpImplName(ClassKind.Immutable)] : global::MetaDslx.Core.Immutable.ImmutableRedSymbolBase, [cls.CSharpFullName(ClassKind.Immutable)]
+internal class [cls.CSharpImplName(ClassKind.Immutable)] : global::MetaDslx.Core.Immutable.ImmutableSymbolBase, [cls.CSharpFullName(ClassKind.Immutable)]
 {
     [loop(cls->prop:GetAllProperties())]
     [GenerateImmutableField(cls, prop)]
 	[end loop]
 ^
-    internal [cls.CSharpImplName()](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)
+    internal [cls.CSharpImplName()](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableModel model)
 		: base(id, model)
     {
     }
@@ -273,13 +273,13 @@ internal class [cls.CSharpImplName(ClassKind.Immutable)] : global::MetaDslx.Core
 end template
 
 template GenerateBuilderInterfaceImpl(MetaModel model, MetaClass cls)
-internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, [cls.CSharpFullName(ClassKind.Builder)]
+internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.Immutable.MutableSymbolBase, [cls.CSharpFullName(ClassKind.Builder)]
 {
     [loop(cls->prop:GetAllProperties() where prop.Type is MetaCollectionType)]
     [GenerateBuilderField(cls, prop)]
 	[end loop]
 ^
-    internal [cls.CSharpImplName(ClassKind.Builder)](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)
+    internal [cls.CSharpImplName(ClassKind.Builder)](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableModel model)
 		: base(id, model)
     {
 		[loop(cls->prop:GetAllProperties())]
@@ -310,7 +310,7 @@ internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.I
 ^
 public class [cls.CSharpImplName(ClassKind.ChildBuilder)] : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, [cls.CSharpFullName(ClassKind.ChildBuilder)]
 {
-    internal [cls.CSharpImplName(ClassKind.ChildBuilder)](global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
+    internal [cls.CSharpImplName(ClassKind.ChildBuilder)](global::MetaDslx.Core.Immutable.MutableSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
 		: base(parent, property)
     {
     }
@@ -684,19 +684,19 @@ public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.Model
 		[model.CSharpDescriptorName()].Init();
     }
 ^
-    public [model.CSharpFactoryName()](global::MetaDslx.Core.Immutable.MutableRedModel model)
+    public [model.CSharpFactoryName()](global::MetaDslx.Core.Immutable.MutableModel model)
         : base(model)
     {
 		[model.CSharpDescriptorName()].Init();
     }
 ^
-    public override global::MetaDslx.Core.Immutable.MutableRedSymbol Create(string type)
+    public override global::MetaDslx.Core.Immutable.IMutableSymbol Create(string type)
     {
         switch (type)
         {
 			[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
 				[if (!cls.IsAbstract)]
-            case "[cls.CSharpName()]": return (MutableRedSymbol)this.[cls.CSharpName()]();
+            case "[cls.CSharpName()]": return (global::MetaDslx.Core.Immutable.IMutableSymbol)this.[cls.CSharpName()]();
 				[end if]
 			[end loop]
             default:
@@ -711,7 +711,7 @@ public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.Model
     /// </summary>
     public [cls.CSharpName(ClassKind.Builder)] [cls.CSharpName()](params global::MetaDslx.Core.Immutable.PropertyInit["[]"] propertyInitializers)
 	{
-		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new [cls.CSharpName(ClassKind.Id)]());
+		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new [cls.CSharpName(ClassKind.Id)]());
 		symbol.MInitProperties(propertyInitializers);
 		symbol.MMakeCreated();
 		return ([cls.CSharpName(ClassKind.Builder)])symbol;
@@ -751,7 +751,7 @@ template GenerateInitImplementation(MetaModel model, MetaClass cls)
 @this.[init.ObjectName]LazyChild.[init.PropertyName] = () => [GenerateExpression(init.Value)];
 			[end if]
 		[else]
-((MutableRedSymbolBase)@this).MChildLazyAdd([init.Object.CSharpFullDescriptorName(ClassKind.Builder)], [init.Property.CSharpFullDescriptorName(ClassKind.Builder)], () => [GenerateExpression(init.Value)]);
+((MutableSymbolBase)@this).MChildLazyAdd([init.Object.CSharpFullDescriptorName(ClassKind.Builder)], [init.Property.CSharpFullDescriptorName(ClassKind.Builder)], () => [GenerateExpression(init.Value)]);
 		[end if]
 	[end if]
 [end loop]
@@ -947,9 +947,9 @@ template GenerateMetaModelInstance(MetaModel model)
 [Dictionary<ModelObject, string> mobjToName = model.GetNamedModelObjects()]
 public static class [model.CSharpInstancesName(ClassKind.Immutable)]
 {
-    private static global::MetaDslx.Core.Immutable.ImmutableRedModel model;
+    private static global::MetaDslx.Core.Immutable.ImmutableModel model;
 ^
-    public static global::MetaDslx.Core.Immutable.ImmutableRedModel Model
+    public static global::MetaDslx.Core.Immutable.ImmutableModel Model
     {
         get { return [model.Name]Instance.model; }
     }

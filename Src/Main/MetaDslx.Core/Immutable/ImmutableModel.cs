@@ -19,8 +19,8 @@ namespace MetaDslx.Core.Immutable
         public string Id { get { return this.id; } }
         public abstract Type ImmutableType { get; }
         public abstract Type MutableType { get; }
-        public abstract ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model);
-        public abstract MutableRedSymbol CreateMutableRed(MutableRedModel model);
+        public abstract IImmutableSymbol CreateImmutable(ImmutableModel model);
+        public abstract IMutableSymbol CreateMutable(MutableModel model);
 
         public override int GetHashCode()
         {
@@ -36,22 +36,23 @@ namespace MetaDslx.Core.Immutable
 
     // RED interface:
 
-    public interface RedSymbol
+    public interface ISymbol
     {
         object MMetaModel { get; }
         object MMetaClass { get; }
 
         RedModel MModel { get; }
-        RedSymbol MParent { get; }
-        IReadOnlyList<RedSymbol> MChildren { get; }
+        bool MIsReadOnly { get; }
+        ISymbol MParent { get; }
+        IReadOnlyList<ISymbol> MChildren { get; }
     }
 
     // Symbol:
-    public interface ImmutableRedSymbol : RedSymbol
+    public interface IImmutableSymbol : ISymbol
     {
-        new ImmutableRedModel MModel { get; }
-        new ImmutableRedSymbol MParent { get; }
-        new IReadOnlyList<ImmutableRedSymbol> MChildren { get; }
+        new ImmutableModel MModel { get; }
+        new IImmutableSymbol MParent { get; }
+        new IReadOnlyList<IImmutableSymbol> MChildren { get; }
         IReadOnlyList<ModelProperty> MProperties { get; }
         IReadOnlyList<ModelProperty> MAllProperties { get; }
         bool MTryGet(ModelProperty property, out object value);
@@ -63,11 +64,11 @@ namespace MetaDslx.Core.Immutable
         IReadOnlyList<ModelProperty> MGetAllProperties(string name);
     }
 
-    public interface MutableRedSymbol : RedSymbol
+    public interface IMutableSymbol : ISymbol
     {
-        new MutableRedModel MModel { get; }
-        new MutableRedSymbol MParent { get; }
-        new IReadOnlyList<MutableRedSymbol> MChildren { get; }
+        new MutableModel MModel { get; }
+        new IMutableSymbol MParent { get; }
+        new IReadOnlyList<IMutableSymbol> MChildren { get; }
         IReadOnlyList<ModelProperty> MProperties { get; }
         IReadOnlyList<ModelProperty> MAllProperties { get; }
         bool MTryGet(ModelProperty property, out object value);
@@ -99,13 +100,13 @@ namespace MetaDslx.Core.Immutable
 
     // List:
 
-    public interface ImmutableModelList<T> : IReadOnlyList<T>
+    public interface IImmutableModelList<T> : IReadOnlyList<T>
     {
         bool Contains(T item);
         bool HasLazy();
     }
 
-    public interface ModelList<T> : IList<T>
+    public interface IMutableModelList<T> : IList<T>
     {
         void LazyAdd(Func<T> lazy);
         void LazyAddRange(Func<IEnumerable<T>> lazy);
@@ -123,27 +124,27 @@ namespace MetaDslx.Core.Immutable
 
     public abstract class ModelFactory
     {
-        private MutableRedModel model;
+        private MutableModel model;
 
         public ModelFactory()
         {
-            this.model = new MutableRedModel();
+            this.model = new MutableModel();
         }
 
-        public ModelFactory(MutableRedModel model)
+        public ModelFactory(MutableModel model)
         {
             this.model = model;
         }
 
-        public MutableRedModel Model { get { return this.model; } }
+        public MutableModel Model { get { return this.model; } }
 
-        protected MutableRedSymbol AddSymbol(SymbolId id)
+        protected IMutableSymbol AddSymbol(SymbolId id)
         {
-            MutableRedSymbol symbol = this.model.AddSymbol(id);
+            IMutableSymbol symbol = this.model.AddSymbol(id);
             return symbol;
         }
 
-        public abstract MutableRedSymbol Create(string type);
+        public abstract IMutableSymbol Create(string type);
     }
 
     public class PropertyInit

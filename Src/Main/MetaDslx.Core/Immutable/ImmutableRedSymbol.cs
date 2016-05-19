@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
-    public abstract class ImmutableRedSymbolBase : ImmutableRedSymbol
+    public abstract class ImmutableSymbolBase : IImmutableSymbol
     {
         private string id;
         private SymbolId green;
-        private ImmutableRedModel model;
+        private ImmutableModel model;
 
-        protected ImmutableRedSymbolBase(SymbolId green, ImmutableRedModel model)
+        protected ImmutableSymbolBase(SymbolId green, ImmutableModel model)
         {
             this.id = Guid.NewGuid().ToString();
             this.green = green;
@@ -46,9 +46,9 @@ namespace MetaDslx.Core.Immutable
             return result;
         }
 
-        protected ImmutableModelList<T> GetList<T>(ModelProperty property, ref ImmutableModelList<T> value)
+        protected IImmutableModelList<T> GetList<T>(ModelProperty property, ref IImmutableModelList<T> value)
         {
-            ImmutableModelList<T> result = value;
+            IImmutableModelList<T> result = value;
             if (result == null)
             {
                 result = this.model.GetList<T>(this, property);
@@ -61,21 +61,25 @@ namespace MetaDslx.Core.Immutable
         public abstract object MMetaClass { get; }
 
         internal SymbolId Green { get { return this.green; } }
-        public ImmutableRedModel MModel
+        public ImmutableModel MModel
         {
             get
             {
                 return this.model;
             }
         }
-        public ImmutableRedSymbol MParent
+        public bool MIsReadOnly
+        {
+            get { return true; }
+        }
+        public IImmutableSymbol MParent
         {
             get
             {
                 return this.model.MParent(this);
             }
         }
-        public IReadOnlyList<ImmutableRedSymbol> MChildren
+        public IReadOnlyList<IImmutableSymbol> MChildren
         {
             get
             {
@@ -133,30 +137,30 @@ namespace MetaDslx.Core.Immutable
             return this.green.GetHashCode();
         }
 
-        RedModel RedSymbol.MModel
+        RedModel ISymbol.MModel
         {
             get { return this.MModel; }
         }
 
-        RedSymbol RedSymbol.MParent
+        ISymbol ISymbol.MParent
         {
             get { return this.MParent; }
         }
 
-        IReadOnlyList<RedSymbol> RedSymbol.MChildren
+        IReadOnlyList<ISymbol> ISymbol.MChildren
         {
             get { return this.MChildren; }
         }
     }
 
-    public abstract class MutableRedSymbolBase : MutableRedSymbol
+    public abstract class MutableSymbolBase : IMutableSymbol
     {
         private string id;
         private bool created;
         private SymbolId green;
-        private MutableRedModel model;
+        private MutableModel model;
 
-        protected MutableRedSymbolBase(SymbolId green, MutableRedModel model)
+        protected MutableSymbolBase(SymbolId green, MutableModel model)
         {
             this.id = Guid.NewGuid().ToString();
             this.green = green;
@@ -186,7 +190,7 @@ namespace MetaDslx.Core.Immutable
         protected void SetReference<T>(ModelProperty property, T value)
             where T : class
         {
-            if (value is MutableRedSymbolBase && ((MutableRedSymbolBase)(object)value).model != this.model)
+            if (value is MutableSymbolBase && ((MutableSymbolBase)(object)value).model != this.model)
             {
                 value = (T)this.model.ToRedValue(this.model.ToGreenValue(value));
             }
@@ -217,15 +221,20 @@ namespace MetaDslx.Core.Immutable
             this.model.SetLazyValue(this, property, value, !this.MIsCreated);
         }
 
-        protected ModelList<T> GetList<T>(ModelProperty property, ref ModelList<T> value)
+        protected IMutableModelList<T> GetList<T>(ModelProperty property, ref IMutableModelList<T> value)
         {
-            ModelList<T> result = this.model.GetList(this, property, value);
+            IMutableModelList<T> result = this.model.GetList(this, property, value);
             Interlocked.Exchange(ref value, result);
             return value;
         }
 
         public abstract object MMetaModel { get; }
         public abstract object MMetaClass { get; }
+
+        public bool MIsReadOnly
+        {
+            get { return this.model.IsReadOnly; }
+        }
 
         internal SymbolId Green { get { return this.green; } }
 
@@ -300,21 +309,21 @@ namespace MetaDslx.Core.Immutable
             this.MCheckPropertyInitialization();
         }
 
-        public MutableRedModel MModel
+        public MutableModel MModel
         {
             get
             {
                 return this.model;
             }
         }
-        public MutableRedSymbol MParent
+        public IMutableSymbol MParent
         {
             get
             {
                 return this.model.MParent(this);
             }
         }
-        public IReadOnlyList<MutableRedSymbol> MChildren
+        public IReadOnlyList<IMutableSymbol> MChildren
         {
             get
             {
@@ -441,17 +450,17 @@ namespace MetaDslx.Core.Immutable
             return this.green.GetHashCode();
         }
 
-        RedModel RedSymbol.MModel
+        RedModel ISymbol.MModel
         {
             get { return this.MModel; }
         }
 
-        RedSymbol RedSymbol.MParent
+        ISymbol ISymbol.MParent
         {
             get { return this.MParent; }
         }
 
-        IReadOnlyList<RedSymbol> RedSymbol.MChildren
+        IReadOnlyList<ISymbol> ISymbol.MChildren
         {
             get { return this.MChildren; }
         }
@@ -459,13 +468,13 @@ namespace MetaDslx.Core.Immutable
 
     public class LazyChildBuilderBase
     {
-        public LazyChildBuilderBase(MutableRedSymbolBase parent, ModelProperty property)
+        public LazyChildBuilderBase(MutableSymbolBase parent, ModelProperty property)
         {
             this.MParent = parent;
             this.MProperty = property;
         }
 
-        public MutableRedSymbolBase MParent { get; private set; }
+        public MutableSymbolBase MParent { get; private set; }
         public ModelProperty MProperty { get; private set; }
     }
 

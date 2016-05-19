@@ -202,13 +202,13 @@ namespace MetaDslx.Core.Immutable
     // RED:
 
     // thread-safe
-    public sealed class ImmutableRedList<T> : ImmutableModelList<T>, IReadOnlyList<T>, IInternalReadOnlyCollection
+    public sealed class ImmutableModelList<T> : IImmutableModelList<T>, IReadOnlyList<T>, IInternalReadOnlyCollection
     {
         private GreenList green;
-        private ImmutableRedModel model;
+        private ImmutableModel model;
         private List<T> cachedItems = null;
 
-        internal ImmutableRedList(GreenList green, ImmutableRedModel model)
+        internal ImmutableModelList(GreenList green, ImmutableModel model)
         {
             this.green = green;
             this.model = model;
@@ -216,7 +216,7 @@ namespace MetaDslx.Core.Immutable
 
         GreenList IInternalReadOnlyCollection.Green { get { return this.green; } }
         public ModelProperty Property { get { return this.green.Property; } }
-        public ImmutableRedModel Model { get { return this.model; } }
+        public ImmutableModel Model { get { return this.model; } }
 
         public T this[int index]
         {
@@ -269,19 +269,19 @@ namespace MetaDslx.Core.Immutable
 
 
     // NOT thread-safe
-    public sealed class MutableRedList<T> : ModelList<T>, IList<T>
+    public sealed class MutableModelList<T> : IMutableModelList<T>, IList<T>
     {
         private GreenList green;
-        private MutableRedModel model;
+        private MutableModel model;
 
-        internal MutableRedList(GreenList green, MutableRedModel model)
+        internal MutableModelList(GreenList green, MutableModel model)
         {
             this.green = green;
             this.model = model;
         }
 
         internal GreenList Green { get { return this.green; } }
-        public MutableRedModel Model { get { return this.model; } }
+        public MutableModel Model { get { return this.model; } }
 
         internal void UpdateGreen(GreenList value)
         {
@@ -401,13 +401,13 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    internal class ImmutableReadOnlyRedList<T> : IReadOnlyList<T>
-        where T : ImmutableRedSymbolBase
+    internal class ReadOnlyImmutableModelList<T> : IReadOnlyList<T>
+        where T : ImmutableSymbolBase
     {
         private IReadOnlyList<SymbolId> greenList;
-        private ImmutableRedModel model;
+        private ImmutableModel model;
 
-        public ImmutableReadOnlyRedList(IReadOnlyList<SymbolId> greenList, ImmutableRedModel model)
+        public ReadOnlyImmutableModelList(IReadOnlyList<SymbolId> greenList, ImmutableModel model)
         {
             this.greenList = greenList;
             this.model = model;
@@ -443,13 +443,13 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    internal class MutableReadOnlyRedList<T> : IReadOnlyList<T>
-        where T : MutableRedSymbolBase
+    internal class ReadOnlyMutableModelList<T> : IReadOnlyList<T>
+        where T : MutableSymbolBase
     {
         private IReadOnlyList<SymbolId> greenList;
-        private MutableRedModel model;
+        private MutableModel model;
 
-        public MutableReadOnlyRedList(IReadOnlyList<SymbolId> greenList, MutableRedModel model)
+        public ReadOnlyMutableModelList(IReadOnlyList<SymbolId> greenList, MutableModel model)
         {
             this.greenList = greenList;
             this.model = model;

@@ -15,7 +15,7 @@ namespace MetaDslx.Core.Immutable.Test
         [TestMethod]
         public void TestPersonPetStatic1()
         {
-            MutableRedModel model = new MutableRedModel();
+            MutableModel model = new MutableModel();
             TestModelFactory f = new TestModelFactory(model);
             Person p1 = f.Person();
             Pet t1 = f.Pet();
@@ -28,7 +28,7 @@ namespace MetaDslx.Core.Immutable.Test
         [TestMethod]
         public void TestPersonPetStatic2()
         {
-            MutableRedModel model = new MutableRedModel();
+            MutableModel model = new MutableModel();
             TestModelFactory f = new TestModelFactory(model);
             Person p1 = f.Person();
             Pet t1 = f.Pet();
@@ -42,7 +42,7 @@ namespace MetaDslx.Core.Immutable.Test
         [ExpectedException(typeof(ModelException))]
         public void TestPersonDogStatic1()
         {
-            MutableRedModel model = new MutableRedModel();
+            MutableModel model = new MutableModel();
             TestModelFactory f = new TestModelFactory(model);
             Person p1 = f.Person();
             Dog d1 = f.Dog();
@@ -56,7 +56,7 @@ namespace MetaDslx.Core.Immutable.Test
         [ExpectedException(typeof(ModelException))]
         public void TestPersonDogStatic2()
         {
-            MutableRedModel model = new MutableRedModel();
+            MutableModel model = new MutableModel();
             TestModelFactory f = new TestModelFactory(model);
             Person p1 = f.Person();
             Dog d1 = f.Dog();
@@ -70,7 +70,7 @@ namespace MetaDslx.Core.Immutable.Test
         [ExpectedException(typeof(ModelException))]
         public void TestStudentPetStatic1()
         {
-            MutableRedModel model = new MutableRedModel();
+            MutableModel model = new MutableModel();
             TestModelFactory f = new TestModelFactory(model);
             Student s1 = f.Student();
             Pet t1 = f.Pet();
@@ -84,7 +84,7 @@ namespace MetaDslx.Core.Immutable.Test
         [ExpectedException(typeof(ModelException))]
         public void TestStudentPetStatic2()
         {
-            MutableRedModel model = new MutableRedModel();
+            MutableModel model = new MutableModel();
             TestModelFactory f = new TestModelFactory(model);
             Student s1 = f.Student();
             Pet t1 = f.Pet();
@@ -97,7 +97,7 @@ namespace MetaDslx.Core.Immutable.Test
         [TestMethod]
         public void TestStudentDogStatic1()
         {
-            MutableRedModel model = new MutableRedModel();
+            MutableModel model = new MutableModel();
             TestModelFactory f = new TestModelFactory(model);
             Student s1 = f.Student();
             Dog d1 = f.Dog();
@@ -113,7 +113,7 @@ namespace MetaDslx.Core.Immutable.Test
         [TestMethod]
         public void TestStudentDogStatic2()
         {
-            MutableRedModel model = new MutableRedModel();
+            MutableModel model = new MutableModel();
             TestModelFactory f = new TestModelFactory(model);
             Student s1 = f.Student();
             Dog d1 = f.Dog();
@@ -129,7 +129,7 @@ namespace MetaDslx.Core.Immutable.Test
         [TestMethod]
         public void TestStudentDogStatic3()
         {
-            MutableRedModel model = new MutableRedModel();
+            MutableModel model = new MutableModel();
             TestModelFactory f = new TestModelFactory(model);
             Student s1 = f.Student();
             Dog d1 = f.Dog();
@@ -145,7 +145,7 @@ namespace MetaDslx.Core.Immutable.Test
         [TestMethod]
         public void TestStudentDogStatic4()
         {
-            MutableRedModel model = new MutableRedModel();
+            MutableModel model = new MutableModel();
             TestModelFactory f = new TestModelFactory(model);
             Student s1 = f.Student();
             Dog d1 = f.Dog();

@@ -28,13 +28,13 @@ namespace MetaDslx.Core.Immutable
         internal object CreateValue(GreenModel model)
         {
             object value = lazy();
-            if (value is MutableRedSymbolBase)
+            if (value is MutableSymbolBase)
             {
-                return ((MutableRedSymbolBase)value).Green;
+                return ((MutableSymbolBase)value).Green;
             }
-            else if (value is ImmutableRedSymbolBase)
+            else if (value is ImmutableSymbolBase)
             {
-                return ((ImmutableRedSymbolBase)value).Green;
+                return ((ImmutableSymbolBase)value).Green;
             }
             return value;
         }
@@ -60,13 +60,13 @@ namespace MetaDslx.Core.Immutable
             foreach (var item in lazy())
             {
                 object value = item;
-                if (value is MutableRedSymbolBase)
+                if (value is MutableSymbolBase)
                 {
-                    value = ((MutableRedSymbolBase)value).Green;
+                    value = ((MutableSymbolBase)value).Green;
                 }
-                else if (value is ImmutableRedSymbolBase)
+                else if (value is ImmutableSymbolBase)
                 {
-                    value = ((ImmutableRedSymbolBase)value).Green;
+                    value = ((ImmutableSymbolBase)value).Green;
                 }
                 result.Add(value);
             }
@@ -95,17 +95,17 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    public class LazyEvalException : ModelException
+    public sealed class LazyEvalException : ModelException
     {
         private List<LazyEvalEntry> evalStack;
 
-        public LazyEvalException(string message, List<LazyEvalEntry> evalStack)
+        internal LazyEvalException(string message, List<LazyEvalEntry> evalStack)
             : base(message)
         {
             this.evalStack = evalStack;
         }
 
-        public LazyEvalException(string message, List<LazyEvalEntry> evalStack, Exception innerException)
+        internal LazyEvalException(string message, List<LazyEvalEntry> evalStack, Exception innerException)
             : base(message, innerException)
         {
             this.evalStack = evalStack;
@@ -117,7 +117,6 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    // TODO: memory optimization
     internal class GreenSymbol
     {
         private static object Unassigned = new object();
@@ -774,9 +773,9 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(this.properties.ContainsKey(property));
             Debug.Assert(!(value is GreenLazyList));
             Debug.Assert(!(value is GreenSymbol));
-            Debug.Assert(!(value is RedSymbol));
+            Debug.Assert(!(value is ISymbol));
             Debug.Assert(!(oldValue is GreenLazyList));
-            Debug.Assert(!(oldValue is RedSymbol));
+            Debug.Assert(!(oldValue is ISymbol));
             if (value == oldValue) return false;
             if (this.IsCreated && !reassign)
             {
@@ -863,7 +862,7 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(this.properties.ContainsKey(property));
             Debug.Assert(value != Unassigned);
             Debug.Assert(!(value is GreenSymbol));
-            Debug.Assert(!(value is RedSymbol));
+            Debug.Assert(!(value is ISymbol));
             if (this.IsCreated)
             {
                 if (property.IsDerived)
@@ -942,7 +941,7 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(this.properties.ContainsKey(property));
             Debug.Assert(value != Unassigned);
             Debug.Assert(!(value is GreenSymbol));
-            Debug.Assert(!(value is RedSymbol));
+            Debug.Assert(!(value is ISymbol));
             Debug.Assert(!(index >= 0 && removeAll));
             if (this.IsCreated)
             {

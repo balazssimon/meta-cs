@@ -14,22 +14,22 @@ namespace MetaDslx.Core.Immutable
             throw new NotImplementedException();
         }
 
-        public override RedSymbol bind(BindingInfo definitions)
+        public override ISymbol bind(BindingInfo definitions)
         {
             throw new NotImplementedException();
         }
 
-        public override RedSymbol bind(RedSymbol context, BindingInfo definitions)
+        public override ISymbol bind(ISymbol context, BindingInfo definitions)
         {
             throw new NotImplementedException();
         }
 
-        public override MetaTypeBuilder current_type(RedSymbol symbol)
+        public override MetaTypeBuilder current_type(ISymbol symbol)
         {
             throw new NotImplementedException();
         }
 
-        public override BindingInfo definition_list(RedSymbol definition)
+        public override BindingInfo definition_list(ISymbol definition)
         {
             throw new NotImplementedException();
         }
@@ -49,7 +49,7 @@ namespace MetaDslx.Core.Immutable
             throw new NotImplementedException();
         }
 
-        public override BindingInfo resolve(RedSymbol context, string name)
+        public override BindingInfo resolve(ISymbol context, string name)
         {
             throw new NotImplementedException();
         }
@@ -59,7 +59,7 @@ namespace MetaDslx.Core.Immutable
             throw new NotImplementedException();
         }
 
-        public override BindingInfo resolve_name(RedSymbol context, string name)
+        public override BindingInfo resolve_name(ISymbol context, string name)
         {
             throw new NotImplementedException();
         }
@@ -69,12 +69,12 @@ namespace MetaDslx.Core.Immutable
             throw new NotImplementedException();
         }
 
-        public override BindingInfo resolve_type(RedSymbol context, string name)
+        public override BindingInfo resolve_type(ISymbol context, string name)
         {
             throw new NotImplementedException();
         }
 
-        public override bool type_check(RedSymbol symbol)
+        public override bool type_check(ISymbol symbol)
         {
             throw new NotImplementedException();
         }

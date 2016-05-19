@@ -488,11 +488,11 @@ namespace MetaDslx.Core
                 else innerName = collection.InnerType.CSharpFullName(classKind);
                 if (classKind == ClassKind.Immutable)
                 {
-                    return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.IImmutableModelList<" + innerName + ">";
                 }
                 else if (classKind == ClassKind.Builder)
                 {
-                    return "global::MetaDslx.Core.Immutable.ModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.IMutableModelList<" + innerName + ">";
                 }
                 else
                 {
@@ -527,7 +527,7 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "RedSymbol";
+                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "global::MetaDslx.Core.Immutable.ISymbol";
                 return primitive.ToCSharpType();
             }
             return GetPrefix(classKind) + ((MetaNamedElement)@this).Name + GetSuffix(classKind);
@@ -564,11 +564,11 @@ namespace MetaDslx.Core
                 string innerName = collection.InnerType.CSharpFullName(classKind);
                 if (classKind == ClassKind.Immutable)
                 {
-                    return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.IImmutableModelList<" + innerName + ">";
                 }
                 else if (classKind == ClassKind.Builder)
                 {
-                    return "global::MetaDslx.Core.Immutable.ModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.IMutableModelList<" + innerName + ">";
                 }
                 else
                 {
@@ -596,7 +596,7 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "RedSymbol";
+                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "global::MetaDslx.Core.Immutable.ISymbol";
                 return primitive.ToCSharpType();
             }
             MetaDeclaration decl = @this as MetaDeclaration;
@@ -738,11 +738,11 @@ namespace MetaDslx.Core
                 string innerName = collection.InnerType.CSharpImplName(classKind);
                 if (classKind == ClassKind.Immutable)
                 {
-                    return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.IImmutableModelList<" + innerName + ">";
                 }
                 else if (classKind == ClassKind.Builder)
                 {
-                    return "global::MetaDslx.Core.Immutable.ModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.IMutableModelList<" + innerName + ">";
                 }
                 else
                 {
@@ -767,7 +767,7 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "RedSymbol";
+                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "global::MetaDslx.Core.Immutable.ISymbol";
                 return primitive.ToCSharpType();
             }
             return GetPrefix(classKind) + ((MetaNamedElement)@this).Name + GetSuffix(classKind) + "Impl";
@@ -782,11 +782,11 @@ namespace MetaDslx.Core
                 string innerName = collection.InnerType.CSharpFullPublicName(classKind);
                 if (classKind == ClassKind.Immutable)
                 {
-                    return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.IImmutableModelList<" + innerName + ">";
                 }
                 else if (classKind == ClassKind.Builder)
                 {
-                    return "global::MetaDslx.Core.Immutable.ModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.IMutableModelList<" + innerName + ">";
                 }
                 else
                 {
@@ -811,7 +811,7 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "RedSymbol";
+                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "global::MetaDslx.Core.Immutable.ISymbol";
                 return primitive.ToCSharpType();
             }
             return @this.CSharpFullName(classKind);

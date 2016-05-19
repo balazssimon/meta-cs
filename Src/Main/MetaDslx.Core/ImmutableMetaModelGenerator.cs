@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_ImmutableMetaModelGenerator_461084957;
-    namespace __Hidden_ImmutableMetaModelGenerator_461084957
+    using __Hidden_ImmutableMetaModelGenerator_332110593;
+    namespace __Hidden_ImmutableMetaModelGenerator_332110593
     {
         internal static class __Extensions
         {
@@ -590,7 +590,7 @@ namespace MetaDslx.Core //1:1
             }
             if (result == "" && classKind != ClassKind.ChildBuilder) //80:2
             {
-                result = " : global::MetaDslx.Core.Immutable.RedSymbol"; //81:3
+                result = " : global::MetaDslx.Core.Immutable.ISymbol"; //81:3
             }
             return result; //83:2
         }
@@ -661,8 +661,8 @@ namespace MetaDslx.Core //1:1
             if (__tmp12Line != null) __out.Append(__tmp12Line);
             __out.AppendLine(false); //90:101
             __out.AppendLine(true); //91:1
-            __out.Append("    public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)"); //92:1
-            __out.AppendLine(false); //92:83
+            __out.Append("    public override IImmutableSymbol CreateImmutable(ImmutableModel model)"); //92:1
+            __out.AppendLine(false); //92:75
             __out.Append("    {"); //93:1
             __out.AppendLine(false); //93:6
             string __tmp14Line = "        return new "; //94:1
@@ -688,8 +688,8 @@ namespace MetaDslx.Core //1:1
             __out.Append("    }"); //95:1
             __out.AppendLine(false); //95:6
             __out.AppendLine(true); //96:1
-            __out.Append("    public override MutableRedSymbol CreateMutableRed(MutableRedModel model)"); //97:1
-            __out.AppendLine(false); //97:77
+            __out.Append("    public override IMutableSymbol CreateMutable(MutableModel model)"); //97:1
+            __out.AppendLine(false); //97:69
             __out.Append("    {"); //98:1
             __out.AppendLine(false); //98:6
             string __tmp18Line = "        return new "; //99:1
@@ -1589,7 +1589,7 @@ namespace MetaDslx.Core //1:1
                     if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
-            string __tmp4Line = " : global::MetaDslx.Core.Immutable.ImmutableRedSymbolBase, "; //244:57
+            string __tmp4Line = " : global::MetaDslx.Core.Immutable.ImmutableSymbolBase, "; //244:57
             if (__tmp4Line != null) __out.Append(__tmp4Line);
             StringBuilder __tmp5 = new StringBuilder();
             __tmp5.Append(cls.CSharpFullName(ClassKind.Immutable));
@@ -1604,7 +1604,7 @@ namespace MetaDslx.Core //1:1
                     __tmp5_last = __tmp5Reader.EndOfStream;
                     if (__tmp5Line != null) __out.Append(__tmp5Line);
                     if (!__tmp5_last) __out.AppendLine(true);
-                    __out.AppendLine(false); //244:157
+                    __out.AppendLine(false); //244:154
                 }
             }
             __out.Append("{"); //245:1
@@ -1657,9 +1657,9 @@ namespace MetaDslx.Core //1:1
                     if (!__tmp11_last) __out.AppendLine(true);
                 }
             }
-            string __tmp12Line = "(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableRedModel model)"; //250:36
+            string __tmp12Line = "(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.ImmutableModel model)"; //250:36
             if (__tmp12Line != null) __out.Append(__tmp12Line);
-            __out.AppendLine(false); //250:138
+            __out.AppendLine(false); //250:135
             __out.Append("		: base(id, model)"); //251:1
             __out.AppendLine(false); //251:20
             __out.Append("    {"); //252:1
@@ -1807,7 +1807,7 @@ namespace MetaDslx.Core //1:1
                     if (!__tmp3_last) __out.AppendLine(true);
                 }
             }
-            string __tmp4Line = " : global::MetaDslx.Core.Immutable.MutableRedSymbolBase, "; //276:55
+            string __tmp4Line = " : global::MetaDslx.Core.Immutable.MutableSymbolBase, "; //276:55
             if (__tmp4Line != null) __out.Append(__tmp4Line);
             StringBuilder __tmp5 = new StringBuilder();
             __tmp5.Append(cls.CSharpFullName(ClassKind.Builder));
@@ -1822,7 +1822,7 @@ namespace MetaDslx.Core //1:1
                     __tmp5_last = __tmp5Reader.EndOfStream;
                     if (__tmp5Line != null) __out.Append(__tmp5Line);
                     if (!__tmp5_last) __out.AppendLine(true);
-                    __out.AppendLine(false); //276:151
+                    __out.AppendLine(false); //276:148
                 }
             }
             __out.Append("{"); //277:1
@@ -1876,9 +1876,9 @@ namespace MetaDslx.Core //1:1
                     if (!__tmp11_last) __out.AppendLine(true);
                 }
             }
-            string __tmp12Line = "(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableRedModel model)"; //282:53
+            string __tmp12Line = "(global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableModel model)"; //282:53
             if (__tmp12Line != null) __out.Append(__tmp12Line);
-            __out.AppendLine(false); //282:153
+            __out.AppendLine(false); //282:150
             __out.Append("		: base(id, model)"); //283:1
             __out.AppendLine(false); //283:20
             __out.Append("    {"); //284:1
@@ -2105,9 +2105,9 @@ namespace MetaDslx.Core //1:1
                     if (!__tmp41_last) __out.AppendLine(true);
                 }
             }
-            string __tmp42Line = "(global::MetaDslx.Core.Immutable.MutableRedSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)"; //313:58
+            string __tmp42Line = "(global::MetaDslx.Core.Immutable.MutableSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)"; //313:58
             if (__tmp42Line != null) __out.Append(__tmp42Line);
-            __out.AppendLine(false); //313:175
+            __out.AppendLine(false); //313:172
             __out.Append("		: base(parent, property)"); //314:1
             __out.AppendLine(false); //314:27
             __out.Append("    {"); //315:1
@@ -5857,9 +5857,9 @@ namespace MetaDslx.Core //1:1
                     if (!__tmp14_last) __out.AppendLine(true);
                 }
             }
-            string __tmp15Line = "(global::MetaDslx.Core.Immutable.MutableRedModel model)"; //687:39
+            string __tmp15Line = "(global::MetaDslx.Core.Immutable.MutableModel model)"; //687:39
             if (__tmp15Line != null) __out.Append(__tmp15Line);
-            __out.AppendLine(false); //687:94
+            __out.AppendLine(false); //687:91
             __out.Append("        : base(model)"); //688:1
             __out.AppendLine(false); //688:22
             __out.Append("    {"); //689:1
@@ -5887,8 +5887,8 @@ namespace MetaDslx.Core //1:1
             __out.Append("    }"); //691:1
             __out.AppendLine(false); //691:6
             __out.AppendLine(true); //692:1
-            __out.Append("    public override global::MetaDslx.Core.Immutable.MutableRedSymbol Create(string type)"); //693:1
-            __out.AppendLine(false); //693:89
+            __out.Append("    public override global::MetaDslx.Core.Immutable.IMutableSymbol Create(string type)"); //693:1
+            __out.AppendLine(false); //693:87
             __out.Append("    {"); //694:1
             __out.AppendLine(false); //694:6
             __out.Append("        switch (type)"); //695:1
@@ -5929,7 +5929,7 @@ namespace MetaDslx.Core //1:1
                             if (!__tmp22_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp23Line = "\": return (MutableRedSymbol)this."; //699:37
+                    string __tmp23Line = "\": return (global::MetaDslx.Core.Immutable.IMutableSymbol)this."; //699:37
                     if (__tmp23Line != null) __out.Append(__tmp23Line);
                     StringBuilder __tmp24 = new StringBuilder();
                     __tmp24.Append(cls.CSharpName());
@@ -5946,9 +5946,9 @@ namespace MetaDslx.Core //1:1
                             if (!__tmp24_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp25Line = "();"; //699:88
+                    string __tmp25Line = "();"; //699:118
                     if (__tmp25Line != null) __out.Append(__tmp25Line);
-                    __out.AppendLine(false); //699:91
+                    __out.AppendLine(false); //699:121
                 }
             }
             __out.Append("            default:"); //702:1
@@ -6057,7 +6057,7 @@ namespace MetaDslx.Core //1:1
                     __out.AppendLine(false); //712:146
                     __out.Append("	{"); //713:1
                     __out.AppendLine(false); //713:3
-                    string __tmp40Line = "		global::MetaDslx.Core.Immutable.MutableRedSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableRedSymbolBase)this.AddSymbol(new "; //714:1
+                    string __tmp40Line = "		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new "; //714:1
                     if (__tmp40Line != null) __out.Append(__tmp40Line);
                     StringBuilder __tmp41 = new StringBuilder();
                     __tmp41.Append(cls.CSharpName(ClassKind.Id));
@@ -6074,9 +6074,9 @@ namespace MetaDslx.Core //1:1
                             if (!__tmp41_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp42Line = "());"; //714:168
+                    string __tmp42Line = "());"; //714:162
                     if (__tmp42Line != null) __out.Append(__tmp42Line);
-                    __out.AppendLine(false); //714:172
+                    __out.AppendLine(false); //714:166
                     __out.Append("		symbol.MInitProperties(propertyInitializers);"); //715:1
                     __out.AppendLine(false); //715:48
                     __out.Append("		symbol.MMakeCreated();"); //716:1
@@ -6486,7 +6486,7 @@ namespace MetaDslx.Core //1:1
                     }
                     else //753:4
                     {
-                        string __tmp44Line = "((MutableRedSymbolBase)@this).MChildLazyAdd("; //754:1
+                        string __tmp44Line = "((MutableSymbolBase)@this).MChildLazyAdd("; //754:1
                         if (__tmp44Line != null) __out.Append(__tmp44Line);
                         StringBuilder __tmp45 = new StringBuilder();
                         __tmp45.Append(init.Object.CSharpFullDescriptorName(ClassKind.Builder));
@@ -6503,7 +6503,7 @@ namespace MetaDslx.Core //1:1
                                 if (!__tmp45_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp46Line = ", "; //754:102
+                        string __tmp46Line = ", "; //754:99
                         if (__tmp46Line != null) __out.Append(__tmp46Line);
                         StringBuilder __tmp47 = new StringBuilder();
                         __tmp47.Append(init.Property.CSharpFullDescriptorName(ClassKind.Builder));
@@ -6520,7 +6520,7 @@ namespace MetaDslx.Core //1:1
                                 if (!__tmp47_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp48Line = ", () => "; //754:163
+                        string __tmp48Line = ", () => "; //754:160
                         if (__tmp48Line != null) __out.Append(__tmp48Line);
                         StringBuilder __tmp49 = new StringBuilder();
                         __tmp49.Append(GenerateExpression(init.Value));
@@ -6537,9 +6537,9 @@ namespace MetaDslx.Core //1:1
                                 if (!__tmp49_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp50Line = ");"; //754:203
+                        string __tmp50Line = ");"; //754:200
                         if (__tmp50Line != null) __out.Append(__tmp50Line);
-                        __out.AppendLine(false); //754:205
+                        __out.AppendLine(false); //754:202
                     }
                 }
             }
@@ -7939,11 +7939,11 @@ namespace MetaDslx.Core //1:1
             }
             __out.Append("{"); //949:1
             __out.AppendLine(false); //949:2
-            __out.Append("    private static global::MetaDslx.Core.Immutable.ImmutableRedModel model;"); //950:1
-            __out.AppendLine(false); //950:76
+            __out.Append("    private static global::MetaDslx.Core.Immutable.ImmutableModel model;"); //950:1
+            __out.AppendLine(false); //950:73
             __out.AppendLine(true); //951:1
-            __out.Append("    public static global::MetaDslx.Core.Immutable.ImmutableRedModel Model"); //952:1
-            __out.AppendLine(false); //952:74
+            __out.Append("    public static global::MetaDslx.Core.Immutable.ImmutableModel Model"); //952:1
+            __out.AppendLine(false); //952:71
             __out.Append("    {"); //953:1
             __out.AppendLine(false); //953:6
             string __tmp5Line = "        get { return "; //954:1
