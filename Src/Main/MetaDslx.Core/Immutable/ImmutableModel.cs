@@ -6,13 +6,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
-    public enum ReferenceMode
-    {
-        Default,
-        StrongReference,
-        WeakReference
-    }
-    
+   
     // GREEN interface:
 
     public abstract class SymbolId
@@ -22,10 +16,11 @@ namespace MetaDslx.Core.Immutable
         {
             this.id = Guid.NewGuid().ToString();
         }
+        public string Id { get { return this.id; } }
         public abstract Type ImmutableType { get; }
         public abstract Type MutableType { get; }
-        public abstract ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart part);
-        public abstract MutableRedSymbol CreateMutableRed(MutableRedModelPart part);
+        public abstract ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model);
+        public abstract MutableRedSymbol CreateMutableRed(MutableRedModel model);
 
         public override int GetHashCode()
         {
@@ -47,7 +42,6 @@ namespace MetaDslx.Core.Immutable
         object MMetaClass { get; }
 
         RedModel MModel { get; }
-        RedModelPart MModelPart { get; }
         RedSymbol MParent { get; }
         IReadOnlyList<RedSymbol> MChildren { get; }
     }
@@ -56,7 +50,6 @@ namespace MetaDslx.Core.Immutable
     public interface ImmutableRedSymbol : RedSymbol
     {
         new ImmutableRedModel MModel { get; }
-        new ImmutableRedModelPart MModelPart { get; }
         new ImmutableRedSymbol MParent { get; }
         new IReadOnlyList<ImmutableRedSymbol> MChildren { get; }
         IReadOnlyList<ModelProperty> MProperties { get; }
@@ -73,7 +66,6 @@ namespace MetaDslx.Core.Immutable
     public interface MutableRedSymbol : RedSymbol
     {
         new MutableRedModel MModel { get; }
-        new MutableRedModelPart MModelPart { get; }
         new MutableRedSymbol MParent { get; }
         new IReadOnlyList<MutableRedSymbol> MChildren { get; }
         IReadOnlyList<ModelProperty> MProperties { get; }
@@ -124,11 +116,6 @@ namespace MetaDslx.Core.Immutable
 
     // Model:
 
-    public interface RedModelPart
-    {
-
-    }
-
     public interface RedModel
     {
 
@@ -137,46 +124,22 @@ namespace MetaDslx.Core.Immutable
     public abstract class ModelFactory
     {
         private MutableRedModel model;
-        private MutableRedModelPart part;
 
         public ModelFactory()
         {
             this.model = new MutableRedModel();
-            var parts = this.model.Parts.ToList();
-            if (parts.Count != 1)
-            {
-                throw new ModelException("The model must have exactly one part.");
-            }
-            this.part = parts[0];
         }
 
         public ModelFactory(MutableRedModel model)
         {
             this.model = model;
-            var parts = this.model.Parts.ToList();
-            if (parts.Count != 1)
-            {
-                throw new ModelException("The model must have exactly one part.");
-            }
-            this.part = parts[0];
-        }
-
-        public ModelFactory(MutableRedModel model, MutableRedModelPart part)
-        {
-            this.model = model;
-            if (!model.Parts.Contains(part))
-            {
-                throw new ModelException("The model must contain the given part.");
-            }
-            this.part = part;
         }
 
         public MutableRedModel Model { get { return this.model; } }
-        public MutableRedModelPart ModelPart { get { return this.part; } }
 
         protected MutableRedSymbol AddSymbol(SymbolId id)
         {
-            MutableRedSymbol symbol = this.part.AddSymbol(id);
+            MutableRedSymbol symbol = this.model.AddSymbol(id);
             return symbol;
         }
 

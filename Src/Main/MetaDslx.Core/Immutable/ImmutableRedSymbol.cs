@@ -13,13 +13,13 @@ namespace MetaDslx.Core.Immutable
     {
         private string id;
         private SymbolId green;
-        private ImmutableRedModelPart part;
+        private ImmutableRedModel model;
 
-        protected ImmutableRedSymbolBase(SymbolId green, ImmutableRedModelPart part)
+        protected ImmutableRedSymbolBase(SymbolId green, ImmutableRedModel model)
         {
             this.id = Guid.NewGuid().ToString();
             this.green = green;
-            this.part = part;
+            this.model = model;
         }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
@@ -27,7 +27,7 @@ namespace MetaDslx.Core.Immutable
         {
             if (default(T).Equals(value))
             {
-                object valueObj = this.part.GetValue(this, property);
+                object valueObj = this.model.GetValue(this, property);
                 if (valueObj == null) value = default(T);
                 else value = (T)valueObj;
             }
@@ -40,7 +40,7 @@ namespace MetaDslx.Core.Immutable
             T result = value;
             if (result == null)
             {
-                result = (T)this.part.GetValue(this, property);
+                result = (T)this.model.GetValue(this, property);
                 result = Interlocked.CompareExchange(ref value, result, null) ?? result;
             }
             return result;
@@ -51,7 +51,7 @@ namespace MetaDslx.Core.Immutable
             ImmutableModelList<T> result = value;
             if (result == null)
             {
-                result = this.part.GetList<T>(this, property);
+                result = this.model.GetList<T>(this, property);
                 result = Interlocked.CompareExchange(ref value, result, null) ?? result;
             }
             return result;
@@ -65,74 +65,67 @@ namespace MetaDslx.Core.Immutable
         {
             get
             {
-                return this.part.Model;
-            }
-        }
-        public ImmutableRedModelPart MModelPart
-        {
-            get
-            {
-                return this.part;
+                return this.model;
             }
         }
         public ImmutableRedSymbol MParent
         {
             get
             {
-                return this.part.MParent(this);
+                return this.model.MParent(this);
             }
         }
         public IReadOnlyList<ImmutableRedSymbol> MChildren
         {
             get
             {
-                return this.part.MChildren(this);
+                return this.model.MChildren(this);
             }
         }
         public IReadOnlyList<ModelProperty> MProperties
         {
             get
             {
-                return this.part.MProperties(this);
+                return this.model.MProperties(this);
             }
         }
         public IReadOnlyList<ModelProperty> MAllProperties
         {
             get
             {
-                return this.part.MAllProperties(this);
+                return this.model.MAllProperties(this);
             }
         }
 
         public object MGet(ModelProperty property)
         {
-            return this.part.MGet(this, property);
+            return this.model.MGet(this, property);
         }
         public bool MIsSet(ModelProperty property)
         {
-            return this.part.MIsSet(this, property);
+            return this.model.MIsSet(this, property);
         }
         public ModelProperty MGetProperty(string name)
         {
-            return this.part.MGetProperty(this, name);
+            return this.model.MGetProperty(this, name);
         }
         public IReadOnlyList<ModelProperty> MGetAllProperties(string name)
         {
-            return this.part.MGetAllProperties(this, name);
+            return this.model.MGetAllProperties(this, name);
         }
         public bool MTryGet(ModelProperty property, out object value)
         {
-            bool result = this.part.MTryGet(this, property, out value);
-            value = this.part.ToRedValue(value);
+            bool result = this.model.MTryGet(this, property, out value);
+            value = this.model.ToRedValue(value);
             return result;
         }
         public bool MHasLazy(ModelProperty property)
         {
-            return this.part.MHasLazy(this, property);
+            return this.model.MHasLazy(this, property);
         }
         public bool MIsAttached(ModelProperty property)
         {
-            return this.part.MIsAttached(this, property);
+            return this.model.MIsAttached(this, property);
         }
 
         public override int GetHashCode()
@@ -143,11 +136,6 @@ namespace MetaDslx.Core.Immutable
         RedModel RedSymbol.MModel
         {
             get { return this.MModel; }
-        }
-
-        RedModelPart RedSymbol.MModelPart
-        {
-            get { return this.MModelPart; }
         }
 
         RedSymbol RedSymbol.MParent
@@ -166,19 +154,19 @@ namespace MetaDslx.Core.Immutable
         private string id;
         private bool created;
         private SymbolId green;
-        private MutableRedModelPart part;
+        private MutableRedModel model;
 
-        protected MutableRedSymbolBase(SymbolId green, MutableRedModelPart part)
+        protected MutableRedSymbolBase(SymbolId green, MutableRedModel model)
         {
             this.id = Guid.NewGuid().ToString();
             this.green = green;
-            this.part = part;
+            this.model = model;
         }
 
         protected T GetValue<T>(ModelProperty property)
             where T : struct
         {
-            object valueObj = this.part.GetValue(this, property);
+            object valueObj = this.model.GetValue(this, property);
             if (valueObj == null) return default(T);
             else return (T)valueObj;
         }
@@ -186,52 +174,52 @@ namespace MetaDslx.Core.Immutable
         protected void SetValue<T>(ModelProperty property, T value)
             where T : struct
         {
-            this.part.SetValue(this, property, value, !this.MIsCreated);
+            this.model.SetValue(this, property, value, !this.MIsCreated);
         }
 
         protected T GetReference<T>(ModelProperty property)
             where T : class
         {
-            return (T)this.part.GetValue(this, property);
+            return (T)this.model.GetValue(this, property);
         }
 
         protected void SetReference<T>(ModelProperty property, T value)
             where T : class
         {
-            if (value is MutableRedSymbolBase && ((MutableRedSymbolBase)(object)value).part != this.part)
+            if (value is MutableRedSymbolBase && ((MutableRedSymbolBase)(object)value).model != this.model)
             {
-                value = (T)this.part.ToRedValue(this.part.ToGreenValue(value));
+                value = (T)this.model.ToRedValue(this.model.ToGreenValue(value));
             }
-            this.part.SetValue(this, property, value, !this.MIsCreated);
+            this.model.SetValue(this, property, value, !this.MIsCreated);
         }
 
         protected Func<T> GetLazyValue<T>(ModelProperty property)
             where T : struct
         {
-            return (Func<T>)(object)this.part.GetLazyValue(this, property);
+            return (Func<T>)(object)this.model.GetLazyValue(this, property);
         }
 
         protected void SetLazyValue<T>(ModelProperty property, Func<T> value)
             where T : struct
         {
-            this.part.SetLazyValue(this, property, (Func<object>)(object)value, !this.MIsCreated);
+            this.model.SetLazyValue(this, property, (Func<object>)(object)value, !this.MIsCreated);
         }
 
         protected Func<T> GetLazyReference<T>(ModelProperty property)
             where T : class
         {
-            return (Func<T>)this.part.GetLazyValue(this, property);
+            return (Func<T>)this.model.GetLazyValue(this, property);
         }
 
         protected void SetLazyReference<T>(ModelProperty property, Func<T> value)
             where T : class
         {
-            this.part.SetLazyValue(this, property, value, !this.MIsCreated);
+            this.model.SetLazyValue(this, property, value, !this.MIsCreated);
         }
 
         protected ModelList<T> GetList<T>(ModelProperty property, ref ModelList<T> value)
         {
-            ModelList<T> result = this.part.GetList(this, property, value);
+            ModelList<T> result = this.model.GetList(this, property, value);
             Interlocked.Exchange(ref value, result);
             return value;
         }
@@ -300,7 +288,7 @@ namespace MetaDslx.Core.Immutable
             {
                 if (!this.created)
                 {
-                    this.created = this.part.MIsCreated(this);
+                    this.created = this.model.MIsCreated(this);
                 }
                 return this.created;
             }
@@ -308,7 +296,7 @@ namespace MetaDslx.Core.Immutable
 
         public void MMakeCreated()
         {
-            this.part.MMakeCreated(this);
+            this.model.MMakeCreated(this);
             this.MCheckPropertyInitialization();
         }
 
@@ -316,143 +304,136 @@ namespace MetaDslx.Core.Immutable
         {
             get
             {
-                return this.part.Model;
-            }
-        }
-        public MutableRedModelPart MModelPart
-        {
-            get
-            {
-                return this.part;
+                return this.model;
             }
         }
         public MutableRedSymbol MParent
         {
             get
             {
-                return this.part.MParent(this);
+                return this.model.MParent(this);
             }
         }
         public IReadOnlyList<MutableRedSymbol> MChildren
         {
             get
             {
-                return this.part.MChildren(this);
+                return this.model.MChildren(this);
             }
         }
         public IReadOnlyList<ModelProperty> MProperties
         {
             get
             {
-                return this.part.MProperties(this);
+                return this.model.MProperties(this);
             }
         }
         public IReadOnlyList<ModelProperty> MAllProperties
         {
             get
             {
-                return this.part.MAllProperties(this);
+                return this.model.MAllProperties(this);
             }
         }
 
         public object MGet(ModelProperty property)
         {
-            return this.part.MGet(this, property);
+            return this.model.MGet(this, property);
         }
         public bool MIsSet(ModelProperty property)
         {
-            return this.part.MIsSet(this, property);
+            return this.model.MIsSet(this, property);
         }
         public ModelProperty MGetProperty(string name)
         {
-            return this.part.MGetProperty(this, name);
+            return this.model.MGetProperty(this, name);
         }
         public IReadOnlyList<ModelProperty> MGetAllProperties(string name)
         {
-            return this.part.MGetAllProperties(this, name);
+            return this.model.MGetAllProperties(this, name);
         }
         public bool MTryGet(ModelProperty property, out object value)
         {
-            bool result = this.part.MTryGet(this, property, out value);
-            value = this.part.ToRedValue(value);
+            bool result = this.model.MTryGet(this, property, out value);
+            value = this.model.ToRedValue(value);
             return result;
         }
         public bool MHasLazy(ModelProperty property)
         {
-            return this.part.MHasLazy(this, property);
+            return this.model.MHasLazy(this, property);
         }
         public bool MIsAttached(ModelProperty property)
         {
-            return this.part.MIsAttached(this, property);
+            return this.model.MIsAttached(this, property);
         }
 
         public void MEvaluateLazy()
         {
-            this.part.MEvaluateLazy(this);
+            this.model.MEvaluateLazy(this);
         }
         public bool MAttachProperty(ModelProperty property)
         {
-            return this.part.MAttachProperty(this, property);
+            return this.model.MAttachProperty(this, property);
         }
         public bool MDetachProperty(ModelProperty property)
         {
-            return this.part.MDetachProperty(this, property);
+            return this.model.MDetachProperty(this, property);
         }
         public bool MClear(ModelProperty property, bool clearLazy = true)
         {
-            return this.part.MClear(this, property, clearLazy);
+            return this.model.MClear(this, property, clearLazy);
         }
         public bool MClearLazy(ModelProperty property)
         {
-            return this.part.MClearLazy(this, property);
+            return this.model.MClearLazy(this, property);
         }
         public bool MAdd(ModelProperty property, object value, bool reset = false)
         {
-            return this.part.MAdd(this, property, value, reset);
+            return this.model.MAdd(this, property, value, reset);
         }
         public bool MLazyAdd(ModelProperty property, Func<object> value, bool reset = false)
         {
-            return this.part.MLazyAdd(this, property, value, reset);
+            return this.model.MLazyAdd(this, property, value, reset);
         }
         public bool MAddRange(ModelProperty property, IEnumerable<object> value, bool reset = false)
         {
-            return this.part.MAddRange(this, property, value, reset);
+            return this.model.MAddRange(this, property, value, reset);
         }
         public bool MLazyAddRange(ModelProperty property, Func<IEnumerable<object>> values, bool reset = false)
         {
-            return this.part.MLazyAddRange(this, property, values, reset);
+            return this.model.MLazyAddRange(this, property, values, reset);
         }
         public bool MLazyAddRange(ModelProperty property, IEnumerable<Func<object>> values, bool reset = false)
         {
-            return this.part.MLazyAddRange(this, property, values, reset);
+            return this.model.MLazyAddRange(this, property, values, reset);
         }
         public bool MChildLazyAdd(ModelProperty child, ModelProperty property, Func<object> value, bool reset = false)
         {
-            return this.part.MChildLazyAdd(this, child, property, value, reset);
+            return this.model.MChildLazyAdd(this, child, property, value, reset);
         }
         public bool MChildLazyAddRange(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset = false)
         {
-            return this.part.MChildLazyAddRange(this, child, property, values, reset);
+            return this.model.MChildLazyAddRange(this, child, property, values, reset);
         }
         public bool MChildLazyAddRange(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset = false)
         {
-            return this.part.MChildLazyAddRange(this, child, property, values, reset);
+            return this.model.MChildLazyAddRange(this, child, property, values, reset);
         }
         public bool MChildLazyClear(ModelProperty child)
         {
-            return this.part.MChildLazyClear(this, child);
+            return this.model.MChildLazyClear(this, child);
         }
         public bool MChildLazyClear(ModelProperty child, ModelProperty property)
         {
-            return this.part.MChildLazyClear(this, child, property);
+            return this.model.MChildLazyClear(this, child, property);
         }
         public bool MRemove(ModelProperty property, object value, bool removeAll = false)
         {
-            return this.part.MRemove(this, property, value, removeAll);
+            return this.model.MRemove(this, property, value, removeAll);
         }
         public void MUnset(ModelProperty property)
         {
-            this.part.MUnset(this, property);
+            this.model.MUnset(this, property);
         }
 
         public override int GetHashCode()
@@ -463,11 +444,6 @@ namespace MetaDslx.Core.Immutable
         RedModel RedSymbol.MModel
         {
             get { return this.MModel; }
-        }
-
-        RedModelPart RedSymbol.MModelPart
-        {
-            get { return this.MModelPart; }
         }
 
         RedSymbol RedSymbol.MParent

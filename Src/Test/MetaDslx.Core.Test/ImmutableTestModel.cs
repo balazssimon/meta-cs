@@ -173,12 +173,6 @@ namespace MetaDslx.Core.Immutable.Test
             TestModelDescriptor.Init();
         }
 
-        public TestModelFactory(MutableRedModel model, MutableRedModelPart part)
-            : base(model, part)
-        {
-            TestModelDescriptor.Init();
-        }
-
         public override MutableRedSymbol Create(string type)
         {
             switch (type)
@@ -270,12 +264,12 @@ namespace MetaDslx.Core.Immutable.Test
         public override Type ImmutableType { get { return typeof(ImmutableHusband); } }
         public override Type MutableType { get { return typeof(Husband); } }
 
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutableHusbandImpl(this, model);
         }
 
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new HusbandImpl(this, model);
         }
@@ -286,12 +280,12 @@ namespace MetaDslx.Core.Immutable.Test
         public override Type ImmutableType { get { return typeof(ImmutableWife); } }
         public override Type MutableType { get { return typeof(Wife); } }
 
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutableWifeImpl(this, model);
         }
 
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new WifeImpl(this, model);
         }
@@ -302,12 +296,12 @@ namespace MetaDslx.Core.Immutable.Test
         public override Type ImmutableType { get { return typeof(ImmutableListChild); } }
         public override Type MutableType { get { return typeof(ListChild); } }
 
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutableListChildImpl(this, model);
         }
 
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new ListChildImpl(this, model);
         }
@@ -318,12 +312,12 @@ namespace MetaDslx.Core.Immutable.Test
         public override Type ImmutableType { get { return typeof(ImmutableListParent); } }
         public override Type MutableType { get { return typeof(ListParent); } }
 
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutableListParentImpl(this, model);
         }
 
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new ListParentImpl(this, model);
         }
@@ -334,12 +328,12 @@ namespace MetaDslx.Core.Immutable.Test
         public override Type ImmutableType { get { return typeof(ImmutableUser); } }
         public override Type MutableType { get { return typeof(User); } }
 
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutableUserImpl(this, model);
         }
 
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new UserImpl(this, model);
         }
@@ -350,12 +344,12 @@ namespace MetaDslx.Core.Immutable.Test
         public override Type ImmutableType { get { return typeof(ImmutableRole); } }
         public override Type MutableType { get { return typeof(Role); } }
 
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutableRoleImpl(this, model);
         }
 
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new RoleImpl(this, model);
         }
@@ -366,12 +360,12 @@ namespace MetaDslx.Core.Immutable.Test
         public override Type ImmutableType { get { return typeof(ImmutablePerson); } }
         public override Type MutableType { get { return typeof(Person); } }
 
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutablePersonImpl(this, model);
         }
 
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new PersonImpl(this, model);
         }
@@ -382,12 +376,12 @@ namespace MetaDslx.Core.Immutable.Test
         public override Type ImmutableType { get { return typeof(ImmutableStudent); } }
         public override Type MutableType { get { return typeof(Student); } }
 
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutableStudentImpl(this, model);
         }
 
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new StudentImpl(this, model);
         }
@@ -398,12 +392,12 @@ namespace MetaDslx.Core.Immutable.Test
         public override Type ImmutableType { get { return typeof(ImmutablePet); } }
         public override Type MutableType { get { return typeof(Pet); } }
 
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutablePetImpl(this, model);
         }
 
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new PetImpl(this, model);
         }
@@ -414,12 +408,12 @@ namespace MetaDslx.Core.Immutable.Test
         public override Type ImmutableType { get { return typeof(ImmutableDog); } }
         public override Type MutableType { get { return typeof(Dog); } }
 
-        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModelPart model)
+        public override ImmutableRedSymbol CreateImmutableRed(ImmutableRedModel model)
         {
             return new ImmutableDogImpl(this, model);
         }
 
-        public override MutableRedSymbol CreateMutableRed(MutableRedModelPart model)
+        public override MutableRedSymbol CreateMutableRed(MutableRedModel model)
         {
             return new DogImpl(this, model);
         }
@@ -553,7 +547,7 @@ namespace MetaDslx.Core.Immutable.Test
         private string name;
         private ImmutableWife wife;
 
-        public ImmutableHusbandImpl(SymbolId green, ImmutableRedModelPart model)
+        public ImmutableHusbandImpl(SymbolId green, ImmutableRedModel model)
             : base(green, model)
         {
         }
@@ -584,7 +578,7 @@ namespace MetaDslx.Core.Immutable.Test
         private string name;
         private ImmutableHusband husband;
 
-        public ImmutableWifeImpl(SymbolId green, ImmutableRedModelPart model)
+        public ImmutableWifeImpl(SymbolId green, ImmutableRedModel model)
             : base(green, model)
         {
         }
@@ -615,7 +609,7 @@ namespace MetaDslx.Core.Immutable.Test
         private string name;
         private ImmutableListParent parent;
 
-        public ImmutableListChildImpl(SymbolId green, ImmutableRedModelPart model)
+        public ImmutableListChildImpl(SymbolId green, ImmutableRedModel model)
             : base(green, model)
         {
         }
@@ -646,7 +640,7 @@ namespace MetaDslx.Core.Immutable.Test
         private string name;
         private ImmutableModelList<ImmutableListChild> children;
 
-        public ImmutableListParentImpl(SymbolId green, ImmutableRedModelPart model)
+        public ImmutableListParentImpl(SymbolId green, ImmutableRedModel model)
             : base(green, model)
         {
         }
@@ -677,7 +671,7 @@ namespace MetaDslx.Core.Immutable.Test
         private string name;
         private ImmutableModelList<ImmutableRole> roles;
 
-        public ImmutableUserImpl(SymbolId green, ImmutableRedModelPart model)
+        public ImmutableUserImpl(SymbolId green, ImmutableRedModel model)
             : base(green, model)
         {
         }
@@ -708,7 +702,7 @@ namespace MetaDslx.Core.Immutable.Test
         private string name;
         private ImmutableModelList<ImmutableUser> users;
 
-        public ImmutableRoleImpl(SymbolId green, ImmutableRedModelPart model)
+        public ImmutableRoleImpl(SymbolId green, ImmutableRedModel model)
             : base(green, model)
         {
         }
@@ -739,7 +733,7 @@ namespace MetaDslx.Core.Immutable.Test
         private string name;
         private ImmutableModelList<ImmutablePet> pets;
 
-        public ImmutablePersonImpl(SymbolId green, ImmutableRedModelPart model)
+        public ImmutablePersonImpl(SymbolId green, ImmutableRedModel model)
             : base(green, model)
         {
         }
@@ -771,7 +765,7 @@ namespace MetaDslx.Core.Immutable.Test
         private ImmutableModelList<ImmutablePet> pets;
         private ImmutableModelList<ImmutableDog> dogs;
 
-        public ImmutableStudentImpl(SymbolId green, ImmutableRedModelPart model)
+        public ImmutableStudentImpl(SymbolId green, ImmutableRedModel model)
             : base(green, model)
         {
         }
@@ -807,7 +801,7 @@ namespace MetaDslx.Core.Immutable.Test
         private string name;
         private ImmutablePerson owner;
 
-        public ImmutablePetImpl(SymbolId green, ImmutableRedModelPart model)
+        public ImmutablePetImpl(SymbolId green, ImmutableRedModel model)
             : base(green, model)
         {
         }
@@ -839,7 +833,7 @@ namespace MetaDslx.Core.Immutable.Test
         private ImmutablePerson owner;
         private ImmutableStudent friend;
 
-        public ImmutableDogImpl(SymbolId green, ImmutableRedModelPart model)
+        public ImmutableDogImpl(SymbolId green, ImmutableRedModel model)
             : base(green, model)
         {
         }
@@ -872,7 +866,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class HusbandImpl : MutableRedSymbolBase, Husband, HusbandBuilder
     {
-        public HusbandImpl(SymbolId green, MutableRedModelPart model)
+        public HusbandImpl(SymbolId green, MutableRedModel model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Husband.NameProperty);
@@ -927,7 +921,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class WifeImpl : MutableRedSymbolBase, Wife
     {
-        public WifeImpl(SymbolId green, MutableRedModelPart model)
+        public WifeImpl(SymbolId green, MutableRedModel model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Wife.NameProperty);
@@ -964,7 +958,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class ListChildImpl : MutableRedSymbolBase, ListChild
     {
-        public ListChildImpl(SymbolId green, MutableRedModelPart model)
+        public ListChildImpl(SymbolId green, MutableRedModel model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.ListChild.NameProperty);
@@ -1003,7 +997,7 @@ namespace MetaDslx.Core.Immutable.Test
     {
         private ModelList<ListChild> children;
 
-        public ListParentImpl(SymbolId green, MutableRedModelPart model)
+        public ListParentImpl(SymbolId green, MutableRedModel model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.ListParent.NameProperty);
@@ -1042,7 +1036,7 @@ namespace MetaDslx.Core.Immutable.Test
     {
         private ModelList<Role> roles;
 
-        public UserImpl(SymbolId green, MutableRedModelPart model)
+        public UserImpl(SymbolId green, MutableRedModel model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.User.NameProperty);
@@ -1081,7 +1075,7 @@ namespace MetaDslx.Core.Immutable.Test
     {
         private ModelList<User> roles;
 
-        public RoleImpl(SymbolId green, MutableRedModelPart model)
+        public RoleImpl(SymbolId green, MutableRedModel model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Role.NameProperty);
@@ -1120,7 +1114,7 @@ namespace MetaDslx.Core.Immutable.Test
     {
         private ModelList<Pet> pets;
 
-        public PersonImpl(SymbolId green, MutableRedModelPart model)
+        public PersonImpl(SymbolId green, MutableRedModel model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Person.NameProperty);
@@ -1160,7 +1154,7 @@ namespace MetaDslx.Core.Immutable.Test
         private ModelList<Pet> pets;
         private ModelList<Dog> dogs;
 
-        public StudentImpl(SymbolId green, MutableRedModelPart model)
+        public StudentImpl(SymbolId green, MutableRedModel model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Person.NameProperty);
@@ -1203,7 +1197,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class PetImpl : MutableRedSymbolBase, Pet
     {
-        public PetImpl(SymbolId green, MutableRedModelPart model)
+        public PetImpl(SymbolId green, MutableRedModel model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Pet.NameProperty);
@@ -1240,7 +1234,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class DogImpl : MutableRedSymbolBase, Dog
     {
-        public DogImpl(SymbolId green, MutableRedModelPart model)
+        public DogImpl(SymbolId green, MutableRedModel model)
             : base(green, model)
         {
             this.MAttachProperty(TestModelDescriptor.Pet.NameProperty);

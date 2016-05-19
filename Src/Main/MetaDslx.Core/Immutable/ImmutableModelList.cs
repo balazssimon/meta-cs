@@ -205,10 +205,10 @@ namespace MetaDslx.Core.Immutable
     public sealed class ImmutableRedList<T> : ImmutableModelList<T>, IReadOnlyList<T>, IInternalReadOnlyCollection
     {
         private GreenList green;
-        private ImmutableRedModelPart model;
+        private ImmutableRedModel model;
         private List<T> cachedItems = null;
 
-        internal ImmutableRedList(GreenList green, ImmutableRedModelPart model)
+        internal ImmutableRedList(GreenList green, ImmutableRedModel model)
         {
             this.green = green;
             this.model = model;
@@ -216,7 +216,7 @@ namespace MetaDslx.Core.Immutable
 
         GreenList IInternalReadOnlyCollection.Green { get { return this.green; } }
         public ModelProperty Property { get { return this.green.Property; } }
-        public ImmutableRedModelPart Model { get { return this.model; } }
+        public ImmutableRedModel Model { get { return this.model; } }
 
         public T this[int index]
         {
@@ -272,16 +272,16 @@ namespace MetaDslx.Core.Immutable
     public sealed class MutableRedList<T> : ModelList<T>, IList<T>
     {
         private GreenList green;
-        private MutableRedModelPart model;
+        private MutableRedModel model;
 
-        internal MutableRedList(GreenList green, MutableRedModelPart model)
+        internal MutableRedList(GreenList green, MutableRedModel model)
         {
             this.green = green;
             this.model = model;
         }
 
         internal GreenList Green { get { return this.green; } }
-        public MutableRedModelPart Model { get { return this.model; } }
+        public MutableRedModel Model { get { return this.model; } }
 
         internal void UpdateGreen(GreenList value)
         {
@@ -405,19 +405,19 @@ namespace MetaDslx.Core.Immutable
         where T : ImmutableRedSymbolBase
     {
         private IReadOnlyList<SymbolId> greenList;
-        private ImmutableRedModelPart part;
+        private ImmutableRedModel model;
 
-        public ImmutableReadOnlyRedList(IReadOnlyList<SymbolId> greenList, ImmutableRedModelPart part)
+        public ImmutableReadOnlyRedList(IReadOnlyList<SymbolId> greenList, ImmutableRedModel model)
         {
             this.greenList = greenList;
-            this.part = part;
+            this.model = model;
         }
 
         public T this[int index]
         {
             get
             {
-                return (T)this.part.Model.GetRedSymbol(this.greenList[index]);
+                return (T)this.model.GetRedSymbol(this.greenList[index]);
             }
         }
 
@@ -433,7 +433,7 @@ namespace MetaDslx.Core.Immutable
         {
             foreach (var item in greenList)
             {
-                yield return (T)this.part.Model.GetRedSymbol(item);
+                yield return (T)this.model.GetRedSymbol(item);
             }
         }
 
@@ -447,19 +447,19 @@ namespace MetaDslx.Core.Immutable
         where T : MutableRedSymbolBase
     {
         private IReadOnlyList<SymbolId> greenList;
-        private MutableRedModelPart part;
+        private MutableRedModel model;
 
-        public MutableReadOnlyRedList(IReadOnlyList<SymbolId> greenList, MutableRedModelPart part)
+        public MutableReadOnlyRedList(IReadOnlyList<SymbolId> greenList, MutableRedModel model)
         {
             this.greenList = greenList;
-            this.part = part;
+            this.model = model;
         }
 
         public T this[int index]
         {
             get
             {
-                return (T)this.part.Model.GetRedSymbol(this.greenList[index]);
+                return (T)this.model.GetRedSymbol(this.greenList[index]);
             }
         }
 
@@ -475,7 +475,7 @@ namespace MetaDslx.Core.Immutable
         {
             foreach (var item in greenList)
             {
-                yield return (T)this.part.Model.GetRedSymbol(item);
+                yield return (T)this.model.GetRedSymbol(item);
             }
         }
 
