@@ -32,28 +32,22 @@ namespace MetaDslx.Core.Immutable
     internal class GreenList : IReadOnlyList<object>
     {
         private static readonly TxList<object> emptyList = new TxList<object>();
-        private SymbolId parent;
-        private ModelProperty property;
+        private bool unique;
         private TxList<object> items;
         private TxList<object> lazyItems;
 
-        internal GreenList(SymbolId parent, ModelProperty property)
+        internal GreenList(bool unique)
         {
-            this.parent = parent;
-            this.property = property;
+            this.unique = unique;
             this.items = new TxList<object>();
         }
 
         internal GreenList(GreenList other)
         {
-            this.parent = other.parent;
-            this.property = other.property;
+            this.unique = other.unique;
             this.items = new TxList<object>(other.items);
             this.lazyItems = other.lazyItems != null ? new TxList<object>(other.lazyItems) : null;
         }
-
-        internal SymbolId Parent { get { return this.parent; } }
-        internal ModelProperty Property { get { return this.property; } }
 
         public int Count { get { return this.items.Count; } }
         public object this[int index] { get { return this.items[index]; } }
@@ -74,25 +68,7 @@ namespace MetaDslx.Core.Immutable
         internal bool Add(object item)
         {
             Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
-            if (item is SymbolId)
-            {
-                if (!property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)item).MutableType))
-                {
-                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", ((SymbolId)item).MutableType, property.MutableTypeInfo.Type));
-                }
-            }
-            else 
-            {
-                if (!property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType()))
-                {
-                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", item.GetType(), property.MutableTypeInfo.Type));
-                }
-            }
-            if (this.property.IsNonNull && item == null)
-            {
-                throw new ModelException(string.Format("Cannot add null to collection of non-null types '{0}'.", property.MutableTypeInfo.Type));
-            }
-            if (this.property.IsNonUnique || !this.items.Contains(item))
+            if (!this.unique || !this.items.Contains(item))
             {
                 this.items.Add(item);
                 return true;
@@ -123,25 +99,7 @@ namespace MetaDslx.Core.Immutable
         internal bool Insert(int index, object item)
         {
             Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
-            if (item is SymbolId)
-            {
-                if (!property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)item).MutableType))
-                {
-                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", ((SymbolId)item).MutableType, property.MutableTypeInfo.Type));
-                }
-            }
-            else
-            {
-                if (!property.MutableTypeInfo.Type.IsAssignableFrom(item.GetType()))
-                {
-                    throw new ModelException(string.Format("An object of type '{0}' cannot be added to a collection of types '{1}'.", item.GetType(), property.MutableTypeInfo.Type));
-                }
-            }
-            if (this.property.IsNonNull && item == null)
-            {
-                throw new ModelException(string.Format("Cannot add null to collection of non-null types '{0}'.", property.MutableTypeInfo.Type));
-            }
-            if (this.property.IsNonUnique || !this.items.Contains(item))
+            if (!this.unique || !this.items.Contains(item))
             {
                 this.items.Insert(index, item);
                 return true;
@@ -204,6 +162,8 @@ namespace MetaDslx.Core.Immutable
     // thread-safe
     public sealed class ImmutableModelList<T> : IImmutableModelList<T>, IReadOnlyList<T>, IInternalReadOnlyCollection
     {
+        internal static readonly ImmutableModelList<T> Empty = new ImmutableModelList<T>();
+
         private GreenList green;
         private ImmutableModel model;
         private List<T> cachedItems = null;
@@ -215,7 +175,6 @@ namespace MetaDslx.Core.Immutable
         }
 
         GreenList IInternalReadOnlyCollection.Green { get { return this.green; } }
-        public ModelProperty Property { get { return this.green.Property; } }
         public ImmutableModel Model { get { return this.model; } }
 
         public T this[int index]

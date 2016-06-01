@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImmutableMetaImplementation.cs" />
-    <Compile Include="ImmutableMetaModel.cs" />
     <Compile Include="ImmutableMetaModelGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -57,7 +56,8 @@
     <Compile Include="Immutable\ImmutableModelList.cs" />
     <Compile Include="Immutable\ImmutableModelProperties.cs" />
     <Compile Include="Immutable\ImmutableRedModel.cs" />
-    <Compile Include="Immutable\ImmutableRedSymbol.cs" />
+    <Compile Include="Immutable\ImmutableSymbol.cs" />
+    <Compile Include="Immutable\ImmutableSymbolState.cs" />
     <Compile Include="Immutable\TransactionalCollections.cs" />
     <Compile Include="MetaImplementation.cs" />
     <Compile Include="MetaModel.cs">

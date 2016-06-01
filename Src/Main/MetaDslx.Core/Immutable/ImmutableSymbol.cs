@@ -11,56 +11,103 @@ namespace MetaDslx.Core.Immutable
 {
     public abstract class ImmutableSymbolBase : IImmutableSymbol
     {
-        private string id;
-        private SymbolId green;
+        private SymbolId id;
+        private GreenSymbol green;
         private ImmutableModel model;
 
-        protected ImmutableSymbolBase(SymbolId green, ImmutableModel model)
+        protected ImmutableSymbolBase(ImmutableModel model, SymbolId id)
         {
-            this.id = Guid.NewGuid().ToString();
-            this.green = green;
+            if (model == null) throw new ArgumentNullException(nameof(model));
+            if (id == null) throw new ArgumentNullException(nameof(id));
             this.model = model;
+            this.id = id;
+            bool readOnly;
+            if (!this.model.Green.TryGetSymbol(id, false, out this.green, out readOnly))
+            {
+                throw new ModelException("The symbol with id '" + id + "' is not found in the model.");
+            }
+        }
+
+        protected ImmutableSymbolBase(SymbolId id, GreenSymbol green)
+        {
+            if (id == null) throw new ArgumentNullException(nameof(id));
+            if (green == null) throw new ArgumentNullException(nameof(green));
+            this.model = null;
+            this.id = id;
+            this.green = green;
         }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
             where T : struct
         {
-            if (default(T).Equals(value))
+            if (this.model != null)
             {
-                object valueObj = this.model.GetValue(this, property);
-                if (valueObj == null) value = default(T);
-                else value = (T)valueObj;
+                if (default(T).Equals(value))
+                {
+                    object valueObj = this.green.GetValue(this.model.Green, this.id, property, false, false);
+                    if (valueObj == null) value = default(T);
+                    else value = (T)valueObj;
+                }
+                return value;
             }
-            return value;
+            else
+            {
+                return value;
+            }
         }
 
         protected T GetReference<T>(ModelProperty property, ref T value)
             where T : class
         {
-            T result = value;
-            if (result == null)
+            if (this.model != null)
             {
-                result = (T)this.model.GetValue(this, property);
-                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+                T result = value;
+                if (result == null)
+                {
+                    result = (T)this.green.GetValue(this.model.Green, this.id, property, false, false);
+                    result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+                }
+                return result;
             }
-            return result;
+            else
+            {
+                return value;
+            }
         }
 
         protected IImmutableModelList<T> GetList<T>(ModelProperty property, ref IImmutableModelList<T> value)
         {
-            IImmutableModelList<T> result = value;
-            if (result == null)
+            if (this.model != null)
             {
-                result = this.model.GetList<T>(this, property);
-                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+                IImmutableModelList<T> result = value;
+                if (result == null)
+                {
+                    object greenObject = this.green.GetValue(this.model.Green, this.id, property, false, false);
+                    if (greenObject is GreenList)
+                    {
+                        result = new ImmutableModelList<T>((GreenList)greenObject, this.model);
+                    }
+                    result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+                }
+                return result;
             }
-            return result;
+            else
+            {
+                IImmutableModelList<T> result = value;
+                if (result == null)
+                {
+                    result = Interlocked.CompareExchange(ref value, ImmutableModelList<T>.Empty, null) ?? result;
+                }
+                return result;
+            }
         }
 
         public abstract object MMetaModel { get; }
         public abstract object MMetaClass { get; }
 
-        internal SymbolId Green { get { return this.green; } }
+        internal SymbolId Id { get { return this.id; } }
+        internal GreenSymbol GreenSymbol { get { return this.green; } }
+
         public ImmutableModel MModel
         {
             get
@@ -155,15 +202,17 @@ namespace MetaDslx.Core.Immutable
 
     public abstract class MutableSymbolBase : IMutableSymbol
     {
-        private string id;
         private bool created;
-        private SymbolId green;
+        private GreenSymbol green;
         private MutableModel model;
 
-        protected MutableSymbolBase(SymbolId green, MutableModel model)
+        protected MutableSymbolBase(SymbolId id, MutableModel model)
         {
-            this.id = Guid.NewGuid().ToString();
-            this.green = green;
+            bool readOnly;
+            if (!model.Green.TryGetSymbol(id, true, false, out this.green, out readOnly))
+            {
+                throw new ModelException("Cannot find symbol with id " + id + " in the model.");
+            }
             this.model = model;
         }
 
@@ -236,7 +285,8 @@ namespace MetaDslx.Core.Immutable
             get { return this.model.IsReadOnly; }
         }
 
-        internal SymbolId Green { get { return this.green; } }
+        internal SymbolId Id { get { return this.green.Id; } }
+        internal GreenSymbol GreenSymbol { get { return this.green; } }
 
         public void MInit()
         {

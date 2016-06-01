@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
-    internal class GreenLazyValue
+    public sealed class GreenLazyValue
     {
         private Func<object> lazy;
 
@@ -25,22 +25,22 @@ namespace MetaDslx.Core.Immutable
             get { return this.lazy; }
         }
 
-        internal object CreateValue(GreenModel model)
+        internal object CreateValue()
         {
             object value = lazy();
             if (value is MutableSymbolBase)
             {
-                return ((MutableSymbolBase)value).Green;
+                return ((MutableSymbolBase)value).Id;
             }
             else if (value is ImmutableSymbolBase)
             {
-                return ((ImmutableSymbolBase)value).Green;
+                return ((ImmutableSymbolBase)value).Id;
             }
             return value;
         }
     }
 
-    internal class GreenLazyList
+    public sealed class GreenLazyList
     {
         private Func<IEnumerable<object>> lazy;
 
@@ -54,7 +54,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.lazy; }
         }
 
-        internal List<object> CreateValues(GreenModel model)
+        internal List<object> CreateValues()
         {
             List<object> result = new List<object>();
             foreach (var item in lazy())
@@ -62,11 +62,11 @@ namespace MetaDslx.Core.Immutable
                 object value = item;
                 if (value is MutableSymbolBase)
                 {
-                    value = ((MutableSymbolBase)value).Green;
+                    value = ((MutableSymbolBase)value).Id;
                 }
                 else if (value is ImmutableSymbolBase)
                 {
-                    value = ((ImmutableSymbolBase)value).Green;
+                    value = ((ImmutableSymbolBase)value).Id;
                 }
                 result.Add(value);
             }
@@ -95,6 +95,28 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
+    public sealed class CircularContainmentException : ModelException
+    {
+        private List<SymbolId> symbols;
+
+        internal CircularContainmentException(string message, List<SymbolId> symbols)
+            : base(message)
+        {
+            this.symbols = symbols;
+        }
+
+        internal CircularContainmentException(string message, List<SymbolId> symbols, Exception innerException)
+            : base(message, innerException)
+        {
+            this.symbols = symbols;
+        }
+
+        public IReadOnlyList<SymbolId> Symbols
+        {
+            get { return this.symbols; }
+        }
+    }
+
     public sealed class LazyEvalException : ModelException
     {
         private List<LazyEvalEntry> evalStack;
@@ -117,55 +139,43 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    internal class GreenSymbol
+    public sealed class GreenSymbol
     {
         private static object Unassigned = new object();
         private static ThreadLocal<List<LazyEvalEntry>> lazyEvalStack = new ThreadLocal<List<LazyEvalEntry>>(() => new List<LazyEvalEntry>());
 
-        private SymbolId id;
-        private GreenModel model;
         private TxValue<bool> created;
         private TxValue<SymbolId> parent;
-        private TxHashSet<ModelProperty> childProperties;
         private TxList<SymbolId> children;
+        private TxHashSet<ModelProperty> parentProperties;
         private TxDictionary<ModelProperty, object> properties;
         private TxList<ModelProperty> attachedProperties;
-        private TxDictionary<SymbolId, TxHashSet<ModelProperty>> references;
+        private TxHashSet<ModelProperty> lazyIndex;
         private TxDictionary<ModelProperty, TxDictionary<ModelProperty, object>> childInitializers;
 
-        internal GreenSymbol(GreenModel model, SymbolId id)
+        internal GreenSymbol()
         {
-            Debug.Assert(id != null);
-            this.id = id;
-            this.model = model;
             this.created = new TxValue<bool>(false);
             this.parent = new TxValue<SymbolId>();
-            this.childProperties = new TxHashSet<ModelProperty>();
             this.children = new TxList<SymbolId>();
+            this.parentProperties = new TxHashSet<ModelProperty>();
             this.properties = new TxDictionary<ModelProperty, object>();
             this.attachedProperties = new TxList<ModelProperty>();
-            this.references = new TxDictionary<SymbolId, TxHashSet<ModelProperty>>();
+            this.lazyIndex = new TxHashSet<ModelProperty>();
             this.childInitializers = new TxDictionary<ModelProperty, TxDictionary<ModelProperty, object>>();
         }
 
-        internal GreenSymbol(GreenModel model, GreenSymbol other)
+        internal GreenSymbol(GreenSymbol other)
         {
             Debug.Assert(other != null);
-            this.id = other.id;
-            this.model = model;
             this.created = new TxValue<bool>(true);
             this.parent = new TxValue<SymbolId>(other.parent.Value);
-            this.childProperties = new TxHashSet<ModelProperty>(other.childProperties);
             this.children = new TxList<SymbolId>(other.children);
+            this.parentProperties = new TxHashSet<ModelProperty>(other.parentProperties);
             this.properties = new TxDictionary<ModelProperty, object>(other.properties, entry => entry is GreenList ? new GreenList((GreenList)entry) : entry);
             this.attachedProperties = new TxList<ModelProperty>(other.attachedProperties);
-            this.references = new TxDictionary<SymbolId, TxHashSet<ModelProperty>>(other.references, entry => new TxHashSet<ModelProperty>(entry));
+            this.lazyIndex = new TxHashSet<ModelProperty>(other.lazyIndex);
             this.childInitializers = new TxDictionary<ModelProperty, TxDictionary<ModelProperty, object>>(other.childInitializers, entry => new TxDictionary<ModelProperty, object>(entry));
-        }
-
-        public SymbolId Id
-        {
-            get { return this.id; }
         }
 
         public bool IsCreated
@@ -198,9 +208,9 @@ namespace MetaDslx.Core.Immutable
             this.created.Value = true;
         }
 
-        public bool AddProperty(ModelProperty property)
+        public bool AddProperty(GreenModel model, SymbolId id, ModelProperty property)
         {
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!this.properties.ContainsKey(property))
             {
                 this.properties.Add(property, Unassigned);
@@ -209,7 +219,7 @@ namespace MetaDslx.Core.Immutable
                     object value;
                     this.TryGetValueCore(property, false, false, true, out value);
                 }
-                bool declared = ModelProperty.GetDeclaredPropertiesForType(this.id.MutableType).Contains(property);
+                bool declared = ModelProperty.GetDeclaredPropertiesForType(id.MutableType).Contains(property);
                 if (!declared)
                 {
                     this.attachedProperties.Add(property);
@@ -219,12 +229,12 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        public bool RemoveProperty(ModelProperty property)
+        public bool RemoveProperty(GreenModel model, SymbolId id, ModelProperty property)
         {
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (this.properties.ContainsKey(property))
             {
-                bool declared = ModelProperty.GetDeclaredPropertiesForType(this.id.MutableType).Contains(property);
+                bool declared = ModelProperty.GetDeclaredPropertiesForType(id.MutableType).Contains(property);
                 if (declared)
                 {
                     return false;
@@ -233,15 +243,15 @@ namespace MetaDslx.Core.Immutable
                 {
                     if (property.IsCollection)
                     {
-                        this.ClearLazyItems(property);
-                        this.ClearItems(property);
+                        this.ClearLazyItems(model, id, property);
+                        this.ClearItems(model, id, property);
                     }
                     else
                     {
-                        this.SetValue(property, true, Unassigned);
+                        this.SetValue(model, id, property, true, Unassigned);
                     }
                     this.properties.Remove(property);
-                    if (!ModelProperty.GetDeclaredPropertiesForType(this.id.MutableType).Contains(property))
+                    if (!ModelProperty.GetDeclaredPropertiesForType(id.MutableType).Contains(property))
                     {
                         this.attachedProperties.Remove(property);
                     }
@@ -293,31 +303,32 @@ namespace MetaDslx.Core.Immutable
             return null;
         }
 
-        public object GetValue(ModelProperty property, bool lazyEval, bool forceReplaceWithConcreteValue)
+        public object GetValue(GreenModel model, SymbolId id, ModelProperty property, bool lazyEval, bool forceReplaceWithConcreteValue)
         {
             if (property.IsDerived)
             {
-                return this.LazyEvalCore(property, forceReplaceWithConcreteValue);
+                Debug.Assert(!model.IsReadOnly || !forceReplaceWithConcreteValue);
+                return this.LazyEvalCore(model, id, property, forceReplaceWithConcreteValue);
             }
             else if (lazyEval)
             {
-                Debug.Assert(!this.model.IsReadOnly);
+                Debug.Assert(!model.IsReadOnly);
                 if (property.HasRemoveAffectedProperties)
                 {
                     foreach (var prop in property.RemoveAffectedProperties)
                     {
-                        this.LazyEvalCore(prop, forceReplaceWithConcreteValue);
+                        this.LazyEvalCore(model, id, prop, forceReplaceWithConcreteValue);
                     }
                 }
-                this.LazyEvalCore(property, forceReplaceWithConcreteValue);
+                this.LazyEvalCore(model, id, property, forceReplaceWithConcreteValue);
             }
             return this.GetValue(property);
         }
 
-        private object LazyEvalCore(ModelProperty property, bool forceReplaceWithConcreteValue)
+        private object LazyEvalCore(GreenModel model, SymbolId id, ModelProperty property, bool forceReplaceWithConcreteValue)
         {
             object lazyValue;
-            LazyEvalEntry entry = new LazyEvalEntry(this.id, property);
+            LazyEvalEntry entry = new LazyEvalEntry(id, property);
             int entryIndex = lazyEvalStack.Value.IndexOf(entry);
             if (entryIndex >= 0)
             {
@@ -338,7 +349,7 @@ namespace MetaDslx.Core.Immutable
                         object value = this.LazyEvalValue((GreenLazyValue)lazyValue);
                         if (!property.IsDerived || forceReplaceWithConcreteValue)
                         {
-                            this.SetValue(property, true, value);
+                            this.SetValue(model, id, property, true, value);
                         }
                         return value;
                     }
@@ -379,7 +390,7 @@ namespace MetaDslx.Core.Immutable
         {
             try
             {
-                return lazyValue.CreateValue(this.model);
+                return lazyValue.CreateValue();
             }
             catch(Exception ex)
             {
@@ -391,7 +402,7 @@ namespace MetaDslx.Core.Immutable
         {
             try
             {
-                return lazyList.CreateValues(this.model);
+                return lazyList.CreateValues();
             }
             catch (Exception ex)
             {
@@ -409,102 +420,102 @@ namespace MetaDslx.Core.Immutable
             return null;
         }
 
-        public bool UnsetValue(ModelProperty property)
+        public bool UnsetValue(GreenModel model, SymbolId id, ModelProperty property)
         {
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!this.properties.ContainsKey(property)) return false;
             if (property.IsCollection)
             {
-                this.ClearLazyItems(property);
-                this.ClearItems(property);
+                this.ClearLazyItems(model, id, property);
+                this.ClearItems(model, id, property);
                 return true;
             }
             else
             {
-                return this.SetValue(property, true, Unassigned);
+                return this.SetValue(model, id, property, true, Unassigned);
             }
         }
 
-        public bool ClearValue(ModelProperty property)
+        public bool ClearValue(GreenModel model, SymbolId id, ModelProperty property)
         {
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!this.properties.ContainsKey(property)) return false;
             if (property.IsCollection)
             {
-                this.ClearLazyItems(property);
-                this.ClearItems(property);
+                this.ClearLazyItems(model, id, property);
+                this.ClearItems(model, id, property);
                 return true;
             }
             else
             {
-                return this.SetValue(property, true, null);
+                return this.SetValue(model, id, property, true, null);
             }
         }
 
-        public bool ClearLazyValue(ModelProperty property)
+        public bool ClearLazyValue(GreenModel model, SymbolId id, ModelProperty property)
         {
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!this.properties.ContainsKey(property)) return false;
             if (property.IsCollection)
             {
-                return this.ClearLazyItems(property);
+                return this.ClearLazyItems(model, id, property);
             }
             else
             {
                 object value;
                 if (this.TryGetValueCore(property, false, true, false, out value) && value is GreenLazyValue)
                 {
-                    return this.SetValue(property, true, Unassigned);
+                    return this.SetValue(model, id, property, true, Unassigned);
                 }
             }
             return false;
         }
 
-        public bool SetValue(ModelProperty property, bool reassign, object value)
+        public bool SetValue(GreenModel model, SymbolId id, ModelProperty property, bool reassign, object value)
         {
             Debug.Assert(property != null);
             Debug.Assert(!property.IsCollection);
             Debug.Assert(!(value is GreenLazyList));
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!this.properties.ContainsKey(property)) return false;
             object oldValue;
             if (this.ValueChangedCore(property, value, out oldValue))
             {
                 if (!property.HasAffectedProperties || value is GreenLazyValue)
                 {
-                    return this.SetValueCore(property, reassign, value, oldValue);
+                    return this.SetValueCore(model, id, property, reassign, value, oldValue);
                 }
                 else
                 {
-                    return this.SlowAddValueCore(property, null, -1, reassign, value, oldValue, null);
+                    return this.SlowAddValueCore(model, id, property, null, -1, reassign, value, oldValue, null);
                 }
             }
             return false;
         }
 
-        public bool AddItem(ModelProperty property, int index, bool replace, object value)
+        public bool AddItem(GreenModel model, SymbolId id, ModelProperty property, int index, bool replace, object value)
         {
             Debug.Assert(property != null);
             Debug.Assert(property.IsCollection);
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!this.properties.ContainsKey(property)) return false;
             if (!property.HasAddAffectedProperties || value is GreenLazyValue || value is GreenLazyList)
             {
-                if (replace) this.RemoveValueCore(property, null, index, false, null);
-                return this.AddValueCore(property, null, index, value);
+                if (replace) this.RemoveValueCore(model, id, property, null, index, false, null);
+                return this.AddValueCore(model, id, property, null, index, value);
             }
             else
             {
-                if (replace) this.SlowRemoveValueCore(property, null, index, false, value, null);
-                return this.SlowAddValueCore(property, null, index, false, value, Unassigned, null);
+                if (replace) this.SlowRemoveValueCore(model, id, property, null, index, false, value, null);
+                return this.SlowAddValueCore(model, id, property, null, index, false, value, Unassigned, null);
             }
         }
 
-        public bool AddItems(ModelProperty property, IEnumerable<object> values)
+        public bool AddItems(GreenModel model, SymbolId id, ModelProperty property, IEnumerable<object> values)
         {
             Debug.Assert(property != null);
             Debug.Assert(property.IsCollection);
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!this.properties.ContainsKey(property)) return false;
             object listValue;
             if (!this.TryGetValueCore(property, false, false, true, out listValue) || !(listValue is GreenList))
@@ -517,7 +528,7 @@ namespace MetaDslx.Core.Immutable
             {
                 foreach (var value in values)
                 {
-                    result |= this.AddValueCore(property, list, -1, value);
+                    result |= this.AddValueCore(model, id, property, list, -1, value);
                 }
             }
             else
@@ -526,37 +537,37 @@ namespace MetaDslx.Core.Immutable
                 {
                     if (value is GreenLazyValue || value is GreenLazyList)
                     {
-                        result |= this.AddValueCore(property, list, -1, value);
+                        result |= this.AddValueCore(model, id, property, list, -1, value);
                     }
                     else
                     {
-                        result |= this.SlowAddValueCore(property, list, -1, false, value, Unassigned, null);
+                        result |= this.SlowAddValueCore(model, id, property, list, -1, false, value, Unassigned, null);
                     }
                 }
             }
             return result;
         }
 
-        public bool RemoveItem(ModelProperty property, int index, bool removeAll, object value)
+        public bool RemoveItem(GreenModel model, SymbolId id, ModelProperty property, int index, bool removeAll, object value)
         {
             Debug.Assert(property != null);
             Debug.Assert(property.IsCollection);
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!this.properties.ContainsKey(property)) return false;
             if (!property.HasRemoveAffectedProperties)
             {
-                return this.RemoveValueCore(property, null, index, removeAll, value);
+                return this.RemoveValueCore(model, id, property, null, index, removeAll, value);
             }
             else
             {
-                return this.SlowRemoveValueCore(property, null, index, removeAll, value, null);
+                return this.SlowRemoveValueCore(model, id, property, null, index, removeAll, value, null);
             }
         }
 
-        public bool ClearItems(ModelProperty property)
+        public bool ClearItems(GreenModel model, SymbolId id, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             object listValue;
             if (!this.TryGetValueCore(property, false, false, true, out listValue) || !(listValue is GreenList))
             {
@@ -569,23 +580,23 @@ namespace MetaDslx.Core.Immutable
             {
                 foreach (var item in items)
                 {
-                    return this.RemoveValueCore(property, list, -1, true, item);
+                    return this.RemoveValueCore(model, id, property, list, -1, true, item);
                 }
             }
             else
             {
                 foreach (var item in items)
                 {
-                    return this.SlowRemoveValueCore(property, list, -1, true, item, null);
+                    return this.SlowRemoveValueCore(model, id, property, list, -1, true, item, null);
                 }
             }
             return true;
         }
 
-        public bool ClearLazyItems(ModelProperty property)
+        public bool ClearLazyItems(GreenModel model, SymbolId id, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             object listValue;
             if (!this.TryGetValueCore(property, false, false, true, out listValue) || !(listValue is GreenList))
             {
@@ -593,17 +604,17 @@ namespace MetaDslx.Core.Immutable
             }
             GreenList list = (GreenList)listValue;
             list.ClearLazyItems();
-            this.model.UnregisterLazyValue(this.id, property);
+            this.UnregisterLazyValueCore(model, id, property);
             return true;
         }
 
-        public bool ChildSetValue(ModelProperty child, ModelProperty property, bool reassign, GreenLazyValue value)
+        public bool ChildSetValue(GreenModel model, SymbolId id, ModelProperty child, ModelProperty property, bool reassign, GreenLazyValue value)
         {
             Debug.Assert(!property.IsCollection);
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!child.IsContainment)
             {
-                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+                throw new ModelException("The child property " + id + "::" + child + " must be a containment.");
             }
             TxDictionary<ModelProperty, object> initValues;
             if (!this.childInitializers.TryGetValue(child, out initValues))
@@ -616,20 +627,20 @@ namespace MetaDslx.Core.Immutable
             {
                 if (this.IsCreated && !reassign)
                 {
-                    throw new ModelException("Cannot reassign the child initializer: " + this.id + "::" + child + "::" + property);
+                    throw new ModelException("Cannot reassign the child initializer: " + id + "::" + child + "::" + property);
                 }
             }
             initValues[property] = value;
             return true;
         }
 
-        public bool ChildAddItem(ModelProperty child, ModelProperty property, GreenLazyValue values)
+        public bool ChildAddItem(GreenModel model, SymbolId id, ModelProperty child, ModelProperty property, GreenLazyValue values)
         {
             Debug.Assert(property.IsCollection);
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!child.IsContainment)
             {
-                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+                throw new ModelException("The child property " + id + "::" + child + " must be a containment.");
             }
             TxDictionary<ModelProperty, object> initValues;
             if (!this.childInitializers.TryGetValue(child, out initValues))
@@ -649,13 +660,13 @@ namespace MetaDslx.Core.Immutable
             return true;
         }
 
-        public bool ChildAddItems(ModelProperty child, ModelProperty property, IEnumerable<GreenLazyValue> values)
+        public bool ChildAddItems(GreenModel model, SymbolId id, ModelProperty child, ModelProperty property, IEnumerable<GreenLazyValue> values)
         {
             Debug.Assert(property.IsCollection);
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!child.IsContainment)
             {
-                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+                throw new ModelException("The child property " + id + "::" + child + " must be a containment.");
             }
             TxDictionary<ModelProperty, object> initValues;
             if (!this.childInitializers.TryGetValue(child, out initValues))
@@ -675,13 +686,13 @@ namespace MetaDslx.Core.Immutable
             return true;
         }
 
-        public bool ChildAddItems(ModelProperty child, ModelProperty property, GreenLazyList values)
+        public bool ChildAddItems(GreenModel model, SymbolId id, ModelProperty child, ModelProperty property, GreenLazyList values)
         {
             Debug.Assert(property.IsCollection);
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!child.IsContainment)
             {
-                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+                throw new ModelException("The child property " + id + "::" + child + " must be a containment.");
             }
             TxDictionary<ModelProperty, object> initValues;
             if (!this.childInitializers.TryGetValue(child, out initValues))
@@ -701,22 +712,22 @@ namespace MetaDslx.Core.Immutable
             return true;
         }
 
-        public bool ChildClear(ModelProperty child)
+        public bool ChildClear(GreenModel model, SymbolId id, ModelProperty child)
         {
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!child.IsContainment)
             {
-                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+                throw new ModelException("The child property " + id + "::" + child + " must be a containment.");
             }
             return this.childInitializers.Remove(child);
         }
 
-        public bool ChildClear(ModelProperty child, ModelProperty property)
+        public bool ChildClear(GreenModel model, SymbolId id, ModelProperty child, ModelProperty property)
         {
-            Debug.Assert(!this.model.IsReadOnly);
+            Debug.Assert(!model.IsReadOnly);
             if (!child.IsContainment)
             {
-                throw new ModelException("The child property " + this.id + "::" + child + " must be a containment.");
+                throw new ModelException("The child property " + id + "::" + child + " must be a containment.");
             }
             TxDictionary<ModelProperty, object> initValues;
             if (this.childInitializers.TryGetValue(child, out initValues))
@@ -743,7 +754,7 @@ namespace MetaDslx.Core.Immutable
                 }
                 else if (createIfNotExists && property.IsCollection)
                 {
-                    value = new GreenList(this.id, property);
+                    value = new GreenList(!property.IsNonUnique);
                     this.properties[property] = value;
                     return true;
                 }
@@ -768,7 +779,7 @@ namespace MetaDslx.Core.Immutable
             return true;
         }
 
-        private bool SetValueCore(ModelProperty property, bool reassign, object value, object oldValue)
+        private bool SetValueCore(GreenModel model, SymbolId id, ModelProperty property, bool reassign, object value, object oldValue)
         {
             Debug.Assert(this.properties.ContainsKey(property));
             Debug.Assert(!(value is GreenLazyList));
@@ -781,48 +792,53 @@ namespace MetaDslx.Core.Immutable
             {
                 if (property.IsDerived && oldValue != Unassigned)
                 {
-                    throw new ModelException("Cannot reassign a derived property: " + this.id + "::" + property);
+                    throw new ModelException("Cannot reassign a derived property: " + id + "::" + property);
                 }
                 if (property.IsReadonly && oldValue != Unassigned)
                 {
-                    throw new ModelException("Cannot reassign a read-only property: " + this.id + "::" + property);
+                    throw new ModelException("Cannot reassign a read-only property: " + id + "::" + property);
                 }
                 if (oldValue is GreenLazyValue)
                 {
-                    throw new ModelException("Cannot reassign a lazy-valued property: " + this.id + "::" + property);
+                    throw new ModelException("Cannot reassign a lazy-valued property: " + id + "::" + property);
                 }
             }
             if (value == null && property.IsNonNull)
             {
-                throw new ModelException("Null value cannot be assigned to property: " + this.id + "::" + property);
+                throw new ModelException("Null value cannot be assigned to property: " + id + "::" + property);
             }
             if (!(value == null || value == Unassigned || (value is GreenLazyValue) ||
                 ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).MutableType))) ||
                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
             {
-                throw new ModelException("Value of type '" + value.GetType() + "' cannot be assigned to property " + this.id + "::" + property + " of type '" + property.MutableTypeInfo.Type + "'.");
+                throw new ModelException("Value of type '" + value.GetType() + "' cannot be assigned to property " + id + "::" + property + " of type '" + property.MutableTypeInfo.Type + "'.");
             }
             if (value is SymbolId)
             {
-                if (!this.model.SymbolExists((SymbolId)value))
+                if (!model.SymbolExists((SymbolId)value))
                 {
-                    throw new ModelException("Symbol with id '" + ((SymbolId)value).Id + "' cannot be assigned to property " + this.id + "::" + property + " of type '" + property.MutableTypeInfo.Type + "', since the value cannot be resolved within the model group. Make sure to reference the required models from the model group.");
+                    throw new ModelException("Symbol with id '" + ((SymbolId)value).Id + "' cannot be assigned to property " + id + "::" + property + " of type '" + property.MutableTypeInfo.Type + "', since the value cannot be resolved within the model group. Make sure to reference the required models from the model group.");
                 }
             }
             if (oldValue != null && oldValue != Unassigned)
             {
                 if (oldValue is SymbolId)
                 {
-                    GreenSymbol oldSymbol;
-                    bool readOnly;
-                    if (this.model.TryGetSymbol((SymbolId)oldValue, true, true, out oldSymbol, out readOnly) && !readOnly)
+                    SymbolId oldId = (SymbolId)value;
+                    GreenModel oldModel = model.GetModelOf(oldId);
+                    if (oldModel != null)
                     {
-                        this.RemoveReferenceCore(property, oldSymbol);
+                        GreenSymbol oldSymbol;
+                        bool readOnly;
+                        if (oldModel.TryGetSymbol(oldId, true, out oldSymbol, out readOnly))
+                        {
+                            this.RemoveReferenceCore(model, id, property, oldModel, oldId, oldSymbol, readOnly);
+                        }
                     }
                 }
                 else if (oldValue is GreenLazyValue)
                 {
-                    this.model.UnregisterLazyValue(this.id, property);
+                    this.UnregisterLazyValueCore(model, id, property);
                 }
             }
             this.properties[property] = value;
@@ -830,34 +846,35 @@ namespace MetaDslx.Core.Immutable
             {
                 if (value is SymbolId)
                 {
-                    GreenSymbol valueSymbol;
-                    bool readOnly;
-                    if (this.model.TryGetSymbol((SymbolId)value, true, true, out valueSymbol, out readOnly))
+                    SymbolId childId = (SymbolId)value;
+                    GreenModel childModel = model.GetModelOf(childId);
+                    if (childModel != null)
                     {
-                        if (!readOnly)
+                        GreenSymbol childSymbol;
+                        bool readOnly;
+                        if (childModel.TryGetSymbol(childId, true, out childSymbol, out readOnly))
                         {
-                            bool addedAsChild;
-                            this.AddReferenceCore(property, valueSymbol, out addedAsChild);
-                            if (addedAsChild)
-                            {
-                                this.InitChildCore(property, valueSymbol);
-                            }
+                            this.AddReferenceCore(model, id, property, childModel, childId, childSymbol, readOnly);
+                        }
+                        else
+                        {
+                            throw new ModelException("Cannot find referenced symbol '" + value + "' for property: " + id + "::" + property);
                         }
                     }
                     else
                     {
-                        throw new ModelException("Cannot find referenced symbol '" + value + "' for property: " + this.id + "::" + property);
+                        throw new ModelException("Cannot find the model of the referenced symbol '" + value + "' for property: " + id + "::" + property);
                     }
                 }
                 else if (value is GreenLazyValue)
                 {
-                    this.model.RegisterLazyValue(this.id, property);
+                    this.RegisterLazyValueCore(model, id, property);
                 }
             }
             return true;
         }
 
-        private bool AddValueCore(ModelProperty property, GreenList list, int index, object value)
+        private bool AddValueCore(GreenModel model, SymbolId id, ModelProperty property, GreenList list, int index, object value)
         {
             Debug.Assert(this.properties.ContainsKey(property));
             Debug.Assert(value != Unassigned);
@@ -867,23 +884,29 @@ namespace MetaDslx.Core.Immutable
             {
                 if (property.IsDerived)
                 {
-                    throw new ModelException("Cannot change a derived property: " + this.id + "::" + property);
+                    throw new ModelException("Cannot change a derived property: " + id + "::" + property);
                 }
                 if (property.IsReadonly)
                 {
-                    throw new ModelException("Cannot change a read-only property: " + this.id + "::" + property);
+                    throw new ModelException("Cannot change a read-only property: " + id + "::" + property);
                 }
             }
             if (value == null && property.IsNonNull)
             {
-                throw new ModelException("Null value cannot added to property: " + this.id + "::" + property);
+                throw new ModelException("Null value cannot added to property: " + id + "::" + property);
             }
             if (value is SymbolId)
             {
-                if (!this.model.SymbolExists((SymbolId)value))
+                if (!model.SymbolExists((SymbolId)value))
                 {
-                    throw new ModelException("Symbol with id '" + ((SymbolId)value).Id + "' cannot be added to property " + this.id + "::" + property + " of type '" + property.MutableTypeInfo.Type + "', since the value cannot be resolved within the model group. Make sure to reference the required models from the model group.");
+                    throw new ModelException("Symbol with id '" + ((SymbolId)value).Id + "' cannot be added to property " + id + "::" + property + " of type '" + property.MutableTypeInfo.Type + "', since the value cannot be resolved within the model group. Make sure to reference the required models from the model group.");
                 }
+            }
+            if (!(value == null || (value is GreenLazyValue) || (value is GreenLazyList) ||
+                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).MutableType))) ||
+                (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
+            {
+                throw new ModelException("Value of type '" + value.GetType() + "' cannot be added to property " + id + "::" + property + " of type '" + property.MutableTypeInfo.Type + "'.");
             }
             if (list == null)
             {
@@ -897,7 +920,7 @@ namespace MetaDslx.Core.Immutable
             if (value is GreenLazyValue || value is GreenLazyList)
             {
                 list.AddLazy(value);
-                this.model.RegisterLazyValue(this.id, property);
+                this.RegisterLazyValueCore(model, id, property);
                 return true;
             }
             else
@@ -913,30 +936,31 @@ namespace MetaDslx.Core.Immutable
                 }
                 if (added && value is SymbolId)
                 {
-                    GreenSymbol valueSymbol;
-                    bool readOnly;
-                    if (this.model.TryGetSymbol((SymbolId)value, true, true, out valueSymbol, out readOnly))
+                    SymbolId childId = (SymbolId)value;
+                    GreenModel childModel = model.GetModelOf(childId);
+                    if (childModel != null)
                     {
-                        if (!readOnly)
+                        GreenSymbol childSymbol;
+                        bool readOnly;
+                        if (childModel.TryGetSymbol(childId, true, out childSymbol, out readOnly))
                         {
-                            bool addedAsChild;
-                            this.AddReferenceCore(property, valueSymbol, out addedAsChild);
-                            if (addedAsChild)
-                            {
-                                this.InitChildCore(property, valueSymbol);
-                            }
+                            this.AddReferenceCore(model, id, property, childModel, childId, childSymbol, readOnly);
+                        }
+                        else
+                        {
+                            throw new ModelException("Cannot find referenced symbol '" + value + "' for property: " + id + "::" + property);
                         }
                     }
                     else
                     {
-                        throw new ModelException("Cannot find referenced symbol '" + value + "' for property: " + this.id + "::" + property);
+                        throw new ModelException("Cannot find the model of the referenced symbol '" + value + "' for property: " + id + "::" + property);
                     }
                 }
                 return added;
             }
         }
 
-        private bool RemoveValueCore(ModelProperty property, GreenList list, int index, bool removeAll, object value)
+        private bool RemoveValueCore(GreenModel model, SymbolId id, ModelProperty property, GreenList list, int index, bool removeAll, object value)
         {
             Debug.Assert(this.properties.ContainsKey(property));
             Debug.Assert(value != Unassigned);
@@ -947,11 +971,11 @@ namespace MetaDslx.Core.Immutable
             {
                 if (property.IsDerived)
                 {
-                    throw new ModelException("Cannot change a derived property: " + this.id + "::" + property);
+                    throw new ModelException("Cannot change a derived property: " + id + "::" + property);
                 }
                 if (property.IsReadonly)
                 {
-                    throw new ModelException("Cannot change a read-only property: " + this.id + "::" + property);
+                    throw new ModelException("Cannot change a read-only property: " + id + "::" + property);
                 }
             }
             if (index < 0 && value == null && property.IsNonNull)
@@ -992,24 +1016,22 @@ namespace MetaDslx.Core.Immutable
             }
             if (removedAll && value is SymbolId)
             {
-                GreenSymbol valueSymbol;
-                bool readOnly;
-                if (this.model.TryGetSymbol((SymbolId)value, true, true, out valueSymbol, out readOnly))
+                SymbolId valueId = (SymbolId)value;
+                GreenModel valueModel = model.GetModelOf(valueId);
+                if (valueModel != null)
                 {
-                    if (!readOnly)
+                    GreenSymbol oldSymbol;
+                    bool readOnly;
+                    if (valueModel.TryGetSymbol(valueId, true, out oldSymbol, out readOnly))
                     {
-                        this.RemoveReferenceCore(property, valueSymbol);
+                        this.RemoveReferenceCore(model, id, property, valueModel, valueId, oldSymbol, readOnly);
                     }
-                }
-                else
-                {
-                    throw new ModelException("Cannot find referenced symbol '" + value + "' for property: " + this.id + "::" + property);
                 }
             }
             return result;
         }
 
-        private bool SlowAddValueCore(ModelProperty property, GreenList list, int index, bool reassign, object value, object oldValue, ChangeInfo change)
+        private bool SlowAddValueCore(GreenModel model, SymbolId id, ModelProperty property, GreenList list, int index, bool reassign, object value, object oldValue, ChangeInfo change)
         {
             Debug.Assert(!(value is GreenLazyValue || value is GreenLazyList || value is GreenList));
             if (!this.properties.ContainsKey(property)) return false;
@@ -1029,11 +1051,11 @@ namespace MetaDslx.Core.Immutable
                 bool removed = false;
                 if (property.IsCollection)
                 {
-                    removed = this.RemoveValueCore(property, list, index, false, oldValue);
+                    removed = this.RemoveValueCore(model, id, property, list, index, false, oldValue);
                 }
                 else
                 {
-                    removed = this.SetValueCore(property, reassign, null, oldValue);
+                    removed = this.SetValueCore(model, id, property, reassign, null, oldValue);
                 }
                 if (removed)
                 {
@@ -1041,30 +1063,39 @@ namespace MetaDslx.Core.Immutable
                     {
                         foreach (var remProp in property.RemoveAffectedProperties)
                         {
-                            this.SlowRemoveValueCore(remProp, null, -1, false, oldValue, change);
+                            this.SlowRemoveValueCore(model, id, remProp, null, -1, false, oldValue, change);
                         }
                         foreach (var remProp in property.RemoveAffectedOptionalProperties)
                         {
-                            this.SlowRemoveValueCore(remProp, null, -1, false, oldValue, change);
+                            this.SlowRemoveValueCore(model, id, remProp, null, -1, false, oldValue, change);
                         }
                     }
                     if (property.HasOppositeProperties && oldValue is SymbolId)
                     {
-                        GreenSymbol oldSymbol;
-                        bool readOnly;
-                        if (this.model.TryGetSymbol((SymbolId)oldValue, true, true, out oldSymbol, out readOnly))
+                        SymbolId oldId = (SymbolId)oldValue;
+                        GreenModel oldModel = model.GetModelOf(oldId);
+                        if (oldModel != null)
                         {
-                            if (!readOnly)
+                            GreenSymbol oldSymbol;
+                            bool readOnly;
+                            if (oldModel.TryGetSymbol(oldId, true, out oldSymbol, out readOnly))
                             {
-                                foreach (var oppProp in property.OppositeProperties)
+                                if (!readOnly)
                                 {
-                                    oldSymbol.SlowRemoveValueCore(oppProp, null, -1, false, this.id, change.oldOpposite);
+                                    foreach (var oppProp in property.OppositeProperties)
+                                    {
+                                        oldSymbol.SlowRemoveValueCore(oldModel, oldId, oppProp, null, -1, false, id, change.oldOpposite);
+                                    }
                                 }
+                            }
+                            else
+                            {
+                                throw new ModelException("Cannot find opposite symbol '" + oldValue + "' for property: " + id + "::" + property);
                             }
                         }
                         else
                         {
-                            throw new ModelException("Cannot find opposite symbol '" + oldValue + "' for property: " + this.id + "::" + property);
+                            throw new ModelException("Cannot find the model of the opposite symbol '" + oldValue + "' for property: " + id + "::" + property);
                         }
                     }
                 }
@@ -1072,11 +1103,11 @@ namespace MetaDslx.Core.Immutable
             bool result;
             if (property.IsCollection)
             {
-                result = this.AddValueCore(property, list, index, value);
+                result = this.AddValueCore(model, id, property, list, index, value);
             }
             else
             {
-                result = this.SetValueCore(property, reassign, value, null);
+                result = this.SetValueCore(model, id, property, reassign, value, null);
             }
             if (result && !(value is GreenLazyValue || value is GreenLazyList))
             {
@@ -1084,7 +1115,7 @@ namespace MetaDslx.Core.Immutable
                 {
                     foreach (var addProp in property.AddAffectedProperties)
                     {
-                        this.SlowAddValueCore(addProp, null, -1, reassign, value, null, change);
+                        this.SlowAddValueCore(model, id, addProp, null, -1, reassign, value, null, change);
                     }
                     foreach (var addProp in property.AddAffectedOptionalProperties)
                     {
@@ -1092,52 +1123,61 @@ namespace MetaDslx.Core.Immutable
                             ((value is SymbolId) && (addProp.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).MutableType))) ||
                             (!(value is SymbolId) && (addProp.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))))
                         {
-                            this.SlowAddValueCore(addProp, null, -1, reassign, value, null, change);
+                            this.SlowAddValueCore(model, id, addProp, null, -1, reassign, value, null, change);
                         }
                     }
                 }
                 if (property.HasOppositeProperties && value is SymbolId)
                 {
-                    GreenSymbol oppSymbol;
-                    bool readOnly;
-                    if (this.model.TryGetSymbol((SymbolId)value, true, true, out oppSymbol, out readOnly))
+                    SymbolId oppId = (SymbolId)value;
+                    GreenModel oppModel = model.GetModelOf(oppId);
+                    if (oppModel != null)
                     {
-                        if (!readOnly)
+                        GreenSymbol oppSymbol;
+                        bool readOnly;
+                        if (oppModel.TryGetSymbol(oppId, true, out oppSymbol, out readOnly))
                         {
-                            foreach (var oppProp in property.OppositeProperties)
+                            if (!readOnly)
                             {
-                                object oldOppValue = oppSymbol.GetValue(oppProp);
-                                if (oppProp.IsCollection)
+                                foreach (var oppProp in property.OppositeProperties)
                                 {
-                                    GreenList oldOppList = oldOppValue as GreenList;
-                                    if (oldOppList != null && !oldOppList.Contains(this.id))
+                                    object oldOppValue = oppSymbol.GetValue(oppProp);
+                                    if (oppProp.IsCollection)
                                     {
-                                        oppSymbol.SlowAddValueCore(oppProp, oldOppList, -1, reassign, this.id, null, change.newOpposite);
+                                        GreenList oldOppList = oldOppValue as GreenList;
+                                        if (oldOppList != null && !oldOppList.Contains(id))
+                                        {
+                                            oppSymbol.SlowAddValueCore(oppModel, oppId, oppProp, oldOppList, -1, reassign, id, null, change.newOpposite);
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    if (oldOppValue != this)
+                                    else
                                     {
-                                        oppSymbol.SlowAddValueCore(oppProp, null, -1, reassign, this.id, oldOppValue, change.newOpposite);
+                                        if (oldOppValue != this)
+                                        {
+                                            oppSymbol.SlowAddValueCore(oppModel, oppId, oppProp, null, -1, reassign, id, oldOppValue, change.newOpposite);
+                                        }
                                     }
                                 }
                             }
                         }
+                        else
+                        {
+                            throw new ModelException("Cannot find opposite symbol '" + value + "' for property: " + id + "::" + property);
+                        }
                     }
                     else
                     {
-                        throw new ModelException("Cannot find opposite symbol '" + value + "' for property: " + this.id + "::" + property);
+                        throw new ModelException("Cannot find the model of the opposite symbol '" + oldValue + "' for property: " + id + "::" + property);
                     }
                 }
             }
             return result;
         }
 
-        private bool SlowRemoveValueCore(ModelProperty property, GreenList list, int index, bool removeAll, object value, ChangeInfo change)
+        private bool SlowRemoveValueCore(GreenModel model, SymbolId id, ModelProperty property, GreenList list, int index, bool removeAll, object value, ChangeInfo change)
         {
             Debug.Assert(!(value is GreenLazyValue || value is GreenLazyList || value is GreenList));
-            Debug.Assert(this.model.ContainsSymbol(this.id));
+            Debug.Assert(model.ContainsSymbol(id));
             if (!this.properties.ContainsKey(property)) return false;
             if (change == null)
             {
@@ -1152,11 +1192,11 @@ namespace MetaDslx.Core.Immutable
             bool result;
             if (property.IsCollection)
             {
-                result = this.RemoveValueCore(property, list, index, removeAll, value);
+                result = this.RemoveValueCore(model, id, property, list, index, removeAll, value);
             }
             else
             {
-                result = this.SetValueCore(property, false, null, value);
+                result = this.SetValueCore(model, id, property, false, null, value);
             }
             if (result)
             {
@@ -1164,86 +1204,111 @@ namespace MetaDslx.Core.Immutable
                 {
                     foreach (var remProp in property.RemoveAffectedProperties)
                     {
-                        this.SlowRemoveValueCore(remProp, null, -1, removeAll, value, change);
+                        this.SlowRemoveValueCore(model, id, remProp, null, -1, removeAll, value, change);
                     }
                     foreach (var remProp in property.RemoveAffectedOptionalProperties)
                     {
-                        this.SlowRemoveValueCore(remProp, null, -1, removeAll, value, change);
+                        this.SlowRemoveValueCore(model, id, remProp, null, -1, removeAll, value, change);
                     }
                 }
                 if (property.HasOppositeProperties && value is SymbolId)
                 {
-                    GreenSymbol oppSymbol;
-                    bool readOnly;
-                    if (this.model.TryGetSymbol((SymbolId)value, true, true, out oppSymbol, out readOnly))
+                    SymbolId oppId = (SymbolId)value;
+                    GreenModel oppModel = model.GetModelOf(oppId);
+                    if (oppModel != null)
                     {
-                        if (!readOnly)
+                        GreenSymbol oppSymbol;
+                        bool readOnly;
+                        if (oppModel.TryGetSymbol((SymbolId)value, true, out oppSymbol, out readOnly))
                         {
-                            foreach (var oppProp in property.OppositeProperties)
+                            if (!readOnly)
                             {
-                                oppSymbol.SlowRemoveValueCore(oppProp, null, -1, removeAll, this.id, change.oldOpposite);
+                                foreach (var oppProp in property.OppositeProperties)
+                                {
+                                    oppSymbol.SlowRemoveValueCore(oppModel, oppId, oppProp, null, -1, removeAll, id, change.oldOpposite);
+                                }
                             }
+                        }
+                        else
+                        {
+                            throw new ModelException("Cannot find opposite symbol '" + value + "' for property: " + id + "::" + property);
                         }
                     }
                     else
                     {
-                        throw new ModelException("Cannot find opposite symbol '" + value + "' for property: " + this.id + "::" + property);
+                        throw new ModelException("Cannot find the model of the opposite symbol '" + value + "' for property: " + id + "::" + property);
                     }
                 }
             }
             return result;
         }
 
-        private void AddReferenceCore(ModelProperty property, GreenSymbol value, out bool addedAsChild)
+        private void AddReferenceCore(GreenModel model, SymbolId id, ModelProperty property, GreenModel valueModel, SymbolId valueId, GreenSymbol value, bool readOnlyValue)
         {
             Debug.Assert(property != null);
             Debug.Assert(value != null);
-            addedAsChild = false;
-            TxHashSet<ModelProperty> properties;
-            if (!value.references.TryGetValue(this.id, out properties))
-            {
-                properties = new TxHashSet<ModelProperty>();
-                value.references.Add(this.id, properties);
-            }
-            properties.Add(property);
+            //model.AddReference(id, property, valueId);
             if (property.IsContainment)
             {
-                if (value.parent.Value != null && value.parent.Value != this.id)
+                if (value.parent.Value != null && value.parent.Value != id)
                 {
-                    throw new ModelException("Invalid containment in " + this.id + "::" + property + ": symbol '" + value + "' is already contained by '" + value.parent.Value + "'.");
+                    throw new ModelException("Invalid containment in " + id + "::" + property + ": symbol '" + value + "' is already contained by '" + value.parent.Value + "'.");
                 }
-                this.childProperties.Add(property);
-                if (!this.children.Contains(value.id))
+                if (!readOnlyValue)
                 {
-                    this.children.Add(value.id);
-                    value.parent.Value = this.id;
-                    addedAsChild = true;
+                    value.parent.Value = id;
+                    value.parentProperties.Add(property);
+                }
+                if (!this.children.Contains(valueId))
+                {
+                    this.children.Add(valueId);
+                    if (!readOnlyValue)
+                    {
+                        this.InitChildCore(property, valueModel, valueId, value);
+                    }
                 }
             }
         }
 
-        private void RemoveReferenceCore(ModelProperty property, GreenSymbol value)
+        private void RemoveReferenceCore(GreenModel model, SymbolId id, ModelProperty property, GreenModel valueModel, SymbolId valueId, GreenSymbol value, bool readOnlyValue)
         {
             Debug.Assert(property != null);
             Debug.Assert(value != null);
-            TxHashSet<ModelProperty> properties;
-            if (value.references.TryGetValue(this.id, out properties))
-            {
-                properties.Remove(property);
-            }
-            Debug.Assert(properties != null);
+            //model.RemoveReference(id, property, valueId);
             if (property.IsContainment)
             {
-                bool lostParent = !this.childProperties.Overlaps(properties);
-                if (lostParent)
+                if (!readOnlyValue)
                 {
-                    this.children.Remove(value.id);
+                    value.parentProperties.Remove(property);
                     value.parent.Value = null;
+                    this.children.Remove(valueId);
+                }
+                else
+                {
+                    bool lostParent = true;
+                    foreach (var prop in this.properties)
+                    {
+                        if (prop.Key != property && prop.Key.IsContainment)
+                        {
+                            if (prop.Value is GreenList)
+                            {
+                                if (((GreenList)prop.Value).Contains(valueId)) lostParent = false;
+                            }
+                            else
+                            {
+                                if (prop.Value == valueId) lostParent = false;
+                            }
+                        }
+                    }
+                    if (lostParent)
+                    {
+                        this.children.Remove(valueId);
+                    }
                 }
             }
         }
 
-        private void InitChildCore(ModelProperty childProperty, GreenSymbol child)
+        private void InitChildCore(ModelProperty childProperty, GreenModel childModel, SymbolId childId, GreenSymbol child)
         {
             TxDictionary<ModelProperty, object> initValues;
             if (this.childInitializers.TryGetValue(childProperty, out initValues) && initValues != null)
@@ -1255,14 +1320,44 @@ namespace MetaDslx.Core.Immutable
                         TxList<object> values = initValue.Value as TxList<object>;
                         if (values != null)
                         {
-                            child.AddItems(initValue.Key, values);
+                            child.AddItems(childModel, childId, initValue.Key, values);
                         }
                     }
                     else
                     {
-                        child.SetValue(initValue.Key, false, initValue.Value);
+                        child.SetValue(childModel, childId, initValue.Key, false, initValue.Value);
                     }
                 }
+            }
+        }
+
+        private void RegisterLazyValueCore(GreenModel model, SymbolId id, ModelProperty property)
+        {
+            if (this.lazyIndex.Count == 0)
+            {
+                model.RegisterLazySymbol(id);
+            }
+            this.lazyIndex.Add(property);
+        }
+
+        private void UnregisterLazyValueCore(GreenModel model, SymbolId id, ModelProperty property)
+        {
+            if (this.lazyIndex.Count > 0)
+            {
+                this.lazyIndex.Remove(property);
+                if (this.lazyIndex.Count == 0)
+                {
+                    model.UnregisterLazySymbol(id);
+                }
+            }
+        }
+
+        internal void EvaluateLazyValues(GreenModel model, SymbolId id, bool forceReplaceWithConcreteValue)
+        {
+            var lazyProps = this.lazyIndex.ToList();
+            foreach (var prop in lazyProps)
+            {
+                this.LazyEvalCore(model, id, prop, forceReplaceWithConcreteValue);
             }
         }
 
@@ -1291,7 +1386,7 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    internal class GreenModel
+    public sealed class GreenModel
     {
         private static readonly IReadOnlyList<SymbolId> emptySymbolList = new List<SymbolId>();
         private static readonly IReadOnlyList<SymbolId> emptyPropertyList = new List<SymbolId>();
@@ -1300,27 +1395,37 @@ namespace MetaDslx.Core.Immutable
         private bool readOnly = false;
         private TxValue<bool> changed;
         private TxDictionary<SymbolId, GreenSymbol> symbols;
-        private TxDictionary<ModelProperty, TxHashSet<SymbolId>> lazyIndex;
+        private TxHashSet<SymbolId> lazySymbols;
 
         internal GreenModel(GreenModelGroup group = null)
         {
             this.group = group;
             this.changed = new TxValue<bool>(false);
             this.symbols = new TxDictionary<SymbolId, GreenSymbol>();
-            this.lazyIndex = new TxDictionary<ModelProperty, TxHashSet<SymbolId>>();
+            this.lazySymbols = new TxHashSet<SymbolId>();
         }
 
         internal GreenModel(GreenModelGroup group, GreenModel baseModel, bool readOnly, bool deepCopy)
         {
             this.group = group;
             this.readOnly = readOnly;
-            if (readOnly && !baseModel.IsReadOnly) deepCopy = true;
-            this.baseModel = deepCopy ? null : baseModel;
             this.changed = new TxValue<bool>(false);
-            this.symbols = deepCopy ?
-                new TxDictionary<SymbolId, GreenSymbol>(baseModel.symbols, symbol => new GreenSymbol(this, symbol)) :
-                new TxDictionary<SymbolId, GreenSymbol>(baseModel.symbols, symbol => null);
-            this.lazyIndex = new TxDictionary<ModelProperty, TxHashSet<SymbolId>>(baseModel.lazyIndex, symbols => new TxHashSet<SymbolId>(symbols));
+            if (readOnly && !baseModel.IsReadOnly) deepCopy = true;
+            if (deepCopy)
+            {
+                this.baseModel = null;
+                this.symbols = new TxDictionary<SymbolId, GreenSymbol>();
+                foreach (var entry in baseModel.symbols)
+                {
+                    this.symbols.Add(entry.Key, baseModel.GetSymbol(entry.Key, !this.readOnly) ?? new GreenSymbol());
+                }
+            }
+            else
+            {
+                this.baseModel = baseModel;
+                this.symbols = new TxDictionary<SymbolId, GreenSymbol>(baseModel.symbols, symbol => null);
+            }
+            this.lazySymbols = new TxHashSet<SymbolId>(baseModel.lazySymbols);
         }
 
         internal GreenModelGroup Group
@@ -1345,7 +1450,7 @@ namespace MetaDslx.Core.Immutable
 
         internal bool HasLazyValues
         {
-            get { return this.lazyIndex.Count > 0; }
+            get { return this.lazySymbols.Count > 0; }
         }
 
         internal IEnumerable<SymbolId> Symbols
@@ -1353,7 +1458,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.symbols.Keys; }
         }
 
-        internal bool TryGetSymbol(SymbolId id, bool forWriting, bool lookupInGroup, out GreenSymbol symbol, out bool readOnly)
+        internal bool TryGetSymbol(SymbolId id, bool forWriting, out GreenSymbol symbol, out bool readOnly)
         {
             Debug.Assert(id != null);
             if (this.symbols.TryGetValue(id, out symbol))
@@ -1364,11 +1469,11 @@ namespace MetaDslx.Core.Immutable
                     return true;
                 }
                 GreenSymbol baseSymbol;
-                if (this.baseModel != null && this.baseModel.TryGetSymbol(id, false, false, out baseSymbol, out readOnly))
+                if (this.baseModel != null && this.baseModel.TryGetSymbol(id, false, out baseSymbol, out readOnly))
                 {
                     if (forWriting)
                     {
-                        symbol = new GreenSymbol(this, baseSymbol);
+                        symbol = new GreenSymbol(baseSymbol);
                         this.symbols[id] = symbol;
                         this.changed.Value = true;
                         readOnly = false;
@@ -1381,23 +1486,32 @@ namespace MetaDslx.Core.Immutable
                     return true;
                 }
             }
-            else if (lookupInGroup)
-            {
-                return this.group.TryGetSymbol(this, id, forWriting, out symbol, out readOnly);
-            }
             symbol = null;
             readOnly = true;
             return false;
         }
 
-        private GreenSymbol GetSymbol(SymbolId id, bool forWriting)
+        internal GreenSymbol GetSymbol(SymbolId id, bool forWriting)
         {
             GreenSymbol symbol;
             bool readOnly;
-            if (this.TryGetSymbol(id, forWriting, false, out symbol, out readOnly))
+            if (this.TryGetSymbol(id, forWriting, out symbol, out readOnly))
             {
                 if (readOnly && forWriting) return null;
                 return symbol;
+            }
+            return null;
+        }
+
+        internal GreenModel GetModelOf(SymbolId id)
+        {
+            if (this.group != null)
+            {
+                return this.group.GetModelOf(id);
+            }
+            else if (this.symbols.ContainsKey(id))
+            {
+                return this;
             }
             return null;
         }
@@ -1417,18 +1531,26 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        internal void AddSymbol(SymbolId id)
+        internal GreenSymbol AddSymbol(SymbolId id)
         {
             Debug.Assert(id != null);
             if (this.group != null)
             {
-                if (this.group.ContainsSymbol(id)) return;
+                if (this.group.ContainsSymbol(id))
+                {
+                    throw new ModelException("Symbol " + id + " is already contained by the model group.");
+                }
             }
             else
             {
-                if (this.ContainsSymbol(id)) return;
+                if (this.ContainsSymbol(id)) 
+                {
+                    throw new ModelException("Symbol " + id + " is already contained by the model.");
+                }
             }
-            this.symbols.Add(id, new GreenSymbol(this, id));
+            GreenSymbol symbol = new GreenSymbol();
+            this.symbols.Add(id, symbol);
+            return symbol;
         }
 
         internal void RemoveSymbol(SymbolId id)
@@ -1443,18 +1565,84 @@ namespace MetaDslx.Core.Immutable
             throw new NotImplementedException();
         }
 
+
+        internal void RegisterLazySymbol(SymbolId id)
+        {
+            Debug.Assert(id != null);
+            Debug.Assert(this.symbols.ContainsKey(id));
+            this.lazySymbols.Add(id);
+        }
+
+        internal void UnregisterLazySymbol(SymbolId id)
+        {
+            Debug.Assert(id != null);
+            Debug.Assert(this.symbols.ContainsKey(id));
+            this.lazySymbols.Remove(id);
+        }
+
+        internal void EvaluateLazyValues(bool forceReplaceWithConcreteValue)
+        {
+            var symbolIds = this.lazySymbols.ToList();
+            foreach (var id in symbolIds)
+            {
+                var symbol = this.GetSymbol(id, true);
+                symbol.EvaluateLazyValues(this, id, forceReplaceWithConcreteValue);
+            }
+        }
+        /*
+        internal bool AddReference(SymbolId id, ModelProperty property, SymbolId valueId)
+        {
+            if (id == null) return false;
+            if (property == null) return false;
+            if (valueId == null) return false;
+            TxDictionary<SymbolId, TxHashSet<ModelProperty>> symbols;
+            if (!this.references.TryGetValue(valueId, out symbols))
+            {
+                symbols = new TxDictionary<SymbolId, TxHashSet<ModelProperty>>();
+                this.references.Add(valueId, symbols);
+            }
+            TxHashSet<ModelProperty> properties;
+            if (!symbols.TryGetValue(id, out properties))
+            {
+                properties = new TxHashSet<ModelProperty>();
+                symbols.Add(id, properties);
+            }
+            properties.Add(property);
+            return property.IsContainment;
+        }
+
+        internal bool RemoveReference(SymbolId id, ModelProperty property, SymbolId valueId)
+        {
+            if (id == null) return false;
+            if (property == null) return false;
+            if (valueId == null) return false;
+            TxDictionary<SymbolId, TxHashSet<ModelProperty>> symbols;
+            if (!this.references.TryGetValue(valueId, out symbols))
+            {
+                return false;
+            }
+            TxHashSet<ModelProperty> properties;
+            if (!symbols.TryGetValue(id, out properties))
+            {
+                return false;
+            }
+            properties.Remove(property);
+            bool lostParent = property.IsContainment && properties.All(p => !p.IsContainment);
+            return lostParent;
+        }
+
         internal void RegisterLazyValue(SymbolId id, ModelProperty property)
         {
             Debug.Assert(id != null);
             Debug.Assert(property != null);
             Debug.Assert(this.symbols.ContainsKey(id));
-            TxHashSet<SymbolId> symbols;
-            if (!this.lazyIndex.TryGetValue(property, out symbols))
+            TxHashSet<ModelProperty> properties;
+            if (!this.lazyIndex.TryGetValue(id, out properties))
             {
-                symbols = new TxHashSet<SymbolId>();
-                this.lazyIndex.Add(property, symbols);
+                properties = new TxHashSet<ModelProperty>();
+                this.lazyIndex.Add(id, properties);
             }
-            symbols.Add(id);
+            properties.Add(property);
         }
 
         internal void UnregisterLazyValue(SymbolId id, ModelProperty property)
@@ -1462,17 +1650,36 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(id != null);
             Debug.Assert(property != null);
             Debug.Assert(this.symbols.ContainsKey(id));
-            TxHashSet<SymbolId> symbols;
-            if (this.lazyIndex.TryGetValue(property, out symbols) && symbols != null)
+            TxHashSet<ModelProperty> properties;
+            if (this.lazyIndex.TryGetValue(id, out properties) && properties != null)
             {
-                symbols.Remove(id);
-                if (symbols.Count == 0)
+                properties.Remove(property);
+                if (properties.Count == 0)
                 {
-                    this.lazyIndex.Remove(property);
+                    this.lazyIndex.Remove(id);
                 }
             }
         }
 
+        internal void EvaluateLazyValues(bool forceReplaceWithConcreteValue)
+        {
+            var symbolIds = this.lazyIndex.Keys.ToList();
+            foreach (var id in symbolIds)
+            {
+                TxHashSet<ModelProperty> properties;
+                if (this.lazyIndex.TryGetValue(id, out properties))
+                {
+                    GreenSymbol symbol = this.GetSymbol(id, true);
+                    var propertyList = properties.ToList();
+                    foreach (var property in propertyList)
+                    {
+                        symbol.GetValue(this, id, property, true, forceReplaceWithConcreteValue);
+                    }
+                }
+            }
+        }
+        */
+        /*
         internal object GetValue(SymbolId id, ModelProperty property, bool lazyEval)
         {
             GreenSymbol symbol = this.GetSymbol(id, lazyEval);
@@ -1828,25 +2035,8 @@ namespace MetaDslx.Core.Immutable
             }
             return false;
         }
-
-        internal void EvaluateLazyValues(bool forceReplaceWithConcreteValue)
-        {
-            var properties = this.lazyIndex.Keys.ToList();
-            foreach (var property in properties)
-            {
-                TxHashSet<SymbolId> symbols;
-                if (this.lazyIndex.TryGetValue(property, out symbols))
-                {
-                    var symbolList = symbols.ToList();
-                    foreach (var id in symbolList)
-                    {
-                        GreenSymbol symbol = this.GetSymbol(id, true);
-                        symbol.GetValue(property, true, forceReplaceWithConcreteValue);
-                    }
-                }
-            }
-        }
-
+        */
+        /*
         internal void MMakeCreated(SymbolId id)
         {
             GreenSymbol symbol = this.GetSymbol(id, true);
@@ -1865,7 +2055,7 @@ namespace MetaDslx.Core.Immutable
             }
             return true;
         }
-
+        */
         public GreenModel Fork(GreenModelGroup group)
         {
             return new GreenModel(group, this, false, true);
@@ -1877,7 +2067,7 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    internal class GreenModelGroup
+    public sealed class GreenModelGroup
     {
         private bool readOnly;
         private TxList<GreenModel> references;
@@ -2008,7 +2198,7 @@ namespace MetaDslx.Core.Immutable
             {
                 if (model != sender)
                 {
-                    if (model.TryGetSymbol(id, forWriting, false, out symbol, out readOnly))
+                    if (model.TryGetSymbol(id, forWriting, out symbol, out readOnly))
                     {
                         return true;
                     }
@@ -2018,7 +2208,7 @@ namespace MetaDslx.Core.Immutable
             {
                 if (reference != sender)
                 {
-                    if (reference.TryGetSymbol(id, false, false, out symbol, out readOnly))
+                    if (reference.TryGetSymbol(id, false, out symbol, out readOnly))
                     {
                         return true;
                     }
@@ -2027,6 +2217,18 @@ namespace MetaDslx.Core.Immutable
             symbol = null;
             readOnly = true;
             return false;
+        }
+
+        internal GreenModel GetModelOf(SymbolId id)
+        {
+            foreach (var model in this.models)
+            {
+                if (model.ContainsSymbol(id))
+                {
+                    return model;
+                }
+            }
+            return null;
         }
     }
 
