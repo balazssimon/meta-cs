@@ -456,6 +456,11 @@ namespace MetaDslx.Core.Immutable
             get { return this.attachedProperties; }
         }
 
+        internal bool HasLazyValues
+        {
+            get { return this.lazyIndex.Count > 0; }
+        }
+
         internal GreenSymbol AddProperty(GreenSymbolContext context, ModelProperty property)
         {
             if (!this.properties.ContainsKey(property))
@@ -1649,6 +1654,11 @@ namespace MetaDslx.Core.Immutable
         {
             return symbol.Id + "." + property.Name;
         }
+
+        internal void EvaluateLazyValues(GreenSymbolContext context)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     internal class GreenModel
@@ -1717,6 +1727,34 @@ namespace MetaDslx.Core.Immutable
         {
             GreenSymbol result;
             return this.symbols.TryGetValue(id, out result) && result != null;
+        }
+
+        internal GreenModel AddSymbol(SymbolId id)
+        {
+            if (this.symbols.ContainsKey(id)) return this;
+            return this.Update(this.id, this.symbols.Add(id, new GreenSymbol(id)), this.lazySymbols);
+        }
+
+        internal GreenModel AddSymbol(GreenSymbol symbol)
+        {
+            if (this.symbols.ContainsKey(symbol.Id)) return this;
+            return this.Update(this.id, this.symbols.Add(symbol.Id, symbol), this.lazySymbols);
+        }
+
+        internal void EvaluateLazyValues(GreenSymbolContext context)
+        {
+            if (context == null) context = new GreenSymbolContext(null, this);
+            foreach (var symbolId in this.lazySymbols)
+            {
+                GreenModel symbolModel;
+                bool symbolReadOnly;
+                GreenSymbol symbol = context.GetSymbol(symbolId, out symbolModel, out symbolReadOnly);
+                GreenSymbol newSymbol = symbol;
+                if (symbol != null && !symbolReadOnly)
+                {
+                    symbol.EvaluateLazyValues(context);
+                }
+            }
         }
     }
 

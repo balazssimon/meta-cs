@@ -12,7 +12,6 @@ namespace MetaDslx.Core.Immutable
     public abstract class ImmutableSymbolBase : IImmutableSymbol
     {
         private SymbolId id;
-        private GreenSymbol green;
         private ImmutableModel model;
 
         protected ImmutableSymbolBase(ImmutableModel model, SymbolId id)
@@ -25,6 +24,12 @@ namespace MetaDslx.Core.Immutable
             {
                 throw new ModelException("The symbol with id '" + id + "' is not found in the model.");
             }
+        }
+
+        public IMutableSymbol ToMutable()
+        {
+            MutableModel mutableModel = this.model.ToMutable();
+            return mutableModel.GetSymbol(this);
         }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
@@ -96,7 +101,6 @@ namespace MetaDslx.Core.Immutable
         public abstract object MMetaClass { get; }
 
         internal SymbolId Id { get { return this.id; } }
-        internal GreenSymbol GreenSymbol { get { return this.green; } }
 
         public ImmutableModel MModel
         {
@@ -193,17 +197,20 @@ namespace MetaDslx.Core.Immutable
     public abstract class MutableSymbolBase : IMutableSymbol
     {
         private bool created;
-        private GreenSymbol green;
+        private SymbolId id;
         private MutableModel model;
 
-        protected MutableSymbolBase(SymbolId id, MutableModel model)
+        protected MutableSymbolBase(SymbolId id, MutableModel model, bool created)
         {
-            bool readOnly;
-            if (!model.Green.TryGetSymbol(id, true, false, out this.green, out readOnly))
-            {
-                throw new ModelException("Cannot find symbol with id " + id + " in the model.");
-            }
+            this.id = id;
             this.model = model;
+            this.created = created;
+        }
+
+        public IImmutableSymbol ToImmutable()
+        {
+            ImmutableModel immutableModel = this.model.ToImmutable();
+            return immutableModel.GetSymbol(this);
         }
 
         protected T GetValue<T>(ModelProperty property)
@@ -275,9 +282,8 @@ namespace MetaDslx.Core.Immutable
             get { return this.model.IsReadOnly; }
         }
 
-        internal SymbolId Id { get { return this.green.Id; } }
-        internal GreenSymbol GreenSymbol { get { return this.green; } }
-
+        internal SymbolId Id { get { return this.id; } }
+        
         public void MInit()
         {
             if (this.MIsCreated) return;

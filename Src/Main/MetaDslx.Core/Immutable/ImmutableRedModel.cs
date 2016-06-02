@@ -87,6 +87,56 @@ namespace MetaDslx.Core.Immutable
             return newModel;
         }
 
+        internal object ToGreenValue(object value)
+        {
+            if (value is ImmutableSymbolBase)
+            {
+                return ((ImmutableSymbolBase)value).Id;
+            }
+            else if (value is MutableSymbolBase)
+            {
+                Debug.Assert(false);
+                return ((MutableSymbolBase)value).Id;
+            }
+            return value;
+        }
+
+        internal object ToRedValue(object value)
+        {
+            if (value is GreenDerivedValue)
+            {
+                object redValue = ((GreenDerivedValue)value).CreateRedValue();
+                if (value is ImmutableSymbolBase)
+                {
+                    return (ImmutableSymbolBase)value;
+                }
+                else if (value is MutableSymbolBase)
+                {
+                    return ((MutableSymbolBase)value).ToImmutable();
+                }
+            }
+            else if (value is GreenLazyValue)
+            {
+                Debug.Assert(false);
+                return null;
+            }
+            else if (value is GreenLazyList)
+            {
+                Debug.Assert(false);
+                return null;
+            }
+            else if (value is GreenList)
+            {
+                Debug.Assert(false);
+                return null;
+            }
+            else if (value is SymbolId)
+            {
+                return this.GetRedSymbol((SymbolId)value);
+            }
+            return value;
+        }
+
         public IImmutableSymbol GetSymbol(ISymbol symbol)
         {
             if (symbol is ImmutableSymbolBase)
@@ -116,13 +166,27 @@ namespace MetaDslx.Core.Immutable
         internal IImmutableSymbol GetRedSymbol(SymbolId green)
         {
             if (green == null) return null;
-            if (!this.cachedSymbols) this.CacheSymbols();
+            if (!this.green.ContainsSymbol(green)) return null;
             IImmutableSymbol red;
-            if (this.symbols.TryGetValue(green, out red))
+            if (!this.symbols.TryGetValue(green, out red))
             {
-                return red;
+                red = this.CreateRedSymbol(green);
             }
-            return null;
+            return red;
+        }
+
+        private IImmutableSymbol CreateRedSymbol(SymbolId green)
+        {
+            ImmutableDictionary<SymbolId, IImmutableSymbol> redSymbols = this.symbols;
+            IImmutableSymbol red = green.CreateImmutable(this, green);
+            redSymbols = redSymbols.Add(green, red);
+            Interlocked.Exchange(ref this.symbols, redSymbols);
+            IImmutableSymbol result;
+            if (this.symbols != redSymbols && this.symbols.TryGetValue(green, out result) && result != null)
+            {
+                return result;
+            }
+            return red;
         }
 
         private void CacheSymbols()
@@ -132,12 +196,14 @@ namespace MetaDslx.Core.Immutable
             {
                 if (this.cachedSymbols) return;
                 this.cachedSymbols = true;
-                ImmutableDictionary<SymbolId, IImmutableSymbol> redSymbols = ImmutableDictionary<SymbolId, IImmutableSymbol>.Empty;
+                ImmutableDictionary<SymbolId, IImmutableSymbol> redSymbols = this.symbols;
                 foreach (var greenId in this.green.Symbols)
                 {
-                    GreenSymbol greenSymbol = this.green.GetSymbol(greenId);
-                    IImmutableSymbol red = greenId.CreateImmutable(this, greenSymbol);
-                    redSymbols = redSymbols.Add(greenId, red);
+                    if (!redSymbols.ContainsKey(greenId))
+                    {
+                        IImmutableSymbol red = greenId.CreateImmutable(this, greenId);
+                        redSymbols = redSymbols.Add(greenId, red);
+                    }
                 }
                 this.symbols = redSymbols;
             }
@@ -242,55 +308,6 @@ namespace MetaDslx.Core.Immutable
             return this.green.MTryGet(redSymbol.Id, property, out value);
         }
         */
-        internal object ToGreenValue(object value)
-        {
-            if (value is ImmutableSymbolBase)
-            {
-                return ((ImmutableSymbolBase)value).Id;
-            }
-            else if (value is MutableSymbolBase)
-            {
-                Debug.Assert(false);
-                return ((MutableSymbolBase)value).Id;
-            }
-            return value;
-        }
-
-        internal object ToRedValue(object value)
-        {
-            if (value is GreenDerivedValue)
-            {
-                object redValue = ((GreenDerivedValue)value).CreateRedValue();
-                if (value is ImmutableSymbolBase)
-                {
-                    return (ImmutableSymbolBase)value;
-                }
-                else if (value is MutableSymbolBase)
-                {
-                    return ((MutableSymbolBase)value).ToImmutable(this);
-                }
-            }
-            else if (value is GreenLazyValue)
-            {
-                Debug.Assert(false);
-                return null;
-            }
-            else if (value is GreenLazyList)
-            {
-                Debug.Assert(false);
-                return null;
-            }
-            else if (value is GreenList)
-            {
-                Debug.Assert(false);
-                return null;
-            }
-            else if (value is SymbolId)
-            {
-                return this.GetRedSymbol((SymbolId)value);
-            }
-            return value;
-        }
     }
 
     public sealed class ImmutableModelGroup
@@ -406,61 +423,13 @@ namespace MetaDslx.Core.Immutable
         {
             if (this.green != green)
             {
+                this.immutableModel.SetTarget(null);
                 Interlocked.Exchange(ref this.green, green);
-                lock (this.immutableModel)
-                {
-                    this.immutableModel.SetTarget(null);
-                }
             }
             if (this.symbols != symbols)
             {
                 Interlocked.Exchange(ref this.symbols, symbols);
             }
-        }
-
-        public ImmutableModel ToImmutable()
-        {
-            ImmutableModel result;
-            if (this.group != null)
-            {
-                ImmutableModelGroup immutableGroup = this.group.ToImmutable();
-                if (immutableGroup != null)
-                {
-                    if (immutableGroup.Models.TryGetValue(this.green.Id, out result))
-                    {
-                        return result;
-                    }
-                    if (immutableGroup.References.TryGetValue(this.green.Id, out result))
-                    {
-                        return result;
-                    }
-                }
-            }
-            else
-            {
-                lock (this.immutableModel)
-                {
-                    if (this.immutableModel.TryGetTarget(out result) && result != null)
-                    {
-                        return result;
-                    }
-                }
-                result = new ImmutableModel(this.green, null, this);
-                lock (this.immutableModel)
-                {
-                    ImmutableModel oldModel;
-                    if (this.immutableModel.TryGetTarget(out oldModel) && oldModel != null)
-                    {
-                        return oldModel;
-                    }
-                    else
-                    {
-                        this.immutableModel.SetTarget(result);
-                        return result;
-                    }
-                }
-            }
-            return null;
         }
 
         public bool IsReadOnly
@@ -488,19 +457,91 @@ namespace MetaDslx.Core.Immutable
             set { this.allowLazyEval = value; }
         }
 
-        public ModelTransaction BeginTransaction()
+        public ImmutableModel ToImmutable()
         {
-            if (this.IsReadOnly) throw new ModelException("Cannot change a read-only mutable model. Create a new one instead.");
-            return new ModelTransaction(this);
+            ImmutableModel result;
+            if (this.group != null)
+            {
+                ImmutableModelGroup immutableGroup = this.group.ToImmutable();
+                if (immutableGroup != null)
+                {
+                    if (immutableGroup.Models.TryGetValue(this.green.Id, out result))
+                    {
+                        return result;
+                    }
+                    if (immutableGroup.References.TryGetValue(this.green.Id, out result))
+                    {
+                        return result;
+                    }
+                }
+            }
+            else
+            {
+                if (this.immutableModel.TryGetTarget(out result) && result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    result = new ImmutableModel(this.green, null, this);
+                    this.immutableModel.SetTarget(result);
+                    return result;
+                }
+            }
+            return null;
         }
 
-        public void EvaluateLazyValues()
+        internal object ToGreenValue(object value)
         {
-            if (this.IsReadOnly) throw new ModelException("Cannot change a read-only mutable model. Create a new one instead.");
-            using (CollectionTxScope scope = new CollectionTxScope())
+            if (value is ImmutableSymbolBase)
             {
-                this.green.EvaluateLazyValues(false);
-                scope.Commit();
+                Debug.Assert(false);
+                return ((ImmutableSymbolBase)value).Id;
+            }
+            if (value is MutableSymbolBase)
+            {
+                return ((MutableSymbolBase)value).Id;
+            }
+            return value;
+        }
+
+        internal object ToRedValue(object value)
+        {
+            if (value is GreenDerivedValue)
+            {
+                object redValue = ((GreenDerivedValue)value).CreateRedValue();
+                if (value is ImmutableSymbolBase)
+                {
+                    return ((ImmutableSymbolBase)value).ToMutable();
+                }
+                else if (value is MutableSymbolBase)
+                {
+                    return (MutableSymbolBase)value;
+                }
+                return redValue;
+            }
+            else if (value is GreenLazyValue)
+            {
+                Debug.Assert(false);
+                return null;
+            }
+            else if (value is GreenLazyList)
+            {
+                Debug.Assert(false);
+                return null;
+            }
+            else if (value is GreenList)
+            {
+                Debug.Assert(false);
+                return null;
+            }
+            else if (value is SymbolId)
+            {
+                return this.GetRedSymbol((SymbolId)value);
+            }
+            else
+            {
+                return value;
             }
         }
 
@@ -530,82 +571,58 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        internal IMutableSymbol GetRedSymbol(SymbolId green)
+        internal IMutableSymbol GetRedSymbol(SymbolId id)
         {
-            if (green == null) return null;
-            if (!this.cachedSymbols) this.CacheSymbols();
+            if (id == null) return null;
+            if (!this.green.ContainsSymbol(id)) return null;
             IMutableSymbol red;
-            if (this.symbols.TryGetValue(green, out red))
+            if (this.symbols.TryGetValue(id, out red))
             {
                 return red;
             }
-            return null;
-        }
-
-        internal void EnsureWritable(string errorMessage = "Cannot change a read-only mutable model. Create a new one instead.")
-        {
-            if (this.green.IsReadOnly) throw new ModelException(errorMessage);
+            red = id.CreateMutable(this, id);
+            this.Update(this.green, this.symbols.Add(id, red));
+            return red;
         }
 
         private void CacheSymbols()
         {
             if (this.cachedSymbols) return;
-            using (new CollectionTxScope(TransactionPropagation.DisableTx))
+            ImmutableDictionary<SymbolId, IMutableSymbol> redSymbols = this.symbols;
+            foreach (var greenId in this.green.Symbols)
             {
-                foreach (var greenId in this.green.Symbols)
+                if (!redSymbols.ContainsKey(greenId))
                 {
-                    GreenSymbol greenSymbol = this.green.GetSymbol(greenId, true);
-                    IMutableSymbol red = greenId.CreateMutable(this, greenSymbol);
-                    this.symbols.Add(greenId, red);
+                    IMutableSymbol red = greenId.CreateMutable(this, greenId);
+                    redSymbols = redSymbols.Add(greenId, red);
                 }
-                this.cachedSymbols = true;
             }
+            this.Update(this.green, redSymbols);
+            this.cachedSymbols = true;
+        }
+
+        internal void EnsureWritable(string errorMessage = "Cannot change a read-only mutable model. Create a new one instead.")
+        {
+            if (this.readOnly) throw new ModelException(errorMessage);
+        }
+
+        public ModelTransaction BeginTransaction()
+        {
+            this.EnsureWritable();
+            return new ModelTransaction(this);
         }
 
         public IMutableSymbol AddSymbol(SymbolId id)
         {
             this.EnsureWritable();
-            if (!this.cachedSymbols) this.CacheSymbols();
-            GreenSymbol greenSymbol = this.green.AddSymbol(id);
-            IMutableSymbol red = id.CreateMutable(this, greenSymbol);
-            this.symbols.Add(id, red);
-            return red;
+            this.Update(this.green.AddSymbol(id), this.symbols);
+            return this.GetRedSymbol(id);
         }
 
-        internal object ToGreenValue(object value)
+        public void EvaluateLazyValues()
         {
-            if (value is MutableSymbolBase)
-            {
-                return ((MutableSymbolBase)value).Id;
-            }
-            return value;
-        }
-
-        internal object ToRedValue(object value)
-        {
-            if (value is GreenLazyValue)
-            {
-                Debug.Assert(false);
-                return null;
-            }
-            else if (value is GreenLazyList)
-            {
-                Debug.Assert(false);
-                return null;
-            }
-            else if (value is GreenList)
-            {
-                Debug.Assert(false);
-                return null;
-            }
-            else if (value is SymbolId)
-            {
-                return this.GetRedSymbol((SymbolId)value);
-            }
-            else
-            {
-                return value;
-            }
+            this.EnsureWritable();
+            this.Update(this.green.EvaluateLazyValues(), this.symbols);
         }
         /*
         internal object GetValue(MutableSymbolBase symbol, ModelProperty property)
