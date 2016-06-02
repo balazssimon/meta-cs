@@ -1,6 +1,7 @@
 ﻿using MetaDslx.Core.Collections.Transactional;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -12,17 +13,23 @@ namespace MetaDslx.Core.Immutable
     public sealed class ImmutableModel : RedModel
     {
         private GreenModel green;
+        private ImmutableModelGroup group;
         private bool cachedSymbols;
-        private Dictionary<SymbolId, IImmutableSymbol> symbols;
+        private ImmutableDictionary<SymbolId, IImmutableSymbol> symbols;
+        private WeakReference<MutableModel> mutableModel;
 
-        internal ImmutableModel(GreenModel green)
+        internal ImmutableModel(GreenModel green, ImmutableModelGroup group, MutableModel mutableModel)
         {
-            if (!green.IsReadOnly)
-            {
-                throw new ModelException("The green model must be read-only.");
-            }
             this.green = green;
+            this.group = group;
             this.cachedSymbols = false;
+            this.symbols = ImmutableDictionary<SymbolId, IImmutableSymbol>.Empty;
+            this.mutableModel = new WeakReference<MutableModel>(mutableModel);
+        }
+
+        public bool IsReadOnly
+        {
+            get { return true; }
         }
 
         internal GreenModel Green { get { return this.green; } }
@@ -36,9 +43,48 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        public MutableModel ToMutable()
+        public MutableModel ToMutable(bool createNew = false)
         {
-            return new MutableModel(this.green, this);
+            MutableModel result = null;
+            if (!createNew)
+            {
+                lock (this.mutableModel)
+                {
+                    if (this.mutableModel.TryGetTarget(out result) && result != null)
+                    {
+                        return result; 
+                    }
+                }
+            }
+            MutableModel newModel = null;
+            if (this.group != null)
+            {
+                MutableModelGroup mutableGroup = this.group.ToMutable(createNew);
+                mutableGroup.Models.TryGetValue(this.green.Id, out newModel);
+            }
+            else
+            {
+                newModel = new MutableModel(this.green, null, false, this);
+            }
+            if (newModel != null)
+            {
+                if (!createNew)
+                {
+                    lock (this.mutableModel)
+                    {
+                        MutableModel oldModel;
+                        if (this.mutableModel.TryGetTarget(out oldModel) && oldModel != null)
+                        {
+                            return oldModel;
+                        }
+                        else
+                        {
+                            this.mutableModel.SetTarget(newModel);
+                        }
+                    }
+                }
+            }
+            return newModel;
         }
 
         public IImmutableSymbol GetSymbol(ISymbol symbol)
@@ -86,19 +132,20 @@ namespace MetaDslx.Core.Immutable
             {
                 if (this.cachedSymbols) return;
                 this.cachedSymbols = true;
-                this.symbols = new Dictionary<SymbolId, IImmutableSymbol>();
+                ImmutableDictionary<SymbolId, IImmutableSymbol> redSymbols = ImmutableDictionary<SymbolId, IImmutableSymbol>.Empty;
                 foreach (var greenId in this.green.Symbols)
                 {
-                    GreenSymbol greenSymbol = this.green.GetSymbol(greenId, false);
+                    GreenSymbol greenSymbol = this.green.GetSymbol(greenId);
                     IImmutableSymbol red = greenId.CreateImmutable(this, greenSymbol);
-                    this.symbols.Add(greenId, red);
+                    redSymbols = redSymbols.Add(greenId, red);
                 }
+                this.symbols = redSymbols;
             }
         }
 
-        internal List<T> CreateListItems<T>(IInternalReadOnlyCollection list)
+        internal ImmutableList<T> CreateListItems<T>(IInternalReadOnlyCollection list)
         {
-            List<T> result = new List<T>();
+            ImmutableList<T> result = ImmutableList<T>.Empty;
             foreach (var greenObject in list.Green)
             {
                 object redObject = greenObject;
@@ -107,7 +154,7 @@ namespace MetaDslx.Core.Immutable
                     redObject = this.GetRedSymbol((SymbolId)greenObject);
                     Debug.Assert(redObject != null);
                 }
-                result.Add((T)redObject);
+                result = result.Add((T)redObject);
             }
             return result;
         }
@@ -211,7 +258,19 @@ namespace MetaDslx.Core.Immutable
 
         internal object ToRedValue(object value)
         {
-            if (value is GreenLazyValue)
+            if (value is GreenDerivedValue)
+            {
+                object redValue = ((GreenDerivedValue)value).CreateRedValue();
+                if (value is ImmutableSymbolBase)
+                {
+                    return (ImmutableSymbolBase)value;
+                }
+                else if (value is MutableSymbolBase)
+                {
+                    return ((MutableSymbolBase)value).ToImmutable(this);
+                }
+            }
+            else if (value is GreenLazyValue)
             {
                 Debug.Assert(false);
                 return null;
@@ -234,31 +293,179 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
+    public sealed class ImmutableModelGroup
+    {
+        private GreenModelGroup green;
+        private ImmutableDictionary<ModelId, ImmutableModel> references;
+        private ImmutableDictionary<ModelId, ImmutableModel> models;
+        private WeakReference<MutableModelGroup> mutableGroup;
+
+        internal ImmutableModelGroup(GreenModelGroup green, MutableModelGroup mutableGroup)
+        {
+            this.green = green;
+            this.mutableGroup = new WeakReference<MutableModelGroup>(mutableGroup);
+            if (mutableGroup != null)
+            {
+                this.models = green.Models.ToImmutableDictionary(v => v.Id, v => new ImmutableModel(v, this, mutableGroup.Models.GetValueOrDefault(v.Id)));
+                this.references = green.References.ToImmutableDictionary(v => v.Id, v => new ImmutableModel(v, this, mutableGroup.References.GetValueOrDefault(v.Id)));
+            }
+            else
+            {
+                this.models = green.Models.ToImmutableDictionary(v => v.Id, v => new ImmutableModel(v, this, null));
+                this.references = green.References.ToImmutableDictionary(v => v.Id, v => new ImmutableModel(v, this, null));
+            }
+        }
+
+        private ImmutableModelGroup(GreenModelGroup green, ImmutableDictionary<ModelId, ImmutableModel> models, ImmutableDictionary<ModelId, ImmutableModel> references)
+        {
+            this.green = green;
+            this.models = models;
+            this.references = references;
+        }
+
+        private ImmutableModelGroup Update(GreenModelGroup green, ImmutableDictionary<ModelId, ImmutableModel> models, ImmutableDictionary<ModelId, ImmutableModel> references)
+        {
+            if (this.green != green || this.models != models || this.references != references)
+            {
+                return new ImmutableModelGroup(green, models, references);
+            }
+            return this;
+        }
+
+        public MutableModelGroup ToMutable(bool createNew = false)
+        {
+            MutableModelGroup result;
+            if (!createNew)
+            {
+                lock(this.mutableGroup)
+                {
+                    if (this.mutableGroup.TryGetTarget(out result) && result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+            result = new MutableModelGroup(this.green, this);
+            if (!createNew)
+            {
+                lock(this.mutableGroup)
+                {
+                    MutableModelGroup oldGroup = null;
+                    if (this.mutableGroup.TryGetTarget(out oldGroup) && oldGroup != null)
+                    {
+                        return oldGroup;
+                    }
+                    else
+                    {
+                        this.mutableGroup.SetTarget(result);
+                        return result;
+                    }
+                }
+            }
+            return result;
+        }
+
+        internal GreenModelGroup Green
+        {
+            get { return this.green; }
+        }
+
+        public ImmutableDictionary<ModelId, ImmutableModel> Models
+        {
+            get { return this.models; }
+        }
+
+        public ImmutableDictionary<ModelId, ImmutableModel> References
+        {
+            get { return this.references; }
+        }
+    }
+
     public sealed class MutableModel : RedModel
     {
         private GreenModel green;
-        private ImmutableModel originalImmutableModel;
+        private MutableModelGroup group;
+        private bool readOnly;
         private bool cachedSymbols;
-        private TxValue<bool> allowLazyEval;
-        private TxDictionary<SymbolId, IMutableSymbol> symbols;
+        private ImmutableDictionary<SymbolId, IMutableSymbol> symbols;
+        private bool allowLazyEval;
+        private WeakReference<ImmutableModel> immutableModel;
 
-        public MutableModel()
-            : this(new GreenModel(), null)
-        {
-            this.allowLazyEval = new TxValue<bool>(true);
-        }
-
-        internal MutableModel(GreenModel green, ImmutableModel originalImmutableModel)
+        internal MutableModel(GreenModel green, MutableModelGroup group, bool readOnly, ImmutableModel immutableModel)
         {
             this.green = green;
-            this.originalImmutableModel = originalImmutableModel;
-            this.symbols = new TxDictionary<SymbolId, IMutableSymbol>();
-            this.allowLazyEval = new TxValue<bool>(!this.green.IsReadOnly);
+            this.group = group;
+            this.readOnly = readOnly;
+            this.immutableModel = new WeakReference<ImmutableModel>(immutableModel);
+            this.allowLazyEval = true;
+            this.cachedSymbols = false;
+            this.symbols = ImmutableDictionary<SymbolId, IMutableSymbol>.Empty;
+        }
+
+        private void Update(GreenModel green, ImmutableDictionary<SymbolId, IMutableSymbol> symbols)
+        {
+            if (this.green != green)
+            {
+                Interlocked.Exchange(ref this.green, green);
+                lock (this.immutableModel)
+                {
+                    this.immutableModel.SetTarget(null);
+                }
+            }
+            if (this.symbols != symbols)
+            {
+                Interlocked.Exchange(ref this.symbols, symbols);
+            }
+        }
+
+        public ImmutableModel ToImmutable()
+        {
+            ImmutableModel result;
+            if (this.group != null)
+            {
+                ImmutableModelGroup immutableGroup = this.group.ToImmutable();
+                if (immutableGroup != null)
+                {
+                    if (immutableGroup.Models.TryGetValue(this.green.Id, out result))
+                    {
+                        return result;
+                    }
+                    if (immutableGroup.References.TryGetValue(this.green.Id, out result))
+                    {
+                        return result;
+                    }
+                }
+            }
+            else
+            {
+                lock (this.immutableModel)
+                {
+                    if (this.immutableModel.TryGetTarget(out result) && result != null)
+                    {
+                        return result;
+                    }
+                }
+                result = new ImmutableModel(this.green, null, this);
+                lock (this.immutableModel)
+                {
+                    ImmutableModel oldModel;
+                    if (this.immutableModel.TryGetTarget(out oldModel) && oldModel != null)
+                    {
+                        return oldModel;
+                    }
+                    else
+                    {
+                        this.immutableModel.SetTarget(result);
+                        return result;
+                    }
+                }
+            }
+            return null;
         }
 
         public bool IsReadOnly
         {
-            get { return this.green.IsReadOnly; }
+            get { return this.readOnly; }
         }
 
         internal GreenModel Green
@@ -277,14 +484,14 @@ namespace MetaDslx.Core.Immutable
 
         public bool AllowLazyEvaluation
         {
-            get { return this.allowLazyEval.Value; }
-            set { this.allowLazyEval.Value = value; }
+            get { return this.allowLazyEval; }
+            set { this.allowLazyEval = value; }
         }
 
-        public RedModelTransaction BeginTransaction()
+        public ModelTransaction BeginTransaction()
         {
             if (this.IsReadOnly) throw new ModelException("Cannot change a read-only mutable model. Create a new one instead.");
-            return new RedModelTransaction(this);
+            return new ModelTransaction(this);
         }
 
         public void EvaluateLazyValues()
@@ -294,47 +501,6 @@ namespace MetaDslx.Core.Immutable
             {
                 this.green.EvaluateLazyValues(false);
                 scope.Commit();
-            }
-        }
-
-        public ImmutableModel ToImmutable(bool finish = true, bool evalLazy = false, bool evalDerived = false)
-        {
-            if (this.green.Group != null)
-            {
-                throw new ModelException("Cannot create an immutable model within a group. Try create an immutable model group from the whole group instead.");
-            }
-            if (this.green.IsChanged || this.green.BaseModel == null)
-            {
-                GreenModel fork = this.green.Fork(null);
-                fork.Finish();
-                return new ImmutableModel(fork);
-            }
-            else
-            {
-                if (this.originalImmutableModel != null)
-                {
-                    if (this.originalImmutableModel.Green.HasLazyValues && (evalLazy || evalDerived))
-                    {
-                        GreenModel fork = this.green.Fork(null);
-                        fork.EvaluateLazyValues(evalDerived);
-                        fork.Finish();
-                        return new ImmutableModel(fork);
-                    }
-                    else
-                    {
-                        return this.originalImmutableModel;
-                    }
-                }
-                else
-                {
-                    GreenModel fork = this.green.Fork(null);
-                    if (evalLazy || evalDerived)
-                    {
-                        fork.EvaluateLazyValues(evalDerived);
-                    }
-                    fork.Finish();
-                    return new ImmutableModel(fork);
-                }
             }
         }
 
@@ -751,12 +917,90 @@ namespace MetaDslx.Core.Immutable
         */
     }
 
-    public sealed class RedModelTransaction : IDisposable
+    public sealed class MutableModelGroup
+    {
+        private GreenModelGroup green;
+        private WeakReference<ImmutableModelGroup> immutableGroup;
+        private ImmutableDictionary<ModelId, MutableModel> references;
+        private ImmutableDictionary<ModelId, MutableModel> models;
+
+        internal MutableModelGroup(GreenModelGroup green, ImmutableModelGroup immutableGroup)
+        {
+            this.green = green;
+            this.immutableGroup = new WeakReference<ImmutableModelGroup>(immutableGroup);
+            if (immutableGroup != null)
+            {
+                this.models = green.Models.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, false, immutableGroup.Models.GetValueOrDefault(v.Id)));
+                this.references = green.References.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, true, immutableGroup.Models.GetValueOrDefault(v.Id)));
+            }
+            else
+            {
+                this.models = green.Models.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, false, null));
+                this.references = green.References.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, true, null));
+            }
+        }
+
+        private MutableModelGroup(GreenModelGroup green, ImmutableDictionary<ModelId, MutableModel> models, ImmutableDictionary<ModelId, MutableModel> references)
+        {
+            this.green = green;
+            this.models = models;
+            this.references = references;
+        }
+
+        private void Update(GreenModelGroup green, ImmutableDictionary<ModelId, MutableModel> models, ImmutableDictionary<ModelId, MutableModel> references)
+        {
+            if (this.green != green || this.models != models || this.references != references)
+            {
+                lock (this.immutableGroup)
+                {
+                    this.immutableGroup.SetTarget(null);
+                }
+            }
+            if (this.green != green) Interlocked.Exchange(ref this.green, green);
+            if (this.models != models) Interlocked.Exchange(ref this.models, models);
+            if (this.references != references) Interlocked.Exchange(ref this.references, references);
+        }
+
+        public ImmutableModelGroup ToImmutable()
+        {
+            ImmutableModelGroup result;
+            lock (this.immutableGroup)
+            {
+                if (this.immutableGroup.TryGetTarget(out result) && result != null)
+                {
+                    return result;
+                }
+            }
+            result = new ImmutableModelGroup(this.green, this);
+            lock (this.immutableGroup)
+            {
+                this.immutableGroup.SetTarget(result);
+            }
+            return result;
+        }
+
+        internal GreenModelGroup Green
+        {
+            get { return this.green; }
+        }
+
+        public ImmutableDictionary<ModelId, MutableModel> Models
+        {
+            get { return this.models; }
+        }
+
+        public ImmutableDictionary<ModelId, MutableModel> References
+        {
+            get { return this.references; }
+        }
+    }
+
+    public sealed class ModelTransaction : IDisposable
     {
         private MutableModel model;
         private CollectionTxScope txScope;
 
-        internal RedModelTransaction(MutableModel model)
+        internal ModelTransaction(MutableModel model)
         {
             this.model = model;
             this.txScope = new CollectionTxScope();

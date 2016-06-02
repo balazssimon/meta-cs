@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -28,145 +29,16 @@ namespace MetaDslx.Core.Immutable
         void InternalRemoveAt(int index);
     }
 
-    // GREEN:
-    internal class GreenList : IReadOnlyList<object>
-    {
-        private static readonly TxList<object> emptyList = new TxList<object>();
-        private bool unique;
-        private TxList<object> items;
-        private TxList<object> lazyItems;
-
-        internal GreenList(bool unique)
-        {
-            this.unique = unique;
-            this.items = new TxList<object>();
-        }
-
-        internal GreenList(GreenList other)
-        {
-            this.unique = other.unique;
-            this.items = new TxList<object>(other.items);
-            this.lazyItems = other.lazyItems != null ? new TxList<object>(other.lazyItems) : null;
-        }
-
-        public int Count { get { return this.items.Count; } }
-        public object this[int index] { get { return this.items[index]; } }
-
-        internal bool HasLazyItems { get { return this.lazyItems != null && this.lazyItems.Count > 0; } }
-        internal IReadOnlyList<object> LazyItems { get { return this.lazyItems ?? GreenList.emptyList; } }
-
-        public IEnumerator<object> GetEnumerator()
-        {
-            return this.items.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
-        internal bool Add(object item)
-        {
-            Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
-            if (!this.unique || !this.items.Contains(item))
-            {
-                this.items.Add(item);
-                return true;
-            }
-            return false;
-        }
-
-        internal bool AddRange(IEnumerable<object> items)
-        {
-            bool result = false;
-            foreach (var item in items)
-            {
-                result |= this.Add(item);
-            }
-            return result;
-        }
-
-        internal bool Remove(object item)
-        {
-            return this.items.Remove(item);
-        }
-
-        internal bool Contains(object item)
-        {
-            return this.items.Contains(item);
-        }
-
-        internal bool Insert(int index, object item)
-        {
-            Debug.Assert(!(item is GreenLazyValue || item is GreenLazyList));
-            if (!this.unique || !this.items.Contains(item))
-            {
-                this.items.Insert(index, item);
-                return true;
-            }
-            else
-            {
-                this.items.Remove(item);
-                this.items.Insert(index, item);
-            }
-            return false;
-        }
-
-        internal int IndexOf(object item)
-        {
-            return this.items.IndexOf(item);
-        }
-
-        internal bool RemoveAt(int index, object item)
-        {
-            if (this.items[index] == item)
-            {
-                this.items.RemoveAt(index);
-                return true;
-            }
-            return false;
-        }
-
-        internal void AddLazy(object item)
-        {
-            Debug.Assert(item is GreenLazyValue || item is GreenLazyList);
-            Interlocked.CompareExchange(ref this.lazyItems, new TxList<object>(), null);
-            this.lazyItems.Add(item);
-        }
-
-        internal bool RemoveAll(object item)
-        {
-            bool result = false;
-            for (int i = this.items.Count-1; i >= 0; i++)
-            {
-                if (this.items[i] == item)
-                {
-                    this.items.Remove(i);
-                    result = true;
-                }
-            }
-            return result;
-        }
-
-        internal void ClearLazyItems()
-        {
-            if (this.lazyItems != null)
-            {
-                this.lazyItems.Clear();
-            }
-        }
-    }
-
     // RED:
 
     // thread-safe
     public sealed class ImmutableModelList<T> : IImmutableModelList<T>, IReadOnlyList<T>, IInternalReadOnlyCollection
     {
-        internal static readonly ImmutableModelList<T> Empty = new ImmutableModelList<T>();
+        internal static readonly ImmutableModelList<T> Empty = new ImmutableModelList<T>(null, null);
 
         private GreenList green;
         private ImmutableModel model;
-        private List<T> cachedItems = null;
+        private ImmutableList<T> cachedItems = null;
 
         internal ImmutableModelList(GreenList green, ImmutableModel model)
         {
@@ -175,7 +47,6 @@ namespace MetaDslx.Core.Immutable
         }
 
         GreenList IInternalReadOnlyCollection.Green { get { return this.green; } }
-        public ImmutableModel Model { get { return this.model; } }
 
         public T this[int index]
         {
@@ -196,17 +67,18 @@ namespace MetaDslx.Core.Immutable
 
         public bool Contains(T item)
         {
-            object value = this.model.ToGreenValue(item);
-            return this.green.Contains(item);
+            object value = null;
+            if (this.model != null)
+            {
+                this.model.ToGreenValue(item);
+            }
+            return this.green != null && this.green.Contains(value);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
             if (this.cachedItems == null) this.CacheItems();
-            foreach (var item in this.cachedItems)
-            {
-                yield return item;
-            }
+            return this.cachedItems.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -222,7 +94,7 @@ namespace MetaDslx.Core.Immutable
 
         public bool HasLazy()
         {
-            return this.green.HasLazyItems;
+            return this.green != null && this.green.HasLazyItems;
         }
     }
 

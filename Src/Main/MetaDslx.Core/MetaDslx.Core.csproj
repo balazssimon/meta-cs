@@ -51,13 +51,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
     </Compile>
-    <Compile Include="Immutable\ImmutableGreenModel.cs" />
     <Compile Include="Immutable\ImmutableModel.cs" />
     <Compile Include="Immutable\ImmutableModelList.cs" />
     <Compile Include="Immutable\ImmutableModelProperties.cs" />
     <Compile Include="Immutable\ImmutableRedModel.cs" />
     <Compile Include="Immutable\ImmutableSymbol.cs" />
-    <Compile Include="Immutable\ImmutableSymbolState.cs" />
+    <Compile Include="Immutable\ImmutableGreenModel.cs" />
     <Compile Include="Immutable\TransactionalCollections.cs" />
     <Compile Include="MetaImplementation.cs" />
     <Compile Include="MetaModel.cs">

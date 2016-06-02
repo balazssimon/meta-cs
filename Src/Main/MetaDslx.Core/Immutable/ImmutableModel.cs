@@ -19,8 +19,8 @@ namespace MetaDslx.Core.Immutable
         public string Id { get { return this.id; } }
         public abstract Type ImmutableType { get; }
         public abstract Type MutableType { get; }
-        public abstract IImmutableSymbol CreateImmutable(ImmutableModel model, GreenSymbol green);
-        public abstract IMutableSymbol CreateMutable(MutableModel model, GreenSymbol green);
+        public abstract IImmutableSymbol CreateImmutable(ImmutableModel model, SymbolId green);
+        public abstract IMutableSymbol CreateMutable(MutableModel model, SymbolId green);
 
         public override int GetHashCode()
         {
@@ -128,7 +128,7 @@ namespace MetaDslx.Core.Immutable
 
         public ModelFactory()
         {
-            this.model = new MutableModel();
+            this.model = new MutableModel(new GreenModel(), null, false, null);
         }
 
         public ModelFactory(MutableModel model)

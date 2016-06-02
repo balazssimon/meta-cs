@@ -21,20 +21,10 @@ namespace MetaDslx.Core.Immutable
             if (id == null) throw new ArgumentNullException(nameof(id));
             this.model = model;
             this.id = id;
-            bool readOnly;
-            if (!this.model.Green.TryGetSymbol(id, false, out this.green, out readOnly))
+            if (!this.model.Green.TryGetSymbol(id, out this.green))
             {
                 throw new ModelException("The symbol with id '" + id + "' is not found in the model.");
             }
-        }
-
-        protected ImmutableSymbolBase(SymbolId id, GreenSymbol green)
-        {
-            if (id == null) throw new ArgumentNullException(nameof(id));
-            if (green == null) throw new ArgumentNullException(nameof(green));
-            this.model = null;
-            this.id = id;
-            this.green = green;
         }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
