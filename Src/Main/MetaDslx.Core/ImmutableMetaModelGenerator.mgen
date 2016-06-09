@@ -94,9 +94,9 @@ internal class [cls.CSharpName(ClassKind.Immutable)]Id : SymbolId
         return new [cls.CSharpImplName(ClassKind.Immutable)](this, model);
     }
 ^
-    public override IMutableSymbol CreateMutable(MutableModel model)
+    public override IMutableSymbol CreateMutable(MutableModel model, bool created)
     {
-        return new [cls.CSharpImplName(ClassKind.Builder)](this, model);
+        return new [cls.CSharpImplName(ClassKind.Builder)](this, model, created);
     }
 }
 ^
@@ -279,13 +279,16 @@ internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.I
     [GenerateBuilderField(cls, prop)]
 	[end loop]
 ^
-    internal [cls.CSharpImplName(ClassKind.Builder)](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableModel model)
-		: base(id, model)
+    internal [cls.CSharpImplName(ClassKind.Builder)](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableModel model, bool created)
+		: base(id, model, created)
     {
-		[loop(cls->prop:GetAllProperties())]
-        this.MAttachProperty([prop.CSharpFullDescriptorName(ClassKind.Immutable)]);
-		[end loop]
-        this.MInit();
+		if (!created)
+		{
+			[loop(cls->prop:GetAllProperties())]
+			this.MAttachProperty([prop.CSharpFullDescriptorName(ClassKind.Immutable)]);
+			[end loop]
+			this.MInit();
+		}
     }
 ^
     protected override void MDoInit()
@@ -464,9 +467,9 @@ Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Class.CSharpFull
 	[end if]
 {
 		[if (prop.Type.IsReferenceType())]
-    set { this.MParent.MChildLazyAdd(this.MProperty, [prop.CSharpFullDescriptorName(ClassKind.Builder)], value); }
+    set { this.MParent.MChildAddLazy(this.MProperty, [prop.CSharpFullDescriptorName(ClassKind.Builder)], value); }
 		[else]
-    set { this.MParent.MChildLazyAdd(this.MProperty, [prop.CSharpFullDescriptorName(ClassKind.Builder)], () => value); }
+    set { this.MParent.MChildAddLazy(this.MProperty, [prop.CSharpFullDescriptorName(ClassKind.Builder)], () => value); }
 		[end if]
 }
 [end if]
@@ -751,7 +754,7 @@ template GenerateInitImplementation(MetaModel model, MetaClass cls)
 @this.[init.ObjectName]LazyChild.[init.PropertyName] = () => [GenerateExpression(init.Value)];
 			[end if]
 		[else]
-((MutableSymbolBase)@this).MChildLazyAdd([init.Object.CSharpFullDescriptorName(ClassKind.Builder)], [init.Property.CSharpFullDescriptorName(ClassKind.Builder)], () => [GenerateExpression(init.Value)]);
+((MutableSymbolBase)@this).MChildAddLazy([init.Object.CSharpFullDescriptorName(ClassKind.Builder)], [init.Property.CSharpFullDescriptorName(ClassKind.Builder)], () => [GenerateExpression(init.Value)]);
 		[end if]
 	[end if]
 [end loop]

@@ -37,13 +37,12 @@ namespace MetaDslx.Core.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ModelException))]
         public void TestPersonDogStatic2()
         {
             IPersonX p1 = new PersonX();
             IDogX d1 = new DogX();
             p1.Pets.Add(d1);
-            Assert.AreEqual(d1.Owner, p1);
+            Assert.AreEqual(null, d1.Owner);
             Assert.IsTrue(p1.Pets.Contains(d1));
         }
 
@@ -83,7 +82,7 @@ namespace MetaDslx.Core.Test
             IStudentX s1 = new StudentX();
             IDogX d1 = new DogX();
             s1.Pets.Add(d1);
-            Assert.AreEqual(d1.Owner, s1);
+            Assert.AreEqual(null, d1.Owner);
             Assert.IsTrue(s1.Pets.Contains(d1));
         }
 
