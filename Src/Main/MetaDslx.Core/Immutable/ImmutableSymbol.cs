@@ -27,6 +27,11 @@ namespace MetaDslx.Core.Immutable
             return mutableModel.GetSymbol(this);
         }
 
+        public IMutableSymbol ToMutable(MutableModel mutableModel)
+        {
+            return mutableModel.GetSymbol(this);
+        }
+
         protected T GetValue<T>(ModelProperty property, ref T value)
             where T : struct
         {
@@ -168,6 +173,11 @@ namespace MetaDslx.Core.Immutable
         public IImmutableSymbol ToImmutable()
         {
             ImmutableModel immutableModel = this.model.ToImmutable();
+            return immutableModel.GetSymbol(this);
+        }
+
+        public IImmutableSymbol ToImmutable(ImmutableModel immutableModel)
+        {
             return immutableModel.GetSymbol(this);
         }
 

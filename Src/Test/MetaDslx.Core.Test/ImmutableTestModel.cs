@@ -899,7 +899,7 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        ImmutableHusband Husband.ToImmutable()
+        public new ImmutableHusband ToImmutable()
         {
             return (ImmutableHusband)base.ToImmutable();
         }

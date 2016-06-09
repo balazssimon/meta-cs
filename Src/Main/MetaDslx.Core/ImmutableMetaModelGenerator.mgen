@@ -86,15 +86,15 @@ end function
 template GenerateImmutableInterface(MetaClass cls)
 internal class [cls.CSharpName(ClassKind.Immutable)]Id : SymbolId
 {
-    public override Type ImmutableType { get { return typeof([cls.CSharpName(ClassKind.Immutable)]); } }
-    public override Type MutableType { get { return typeof([cls.CSharpName(ClassKind.Builder)]); } }
+    public override System.Type ImmutableType { get { return typeof([cls.CSharpName(ClassKind.Immutable)]); } }
+    public override System.Type MutableType { get { return typeof([cls.CSharpName(ClassKind.Builder)]); } }
 ^
-    public override IImmutableSymbol CreateImmutable(ImmutableModel model)
+    public override global::MetaDslx.Core.Immutable.IImmutableSymbol CreateImmutable(global::MetaDslx.Core.Immutable.ImmutableModel model)
     {
         return new [cls.CSharpImplName(ClassKind.Immutable)](this, model);
     }
 ^
-    public override IMutableSymbol CreateMutable(MutableModel model, bool created)
+    public override global::MetaDslx.Core.Immutable.IMutableSymbol CreateMutable(global::MetaDslx.Core.Immutable.MutableModel model, bool created)
     {
         return new [cls.CSharpImplName(ClassKind.Builder)](this, model, created);
     }
@@ -113,8 +113,10 @@ public interface [cls.CSharpName(ClassKind.Immutable)][GetAncestors(cls, ClassKi
 ^
 	[if (cls.SuperClasses.Count > 0)]
 	new [cls.CSharpName(ClassKind.Builder)] ToMutable();
+	new [cls.CSharpName(ClassKind.Builder)] ToMutable(global::MetaDslx.Core.Immutable.MutableModel model);
 	[else]
 	[cls.CSharpName(ClassKind.Builder)] ToMutable();
+	[cls.CSharpName(ClassKind.Builder)] ToMutable(global::MetaDslx.Core.Immutable.MutableModel model);
 	[end if]
 }
 ^
@@ -129,8 +131,10 @@ public interface [cls.CSharpName(ClassKind.Builder)][GetAncestors(cls, ClassKind
 ^
 	[if (cls.SuperClasses.Count > 0)]
 	new [cls.CSharpName(ClassKind.Immutable)] ToImmutable();
+	new [cls.CSharpName(ClassKind.Immutable)] ToImmutable(global::MetaDslx.Core.Immutable.ImmutableModel model);
 	[else]
 	[cls.CSharpName(ClassKind.Immutable)] ToImmutable();
+	[cls.CSharpName(ClassKind.Immutable)] ToImmutable(global::MetaDslx.Core.Immutable.ImmutableModel model);
 	[end if]
 }
 ^
@@ -278,11 +282,21 @@ internal class [cls.CSharpImplName(ClassKind.Immutable)] : global::MetaDslx.Core
 	{
 		return ([cls.CSharpFullName(ClassKind.Builder)])base.ToMutable();
 	}
+^
+    public new [cls.CSharpFullName(ClassKind.Builder)] ToMutable(global::MetaDslx.Core.Immutable.MutableModel model)
+	{
+		return ([cls.CSharpFullName(ClassKind.Builder)])base.ToMutable(model);
+	}
 	[loop(cls->sup:GetAllSuperClasses())]
 ^
     [sup.CSharpFullName(ClassKind.Builder)] [sup.CSharpFullName(ClassKind.Immutable)].ToMutable()
 	{
-		return ([sup.CSharpFullName(ClassKind.Builder)])base.ToMutable();
+		return this.ToMutable();
+	}
+^
+    [sup.CSharpFullName(ClassKind.Builder)] [sup.CSharpFullName(ClassKind.Immutable)].ToMutable(global::MetaDslx.Core.Immutable.MutableModel model)
+	{
+		return this.ToMutable(model);
 	}
 	[end loop]
     [loop(cls->prop:GetAllProperties())]
@@ -335,11 +349,21 @@ internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.I
 	{
 		return ([cls.CSharpFullName(ClassKind.Immutable)])base.ToImmutable();
 	}
+^
+    public new [cls.CSharpFullName(ClassKind.Immutable)] ToImmutable(global::MetaDslx.Core.Immutable.ImmutableModel model)
+	{
+		return ([cls.CSharpFullName(ClassKind.Immutable)])base.ToImmutable(model);
+	}
 	[loop(cls->sup:GetAllSuperClasses())]
 ^
     [sup.CSharpFullName(ClassKind.Immutable)] [sup.CSharpFullName(ClassKind.Builder)].ToImmutable()
 	{
-		return ([sup.CSharpFullName(ClassKind.Immutable)])base.ToImmutable();
+		return this.ToImmutable();
+	}
+^
+    [sup.CSharpFullName(ClassKind.Immutable)] [sup.CSharpFullName(ClassKind.Builder)].ToImmutable(global::MetaDslx.Core.Immutable.ImmutableModel model)
+	{
+		return this.ToImmutable(model);
 	}
 	[end loop]
     [loop(cls->prop:GetAllProperties())]

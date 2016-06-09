@@ -51,6 +51,7 @@ namespace MetaDslx.Core.Immutable
     public interface IImmutableSymbol : ISymbol
     {
         IMutableSymbol ToMutable();
+        IMutableSymbol ToMutable(MutableModel model);
         new ImmutableModel MModel { get; }
         new IImmutableSymbol MParent { get; }
         new IReadOnlyList<IImmutableSymbol> MChildren { get; }
@@ -68,6 +69,7 @@ namespace MetaDslx.Core.Immutable
     public interface IMutableSymbol : ISymbol
     {
         IImmutableSymbol ToImmutable();
+        IImmutableSymbol ToImmutable(ImmutableModel model);
         new MutableModel MModel { get; }
         new IMutableSymbol MParent { get; }
         new IReadOnlyList<IMutableSymbol> MChildren { get; }
