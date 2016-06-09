@@ -37,6 +37,7 @@ namespace MetaDslx.Core.Test
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ModelException))]
         public void TestPersonDogStatic2()
         {
             IPersonX p1 = new PersonX();

@@ -182,6 +182,7 @@ namespace MetaDslx.Core.Immutable
 
         private GreenList(bool unique, ImmutableList<object> items, ImmutableList<object> lazyItems)
         {
+            this.unique = unique;
             this.items = items;
             this.lazyItems = lazyItems;
         }
@@ -190,7 +191,7 @@ namespace MetaDslx.Core.Immutable
         {
             if (this.items != items || this.lazyItems != lazyItems)
             {
-                return new GreenList(this.unique, this.items, this.lazyItems);
+                return new GreenList(this.unique, items, lazyItems);
             }
             return this;
         }
@@ -1166,20 +1167,20 @@ namespace MetaDslx.Core.Immutable
                         newProperties.Add(property);
                         foreach (var prop in property.AddAffectedProperties)
                         {
-                            if (properties.Add(prop))
+                            if (this.properties.ContainsKey(prop) && properties.Add(prop))
                             {
                                 newProperties.Add(prop);
                             }
                         }
                         Type mutableType = value is SymbolId ? ((SymbolId)value).MutableType : null;
-                        Type valueType = value.GetType();
+                        Type valueType = value != null ? value.GetType() : null;
                         foreach (var prop in property.AddAffectedOptionalProperties)
                         {
                             if (value == null || value is GreenLazyValue || value is GreenLazyList ||
                                 ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(mutableType))) ||
                                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(valueType))))
                             {
-                                if (properties.Add(prop))
+                                if (this.properties.ContainsKey(prop) && properties.Add(prop))
                                 {
                                     newProperties.Add(prop);
                                 }
@@ -1211,17 +1212,23 @@ namespace MetaDslx.Core.Immutable
                 {
                     foreach (var prop in property.AddAffectedProperties)
                     {
-                        properties.Add(prop);
+                        if (this.properties.ContainsKey(prop))
+                        {
+                            properties.Add(prop);
+                        }
                     }
                     Type mutableType = value is SymbolId ? ((SymbolId)value).MutableType : null;
-                    Type valueType = value.GetType();
+                    Type valueType = value != null ? value.GetType() : null;
                     foreach (var prop in property.AddAffectedOptionalProperties)
                     {
                         if (value == null || value is GreenLazyValue || value is GreenLazyList ||
                             ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(mutableType))) ||
                             (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(valueType))))
                         {
-                            properties.Add(prop);
+                            if (this.properties.ContainsKey(prop))
+                            {
+                                properties.Add(prop);
+                            }
                         }
                     }
                 }
@@ -1241,20 +1248,20 @@ namespace MetaDslx.Core.Immutable
                         newProperties.Add(property);
                         foreach (var prop in property.RemoveAffectedProperties)
                         {
-                            if (properties.Add(prop))
+                            if (this.properties.ContainsKey(prop) && properties.Add(prop))
                             {
                                 newProperties.Add(prop);
                             }
                         }
                         Type mutableType = value is SymbolId ? ((SymbolId)value).MutableType : null;
-                        Type valueType = value.GetType();
+                        Type valueType = value != null ? value.GetType() : null;
                         foreach (var prop in property.RemoveAffectedOptionalProperties)
                         {
                             if (value == null || value is GreenLazyValue || value is GreenLazyList ||
                                 ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(mutableType))) ||
                                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(valueType))))
                             {
-                                if (properties.Add(prop))
+                                if (this.properties.ContainsKey(prop) && properties.Add(prop))
                                 {
                                     newProperties.Add(prop);
                                 }
@@ -1286,17 +1293,23 @@ namespace MetaDslx.Core.Immutable
                 {
                     foreach (var prop in property.RemoveAffectedProperties)
                     {
-                        properties.Add(prop);
+                        if (this.properties.ContainsKey(prop))
+                        {
+                            properties.Add(prop);
+                        }
                     }
                     Type mutableType = value is SymbolId ? ((SymbolId)value).MutableType : null;
-                    Type valueType = value.GetType();
+                    Type valueType = value != null ? value.GetType() : null;
                     foreach (var prop in property.RemoveAffectedOptionalProperties)
                     {
                         if (value == null || value is GreenLazyValue || value is GreenLazyList ||
                             ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(mutableType))) ||
                             (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(valueType))))
                         {
-                            properties.Add(prop);
+                            if (this.properties.ContainsKey(prop))
+                            {
+                                properties.Add(prop);
+                            }
                         }
                     }
                 }
@@ -1336,20 +1349,23 @@ namespace MetaDslx.Core.Immutable
                         result = result.SetValueCore(transaction, prop, reassign, null, oldValue);
                     }
                 }
+                transaction.UpdateSymbol(result);
                 if (oldValueSymbolRef != null && !oldValueSymbolRef.IsReadOnly && removeAffectedOppositeProperties.Count > 0)
                 {
+                    oldValueSymbol = transaction.GetSymbol(oldValueSymbolRef.Model.Id, oldValueSymbol.id);
                     foreach (var prop in removeAffectedOppositeProperties)
                     {
                         if (prop.IsCollection)
                         {
-                            oldValueSymbol = oldValueSymbol.RemoveValueCore(transaction, prop, reassign, -1, false, oldValue);
+                            oldValueSymbol = oldValueSymbol.RemoveValueCore(transaction, prop, reassign, -1, false, this.id);
                         }
                         else
                         {
-                            oldValueSymbol = oldValueSymbol.SetValueCore(transaction, prop, reassign, null, oldValue);
+                            oldValueSymbol = oldValueSymbol.SetValueCore(transaction, prop, reassign, null, this.id);
                         }
                     }
                     transaction.UpdateSymbol(oldValueSymbol);
+                    result = transaction.GetSymbolReference(this.id).Symbol;
                 }
             }
             if (value != GreenSymbol.Unassigned)
@@ -1376,23 +1392,28 @@ namespace MetaDslx.Core.Immutable
                     }
                     else
                     {
-                        result = result.SetValueCore(transaction, prop, reassign, null, value);
+                        result = result.SetValueCore(transaction, prop, reassign, value, null);
                     }
                 }
+                transaction.UpdateSymbol(result);
                 if (valueSymbolRef != null && !valueSymbolRef.IsReadOnly && addAffectedOppositeProperties.Count > 0)
                 {
+                    valueSymbol = transaction.GetSymbol(valueSymbolRef.Model.Id, valueSymbol.id);
                     foreach (var prop in addAffectedOppositeProperties)
                     {
                         if (prop.IsCollection)
                         {
-                            valueSymbol = valueSymbol.RemoveValueCore(transaction, prop, reassign, -1, false, this.id);
+                            valueSymbol = valueSymbol.AddValueCore(transaction, prop, reassign, -1, this.id);
                         }
                         else
                         {
-                            valueSymbol = valueSymbol.SetValueCore(transaction, prop, reassign, null, this.id);
+                            object oldOppositeValue;
+                            valueSymbol.properties.TryGetValue(property, out oldOppositeValue);
+                            valueSymbol = valueSymbol.SetValueCore(transaction, prop, reassign, this.id, oldOppositeValue);
                         }
                     }
                     transaction.UpdateSymbol(valueSymbol);
+                    result = transaction.GetSymbolReference(this.id).Symbol;
                 }
             }
             return result;
@@ -1430,20 +1451,23 @@ namespace MetaDslx.Core.Immutable
                         result = result.SetValueCore(transaction, prop, reassign, null, value);
                     }
                 }
+                transaction.UpdateSymbol(result);
                 if (valueSymbolRef != null && !valueSymbolRef.IsReadOnly && removeAffectedOppositeProperties.Count > 0)
                 {
+                    valueSymbol = transaction.GetSymbol(valueSymbolRef.Model.Id, valueSymbol.id);
                     foreach (var prop in removeAffectedOppositeProperties)
                     {
                         if (prop.IsCollection)
                         {
-                            valueSymbol = valueSymbol.RemoveValueCore(transaction, prop, reassign, -1, removeAll, value);
+                            valueSymbol = valueSymbol.RemoveValueCore(transaction, prop, reassign, -1, removeAll, this.id);
                         }
                         else
                         {
-                            valueSymbol = valueSymbol.SetValueCore(transaction, prop, reassign, null, value);
+                            valueSymbol = valueSymbol.SetValueCore(transaction, prop, reassign, null, this.id);
                         }
                     }
                     transaction.UpdateSymbol(valueSymbol);
+                    result = transaction.GetSymbolReference(this.id).Symbol;
                 }
             }
             return result;

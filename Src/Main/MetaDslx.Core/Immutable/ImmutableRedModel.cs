@@ -715,7 +715,7 @@ namespace MetaDslx.Core.Immutable
 
         private void EnsureWritable()
         {
-            if (!this.readOnly) throw new ModelException("Cannot change a read-only model.");
+            if (this.readOnly) throw new ModelException("Cannot change a read-only model.");
         }
 
         public ModelTransaction BeginTransaction()
@@ -823,19 +823,11 @@ namespace MetaDslx.Core.Immutable
             {
                 greenObject = this.GreenTransaction.GetValue(this.id, symbol.Id, property, true);
             }
-            if (greenObject is GreenList)
+            if (modelList == null)
             {
-                MutableModelList<T> redList = modelList as MutableModelList<T>;
-                if (redList == null)
-                {
-                    redList = new MutableModelList<T>(symbol, property, this);
-                }
-                return redList;
+                modelList = new MutableModelList<T>(symbol, property, this);
             }
-            else
-            {
-                return null;
-            }
+            return modelList;
         }
 
         internal bool SetValue(MutableSymbolBase symbol, ModelProperty property, object redValue, bool reassign)
@@ -1217,8 +1209,8 @@ namespace MetaDslx.Core.Immutable
     {
         private GreenModelTransaction greenTransaction;
         private WeakReference<ImmutableModelGroup> immutableModelGroup;
-        private ImmutableDictionary<ModelId, MutableModel> references;
         private ImmutableDictionary<ModelId, MutableModel> models;
+        private ImmutableDictionary<ModelId, MutableModel> references;
 
         internal MutableModelGroupState(
             GreenModelTransaction greenTransaction,
@@ -1227,6 +1219,8 @@ namespace MetaDslx.Core.Immutable
             WeakReference<ImmutableModelGroup> immutableModelGroup)
         {
             this.greenTransaction = greenTransaction;
+            this.models = models;
+            this.references = references;
             this.immutableModelGroup = immutableModelGroup;
         }
 

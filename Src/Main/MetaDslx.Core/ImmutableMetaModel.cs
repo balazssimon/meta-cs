@@ -30767,7 +30767,7 @@ namespace MetaDslx.Core.Immutable
     
     
     
-    	//public abstract global::MetaDslx.Core.Immutable.MetaTypeBuilder typeof(object type);
+    	public abstract global::MetaDslx.Core.Immutable.MetaTypeBuilder typeof(object type);
     	public abstract global::MetaDslx.Core.Immutable.MetaTypeBuilder get_type(object value);
     	public abstract global::MetaDslx.Core.Immutable.MetaTypeBuilder get_return_type(object value);
     	public abstract global::MetaDslx.Core.Immutable.MetaTypeBuilder current_type(global::MetaDslx.Core.Immutable.ISymbol symbol);

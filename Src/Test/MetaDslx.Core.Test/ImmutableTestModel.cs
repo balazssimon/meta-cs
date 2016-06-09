@@ -477,10 +477,10 @@ namespace MetaDslx.Core.Immutable.Test
         ImmutableStudent Friend { get; }
     }
 
-    public interface Husband : ISymbol, ImmutableHusband
+    public interface Husband : ISymbol
     {
-        new string Name { get; set; }
-        new Wife Wife { get; set; }
+        string Name { get; set; }
+        Wife Wife { get; set; }
     }
 
     public interface HusbandBuilder : Husband
@@ -901,11 +901,6 @@ namespace MetaDslx.Core.Immutable.Test
         {
             get { return this.GetLazyReference<string>(TestModelDescriptor.Husband.NameProperty); }
             set { this.SetLazyReference(TestModelDescriptor.Husband.NameProperty, value); }
-        }
-
-        ImmutableWife ImmutableHusband.Wife
-        {
-            get { return null; }
         }
 
         public Wife Wife
