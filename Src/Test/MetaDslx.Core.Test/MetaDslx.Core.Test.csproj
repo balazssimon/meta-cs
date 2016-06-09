@@ -69,7 +69,6 @@
     <Compile Include="CrossInheritancePropertyTest.cs" />
     <Compile Include="ImmutableTestModel.cs" />
     <Compile Include="ImmutableMetaModelTest.cs" />
-    <Compile Include="TransactionalCollectionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj">

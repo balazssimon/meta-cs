@@ -110,6 +110,12 @@ public interface [cls.CSharpName(ClassKind.Immutable)][GetAncestors(cls, ClassKi
     [loop(cls->op:Operations)]
     [GenerateOperation(op)]
 	[end loop]
+^
+	[if (cls.SuperClasses.Count > 0)]
+	new [cls.CSharpName(ClassKind.Builder)] ToMutable();
+	[else]
+	[cls.CSharpName(ClassKind.Builder)] ToMutable();
+	[end if]
 }
 ^
 end template
@@ -120,6 +126,12 @@ public interface [cls.CSharpName(ClassKind.Builder)][GetAncestors(cls, ClassKind
     [loop(cls->prop:Properties)]
     [GenerateBuilderProperty(prop)]
 	[end loop]
+^
+	[if (cls.SuperClasses.Count > 0)]
+	new [cls.CSharpName(ClassKind.Immutable)] ToImmutable();
+	[else]
+	[cls.CSharpName(ClassKind.Immutable)] ToImmutable();
+	[end if]
 }
 ^
 public interface [cls.CSharpName(ClassKind.ChildBuilder)][GetAncestors(cls, ClassKind.ChildBuilder)]
@@ -262,10 +274,23 @@ internal class [cls.CSharpImplName(ClassKind.Immutable)] : global::MetaDslx.Core
         get { return null; /*[cls.CSharpFullInstanceName()];*/ }
     }
 ^
+    public new [cls.CSharpFullName(ClassKind.Builder)] ToMutable()
+	{
+		return ([cls.CSharpFullName(ClassKind.Builder)])base.ToMutable();
+	}
+	[loop(cls->sup:GetAllSuperClasses())]
+^
+    [sup.CSharpFullName(ClassKind.Builder)] [sup.CSharpFullName(ClassKind.Immutable)].ToMutable()
+	{
+		return ([sup.CSharpFullName(ClassKind.Builder)])base.ToMutable();
+	}
+	[end loop]
     [loop(cls->prop:GetAllProperties())]
+^
     [GenerateImmutablePropertyImpl(model, cls, prop)]
 	[end loop]
     [loop(cls->op:GetAllOperations())]
+^
     [GenerateOperationImpl(model, op)]
 	[end loop]
 }
@@ -306,7 +331,19 @@ internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.I
         get { return null;/*[cls.CSharpFullInstanceName()];*/ }
     }
 ^
+    public new [cls.CSharpFullName(ClassKind.Immutable)] ToImmutable()
+	{
+		return ([cls.CSharpFullName(ClassKind.Immutable)])base.ToImmutable();
+	}
+	[loop(cls->sup:GetAllSuperClasses())]
+^
+    [sup.CSharpFullName(ClassKind.Immutable)] [sup.CSharpFullName(ClassKind.Builder)].ToImmutable()
+	{
+		return ([sup.CSharpFullName(ClassKind.Immutable)])base.ToImmutable();
+	}
+	[end loop]
     [loop(cls->prop:GetAllProperties())]
+^
     [GenerateBuilderPropertyImpl(model, cls, prop)]
 	[end loop]
 }

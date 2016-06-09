@@ -423,12 +423,16 @@ namespace MetaDslx.Core.Immutable.Test
     {
         string Name { get; }
         ImmutableWife Wife { get; }
+
+        Husband ToMutable();
     }
 
     public interface ImmutableWife : ISymbol
     {
         string Name { get; }
         ImmutableHusband Husband { get; }
+
+        Wife ToMutable();
     }
 
     public interface ImmutableListChild : ISymbol
@@ -481,6 +485,8 @@ namespace MetaDslx.Core.Immutable.Test
     {
         string Name { get; set; }
         Wife Wife { get; set; }
+
+        ImmutableHusband ToImmutable();
     }
 
     public interface HusbandBuilder : Husband
@@ -493,6 +499,8 @@ namespace MetaDslx.Core.Immutable.Test
     {
         string Name { get; set; }
         Husband Husband { get; set; }
+
+        ImmutableWife ToImmutable();
     }
 
     public interface ListChild : ISymbol
@@ -571,6 +579,11 @@ namespace MetaDslx.Core.Immutable.Test
         {
             get { return this.GetReference(TestModelDescriptor.Husband.WifeProperty, ref this.wife); }
         }
+
+        Husband ImmutableHusband.ToMutable()
+        {
+            return (Husband)base.ToMutable();
+        }
     }
 
     public class ImmutableWifeImpl : ImmutableSymbolBase, ImmutableWife
@@ -601,6 +614,11 @@ namespace MetaDslx.Core.Immutable.Test
         public ImmutableHusband Husband
         {
             get { return this.GetReference(TestModelDescriptor.Wife.HusbandProperty, ref this.husband); }
+        }
+
+        Wife ImmutableWife.ToMutable()
+        {
+            return (Wife)base.ToMutable();
         }
     }
 
@@ -881,6 +899,11 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
+        ImmutableHusband Husband.ToImmutable()
+        {
+            return (ImmutableHusband)base.ToImmutable();
+        }
+
         public override object MMetaClass
         {
             get { return null; }
@@ -942,6 +965,11 @@ namespace MetaDslx.Core.Immutable.Test
         public override object MMetaModel
         {
             get { return null; }
+        }
+
+        ImmutableWife Wife.ToImmutable()
+        {
+            return (ImmutableWife)base.ToImmutable();
         }
 
         public string Name

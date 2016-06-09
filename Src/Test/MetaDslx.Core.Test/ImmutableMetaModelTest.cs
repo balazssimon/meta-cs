@@ -52,6 +52,20 @@ namespace MetaDslx.Core.Immutable.Test
             Assert.AreEqual("w1", iw1.Name);
             Assert.AreEqual("w1", ih1.Wife.Name);
             Assert.AreEqual("h1", iw1.Husband.Name);
+
+            Assert.AreEqual(iw1, w1.ToImmutable());
+            Assert.AreEqual(ih1, h1.ToImmutable());
+            ih1 = h1.ToImmutable();
+            iw1 = w1.ToImmutable();
+            Assert.AreEqual(iw1, ih1.Wife);
+            Assert.AreEqual(ih1, iw1.Husband);
+            Assert.AreEqual("h1", ih1.Name);
+            Assert.AreEqual("w1", iw1.Name);
+            Assert.AreEqual("w1", ih1.Wife.Name);
+            Assert.AreEqual("h1", iw1.Husband.Name);
+
+            Assert.AreEqual(w1, iw1.ToMutable());
+            Assert.AreEqual(h1, ih1.ToMutable());
         }
 
         [TestMethod]

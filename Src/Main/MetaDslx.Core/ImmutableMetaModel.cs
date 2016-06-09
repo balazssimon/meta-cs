@@ -1592,6 +1592,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations { get; }
     
+    
+    	MetaAnnotatedElementBuilder ToMutable();
     }
     
     internal class MetaDocumentedElementId : SymbolId
@@ -1615,6 +1617,8 @@ namespace MetaDslx.Core.Immutable
         string Documentation { get; }
     
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> GetDocumentationLines();
+    
+    	MetaDocumentedElementBuilder ToMutable();
     }
     
     internal class MetaNamedElementId : SymbolId
@@ -1637,6 +1641,8 @@ namespace MetaDslx.Core.Immutable
     {
         string Name { get; }
     
+    
+    	new MetaNamedElementBuilder ToMutable();
     }
     
     internal class MetaTypedElementId : SymbolId
@@ -1659,6 +1665,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaType Type { get; }
     
+    
+    	MetaTypedElementBuilder ToMutable();
     }
     
     internal class MetaTypeId : SymbolId
@@ -1681,6 +1689,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaType : global::MetaDslx.Core.Immutable.ISymbol
     {
     
+    
+    	MetaTypeBuilder ToMutable();
     }
     
     internal class MetaAnnotationId : SymbolId
@@ -1703,6 +1713,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationProperty> Properties { get; }
     
+    
+    	new MetaAnnotationBuilder ToMutable();
     }
     
     internal class MetaAnnotationPropertyId : SymbolId
@@ -1725,6 +1737,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaExpression Value { get; }
     
+    
+    	new MetaAnnotationPropertyBuilder ToMutable();
     }
     
     internal class MetaNamespaceId : SymbolId
@@ -1752,6 +1766,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaNamespace> Namespaces { get; }
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaDeclaration> Declarations { get; }
     
+    
+    	new MetaNamespaceBuilder ToMutable();
     }
     
     internal class MetaDeclarationId : SymbolId
@@ -1775,6 +1791,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaNamespace Namespace { get; }
         global::MetaDslx.Core.Immutable.MetaModel Model { get; }
     
+    
+    	new MetaDeclarationBuilder ToMutable();
     }
     
     internal class MetaModelId : SymbolId
@@ -1798,6 +1816,8 @@ namespace MetaDslx.Core.Immutable
         string Uri { get; }
         global::MetaDslx.Core.Immutable.MetaNamespace Namespace { get; }
     
+    
+    	new MetaModelBuilder ToMutable();
     }
     
     internal class MetaCollectionTypeId : SymbolId
@@ -1821,6 +1841,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaCollectionKind Kind { get; }
         global::MetaDslx.Core.Immutable.MetaType InnerType { get; }
     
+    
+    	new MetaCollectionTypeBuilder ToMutable();
     }
     
     internal class MetaNullableTypeId : SymbolId
@@ -1843,6 +1865,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaType InnerType { get; }
     
+    
+    	new MetaNullableTypeBuilder ToMutable();
     }
     
     internal class MetaPrimitiveTypeId : SymbolId
@@ -1864,6 +1888,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaPrimitiveType : global::MetaDslx.Core.Immutable.MetaType, global::MetaDslx.Core.Immutable.MetaNamedElement
     {
     
+    
+    	new MetaPrimitiveTypeBuilder ToMutable();
     }
     
     internal class MetaEnumId : SymbolId
@@ -1888,6 +1914,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaEnumLiteral> EnumLiterals { get; }
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation> Operations { get; }
     
+    
+    	new MetaEnumBuilder ToMutable();
     }
     
     internal class MetaEnumLiteralId : SymbolId
@@ -1910,6 +1938,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaEnum Enum { get; }
     
+    
+    	new MetaEnumLiteralBuilder ToMutable();
     }
     
     internal class MetaClassId : SymbolId
@@ -1942,6 +1972,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation> GetAllOperations();
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> GetAllImplementedProperties();
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation> GetAllImplementedOperations();
+    
+    	new MetaClassBuilder ToMutable();
     }
     
     internal class MetaFunctionTypeId : SymbolId
@@ -1965,6 +1997,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaType> ParameterTypes { get; }
         global::MetaDslx.Core.Immutable.MetaType ReturnType { get; }
     
+    
+    	new MetaFunctionTypeBuilder ToMutable();
     }
     
     internal class MetaFunctionId : SymbolId
@@ -1989,6 +2023,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaParameter> Parameters { get; }
         global::MetaDslx.Core.Immutable.MetaType ReturnType { get; }
     
+    
+    	new MetaFunctionBuilder ToMutable();
     }
     
     internal class MetaGlobalFunctionId : SymbolId
@@ -2010,6 +2046,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaGlobalFunction : global::MetaDslx.Core.Immutable.MetaFunction, global::MetaDslx.Core.Immutable.MetaDeclaration
     {
     
+    
+    	new MetaGlobalFunctionBuilder ToMutable();
     }
     
     internal class MetaOperationId : SymbolId
@@ -2032,6 +2070,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaType Parent { get; }
     
+    
+    	new MetaOperationBuilder ToMutable();
     }
     
     internal class MetaConstantId : SymbolId
@@ -2054,6 +2094,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaExpression Value { get; }
     
+    
+    	new MetaConstantBuilder ToMutable();
     }
     
     internal class MetaConstructorId : SymbolId
@@ -2077,6 +2119,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaClass Parent { get; }
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyInitializer> Initializers { get; }
     
+    
+    	new MetaConstructorBuilder ToMutable();
     }
     
     internal class MetaParameterId : SymbolId
@@ -2099,6 +2143,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaFunction Function { get; }
     
+    
+    	new MetaParameterBuilder ToMutable();
     }
     
     internal class MetaPropertyId : SymbolId
@@ -2127,6 +2173,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> RedefinedProperties { get; }
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> RedefiningProperties { get; }
     
+    
+    	new MetaPropertyBuilder ToMutable();
     }
     
     internal class MetaPropertyInitializerId : SymbolId
@@ -2153,6 +2201,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaProperty Property { get; }
         global::MetaDslx.Core.Immutable.MetaExpression Value { get; }
     
+    
+    	MetaPropertyInitializerBuilder ToMutable();
     }
     
     internal class MetaSynthetizedPropertyInitializerId : SymbolId
@@ -2174,6 +2224,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaSynthetizedPropertyInitializer : global::MetaDslx.Core.Immutable.MetaPropertyInitializer
     {
     
+    
+    	new MetaSynthetizedPropertyInitializerBuilder ToMutable();
     }
     
     internal class MetaInheritedPropertyInitializerId : SymbolId
@@ -2197,6 +2249,8 @@ namespace MetaDslx.Core.Immutable
         string ObjectName { get; }
         global::MetaDslx.Core.Immutable.MetaProperty Object { get; }
     
+    
+    	new MetaInheritedPropertyInitializerBuilder ToMutable();
     }
     
     internal class MetaExpressionId : SymbolId
@@ -2220,6 +2274,8 @@ namespace MetaDslx.Core.Immutable
         bool NoTypeError { get; }
         global::MetaDslx.Core.Immutable.MetaType ExpectedType { get; }
     
+    
+    	new MetaExpressionBuilder ToMutable();
     }
     
     internal class MetaBracketExpressionId : SymbolId
@@ -2242,6 +2298,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaExpression Expression { get; }
     
+    
+    	new MetaBracketExpressionBuilder ToMutable();
     }
     
     internal class MetaBoundExpressionId : SymbolId
@@ -2267,6 +2325,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.BindingInfo Definitions { get; }
         global::MetaDslx.Core.Immutable.ISymbol Definition { get; }
     
+    
+    	new MetaBoundExpressionBuilder ToMutable();
     }
     
     internal class MetaThisExpressionId : SymbolId
@@ -2288,6 +2348,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaThisExpression : global::MetaDslx.Core.Immutable.MetaBoundExpression
     {
     
+    
+    	new MetaThisExpressionBuilder ToMutable();
     }
     
     internal class MetaNullExpressionId : SymbolId
@@ -2309,6 +2371,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaNullExpression : global::MetaDslx.Core.Immutable.MetaExpression
     {
     
+    
+    	new MetaNullExpressionBuilder ToMutable();
     }
     
     internal class MetaTypeConversionExpressionId : SymbolId
@@ -2332,6 +2396,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaType TypeReference { get; }
         global::MetaDslx.Core.Immutable.MetaExpression Expression { get; }
     
+    
+    	new MetaTypeConversionExpressionBuilder ToMutable();
     }
     
     internal class MetaTypeAsExpressionId : SymbolId
@@ -2353,6 +2419,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaTypeAsExpression : global::MetaDslx.Core.Immutable.MetaTypeConversionExpression
     {
     
+    
+    	new MetaTypeAsExpressionBuilder ToMutable();
     }
     
     internal class MetaTypeCastExpressionId : SymbolId
@@ -2374,6 +2442,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaTypeCastExpression : global::MetaDslx.Core.Immutable.MetaTypeConversionExpression
     {
     
+    
+    	new MetaTypeCastExpressionBuilder ToMutable();
     }
     
     internal class MetaTypeCheckExpressionId : SymbolId
@@ -2397,6 +2467,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaType TypeReference { get; }
         global::MetaDslx.Core.Immutable.MetaExpression Expression { get; }
     
+    
+    	new MetaTypeCheckExpressionBuilder ToMutable();
     }
     
     internal class MetaTypeOfExpressionId : SymbolId
@@ -2419,6 +2491,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaType TypeReference { get; }
     
+    
+    	new MetaTypeOfExpressionBuilder ToMutable();
     }
     
     internal class MetaConditionalExpressionId : SymbolId
@@ -2444,6 +2518,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpression Then { get; }
         global::MetaDslx.Core.Immutable.MetaExpression Else { get; }
     
+    
+    	new MetaConditionalExpressionBuilder ToMutable();
     }
     
     internal class MetaConstantExpressionId : SymbolId
@@ -2466,6 +2542,8 @@ namespace MetaDslx.Core.Immutable
     {
         object Value { get; }
     
+    
+    	new MetaConstantExpressionBuilder ToMutable();
     }
     
     internal class MetaIdentifierExpressionId : SymbolId
@@ -2488,6 +2566,8 @@ namespace MetaDslx.Core.Immutable
     {
         string Name { get; }
     
+    
+    	new MetaIdentifierExpressionBuilder ToMutable();
     }
     
     internal class MetaMemberAccessExpressionId : SymbolId
@@ -2511,6 +2591,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpression Expression { get; }
         string Name { get; }
     
+    
+    	new MetaMemberAccessExpressionBuilder ToMutable();
     }
     
     internal class MetaFunctionCallExpressionId : SymbolId
@@ -2533,6 +2615,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaExpression Expression { get; }
     
+    
+    	new MetaFunctionCallExpressionBuilder ToMutable();
     }
     
     internal class MetaIndexerExpressionId : SymbolId
@@ -2555,6 +2639,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaExpression Expression { get; }
     
+    
+    	new MetaIndexerExpressionBuilder ToMutable();
     }
     
     internal class MetaNewExpressionId : SymbolId
@@ -2578,6 +2664,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaClass TypeReference { get; }
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaNewPropertyInitializer> PropertyInitializers { get; }
     
+    
+    	new MetaNewExpressionBuilder ToMutable();
     }
     
     internal class MetaNewPropertyInitializerId : SymbolId
@@ -2603,6 +2691,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpression Value { get; }
         global::MetaDslx.Core.Immutable.MetaProperty Property { get; }
     
+    
+    	MetaNewPropertyInitializerBuilder ToMutable();
     }
     
     internal class MetaNewCollectionExpressionId : SymbolId
@@ -2626,6 +2716,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaCollectionType TypeReference { get; }
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Values { get; }
     
+    
+    	new MetaNewCollectionExpressionBuilder ToMutable();
     }
     
     internal class MetaOperatorExpressionId : SymbolId
@@ -2648,6 +2740,8 @@ namespace MetaDslx.Core.Immutable
     {
         string Name { get; }
     
+    
+    	new MetaOperatorExpressionBuilder ToMutable();
     }
     
     internal class MetaUnaryExpressionId : SymbolId
@@ -2670,6 +2764,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaExpression Expression { get; }
     
+    
+    	new MetaUnaryExpressionBuilder ToMutable();
     }
     
     internal class MetaUnaryPlusExpressionId : SymbolId
@@ -2691,6 +2787,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaUnaryPlusExpression : global::MetaDslx.Core.Immutable.MetaUnaryExpression
     {
     
+    
+    	new MetaUnaryPlusExpressionBuilder ToMutable();
     }
     
     internal class MetaNegateExpressionId : SymbolId
@@ -2712,6 +2810,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaNegateExpression : global::MetaDslx.Core.Immutable.MetaUnaryExpression
     {
     
+    
+    	new MetaNegateExpressionBuilder ToMutable();
     }
     
     internal class MetaOnesComplementExpressionId : SymbolId
@@ -2733,6 +2833,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaOnesComplementExpression : global::MetaDslx.Core.Immutable.MetaUnaryExpression
     {
     
+    
+    	new MetaOnesComplementExpressionBuilder ToMutable();
     }
     
     internal class MetaNotExpressionId : SymbolId
@@ -2754,6 +2856,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaNotExpression : global::MetaDslx.Core.Immutable.MetaUnaryExpression
     {
     
+    
+    	new MetaNotExpressionBuilder ToMutable();
     }
     
     internal class MetaUnaryAssignExpressionId : SymbolId
@@ -2775,6 +2879,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaUnaryAssignExpression : global::MetaDslx.Core.Immutable.MetaUnaryExpression
     {
     
+    
+    	new MetaUnaryAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaPostIncrementAssignExpressionId : SymbolId
@@ -2796,6 +2902,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaPostIncrementAssignExpression : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression
     {
     
+    
+    	new MetaPostIncrementAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaPostDecrementAssignExpressionId : SymbolId
@@ -2817,6 +2925,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaPostDecrementAssignExpression : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression
     {
     
+    
+    	new MetaPostDecrementAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaPreIncrementAssignExpressionId : SymbolId
@@ -2838,6 +2948,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaPreIncrementAssignExpression : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression
     {
     
+    
+    	new MetaPreIncrementAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaPreDecrementAssignExpressionId : SymbolId
@@ -2859,6 +2971,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaPreDecrementAssignExpression : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression
     {
     
+    
+    	new MetaPreDecrementAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaBinaryExpressionId : SymbolId
@@ -2882,6 +2996,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpression Left { get; }
         global::MetaDslx.Core.Immutable.MetaExpression Right { get; }
     
+    
+    	new MetaBinaryExpressionBuilder ToMutable();
     }
     
     internal class MetaBinaryArithmeticExpressionId : SymbolId
@@ -2903,6 +3019,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaBinaryArithmeticExpression : global::MetaDslx.Core.Immutable.MetaBinaryExpression
     {
     
+    
+    	new MetaBinaryArithmeticExpressionBuilder ToMutable();
     }
     
     internal class MetaMultiplyExpressionId : SymbolId
@@ -2924,6 +3042,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaMultiplyExpression : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression
     {
     
+    
+    	new MetaMultiplyExpressionBuilder ToMutable();
     }
     
     internal class MetaDivideExpressionId : SymbolId
@@ -2945,6 +3065,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaDivideExpression : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression
     {
     
+    
+    	new MetaDivideExpressionBuilder ToMutable();
     }
     
     internal class MetaModuloExpressionId : SymbolId
@@ -2966,6 +3088,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaModuloExpression : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression
     {
     
+    
+    	new MetaModuloExpressionBuilder ToMutable();
     }
     
     internal class MetaAddExpressionId : SymbolId
@@ -2987,6 +3111,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaAddExpression : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression
     {
     
+    
+    	new MetaAddExpressionBuilder ToMutable();
     }
     
     internal class MetaSubtractExpressionId : SymbolId
@@ -3008,6 +3134,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaSubtractExpression : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression
     {
     
+    
+    	new MetaSubtractExpressionBuilder ToMutable();
     }
     
     internal class MetaLeftShiftExpressionId : SymbolId
@@ -3029,6 +3157,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaLeftShiftExpression : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression
     {
     
+    
+    	new MetaLeftShiftExpressionBuilder ToMutable();
     }
     
     internal class MetaRightShiftExpressionId : SymbolId
@@ -3050,6 +3180,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaRightShiftExpression : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression
     {
     
+    
+    	new MetaRightShiftExpressionBuilder ToMutable();
     }
     
     internal class MetaBinaryComparisonExpressionId : SymbolId
@@ -3071,6 +3203,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaBinaryComparisonExpression : global::MetaDslx.Core.Immutable.MetaBinaryExpression
     {
     
+    
+    	new MetaBinaryComparisonExpressionBuilder ToMutable();
     }
     
     internal class MetaLessThanExpressionId : SymbolId
@@ -3092,6 +3226,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaLessThanExpression : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression
     {
     
+    
+    	new MetaLessThanExpressionBuilder ToMutable();
     }
     
     internal class MetaLessThanOrEqualExpressionId : SymbolId
@@ -3113,6 +3249,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaLessThanOrEqualExpression : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression
     {
     
+    
+    	new MetaLessThanOrEqualExpressionBuilder ToMutable();
     }
     
     internal class MetaGreaterThanExpressionId : SymbolId
@@ -3134,6 +3272,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaGreaterThanExpression : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression
     {
     
+    
+    	new MetaGreaterThanExpressionBuilder ToMutable();
     }
     
     internal class MetaGreaterThanOrEqualExpressionId : SymbolId
@@ -3155,6 +3295,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaGreaterThanOrEqualExpression : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression
     {
     
+    
+    	new MetaGreaterThanOrEqualExpressionBuilder ToMutable();
     }
     
     internal class MetaEqualExpressionId : SymbolId
@@ -3176,6 +3318,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaEqualExpression : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression
     {
     
+    
+    	new MetaEqualExpressionBuilder ToMutable();
     }
     
     internal class MetaNotEqualExpressionId : SymbolId
@@ -3197,6 +3341,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaNotEqualExpression : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression
     {
     
+    
+    	new MetaNotEqualExpressionBuilder ToMutable();
     }
     
     internal class MetaBinaryLogicalExpressionId : SymbolId
@@ -3218,6 +3364,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaBinaryLogicalExpression : global::MetaDslx.Core.Immutable.MetaBinaryExpression
     {
     
+    
+    	new MetaBinaryLogicalExpressionBuilder ToMutable();
     }
     
     internal class MetaAndExpressionId : SymbolId
@@ -3239,6 +3387,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaAndExpression : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression
     {
     
+    
+    	new MetaAndExpressionBuilder ToMutable();
     }
     
     internal class MetaOrExpressionId : SymbolId
@@ -3260,6 +3410,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaOrExpression : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression
     {
     
+    
+    	new MetaOrExpressionBuilder ToMutable();
     }
     
     internal class MetaExclusiveOrExpressionId : SymbolId
@@ -3281,6 +3433,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaExclusiveOrExpression : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression
     {
     
+    
+    	new MetaExclusiveOrExpressionBuilder ToMutable();
     }
     
     internal class MetaAndAlsoExpressionId : SymbolId
@@ -3302,6 +3456,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaAndAlsoExpression : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression
     {
     
+    
+    	new MetaAndAlsoExpressionBuilder ToMutable();
     }
     
     internal class MetaOrElseExpressionId : SymbolId
@@ -3323,6 +3479,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaOrElseExpression : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression
     {
     
+    
+    	new MetaOrElseExpressionBuilder ToMutable();
     }
     
     internal class MetaNullCoalescingExpressionId : SymbolId
@@ -3344,6 +3502,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaNullCoalescingExpression : global::MetaDslx.Core.Immutable.MetaBinaryExpression
     {
     
+    
+    	new MetaNullCoalescingExpressionBuilder ToMutable();
     }
     
     internal class MetaAssignmentExpressionId : SymbolId
@@ -3365,6 +3525,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaAssignmentExpression : global::MetaDslx.Core.Immutable.MetaBinaryExpression
     {
     
+    
+    	new MetaAssignmentExpressionBuilder ToMutable();
     }
     
     internal class MetaAssignExpressionId : SymbolId
@@ -3386,6 +3548,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaAssignExpression : global::MetaDslx.Core.Immutable.MetaAssignmentExpression
     {
     
+    
+    	new MetaAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaArithmeticAssignmentExpressionId : SymbolId
@@ -3407,6 +3571,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaArithmeticAssignmentExpression : global::MetaDslx.Core.Immutable.MetaAssignmentExpression
     {
     
+    
+    	new MetaArithmeticAssignmentExpressionBuilder ToMutable();
     }
     
     internal class MetaMultiplyAssignExpressionId : SymbolId
@@ -3428,6 +3594,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaMultiplyAssignExpression : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression
     {
     
+    
+    	new MetaMultiplyAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaDivideAssignExpressionId : SymbolId
@@ -3449,6 +3617,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaDivideAssignExpression : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression
     {
     
+    
+    	new MetaDivideAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaModuloAssignExpressionId : SymbolId
@@ -3470,6 +3640,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaModuloAssignExpression : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression
     {
     
+    
+    	new MetaModuloAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaAddAssignExpressionId : SymbolId
@@ -3491,6 +3663,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaAddAssignExpression : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression
     {
     
+    
+    	new MetaAddAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaSubtractAssignExpressionId : SymbolId
@@ -3512,6 +3686,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaSubtractAssignExpression : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression
     {
     
+    
+    	new MetaSubtractAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaLeftShiftAssignExpressionId : SymbolId
@@ -3533,6 +3709,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaLeftShiftAssignExpression : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression
     {
     
+    
+    	new MetaLeftShiftAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaRightShiftAssignExpressionId : SymbolId
@@ -3554,6 +3732,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaRightShiftAssignExpression : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression
     {
     
+    
+    	new MetaRightShiftAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaLogicalAssignmentExpressionId : SymbolId
@@ -3575,6 +3755,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaLogicalAssignmentExpression : global::MetaDslx.Core.Immutable.MetaAssignmentExpression
     {
     
+    
+    	new MetaLogicalAssignmentExpressionBuilder ToMutable();
     }
     
     internal class MetaAndAssignExpressionId : SymbolId
@@ -3596,6 +3778,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaAndAssignExpression : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression
     {
     
+    
+    	new MetaAndAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaExclusiveOrAssignExpressionId : SymbolId
@@ -3617,6 +3801,8 @@ namespace MetaDslx.Core.Immutable
     public interface MetaExclusiveOrAssignExpression : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression
     {
     
+    
+    	new MetaExclusiveOrAssignExpressionBuilder ToMutable();
     }
     
     internal class MetaOrAssignExpressionId : SymbolId
@@ -3638,12 +3824,16 @@ namespace MetaDslx.Core.Immutable
     public interface MetaOrAssignExpression : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression
     {
     
+    
+    	new MetaOrAssignExpressionBuilder ToMutable();
     }
     
     public interface MetaAnnotatedElementBuilder : global::MetaDslx.Core.Immutable.ISymbol
     {
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations { get; }
         global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilder AnnotationsLazyChild { get; }
+    
+    	MetaAnnotatedElement ToImmutable();
     }
     
     public interface MetaAnnotatedElementLazyChildBuilder
@@ -3655,6 +3845,8 @@ namespace MetaDslx.Core.Immutable
     {
         string Documentation { get; set; }
         Func<string> DocumentationLazy { get; set; }
+    
+    	MetaDocumentedElement ToImmutable();
     }
     
     public interface MetaDocumentedElementLazyChildBuilder
@@ -3666,6 +3858,8 @@ namespace MetaDslx.Core.Immutable
     {
         string Name { get; set; }
         Func<string> NameLazy { get; set; }
+    
+    	new MetaNamedElement ToImmutable();
     }
     
     public interface MetaNamedElementLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaDocumentedElementLazyChildBuilder
@@ -3677,6 +3871,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaTypeBuilder Type { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeLazy { get; set; }
+    
+    	MetaTypedElement ToImmutable();
     }
     
     public interface MetaTypedElementLazyChildBuilder
@@ -3686,6 +3882,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaTypeBuilder : global::MetaDslx.Core.Immutable.ISymbol
     {
+    
+    	MetaType ToImmutable();
     }
     
     public interface MetaTypeLazyChildBuilder
@@ -3696,6 +3894,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder> Properties { get; }
         global::MetaDslx.Core.Immutable.MetaAnnotationPropertyLazyChildBuilder PropertiesLazyChild { get; }
+    
+    	new MetaAnnotation ToImmutable();
     }
     
     public interface MetaAnnotationLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder
@@ -3708,6 +3908,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ValueLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValueLazyChild { get; }
+    
+    	new MetaAnnotationProperty ToImmutable();
     }
     
     public interface MetaAnnotationPropertyLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder
@@ -3727,6 +3929,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaNamespaceLazyChildBuilder NamespacesLazyChild { get; }
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaDeclarationBuilder> Declarations { get; }
         global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder DeclarationsLazyChild { get; }
+    
+    	new MetaNamespace ToImmutable();
     }
     
     public interface MetaNamespaceLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
@@ -3744,6 +3948,8 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> NamespaceLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaModelBuilder Model { get; }
         Func<global::MetaDslx.Core.Immutable.MetaModelBuilder> ModelLazy { get; set; }
+    
+    	new MetaDeclaration ToImmutable();
     }
     
     public interface MetaDeclarationLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
@@ -3758,6 +3964,8 @@ namespace MetaDslx.Core.Immutable
         Func<string> UriLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> NamespaceLazy { get; set; }
+    
+    	new MetaModel ToImmutable();
     }
     
     public interface MetaModelLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
@@ -3772,6 +3980,8 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaCollectionKind> KindLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaTypeBuilder InnerType { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> InnerTypeLazy { get; set; }
+    
+    	new MetaCollectionType ToImmutable();
     }
     
     public interface MetaCollectionTypeLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder
@@ -3784,6 +3994,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaTypeBuilder InnerType { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> InnerTypeLazy { get; set; }
+    
+    	new MetaNullableType ToImmutable();
     }
     
     public interface MetaNullableTypeLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder
@@ -3793,6 +4005,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaPrimitiveTypeBuilder : global::MetaDslx.Core.Immutable.MetaTypeBuilder, global::MetaDslx.Core.Immutable.MetaNamedElementBuilder
     {
+    
+    	new MetaPrimitiveType ToImmutable();
     }
     
     public interface MetaPrimitiveTypeLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder
@@ -3805,6 +4019,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaEnumLiteralLazyChildBuilder EnumLiteralsLazyChild { get; }
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder> Operations { get; }
         global::MetaDslx.Core.Immutable.MetaOperationLazyChildBuilder OperationsLazyChild { get; }
+    
+    	new MetaEnum ToImmutable();
     }
     
     public interface MetaEnumLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder
@@ -3817,6 +4033,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaEnumBuilder Enum { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaEnumBuilder> EnumLazy { get; set; }
+    
+    	new MetaEnumLiteral ToImmutable();
     }
     
     public interface MetaEnumLiteralLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder
@@ -3836,6 +4054,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaConstructorBuilder Constructor { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaConstructorBuilder> ConstructorLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaConstructorLazyChildBuilder ConstructorLazyChild { get; }
+    
+    	new MetaClass ToImmutable();
     }
     
     public interface MetaClassLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder
@@ -3852,6 +4072,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ParameterTypes { get; }
         global::MetaDslx.Core.Immutable.MetaTypeBuilder ReturnType { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ReturnTypeLazy { get; set; }
+    
+    	new MetaFunctionType ToImmutable();
     }
     
     public interface MetaFunctionTypeLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder
@@ -3868,6 +4090,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilder ParametersLazyChild { get; }
         global::MetaDslx.Core.Immutable.MetaTypeBuilder ReturnType { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ReturnTypeLazy { get; set; }
+    
+    	new MetaFunction ToImmutable();
     }
     
     public interface MetaFunctionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
@@ -3879,6 +4103,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaGlobalFunctionBuilder : global::MetaDslx.Core.Immutable.MetaFunctionBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationBuilder
     {
+    
+    	new MetaGlobalFunction ToImmutable();
     }
     
     public interface MetaGlobalFunctionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaFunctionLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder
@@ -3889,6 +4115,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaTypeBuilder Parent { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ParentLazy { get; set; }
+    
+    	new MetaOperation ToImmutable();
     }
     
     public interface MetaOperationLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaFunctionLazyChildBuilder
@@ -3901,6 +4129,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ValueLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValueLazyChild { get; }
+    
+    	new MetaConstant ToImmutable();
     }
     
     public interface MetaConstantLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilder
@@ -3914,6 +4144,8 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> ParentLazy { get; set; }
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder> Initializers { get; }
         global::MetaDslx.Core.Immutable.MetaPropertyInitializerLazyChildBuilder InitializersLazyChild { get; }
+    
+    	new MetaConstructor ToImmutable();
     }
     
     public interface MetaConstructorLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
@@ -3926,6 +4158,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaFunctionBuilder Function { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaFunctionBuilder> FunctionLazy { get; set; }
+    
+    	new MetaParameter ToImmutable();
     }
     
     public interface MetaParameterLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
@@ -3944,6 +4178,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> SubsettingProperties { get; }
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> RedefinedProperties { get; }
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> RedefiningProperties { get; }
+    
+    	new MetaProperty ToImmutable();
     }
     
     public interface MetaPropertyLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaNamedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder, global::MetaDslx.Core.Immutable.MetaAnnotatedElementLazyChildBuilder
@@ -3970,6 +4206,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ValueLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValueLazyChild { get; }
+    
+    	MetaPropertyInitializer ToImmutable();
     }
     
     public interface MetaPropertyInitializerLazyChildBuilder
@@ -3983,6 +4221,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaSynthetizedPropertyInitializerBuilder : global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder
     {
+    
+    	new MetaSynthetizedPropertyInitializer ToImmutable();
     }
     
     public interface MetaSynthetizedPropertyInitializerLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaPropertyInitializerLazyChildBuilder
@@ -3995,6 +4235,8 @@ namespace MetaDslx.Core.Immutable
         Func<string> ObjectNameLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaPropertyBuilder Object { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> ObjectLazy { get; set; }
+    
+    	new MetaInheritedPropertyInitializer ToImmutable();
     }
     
     public interface MetaInheritedPropertyInitializerLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaPropertyInitializerLazyChildBuilder
@@ -4009,6 +4251,8 @@ namespace MetaDslx.Core.Immutable
         Func<bool> NoTypeErrorLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType { get; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ExpectedTypeLazy { get; set; }
+    
+    	new MetaExpression ToImmutable();
     }
     
     public interface MetaExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypedElementLazyChildBuilder
@@ -4022,6 +4266,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    
+    	new MetaBracketExpression ToImmutable();
     }
     
     public interface MetaBracketExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
@@ -4039,6 +4285,8 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.BindingInfo> DefinitionsLazy { get; set; }
         global::MetaDslx.Core.Immutable.ISymbol Definition { get; }
         Func<global::MetaDslx.Core.Immutable.ISymbol> DefinitionLazy { get; set; }
+    
+    	new MetaBoundExpression ToImmutable();
     }
     
     public interface MetaBoundExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
@@ -4051,6 +4299,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaThisExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder
     {
+    
+    	new MetaThisExpression ToImmutable();
     }
     
     public interface MetaThisExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
@@ -4059,6 +4309,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaNullExpressionBuilder : global::MetaDslx.Core.Immutable.MetaExpressionBuilder
     {
+    
+    	new MetaNullExpression ToImmutable();
     }
     
     public interface MetaNullExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
@@ -4072,6 +4324,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    
+    	new MetaTypeConversionExpression ToImmutable();
     }
     
     public interface MetaTypeConversionExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
@@ -4082,6 +4336,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaTypeAsExpressionBuilder : global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder
     {
+    
+    	new MetaTypeAsExpression ToImmutable();
     }
     
     public interface MetaTypeAsExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionLazyChildBuilder
@@ -4090,6 +4346,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaTypeCastExpressionBuilder : global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder
     {
+    
+    	new MetaTypeCastExpression ToImmutable();
     }
     
     public interface MetaTypeCastExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionLazyChildBuilder
@@ -4103,6 +4361,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    
+    	new MetaTypeCheckExpression ToImmutable();
     }
     
     public interface MetaTypeCheckExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
@@ -4115,6 +4375,8 @@ namespace MetaDslx.Core.Immutable
     {
         global::MetaDslx.Core.Immutable.MetaTypeBuilder TypeReference { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaTypeBuilder> TypeReferenceLazy { get; set; }
+    
+    	new MetaTypeOfExpression ToImmutable();
     }
     
     public interface MetaTypeOfExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
@@ -4135,6 +4397,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Else { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ElseLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ElseLazyChild { get; }
+    
+    	new MetaConditionalExpression ToImmutable();
     }
     
     public interface MetaConditionalExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
@@ -4149,6 +4413,8 @@ namespace MetaDslx.Core.Immutable
     {
         object Value { get; set; }
         Func<object> ValueLazy { get; set; }
+    
+    	new MetaConstantExpression ToImmutable();
     }
     
     public interface MetaConstantExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
@@ -4160,6 +4426,8 @@ namespace MetaDslx.Core.Immutable
     {
         string Name { get; set; }
         Func<string> NameLazy { get; set; }
+    
+    	new MetaIdentifierExpression ToImmutable();
     }
     
     public interface MetaIdentifierExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
@@ -4174,6 +4442,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
         string Name { get; set; }
         Func<string> NameLazy { get; set; }
+    
+    	new MetaMemberAccessExpression ToImmutable();
     }
     
     public interface MetaMemberAccessExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
@@ -4187,6 +4457,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    
+    	new MetaFunctionCallExpression ToImmutable();
     }
     
     public interface MetaFunctionCallExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
@@ -4199,6 +4471,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    
+    	new MetaIndexerExpression ToImmutable();
     }
     
     public interface MetaIndexerExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
@@ -4212,6 +4486,8 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaClassBuilder> TypeReferenceLazy { get; set; }
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder> PropertyInitializers { get; }
         global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerLazyChildBuilder PropertyInitializersLazyChild { get; }
+    
+    	new MetaNewExpression ToImmutable();
     }
     
     public interface MetaNewExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
@@ -4231,6 +4507,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValueLazyChild { get; }
         global::MetaDslx.Core.Immutable.MetaPropertyBuilder Property { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> PropertyLazy { get; set; }
+    
+    	MetaNewPropertyInitializer ToImmutable();
     }
     
     public interface MetaNewPropertyInitializerLazyChildBuilder
@@ -4247,6 +4525,8 @@ namespace MetaDslx.Core.Immutable
         Func<global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder> TypeReferenceLazy { get; set; }
         global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Values { get; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ValuesLazyChild { get; }
+    
+    	new MetaNewCollectionExpression ToImmutable();
     }
     
     public interface MetaNewCollectionExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder
@@ -4259,6 +4539,8 @@ namespace MetaDslx.Core.Immutable
     {
         string Name { get; }
         Func<string> NameLazy { get; set; }
+    
+    	new MetaOperatorExpression ToImmutable();
     }
     
     public interface MetaOperatorExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBoundExpressionLazyChildBuilder
@@ -4271,6 +4553,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> ExpressionLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder ExpressionLazyChild { get; }
+    
+    	new MetaUnaryExpression ToImmutable();
     }
     
     public interface MetaUnaryExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaOperatorExpressionLazyChildBuilder
@@ -4280,6 +4564,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaUnaryPlusExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder
     {
+    
+    	new MetaUnaryPlusExpression ToImmutable();
     }
     
     public interface MetaUnaryPlusExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
@@ -4288,6 +4574,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaNegateExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder
     {
+    
+    	new MetaNegateExpression ToImmutable();
     }
     
     public interface MetaNegateExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
@@ -4296,6 +4584,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaOnesComplementExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder
     {
+    
+    	new MetaOnesComplementExpression ToImmutable();
     }
     
     public interface MetaOnesComplementExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
@@ -4304,6 +4594,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaNotExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder
     {
+    
+    	new MetaNotExpression ToImmutable();
     }
     
     public interface MetaNotExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
@@ -4312,6 +4604,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaUnaryAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder
     {
+    
+    	new MetaUnaryAssignExpression ToImmutable();
     }
     
     public interface MetaUnaryAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryExpressionLazyChildBuilder
@@ -4320,6 +4614,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaPostIncrementAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder
     {
+    
+    	new MetaPostIncrementAssignExpression ToImmutable();
     }
     
     public interface MetaPostIncrementAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionLazyChildBuilder
@@ -4328,6 +4624,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaPostDecrementAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder
     {
+    
+    	new MetaPostDecrementAssignExpression ToImmutable();
     }
     
     public interface MetaPostDecrementAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionLazyChildBuilder
@@ -4336,6 +4634,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaPreIncrementAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder
     {
+    
+    	new MetaPreIncrementAssignExpression ToImmutable();
     }
     
     public interface MetaPreIncrementAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionLazyChildBuilder
@@ -4344,6 +4644,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaPreDecrementAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder
     {
+    
+    	new MetaPreDecrementAssignExpression ToImmutable();
     }
     
     public interface MetaPreDecrementAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionLazyChildBuilder
@@ -4358,6 +4660,8 @@ namespace MetaDslx.Core.Immutable
         global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right { get; set; }
         Func<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> RightLazy { get; set; }
         global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilder RightLazyChild { get; }
+    
+    	new MetaBinaryExpression ToImmutable();
     }
     
     public interface MetaBinaryExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaOperatorExpressionLazyChildBuilder
@@ -4368,6 +4672,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaBinaryArithmeticExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder
     {
+    
+    	new MetaBinaryArithmeticExpression ToImmutable();
     }
     
     public interface MetaBinaryArithmeticExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
@@ -4376,6 +4682,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaMultiplyExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
     {
+    
+    	new MetaMultiplyExpression ToImmutable();
     }
     
     public interface MetaMultiplyExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
@@ -4384,6 +4692,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaDivideExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
     {
+    
+    	new MetaDivideExpression ToImmutable();
     }
     
     public interface MetaDivideExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
@@ -4392,6 +4702,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaModuloExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
     {
+    
+    	new MetaModuloExpression ToImmutable();
     }
     
     public interface MetaModuloExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
@@ -4400,6 +4712,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaAddExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
     {
+    
+    	new MetaAddExpression ToImmutable();
     }
     
     public interface MetaAddExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
@@ -4408,6 +4722,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaSubtractExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
     {
+    
+    	new MetaSubtractExpression ToImmutable();
     }
     
     public interface MetaSubtractExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
@@ -4416,6 +4732,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaLeftShiftExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
     {
+    
+    	new MetaLeftShiftExpression ToImmutable();
     }
     
     public interface MetaLeftShiftExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
@@ -4424,6 +4742,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaRightShiftExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder
     {
+    
+    	new MetaRightShiftExpression ToImmutable();
     }
     
     public interface MetaRightShiftExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionLazyChildBuilder
@@ -4432,6 +4752,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaBinaryComparisonExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder
     {
+    
+    	new MetaBinaryComparisonExpression ToImmutable();
     }
     
     public interface MetaBinaryComparisonExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
@@ -4440,6 +4762,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaLessThanExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder
     {
+    
+    	new MetaLessThanExpression ToImmutable();
     }
     
     public interface MetaLessThanExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
@@ -4448,6 +4772,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaLessThanOrEqualExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder
     {
+    
+    	new MetaLessThanOrEqualExpression ToImmutable();
     }
     
     public interface MetaLessThanOrEqualExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
@@ -4456,6 +4782,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaGreaterThanExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder
     {
+    
+    	new MetaGreaterThanExpression ToImmutable();
     }
     
     public interface MetaGreaterThanExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
@@ -4464,6 +4792,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaGreaterThanOrEqualExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder
     {
+    
+    	new MetaGreaterThanOrEqualExpression ToImmutable();
     }
     
     public interface MetaGreaterThanOrEqualExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
@@ -4472,6 +4802,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaEqualExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder
     {
+    
+    	new MetaEqualExpression ToImmutable();
     }
     
     public interface MetaEqualExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
@@ -4480,6 +4812,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaNotEqualExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder
     {
+    
+    	new MetaNotEqualExpression ToImmutable();
     }
     
     public interface MetaNotEqualExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionLazyChildBuilder
@@ -4488,6 +4822,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaBinaryLogicalExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder
     {
+    
+    	new MetaBinaryLogicalExpression ToImmutable();
     }
     
     public interface MetaBinaryLogicalExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
@@ -4496,6 +4832,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaAndExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder
     {
+    
+    	new MetaAndExpression ToImmutable();
     }
     
     public interface MetaAndExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
@@ -4504,6 +4842,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaOrExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder
     {
+    
+    	new MetaOrExpression ToImmutable();
     }
     
     public interface MetaOrExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
@@ -4512,6 +4852,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaExclusiveOrExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder
     {
+    
+    	new MetaExclusiveOrExpression ToImmutable();
     }
     
     public interface MetaExclusiveOrExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
@@ -4520,6 +4862,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaAndAlsoExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder
     {
+    
+    	new MetaAndAlsoExpression ToImmutable();
     }
     
     public interface MetaAndAlsoExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
@@ -4528,6 +4872,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaOrElseExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder
     {
+    
+    	new MetaOrElseExpression ToImmutable();
     }
     
     public interface MetaOrElseExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionLazyChildBuilder
@@ -4536,6 +4882,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaNullCoalescingExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder
     {
+    
+    	new MetaNullCoalescingExpression ToImmutable();
     }
     
     public interface MetaNullCoalescingExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
@@ -4544,6 +4892,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaAssignmentExpressionBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder
     {
+    
+    	new MetaAssignmentExpression ToImmutable();
     }
     
     public interface MetaAssignmentExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaBinaryExpressionLazyChildBuilder
@@ -4552,6 +4902,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder
     {
+    
+    	new MetaAssignExpression ToImmutable();
     }
     
     public interface MetaAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionLazyChildBuilder
@@ -4560,6 +4912,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaArithmeticAssignmentExpressionBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder
     {
+    
+    	new MetaArithmeticAssignmentExpression ToImmutable();
     }
     
     public interface MetaArithmeticAssignmentExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionLazyChildBuilder
@@ -4568,6 +4922,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaMultiplyAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
     {
+    
+    	new MetaMultiplyAssignExpression ToImmutable();
     }
     
     public interface MetaMultiplyAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
@@ -4576,6 +4932,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaDivideAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
     {
+    
+    	new MetaDivideAssignExpression ToImmutable();
     }
     
     public interface MetaDivideAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
@@ -4584,6 +4942,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaModuloAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
     {
+    
+    	new MetaModuloAssignExpression ToImmutable();
     }
     
     public interface MetaModuloAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
@@ -4592,6 +4952,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaAddAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
     {
+    
+    	new MetaAddAssignExpression ToImmutable();
     }
     
     public interface MetaAddAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
@@ -4600,6 +4962,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaSubtractAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
     {
+    
+    	new MetaSubtractAssignExpression ToImmutable();
     }
     
     public interface MetaSubtractAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
@@ -4608,6 +4972,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaLeftShiftAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
     {
+    
+    	new MetaLeftShiftAssignExpression ToImmutable();
     }
     
     public interface MetaLeftShiftAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
@@ -4616,6 +4982,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaRightShiftAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder
     {
+    
+    	new MetaRightShiftAssignExpression ToImmutable();
     }
     
     public interface MetaRightShiftAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionLazyChildBuilder
@@ -4624,6 +4992,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaLogicalAssignmentExpressionBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder
     {
+    
+    	new MetaLogicalAssignmentExpression ToImmutable();
     }
     
     public interface MetaLogicalAssignmentExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaAssignmentExpressionLazyChildBuilder
@@ -4632,6 +5002,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaAndAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder
     {
+    
+    	new MetaAndAssignExpression ToImmutable();
     }
     
     public interface MetaAndAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionLazyChildBuilder
@@ -4640,6 +5012,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaExclusiveOrAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder
     {
+    
+    	new MetaExclusiveOrAssignExpression ToImmutable();
     }
     
     public interface MetaExclusiveOrAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionLazyChildBuilder
@@ -4648,6 +5022,8 @@ namespace MetaDslx.Core.Immutable
     
     public interface MetaOrAssignExpressionBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder
     {
+    
+    	new MetaOrAssignExpression ToImmutable();
     }
     
     public interface MetaOrAssignExpressionLazyChildBuilder : global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionLazyChildBuilder
@@ -4673,6 +5049,11 @@ namespace MetaDslx.Core.Immutable
         {
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAnnotatedElement;*/ }
         }
+    
+        public new global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
     
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
@@ -4701,11 +5082,17 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaDocumentedElement;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -4735,16 +5122,28 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNamedElement;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNamedElementBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -4772,6 +5171,11 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaTypedElement;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypedElementBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -4797,6 +5201,10 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaType;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeBuilder)base.ToMutable();
+    	}
     }
     
     internal class MetaAnnotationImpl : global::MetaDslx.Core.Immutable.ImmutableSymbolBase, global::MetaDslx.Core.Immutable.MetaAnnotation
@@ -4823,21 +5231,39 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAnnotation;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAnnotationBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotationBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationProperty> Properties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotationProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotation.PropertiesProperty, ref properties0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -4869,21 +5295,39 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAnnotationProperty;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Value
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotationProperty.ValueProperty, ref value0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -4925,46 +5369,74 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNamespace;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNamespaceBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamespaceBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespace Parent
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespace>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.ParentProperty, ref parent0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaNamespace> Usings
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaNamespace>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.UsingsProperty, ref usings0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModel MetaModel
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaModel>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.MetaModelProperty, ref metaModel0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaNamespace> Namespaces
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaNamespace>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.NamespacesProperty, ref namespaces0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaDeclaration> Declarations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaDeclaration>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.DeclarationsProperty, ref declarations0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5000,31 +5472,56 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaDeclaration;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaDeclarationBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDeclarationBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespace Namespace
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespace>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModel Model
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaModel>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, ref model0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5060,31 +5557,56 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaModel;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaModelBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaModelBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public string Uri
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.UriProperty, ref uri0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespace Namespace
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespace>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.NamespaceProperty, ref namespace0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5114,11 +5636,22 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaCollectionType;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypeBuilder global::MetaDslx.Core.Immutable.MetaType.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaCollectionKind Kind
         {
             get { return this.GetValue<global::MetaDslx.Core.Immutable.MetaCollectionKind>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaCollectionType.KindProperty, ref kind0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType InnerType
         {
@@ -5145,6 +5678,16 @@ namespace MetaDslx.Core.Immutable
         {
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNullableType;*/ }
         }
+    
+        public new global::MetaDslx.Core.Immutable.MetaNullableTypeBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNullableTypeBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypeBuilder global::MetaDslx.Core.Immutable.MetaType.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeBuilder)base.ToMutable();
+    	}
     
         
         public global::MetaDslx.Core.Immutable.MetaType InnerType
@@ -5175,16 +5718,38 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaPrimitiveType;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypeBuilder global::MetaDslx.Core.Immutable.MetaType.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5224,41 +5789,78 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaEnum;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaEnumBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaEnumBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypeBuilder global::MetaDslx.Core.Immutable.MetaType.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDeclarationBuilder global::MetaDslx.Core.Immutable.MetaDeclaration.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDeclarationBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaEnumLiteral> EnumLiterals
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaEnumLiteral>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum.EnumLiteralsProperty, ref enumLiterals0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation> Operations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaOperation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum.OperationsProperty, ref operations0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespace Namespace
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespace>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModel Model
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaModel>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, ref model0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5292,26 +5894,50 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaEnumLiteral;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaEnum Enum
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaEnum>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnumLiteral.EnumProperty, ref enum0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5357,81 +5983,126 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaClass;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaClassBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaClassBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypeBuilder global::MetaDslx.Core.Immutable.MetaType.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDeclarationBuilder global::MetaDslx.Core.Immutable.MetaDeclaration.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDeclarationBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public bool IsAbstract
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.IsAbstractProperty, ref isAbstract0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaClass> SuperClasses
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaClass>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.SuperClassesProperty, ref superClasses0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> Properties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.PropertiesProperty, ref properties0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation> Operations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaOperation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.OperationsProperty, ref operations0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaConstructor Constructor
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaConstructor>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.ConstructorProperty, ref constructor0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespace Namespace
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespace>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModel Model
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaModel>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, ref model0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaClass> global::MetaDslx.Core.Immutable.MetaClass.GetAllSuperClasses()
         {
             return global::MetaDslx.Core.Immutable.MetaImplementationProvider.Implementation.MetaClass_GetAllSuperClasses(this);
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> global::MetaDslx.Core.Immutable.MetaClass.GetAllProperties()
         {
             return global::MetaDslx.Core.Immutable.MetaImplementationProvider.Implementation.MetaClass_GetAllProperties(this);
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation> global::MetaDslx.Core.Immutable.MetaClass.GetAllOperations()
         {
             return global::MetaDslx.Core.Immutable.MetaImplementationProvider.Implementation.MetaClass_GetAllOperations(this);
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> global::MetaDslx.Core.Immutable.MetaClass.GetAllImplementedProperties()
         {
             return global::MetaDslx.Core.Immutable.MetaImplementationProvider.Implementation.MetaClass_GetAllImplementedProperties(this);
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation> global::MetaDslx.Core.Immutable.MetaClass.GetAllImplementedOperations()
         {
             return global::MetaDslx.Core.Immutable.MetaImplementationProvider.Implementation.MetaClass_GetAllImplementedOperations(this);
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5461,11 +6132,22 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaFunctionType;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypeBuilder global::MetaDslx.Core.Immutable.MetaType.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaType> ParameterTypes
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionType.ParameterTypesProperty, ref parameterTypes0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ReturnType
         {
@@ -5505,42 +6187,74 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaFunction;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaFunctionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaFunctionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaFunctionType Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaFunctionType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty, ref type0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaParameter> Parameters
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaParameter>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty, ref parameters0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ReturnType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty, ref returnType0); }
         }
+    
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         global::MetaDslx.Core.Immutable.MetaType global::MetaDslx.Core.Immutable.MetaTypedElement.Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, ref type1); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5584,52 +6298,96 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaGlobalFunction;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaFunctionBuilder global::MetaDslx.Core.Immutable.MetaFunction.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaFunctionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDeclarationBuilder global::MetaDslx.Core.Immutable.MetaDeclaration.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDeclarationBuilder)base.ToMutable();
+    	}
+    
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         global::MetaDslx.Core.Immutable.MetaFunctionType global::MetaDslx.Core.Immutable.MetaFunction.Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaFunctionType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty, ref type0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaParameter> Parameters
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaParameter>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty, ref parameters0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ReturnType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty, ref returnType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, ref type1); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespace Namespace
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespace>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModel Model
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaModel>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, ref model0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5671,47 +6429,85 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaOperation;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOperationBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperationBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaFunctionBuilder global::MetaDslx.Core.Immutable.MetaFunction.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaFunctionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Parent
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperation.ParentProperty, ref parent0); }
         }
+    
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         global::MetaDslx.Core.Immutable.MetaFunctionType global::MetaDslx.Core.Immutable.MetaFunction.Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaFunctionType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty, ref type0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaParameter> Parameters
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaParameter>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty, ref parameters0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ReturnType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty, ref returnType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, ref type1); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5751,41 +6547,78 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaConstant;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaConstantBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaConstantBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDeclarationBuilder global::MetaDslx.Core.Immutable.MetaDeclaration.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDeclarationBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Value
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstant.ValueProperty, ref value0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespace Namespace
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNamespace>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModel Model
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaModel>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, ref model0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5821,31 +6654,56 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaConstructor;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaConstructorBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaConstructorBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaClass Parent
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaClass>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor.ParentProperty, ref parent0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyInitializer> Initializers
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaPropertyInitializer>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor.InitializersProperty, ref initializers0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5881,31 +6739,61 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaParameter;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaParameterBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaParameterBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaFunction Function
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaFunction>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaParameter.FunctionProperty, ref function0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -5953,61 +6841,97 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaProperty;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPropertyBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPropertyBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElementBuilder global::MetaDslx.Core.Immutable.MetaNamedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder global::MetaDslx.Core.Immutable.MetaDocumentedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder global::MetaDslx.Core.Immutable.MetaAnnotatedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaPropertyKind Kind
         {
             get { return this.GetValue<global::MetaDslx.Core.Immutable.MetaPropertyKind>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.KindProperty, ref kind0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaClass Class
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaClass>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.ClassProperty, ref class0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> OppositeProperties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.OppositePropertiesProperty, ref oppositeProperties0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> SubsettedProperties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.SubsettedPropertiesProperty, ref subsettedProperties0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> SubsettingProperties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.SubsettingPropertiesProperty, ref subsettingProperties0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> RedefinedProperties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.RedefinedPropertiesProperty, ref redefinedProperties0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty> RedefiningProperties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.RedefiningPropertiesProperty, ref redefiningProperties0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
         }
+    
         
         public string Documentation
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation> Annotations
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaAnnotation>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
         }
+    
         
         global::MetaDslx.Core.Immutable.IImmutableModelList<string> global::MetaDslx.Core.Immutable.MetaDocumentedElement.GetDocumentationLines()
         {
@@ -6043,26 +6967,35 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaPropertyInitializer;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaConstructor Constructor
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaConstructor>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, ref constructor0); }
         }
+    
         
         public string PropertyName
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, ref propertyName0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaClass PropertyContext
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaClass>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, ref propertyContext0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaProperty Property
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, ref property0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Value
         {
@@ -6098,26 +7031,40 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaSynthetizedPropertyInitializer;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder global::MetaDslx.Core.Immutable.MetaPropertyInitializer.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaConstructor Constructor
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaConstructor>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, ref constructor0); }
         }
+    
         
         public string PropertyName
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, ref propertyName0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaClass PropertyContext
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaClass>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, ref propertyContext0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaProperty Property
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, ref property0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Value
         {
@@ -6157,36 +7104,52 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaInheritedPropertyInitializer;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder global::MetaDslx.Core.Immutable.MetaPropertyInitializer.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder)base.ToMutable();
+    	}
+    
         
         public string ObjectName
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectNameProperty, ref objectName0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaProperty Object
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectProperty, ref object0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaConstructor Constructor
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaConstructor>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, ref constructor0); }
         }
+    
         
         public string PropertyName
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, ref propertyName0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaClass PropertyContext
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaClass>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, ref propertyContext0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaProperty Property
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaProperty>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, ref property0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Value
         {
@@ -6218,16 +7181,28 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6261,21 +7236,39 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaBracketExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBracketExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBracketExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBracketExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6315,36 +7308,57 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaBoundExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6384,36 +7398,62 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaThisExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6445,16 +7485,33 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNullExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNullExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNullExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6490,26 +7547,45 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaTypeConversionExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaType TypeReference
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, ref typeReference0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6545,26 +7621,50 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaTypeAsExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeAsExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeAsExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder global::MetaDslx.Core.Immutable.MetaTypeConversionExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaType TypeReference
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, ref typeReference0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6600,26 +7700,50 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaTypeCastExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeCastExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeCastExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder global::MetaDslx.Core.Immutable.MetaTypeConversionExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaType TypeReference
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, ref typeReference0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6655,26 +7779,45 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaTypeCheckExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeCheckExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeCheckExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaType TypeReference
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.TypeReferenceProperty, ref typeReference0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6708,21 +7851,39 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaTypeOfExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaType TypeReference
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeOfExpression.TypeReferenceProperty, ref typeReference0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6762,36 +7923,57 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaConditionalExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaConditionalExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaConditionalExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Condition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ConditionProperty, ref condition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType BalancedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty, ref balancedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Then
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ThenProperty, ref then0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Else
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ElseProperty, ref else0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6825,21 +8007,39 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaConstantExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public object Value
         {
             get { return this.GetReference<object>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstantExpression.ValueProperty, ref value0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6881,41 +8081,68 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaIdentifierExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIdentifierExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -6959,46 +8186,74 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaMemberAccessExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7040,41 +8295,68 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaFunctionCallExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionCallExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7116,41 +8398,68 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaIndexerExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaIndexerExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaIndexerExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIndexerExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7186,26 +8495,45 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNewExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaClass TypeReference
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaClass>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, ref typeReference0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaNewPropertyInitializer> PropertyInitializers
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaNewPropertyInitializer>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty, ref propertyInitializers0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7239,21 +8567,29 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaNewExpression Parent
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaNewExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, ref parent0); }
         }
+    
         
         public string PropertyName
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty, ref propertyName0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Value
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty, ref value0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaProperty Property
         {
@@ -7289,26 +8625,45 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNewCollectionExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNewCollectionExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNewCollectionExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaCollectionType TypeReference
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaCollectionType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewCollectionExpression.TypeReferenceProperty, ref typeReference0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Values
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewCollectionExpression.ValuesProperty, ref values0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7350,41 +8705,68 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaOperatorExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7428,46 +8810,79 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaUnaryExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7511,46 +8926,84 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaUnaryPlusExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaUnaryPlusExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryPlusExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7594,46 +9047,84 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNegateExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNegateExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNegateExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7677,46 +9168,84 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaOnesComplementExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOnesComplementExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOnesComplementExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7760,46 +9289,84 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNotExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNotExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNotExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7843,46 +9410,84 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaUnaryAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -7926,46 +9531,89 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaPostIncrementAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPostIncrementAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPostIncrementAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8009,46 +9657,89 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaPostDecrementAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPostDecrementAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPostDecrementAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8092,46 +9783,89 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaPreIncrementAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPreIncrementAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPreIncrementAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8175,46 +9909,89 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaPreDecrementAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPreDecrementAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPreDecrementAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaUnaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Expression
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty, ref expression0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8260,51 +10037,85 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaBinaryExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8350,51 +10161,90 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaBinaryArithmeticExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8440,51 +10290,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaMultiplyExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaMultiplyExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaMultiplyExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8530,51 +10424,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaDivideExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaDivideExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDivideExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8620,51 +10558,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaModuloExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaModuloExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaModuloExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8710,51 +10692,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAddExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAddExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAddExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8800,51 +10826,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaSubtractExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaSubtractExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaSubtractExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8890,51 +10960,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaLeftShiftExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaLeftShiftExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLeftShiftExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -8980,51 +11094,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaRightShiftExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaRightShiftExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaRightShiftExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9070,51 +11228,90 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaBinaryComparisonExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9160,51 +11357,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaLessThanExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaLessThanExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLessThanExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9250,51 +11491,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaLessThanOrEqualExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaLessThanOrEqualExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLessThanOrEqualExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9340,51 +11625,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaGreaterThanExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaGreaterThanExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaGreaterThanExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9430,51 +11759,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaGreaterThanOrEqualExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaGreaterThanOrEqualExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaGreaterThanOrEqualExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9520,51 +11893,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaEqualExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaEqualExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaEqualExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9610,51 +12027,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNotEqualExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNotEqualExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNotEqualExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9700,51 +12161,90 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaBinaryLogicalExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9790,51 +12290,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAndExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAndExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAndExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9880,51 +12424,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaOrExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOrExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOrExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -9970,51 +12558,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaExclusiveOrExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaExclusiveOrExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExclusiveOrExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10060,51 +12692,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAndAlsoExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAndAlsoExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAndAlsoExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10150,51 +12826,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaOrElseExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOrElseExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOrElseExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10240,51 +12960,90 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNullCoalescingExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNullCoalescingExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNullCoalescingExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10330,51 +13089,90 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAssignmentExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10420,51 +13218,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10510,51 +13352,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaArithmeticAssignmentExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10600,51 +13486,100 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaMultiplyAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaMultiplyAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaMultiplyAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10690,51 +13625,100 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaDivideAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaDivideAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDivideAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10780,51 +13764,100 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaModuloAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaModuloAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaModuloAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10870,51 +13903,100 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAddAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAddAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAddAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -10960,51 +14042,100 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaSubtractAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaSubtractAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaSubtractAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -11050,51 +14181,100 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaLeftShiftAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaLeftShiftAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLeftShiftAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -11140,51 +14320,100 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaRightShiftAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaRightShiftAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaRightShiftAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -11230,51 +14459,95 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaLogicalAssignmentExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -11320,51 +14593,100 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAndAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAndAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAndAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -11410,51 +14732,100 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaExclusiveOrAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaExclusiveOrAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExclusiveOrAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -11500,51 +14871,100 @@ namespace MetaDslx.Core.Immutable
             get { return null; /*global::MetaDslx.Core.MetaInstance.MetaOrAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOrAssignExpressionBuilder ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOrAssignExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder global::MetaDslx.Core.Immutable.MetaAssignmentExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder global::MetaDslx.Core.Immutable.MetaBinaryExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder global::MetaDslx.Core.Immutable.MetaOperatorExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder global::MetaDslx.Core.Immutable.MetaBoundExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpressionBuilder global::MetaDslx.Core.Immutable.MetaExpression.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpressionBuilder)base.ToMutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElementBuilder global::MetaDslx.Core.Immutable.MetaTypedElement.ToMutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElementBuilder)base.ToMutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Left
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty, ref left0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpression Right
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty, ref right0); }
         }
+    
         
         public string Name
         {
             get { return this.GetReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, ref name0); }
         }
+    
         
         public bool UniqueDefinition
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, ref uniqueDefinition0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaExpression> Arguments
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaExpression>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty, ref arguments0); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
             get { return this.GetReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, ref definitions0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, ref definition0); }
         }
+    
         
         public bool NoTypeError
         {
             get { return this.GetValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, ref noTypeError0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType ExpectedType
         {
             get { return this.GetReference<global::MetaDslx.Core.Immutable.MetaType>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, ref expectedType0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaType Type
         {
@@ -11580,6 +15000,11 @@ namespace MetaDslx.Core.Immutable
         {
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAnnotatedElement;*/ }
         }
+    
+        public new global::MetaDslx.Core.Immutable.MetaAnnotatedElement ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
     
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
@@ -11631,6 +15056,11 @@ namespace MetaDslx.Core.Immutable
         {
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaDocumentedElement;*/ }
         }
+    
+        public new global::MetaDslx.Core.Immutable.MetaDocumentedElement ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
     
         
         public string Documentation
@@ -11690,6 +15120,16 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNamedElement;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNamedElement ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
         
         public string Name
         {
@@ -11702,6 +15142,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -11765,6 +15206,11 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaTypedElement;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypedElement ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -11821,6 +15267,10 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaType;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaType ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaType)base.ToImmutable();
+    	}
     }
     
     public class MetaTypeLazyChildBuilderImpl : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, global::MetaDslx.Core.Immutable.MetaTypeLazyChildBuilder
@@ -11863,6 +15313,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAnnotation;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAnnotation ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotation)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder> Properties
         {
@@ -11874,6 +15339,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaAnnotationPropertyLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotation.PropertiesProperty); }
         }
+    
         
         public string Name
         {
@@ -11886,6 +15352,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -11952,6 +15419,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAnnotationProperty;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAnnotationProperty ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotationProperty)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value
         {
@@ -11970,6 +15452,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotationProperty.ValueProperty); }
         }
+    
         
         public string Name
         {
@@ -11982,6 +15465,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -12062,6 +15546,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNamespace;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNamespace ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamespace)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Parent
         {
@@ -12074,11 +15578,13 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.ParentProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.ParentProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Usings
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.UsingsProperty, ref usings0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModelBuilder MetaModel
         {
@@ -12097,6 +15603,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaModelLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.MetaModelProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder> Namespaces
         {
@@ -12108,6 +15615,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaNamespaceLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.NamespacesProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaDeclarationBuilder> Declarations
         {
@@ -12119,6 +15627,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaDeclarationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace.DeclarationsProperty); }
         }
+    
         
         public string Name
         {
@@ -12131,6 +15640,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -12143,6 +15653,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -12226,6 +15737,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaDeclaration;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaDeclaration ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDeclaration)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace
         {
@@ -12238,6 +15769,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModelBuilder Model
         {
@@ -12249,6 +15781,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaModelBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
         }
+    
         
         public string Name
         {
@@ -12261,6 +15794,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -12273,6 +15807,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -12353,6 +15888,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaModel;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaModel ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaModel)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public string Uri
         {
@@ -12365,6 +15920,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.UriProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.UriProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace
         {
@@ -12377,6 +15933,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.NamespaceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel.NamespaceProperty, value); }
         }
+    
         
         public string Name
         {
@@ -12389,6 +15946,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -12401,6 +15959,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -12477,6 +16036,16 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaCollectionType;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaCollectionType ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaCollectionType)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaType global::MetaDslx.Core.Immutable.MetaTypeBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaType)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaCollectionKind Kind
         {
@@ -12489,6 +16058,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<global::MetaDslx.Core.Immutable.MetaCollectionKind>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaCollectionType.KindProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaCollectionType.KindProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder InnerType
         {
@@ -12552,6 +16122,16 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNullableType;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNullableType ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNullableType)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaType global::MetaDslx.Core.Immutable.MetaTypeBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaType)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder InnerType
         {
@@ -12610,6 +16190,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaPrimitiveType;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPrimitiveType ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPrimitiveType)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaType global::MetaDslx.Core.Immutable.MetaTypeBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaType)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
         
         public string Name
         {
@@ -12622,6 +16222,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -12694,6 +16295,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaEnum;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaEnum ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaEnum)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaType global::MetaDslx.Core.Immutable.MetaTypeBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaType)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDeclaration global::MetaDslx.Core.Immutable.MetaDeclarationBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDeclaration)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder> EnumLiterals
         {
@@ -12705,6 +16336,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaEnumLiteralLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum.EnumLiteralsProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder> Operations
         {
@@ -12716,6 +16348,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaOperationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum.OperationsProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace
         {
@@ -12728,6 +16361,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModelBuilder Model
         {
@@ -12739,6 +16373,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaModelBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
         }
+    
         
         public string Name
         {
@@ -12751,6 +16386,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -12763,6 +16399,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -12843,6 +16480,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaEnumLiteral;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaEnumLiteral ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaEnumLiteral)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaEnumBuilder Enum
         {
@@ -12855,6 +16512,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaEnumBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnumLiteral.EnumProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnumLiteral.EnumProperty, value); }
         }
+    
         
         public string Name
         {
@@ -12867,6 +16525,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -12879,6 +16538,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -12967,6 +16627,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaClass;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaClass ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaClass)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaType global::MetaDslx.Core.Immutable.MetaTypeBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaType)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDeclaration global::MetaDslx.Core.Immutable.MetaDeclarationBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDeclaration)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public bool IsAbstract
         {
@@ -12979,11 +16669,13 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.IsAbstractProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.IsAbstractProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaClassBuilder> SuperClasses
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaClassBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.SuperClassesProperty, ref superClasses0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> Properties
         {
@@ -12995,6 +16687,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaPropertyLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.PropertiesProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder> Operations
         {
@@ -13006,6 +16699,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaOperationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.OperationsProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaConstructorBuilder Constructor
         {
@@ -13024,6 +16718,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaConstructorLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass.ConstructorProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace
         {
@@ -13036,6 +16731,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModelBuilder Model
         {
@@ -13047,6 +16743,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaModelBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
         }
+    
         
         public string Name
         {
@@ -13059,6 +16756,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -13071,6 +16769,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -13163,11 +16862,22 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaFunctionType;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaFunctionType ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaFunctionType)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaType global::MetaDslx.Core.Immutable.MetaTypeBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaType)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaTypeBuilder> ParameterTypes
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionType.ParameterTypesProperty, ref parameterTypes0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ReturnType
         {
@@ -13234,6 +16944,31 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaFunction;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaFunction ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaFunction)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder Type
         {
@@ -13245,6 +16980,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder> Parameters
         {
@@ -13256,6 +16992,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ReturnType
         {
@@ -13268,6 +17005,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty, value); }
         }
+    
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         global::MetaDslx.Core.Immutable.MetaTypeBuilder global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.Type
@@ -13282,6 +17020,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
         }
+    
         
         public string Name
         {
@@ -13294,6 +17033,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -13306,6 +17046,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -13398,6 +17139,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaGlobalFunction;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaGlobalFunction ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaGlobalFunction)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaFunction global::MetaDslx.Core.Immutable.MetaFunctionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaFunction)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDeclaration global::MetaDslx.Core.Immutable.MetaDeclarationBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDeclaration)base.ToImmutable();
+    	}
+    
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder global::MetaDslx.Core.Immutable.MetaFunctionBuilder.Type
@@ -13411,6 +17187,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder> Parameters
         {
@@ -13422,6 +17199,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ReturnType
         {
@@ -13434,6 +17212,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -13446,6 +17225,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
         }
+    
         
         public string Name
         {
@@ -13458,6 +17238,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -13470,6 +17251,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -13481,6 +17263,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaAnnotationLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace
         {
@@ -13493,6 +17276,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModelBuilder Model
         {
@@ -13596,6 +17380,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaOperation;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOperation ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperation)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaFunction global::MetaDslx.Core.Immutable.MetaFunctionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaFunction)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Parent
         {
@@ -13608,6 +17422,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperation.ParentProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperation.ParentProperty, value); }
         }
+    
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder global::MetaDslx.Core.Immutable.MetaFunctionBuilder.Type
@@ -13621,6 +17436,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.TypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder> Parameters
         {
@@ -13632,6 +17448,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaParameterLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ParametersProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ReturnType
         {
@@ -13644,6 +17461,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction.ReturnTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -13656,6 +17474,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
         }
+    
         
         public string Name
         {
@@ -13668,6 +17487,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -13680,6 +17500,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -13775,6 +17596,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaConstant;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaConstant ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaConstant)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDeclaration global::MetaDslx.Core.Immutable.MetaDeclarationBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDeclaration)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value
         {
@@ -13793,6 +17644,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstant.ValueProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -13805,6 +17657,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaNamespaceBuilder Namespace
         {
@@ -13817,6 +17670,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaModelBuilder Model
         {
@@ -13828,6 +17682,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaModelBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration.ModelProperty, value); }
         }
+    
         
         public string Name
         {
@@ -13840,6 +17695,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -13852,6 +17708,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -13945,6 +17802,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaConstructor;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaConstructor ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaConstructor)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaClassBuilder Parent
         {
@@ -13957,6 +17834,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaClassBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor.ParentProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor.ParentProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder> Initializers
         {
@@ -13968,6 +17846,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaPropertyInitializerLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor.InitializersProperty); }
         }
+    
         
         public string Name
         {
@@ -13980,6 +17859,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -13992,6 +17872,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -14067,6 +17948,31 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaParameter;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaParameter ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaParameter)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaFunctionBuilder Function
         {
@@ -14079,6 +17985,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaFunctionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaParameter.FunctionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaParameter.FunctionProperty, value); }
         }
+    
         
         public string Name
         {
@@ -14091,6 +17998,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -14103,6 +18011,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -14115,6 +18024,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -14206,6 +18116,31 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaProperty;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaProperty ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaProperty)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaNamedElement global::MetaDslx.Core.Immutable.MetaNamedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNamedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaDocumentedElement global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDocumentedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAnnotatedElement global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAnnotatedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaPropertyKind Kind
         {
@@ -14218,6 +18153,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<global::MetaDslx.Core.Immutable.MetaPropertyKind>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.KindProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.KindProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaClassBuilder Class
         {
@@ -14230,31 +18166,37 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaClassBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.ClassProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.ClassProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> OppositeProperties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.OppositePropertiesProperty, ref oppositeProperties0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> SubsettedProperties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.SubsettedPropertiesProperty, ref subsettedProperties0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> SubsettingProperties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.SubsettingPropertiesProperty, ref subsettingProperties0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> RedefinedProperties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.RedefinedPropertiesProperty, ref redefinedProperties0); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder> RedefiningProperties
         {
             get { return this.GetList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty.RedefiningPropertiesProperty, ref redefiningProperties0); }
         }
+    
         
         public string Name
         {
@@ -14267,6 +18209,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, value); }
         }
+    
         
         public string Documentation
         {
@@ -14279,6 +18222,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -14291,6 +18235,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder> Annotations
         {
@@ -14381,6 +18326,11 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaPropertyInitializer;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPropertyInitializer ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPropertyInitializer)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaConstructorBuilder Constructor
         {
@@ -14393,6 +18343,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaConstructorBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, value); }
         }
+    
         
         public string PropertyName
         {
@@ -14405,6 +18356,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaClassBuilder PropertyContext
         {
@@ -14417,6 +18369,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaClassBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaPropertyBuilder Property
         {
@@ -14429,6 +18382,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value
         {
@@ -14520,6 +18474,16 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaSynthetizedPropertyInitializer;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializer ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializer)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaPropertyInitializer global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPropertyInitializer)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaConstructorBuilder Constructor
         {
@@ -14532,6 +18496,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaConstructorBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, value); }
         }
+    
         
         public string PropertyName
         {
@@ -14544,6 +18509,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaClassBuilder PropertyContext
         {
@@ -14556,6 +18522,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaClassBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaPropertyBuilder Property
         {
@@ -14568,6 +18535,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value
         {
@@ -14661,6 +18629,16 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaInheritedPropertyInitializer;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializer ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializer)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaPropertyInitializer global::MetaDslx.Core.Immutable.MetaPropertyInitializerBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPropertyInitializer)base.ToImmutable();
+    	}
+    
         
         public string ObjectName
         {
@@ -14673,6 +18651,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectNameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectNameProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaPropertyBuilder Object
         {
@@ -14685,6 +18664,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaInheritedPropertyInitializer.ObjectProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaConstructorBuilder Constructor
         {
@@ -14697,6 +18677,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaConstructorBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.ConstructorProperty, value); }
         }
+    
         
         public string PropertyName
         {
@@ -14709,6 +18690,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyNameProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaClassBuilder PropertyContext
         {
@@ -14721,6 +18703,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaClassBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyContextProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaPropertyBuilder Property
         {
@@ -14733,6 +18716,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer.PropertyProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value
         {
@@ -14834,6 +18818,16 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public bool NoTypeError
         {
@@ -14845,6 +18839,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -14856,6 +18851,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -14928,6 +18924,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaBracketExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBracketExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBracketExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -14946,6 +18957,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBracketExpression.ExpressionProperty); }
         }
+    
         
         public bool NoTypeError
         {
@@ -14957,6 +18969,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -14968,6 +18981,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -15050,6 +19064,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaBoundExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBoundExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public bool UniqueDefinition
         {
@@ -15061,6 +19090,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -15072,6 +19102,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -15083,6 +19114,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -15094,6 +19126,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -15105,6 +19138,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -15116,6 +19150,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -15211,6 +19246,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaThisExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaThisExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaThisExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public bool UniqueDefinition
         {
@@ -15222,6 +19277,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -15233,6 +19289,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -15244,6 +19301,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -15255,6 +19313,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -15266,6 +19325,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -15277,6 +19337,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -15367,6 +19428,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNullExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNullExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNullExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public bool NoTypeError
         {
@@ -15378,6 +19454,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -15389,6 +19466,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -15462,6 +19540,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaTypeConversionExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeConversionExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeConversionExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder TypeReference
         {
@@ -15474,6 +19567,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -15492,6 +19586,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty); }
         }
+    
         
         public bool NoTypeError
         {
@@ -15503,6 +19598,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -15514,6 +19610,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -15599,6 +19696,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaTypeAsExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeAsExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeAsExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypeConversionExpression global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeConversionExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder TypeReference
         {
@@ -15611,6 +19728,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -15629,6 +19747,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty); }
         }
+    
         
         public bool NoTypeError
         {
@@ -15640,6 +19759,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -15651,6 +19771,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -15736,6 +19857,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaTypeCastExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeCastExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeCastExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypeConversionExpression global::MetaDslx.Core.Immutable.MetaTypeConversionExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeConversionExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder TypeReference
         {
@@ -15748,6 +19889,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.TypeReferenceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -15766,6 +19908,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeConversionExpression.ExpressionProperty); }
         }
+    
         
         public bool NoTypeError
         {
@@ -15777,6 +19920,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -15788,6 +19932,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -15873,6 +20018,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaTypeCheckExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeCheckExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeCheckExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder TypeReference
         {
@@ -15885,6 +20045,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.TypeReferenceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.TypeReferenceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -15903,6 +20064,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeCheckExpression.ExpressionProperty); }
         }
+    
         
         public bool NoTypeError
         {
@@ -15914,6 +20076,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -15925,6 +20088,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -16009,6 +20173,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaTypeOfExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaTypeOfExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypeOfExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder TypeReference
         {
@@ -16021,6 +20200,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeOfExpression.TypeReferenceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypeOfExpression.TypeReferenceProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -16032,6 +20212,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -16043,6 +20224,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -16124,6 +20306,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaConditionalExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaConditionalExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaConditionalExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Condition
         {
@@ -16142,6 +20339,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ConditionProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder BalancedType
         {
@@ -16154,6 +20352,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.BalancedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Then
         {
@@ -16172,6 +20371,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ThenProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Else
         {
@@ -16190,6 +20390,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConditionalExpression.ElseProperty); }
         }
+    
         
         public bool NoTypeError
         {
@@ -16201,6 +20402,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -16212,6 +20414,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -16308,6 +20511,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaConstantExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaConstantExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaConstantExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public object Value
         {
@@ -16320,6 +20538,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<object>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstantExpression.ValueProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstantExpression.ValueProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -16331,6 +20550,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -16342,6 +20562,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -16425,6 +20646,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaIdentifierExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaIdentifierExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaIdentifierExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public string Name
         {
@@ -16437,6 +20678,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIdentifierExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIdentifierExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -16448,6 +20690,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -16459,6 +20702,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -16470,6 +20714,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -16481,6 +20726,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -16492,6 +20738,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -16503,6 +20750,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -16606,6 +20854,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaMemberAccessExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaMemberAccessExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaMemberAccessExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -16624,6 +20892,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -16636,6 +20905,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaMemberAccessExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -16647,6 +20917,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -16658,6 +20929,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -16669,6 +20941,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -16680,6 +20953,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -16691,6 +20965,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -16702,6 +20977,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -16810,6 +21086,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaFunctionCallExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaFunctionCallExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaFunctionCallExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -16828,6 +21124,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionCallExpression.ExpressionProperty); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -16839,6 +21136,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -16850,6 +21148,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -16861,6 +21160,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -16872,6 +21172,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -16883,6 +21184,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -16894,6 +21196,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -16996,6 +21299,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaIndexerExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaIndexerExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaIndexerExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -17014,6 +21337,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIndexerExpression.ExpressionProperty); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -17025,6 +21349,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -17036,6 +21361,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -17047,6 +21373,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -17058,6 +21385,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -17069,6 +21397,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -17080,6 +21409,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -17179,6 +21509,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNewExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNewExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNewExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaClassBuilder TypeReference
         {
@@ -17191,6 +21536,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaClassBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewExpression.TypeReferenceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewExpression.TypeReferenceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder> PropertyInitializers
         {
@@ -17202,6 +21548,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewExpression.PropertyInitializersProperty); }
         }
+    
         
         public bool NoTypeError
         {
@@ -17213,6 +21560,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -17224,6 +21572,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -17303,6 +21652,11 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNewPropertyInitializer ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNewPropertyInitializer)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder Parent
         {
@@ -17315,6 +21669,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.ParentProperty, value); }
         }
+    
         
         public string PropertyName
         {
@@ -17327,6 +21682,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.PropertyNameProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Value
         {
@@ -17345,6 +21701,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer.ValueProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaPropertyBuilder Property
         {
@@ -17425,6 +21782,21 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNewCollectionExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNewCollectionExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNewCollectionExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder TypeReference
         {
@@ -17437,6 +21809,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewCollectionExpression.TypeReferenceProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewCollectionExpression.TypeReferenceProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Values
         {
@@ -17448,6 +21821,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewCollectionExpression.ValuesProperty); }
         }
+    
         
         public bool NoTypeError
         {
@@ -17459,6 +21833,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -17470,6 +21845,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -17554,6 +21930,26 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaOperatorExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOperatorExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public string Name
         {
@@ -17565,6 +21961,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -17576,6 +21973,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -17587,6 +21985,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -17598,6 +21997,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -17609,6 +22009,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -17620,6 +22021,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -17631,6 +22033,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -17734,6 +22137,31 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaUnaryExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaUnaryExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -17752,6 +22180,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -17763,6 +22192,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -17774,6 +22204,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -17785,6 +22216,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -17796,6 +22228,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -17807,6 +22240,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -17818,6 +22252,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -17829,6 +22264,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -17938,6 +22374,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaUnaryPlusExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaUnaryPlusExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryPlusExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpression global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -17956,6 +22422,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -17967,6 +22434,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -17978,6 +22446,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -17989,6 +22458,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -18000,6 +22470,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -18011,6 +22482,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -18022,6 +22494,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -18033,6 +22506,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -18142,6 +22616,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNegateExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNegateExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNegateExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpression global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -18160,6 +22664,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -18171,6 +22676,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -18182,6 +22688,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -18193,6 +22700,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -18204,6 +22712,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -18215,6 +22724,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -18226,6 +22736,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -18237,6 +22748,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -18346,6 +22858,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaOnesComplementExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOnesComplementExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOnesComplementExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpression global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -18364,6 +22906,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -18375,6 +22918,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -18386,6 +22930,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -18397,6 +22942,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -18408,6 +22954,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -18419,6 +22966,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -18430,6 +22978,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -18441,6 +22990,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -18550,6 +23100,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNotExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNotExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNotExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpression global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -18568,6 +23148,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -18579,6 +23160,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -18590,6 +23172,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -18601,6 +23184,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -18612,6 +23196,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -18623,6 +23208,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -18634,6 +23220,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -18645,6 +23232,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -18754,6 +23342,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaUnaryAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpression global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -18772,6 +23390,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -18783,6 +23402,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -18794,6 +23414,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -18805,6 +23426,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -18816,6 +23438,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -18827,6 +23450,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -18838,6 +23462,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -18849,6 +23474,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -18958,6 +23584,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaPostIncrementAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPostIncrementAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPostIncrementAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpression global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -18976,6 +23637,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -18987,6 +23649,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -18998,6 +23661,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -19009,6 +23673,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -19020,6 +23685,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -19031,6 +23697,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -19042,6 +23709,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -19053,6 +23721,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -19162,6 +23831,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaPostDecrementAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPostDecrementAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPostDecrementAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpression global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -19180,6 +23884,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -19191,6 +23896,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -19202,6 +23908,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -19213,6 +23920,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -19224,6 +23932,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -19235,6 +23944,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -19246,6 +23956,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -19257,6 +23968,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -19366,6 +24078,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaPreIncrementAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPreIncrementAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPreIncrementAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpression global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -19384,6 +24131,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -19395,6 +24143,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -19406,6 +24155,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -19417,6 +24167,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -19428,6 +24179,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -19439,6 +24191,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -19450,6 +24203,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -19461,6 +24215,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -19570,6 +24325,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaPreDecrementAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaPreDecrementAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaPreDecrementAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression global::MetaDslx.Core.Immutable.MetaUnaryAssignExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaUnaryExpression global::MetaDslx.Core.Immutable.MetaUnaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaUnaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Expression
         {
@@ -19588,6 +24378,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaUnaryExpression.ExpressionProperty); }
         }
+    
         
         public string Name
         {
@@ -19599,6 +24390,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -19610,6 +24402,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -19621,6 +24414,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -19632,6 +24426,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -19643,6 +24438,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -19654,6 +24450,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -19665,6 +24462,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -19775,6 +24573,31 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaBinaryExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBinaryExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -19793,6 +24616,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -19811,6 +24635,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -19822,6 +24647,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -19833,6 +24659,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -19844,6 +24671,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -19855,6 +24683,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -19866,6 +24695,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -19877,6 +24707,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -19888,6 +24719,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -20004,6 +24836,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaBinaryArithmeticExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -20022,6 +24884,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -20040,6 +24903,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -20051,6 +24915,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -20062,6 +24927,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -20073,6 +24939,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -20084,6 +24951,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -20095,6 +24963,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -20106,6 +24975,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -20117,6 +24987,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -20233,6 +25104,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaMultiplyExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaMultiplyExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaMultiplyExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -20251,6 +25157,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -20269,6 +25176,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -20280,6 +25188,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -20291,6 +25200,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -20302,6 +25212,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -20313,6 +25224,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -20324,6 +25236,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -20335,6 +25248,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -20346,6 +25260,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -20462,6 +25377,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaDivideExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaDivideExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDivideExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -20480,6 +25430,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -20498,6 +25449,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -20509,6 +25461,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -20520,6 +25473,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -20531,6 +25485,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -20542,6 +25497,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -20553,6 +25509,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -20564,6 +25521,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -20575,6 +25533,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -20691,6 +25650,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaModuloExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaModuloExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaModuloExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -20709,6 +25703,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -20727,6 +25722,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -20738,6 +25734,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -20749,6 +25746,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -20760,6 +25758,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -20771,6 +25770,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -20782,6 +25782,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -20793,6 +25794,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -20804,6 +25806,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -20920,6 +25923,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAddExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAddExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAddExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -20938,6 +25976,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -20956,6 +25995,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -20967,6 +26007,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -20978,6 +26019,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -20989,6 +26031,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -21000,6 +26043,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -21011,6 +26055,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -21022,6 +26067,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -21033,6 +26079,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -21149,6 +26196,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaSubtractExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaSubtractExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaSubtractExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -21167,6 +26249,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -21185,6 +26268,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -21196,6 +26280,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -21207,6 +26292,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -21218,6 +26304,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -21229,6 +26316,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -21240,6 +26328,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -21251,6 +26340,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -21262,6 +26352,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -21378,6 +26469,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaLeftShiftExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaLeftShiftExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLeftShiftExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -21396,6 +26522,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -21414,6 +26541,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -21425,6 +26553,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -21436,6 +26565,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -21447,6 +26577,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -21458,6 +26589,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -21469,6 +26601,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -21480,6 +26613,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -21491,6 +26625,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -21607,6 +26742,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaRightShiftExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaRightShiftExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaRightShiftExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryArithmeticExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -21625,6 +26795,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -21643,6 +26814,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -21654,6 +26826,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -21665,6 +26838,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -21676,6 +26850,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -21687,6 +26862,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -21698,6 +26874,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -21709,6 +26886,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -21720,6 +26898,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -21836,6 +27015,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaBinaryComparisonExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -21854,6 +27063,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -21872,6 +27082,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -21883,6 +27094,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -21894,6 +27106,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -21905,6 +27118,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -21916,6 +27130,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -21927,6 +27142,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -21938,6 +27154,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -21949,6 +27166,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -22065,6 +27283,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaLessThanExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaLessThanExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLessThanExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -22083,6 +27336,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -22101,6 +27355,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -22112,6 +27367,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -22123,6 +27379,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -22134,6 +27391,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -22145,6 +27403,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -22156,6 +27415,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -22167,6 +27427,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -22178,6 +27439,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -22294,6 +27556,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaLessThanOrEqualExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaLessThanOrEqualExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLessThanOrEqualExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -22312,6 +27609,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -22330,6 +27628,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -22341,6 +27640,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -22352,6 +27652,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -22363,6 +27664,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -22374,6 +27676,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -22385,6 +27688,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -22396,6 +27700,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -22407,6 +27712,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -22523,6 +27829,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaGreaterThanExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaGreaterThanExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaGreaterThanExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -22541,6 +27882,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -22559,6 +27901,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -22570,6 +27913,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -22581,6 +27925,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -22592,6 +27937,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -22603,6 +27949,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -22614,6 +27961,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -22625,6 +27973,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -22636,6 +27985,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -22752,6 +28102,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaGreaterThanOrEqualExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaGreaterThanOrEqualExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaGreaterThanOrEqualExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -22770,6 +28155,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -22788,6 +28174,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -22799,6 +28186,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -22810,6 +28198,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -22821,6 +28210,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -22832,6 +28222,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -22843,6 +28234,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -22854,6 +28246,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -22865,6 +28258,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -22981,6 +28375,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaEqualExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaEqualExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaEqualExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -22999,6 +28428,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -23017,6 +28447,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -23028,6 +28459,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -23039,6 +28471,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -23050,6 +28483,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -23061,6 +28495,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -23072,6 +28507,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -23083,6 +28519,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -23094,6 +28531,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -23210,6 +28648,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNotEqualExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNotEqualExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNotEqualExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryComparisonExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -23228,6 +28701,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -23246,6 +28720,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -23257,6 +28732,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -23268,6 +28744,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -23279,6 +28756,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -23290,6 +28768,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -23301,6 +28780,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -23312,6 +28792,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -23323,6 +28804,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -23439,6 +28921,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaBinaryLogicalExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -23457,6 +28969,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -23475,6 +28988,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -23486,6 +29000,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -23497,6 +29012,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -23508,6 +29024,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -23519,6 +29036,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -23530,6 +29048,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -23541,6 +29060,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -23552,6 +29072,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -23668,6 +29189,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAndExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAndExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAndExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -23686,6 +29242,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -23704,6 +29261,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -23715,6 +29273,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -23726,6 +29285,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -23737,6 +29297,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -23748,6 +29309,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -23759,6 +29321,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -23770,6 +29333,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -23781,6 +29345,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -23897,6 +29462,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaOrExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOrExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOrExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -23915,6 +29515,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -23933,6 +29534,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -23944,6 +29546,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -23955,6 +29558,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -23966,6 +29570,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -23977,6 +29582,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -23988,6 +29594,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -23999,6 +29606,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -24010,6 +29618,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -24126,6 +29735,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaExclusiveOrExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaExclusiveOrExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExclusiveOrExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -24144,6 +29788,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -24162,6 +29807,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -24173,6 +29819,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -24184,6 +29831,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -24195,6 +29843,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -24206,6 +29855,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -24217,6 +29867,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -24228,6 +29879,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -24239,6 +29891,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -24355,6 +30008,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAndAlsoExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAndAlsoExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAndAlsoExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -24373,6 +30061,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -24391,6 +30080,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -24402,6 +30092,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -24413,6 +30104,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -24424,6 +30116,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -24435,6 +30128,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -24446,6 +30140,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -24457,6 +30152,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -24468,6 +30164,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -24584,6 +30281,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaOrElseExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOrElseExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOrElseExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryLogicalExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -24602,6 +30334,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -24620,6 +30353,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -24631,6 +30365,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -24642,6 +30377,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -24653,6 +30389,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -24664,6 +30401,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -24675,6 +30413,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -24686,6 +30425,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -24697,6 +30437,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -24813,6 +30554,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNullCoalescingExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaNullCoalescingExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaNullCoalescingExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -24831,6 +30602,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -24849,6 +30621,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -24860,6 +30633,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -24871,6 +30645,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -24882,6 +30657,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -24893,6 +30669,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -24904,6 +30681,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -24915,6 +30693,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -24926,6 +30705,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -25042,6 +30822,36 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAssignmentExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAssignmentExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -25060,6 +30870,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -25078,6 +30889,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -25089,6 +30901,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -25100,6 +30913,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -25111,6 +30925,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -25122,6 +30937,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -25133,6 +30949,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -25144,6 +30961,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -25155,6 +30973,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -25271,6 +31090,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -25289,6 +31143,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -25307,6 +31162,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -25318,6 +31174,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -25329,6 +31186,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -25340,6 +31198,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -25351,6 +31210,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -25362,6 +31222,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -25373,6 +31234,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -25384,6 +31246,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -25500,6 +31363,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaArithmeticAssignmentExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -25518,6 +31416,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -25536,6 +31435,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -25547,6 +31447,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -25558,6 +31459,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -25569,6 +31471,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -25580,6 +31483,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -25591,6 +31495,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -25602,6 +31507,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -25613,6 +31519,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -25729,6 +31636,46 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaMultiplyAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaMultiplyAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaMultiplyAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -25747,6 +31694,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -25765,6 +31713,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -25776,6 +31725,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -25787,6 +31737,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -25798,6 +31749,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -25809,6 +31761,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -25820,6 +31773,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -25831,6 +31785,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -25842,6 +31797,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -25958,6 +31914,46 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaDivideAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaDivideAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaDivideAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -25976,6 +31972,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -25994,6 +31991,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -26005,6 +32003,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -26016,6 +32015,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -26027,6 +32027,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -26038,6 +32039,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -26049,6 +32051,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -26060,6 +32063,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -26071,6 +32075,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -26187,6 +32192,46 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaModuloAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaModuloAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaModuloAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -26205,6 +32250,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -26223,6 +32269,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -26234,6 +32281,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -26245,6 +32293,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -26256,6 +32305,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -26267,6 +32317,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -26278,6 +32329,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -26289,6 +32341,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -26300,6 +32353,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -26416,6 +32470,46 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAddAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAddAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAddAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -26434,6 +32528,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -26452,6 +32547,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -26463,6 +32559,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -26474,6 +32571,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -26485,6 +32583,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -26496,6 +32595,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -26507,6 +32607,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -26518,6 +32619,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -26529,6 +32631,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -26645,6 +32748,46 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaSubtractAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaSubtractAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaSubtractAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -26663,6 +32806,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -26681,6 +32825,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -26692,6 +32837,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -26703,6 +32849,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -26714,6 +32861,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -26725,6 +32873,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -26736,6 +32885,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -26747,6 +32897,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -26758,6 +32909,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -26874,6 +33026,46 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaLeftShiftAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaLeftShiftAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLeftShiftAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -26892,6 +33084,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -26910,6 +33103,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -26921,6 +33115,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -26932,6 +33127,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -26943,6 +33139,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -26954,6 +33151,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -26965,6 +33163,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -26976,6 +33175,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -26987,6 +33187,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -27103,6 +33304,46 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaRightShiftAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaRightShiftAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaRightShiftAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaArithmeticAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -27121,6 +33362,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -27139,6 +33381,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -27150,6 +33393,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -27161,6 +33405,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -27172,6 +33417,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -27183,6 +33429,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -27194,6 +33441,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -27205,6 +33453,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -27216,6 +33465,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -27332,6 +33582,41 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaLogicalAssignmentExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -27350,6 +33635,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -27368,6 +33654,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -27379,6 +33666,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -27390,6 +33678,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -27401,6 +33690,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -27412,6 +33702,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -27423,6 +33714,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -27434,6 +33726,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -27445,6 +33738,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -27561,6 +33855,46 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAndAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaAndAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAndAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -27579,6 +33913,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -27597,6 +33932,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -27608,6 +33944,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -27619,6 +33956,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -27630,6 +33968,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -27641,6 +33980,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -27652,6 +33992,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -27663,6 +34004,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -27674,6 +34016,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -27790,6 +34133,46 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaExclusiveOrAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaExclusiveOrAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExclusiveOrAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -27808,6 +34191,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -27826,6 +34210,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -27837,6 +34222,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -27848,6 +34234,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -27859,6 +34246,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -27870,6 +34258,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -27881,6 +34270,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -27892,6 +34282,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -27903,6 +34294,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
@@ -28019,6 +34411,46 @@ namespace MetaDslx.Core.Immutable
             get { return null;/*global::MetaDslx.Core.MetaInstance.MetaOrAssignExpression;*/ }
         }
     
+        public new global::MetaDslx.Core.Immutable.MetaOrAssignExpression ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOrAssignExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaLogicalAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaAssignmentExpression global::MetaDslx.Core.Immutable.MetaAssignmentExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaAssignmentExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBinaryExpression global::MetaDslx.Core.Immutable.MetaBinaryExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBinaryExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaOperatorExpression global::MetaDslx.Core.Immutable.MetaOperatorExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaOperatorExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaBoundExpression global::MetaDslx.Core.Immutable.MetaBoundExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaBoundExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaExpression global::MetaDslx.Core.Immutable.MetaExpressionBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaExpression)base.ToImmutable();
+    	}
+    
+        global::MetaDslx.Core.Immutable.MetaTypedElement global::MetaDslx.Core.Immutable.MetaTypedElementBuilder.ToImmutable()
+    	{
+    		return (global::MetaDslx.Core.Immutable.MetaTypedElement)base.ToImmutable();
+    	}
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Left
         {
@@ -28037,6 +34469,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.LeftProperty); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaExpressionBuilder Right
         {
@@ -28055,6 +34488,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBinaryExpression.RightProperty); }
         }
+    
         
         public string Name
         {
@@ -28066,6 +34500,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<string>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperatorExpression.NameProperty, value); }
         }
+    
         
         public bool UniqueDefinition
         {
@@ -28077,6 +34512,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaExpressionBuilder> Arguments
         {
@@ -28088,6 +34524,7 @@ namespace MetaDslx.Core.Immutable
         {
             get { return new global::MetaDslx.Core.Immutable.MetaExpressionLazyChildBuilderImpl(this, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.ArgumentsProperty); }
         }
+    
         
         public global::MetaDslx.Core.BindingInfo Definitions
         {
@@ -28099,6 +34536,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.BindingInfo>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionsProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.ISymbol Definition
         {
@@ -28110,6 +34548,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.ISymbol>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.DefinitionProperty, value); }
         }
+    
         
         public bool NoTypeError
         {
@@ -28121,6 +34560,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyValue<bool>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty); }
             set { this.SetLazyValue(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.NoTypeErrorProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder ExpectedType
         {
@@ -28132,6 +34572,7 @@ namespace MetaDslx.Core.Immutable
             get { return this.GetLazyReference<global::MetaDslx.Core.Immutable.MetaTypeBuilder>(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty); }
             set { this.SetLazyReference(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaExpression.ExpectedTypeProperty, value); }
         }
+    
         
         public global::MetaDslx.Core.Immutable.MetaTypeBuilder Type
         {
