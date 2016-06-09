@@ -20,10 +20,6 @@ namespace MetaDslx.Core.Immutable
             if (id == null) throw new ArgumentNullException(nameof(id));
             this.model = model;
             this.id = id;
-            if (!this.model.Green.TryGetSymbol(id, out this.green))
-            {
-                throw new ModelException("The symbol with id '" + id + "' is not found in the model.");
-            }
         }
 
         public IMutableSymbol ToMutable()

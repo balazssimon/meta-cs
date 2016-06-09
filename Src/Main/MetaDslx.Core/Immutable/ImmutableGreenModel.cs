@@ -1687,8 +1687,8 @@ namespace MetaDslx.Core.Immutable
         {
             GreenModelGroup newGroup = this.group;
             GreenModel newModel = this.model;
-            if (newGroup != null) newGroup = newGroup.UpdateSymbolCore(symbol);
-            if (newModel != null) newModel = newModel.UpdateSymbolCore(symbol);
+            if (newGroup != null) newGroup = newGroup.UpdateSymbol(symbol);
+            if (newModel != null) newModel = newModel.UpdateSymbol(symbol);
             this.Update(newGroup, newModel);
         }
 
@@ -1696,8 +1696,8 @@ namespace MetaDslx.Core.Immutable
         {
             GreenModelGroup newGroup = this.group;
             GreenModel newModel = this.model;
-            if (newGroup != null) newGroup = newGroup.UpdateSymbolsCore(symbols);
-            if (newModel != null) newModel = newModel.UpdateSymbolsCore(symbols);
+            if (newGroup != null) newGroup = newGroup.UpdateSymbols(symbols);
+            if (newModel != null) newModel = newModel.UpdateSymbols(symbols);
             this.Update(newGroup, newModel);
         }
 
@@ -1749,15 +1749,71 @@ namespace MetaDslx.Core.Immutable
             return null;
         }
 
+        internal void AddModel(GreenModel greenModel)
+        {
+            if (this.group != null)
+            {
+                this.Update(this.group.AddModel(greenModel), this.model);
+            }
+        }
+
+        internal void AddReference(GreenModel greenModel)
+        {
+            if (this.group != null)
+            {
+                this.Update(this.group.AddReference(greenModel), this.model);
+            }
+        }
+
         internal void UpdateModel(GreenModel greenModel)
         {
             if (this.group != null)
             {
-                this.Update(this.group.UpdateModelCore(greenModel), this.model);
+                this.Update(this.group.UpdateModel(greenModel), this.model);
             }
             else if (this.model != null)
             {
                 this.Update(this.group, greenModel);
+            }
+        }
+
+        internal void AddSymbol(ModelId modelId, SymbolId symbolId)
+        {
+            if (this.group != null)
+            {
+                GreenModel gm = this.group.GetModel(modelId);
+                if (gm != null)
+                {
+                    this.Update(this.group.UpdateModel(gm.AddSymbol(symbolId)), this.model);
+                }
+            }
+            else if (this.model != null)
+            {
+                Debug.Assert(this.model.Id == modelId);
+                this.Update(this.group, this.model.AddSymbol(symbolId));
+            }
+        }
+
+        internal void EvaluateLazyValues()
+        {
+            if (this.group != null)
+            {
+                foreach (var m in this.group.Models)
+                {
+                    foreach (var symbolId in m.Symbols)
+                    {
+                        GreenSymbol symbol = m.GetSymbol(symbolId);
+                        symbol.EvaluateLazyValues(this);
+                    }
+                }
+            }
+            else if (this.model != null)
+            {
+                foreach (var symbolId in this.model.Symbols)
+                {
+                    GreenSymbol symbol = this.model.GetSymbol(symbolId);
+                    symbol.EvaluateLazyValues(this);
+                }
             }
         }
     }
@@ -1825,19 +1881,19 @@ namespace MetaDslx.Core.Immutable
             return this.symbols.TryGetValue(id, out result) && result != null;
         }
 
-        internal GreenModel AddSymbolCore(SymbolId id)
+        internal GreenModel AddSymbol(SymbolId id)
         {
             if (this.symbols.ContainsKey(id)) return this;
             return this.Update(this.id, this.symbols.Add(id, new GreenSymbol(id)));
         }
 
-        internal GreenModel AddSymbolCore(GreenSymbol symbol)
+        internal GreenModel AddSymbol(GreenSymbol symbol)
         {
             if (this.symbols.ContainsKey(symbol.Id)) return this;
             return this.Update(this.id, this.symbols.Add(symbol.Id, symbol));
         }
 
-        internal GreenModel UpdateSymbolCore(GreenSymbol symbol)
+        internal GreenModel UpdateSymbol(GreenSymbol symbol)
         {
             if (symbol == null) return this;
             GreenSymbol oldSymbol;
@@ -1851,44 +1907,15 @@ namespace MetaDslx.Core.Immutable
             return this;
         }
 
-        internal GreenModel UpdateSymbolsCore(IEnumerable<GreenSymbol> symbols)
+        internal GreenModel UpdateSymbols(IEnumerable<GreenSymbol> symbols)
         {
             if (symbols == null) return this;
             GreenModel result = this;
             foreach (var symbol in symbols)
             {
-                result = result.UpdateSymbolCore(symbol);
+                result = result.UpdateSymbol(symbol);
             }
             return result;
-        }
-
-        internal void AddSymbol(GreenModelTransaction transaction, SymbolId id)
-        {
-            transaction.UpdateModel(this.AddSymbolCore(id));
-        }
-
-        internal void AddSymbol(GreenModelTransaction transaction, GreenSymbol symbol)
-        {
-            transaction.UpdateModel(this.AddSymbolCore(symbol));
-        }
-
-        internal void UpdateSymbol(GreenModelTransaction transaction, GreenSymbol symbol)
-        {
-            transaction.UpdateModel(this.UpdateSymbolCore(symbol));
-        }
-
-        internal void UpdateSymbols(GreenModelTransaction transaction, IEnumerable<GreenSymbol> symbols)
-        {
-            transaction.UpdateModel(this.UpdateSymbolsCore(symbols));
-        }
-
-        internal void EvaluateLazyValues(GreenModelTransaction transaction)
-        {
-            foreach (var symbolId in this.symbols.Keys)
-            {
-                GreenSymbolReference symbolRef = transaction.GetSymbol(this.id, symbolId);
-                symbolRef.Symbol.EvaluateLazyValues(transaction);
-            }
         }
     }
 
@@ -1996,25 +2023,25 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        internal GreenModelGroup UpdateSymbolCore(GreenSymbol symbol)
+        internal GreenModelGroup UpdateSymbol(GreenSymbol symbol)
         {
             if (symbol == null) return this;
             GreenSymbolReference oldSymbolRef = this.GetSymbol(null, symbol.Id);
             if (oldSymbolRef == null || oldSymbolRef.IsReadOnly) return this;
             if (oldSymbolRef.Symbol != symbol)
             {
-                return this.Update(this.models.SetItem(oldSymbolRef.Model.Id, oldSymbolRef.Model.UpdateSymbolCore(symbol)), this.references);
+                return this.Update(this.models.SetItem(oldSymbolRef.Model.Id, oldSymbolRef.Model.UpdateSymbol(symbol)), this.references);
             }
             return this;
         }
 
-        internal GreenModelGroup UpdateSymbolsCore(IEnumerable<GreenSymbol> symbols)
+        internal GreenModelGroup UpdateSymbols(IEnumerable<GreenSymbol> symbols)
         {
             if (symbols == null) return this;
             GreenModelGroup result = this;
             foreach (var symbol in symbols)
             {
-                result = result.UpdateSymbolCore(symbol);
+                result = result.UpdateSymbol(symbol);
             }
             return result;
         }
@@ -2039,7 +2066,17 @@ namespace MetaDslx.Core.Immutable
             return null;
         }
 
-        internal GreenModelGroup UpdateModelCore(GreenModel model)
+        internal GreenModelGroup AddModel(GreenModel model)
+        {
+            return this.Update(this.models.Add(model.Id, model), this.references);
+        }
+
+        internal GreenModelGroup AddReference(GreenModel model)
+        {
+            return this.Update(this.models, this.references.Add(model.Id, model));
+        }
+
+        internal GreenModelGroup UpdateModel(GreenModel model)
         {
             if (model == null) return this;
             GreenModel oldModel;

@@ -406,16 +406,7 @@ namespace MetaDslx.Core.Immutable
         private bool allowLazyEval;
         private WeakReference<ImmutableModel> immutableModel;
 
-        internal MutableModelState(GreenModelTransaction greenTransaction, ImmutableModel immutableModel)
-        {
-            this.greenTransaction = greenTransaction;
-            this.cachedSymbols = false;
-            this.symbols = ImmutableDictionary<SymbolId, IMutableSymbol>.Empty;
-            this.allowLazyEval = true;
-            this.immutableModel = new WeakReference<ImmutableModel>(immutableModel);
-        }
-
-        private MutableModelState(
+        internal MutableModelState(
             GreenModelTransaction greenTransaction,
             bool cachedSymbols,
             ImmutableDictionary<SymbolId, IMutableSymbol> symbols,
@@ -469,8 +460,21 @@ namespace MetaDslx.Core.Immutable
         {
             return this.Update(this.greenTransaction, this.cachedSymbols, this.symbols, allowLazyEval, this.immutableModel);
         }
-    }
 
+        internal MutableModelState BeginTransaction()
+        {
+            ImmutableModel im = null;
+            this.immutableModel.TryGetTarget(out im);
+            return this.Update(new GreenModelTransaction(this.greenTransaction), this.cachedSymbols, this.symbols, this.allowLazyEval, new WeakReference<ImmutableModel>(im));
+        }
+
+        internal MutableModelState BeginGroupTransaction(GreenModelTransaction gtx)
+        {
+            ImmutableModel im = null;
+            this.immutableModel.TryGetTarget(out im);
+            return this.Update(gtx, this.cachedSymbols, this.symbols, this.allowLazyEval, new WeakReference<ImmutableModel>(im));
+        }
+    }
 
     public sealed class MutableModel : RedModel
     {
@@ -485,30 +489,18 @@ namespace MetaDslx.Core.Immutable
             this.id = green.Id;
             this.group = group;
             this.readOnly = readOnly;
-            this.state = new MutableModelState(group != null ? group.State.GreenTransaction : new GreenModelTransaction(null, green), immutableModel);
+            this.state = new MutableModelState(
+                group != null ? group.GreenTransaction : new GreenModelTransaction(null, green),
+                false,
+                ImmutableDictionary<SymbolId, IMutableSymbol>.Empty,
+                true,
+                new WeakReference<ImmutableModel>(immutableModel));
             this.transaction = null;
         }
 
         private void Update(MutableModelState state)
         {
             Interlocked.Exchange(ref this.state, state);
-        }
-
-        private void ApplyGreenTransaction(GreenModelTransaction greenTransaction)
-        {
-            if (this.group != null)
-            {
-                this.group.ApplyGreenTransaction(greenTransaction);
-            }
-            else
-            {
-                Interlocked.Exchange(ref this.state, this.state.WithGreenTransaction(greenTransaction));
-            }
-        }
-
-        private void ApplyGroupGreenTransaction(GreenModelTransaction greenTransaction)
-        {
-            Interlocked.Exchange(ref this.state, this.state.WithGreenTransaction(greenTransaction));
         }
 
         internal MutableModelState State
@@ -521,12 +513,17 @@ namespace MetaDslx.Core.Immutable
             get { return this.readOnly; }
         }
 
+        internal ModelId Id
+        {
+            get { return this.id; }
+        }
+
         internal GreenModel Green
         {
             get { return this.state.GreenTransaction.GetModel(this.id); }
         }
 
-        internal GreenModelTransaction CurrentGreenTransaction
+        internal GreenModelTransaction GreenTransaction
         {
             get { return this.state.GreenTransaction; }
         }
@@ -705,16 +702,17 @@ namespace MetaDslx.Core.Immutable
             else
             {
                 this.transaction = new ModelTransaction(this, this.transaction);
-                GreenModelTransaction gtx = new GreenModelTransaction(null, this.Green);
-                this.Update(this.state.Update(gtx, this.state.CachedSymbols, this.state.Symbols, this.state.AllowLazyEval, new WeakReference<ImmutableModel>(null)));
+                this.Update(this.state.BeginTransaction());
                 return this.transaction;
             }
         }
 
-        internal void BeginGroupTransaction(ModelTransaction tx, GreenModelTransaction gtx)
+        internal MutableModelState BeginGroupTransaction(ModelTransaction tx, GreenModelTransaction gtx)
         {
-            this.Update(this.state.Update(gtx, this.state.CachedSymbols, this.state.Symbols, this.state.AllowLazyEval, new WeakReference<ImmutableModel>(null)));
+            MutableModelState result = this.state;
+            this.Update(this.state.BeginGroupTransaction(gtx));
             this.transaction = tx;
+            return result;
         }
 
         internal void CommitTransaction(ModelTransaction transaction)
@@ -732,7 +730,7 @@ namespace MetaDslx.Core.Immutable
             {
                 throw new ModelException("Only the current transaction can be finished.");
             }
-            this.Update(transaction.ModelState);
+            this.Update(transaction.OriginalModelState);
             this.transaction = this.transaction.Parent;
         }
 
@@ -743,28 +741,26 @@ namespace MetaDslx.Core.Immutable
 
         internal void RollbackGroupTransaction(ModelTransaction tx)
         {
-            this.Update(transaction.GroupState);
+            MutableModelState originalState;
+            if (tx.OriginalModelStates.TryGetValue(this.id, out originalState))
+            {
+                this.Update(originalState);
+            }
             this.transaction = tx.Parent;
         }
 
         public IMutableSymbol AddSymbol(SymbolId id)
         {
-            using (ModelTransaction tx = this.BeginTransaction())
-            {
-                GreenModelTransaction gtx = this.CurrentGreenTransaction;
-                this.Green.AddSymbol(gtx, id);
-                IMutableSymbol red = this.GetRedSymbol(id);
-                tx.Commit();
-                return red;
-            }
+            this.GreenTransaction.AddSymbol(this.id, id);
+            return this.GetRedSymbol(id);
         }
 
         public void EvaluateLazyValues()
         {
             using (ModelTransaction tx = this.BeginTransaction())
             {
-                GreenModelTransaction gtx = this.CurrentGreenTransaction;
-                this.Green.EvaluateLazyValues(gtx);
+                GreenModelTransaction gtx = this.GreenTransaction;
+                gtx.EvaluateLazyValues();
                 tx.Commit();
             }
         }
@@ -1078,170 +1074,248 @@ namespace MetaDslx.Core.Immutable
         */
     }
 
-    public sealed class MutableModelGroup
+    internal class MutableModelGroupState
     {
-        private GreenModelGroup green;
-        private WeakReference<ImmutableModelGroup> immutableGroup;
+        private GreenModelTransaction greenTransaction;
+        private WeakReference<ImmutableModelGroup> immutableModelGroup;
         private ImmutableDictionary<ModelId, MutableModel> references;
         private ImmutableDictionary<ModelId, MutableModel> models;
+
+        internal MutableModelGroupState(
+            GreenModelTransaction greenTransaction,
+            ImmutableDictionary<ModelId, MutableModel> models,
+            ImmutableDictionary<ModelId, MutableModel> references,
+            WeakReference<ImmutableModelGroup> immutableModelGroup)
+        {
+            this.greenTransaction = greenTransaction;
+            this.immutableModelGroup = immutableModelGroup;
+        }
+
+        internal MutableModelGroupState Update(
+            GreenModelTransaction greenTransaction,
+            ImmutableDictionary<ModelId, MutableModel> models,
+            ImmutableDictionary<ModelId, MutableModel> references,
+            WeakReference<ImmutableModelGroup> immutableModelGroup)
+        {
+            if (this.greenTransaction != greenTransaction || this.models != models || this.references != references || 
+                this.immutableModelGroup != immutableModelGroup)
+            {
+                return new MutableModelGroupState(greenTransaction, models, references, immutableModelGroup);
+            }
+            return this;
+        }
+
+        internal GreenModelTransaction GreenTransaction { get { return this.greenTransaction; } }
+        internal ImmutableDictionary<ModelId, MutableModel> Models { get { return this.models; } }
+        internal ImmutableDictionary<ModelId, MutableModel> References { get { return this.references; } }
+        internal WeakReference<ImmutableModelGroup> ImmutableModelGroup { get { return this.immutableModelGroup; } }
+
+        internal MutableModelGroupState WithGreenTransaction(GreenModelTransaction greenTransaction)
+        {
+            return this.Update(greenTransaction, this.models, this.references, this.immutableModelGroup);
+        }
+
+        internal MutableModelGroupState WithModel(MutableModel model)
+        {
+            return this.Update(greenTransaction, this.models.SetItem(model.Id, model), this.references, this.immutableModelGroup);
+        }
+
+        internal MutableModelGroupState WithReference(MutableModel model)
+        {
+            return this.Update(greenTransaction, this.models, this.references.SetItem(model.Id, model), this.immutableModelGroup);
+        }
+
+        internal MutableModelGroupState BeginTransaction()
+        {
+            ImmutableModelGroup img = null;
+            this.immutableModelGroup.TryGetTarget(out img);
+            return this.Update(new GreenModelTransaction(this.greenTransaction), this.models, this.references, new WeakReference<ImmutableModelGroup>(img));
+        }
+    }
+
+    public sealed class MutableModelGroup
+    {
+        private MutableModelGroupState state;
         private ModelTransaction transaction = null;
 
         internal MutableModelGroup(GreenModelGroup green, ImmutableModelGroup immutableGroup)
         {
-            this.green = green;
-            this.immutableGroup = new WeakReference<ImmutableModelGroup>(immutableGroup);
+            ImmutableDictionary<ModelId, MutableModel> models;
+            ImmutableDictionary<ModelId, MutableModel> references;
             if (immutableGroup != null)
             {
-                this.models = green.Models.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, false, immutableGroup.Models.GetValueOrDefault(v.Id)));
-                this.references = green.References.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, true, immutableGroup.Models.GetValueOrDefault(v.Id)));
+                models = green.Models.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, false, immutableGroup.Models.GetValueOrDefault(v.Id)));
+                references = green.References.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, true, immutableGroup.Models.GetValueOrDefault(v.Id)));
             }
             else
             {
-                this.models = green.Models.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, false, null));
-                this.references = green.References.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, true, null));
+                models = green.Models.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, false, null));
+                references = green.References.ToImmutableDictionary(v => v.Id, v => new MutableModel(v, this, true, null));
             }
+            this.state = new MutableModelGroupState(new GreenModelTransaction(green, null), models, references, new WeakReference<ImmutableModelGroup>(immutableGroup));
         }
 
-        private MutableModelGroup(GreenModelGroup green, ImmutableDictionary<ModelId, MutableModel> models, ImmutableDictionary<ModelId, MutableModel> references)
+        private void Update(MutableModelGroupState state)
         {
-            this.green = green;
-            this.models = models;
-            this.references = references;
-        }
-
-        private void Update(GreenModelGroup green, ImmutableDictionary<ModelId, MutableModel> models, ImmutableDictionary<ModelId, MutableModel> references)
-        {
-            if (this.green != green || this.models != models || this.references != references)
-            {
-                lock (this.immutableGroup)
-                {
-                    this.immutableGroup.SetTarget(null);
-                }
-            }
-            if (this.green != green) Interlocked.Exchange(ref this.green, green);
-            if (this.models != models) Interlocked.Exchange(ref this.models, models);
-            if (this.references != references) Interlocked.Exchange(ref this.references, references);
+            Interlocked.Exchange(ref this.state, state);
         }
 
         public ImmutableModelGroup ToImmutable()
         {
             ImmutableModelGroup result;
-            lock (this.immutableGroup)
+            if (this.state.ImmutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
             {
-                if (this.immutableGroup.TryGetTarget(out result) && result != null)
-                {
-                    return result;
-                }
+                return result;
             }
-            result = new ImmutableModelGroup(this.green, this);
-            lock (this.immutableGroup)
-            {
-                this.immutableGroup.SetTarget(result);
-            }
+            result = new ImmutableModelGroup(this.Green, this);
+            this.state.ImmutableModelGroup.SetTarget(result);
             return result;
+        }
+
+        internal MutableModelGroupState State
+        {
+            get { return this.state; }
         }
 
         internal GreenModelGroup Green
         {
-            get { return this.green; }
+            get { return this.state.GreenTransaction.Group; }
         }
 
-        internal ModelTransaction Transaction
+        internal GreenModelTransaction GreenTransaction
+        {
+            get { return this.state.GreenTransaction; }
+        }
+
+        internal ModelTransaction CurrentTransaction
         {
             get { return this.transaction; }
         }
 
         public ImmutableDictionary<ModelId, MutableModel> Models
         {
-            get { return this.models; }
+            get { return this.state.Models; }
         }
 
         public ImmutableDictionary<ModelId, MutableModel> References
         {
-            get { return this.references; }
-        }
-
-        internal bool CreateTransaction()
-        {
-            if (this.transaction == null)
-            {
-                this.transaction = new ModelTransaction(this, new GreenModelTransaction(this.green, null), this.transaction);
-                return true;
-            }
-            return false;
+            get { return this.state.References; }
         }
 
         public ModelTransaction BeginTransaction()
         {
-            this.transaction = new ModelTransaction(this, new GreenModelTransaction(this.green, null), this.transaction);
+            this.transaction = new ModelTransaction(this, this.transaction);
+            this.Update(this.state.BeginTransaction());
+            GreenModelTransaction gtx = this.state.GreenTransaction;
+            Dictionary<ModelId, MutableModelState> modelStates = new Dictionary<ModelId, MutableModelState>();
+            foreach (var model in this.Models)
+            {
+                modelStates.Add(model.Key, model.Value.BeginGroupTransaction(this.transaction, gtx));
+            }
+            this.transaction.SetOriginalModelStates(modelStates);
             return this.transaction;
         }
 
         internal void CommitTransaction(ModelTransaction transaction)
         {
-            Debug.Assert(this.transaction == transaction);
+            if (this.transaction != transaction)
+            {
+                throw new ModelException("Only the current transaction can be finished.");
+            }
+            foreach (var model in this.Models)
+            {
+                model.Value.CommitGroupTransaction(this.transaction);
+            }
+            this.transaction = this.transaction.Parent;
+        }
+
+        internal void RollbackTransaction(ModelTransaction transaction)
+        {
+            if (this.transaction != transaction)
+            {
+                throw new ModelException("Only the current transaction can be finished.");
+            }
+            this.Update(transaction.OriginalGroupState);
+            foreach (var model in this.Models)
+            {
+                model.Value.RollbackGroupTransaction(this.transaction);
+            }
             this.transaction = this.transaction.Parent;
         }
     }
 
-    public enum ModelTransactionState
+    [Flags]
+    public enum ModelTransactionState : byte
     {
-        Rollback,
-        Commit,
-        Disposing,
-        Disposed
+        None = 0,
+        Commit = 1,
+        Disposing = 2,
+        Disposed = 4
     }
 
     public sealed class ModelTransaction : IDisposable
     {
         private MutableModelGroup group;
-        private MutableModelGroupState groupState;
+        private MutableModelGroupState originalGroupState;
+        private Dictionary<ModelId, MutableModelState> originalModelStates;
         private MutableModel model;
-        private MutableModelState modelState;
+        private MutableModelState originalModelState;
         private ModelTransaction parent;
-        private ModelTransactionState state = ModelTransactionState.Rollback;
+        private ModelTransactionState state = ModelTransactionState.None;
 
         internal ModelTransaction(MutableModelGroup group, ModelTransaction parent)
         {
             this.group = group;
-            this.groupState = group.State;
+            this.originalGroupState = group.State;
             this.parent = parent;
         }
 
         internal ModelTransaction(MutableModel model, ModelTransaction parent)
         {
             this.model = model;
-            this.modelState = model.State;
+            this.originalModelState = model.State;
             this.parent = parent;
         }
 
         internal MutableModelGroup Group { get { return this.group; } }
-        internal MutableModelGroupState GroupState { get { return this.groupState; } }
+        internal MutableModelGroupState OriginalGroupState { get { return this.originalGroupState; } }
+        internal Dictionary<ModelId, MutableModelState> OriginalModelStates { get { return this.originalModelStates; } }
         internal MutableModel Model { get { return this.model; } }
-        internal MutableModelState ModelState { get { return this.modelState; } }
+        internal MutableModelState OriginalModelState { get { return this.originalModelState; } }
         internal ModelTransaction Parent { get { return this.parent; } }
 
-        public bool IsCommited { get { return this.state == ModelTransactionState.Commit; } }
+        internal void SetOriginalModelStates(Dictionary<ModelId, MutableModelState> modelStates)
+        {
+            this.originalModelStates = modelStates;
+        }
+
+        public bool IsCommited { get { return (this.state & ModelTransactionState.Commit) != 0; } }
 
         public void Commit()
         {
-            if (this.state == ModelTransactionState.Rollback) this.state = ModelTransactionState.Commit;
+            this.state |= ModelTransactionState.Commit;
         }
 
         public void Rollback()
         {
-            if (this.state == ModelTransactionState.Commit) this.state = ModelTransactionState.Rollback;
+            this.state &= ~ModelTransactionState.Commit;
         }
 
         public void Dispose()
         {
-            if (this.state == ModelTransactionState.Rollback)
+            if ((this.state & ModelTransactionState.Disposing) != 0) return;
+            this.state |= ModelTransactionState.Disposing;
+            if (this.IsCommited)
             {
-                this.state = ModelTransactionState.Disposing;
+                if (this.group != null) this.group.CommitTransaction(this);
+                else if (this.model != null) this.model.CommitTransaction(this);
+            }
+            else
+            {
                 if (this.group != null) this.group.RollbackTransaction(this);
                 else if (this.model != null) this.model.RollbackTransaction(this);
             }
-            this.state = ModelTransactionState.Disposed;
+            this.state |= ModelTransactionState.Disposed;
         }
     }
 }
