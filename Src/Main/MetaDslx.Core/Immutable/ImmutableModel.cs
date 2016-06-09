@@ -55,7 +55,7 @@ namespace MetaDslx.Core.Immutable
         new IImmutableSymbol MParent { get; }
         new IReadOnlyList<IImmutableSymbol> MChildren { get; }
         IReadOnlyList<ModelProperty> MProperties { get; }
-        IReadOnlyList<ModelProperty> MAllProperties { get; }
+        IEnumerable<ModelProperty> MAllProperties { get; }
         bool MTryGet(ModelProperty property, out object value);
         object MGet(ModelProperty property);
         bool MIsSet(ModelProperty property);
@@ -72,7 +72,7 @@ namespace MetaDslx.Core.Immutable
         new IMutableSymbol MParent { get; }
         new IReadOnlyList<IMutableSymbol> MChildren { get; }
         IReadOnlyList<ModelProperty> MProperties { get; }
-        IReadOnlyList<ModelProperty> MAllProperties { get; }
+        IEnumerable<ModelProperty> MAllProperties { get; }
         bool MTryGet(ModelProperty property, out object value);
         object MGet(ModelProperty property);
         bool MIsSet(ModelProperty property);
@@ -81,22 +81,30 @@ namespace MetaDslx.Core.Immutable
         ModelProperty MGetProperty(string name);
         IReadOnlyList<ModelProperty> MGetAllProperties(string name);
 
-        bool MAttachProperty(ModelProperty property);
-        bool MDetachProperty(ModelProperty property);
-        void MUnset(ModelProperty property);
-        bool MClear(ModelProperty property, bool clearLazy = true);
-        bool MClearLazy(ModelProperty property);
-        bool MAdd(ModelProperty property, object value, bool reset = false);
-        bool MLazyAdd(ModelProperty property, Func<object> value, bool reset = false);
-        bool MAddRange(ModelProperty property, IEnumerable<object> value, bool reset = false);
-        bool MLazyAddRange(ModelProperty property, Func<IEnumerable<object>> values, bool reset = false);
-        bool MLazyAddRange(ModelProperty property, IEnumerable<Func<object>> values, bool reset = false);
-        bool MRemove(ModelProperty property, object value, bool removeAll = false);
-        bool MChildLazyAdd(ModelProperty child, ModelProperty property, Func<object> value, bool reset = false);
-        bool MChildLazyAddRange(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset = false);
-        bool MChildLazyAddRange(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset = false);
-        bool MChildLazyClear(ModelProperty child);
-        bool MChildLazyClear(ModelProperty child, ModelProperty property);
+        void MAttachProperty(ModelProperty property);
+        void MDetachProperty(ModelProperty property);
+        void MUnset(ModelProperty property, bool reset = false);
+        void MClear(ModelProperty property, bool clearLazy = true, bool reset = false);
+        void MClearLazy(ModelProperty property, bool reset = false);
+        void MSet(ModelProperty property, object value, bool reset = false);
+        void MSetLazy(ModelProperty property, Func<object> value, bool reset = false);
+        void MSetRange(ModelProperty property, IEnumerable<object> values, bool reset = false);
+        void MSetRangeLazy(ModelProperty property, IEnumerable<Func<object>> values, bool reset = false);
+        void MSetRangeLazy(ModelProperty property, Func<IEnumerable<object>> values, bool reset = false);
+        void MAdd(ModelProperty property, object value, bool reset = false);
+        void MAddLazy(ModelProperty property, Func<object> value, bool reset = false);
+        void MAddRange(ModelProperty property, IEnumerable<object> value, bool reset = false);
+        void MAddRangeLazy(ModelProperty property, Func<IEnumerable<object>> values, bool reset = false);
+        void MAddRangeLazy(ModelProperty property, IEnumerable<Func<object>> values, bool reset = false);
+        void MRemove(ModelProperty property, object value, bool removeAll = false, bool reset = false);
+        void MChildSetLazy(ModelProperty child, ModelProperty property, Func<object> value, bool reset = false);
+        void MChildSetRangeLazy(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset = false);
+        void MChildSetRangeLazy(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset = false);
+        void MChildAddLazy(ModelProperty child, ModelProperty property, Func<object> value, bool reset = false);
+        void MChildAddRangeLazy(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset = false);
+        void MChildAddRangeLazy(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset = false);
+        void MChildClearLazy(ModelProperty child, bool reset = false);
+        void MChildClearLazy(ModelProperty child, ModelProperty property, bool reset = false);
         void MEvaluateLazy();
     }
 

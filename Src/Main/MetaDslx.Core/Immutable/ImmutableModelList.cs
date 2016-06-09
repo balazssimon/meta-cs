@@ -102,41 +102,51 @@ namespace MetaDslx.Core.Immutable
     // NOT thread-safe
     public sealed class MutableModelList<T> : IMutableModelList<T>, IList<T>
     {
-        private GreenList green;
+        private GreenList green = null;
+        private GreenSymbol greenParent = null;
+        private MutableSymbolBase parent;
+        private ModelProperty property;
         private MutableModel model;
 
-        internal MutableModelList(GreenList green, MutableModel model)
+        internal MutableModelList(MutableSymbolBase parent, ModelProperty property, MutableModel model)
         {
-            this.green = green;
+            this.parent = parent;
+            this.property = property;
             this.model = model;
         }
 
-        internal GreenList Green { get { return this.green; } }
-        public MutableModel Model { get { return this.model; } }
-
-        internal void UpdateGreen(GreenList value)
+        internal MutableSymbolBase Parent { get { return this.parent; } }
+        internal ModelProperty Prpoperty { get { return this.property; } }
+        internal GreenList Green
         {
-            if (value != this.green && value != null)
+            get
             {
-                Interlocked.Exchange(ref this.green, value);
+                if (this.greenParent != this.parent.Green)
+                {
+                    this.greenParent = this.parent.Green;
+                    this.green = this.greenParent.GetValue(this.property) as GreenList;
+                }
+                return this.green;
             }
         }
 
+        public MutableModel Model { get { return this.model; } }
+
         public void Add(T item)
         {
-            this.model.AddItem(this.green, this.model.ToGreenValue(item));
+            this.model.AddItem(this.parent.Id, this.property, this.model.ToGreenValue(item), !this.parent.MIsCreated);
         }
 
         public void LazyAdd(Func<T> lazy)
         {
             if (lazy == null) return;
-            this.model.AddLazyItem(this.green, new GreenLazyValue(() => lazy()));
+            this.model.AddLazyItem(this.parent.Id, this.property, new GreenLazyValue(() => lazy()), !this.parent.MIsCreated);
         }
 
         public void LazyAddRange(Func<IEnumerable<T>> lazy)
         {
             if (lazy == null) return;
-            this.model.AddLazyItem(this.green, new GreenLazyList(() => lazy().Select(v => (object)v)));
+            this.model.AddLazyItem(this.parent.Id, this.property, new GreenLazyList(() => lazy().Select(v => (object)v)), !this.parent.MIsCreated);
         }
 
         public void LazyAddRange(IEnumerable<Func<T>> lazy)
@@ -150,18 +160,18 @@ namespace MetaDslx.Core.Immutable
 
         public bool Remove(T item)
         {
-            return this.model.RemoveItem(this.green, this.model.ToGreenValue(item));
+            return this.model.RemoveItem(this.parent.Id, this.property, this.model.ToGreenValue(item), !this.parent.MIsCreated);
         }
 
         public T this[int index]
         {
             get
             {
-                return (T)this.model.ToRedValue(this.green[index]);
+                return (T)this.model.ToRedValue(this.Green[index]);
             }
             set
             {
-                this.model.ReplaceItem(this.green, index, this.model.ToGreenValue(value));
+                this.model.ReplaceItem(this.parent.Id, this.property, index, this.model.ToGreenValue(value), !this.parent.MIsCreated);
             }
         }
 
@@ -169,7 +179,7 @@ namespace MetaDslx.Core.Immutable
         {
             get
             {
-                return this.green.Count;
+                return this.Green.Count;
             }
         }
 
@@ -177,34 +187,34 @@ namespace MetaDslx.Core.Immutable
 
         public void Clear()
         {
-            this.model.ClearItems(this.green);
+            this.model.ClearItems(this.parent.Id, this.property, !this.parent.MIsCreated);
         }
 
         public bool Contains(T item)
         {
             object greenValue = this.model.ToGreenValue(item);
-            return this.green.Contains(greenValue);
+            return this.Green.Contains(greenValue);
         }
 
         public int IndexOf(T item)
         {
             object greenValue = this.model.ToGreenValue(item);
-            return this.green.IndexOf(greenValue);
+            return this.Green.IndexOf(greenValue);
         }
 
         public void Insert(int index, T item)
         {
-            this.model.InsertItem(this.green, index, this.model.ToGreenValue(item));
+            this.model.InsertItem(this.parent.Id, this.property, index, this.model.ToGreenValue(item), !this.parent.MIsCreated);
         }
 
         public void RemoveAt(int index)
         {
-            this.model.RemoveItemAt(this.green, index);
+            this.model.RemoveItemAt(this.parent.Id, this.property, index, !this.parent.MIsCreated);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            foreach (var item in this.green)
+            foreach (var item in this.Green)
             {
                 yield return (T)this.model.ToRedValue(item);
             }
@@ -223,12 +233,12 @@ namespace MetaDslx.Core.Immutable
 
         public bool HasLazy()
         {
-            return this.green.HasLazyItems;
+            return this.Green.HasLazyItems;
         }
 
         public void ClearLazy()
         {
-            this.model.ClearLazyItems(this.green);
+            this.model.ClearLazyItems(this.parent.Id, this.property, !this.parent.MIsCreated);
         }
     }
 

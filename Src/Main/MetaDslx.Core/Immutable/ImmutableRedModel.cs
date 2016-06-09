@@ -224,36 +224,40 @@ namespace MetaDslx.Core.Immutable
             }
             return result;
         }
-        /*
+        
         internal object GetValue(ImmutableSymbolBase symbol, ModelProperty property)
         {
             Debug.Assert(!property.IsCollection);
-            object greenObject = this.green.GetValue(symbol.Id, property, false);
+            GreenSymbol greenSymbol = this.green.GetSymbol(symbol.Id);
+            object greenObject = greenSymbol.GetValue(property);
             return this.ToRedValue(greenObject);
         }
 
         internal ImmutableModelList<T> GetList<T>(ImmutableSymbolBase symbol, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            object greenObject = this.green.GetValue(symbol.Id, property, false);
+            GreenSymbol greenSymbol = this.green.GetSymbol(symbol.Id);
+            object greenObject = greenSymbol.GetValue(property);
             if (greenObject is GreenList)
             {
                 return new ImmutableModelList<T>((GreenList)greenObject, this);
             }
             else
             {
-                return null;
+                return new ImmutableModelList<T>(property.IsNonUnique ? GreenList.EmptyNonUnique : GreenList.EmptyUnique, this);
             }
         }
 
         internal IImmutableSymbol MParent(ImmutableSymbolBase redSymbol)
         {
-            return this.GetRedSymbol(this.green.MParent(redSymbol.Id));
+            GreenSymbol greenSymbol = this.green.GetSymbol(redSymbol.Id);
+            return this.GetRedSymbol(greenSymbol.Parent);
         }
 
         internal IReadOnlyList<IImmutableSymbol> MChildren(ImmutableSymbolBase redSymbol)
         {
-            return new ReadOnlyImmutableModelList<ImmutableSymbolBase>(this.green.MChildren(redSymbol.Id), this);
+            GreenSymbol greenSymbol = this.green.GetSymbol(redSymbol.Id);
+            return new ReadOnlyImmutableModelList<ImmutableSymbolBase>(greenSymbol.Children, this);
         }
 
         internal IReadOnlyList<ModelProperty> MProperties(ImmutableSymbolBase redSymbol)
@@ -261,9 +265,10 @@ namespace MetaDslx.Core.Immutable
             return ModelProperty.GetPropertiesForType(redSymbol.GetType());
         }
 
-        internal IReadOnlyList<ModelProperty> MAllProperties(ImmutableSymbolBase redSymbol)
+        internal IEnumerable<ModelProperty> MAllProperties(ImmutableSymbolBase redSymbol)
         {
-            return this.green.MAllProperties(redSymbol.Id);
+            GreenSymbol greenSymbol = this.green.GetSymbol(redSymbol.Id);
+            return greenSymbol.Properties;
         }
 
         internal object MGet(ImmutableSymbolBase redSymbol, ModelProperty property)
@@ -280,7 +285,8 @@ namespace MetaDslx.Core.Immutable
 
         internal bool MIsSet(ImmutableSymbolBase redSymbol, ModelProperty property)
         {
-            return this.green.MIsSet(redSymbol.Id, property);
+            GreenSymbol greenSymbol = this.green.GetSymbol(redSymbol.Id);
+            return greenSymbol.HasValue(property);
         }
 
         internal ModelProperty MGetProperty(ImmutableSymbolBase redSymbol, string name)
@@ -290,12 +296,15 @@ namespace MetaDslx.Core.Immutable
 
         internal IReadOnlyList<ModelProperty> MGetAllProperties(ImmutableSymbolBase redSymbol, string name)
         {
-            return this.green.MGetAllProperties(redSymbol.Id, name);
+            GreenSymbol greenSymbol = this.green.GetSymbol(redSymbol.Id);
+            List<ModelProperty> result = greenSymbol.Properties.Where(p => p.Name == name).ToList();
+            return result;
         }
 
         internal bool MHasLazy(ImmutableSymbolBase redSymbol, ModelProperty property)
         {
-            return this.green.MHasLazy(redSymbol.Id, property);
+            GreenSymbol greenSymbol = this.green.GetSymbol(redSymbol.Id);
+            return greenSymbol.HasLazyValue(property);
         }
 
         internal bool MIsAttached(ImmutableSymbolBase redSymbol, ModelProperty property)
@@ -305,9 +314,16 @@ namespace MetaDslx.Core.Immutable
 
         internal bool MTryGet(ImmutableSymbolBase redSymbol, ModelProperty property, out object value)
         {
-            return this.green.MTryGet(redSymbol.Id, property, out value);
+            GreenSymbol greenSymbol = this.green.GetSymbol(redSymbol.Id);
+            object greenValue;
+            if (greenSymbol.TryGetValue(property, out greenValue))
+            {
+                value = this.ToRedValue(greenValue);
+                return true;
+            }
+            value = null;
+            return false;
         }
-        */
     }
 
     public sealed class ImmutableModelGroup
@@ -692,9 +708,14 @@ namespace MetaDslx.Core.Immutable
             this.Update(this.state.WithSymbols(redSymbols, true));
         }
 
-        public ModelTransaction BeginTransaction()
+        private void EnsureWritable()
         {
             if (!this.readOnly) throw new ModelException("Cannot change a read-only model.");
+        }
+
+        public ModelTransaction BeginTransaction()
+        {
+            this.EnsureWritable();
             if (this.group != null)
             {
                 return this.group.BeginTransaction();
@@ -751,32 +772,28 @@ namespace MetaDslx.Core.Immutable
 
         public IMutableSymbol AddSymbol(SymbolId id)
         {
+            this.EnsureWritable();
             this.GreenTransaction.AddSymbol(this.id, id);
             return this.GetRedSymbol(id);
         }
 
         public void EvaluateLazyValues()
         {
-            using (ModelTransaction tx = this.BeginTransaction())
-            {
-                GreenModelTransaction gtx = this.GreenTransaction;
-                gtx.EvaluateLazyValues();
-                tx.Commit();
-            }
+            this.EnsureWritable();
+            this.GreenTransaction.EvaluateLazyValues();
         }
-        /*
+
         internal object GetValue(MutableSymbolBase symbol, ModelProperty property)
         {
             Debug.Assert(!property.IsCollection);
             object greenObject;
-            if (!this.AllowLazyEvaluation)
+            if (this.readOnly || !this.AllowLazyEvaluation)
             {
-                greenObject = this.green.GetValue(symbol.Id, property, false);
+                greenObject = this.GreenTransaction.GetValue(this.id, symbol.Id, property, false);
             }
             else
             {
-                this.EnsureWritable("Cannot change a read-only mutable model. Create a new mutable model instead, and enable lazy evaluation mode.");
-                greenObject = this.green.GetValue(symbol.Id, property, true);
+                greenObject = this.GreenTransaction.GetValue(this.id, symbol.Id, property, true);
             }
             return this.ToRedValue(greenObject);
         }
@@ -784,7 +801,7 @@ namespace MetaDslx.Core.Immutable
         internal Func<object> GetLazyValue(MutableSymbolBase symbol, ModelProperty property)
         {
             Debug.Assert(!property.IsCollection);
-            GreenLazyValue lazyValue = this.green.GetLazyValue(symbol.Id, property);
+            GreenLazyValue lazyValue = this.GreenTransaction.GetLazyValue(this.id, symbol.Id, property);
             if (lazyValue != null) return lazyValue.Lazy;
             else return null;
         }
@@ -793,27 +810,22 @@ namespace MetaDslx.Core.Immutable
         {
             Debug.Assert(property.IsCollection);
             object greenObject;
-            if (!this.AllowLazyEvaluation)
+            if (this.readOnly || !this.AllowLazyEvaluation)
             {
-                greenObject = this.green.GetValue(symbol.Id, property, false);
+                greenObject = this.GreenTransaction.GetValue(this.id, symbol.Id, property, false);
             }
             else
             {
-                this.EnsureWritable("Cannot change a read-only mutable model. Create a new mutable model instead, and enable lazy evaluation mode.");
-                greenObject = this.green.GetValue(symbol.Id, property, true);
+                greenObject = this.GreenTransaction.GetValue(this.id, symbol.Id, property, true);
             }
             if (greenObject is GreenList)
             {
                 MutableModelList<T> redList = modelList as MutableModelList<T>;
                 if (redList == null)
                 {
-                    return new MutableModelList<T>((GreenList)greenObject, this);
+                    redList = new MutableModelList<T>(symbol, property, this);
                 }
-                else
-                {
-                    if (redList.Green != greenObject) redList.UpdateGreen((GreenList)greenObject);
-                    return redList;
-                }
+                return redList;
             }
             else
             {
@@ -826,7 +838,7 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(!property.IsCollection);
             this.EnsureWritable();
             object greenValue = this.ToGreenValue(redValue);
-            return this.green.SetValue(symbol.Id, property, reassign, greenValue);
+            return this.GreenTransaction.SetValue(this.id, symbol.Id, property, reassign, greenValue);
         }
 
         internal bool SetLazyValue(MutableSymbolBase symbol, ModelProperty property, Func<object> redLazy, bool reassign)
@@ -834,71 +846,73 @@ namespace MetaDslx.Core.Immutable
             Debug.Assert(!property.IsCollection);
             this.EnsureWritable();
             if (redLazy == null) return false;
-            return this.green.SetValue(symbol.Id, property, reassign, new GreenLazyValue(redLazy));
+            return this.GreenTransaction.SetValue(this.id, symbol.Id, property, reassign, property.IsDerived ? (object)new GreenDerivedValue(redLazy) : (object)new GreenLazyValue(redLazy));
         }
 
-        internal bool AddItem(GreenList collection, object greenItem)
+        internal bool AddItem(SymbolId symbolId, ModelProperty property, object greenItem, bool reassign)
         {
             this.EnsureWritable();
-            return this.green.AddItem(collection.Parent, collection.Property, -1, false, greenItem);
+            return this.GreenTransaction.AddItem(this.id, symbolId, property, reassign, -1, false, greenItem);
         }
 
-        internal bool AddLazyItem(GreenList collection, object greenLazyItem)
+        internal bool AddLazyItem(SymbolId symbolId, ModelProperty property, object greenLazyItem, bool reassign)
         {
             this.EnsureWritable();
-            return this.green.AddItem(collection.Parent, collection.Property, -1, false, greenLazyItem);
+            return this.GreenTransaction.AddItem(this.id, symbolId, property, reassign, -1, false, greenLazyItem);
         }
 
-        internal bool RemoveItem(GreenList collection, object greenItem)
+        internal bool RemoveItem(SymbolId symbolId, ModelProperty property, object greenItem, bool reassign)
         {
             this.EnsureWritable();
-            return this.green.RemoveItem(collection.Parent, collection.Property, -1, false, greenItem);
+            return this.GreenTransaction.RemoveItem(this.id, symbolId, property, reassign, -1, false, greenItem);
         }
 
-        internal bool RemoveAllItems(GreenList collection, object greenItem)
+        internal bool RemoveAllItems(SymbolId symbolId, ModelProperty property, object greenItem, bool reassign)
         {
             this.EnsureWritable();
-            return this.green.RemoveItem(collection.Parent, collection.Property, -1, true, greenItem);
+            return this.GreenTransaction.RemoveItem(this.id, symbolId, property, reassign, -1, true, greenItem);
         }
 
-        internal bool InsertItem(GreenList collection, int index, object greenItem)
+        internal bool InsertItem(SymbolId symbolId, ModelProperty property, int index, object greenItem, bool reassign)
         {
             this.EnsureWritable();
-            return this.green.AddItem(collection.Parent, collection.Property, index, false, greenItem);
+            return this.GreenTransaction.AddItem(this.id, symbolId, property, reassign, index, false, greenItem);
         }
 
-        internal bool ReplaceItem(GreenList collection, int index, object greenItem)
+        internal bool ReplaceItem(SymbolId symbolId, ModelProperty property, int index, object greenItem, bool reassign)
         {
             this.EnsureWritable();
-            return this.green.AddItem(collection.Parent, collection.Property, index, true, greenItem);
+            return this.GreenTransaction.AddItem(this.id, symbolId, property, reassign, index, true, greenItem);
         }
 
-        internal bool RemoveItemAt(GreenList collection, int index)
+        internal bool RemoveItemAt(SymbolId symbolId, ModelProperty property, int index, bool reassign)
         {
             this.EnsureWritable();
-            return this.green.RemoveItem(collection.Parent, collection.Property, index, false, null);
+            return this.GreenTransaction.RemoveItem(this.id, symbolId, property, reassign, index, false, null);
         }
 
-        internal bool ClearItems(GreenList collection)
+        internal bool ClearItems(SymbolId symbolId, ModelProperty property, bool reassign)
         {
             this.EnsureWritable();
-            return this.green.ClearItems(collection.Parent, collection.Property);
+            return this.GreenTransaction.ClearItems(this.id, symbolId, property, reassign);
         }
 
-        internal bool ClearLazyItems(GreenList collection)
+        internal bool ClearLazyItems(SymbolId symbolId, ModelProperty property, bool reassign)
         {
             this.EnsureWritable();
-            return this.green.ClearLazyItems(collection.Parent, collection.Property);
+            return this.GreenTransaction.ClearLazyItems(this.id, symbolId, property, reassign);
         }
 
         internal IMutableSymbol MParent(MutableSymbolBase redSymbol)
         {
-            return this.GetRedSymbol(this.green.MParent(redSymbol.Id));
+            GreenSymbol greenSymbol = this.GreenTransaction.GetSymbol(this.id, redSymbol.Id);
+            return this.GetRedSymbol(greenSymbol.Parent);
         }
 
         internal IReadOnlyList<IMutableSymbol> MChildren(MutableSymbolBase redSymbol)
         {
-            return new ReadOnlyMutableModelList<MutableSymbolBase>(this.green.MChildren(redSymbol.Id), this);
+            GreenSymbol greenSymbol = this.GreenTransaction.GetSymbol(this.id, redSymbol.Id);
+            return new ReadOnlyMutableModelList<MutableSymbolBase>(greenSymbol.Children, this);
         }
 
         internal IReadOnlyList<ModelProperty> MProperties(MutableSymbolBase redSymbol)
@@ -906,9 +920,10 @@ namespace MetaDslx.Core.Immutable
             return ModelProperty.GetPropertiesForType(redSymbol.GetType());
         }
 
-        internal IReadOnlyList<ModelProperty> MAllProperties(MutableSymbolBase redSymbol)
+        internal IEnumerable<ModelProperty> MAllProperties(MutableSymbolBase redSymbol)
         {
-            return this.green.MAllProperties(redSymbol.Id);
+            GreenSymbol greenSymbol = this.GreenTransaction.GetSymbol(this.id, redSymbol.Id);
+            return greenSymbol.Properties;
         }
 
         internal object MGet(MutableSymbolBase redSymbol, ModelProperty property)
@@ -925,7 +940,8 @@ namespace MetaDslx.Core.Immutable
 
         internal bool MIsSet(MutableSymbolBase redSymbol, ModelProperty property)
         {
-            return this.green.MIsSet(redSymbol.Id, property);
+            GreenSymbol greenSymbol = this.GreenTransaction.GetSymbol(this.id, redSymbol.Id);
+            return greenSymbol.HasValue(property);
         }
 
         internal ModelProperty MGetProperty(MutableSymbolBase redSymbol, string name)
@@ -935,12 +951,15 @@ namespace MetaDslx.Core.Immutable
 
         internal IReadOnlyList<ModelProperty> MGetAllProperties(MutableSymbolBase redSymbol, string name)
         {
-            return this.green.MGetAllProperties(redSymbol.Id, name);
+            GreenSymbol greenSymbol = this.GreenTransaction.GetSymbol(this.id, redSymbol.Id);
+            List<ModelProperty> result = greenSymbol.Properties.Where(p => p.Name == name).ToList();
+            return result;
         }
 
         internal bool MHasLazy(MutableSymbolBase redSymbol, ModelProperty property)
         {
-            return this.green.MHasLazy(redSymbol.Id, property);
+            GreenSymbol greenSymbol = this.GreenTransaction.GetSymbol(this.id, redSymbol.Id);
+            return greenSymbol.HasLazyValue(property);
         }
 
         internal bool MIsAttached(MutableSymbolBase redSymbol, ModelProperty property)
@@ -950,128 +969,243 @@ namespace MetaDslx.Core.Immutable
 
         internal bool MTryGet(MutableSymbolBase redSymbol, ModelProperty property, out object value)
         {
-            return this.green.MTryGet(redSymbol.Id, property, out value);
+            GreenSymbol greenSymbol = this.GreenTransaction.GetSymbol(this.id, redSymbol.Id);
+            object greenValue;
+            if (greenSymbol.TryGetValue(property, out greenValue))
+            {
+                value = this.ToRedValue(greenValue);
+                return true;
+            }
+            value = null;
+            return false;
         }
 
-        internal bool MAttachProperty(MutableSymbolBase redSymbol, ModelProperty property)
+        internal void MAttachProperty(MutableSymbolBase redSymbol, ModelProperty property)
         {
             this.EnsureWritable();
-            return this.green.MAttachProperty(redSymbol.Id, property);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.AddProperty(gtx, property);
         }
 
-        internal bool MDetachProperty(MutableSymbolBase redSymbol, ModelProperty property)
+        internal void MDetachProperty(MutableSymbolBase redSymbol, ModelProperty property)
         {
             this.EnsureWritable();
-            return this.green.MDetachProperty(redSymbol.Id, property);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.RemoveProperty(gtx, property);
         }
 
-        internal bool MClear(MutableSymbolBase redSymbol, ModelProperty property, bool clearLazy)
+        internal void MClear(MutableSymbolBase redSymbol, ModelProperty property, bool clearLazy, bool reset)
         {
             this.EnsureWritable();
-            return this.green.MClear(redSymbol.Id, property, clearLazy);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            if (clearLazy)
+            {
+                greenSymbol = greenSymbol.ClearLazyItems(gtx, property, !redSymbol.MIsCreated);
+            }
+            greenSymbol.ClearItems(gtx, property, !redSymbol.MIsCreated);
         }
 
-        internal bool MClearLazy(MutableSymbolBase redSymbol, ModelProperty property)
+        internal void MClearLazy(MutableSymbolBase redSymbol, ModelProperty property, bool reset)
         {
             this.EnsureWritable();
-            return this.green.MClearLazy(redSymbol.Id, property);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.ClearLazyItems(gtx, property, !redSymbol.MIsCreated);
         }
 
-        internal bool MAdd(MutableSymbolBase redSymbol, ModelProperty property, object value, bool reset)
+        internal void MSet(MutableSymbolBase redSymbol, ModelProperty property, object value, bool reset)
         {
             this.EnsureWritable();
-            return this.green.MAdd(redSymbol.Id, property, this.ToGreenValue(value), reset);
+            if (property.IsCollection) throw new ModelException("The property must not be a collection.");
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.SetValue(gtx, property, reset || !redSymbol.MIsCreated, this.ToGreenValue(value));
         }
 
-        internal bool MLazyAdd(MutableSymbolBase redSymbol, ModelProperty property, Func<object> value, bool reset)
-        {
-            this.EnsureWritable();
-            return this.green.MLazyAdd(redSymbol.Id, property, new GreenLazyValue(value), reset);
-        }
-
-        internal bool MAddRange(MutableSymbolBase redSymbol, ModelProperty property, IEnumerable<object> values, bool reset)
+        internal void MSetRange(MutableSymbolBase redSymbol, ModelProperty property, IEnumerable<object> values, bool reset)
         {
             this.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.MAddRange(redSymbol.Id, property, values.Select(v => this.ToGreenValue(v)), reset);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            reset |= !redSymbol.MIsCreated;
+            greenSymbol = greenSymbol.ClearItems(gtx, property, reset).ClearLazyItems(gtx, property, reset);
+            greenSymbol = greenSymbol.AddItems(gtx, property, reset, values.Select(v => this.ToGreenValue(v)));
         }
 
-        internal bool MLazyAddRange(MutableSymbolBase redSymbol, ModelProperty property, Func<IEnumerable<object>> values, bool reset)
+        internal void MSetLazy(MutableSymbolBase redSymbol, ModelProperty property, Func<object> value, bool reset)
+        {
+            this.EnsureWritable();
+            if (property.IsCollection) throw new ModelException("The property must not be a collection.");
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.SetValue(gtx, property, reset || !redSymbol.MIsCreated, property.IsDerived ? (object)new GreenDerivedValue(value) : (object)new GreenLazyValue(value));
+        }
+
+        internal void MSetRangeLazy(MutableSymbolBase redSymbol, ModelProperty property, IEnumerable<Func<object>> values, bool reset)
         {
             this.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.MLazyAddRange(redSymbol.Id, property, new GreenLazyList(values), reset);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            reset |= !redSymbol.MIsCreated;
+            greenSymbol = greenSymbol.ClearItems(gtx, property, reset).ClearLazyItems(gtx, property, reset);
+            greenSymbol.AddItems(gtx, property, reset || !redSymbol.MIsCreated, values.Select(v => new GreenLazyValue(v)));
         }
 
-        internal bool MLazyAddRange(MutableSymbolBase redSymbol, ModelProperty property, IEnumerable<Func<object>> values, bool reset)
+        internal void MSetRangeLazy(MutableSymbolBase redSymbol, ModelProperty property, Func<IEnumerable<object>> values, bool reset)
         {
             this.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.MLazyAddRange(redSymbol.Id, property, values.Select(v => new GreenLazyValue(v)), reset);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            reset |= !redSymbol.MIsCreated;
+            greenSymbol = greenSymbol.ClearItems(gtx, property, reset).ClearLazyItems(gtx, property, reset);
+            greenSymbol.AddItem(gtx, property, reset, false, -1, new GreenLazyList(values));
+        }
+
+        internal void MAdd(MutableSymbolBase redSymbol, ModelProperty property, object value, bool reset)
+        {
+            this.EnsureWritable();
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.AddItem(gtx, property, reset || !redSymbol.MIsCreated, false, -1, value);
+        }
+
+        internal void MAddLazy(MutableSymbolBase redSymbol, ModelProperty property, Func<object> value, bool reset)
+        {
+            this.EnsureWritable();
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.AddItem(gtx, property, reset || !redSymbol.MIsCreated, false, -1, new GreenLazyValue(value));
+        }
+
+        internal void MAddRange(MutableSymbolBase redSymbol, ModelProperty property, IEnumerable<object> values, bool reset)
+        {
+            this.EnsureWritable();
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.AddItems(gtx, property, reset || !redSymbol.MIsCreated, values.Select(v => this.ToGreenValue(v)));
+        }
+
+        internal void MAddRangeLazy(MutableSymbolBase redSymbol, ModelProperty property, Func<IEnumerable<object>> values, bool reset)
+        {
+            this.EnsureWritable();
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.AddItem(gtx, property, reset || !redSymbol.MIsCreated, false, -1, new GreenLazyList(values));
+        }
+
+        internal void MAddRangeLazy(MutableSymbolBase redSymbol, ModelProperty property, IEnumerable<Func<object>> values, bool reset)
+        {
+            this.EnsureWritable();
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.AddItems(gtx, property, reset || !redSymbol.MIsCreated, values.Select(v => new GreenLazyValue(v)));
         }
 
         internal void MEvaluateLazy(MutableSymbolBase redSymbol)
         {
             this.EnsureWritable();
-            this.green.MEvaluateLazy(redSymbol.Id);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.EvaluateLazyValues(gtx);
         }
 
-        internal bool MChildLazyAdd(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<object> value, bool reset)
+        internal void MChildSetLazy(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<object> value, bool reset)
         {
             this.EnsureWritable();
             if (property.IsCollection) throw new ModelException("The property must not be a collection.");
-            return this.green.MChildLazySet(redSymbol.Id, child, property, new GreenLazyValue(value), reset);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.ChildSetValue(gtx, child, property, reset || !redSymbol.MIsCreated, property.IsDerived ? (object)new GreenDerivedValue(value) : (object)new GreenLazyValue(value));
         }
 
-        internal bool MChildLazyAddRange(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset)
+        internal void MChildSetRangeLazy(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset)
+        {
+            this.EnsureWritable();
+            if (property.IsCollection) throw new ModelException("The property must not be a collection.");
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.ChildSetValue(gtx, child, property, reset || !redSymbol.MIsCreated, new GreenLazyList(values));
+        }
+
+        internal void MChildSetRangeLazy(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset)
+        {
+            this.EnsureWritable();
+            if (property.IsCollection) throw new ModelException("The property must not be a collection.");
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol = greenSymbol.ChildClear(gtx, child, property);
+            greenSymbol.ChildAddItems(gtx, child, property, values.Select(v => new GreenLazyValue(v)));
+        }
+
+        internal void MChildAddLazy(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<object> value, bool reset)
         {
             this.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.MChildLazyAddRange(redSymbol.Id, child, property, new GreenLazyList(values), reset);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.ChildAddItem(gtx, child, property, new GreenLazyValue(value));
         }
 
-        internal bool MChildLazyAddRange(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset)
+        internal void MChildAddRangeLazy(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset)
         {
             this.EnsureWritable();
             if (!property.IsCollection) throw new ModelException("The property must be a collection.");
-            return this.green.MChildLazyAddRange(redSymbol.Id, child, property, values.Select(v => new GreenLazyValue(v)), reset);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.ChildAddItem(gtx, child, property, new GreenLazyList(values));
         }
 
-        internal bool MChildLazyClear(MutableSymbolBase redSymbol, ModelProperty child)
+        internal void MChildAddRangeLazy(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset)
         {
             this.EnsureWritable();
-            return this.green.MChildLazyClear(redSymbol.Id, child);
+            if (!property.IsCollection) throw new ModelException("The property must be a collection.");
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.ChildAddItems(gtx, child, property, values.Select(v => new GreenLazyValue(v)));
         }
 
-        internal bool MChildLazyClear(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property)
+        internal void MChildClearLazy(MutableSymbolBase redSymbol, ModelProperty child, bool reset)
         {
             this.EnsureWritable();
-            return this.green.MChildLazyClear(redSymbol.Id, child, property);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.ChildClear(gtx, child);
         }
 
-        internal bool MRemove(MutableSymbolBase redSymbol, ModelProperty property, object value, bool removeAll)
+        internal void MChildClearLazy(MutableSymbolBase redSymbol, ModelProperty child, ModelProperty property, bool reset)
         {
             this.EnsureWritable();
-            return this.green.MRemove(redSymbol.Id, property, value, removeAll);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.ChildClear(gtx, child);
         }
 
-        internal void MUnset(MutableSymbolBase redSymbol, ModelProperty property)
+        internal void MRemove(MutableSymbolBase redSymbol, ModelProperty property, object value, bool removeAll, bool reset)
         {
             this.EnsureWritable();
-            this.green.MUnset(redSymbol.Id, property);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.RemoveItem(gtx, property, reset || !redSymbol.MIsCreated, -1, removeAll, value);
         }
 
-        internal bool MIsCreated(MutableSymbolBase redSymbol)
-        {
-            return this.green.MIsCreated(redSymbol.Id);
-        }
-
-        internal void MMakeCreated(MutableSymbolBase redSymbol)
+        internal void MUnset(MutableSymbolBase redSymbol, ModelProperty property, bool reset)
         {
             this.EnsureWritable();
-            this.green.MMakeCreated(redSymbol.Id);
+            GreenModelTransaction gtx = this.GreenTransaction;
+            GreenSymbol greenSymbol = gtx.GetSymbol(this.id, redSymbol.Id);
+            greenSymbol.UnsetValue(gtx, property, reset);
         }
-        */
     }
 
     internal class MutableModelGroupState

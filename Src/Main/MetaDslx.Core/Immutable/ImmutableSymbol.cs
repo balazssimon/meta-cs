@@ -31,72 +31,40 @@ namespace MetaDslx.Core.Immutable
         protected T GetValue<T>(ModelProperty property, ref T value)
             where T : struct
         {
-            if (this.model != null)
-            {
-                if (default(T).Equals(value))
-                {
-                    object valueObj = this.green.GetValue(this.model.Green, this.id, property, false, false);
-                    if (valueObj == null) value = default(T);
-                    else value = (T)valueObj;
-                }
-                return value;
-            }
-            else
-            {
-                return value;
-            }
+            object valueObj = this.model.GetValue(this, property);
+            if (valueObj == null) value = default(T);
+            else value = (T)valueObj;
+            return value;
         }
 
         protected T GetReference<T>(ModelProperty property, ref T value)
             where T : class
         {
-            if (this.model != null)
+            T result = value;
+            if (result == null)
             {
-                T result = value;
-                if (result == null)
-                {
-                    result = (T)this.green.GetValue(this.model.Green, this.id, property, false, false);
-                    result = Interlocked.CompareExchange(ref value, result, null) ?? result;
-                }
-                return result;
+                result = (T)this.model.GetValue(this, property);
+                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
             }
-            else
-            {
-                return value;
-            }
+            return result;
         }
 
         protected IImmutableModelList<T> GetList<T>(ModelProperty property, ref IImmutableModelList<T> value)
         {
-            if (this.model != null)
+            IImmutableModelList<T> result = value;
+            if (result == null)
             {
-                IImmutableModelList<T> result = value;
-                if (result == null)
-                {
-                    object greenObject = this.green.GetValue(this.model.Green, this.id, property, false, false);
-                    if (greenObject is GreenList)
-                    {
-                        result = new ImmutableModelList<T>((GreenList)greenObject, this.model);
-                    }
-                    result = Interlocked.CompareExchange(ref value, result, null) ?? result;
-                }
-                return result;
+                result = this.model.GetList<T>(this, property);
+                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
             }
-            else
-            {
-                IImmutableModelList<T> result = value;
-                if (result == null)
-                {
-                    result = Interlocked.CompareExchange(ref value, ImmutableModelList<T>.Empty, null) ?? result;
-                }
-                return result;
-            }
+            return result;
         }
 
         public abstract object MMetaModel { get; }
         public abstract object MMetaClass { get; }
 
         internal SymbolId Id { get { return this.id; } }
+        internal GreenSymbol Green { get { return this.model.Green.GetSymbol(this.id); } }
 
         public ImmutableModel MModel
         {
@@ -130,7 +98,7 @@ namespace MetaDslx.Core.Immutable
                 return this.model.MProperties(this);
             }
         }
-        public IReadOnlyList<ModelProperty> MAllProperties
+        public IEnumerable<ModelProperty> MAllProperties
         {
             get
             {
@@ -167,11 +135,6 @@ namespace MetaDslx.Core.Immutable
         public bool MIsAttached(ModelProperty property)
         {
             return this.model.MIsAttached(this, property);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.green.GetHashCode();
         }
 
         RedModel ISymbol.MModel
@@ -220,7 +183,7 @@ namespace MetaDslx.Core.Immutable
         protected void SetValue<T>(ModelProperty property, T value)
             where T : struct
         {
-            this.model.SetValue(this, property, value, !this.MIsCreated);
+            this.model.SetValue(this, property, value, !this.created);
         }
 
         protected T GetReference<T>(ModelProperty property)
@@ -236,7 +199,7 @@ namespace MetaDslx.Core.Immutable
             {
                 value = (T)this.model.ToRedValue(this.model.ToGreenValue(value));
             }
-            this.model.SetValue(this, property, value, !this.MIsCreated);
+            this.model.SetValue(this, property, value, !this.created);
         }
 
         protected Func<T> GetLazyValue<T>(ModelProperty property)
@@ -248,7 +211,7 @@ namespace MetaDslx.Core.Immutable
         protected void SetLazyValue<T>(ModelProperty property, Func<T> value)
             where T : struct
         {
-            this.model.SetLazyValue(this, property, (Func<object>)(object)value, !this.MIsCreated);
+            this.model.SetLazyValue(this, property, (Func<object>)(object)value, !this.created);
         }
 
         protected Func<T> GetLazyReference<T>(ModelProperty property)
@@ -260,14 +223,14 @@ namespace MetaDslx.Core.Immutable
         protected void SetLazyReference<T>(ModelProperty property, Func<T> value)
             where T : class
         {
-            this.model.SetLazyValue(this, property, value, !this.MIsCreated);
+            this.model.SetLazyValue(this, property, value, !this.created);
         }
 
         protected IMutableModelList<T> GetList<T>(ModelProperty property, ref IMutableModelList<T> value)
         {
             IMutableModelList<T> result = this.model.GetList(this, property, value);
-            Interlocked.Exchange(ref value, result);
-            return value;
+            result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            return result;
         }
 
         public abstract object MMetaModel { get; }
@@ -277,12 +240,14 @@ namespace MetaDslx.Core.Immutable
         {
             get { return this.model.IsReadOnly; }
         }
-
+         
         internal SymbolId Id { get { return this.id; } }
-        
+        internal GreenSymbol Green { get { return this.model.Green.GetSymbol(this.id); } }
+        internal bool MIsCreated { get { return this.created; } }
+
         public void MInit()
         {
-            if (this.MIsCreated) return;
+            if (this.created) return;
             this.MDoInit();
         }
 
@@ -290,18 +255,18 @@ namespace MetaDslx.Core.Immutable
 
         public void MInitProperties(IEnumerable<PropertyInit> propertyInitializers)
         {
-            if (this.MIsCreated) return;
+            if (this.created) return;
             foreach (var propInit in propertyInitializers)
             {
                 if (propInit.Property.IsCollection)
                 {
                     if (propInit.Values != null)
                     {
-                        this.MLazyAddRange(propInit.Property, propInit.Values, true);
+                        this.MAddRangeLazy(propInit.Property, propInit.Values, true);
                     }
                     else if (propInit.Value != null)
                     {
-                        this.MLazyAdd(propInit.Property, propInit.Value, true);
+                        this.MAddLazy(propInit.Property, propInit.Value, true);
                     }
                     else
                     {
@@ -312,7 +277,7 @@ namespace MetaDslx.Core.Immutable
                 {
                     if (propInit.Value != null)
                     {
-                        this.MLazyAdd(propInit.Property, propInit.Value, true);
+                        this.MAddLazy(propInit.Property, propInit.Value, true);
                     }
                     else
                     {
@@ -333,21 +298,9 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        public bool MIsCreated
-        {
-            get
-            {
-                if (!this.created)
-                {
-                    this.created = this.model.MIsCreated(this);
-                }
-                return this.created;
-            }
-        }
-
         public void MMakeCreated()
         {
-            this.model.MMakeCreated(this);
+            this.created = true;
             this.MCheckPropertyInitialization();
         }
 
@@ -379,7 +332,7 @@ namespace MetaDslx.Core.Immutable
                 return this.model.MProperties(this);
             }
         }
-        public IReadOnlyList<ModelProperty> MAllProperties
+        public IEnumerable<ModelProperty> MAllProperties
         {
             get
             {
@@ -422,74 +375,101 @@ namespace MetaDslx.Core.Immutable
         {
             this.model.MEvaluateLazy(this);
         }
-        public bool MAttachProperty(ModelProperty property)
+        public void MAttachProperty(ModelProperty property)
         {
-            return this.model.MAttachProperty(this, property);
+            this.model.MAttachProperty(this, property);
         }
-        public bool MDetachProperty(ModelProperty property)
+        public void MDetachProperty(ModelProperty property)
         {
-            return this.model.MDetachProperty(this, property);
+            this.model.MDetachProperty(this, property);
         }
-        public bool MClear(ModelProperty property, bool clearLazy = true)
+        public void MClear(ModelProperty property, bool clearLazy = true, bool reset = false)
         {
-            return this.model.MClear(this, property, clearLazy);
+            this.model.MClear(this, property, clearLazy, reset);
         }
-        public bool MClearLazy(ModelProperty property)
+        public void MClearLazy(ModelProperty property, bool reset = false)
         {
-            return this.model.MClearLazy(this, property);
+            this.model.MClearLazy(this, property, reset);
         }
-        public bool MAdd(ModelProperty property, object value, bool reset = false)
+        public void MSet(ModelProperty property, object value, bool reset = false)
         {
-            return this.model.MAdd(this, property, value, reset);
+            this.model.MSet(this, property, value, reset);
         }
-        public bool MLazyAdd(ModelProperty property, Func<object> value, bool reset = false)
+        public void MSetLazy(ModelProperty property, Func<object> value, bool reset = false)
         {
-            return this.model.MLazyAdd(this, property, value, reset);
+            this.model.MSetLazy(this, property, value, reset);
         }
-        public bool MAddRange(ModelProperty property, IEnumerable<object> value, bool reset = false)
+        public void MSetRange(ModelProperty property, IEnumerable<object> value, bool reset = false)
         {
-            return this.model.MAddRange(this, property, value, reset);
+            this.model.MSetRange(this, property, value, reset);
         }
-        public bool MLazyAddRange(ModelProperty property, Func<IEnumerable<object>> values, bool reset = false)
+        public void MSetRangeLazy(ModelProperty property, Func<IEnumerable<object>> values, bool reset = false)
         {
-            return this.model.MLazyAddRange(this, property, values, reset);
+            this.model.MSetRangeLazy(this, property, values, reset);
         }
-        public bool MLazyAddRange(ModelProperty property, IEnumerable<Func<object>> values, bool reset = false)
+        public void MSetRangeLazy(ModelProperty property, IEnumerable<Func<object>> values, bool reset = false)
         {
-            return this.model.MLazyAddRange(this, property, values, reset);
+            this.model.MSetRangeLazy(this, property, values, reset);
         }
-        public bool MChildLazyAdd(ModelProperty child, ModelProperty property, Func<object> value, bool reset = false)
+        public void MAdd(ModelProperty property, object value, bool reset = false)
         {
-            return this.model.MChildLazyAdd(this, child, property, value, reset);
+            this.model.MAdd(this, property, value, reset);
         }
-        public bool MChildLazyAddRange(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset = false)
+        public void MAddLazy(ModelProperty property, Func<object> value, bool reset = false)
         {
-            return this.model.MChildLazyAddRange(this, child, property, values, reset);
+            this.model.MAddLazy(this, property, value, reset);
         }
-        public bool MChildLazyAddRange(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset = false)
+        public void MAddRange(ModelProperty property, IEnumerable<object> value, bool reset = false)
         {
-            return this.model.MChildLazyAddRange(this, child, property, values, reset);
+            this.model.MAddRange(this, property, value, reset);
         }
-        public bool MChildLazyClear(ModelProperty child)
+        public void MAddRangeLazy(ModelProperty property, Func<IEnumerable<object>> values, bool reset = false)
         {
-            return this.model.MChildLazyClear(this, child);
+            this.model.MAddRangeLazy(this, property, values, reset);
         }
-        public bool MChildLazyClear(ModelProperty child, ModelProperty property)
+        public void MAddRangeLazy(ModelProperty property, IEnumerable<Func<object>> values, bool reset = false)
         {
-            return this.model.MChildLazyClear(this, child, property);
+            this.model.MAddRangeLazy(this, property, values, reset);
         }
-        public bool MRemove(ModelProperty property, object value, bool removeAll = false)
+        public void MChildSetLazy(ModelProperty child, ModelProperty property, Func<object> value, bool reset = false)
         {
-            return this.model.MRemove(this, property, value, removeAll);
+            this.model.MChildSetLazy(this, child, property, value, reset);
         }
-        public void MUnset(ModelProperty property)
+        public void MChildSetRangeLazy(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset = false)
         {
-            this.model.MUnset(this, property);
+            this.model.MChildSetRangeLazy(this, child, property, values, reset);
         }
-
-        public override int GetHashCode()
+        public void MChildSetRangeLazy(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset = false)
         {
-            return this.green.GetHashCode();
+            this.model.MChildSetRangeLazy(this, child, property, values, reset);
+        }
+        public void MChildAddLazy(ModelProperty child, ModelProperty property, Func<object> value, bool reset = false)
+        {
+            this.model.MChildAddLazy(this, child, property, value, reset);
+        }
+        public void MChildAddRangeLazy(ModelProperty child, ModelProperty property, Func<IEnumerable<object>> values, bool reset = false)
+        {
+            this.model.MChildAddRangeLazy(this, child, property, values, reset);
+        }
+        public void MChildAddRangeLazy(ModelProperty child, ModelProperty property, IEnumerable<Func<object>> values, bool reset = false)
+        {
+            this.model.MChildAddRangeLazy(this, child, property, values, reset);
+        }
+        public void MChildClearLazy(ModelProperty child, bool reset = false)
+        {
+            this.model.MChildClearLazy(this, child, reset);
+        }
+        public void MChildClearLazy(ModelProperty child, ModelProperty property, bool reset = false)
+        {
+            this.model.MChildClearLazy(this, child, property, reset);
+        }
+        public void MRemove(ModelProperty property, object value, bool removeAll = false, bool reset = false)
+        {
+            this.model.MRemove(this, property, value, removeAll, reset);
+        }
+        public void MUnset(ModelProperty property, bool reset = false)
+        {
+            this.model.MUnset(this, property, reset);
         }
 
         RedModel ISymbol.MModel
