@@ -300,7 +300,7 @@ namespace MetaDslx.Core.Immutable
         {
             get
             {
-                return (T)this.model.GetRedSymbol(this.greenList[index]);
+                return (T)this.model.GetRedSymbol(this.greenList[index], true);
             }
         }
 
@@ -316,7 +316,7 @@ namespace MetaDslx.Core.Immutable
         {
             foreach (var item in greenList)
             {
-                yield return (T)this.model.GetRedSymbol(item);
+                yield return (T)this.model.GetRedSymbol(item, true);
             }
         }
 

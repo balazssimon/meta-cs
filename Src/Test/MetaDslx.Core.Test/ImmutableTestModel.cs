@@ -269,9 +269,9 @@ namespace MetaDslx.Core.Immutable.Test
             return new ImmutableHusbandImpl(this, model);
         }
 
-        public override IMutableSymbol CreateMutable(MutableModel model)
+        public override IMutableSymbol CreateMutable(MutableModel model, bool created)
         {
-            return new HusbandImpl(this, model);
+            return new HusbandImpl(this, model, created);
         }
     }
 
@@ -285,9 +285,9 @@ namespace MetaDslx.Core.Immutable.Test
             return new ImmutableWifeImpl(this, model);
         }
 
-        public override IMutableSymbol CreateMutable(MutableModel model)
+        public override IMutableSymbol CreateMutable(MutableModel model, bool created)
         {
-            return new WifeImpl(this, model);
+            return new WifeImpl(this, model, created);
         }
     }
 
@@ -301,9 +301,9 @@ namespace MetaDslx.Core.Immutable.Test
             return new ImmutableListChildImpl(this, model);
         }
 
-        public override IMutableSymbol CreateMutable(MutableModel model)
+        public override IMutableSymbol CreateMutable(MutableModel model, bool created)
         {
-            return new ListChildImpl(this, model);
+            return new ListChildImpl(this, model, created);
         }
     }
 
@@ -317,9 +317,9 @@ namespace MetaDslx.Core.Immutable.Test
             return new ImmutableListParentImpl(this, model);
         }
 
-        public override IMutableSymbol CreateMutable(MutableModel model)
+        public override IMutableSymbol CreateMutable(MutableModel model, bool created)
         {
-            return new ListParentImpl(this, model);
+            return new ListParentImpl(this, model, created);
         }
     }
 
@@ -333,9 +333,9 @@ namespace MetaDslx.Core.Immutable.Test
             return new ImmutableUserImpl(this, model);
         }
 
-        public override IMutableSymbol CreateMutable(MutableModel model)
+        public override IMutableSymbol CreateMutable(MutableModel model, bool created)
         {
-            return new UserImpl(this, model);
+            return new UserImpl(this, model, created);
         }
     }
 
@@ -349,9 +349,9 @@ namespace MetaDslx.Core.Immutable.Test
             return new ImmutableRoleImpl(this, model);
         }
 
-        public override IMutableSymbol CreateMutable(MutableModel model)
+        public override IMutableSymbol CreateMutable(MutableModel model, bool created)
         {
-            return new RoleImpl(this, model);
+            return new RoleImpl(this, model, created);
         }
     }
 
@@ -365,9 +365,9 @@ namespace MetaDslx.Core.Immutable.Test
             return new ImmutablePersonImpl(this, model);
         }
 
-        public override IMutableSymbol CreateMutable(MutableModel model)
+        public override IMutableSymbol CreateMutable(MutableModel model, bool created)
         {
-            return new PersonImpl(this, model);
+            return new PersonImpl(this, model, created);
         }
     }
 
@@ -381,9 +381,9 @@ namespace MetaDslx.Core.Immutable.Test
             return new ImmutableStudentImpl(this, model);
         }
 
-        public override IMutableSymbol CreateMutable(MutableModel model)
+        public override IMutableSymbol CreateMutable(MutableModel model, bool created)
         {
-            return new StudentImpl(this, model);
+            return new StudentImpl(this, model, created);
         }
     }
 
@@ -397,9 +397,9 @@ namespace MetaDslx.Core.Immutable.Test
             return new ImmutablePetImpl(this, model);
         }
 
-        public override IMutableSymbol CreateMutable(MutableModel model)
+        public override IMutableSymbol CreateMutable(MutableModel model, bool created)
         {
-            return new PetImpl(this, model);
+            return new PetImpl(this, model, created);
         }
     }
 
@@ -413,9 +413,9 @@ namespace MetaDslx.Core.Immutable.Test
             return new ImmutableDogImpl(this, model);
         }
 
-        public override IMutableSymbol CreateMutable(MutableModel model)
+        public override IMutableSymbol CreateMutable(MutableModel model, bool created)
         {
-            return new DogImpl(this, model);
+            return new DogImpl(this, model, created);
         }
     }
 
@@ -866,12 +866,15 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class HusbandImpl : MutableSymbolBase, Husband, HusbandBuilder
     {
-        public HusbandImpl(SymbolId green, MutableModel model)
-            : base(green, model)
+        public HusbandImpl(SymbolId green, MutableModel model, bool created)
+            : base(green, model, created)
         {
-            this.MAttachProperty(TestModelDescriptor.Husband.NameProperty);
-            this.MAttachProperty(TestModelDescriptor.Husband.WifeProperty);
-            this.MInit();
+            if (!created)
+            {
+                this.MAttachProperty(TestModelDescriptor.Husband.NameProperty);
+                this.MAttachProperty(TestModelDescriptor.Husband.WifeProperty);
+                this.MInit();
+            }
         }
 
         protected override void MDoInit()
@@ -921,12 +924,15 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class WifeImpl : MutableSymbolBase, Wife
     {
-        public WifeImpl(SymbolId green, MutableModel model)
-            : base(green, model)
+        public WifeImpl(SymbolId green, MutableModel model, bool created)
+            : base(green, model, created)
         {
-            this.MAttachProperty(TestModelDescriptor.Wife.NameProperty);
-            this.MAttachProperty(TestModelDescriptor.Wife.HusbandProperty);
-            this.MInit();
+            if (!created)
+            {
+                this.MAttachProperty(TestModelDescriptor.Wife.NameProperty);
+                this.MAttachProperty(TestModelDescriptor.Wife.HusbandProperty);
+                this.MInit();
+            }
         }
 
         protected override void MDoInit()
@@ -958,12 +964,15 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class ListChildImpl : MutableSymbolBase, ListChild
     {
-        public ListChildImpl(SymbolId green, MutableModel model)
-            : base(green, model)
+        public ListChildImpl(SymbolId green, MutableModel model, bool created)
+            : base(green, model, created)
         {
-            this.MAttachProperty(TestModelDescriptor.ListChild.NameProperty);
-            this.MAttachProperty(TestModelDescriptor.ListChild.ParentProperty);
-            this.MInit();
+            if (!created)
+            {
+                this.MAttachProperty(TestModelDescriptor.ListChild.NameProperty);
+                this.MAttachProperty(TestModelDescriptor.ListChild.ParentProperty);
+                this.MInit();
+            }
         }
 
         protected override void MDoInit()
@@ -997,12 +1006,15 @@ namespace MetaDslx.Core.Immutable.Test
     {
         private IMutableModelList<ListChild> children;
 
-        public ListParentImpl(SymbolId green, MutableModel model)
-            : base(green, model)
+        public ListParentImpl(SymbolId green, MutableModel model, bool created)
+            : base(green, model, created)
         {
-            this.MAttachProperty(TestModelDescriptor.ListParent.NameProperty);
-            this.MAttachProperty(TestModelDescriptor.ListParent.ChildrenProperty);
-            this.MInit();
+            if (!created)
+            {
+                this.MAttachProperty(TestModelDescriptor.ListParent.NameProperty);
+                this.MAttachProperty(TestModelDescriptor.ListParent.ChildrenProperty);
+                this.MInit();
+            }
         }
 
         protected override void MDoInit()
@@ -1036,12 +1048,15 @@ namespace MetaDslx.Core.Immutable.Test
     {
         private IMutableModelList<Role> roles;
 
-        public UserImpl(SymbolId green, MutableModel model)
-            : base(green, model)
+        public UserImpl(SymbolId green, MutableModel model, bool created)
+            : base(green, model, created)
         {
-            this.MAttachProperty(TestModelDescriptor.User.NameProperty);
-            this.MAttachProperty(TestModelDescriptor.User.RolesProperty);
-            this.MInit();
+            if (!created)
+            {
+                this.MAttachProperty(TestModelDescriptor.User.NameProperty);
+                this.MAttachProperty(TestModelDescriptor.User.RolesProperty);
+                this.MInit();
+            }
         }
 
         protected override void MDoInit()
@@ -1075,12 +1090,15 @@ namespace MetaDslx.Core.Immutable.Test
     {
         private IMutableModelList<User> roles;
 
-        public RoleImpl(SymbolId green, MutableModel model)
-            : base(green, model)
+        public RoleImpl(SymbolId green, MutableModel model, bool created)
+            : base(green, model, created)
         {
-            this.MAttachProperty(TestModelDescriptor.Role.NameProperty);
-            this.MAttachProperty(TestModelDescriptor.Role.UsersProperty);
-            this.MInit();
+            if (!created)
+            {
+                this.MAttachProperty(TestModelDescriptor.Role.NameProperty);
+                this.MAttachProperty(TestModelDescriptor.Role.UsersProperty);
+                this.MInit();
+            }
         }
 
         protected override void MDoInit()
@@ -1114,12 +1132,15 @@ namespace MetaDslx.Core.Immutable.Test
     {
         private IMutableModelList<Pet> pets;
 
-        public PersonImpl(SymbolId green, MutableModel model)
-            : base(green, model)
+        public PersonImpl(SymbolId green, MutableModel model, bool created)
+            : base(green, model, created)
         {
-            this.MAttachProperty(TestModelDescriptor.Person.NameProperty);
-            this.MAttachProperty(TestModelDescriptor.Person.PetsProperty);
-            this.MInit();
+            if (!created)
+            {
+                this.MAttachProperty(TestModelDescriptor.Person.NameProperty);
+                this.MAttachProperty(TestModelDescriptor.Person.PetsProperty);
+                this.MInit();
+            }
         }
 
         protected override void MDoInit()
@@ -1154,13 +1175,16 @@ namespace MetaDslx.Core.Immutable.Test
         private IMutableModelList<Pet> pets;
         private IMutableModelList<Dog> dogs;
 
-        public StudentImpl(SymbolId green, MutableModel model)
-            : base(green, model)
+        public StudentImpl(SymbolId green, MutableModel model, bool created)
+            : base(green, model, created)
         {
-            this.MAttachProperty(TestModelDescriptor.Person.NameProperty);
-            this.MAttachProperty(TestModelDescriptor.Person.PetsProperty);
-            this.MAttachProperty(TestModelDescriptor.Student.DogsProperty);
-            this.MInit();
+            if (!created)
+            {
+                this.MAttachProperty(TestModelDescriptor.Person.NameProperty);
+                this.MAttachProperty(TestModelDescriptor.Person.PetsProperty);
+                this.MAttachProperty(TestModelDescriptor.Student.DogsProperty);
+                this.MInit();
+            }
         }
 
         protected override void MDoInit()
@@ -1197,12 +1221,15 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class PetImpl : MutableSymbolBase, Pet
     {
-        public PetImpl(SymbolId green, MutableModel model)
-            : base(green, model)
+        public PetImpl(SymbolId green, MutableModel model, bool created)
+            : base(green, model, created)
         {
-            this.MAttachProperty(TestModelDescriptor.Pet.NameProperty);
-            this.MAttachProperty(TestModelDescriptor.Pet.OwnerProperty);
-            this.MInit();
+            if (!created)
+            {
+                this.MAttachProperty(TestModelDescriptor.Pet.NameProperty);
+                this.MAttachProperty(TestModelDescriptor.Pet.OwnerProperty);
+                this.MInit();
+            }
         }
 
         protected override void MDoInit()
@@ -1234,13 +1261,16 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class DogImpl : MutableSymbolBase, Dog
     {
-        public DogImpl(SymbolId green, MutableModel model)
-            : base(green, model)
+        public DogImpl(SymbolId green, MutableModel model, bool created)
+            : base(green, model, created)
         {
-            this.MAttachProperty(TestModelDescriptor.Pet.NameProperty);
-            this.MAttachProperty(TestModelDescriptor.Pet.OwnerProperty);
-            this.MAttachProperty(TestModelDescriptor.Dog.FriendProperty);
-            this.MInit();
+            if (!created)
+            {
+                this.MAttachProperty(TestModelDescriptor.Pet.NameProperty);
+                this.MAttachProperty(TestModelDescriptor.Pet.OwnerProperty);
+                this.MAttachProperty(TestModelDescriptor.Dog.FriendProperty);
+                this.MInit();
+            }
         }
 
         protected override void MDoInit()

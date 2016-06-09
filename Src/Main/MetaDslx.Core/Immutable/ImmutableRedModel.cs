@@ -178,7 +178,7 @@ namespace MetaDslx.Core.Immutable
         private IImmutableSymbol CreateRedSymbol(SymbolId green)
         {
             ImmutableDictionary<SymbolId, IImmutableSymbol> redSymbols = this.symbols;
-            IImmutableSymbol red = green.CreateImmutable(this, green);
+            IImmutableSymbol red = green.CreateImmutable(this);
             redSymbols = redSymbols.Add(green, red);
             Interlocked.Exchange(ref this.symbols, redSymbols);
             IImmutableSymbol result;
@@ -201,7 +201,7 @@ namespace MetaDslx.Core.Immutable
                 {
                     if (!redSymbols.ContainsKey(greenId))
                     {
-                        IImmutableSymbol red = greenId.CreateImmutable(this, greenId);
+                        IImmutableSymbol red = greenId.CreateImmutable(this);
                         redSymbols = redSymbols.Add(greenId, red);
                     }
                 }
@@ -500,6 +500,11 @@ namespace MetaDslx.Core.Immutable
         private MutableModelState state;
         private ModelTransaction transaction;
 
+        public MutableModel()
+            : this(GreenModel.Empty, null, false, null)
+        {
+        }
+
         internal MutableModel(GreenModel green, MutableModelGroup group, bool readOnly, ImmutableModel immutableModel)
         {
             this.id = green.Id;
@@ -645,7 +650,7 @@ namespace MetaDslx.Core.Immutable
             }
             else if (value is SymbolId)
             {
-                return this.GetRedSymbol((SymbolId)value);
+                return this.GetRedSymbol((SymbolId)value, true);
             }
             else
             {
@@ -657,11 +662,11 @@ namespace MetaDslx.Core.Immutable
         {
             if (symbol is ImmutableSymbolBase)
             {
-                return this.GetRedSymbol(((ImmutableSymbolBase)symbol).Id);
+                return this.GetRedSymbol(((ImmutableSymbolBase)symbol).Id, true);
             }
             if (symbol is MutableSymbolBase)
             {
-                return this.GetRedSymbol(((MutableSymbolBase)symbol).Id);
+                return this.GetRedSymbol(((MutableSymbolBase)symbol).Id, true);
             }
             return null;
         }
@@ -679,7 +684,7 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        internal IMutableSymbol GetRedSymbol(SymbolId id)
+        internal IMutableSymbol GetRedSymbol(SymbolId id, bool created)
         {
             if (id == null) return null;
             if (!this.Green.ContainsSymbol(id)) return null;
@@ -688,7 +693,7 @@ namespace MetaDslx.Core.Immutable
             {
                 return red;
             }
-            red = id.CreateMutable(this, id);
+            red = id.CreateMutable(this, created);
             this.Update(this.state.WithSymbol(id, red));
             return red;
         }
@@ -701,7 +706,7 @@ namespace MetaDslx.Core.Immutable
             {
                 if (!redSymbols.ContainsKey(greenId))
                 {
-                    IMutableSymbol red = greenId.CreateMutable(this, greenId);
+                    IMutableSymbol red = greenId.CreateMutable(this, true);
                     redSymbols = redSymbols.Add(greenId, red);
                 }
             }
@@ -774,7 +779,7 @@ namespace MetaDslx.Core.Immutable
         {
             this.EnsureWritable();
             this.GreenTransaction.AddSymbol(this.id, id);
-            return this.GetRedSymbol(id);
+            return this.GetRedSymbol(id, false);
         }
 
         public void EvaluateLazyValues()
@@ -906,7 +911,7 @@ namespace MetaDslx.Core.Immutable
         internal IMutableSymbol MParent(MutableSymbolBase redSymbol)
         {
             GreenSymbol greenSymbol = this.GreenTransaction.GetSymbol(this.id, redSymbol.Id);
-            return this.GetRedSymbol(greenSymbol.Parent);
+            return this.GetRedSymbol(greenSymbol.Parent, true);
         }
 
         internal IReadOnlyList<IMutableSymbol> MChildren(MutableSymbolBase redSymbol)
@@ -1271,6 +1276,12 @@ namespace MetaDslx.Core.Immutable
     {
         private MutableModelGroupState state;
         private ModelTransaction transaction = null;
+
+        public MutableModelGroup()
+            : this(GreenModelGroup.Empty, null)
+        {
+
+        }
 
         internal MutableModelGroup(GreenModelGroup green, ImmutableModelGroup immutableGroup)
         {

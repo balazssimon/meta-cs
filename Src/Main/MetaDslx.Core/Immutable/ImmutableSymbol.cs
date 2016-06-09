@@ -14,7 +14,7 @@ namespace MetaDslx.Core.Immutable
         private SymbolId id;
         private ImmutableModel model;
 
-        protected ImmutableSymbolBase(ImmutableModel model, SymbolId id)
+        protected ImmutableSymbolBase(SymbolId id, ImmutableModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             if (id == null) throw new ArgumentNullException(nameof(id));
