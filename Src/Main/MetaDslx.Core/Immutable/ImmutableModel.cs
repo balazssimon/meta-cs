@@ -120,9 +120,9 @@ namespace MetaDslx.Core.Immutable
 
     public interface IMutableModelList<T> : IList<T>
     {
-        void LazyAdd(Func<T> lazy);
-        void LazyAddRange(Func<IEnumerable<T>> lazy);
-        void LazyAddRange(IEnumerable<Func<T>> lazy);
+        void AddLazy(Func<T> lazy);
+        void AddRangeLazy(Func<IEnumerable<T>> lazy);
+        void AddRangeLazy(IEnumerable<Func<T>> lazy);
         bool HasLazy();
         void ClearLazy();
     }

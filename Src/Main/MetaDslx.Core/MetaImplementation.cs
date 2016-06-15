@@ -452,7 +452,7 @@ namespace MetaDslx.Core
         public static string CSharpName(this MetaModel @this, ClassKind classKind = ClassKind.Normal)
         {
             if (@this == null) return string.Empty;
-            return @this.Name;
+            return GetPrefix(classKind) + @this.Name + GetSuffix(classKind);
         }
 
         public static string CSharpFullName(this MetaModel @this, ClassKind classKind = ClassKind.Normal)

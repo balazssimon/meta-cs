@@ -136,24 +136,24 @@ namespace MetaDslx.Core.Immutable
             this.model.AddItem(this.parent.Id, this.property, this.model.ToGreenValue(item), !this.parent.MIsCreated);
         }
 
-        public void LazyAdd(Func<T> lazy)
+        public void AddLazy(Func<T> lazy)
         {
             if (lazy == null) return;
             this.model.AddLazyItem(this.parent.Id, this.property, new GreenLazyValue(() => lazy()), !this.parent.MIsCreated);
         }
 
-        public void LazyAddRange(Func<IEnumerable<T>> lazy)
+        public void AddRangeLazy(Func<IEnumerable<T>> lazy)
         {
             if (lazy == null) return;
             this.model.AddLazyItem(this.parent.Id, this.property, new GreenLazyList(() => lazy().Select(v => (object)v)), !this.parent.MIsCreated);
         }
 
-        public void LazyAddRange(IEnumerable<Func<T>> lazy)
+        public void AddRangeLazy(IEnumerable<Func<T>> lazy)
         {
             if (lazy == null) return;
             foreach (var item in lazy)
             {
-                this.LazyAdd(item);
+                this.AddLazy(item);
             }
         }
 

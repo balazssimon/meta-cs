@@ -227,7 +227,7 @@ namespace MetaDslx.Core.Immutable
                 get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNamespace;*/ }
             }
         
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), "Namespaces")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace), "Namespaces")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ParentProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Parent", typeof(MetaDescriptor.MetaNamespace),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespace), null, typeof(global::MetaDslx.Core.Immutable.MetaNamespace)),
@@ -240,7 +240,7 @@ namespace MetaDslx.Core.Immutable
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), typeof(global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>), typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder)));
             
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaModel), "Namespace")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel), "Namespace")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty MetaModelProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("MetaModel", typeof(MetaDescriptor.MetaNamespace),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaModel), null, typeof(global::MetaDslx.Core.Immutable.MetaNamespace)),
@@ -248,7 +248,7 @@ namespace MetaDslx.Core.Immutable
             
             [ScopeEntry]
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), "Parent")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace), "Parent")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty NamespacesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Namespaces", typeof(MetaDescriptor.MetaNamespace),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespace), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaNamespace>), typeof(global::MetaDslx.Core.Immutable.MetaNamespace)),
@@ -256,7 +256,7 @@ namespace MetaDslx.Core.Immutable
             
             [ScopeEntry]
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaDeclaration), "Namespace")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaDeclaration), "Namespace")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty DeclarationsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Declarations", typeof(MetaDescriptor.MetaNamespace),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaDeclaration), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaDeclaration>), typeof(global::MetaDslx.Core.Immutable.MetaNamespace)),
@@ -272,7 +272,7 @@ namespace MetaDslx.Core.Immutable
                 get { return null;/*global::MetaDslx.Core.MetaInstance.MetaDeclaration;*/ }
             }
         
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), "Declarations")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace), "Declarations")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty NamespaceProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Namespace", typeof(MetaDescriptor.MetaDeclaration),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespace), null, typeof(global::MetaDslx.Core.Immutable.MetaDeclaration)),
@@ -299,7 +299,7 @@ namespace MetaDslx.Core.Immutable
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null, typeof(global::MetaDslx.Core.Immutable.MetaModel)),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null, typeof(global::MetaDslx.Core.Immutable.MetaModelBuilder)));
             
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNamespace), "MetaModel")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace), "MetaModel")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty NamespaceProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Namespace", typeof(MetaDescriptor.MetaModel),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespace), null, typeof(global::MetaDslx.Core.Immutable.MetaModel)),
@@ -362,7 +362,7 @@ namespace MetaDslx.Core.Immutable
         
             [ScopeEntry]
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnumLiteral), "Enum")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnumLiteral), "Enum")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty EnumLiteralsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("EnumLiterals", typeof(MetaDescriptor.MetaEnum),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaEnumLiteral), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaEnumLiteral>), typeof(global::MetaDslx.Core.Immutable.MetaEnum)),
@@ -370,7 +370,7 @@ namespace MetaDslx.Core.Immutable
             
             [ScopeEntry]
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaOperation), "Parent")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperation), "Parent")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty OperationsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Operations", typeof(MetaDescriptor.MetaEnum),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaOperation), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation>), typeof(global::MetaDslx.Core.Immutable.MetaEnum)),
@@ -386,7 +386,7 @@ namespace MetaDslx.Core.Immutable
                 get { return null;/*global::MetaDslx.Core.MetaInstance.MetaEnumLiteral;*/ }
             }
         
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnum), "EnumLiterals")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum), "EnumLiterals")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty EnumProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Enum", typeof(MetaDescriptor.MetaEnumLiteral),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaEnum), null, typeof(global::MetaDslx.Core.Immutable.MetaEnumLiteral)),
@@ -415,7 +415,7 @@ namespace MetaDslx.Core.Immutable
             
             [ScopeEntry]
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "Class")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "Class")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty PropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Properties", typeof(MetaDescriptor.MetaClass),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>), typeof(global::MetaDslx.Core.Immutable.MetaClass)),
@@ -423,14 +423,14 @@ namespace MetaDslx.Core.Immutable
             
             [ScopeEntry]
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaOperation), "Parent")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaOperation), "Parent")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty OperationsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Operations", typeof(MetaDescriptor.MetaClass),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaOperation), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation>), typeof(global::MetaDslx.Core.Immutable.MetaClass)),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaOperationBuilder), typeof(global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder>), typeof(global::MetaDslx.Core.Immutable.MetaClassBuilder)));
             
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstructor), "Parent")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor), "Parent")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ConstructorProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Constructor", typeof(MetaDescriptor.MetaClass),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaConstructor), null, typeof(global::MetaDslx.Core.Immutable.MetaClass)),
@@ -468,14 +468,14 @@ namespace MetaDslx.Core.Immutable
         
             [Type]
             [ReadonlyAttribute]
-            [RedefinesAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaTypedElement), "Type")]
+            [RedefinesAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaTypedElement), "Type")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty TypeProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Type", typeof(MetaDescriptor.MetaFunction),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaFunctionType), null, typeof(global::MetaDslx.Core.Immutable.MetaFunction)),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder), null, typeof(global::MetaDslx.Core.Immutable.MetaFunctionBuilder)));
             
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaParameter), "Function")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaParameter), "Function")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ParametersProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Parameters", typeof(MetaDescriptor.MetaFunction),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaParameter), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaParameter>), typeof(global::MetaDslx.Core.Immutable.MetaFunction)),
@@ -506,8 +506,8 @@ namespace MetaDslx.Core.Immutable
                 get { return null;/*global::MetaDslx.Core.MetaInstance.MetaOperation;*/ }
             }
         
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), "Operations")]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaEnum), "Operations")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass), "Operations")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaEnum), "Operations")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ParentProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Parent", typeof(MetaDescriptor.MetaOperation),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaType), null, typeof(global::MetaDslx.Core.Immutable.MetaOperation)),
@@ -539,14 +539,14 @@ namespace MetaDslx.Core.Immutable
                 get { return null;/*global::MetaDslx.Core.MetaInstance.MetaConstructor;*/ }
             }
         
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), "Constructor")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass), "Constructor")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ParentProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Parent", typeof(MetaDescriptor.MetaConstructor),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClass), null, typeof(global::MetaDslx.Core.Immutable.MetaConstructor)),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClassBuilder), null, typeof(global::MetaDslx.Core.Immutable.MetaConstructorBuilder)));
             
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaPropertyInitializer), "Constructor")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaPropertyInitializer), "Constructor")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty InitializersProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Initializers", typeof(MetaDescriptor.MetaConstructor),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyInitializer), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyInitializer>), typeof(global::MetaDslx.Core.Immutable.MetaConstructor)),
@@ -562,7 +562,7 @@ namespace MetaDslx.Core.Immutable
                 get { return null;/*global::MetaDslx.Core.MetaInstance.MetaParameter;*/ }
             }
         
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaFunction), "Parameters")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunction), "Parameters")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty FunctionProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Function", typeof(MetaDescriptor.MetaParameter),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaFunction), null, typeof(global::MetaDslx.Core.Immutable.MetaParameter)),
@@ -583,37 +583,37 @@ namespace MetaDslx.Core.Immutable
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyKind), null, typeof(global::MetaDslx.Core.Immutable.MetaProperty)),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyKind), null, typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder)));
             
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaClass), "Properties")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass), "Properties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ClassProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Class", typeof(MetaDescriptor.MetaProperty),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClass), null, typeof(global::MetaDslx.Core.Immutable.MetaProperty)),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClassBuilder), null, typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder)));
             
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "OppositeProperties")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "OppositeProperties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty OppositePropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("OppositeProperties", typeof(MetaDescriptor.MetaProperty),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>), typeof(global::MetaDslx.Core.Immutable.MetaProperty)),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>), typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder)));
             
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "SubsettingProperties")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "SubsettingProperties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty SubsettedPropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("SubsettedProperties", typeof(MetaDescriptor.MetaProperty),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>), typeof(global::MetaDslx.Core.Immutable.MetaProperty)),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>), typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder)));
             
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "SubsettedProperties")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "SubsettedProperties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty SubsettingPropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("SubsettingProperties", typeof(MetaDescriptor.MetaProperty),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>), typeof(global::MetaDslx.Core.Immutable.MetaProperty)),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>), typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder)));
             
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "RedefiningProperties")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "RedefiningProperties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty RedefinedPropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("RedefinedProperties", typeof(MetaDescriptor.MetaProperty),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>), typeof(global::MetaDslx.Core.Immutable.MetaProperty)),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.IMutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>), typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder)));
             
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaProperty), "RedefinedProperties")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "RedefinedProperties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty RedefiningPropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("RedefiningProperties", typeof(MetaDescriptor.MetaProperty),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>), typeof(global::MetaDslx.Core.Immutable.MetaProperty)),
@@ -629,7 +629,7 @@ namespace MetaDslx.Core.Immutable
                 get { return null;/*global::MetaDslx.Core.MetaInstance.MetaPropertyInitializer;*/ }
             }
         
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaConstructor), "Initializers")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor), "Initializers")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ConstructorProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Constructor", typeof(MetaDescriptor.MetaPropertyInitializer),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaConstructor), null, typeof(global::MetaDslx.Core.Immutable.MetaPropertyInitializer)),
@@ -987,7 +987,7 @@ namespace MetaDslx.Core.Immutable
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClassBuilder), null, typeof(global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder)));
             
             [ContainmentAttribute]
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewPropertyInitializer), "Parent")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewPropertyInitializer), "Parent")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty PropertyInitializersProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("PropertyInitializers", typeof(MetaDescriptor.MetaNewExpression),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNewPropertyInitializer), typeof(global::MetaDslx.Core.Immutable.IImmutableModelList<global::MetaDslx.Core.Immutable.MetaNewPropertyInitializer>), typeof(global::MetaDslx.Core.Immutable.MetaNewExpression)),
@@ -1003,7 +1003,7 @@ namespace MetaDslx.Core.Immutable
                 get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNewPropertyInitializer;*/ }
             }
         
-            [OppositeAttribute(typeof(global::MetaDslx.Core.MetaDescriptor.MetaNewExpression), "PropertyInitializers")]
+            [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNewExpression), "PropertyInitializers")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ParentProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register("Parent", typeof(MetaDescriptor.MetaNewPropertyInitializer),
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNewExpression), null, typeof(global::MetaDslx.Core.Immutable.MetaNewPropertyInitializer)),
@@ -39669,822 +39669,6314 @@ namespace MetaDslx.Core.Immutable
         }
     }
     
-	public static class MetaInstance
+	internal class MetaBuilderInstance
 	{
-	    private static global::MetaDslx.Core.Immutable.ImmutableModel model;
+		internal static MetaBuilderInstance instance = new MetaBuilderInstance();
 	
-	    public static global::MetaDslx.Core.Immutable.ImmutableModel Model
+		internal global::MetaDslx.Core.Immutable.MetaModelBuilder metaModel;
+		internal global::MetaDslx.Core.Immutable.MutableModel model;
+	
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Object;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder String;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Int;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Long;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Float;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Double;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Byte;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Bool;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Void;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder None;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Any;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Error;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder ModelObject;
+	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder DefinitionList;
+	    public readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder ModelObjectList;
+	
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp1;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp2;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp3;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp4;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp5;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp6;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp7;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp8;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp9;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp10;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp11;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp12;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp13;
+		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp14;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp15;
+		private readonly global::MetaDslx.Core.Immutable.MetaNamespaceBuilder __tmp16;
+		private readonly global::MetaDslx.Core.Immutable.MetaNamespaceBuilder __tmp17;
+		private readonly global::MetaDslx.Core.Immutable.MetaModelBuilder __tmp18;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp19;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp20;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp21;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp22;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp23;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp24;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp25;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp26;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp27;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp28;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp29;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp30;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp31;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp32;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp33;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp34;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp35;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp36;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp37;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp38;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp39;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp40;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp41;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp42;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp43;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp44;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp45;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp46;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp47;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp48;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp49;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp50;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp51;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp52;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp53;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp54;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp55;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp56;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp57;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp58;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp59;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp60;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp61;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp62;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp63;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp64;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp65;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp66;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp67;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp68;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp69;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp70;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp71;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp72;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp73;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp74;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp75;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp76;
+		private readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp77;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp78;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp79;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp80;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp81;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder TypeOf;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp82;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp83;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp84;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp85;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp86;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp87;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder GetValueType;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp88;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp89;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp90;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp91;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp92;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp93;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder GetReturnType;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp94;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp95;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp96;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp97;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp98;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp99;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder CurrentType;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp100;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp101;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp102;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp103;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp104;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp105;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder TypeCheck;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp106;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp107;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp108;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp109;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp110;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp111;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder Balance;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp112;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp113;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp114;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp115;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp116;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp117;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp118;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder Resolve1;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp119;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp120;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp121;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp122;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp123;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp124;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder Resolve2;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp125;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp126;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp127;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp128;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp129;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp130;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp131;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ResolveType1;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp132;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp133;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp134;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp135;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp136;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp137;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ResolveType2;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp138;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp139;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp140;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp141;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp142;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp143;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp144;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ResolveName1;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp145;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp146;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp147;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp148;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp149;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp150;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ResolveName2;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp151;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp152;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp153;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp154;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp155;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp156;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp157;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ToDefinitionList;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp158;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp159;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp160;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp161;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp162;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp163;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder Bind1;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp164;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp165;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp166;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp167;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp168;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp169;
+		internal readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder Bind2;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp170;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp171;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp172;
+		private readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp173;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAnnotatedElement;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp174;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaAnnotatedElement_AnnotationsProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaDocumentedElement;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaDocumentedElement_DocumentationProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp175;
+		private readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp176;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp177;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp178;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNamedElement;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp179;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamedElement_NameProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypedElement;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp180;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypedElement_TypeProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp181;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaType;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAnnotation;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp182;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaAnnotation_PropertiesProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAnnotationProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaAnnotationProperty_ValueProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp183;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp184;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp185;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp186;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNamespace;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamespace_ParentProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp187;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp188;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamespace_UsingsProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamespace_MetaModelProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp189;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp190;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamespace_NamespacesProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp191;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp192;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamespace_DeclarationsProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaDeclaration;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp193;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp194;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp195;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp196;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaDeclaration_NamespaceProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaDeclaration_ModelProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaModel;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaModel_UriProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaModel_NamespaceProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaEnumBuilder MetaCollectionKind;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp197;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp198;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp199;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp200;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaCollectionType;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaCollectionType_KindProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaCollectionType_InnerTypeProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNullableType;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNullableType_InnerTypeProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPrimitiveType;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp201;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaEnum;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp202;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp203;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaEnum_EnumLiteralsProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp204;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp205;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaEnum_OperationsProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaEnumLiteral;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp206;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp207;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp208;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaEnumLiteral_EnumProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp209;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaClass;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaClass_IsAbstractProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp210;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp211;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaClass_SuperClassesProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp212;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp213;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaClass_PropertiesProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp214;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp215;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaClass_OperationsProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaClass_ConstructorProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp216;
+		private readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp217;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp218;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp219;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp220;
+		private readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp221;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp222;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp223;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp224;
+		private readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp225;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp226;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp227;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp228;
+		private readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp229;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp230;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp231;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp232;
+		private readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp233;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp234;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp235;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaFunctionType;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp236;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunctionType_ParameterTypesProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunctionType_ReturnTypeProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaFunction;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp237;
+		private readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp238;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunction_TypeProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp239;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunction_ParametersProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunction_ReturnTypeProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaGlobalFunction;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOperation;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaOperation_ParentProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaConstant;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp240;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp241;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp242;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConstant_ValueProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaConstructor;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConstructor_ParentProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp243;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConstructor_InitializersProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaParameter;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaParameter_FunctionProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaEnumBuilder MetaPropertyKind;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp244;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp245;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp246;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp247;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp248;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp249;
+		private readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp250;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_KindProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_ClassProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp251;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_OppositePropertiesProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp252;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_SubsettedPropertiesProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp253;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_SubsettingPropertiesProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp254;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_RedefinedPropertiesProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp255;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_RedefiningPropertiesProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPropertyInitializer;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaPropertyInitializer_ConstructorProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaPropertyInitializer_PropertyNameProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaPropertyInitializer_PropertyContextProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaPropertyInitializer_PropertyProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaPropertyInitializer_ValueProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp256;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp257;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeAsExpressionBuilder __tmp258;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp259;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp260;
+		private readonly global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder __tmp261;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp262;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp263;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp264;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp265;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp266;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp267;
+		private readonly global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder __tmp268;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp269;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp270;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp271;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp272;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp273;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaSynthetizedPropertyInitializer;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaInheritedPropertyInitializer;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaInheritedPropertyInitializer_ObjectNameProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaInheritedPropertyInitializer_ObjectProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp274;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp275;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp276;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp277;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp278;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp279;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp280;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp281;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeAsExpressionBuilder __tmp282;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp283;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp284;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp285;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp286;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp287;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp288;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp289;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp290;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp291;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp292;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp293;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp294;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp295;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp296;
+		private readonly global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder __tmp297;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaExpression_NoTypeErrorProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaExpression_ExpectedTypeProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBracketExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp298;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp299;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp300;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp301;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp302;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp303;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBracketExpression_ExpressionProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBoundExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp304;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp305;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp306;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp307;
+		private readonly global::MetaDslx.Core.Immutable.MetaConditionalExpressionBuilder __tmp308;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp309;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp310;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp311;
+		private readonly global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder __tmp312;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp313;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp314;
+		private readonly global::MetaDslx.Core.Immutable.MetaNullExpressionBuilder __tmp315;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp316;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp317;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp318;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp319;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBoundExpression_UniqueDefinitionProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp320;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBoundExpression_ArgumentsProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBoundExpression_DefinitionsProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBoundExpression_DefinitionProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaThisExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp321;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp322;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp323;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp324;
+		private readonly global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder __tmp325;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNullExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp326;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp327;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp328;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypeConversionExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypeConversionExpression_TypeReferenceProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypeConversionExpression_ExpressionProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp329;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp330;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp331;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp332;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp333;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypeAsExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypeCastExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypeCheckExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypeCheckExpression_TypeReferenceProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypeCheckExpression_ExpressionProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp334;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp335;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp336;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp337;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp338;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypeOfExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypeOfExpression_TypeReferenceProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp339;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp340;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp341;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaConditionalExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConditionalExpression_ConditionProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConditionalExpression_BalancedTypeProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConditionalExpression_ThenProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConditionalExpression_ElseProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp342;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp343;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp344;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp345;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp346;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp347;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp348;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp349;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp350;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp351;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp352;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp353;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp354;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp355;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaConstantExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConstantExpression_ValueProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp356;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp357;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp358;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp359;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp360;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaIdentifierExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaIdentifierExpression_NameProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp361;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp362;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp363;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp364;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp365;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaMemberAccessExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaMemberAccessExpression_ExpressionProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaMemberAccessExpression_NameProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp366;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp367;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp368;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp369;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp370;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp371;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp372;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp373;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp374;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaFunctionCallExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunctionCallExpression_ExpressionProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp375;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp376;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp377;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp378;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp379;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp380;
+		private readonly global::MetaDslx.Core.Immutable.MetaConditionalExpressionBuilder __tmp381;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeCheckExpressionBuilder __tmp382;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp383;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp384;
+		private readonly global::MetaDslx.Core.Immutable.MetaBracketExpressionBuilder __tmp385;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeCastExpressionBuilder __tmp386;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp387;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp388;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp389;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp390;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp391;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp392;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp393;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp394;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp395;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaIndexerExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaIndexerExpression_ExpressionProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp396;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp397;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp398;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp399;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp400;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp401;
+		private readonly global::MetaDslx.Core.Immutable.MetaConditionalExpressionBuilder __tmp402;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeCheckExpressionBuilder __tmp403;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp404;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp405;
+		private readonly global::MetaDslx.Core.Immutable.MetaBracketExpressionBuilder __tmp406;
+		private readonly global::MetaDslx.Core.Immutable.MetaTypeCastExpressionBuilder __tmp407;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp408;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp409;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp410;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp411;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp412;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNewExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewExpression_TypeReferenceProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp413;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewExpression_PropertyInitializersProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp414;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp415;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp416;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNewPropertyInitializer;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewPropertyInitializer_ParentProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewPropertyInitializer_PropertyNameProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewPropertyInitializer_ValueProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewPropertyInitializer_PropertyProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp417;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp418;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp419;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp420;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp421;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp422;
+		private readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp423;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp424;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp425;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp426;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp427;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp428;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp429;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNewCollectionExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewCollectionExpression_TypeReferenceProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp430;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewCollectionExpression_ValuesProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp431;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp432;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp433;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOperatorExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaOperatorExpression_NameProperty;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp434;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp435;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp436;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp437;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp438;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaUnaryExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp439;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaUnaryExpression_ExpressionProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaUnaryPlusExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp440;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp441;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp442;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNegateExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp443;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp444;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp445;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOnesComplementExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp446;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp447;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp448;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNotExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp449;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp450;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp451;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaUnaryAssignExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPostIncrementAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp452;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp453;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp454;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPostDecrementAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp455;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp456;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp457;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPreIncrementAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp458;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp459;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp460;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPreDecrementAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp461;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp462;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp463;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBinaryExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp464;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBinaryExpression_LeftProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBinaryExpression_RightProperty;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBinaryArithmeticExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaMultiplyExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp465;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp466;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp467;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaDivideExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp468;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp469;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp470;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaModuloExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp471;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp472;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp473;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAddExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp474;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp475;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp476;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaSubtractExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp477;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp478;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp479;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaLeftShiftExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp480;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp481;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp482;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaRightShiftExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp483;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp484;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp485;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBinaryComparisonExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaLessThanExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp486;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp487;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp488;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaLessThanOrEqualExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp489;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp490;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp491;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaGreaterThanExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp492;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp493;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp494;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaGreaterThanOrEqualExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp495;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp496;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp497;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaEqualExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp498;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp499;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp500;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNotEqualExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp501;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp502;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp503;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBinaryLogicalExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAndExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp504;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp505;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp506;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOrExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp507;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp508;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp509;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaExclusiveOrExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp510;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp511;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp512;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAndAlsoExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp513;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp514;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp515;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOrElseExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp516;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp517;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp518;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNullCoalescingExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp519;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp520;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp521;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAssignmentExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp522;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp523;
+		private readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp524;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp525;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp526;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp527;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp528;
+		private readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp529;
+		private readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp530;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp531;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp532;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp533;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaArithmeticAssignmentExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaMultiplyAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp534;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp535;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp536;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaDivideAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp537;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp538;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp539;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaModuloAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp540;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp541;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp542;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAddAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp543;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp544;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp545;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaSubtractAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp546;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp547;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp548;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaLeftShiftAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp549;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp550;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp551;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaRightShiftAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp552;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp553;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp554;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaLogicalAssignmentExpression;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAndAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp555;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp556;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp557;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaExclusiveOrAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp558;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp559;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp560;
+		internal readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOrAssignExpression;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp561;
+		private readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp562;
+		private readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp563;
+		
+	
+	    private MetaBuilderInstance()
 	    {
-	        get { return MetaInstance.model; }
+			global::MetaDslx.Core.Immutable.MetaFactory factory = new global::MetaDslx.Core.Immutable.MetaFactory(model, false);
+	
+	        Object = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "object"));
+	        String = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "string"));
+	        Int = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "int"));
+	        Long = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "long"));
+	        Float = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "float"));
+	        Double = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "double"));
+	        Byte = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "byte"));
+	        Bool = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "bool"));
+	        Void = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "void"));
+	        None = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "*none*"));
+	        Any = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "*any*"));
+	        Error = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "*error*"));
+	        ModelObject = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "ModelObject"));
+	        DefinitionList = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "DefinitionList"));
+	        ModelObjectList = factory.MetaCollectionType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaCollectionType.InnerTypeProperty, () => global::MetaDslx.Core.Immutable.MetaInstance.ModelObject.ToMutable()));
+	
+			__tmp1 = factory.MetaPrimitiveType();
+			__tmp2 = factory.MetaPrimitiveType();
+			__tmp3 = factory.MetaPrimitiveType();
+			__tmp4 = factory.MetaPrimitiveType();
+			__tmp5 = factory.MetaPrimitiveType();
+			__tmp6 = factory.MetaPrimitiveType();
+			__tmp7 = factory.MetaPrimitiveType();
+			__tmp8 = factory.MetaPrimitiveType();
+			__tmp9 = factory.MetaPrimitiveType();
+			__tmp10 = factory.MetaPrimitiveType();
+			__tmp11 = factory.MetaPrimitiveType();
+			__tmp12 = factory.MetaPrimitiveType();
+			__tmp13 = factory.MetaPrimitiveType();
+			__tmp14 = factory.MetaPrimitiveType();
+			__tmp15 = factory.MetaCollectionType();
+			__tmp16 = factory.MetaNamespace();
+			__tmp17 = factory.MetaNamespace();
+			__tmp18 = factory.MetaModel();
+			metaModel = __tmp18;
+			__tmp19 = factory.MetaConstant();
+			__tmp20 = factory.MetaNewExpression();
+			__tmp21 = factory.MetaNewPropertyInitializer();
+			__tmp22 = factory.MetaConstantExpression();
+			__tmp23 = factory.MetaConstant();
+			__tmp24 = factory.MetaNewExpression();
+			__tmp25 = factory.MetaNewPropertyInitializer();
+			__tmp26 = factory.MetaConstantExpression();
+			__tmp27 = factory.MetaConstant();
+			__tmp28 = factory.MetaNewExpression();
+			__tmp29 = factory.MetaNewPropertyInitializer();
+			__tmp30 = factory.MetaConstantExpression();
+			__tmp31 = factory.MetaConstant();
+			__tmp32 = factory.MetaNewExpression();
+			__tmp33 = factory.MetaNewPropertyInitializer();
+			__tmp34 = factory.MetaConstantExpression();
+			__tmp35 = factory.MetaConstant();
+			__tmp36 = factory.MetaNewExpression();
+			__tmp37 = factory.MetaNewPropertyInitializer();
+			__tmp38 = factory.MetaConstantExpression();
+			__tmp39 = factory.MetaConstant();
+			__tmp40 = factory.MetaNewExpression();
+			__tmp41 = factory.MetaNewPropertyInitializer();
+			__tmp42 = factory.MetaConstantExpression();
+			__tmp43 = factory.MetaConstant();
+			__tmp44 = factory.MetaNewExpression();
+			__tmp45 = factory.MetaNewPropertyInitializer();
+			__tmp46 = factory.MetaConstantExpression();
+			__tmp47 = factory.MetaConstant();
+			__tmp48 = factory.MetaNewExpression();
+			__tmp49 = factory.MetaNewPropertyInitializer();
+			__tmp50 = factory.MetaConstantExpression();
+			__tmp51 = factory.MetaConstant();
+			__tmp52 = factory.MetaNewExpression();
+			__tmp53 = factory.MetaNewPropertyInitializer();
+			__tmp54 = factory.MetaConstantExpression();
+			__tmp55 = factory.MetaConstant();
+			__tmp56 = factory.MetaNewExpression();
+			__tmp57 = factory.MetaNewPropertyInitializer();
+			__tmp58 = factory.MetaConstantExpression();
+			__tmp59 = factory.MetaConstant();
+			__tmp60 = factory.MetaNewExpression();
+			__tmp61 = factory.MetaNewPropertyInitializer();
+			__tmp62 = factory.MetaConstantExpression();
+			__tmp63 = factory.MetaConstant();
+			__tmp64 = factory.MetaNewExpression();
+			__tmp65 = factory.MetaNewPropertyInitializer();
+			__tmp66 = factory.MetaConstantExpression();
+			__tmp67 = factory.MetaConstant();
+			__tmp68 = factory.MetaNewExpression();
+			__tmp69 = factory.MetaNewPropertyInitializer();
+			__tmp70 = factory.MetaConstantExpression();
+			__tmp71 = factory.MetaConstant();
+			__tmp72 = factory.MetaNewExpression();
+			__tmp73 = factory.MetaNewPropertyInitializer();
+			__tmp74 = factory.MetaConstantExpression();
+			__tmp75 = factory.MetaConstant();
+			__tmp76 = factory.MetaNewExpression();
+			__tmp77 = factory.MetaNewPropertyInitializer();
+			__tmp78 = factory.MetaTypeOfExpression();
+			__tmp79 = factory.MetaAnnotation();
+			__tmp80 = factory.MetaAnnotationProperty();
+			__tmp81 = factory.MetaConstantExpression();
+			TypeOf = factory.MetaGlobalFunction();
+			__tmp82 = factory.MetaFunctionType();
+			__tmp83 = factory.MetaFunctionType();
+			__tmp84 = factory.MetaParameter();
+			__tmp85 = factory.MetaAnnotation();
+			__tmp86 = factory.MetaAnnotationProperty();
+			__tmp87 = factory.MetaConstantExpression();
+			GetValueType = factory.MetaGlobalFunction();
+			__tmp88 = factory.MetaFunctionType();
+			__tmp89 = factory.MetaFunctionType();
+			__tmp90 = factory.MetaParameter();
+			__tmp91 = factory.MetaAnnotation();
+			__tmp92 = factory.MetaAnnotationProperty();
+			__tmp93 = factory.MetaConstantExpression();
+			GetReturnType = factory.MetaGlobalFunction();
+			__tmp94 = factory.MetaFunctionType();
+			__tmp95 = factory.MetaFunctionType();
+			__tmp96 = factory.MetaParameter();
+			__tmp97 = factory.MetaAnnotation();
+			__tmp98 = factory.MetaAnnotationProperty();
+			__tmp99 = factory.MetaConstantExpression();
+			CurrentType = factory.MetaGlobalFunction();
+			__tmp100 = factory.MetaFunctionType();
+			__tmp101 = factory.MetaFunctionType();
+			__tmp102 = factory.MetaParameter();
+			__tmp103 = factory.MetaAnnotation();
+			__tmp104 = factory.MetaAnnotationProperty();
+			__tmp105 = factory.MetaConstantExpression();
+			TypeCheck = factory.MetaGlobalFunction();
+			__tmp106 = factory.MetaFunctionType();
+			__tmp107 = factory.MetaFunctionType();
+			__tmp108 = factory.MetaParameter();
+			__tmp109 = factory.MetaAnnotation();
+			__tmp110 = factory.MetaAnnotationProperty();
+			__tmp111 = factory.MetaConstantExpression();
+			Balance = factory.MetaGlobalFunction();
+			__tmp112 = factory.MetaFunctionType();
+			__tmp113 = factory.MetaFunctionType();
+			__tmp114 = factory.MetaParameter();
+			__tmp115 = factory.MetaParameter();
+			__tmp116 = factory.MetaAnnotation();
+			__tmp117 = factory.MetaAnnotationProperty();
+			__tmp118 = factory.MetaConstantExpression();
+			Resolve1 = factory.MetaGlobalFunction();
+			__tmp119 = factory.MetaFunctionType();
+			__tmp120 = factory.MetaFunctionType();
+			__tmp121 = factory.MetaParameter();
+			__tmp122 = factory.MetaAnnotation();
+			__tmp123 = factory.MetaAnnotationProperty();
+			__tmp124 = factory.MetaConstantExpression();
+			Resolve2 = factory.MetaGlobalFunction();
+			__tmp125 = factory.MetaFunctionType();
+			__tmp126 = factory.MetaFunctionType();
+			__tmp127 = factory.MetaParameter();
+			__tmp128 = factory.MetaParameter();
+			__tmp129 = factory.MetaAnnotation();
+			__tmp130 = factory.MetaAnnotationProperty();
+			__tmp131 = factory.MetaConstantExpression();
+			ResolveType1 = factory.MetaGlobalFunction();
+			__tmp132 = factory.MetaFunctionType();
+			__tmp133 = factory.MetaFunctionType();
+			__tmp134 = factory.MetaParameter();
+			__tmp135 = factory.MetaAnnotation();
+			__tmp136 = factory.MetaAnnotationProperty();
+			__tmp137 = factory.MetaConstantExpression();
+			ResolveType2 = factory.MetaGlobalFunction();
+			__tmp138 = factory.MetaFunctionType();
+			__tmp139 = factory.MetaFunctionType();
+			__tmp140 = factory.MetaParameter();
+			__tmp141 = factory.MetaParameter();
+			__tmp142 = factory.MetaAnnotation();
+			__tmp143 = factory.MetaAnnotationProperty();
+			__tmp144 = factory.MetaConstantExpression();
+			ResolveName1 = factory.MetaGlobalFunction();
+			__tmp145 = factory.MetaFunctionType();
+			__tmp146 = factory.MetaFunctionType();
+			__tmp147 = factory.MetaParameter();
+			__tmp148 = factory.MetaAnnotation();
+			__tmp149 = factory.MetaAnnotationProperty();
+			__tmp150 = factory.MetaConstantExpression();
+			ResolveName2 = factory.MetaGlobalFunction();
+			__tmp151 = factory.MetaFunctionType();
+			__tmp152 = factory.MetaFunctionType();
+			__tmp153 = factory.MetaParameter();
+			__tmp154 = factory.MetaParameter();
+			__tmp155 = factory.MetaAnnotation();
+			__tmp156 = factory.MetaAnnotationProperty();
+			__tmp157 = factory.MetaConstantExpression();
+			ToDefinitionList = factory.MetaGlobalFunction();
+			__tmp158 = factory.MetaFunctionType();
+			__tmp159 = factory.MetaFunctionType();
+			__tmp160 = factory.MetaParameter();
+			__tmp161 = factory.MetaAnnotation();
+			__tmp162 = factory.MetaAnnotationProperty();
+			__tmp163 = factory.MetaConstantExpression();
+			Bind1 = factory.MetaGlobalFunction();
+			__tmp164 = factory.MetaFunctionType();
+			__tmp165 = factory.MetaFunctionType();
+			__tmp166 = factory.MetaParameter();
+			__tmp167 = factory.MetaAnnotation();
+			__tmp168 = factory.MetaAnnotationProperty();
+			__tmp169 = factory.MetaConstantExpression();
+			Bind2 = factory.MetaGlobalFunction();
+			__tmp170 = factory.MetaFunctionType();
+			__tmp171 = factory.MetaFunctionType();
+			__tmp172 = factory.MetaParameter();
+			__tmp173 = factory.MetaParameter();
+			MetaAnnotatedElement = factory.MetaClass();
+			__tmp174 = factory.MetaCollectionType();
+			MetaAnnotatedElement_AnnotationsProperty = factory.MetaProperty();
+			MetaDocumentedElement = factory.MetaClass();
+			MetaDocumentedElement_DocumentationProperty = factory.MetaProperty();
+			__tmp175 = factory.MetaCollectionType();
+			__tmp176 = factory.MetaOperation();
+			__tmp177 = factory.MetaFunctionType();
+			__tmp178 = factory.MetaFunctionType();
+			MetaNamedElement = factory.MetaClass();
+			__tmp179 = factory.MetaAnnotation();
+			MetaNamedElement_NameProperty = factory.MetaProperty();
+			MetaTypedElement = factory.MetaClass();
+			__tmp180 = factory.MetaAnnotation();
+			MetaTypedElement_TypeProperty = factory.MetaProperty();
+			__tmp181 = factory.MetaAnnotation();
+			MetaType = factory.MetaClass();
+			MetaAnnotation = factory.MetaClass();
+			__tmp182 = factory.MetaCollectionType();
+			MetaAnnotation_PropertiesProperty = factory.MetaProperty();
+			MetaAnnotationProperty = factory.MetaClass();
+			MetaAnnotationProperty_ValueProperty = factory.MetaProperty();
+			__tmp183 = factory.MetaConstructor();
+			__tmp184 = factory.MetaInheritedPropertyInitializer();
+			__tmp185 = factory.MetaTypeOfExpression();
+			__tmp186 = factory.MetaAnnotation();
+			MetaNamespace = factory.MetaClass();
+			MetaNamespace_ParentProperty = factory.MetaProperty();
+			__tmp187 = factory.MetaAnnotation();
+			__tmp188 = factory.MetaCollectionType();
+			MetaNamespace_UsingsProperty = factory.MetaProperty();
+			MetaNamespace_MetaModelProperty = factory.MetaProperty();
+			__tmp189 = factory.MetaAnnotation();
+			__tmp190 = factory.MetaCollectionType();
+			MetaNamespace_NamespacesProperty = factory.MetaProperty();
+			__tmp191 = factory.MetaAnnotation();
+			__tmp192 = factory.MetaCollectionType();
+			MetaNamespace_DeclarationsProperty = factory.MetaProperty();
+			MetaDeclaration = factory.MetaClass();
+			__tmp193 = factory.MetaConstructor();
+			__tmp194 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp195 = factory.MetaMemberAccessExpression();
+			__tmp196 = factory.MetaIdentifierExpression();
+			MetaDeclaration_NamespaceProperty = factory.MetaProperty();
+			MetaDeclaration_ModelProperty = factory.MetaProperty();
+			MetaModel = factory.MetaClass();
+			MetaModel_UriProperty = factory.MetaProperty();
+			MetaModel_NamespaceProperty = factory.MetaProperty();
+			MetaCollectionKind = factory.MetaEnum();
+			__tmp197 = factory.MetaEnumLiteral();
+			__tmp198 = factory.MetaEnumLiteral();
+			__tmp199 = factory.MetaEnumLiteral();
+			__tmp200 = factory.MetaEnumLiteral();
+			MetaCollectionType = factory.MetaClass();
+			MetaCollectionType_KindProperty = factory.MetaProperty();
+			MetaCollectionType_InnerTypeProperty = factory.MetaProperty();
+			MetaNullableType = factory.MetaClass();
+			MetaNullableType_InnerTypeProperty = factory.MetaProperty();
+			MetaPrimitiveType = factory.MetaClass();
+			__tmp201 = factory.MetaAnnotation();
+			MetaEnum = factory.MetaClass();
+			__tmp202 = factory.MetaAnnotation();
+			__tmp203 = factory.MetaCollectionType();
+			MetaEnum_EnumLiteralsProperty = factory.MetaProperty();
+			__tmp204 = factory.MetaAnnotation();
+			__tmp205 = factory.MetaCollectionType();
+			MetaEnum_OperationsProperty = factory.MetaProperty();
+			MetaEnumLiteral = factory.MetaClass();
+			__tmp206 = factory.MetaConstructor();
+			__tmp207 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp208 = factory.MetaIdentifierExpression();
+			MetaEnumLiteral_EnumProperty = factory.MetaProperty();
+			__tmp209 = factory.MetaAnnotation();
+			MetaClass = factory.MetaClass();
+			MetaClass_IsAbstractProperty = factory.MetaProperty();
+			__tmp210 = factory.MetaAnnotation();
+			__tmp211 = factory.MetaCollectionType();
+			MetaClass_SuperClassesProperty = factory.MetaProperty();
+			__tmp212 = factory.MetaAnnotation();
+			__tmp213 = factory.MetaCollectionType();
+			MetaClass_PropertiesProperty = factory.MetaProperty();
+			__tmp214 = factory.MetaAnnotation();
+			__tmp215 = factory.MetaCollectionType();
+			MetaClass_OperationsProperty = factory.MetaProperty();
+			MetaClass_ConstructorProperty = factory.MetaProperty();
+			__tmp216 = factory.MetaCollectionType();
+			__tmp217 = factory.MetaOperation();
+			__tmp218 = factory.MetaFunctionType();
+			__tmp219 = factory.MetaFunctionType();
+			__tmp220 = factory.MetaCollectionType();
+			__tmp221 = factory.MetaOperation();
+			__tmp222 = factory.MetaFunctionType();
+			__tmp223 = factory.MetaFunctionType();
+			__tmp224 = factory.MetaCollectionType();
+			__tmp225 = factory.MetaOperation();
+			__tmp226 = factory.MetaFunctionType();
+			__tmp227 = factory.MetaFunctionType();
+			__tmp228 = factory.MetaCollectionType();
+			__tmp229 = factory.MetaOperation();
+			__tmp230 = factory.MetaFunctionType();
+			__tmp231 = factory.MetaFunctionType();
+			__tmp232 = factory.MetaCollectionType();
+			__tmp233 = factory.MetaOperation();
+			__tmp234 = factory.MetaFunctionType();
+			__tmp235 = factory.MetaFunctionType();
+			MetaFunctionType = factory.MetaClass();
+			__tmp236 = factory.MetaCollectionType();
+			MetaFunctionType_ParameterTypesProperty = factory.MetaProperty();
+			MetaFunctionType_ReturnTypeProperty = factory.MetaProperty();
+			MetaFunction = factory.MetaClass();
+			__tmp237 = factory.MetaConstructor();
+			__tmp238 = factory.MetaAnnotation();
+			MetaFunction_TypeProperty = factory.MetaProperty();
+			__tmp239 = factory.MetaCollectionType();
+			MetaFunction_ParametersProperty = factory.MetaProperty();
+			MetaFunction_ReturnTypeProperty = factory.MetaProperty();
+			MetaGlobalFunction = factory.MetaClass();
+			MetaOperation = factory.MetaClass();
+			MetaOperation_ParentProperty = factory.MetaProperty();
+			MetaConstant = factory.MetaClass();
+			__tmp240 = factory.MetaConstructor();
+			__tmp241 = factory.MetaInheritedPropertyInitializer();
+			__tmp242 = factory.MetaIdentifierExpression();
+			MetaConstant_ValueProperty = factory.MetaProperty();
+			MetaConstructor = factory.MetaClass();
+			MetaConstructor_ParentProperty = factory.MetaProperty();
+			__tmp243 = factory.MetaCollectionType();
+			MetaConstructor_InitializersProperty = factory.MetaProperty();
+			MetaParameter = factory.MetaClass();
+			MetaParameter_FunctionProperty = factory.MetaProperty();
+			MetaPropertyKind = factory.MetaEnum();
+			__tmp244 = factory.MetaEnumLiteral();
+			__tmp245 = factory.MetaEnumLiteral();
+			__tmp246 = factory.MetaEnumLiteral();
+			__tmp247 = factory.MetaEnumLiteral();
+			__tmp248 = factory.MetaEnumLiteral();
+			__tmp249 = factory.MetaEnumLiteral();
+			__tmp250 = factory.MetaEnumLiteral();
+			MetaProperty = factory.MetaClass();
+			MetaProperty_KindProperty = factory.MetaProperty();
+			MetaProperty_ClassProperty = factory.MetaProperty();
+			__tmp251 = factory.MetaCollectionType();
+			MetaProperty_OppositePropertiesProperty = factory.MetaProperty();
+			__tmp252 = factory.MetaCollectionType();
+			MetaProperty_SubsettedPropertiesProperty = factory.MetaProperty();
+			__tmp253 = factory.MetaCollectionType();
+			MetaProperty_SubsettingPropertiesProperty = factory.MetaProperty();
+			__tmp254 = factory.MetaCollectionType();
+			MetaProperty_RedefinedPropertiesProperty = factory.MetaProperty();
+			__tmp255 = factory.MetaCollectionType();
+			MetaProperty_RedefiningPropertiesProperty = factory.MetaProperty();
+			MetaPropertyInitializer = factory.MetaClass();
+			MetaPropertyInitializer_ConstructorProperty = factory.MetaProperty();
+			MetaPropertyInitializer_PropertyNameProperty = factory.MetaProperty();
+			MetaPropertyInitializer_PropertyContextProperty = factory.MetaProperty();
+			MetaPropertyInitializer_PropertyProperty = factory.MetaProperty();
+			MetaPropertyInitializer_ValueProperty = factory.MetaProperty();
+			__tmp256 = factory.MetaConstructor();
+			__tmp257 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp258 = factory.MetaTypeAsExpression();
+			__tmp259 = factory.MetaFunctionCallExpression();
+			__tmp260 = factory.MetaIdentifierExpression();
+			__tmp261 = factory.MetaThisExpression();
+			__tmp262 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp263 = factory.MetaFunctionCallExpression();
+			__tmp264 = factory.MetaIdentifierExpression();
+			__tmp265 = factory.MetaFunctionCallExpression();
+			__tmp266 = factory.MetaIdentifierExpression();
+			__tmp267 = factory.MetaMemberAccessExpression();
+			__tmp268 = factory.MetaThisExpression();
+			__tmp269 = factory.MetaIdentifierExpression();
+			__tmp270 = factory.MetaInheritedPropertyInitializer();
+			__tmp271 = factory.MetaFunctionCallExpression();
+			__tmp272 = factory.MetaIdentifierExpression();
+			__tmp273 = factory.MetaIdentifierExpression();
+			MetaSynthetizedPropertyInitializer = factory.MetaClass();
+			MetaInheritedPropertyInitializer = factory.MetaClass();
+			MetaInheritedPropertyInitializer_ObjectNameProperty = factory.MetaProperty();
+			MetaInheritedPropertyInitializer_ObjectProperty = factory.MetaProperty();
+			__tmp274 = factory.MetaConstructor();
+			__tmp275 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp276 = factory.MetaFunctionCallExpression();
+			__tmp277 = factory.MetaIdentifierExpression();
+			__tmp278 = factory.MetaFunctionCallExpression();
+			__tmp279 = factory.MetaIdentifierExpression();
+			__tmp280 = factory.MetaIdentifierExpression();
+			__tmp281 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp282 = factory.MetaTypeAsExpression();
+			__tmp283 = factory.MetaFunctionCallExpression();
+			__tmp284 = factory.MetaIdentifierExpression();
+			__tmp285 = factory.MetaIdentifierExpression();
+			__tmp286 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp287 = factory.MetaFunctionCallExpression();
+			__tmp288 = factory.MetaIdentifierExpression();
+			__tmp289 = factory.MetaFunctionCallExpression();
+			__tmp290 = factory.MetaIdentifierExpression();
+			__tmp291 = factory.MetaIdentifierExpression();
+			__tmp292 = factory.MetaIdentifierExpression();
+			MetaExpression = factory.MetaClass();
+			__tmp293 = factory.MetaConstructor();
+			__tmp294 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp295 = factory.MetaFunctionCallExpression();
+			__tmp296 = factory.MetaIdentifierExpression();
+			__tmp297 = factory.MetaThisExpression();
+			MetaExpression_NoTypeErrorProperty = factory.MetaProperty();
+			MetaExpression_ExpectedTypeProperty = factory.MetaProperty();
+			MetaBracketExpression = factory.MetaClass();
+			__tmp298 = factory.MetaConstructor();
+			__tmp299 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp300 = factory.MetaMemberAccessExpression();
+			__tmp301 = factory.MetaIdentifierExpression();
+			__tmp302 = factory.MetaInheritedPropertyInitializer();
+			__tmp303 = factory.MetaIdentifierExpression();
+			MetaBracketExpression_ExpressionProperty = factory.MetaProperty();
+			MetaBoundExpression = factory.MetaClass();
+			__tmp304 = factory.MetaConstructor();
+			__tmp305 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp306 = factory.MetaConstantExpression();
+			__tmp307 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp308 = factory.MetaConditionalExpression();
+			__tmp309 = factory.MetaIdentifierExpression();
+			__tmp310 = factory.MetaFunctionCallExpression();
+			__tmp311 = factory.MetaIdentifierExpression();
+			__tmp312 = factory.MetaThisExpression();
+			__tmp313 = factory.MetaIdentifierExpression();
+			__tmp314 = factory.MetaConstantExpression();
+			__tmp315 = factory.MetaNullExpression();
+			__tmp316 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp317 = factory.MetaFunctionCallExpression();
+			__tmp318 = factory.MetaIdentifierExpression();
+			__tmp319 = factory.MetaIdentifierExpression();
+			MetaBoundExpression_UniqueDefinitionProperty = factory.MetaProperty();
+			__tmp320 = factory.MetaCollectionType();
+			MetaBoundExpression_ArgumentsProperty = factory.MetaProperty();
+			MetaBoundExpression_DefinitionsProperty = factory.MetaProperty();
+			MetaBoundExpression_DefinitionProperty = factory.MetaProperty();
+			MetaThisExpression = factory.MetaClass();
+			__tmp321 = factory.MetaConstructor();
+			__tmp322 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp323 = factory.MetaFunctionCallExpression();
+			__tmp324 = factory.MetaIdentifierExpression();
+			__tmp325 = factory.MetaThisExpression();
+			MetaNullExpression = factory.MetaClass();
+			__tmp326 = factory.MetaConstructor();
+			__tmp327 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp328 = factory.MetaTypeOfExpression();
+			MetaTypeConversionExpression = factory.MetaClass();
+			MetaTypeConversionExpression_TypeReferenceProperty = factory.MetaProperty();
+			MetaTypeConversionExpression_ExpressionProperty = factory.MetaProperty();
+			__tmp329 = factory.MetaConstructor();
+			__tmp330 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp331 = factory.MetaIdentifierExpression();
+			__tmp332 = factory.MetaInheritedPropertyInitializer();
+			__tmp333 = factory.MetaTypeOfExpression();
+			MetaTypeAsExpression = factory.MetaClass();
+			MetaTypeCastExpression = factory.MetaClass();
+			MetaTypeCheckExpression = factory.MetaClass();
+			MetaTypeCheckExpression_TypeReferenceProperty = factory.MetaProperty();
+			MetaTypeCheckExpression_ExpressionProperty = factory.MetaProperty();
+			__tmp334 = factory.MetaConstructor();
+			__tmp335 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp336 = factory.MetaTypeOfExpression();
+			__tmp337 = factory.MetaInheritedPropertyInitializer();
+			__tmp338 = factory.MetaTypeOfExpression();
+			MetaTypeOfExpression = factory.MetaClass();
+			MetaTypeOfExpression_TypeReferenceProperty = factory.MetaProperty();
+			__tmp339 = factory.MetaConstructor();
+			__tmp340 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp341 = factory.MetaTypeOfExpression();
+			MetaConditionalExpression = factory.MetaClass();
+			MetaConditionalExpression_ConditionProperty = factory.MetaProperty();
+			MetaConditionalExpression_BalancedTypeProperty = factory.MetaProperty();
+			MetaConditionalExpression_ThenProperty = factory.MetaProperty();
+			MetaConditionalExpression_ElseProperty = factory.MetaProperty();
+			__tmp342 = factory.MetaConstructor();
+			__tmp343 = factory.MetaInheritedPropertyInitializer();
+			__tmp344 = factory.MetaTypeOfExpression();
+			__tmp345 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp346 = factory.MetaFunctionCallExpression();
+			__tmp347 = factory.MetaIdentifierExpression();
+			__tmp348 = factory.MetaMemberAccessExpression();
+			__tmp349 = factory.MetaIdentifierExpression();
+			__tmp350 = factory.MetaMemberAccessExpression();
+			__tmp351 = factory.MetaIdentifierExpression();
+			__tmp352 = factory.MetaInheritedPropertyInitializer();
+			__tmp353 = factory.MetaIdentifierExpression();
+			__tmp354 = factory.MetaInheritedPropertyInitializer();
+			__tmp355 = factory.MetaIdentifierExpression();
+			MetaConstantExpression = factory.MetaClass();
+			MetaConstantExpression_ValueProperty = factory.MetaProperty();
+			__tmp356 = factory.MetaConstructor();
+			__tmp357 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp358 = factory.MetaFunctionCallExpression();
+			__tmp359 = factory.MetaIdentifierExpression();
+			__tmp360 = factory.MetaIdentifierExpression();
+			MetaIdentifierExpression = factory.MetaClass();
+			MetaIdentifierExpression_NameProperty = factory.MetaProperty();
+			__tmp361 = factory.MetaConstructor();
+			__tmp362 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp363 = factory.MetaFunctionCallExpression();
+			__tmp364 = factory.MetaIdentifierExpression();
+			__tmp365 = factory.MetaIdentifierExpression();
+			MetaMemberAccessExpression = factory.MetaClass();
+			MetaMemberAccessExpression_ExpressionProperty = factory.MetaProperty();
+			MetaMemberAccessExpression_NameProperty = factory.MetaProperty();
+			__tmp366 = factory.MetaConstructor();
+			__tmp367 = factory.MetaInheritedPropertyInitializer();
+			__tmp368 = factory.MetaTypeOfExpression();
+			__tmp369 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp370 = factory.MetaFunctionCallExpression();
+			__tmp371 = factory.MetaIdentifierExpression();
+			__tmp372 = factory.MetaMemberAccessExpression();
+			__tmp373 = factory.MetaIdentifierExpression();
+			__tmp374 = factory.MetaIdentifierExpression();
+			MetaFunctionCallExpression = factory.MetaClass();
+			MetaFunctionCallExpression_ExpressionProperty = factory.MetaProperty();
+			__tmp375 = factory.MetaConstructor();
+			__tmp376 = factory.MetaInheritedPropertyInitializer();
+			__tmp377 = factory.MetaConstantExpression();
+			__tmp378 = factory.MetaInheritedPropertyInitializer();
+			__tmp379 = factory.MetaTypeOfExpression();
+			__tmp380 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp381 = factory.MetaConditionalExpression();
+			__tmp382 = factory.MetaTypeCheckExpression();
+			__tmp383 = factory.MetaIdentifierExpression();
+			__tmp384 = factory.MetaMemberAccessExpression();
+			__tmp385 = factory.MetaBracketExpression();
+			__tmp386 = factory.MetaTypeCastExpression();
+			__tmp387 = factory.MetaIdentifierExpression();
+			__tmp388 = factory.MetaFunctionCallExpression();
+			__tmp389 = factory.MetaIdentifierExpression();
+			__tmp390 = factory.MetaMemberAccessExpression();
+			__tmp391 = factory.MetaIdentifierExpression();
+			__tmp392 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp393 = factory.MetaFunctionCallExpression();
+			__tmp394 = factory.MetaIdentifierExpression();
+			__tmp395 = factory.MetaIdentifierExpression();
+			MetaIndexerExpression = factory.MetaClass();
+			MetaIndexerExpression_ExpressionProperty = factory.MetaProperty();
+			__tmp396 = factory.MetaConstructor();
+			__tmp397 = factory.MetaInheritedPropertyInitializer();
+			__tmp398 = factory.MetaConstantExpression();
+			__tmp399 = factory.MetaInheritedPropertyInitializer();
+			__tmp400 = factory.MetaTypeOfExpression();
+			__tmp401 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp402 = factory.MetaConditionalExpression();
+			__tmp403 = factory.MetaTypeCheckExpression();
+			__tmp404 = factory.MetaIdentifierExpression();
+			__tmp405 = factory.MetaMemberAccessExpression();
+			__tmp406 = factory.MetaBracketExpression();
+			__tmp407 = factory.MetaTypeCastExpression();
+			__tmp408 = factory.MetaIdentifierExpression();
+			__tmp409 = factory.MetaFunctionCallExpression();
+			__tmp410 = factory.MetaIdentifierExpression();
+			__tmp411 = factory.MetaMemberAccessExpression();
+			__tmp412 = factory.MetaIdentifierExpression();
+			MetaNewExpression = factory.MetaClass();
+			MetaNewExpression_TypeReferenceProperty = factory.MetaProperty();
+			__tmp413 = factory.MetaCollectionType();
+			MetaNewExpression_PropertyInitializersProperty = factory.MetaProperty();
+			__tmp414 = factory.MetaConstructor();
+			__tmp415 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp416 = factory.MetaIdentifierExpression();
+			MetaNewPropertyInitializer = factory.MetaClass();
+			MetaNewPropertyInitializer_ParentProperty = factory.MetaProperty();
+			MetaNewPropertyInitializer_PropertyNameProperty = factory.MetaProperty();
+			MetaNewPropertyInitializer_ValueProperty = factory.MetaProperty();
+			MetaNewPropertyInitializer_PropertyProperty = factory.MetaProperty();
+			__tmp417 = factory.MetaConstructor();
+			__tmp418 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp419 = factory.MetaFunctionCallExpression();
+			__tmp420 = factory.MetaIdentifierExpression();
+			__tmp421 = factory.MetaFunctionCallExpression();
+			__tmp422 = factory.MetaIdentifierExpression();
+			__tmp423 = factory.MetaMemberAccessExpression();
+			__tmp424 = factory.MetaIdentifierExpression();
+			__tmp425 = factory.MetaIdentifierExpression();
+			__tmp426 = factory.MetaInheritedPropertyInitializer();
+			__tmp427 = factory.MetaFunctionCallExpression();
+			__tmp428 = factory.MetaIdentifierExpression();
+			__tmp429 = factory.MetaIdentifierExpression();
+			MetaNewCollectionExpression = factory.MetaClass();
+			MetaNewCollectionExpression_TypeReferenceProperty = factory.MetaProperty();
+			__tmp430 = factory.MetaCollectionType();
+			MetaNewCollectionExpression_ValuesProperty = factory.MetaProperty();
+			__tmp431 = factory.MetaConstructor();
+			__tmp432 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp433 = factory.MetaIdentifierExpression();
+			MetaOperatorExpression = factory.MetaClass();
+			MetaOperatorExpression_NameProperty = factory.MetaProperty();
+			__tmp434 = factory.MetaConstructor();
+			__tmp435 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp436 = factory.MetaFunctionCallExpression();
+			__tmp437 = factory.MetaIdentifierExpression();
+			__tmp438 = factory.MetaIdentifierExpression();
+			MetaUnaryExpression = factory.MetaClass();
+			__tmp439 = factory.MetaConstructor();
+			MetaUnaryExpression_ExpressionProperty = factory.MetaProperty();
+			MetaUnaryPlusExpression = factory.MetaClass();
+			__tmp440 = factory.MetaConstructor();
+			__tmp441 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp442 = factory.MetaConstantExpression();
+			MetaNegateExpression = factory.MetaClass();
+			__tmp443 = factory.MetaConstructor();
+			__tmp444 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp445 = factory.MetaConstantExpression();
+			MetaOnesComplementExpression = factory.MetaClass();
+			__tmp446 = factory.MetaConstructor();
+			__tmp447 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp448 = factory.MetaConstantExpression();
+			MetaNotExpression = factory.MetaClass();
+			__tmp449 = factory.MetaConstructor();
+			__tmp450 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp451 = factory.MetaConstantExpression();
+			MetaUnaryAssignExpression = factory.MetaClass();
+			MetaPostIncrementAssignExpression = factory.MetaClass();
+			__tmp452 = factory.MetaConstructor();
+			__tmp453 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp454 = factory.MetaConstantExpression();
+			MetaPostDecrementAssignExpression = factory.MetaClass();
+			__tmp455 = factory.MetaConstructor();
+			__tmp456 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp457 = factory.MetaConstantExpression();
+			MetaPreIncrementAssignExpression = factory.MetaClass();
+			__tmp458 = factory.MetaConstructor();
+			__tmp459 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp460 = factory.MetaConstantExpression();
+			MetaPreDecrementAssignExpression = factory.MetaClass();
+			__tmp461 = factory.MetaConstructor();
+			__tmp462 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp463 = factory.MetaConstantExpression();
+			MetaBinaryExpression = factory.MetaClass();
+			__tmp464 = factory.MetaConstructor();
+			MetaBinaryExpression_LeftProperty = factory.MetaProperty();
+			MetaBinaryExpression_RightProperty = factory.MetaProperty();
+			MetaBinaryArithmeticExpression = factory.MetaClass();
+			MetaMultiplyExpression = factory.MetaClass();
+			__tmp465 = factory.MetaConstructor();
+			__tmp466 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp467 = factory.MetaConstantExpression();
+			MetaDivideExpression = factory.MetaClass();
+			__tmp468 = factory.MetaConstructor();
+			__tmp469 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp470 = factory.MetaConstantExpression();
+			MetaModuloExpression = factory.MetaClass();
+			__tmp471 = factory.MetaConstructor();
+			__tmp472 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp473 = factory.MetaConstantExpression();
+			MetaAddExpression = factory.MetaClass();
+			__tmp474 = factory.MetaConstructor();
+			__tmp475 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp476 = factory.MetaConstantExpression();
+			MetaSubtractExpression = factory.MetaClass();
+			__tmp477 = factory.MetaConstructor();
+			__tmp478 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp479 = factory.MetaConstantExpression();
+			MetaLeftShiftExpression = factory.MetaClass();
+			__tmp480 = factory.MetaConstructor();
+			__tmp481 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp482 = factory.MetaConstantExpression();
+			MetaRightShiftExpression = factory.MetaClass();
+			__tmp483 = factory.MetaConstructor();
+			__tmp484 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp485 = factory.MetaConstantExpression();
+			MetaBinaryComparisonExpression = factory.MetaClass();
+			MetaLessThanExpression = factory.MetaClass();
+			__tmp486 = factory.MetaConstructor();
+			__tmp487 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp488 = factory.MetaConstantExpression();
+			MetaLessThanOrEqualExpression = factory.MetaClass();
+			__tmp489 = factory.MetaConstructor();
+			__tmp490 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp491 = factory.MetaConstantExpression();
+			MetaGreaterThanExpression = factory.MetaClass();
+			__tmp492 = factory.MetaConstructor();
+			__tmp493 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp494 = factory.MetaConstantExpression();
+			MetaGreaterThanOrEqualExpression = factory.MetaClass();
+			__tmp495 = factory.MetaConstructor();
+			__tmp496 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp497 = factory.MetaConstantExpression();
+			MetaEqualExpression = factory.MetaClass();
+			__tmp498 = factory.MetaConstructor();
+			__tmp499 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp500 = factory.MetaConstantExpression();
+			MetaNotEqualExpression = factory.MetaClass();
+			__tmp501 = factory.MetaConstructor();
+			__tmp502 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp503 = factory.MetaConstantExpression();
+			MetaBinaryLogicalExpression = factory.MetaClass();
+			MetaAndExpression = factory.MetaClass();
+			__tmp504 = factory.MetaConstructor();
+			__tmp505 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp506 = factory.MetaConstantExpression();
+			MetaOrExpression = factory.MetaClass();
+			__tmp507 = factory.MetaConstructor();
+			__tmp508 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp509 = factory.MetaConstantExpression();
+			MetaExclusiveOrExpression = factory.MetaClass();
+			__tmp510 = factory.MetaConstructor();
+			__tmp511 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp512 = factory.MetaConstantExpression();
+			MetaAndAlsoExpression = factory.MetaClass();
+			__tmp513 = factory.MetaConstructor();
+			__tmp514 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp515 = factory.MetaConstantExpression();
+			MetaOrElseExpression = factory.MetaClass();
+			__tmp516 = factory.MetaConstructor();
+			__tmp517 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp518 = factory.MetaConstantExpression();
+			MetaNullCoalescingExpression = factory.MetaClass();
+			__tmp519 = factory.MetaConstructor();
+			__tmp520 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp521 = factory.MetaConstantExpression();
+			MetaAssignmentExpression = factory.MetaClass();
+			__tmp522 = factory.MetaConstructor();
+			__tmp523 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp524 = factory.MetaFunctionCallExpression();
+			__tmp525 = factory.MetaIdentifierExpression();
+			__tmp526 = factory.MetaIdentifierExpression();
+			__tmp527 = factory.MetaInheritedPropertyInitializer();
+			__tmp528 = factory.MetaIdentifierExpression();
+			__tmp529 = factory.MetaInheritedPropertyInitializer();
+			__tmp530 = factory.MetaIdentifierExpression();
+			MetaAssignExpression = factory.MetaClass();
+			__tmp531 = factory.MetaConstructor();
+			__tmp532 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp533 = factory.MetaConstantExpression();
+			MetaArithmeticAssignmentExpression = factory.MetaClass();
+			MetaMultiplyAssignExpression = factory.MetaClass();
+			__tmp534 = factory.MetaConstructor();
+			__tmp535 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp536 = factory.MetaConstantExpression();
+			MetaDivideAssignExpression = factory.MetaClass();
+			__tmp537 = factory.MetaConstructor();
+			__tmp538 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp539 = factory.MetaConstantExpression();
+			MetaModuloAssignExpression = factory.MetaClass();
+			__tmp540 = factory.MetaConstructor();
+			__tmp541 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp542 = factory.MetaConstantExpression();
+			MetaAddAssignExpression = factory.MetaClass();
+			__tmp543 = factory.MetaConstructor();
+			__tmp544 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp545 = factory.MetaConstantExpression();
+			MetaSubtractAssignExpression = factory.MetaClass();
+			__tmp546 = factory.MetaConstructor();
+			__tmp547 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp548 = factory.MetaConstantExpression();
+			MetaLeftShiftAssignExpression = factory.MetaClass();
+			__tmp549 = factory.MetaConstructor();
+			__tmp550 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp551 = factory.MetaConstantExpression();
+			MetaRightShiftAssignExpression = factory.MetaClass();
+			__tmp552 = factory.MetaConstructor();
+			__tmp553 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp554 = factory.MetaConstantExpression();
+			MetaLogicalAssignmentExpression = factory.MetaClass();
+			MetaAndAssignExpression = factory.MetaClass();
+			__tmp555 = factory.MetaConstructor();
+			__tmp556 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp557 = factory.MetaConstantExpression();
+			MetaExclusiveOrAssignExpression = factory.MetaClass();
+			__tmp558 = factory.MetaConstructor();
+			__tmp559 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp560 = factory.MetaConstantExpression();
+			MetaOrAssignExpression = factory.MetaClass();
+			__tmp561 = factory.MetaConstructor();
+			__tmp562 = factory.MetaSynthetizedPropertyInitializer();
+			__tmp563 = factory.MetaConstantExpression();
+			
+	
+			__tmp1.Name = "object";
+			__tmp1.Documentation = null;
+			__tmp2.Name = "string";
+			__tmp2.Documentation = null;
+			__tmp3.Name = "int";
+			__tmp3.Documentation = null;
+			__tmp4.Name = "long";
+			__tmp4.Documentation = null;
+			__tmp5.Name = "float";
+			__tmp5.Documentation = null;
+			__tmp6.Name = "double";
+			__tmp6.Documentation = null;
+			__tmp7.Name = "byte";
+			__tmp7.Documentation = null;
+			__tmp8.Name = "bool";
+			__tmp8.Documentation = null;
+			__tmp9.Name = "void";
+			__tmp9.Documentation = null;
+			__tmp10.Name = "*none*";
+			__tmp10.Documentation = null;
+			__tmp11.Name = "*any*";
+			__tmp11.Documentation = null;
+			__tmp12.Name = "*error*";
+			__tmp12.Documentation = null;
+			__tmp13.Name = "ModelObject";
+			__tmp13.Documentation = null;
+			__tmp14.Name = "DefinitionList";
+			__tmp14.Documentation = null;
+			// __tmp15.Kind = null;
+			__tmp15.InnerTypeLazy = () => __tmp13;
+			// __tmp16.Parent = null;
+			// __tmp16.MetaModel = null;
+			__tmp16.Namespaces.AddLazy(() => __tmp17);
+			__tmp16.Name = "MetaDslx";
+			__tmp16.Documentation = null;
+			__tmp17.ParentLazy = () => __tmp16;
+			__tmp17.MetaModelLazy = () => __tmp18;
+			__tmp17.Declarations.AddLazy(() => __tmp19);
+			__tmp17.Declarations.AddLazy(() => __tmp23);
+			__tmp17.Declarations.AddLazy(() => __tmp27);
+			__tmp17.Declarations.AddLazy(() => __tmp31);
+			__tmp17.Declarations.AddLazy(() => __tmp35);
+			__tmp17.Declarations.AddLazy(() => __tmp39);
+			__tmp17.Declarations.AddLazy(() => __tmp43);
+			__tmp17.Declarations.AddLazy(() => __tmp47);
+			__tmp17.Declarations.AddLazy(() => __tmp51);
+			__tmp17.Declarations.AddLazy(() => __tmp55);
+			__tmp17.Declarations.AddLazy(() => __tmp59);
+			__tmp17.Declarations.AddLazy(() => __tmp63);
+			__tmp17.Declarations.AddLazy(() => __tmp67);
+			__tmp17.Declarations.AddLazy(() => __tmp71);
+			__tmp17.Declarations.AddLazy(() => __tmp75);
+			__tmp17.Declarations.AddLazy(() => TypeOf);
+			__tmp17.Declarations.AddLazy(() => GetValueType);
+			__tmp17.Declarations.AddLazy(() => GetReturnType);
+			__tmp17.Declarations.AddLazy(() => CurrentType);
+			__tmp17.Declarations.AddLazy(() => TypeCheck);
+			__tmp17.Declarations.AddLazy(() => Balance);
+			__tmp17.Declarations.AddLazy(() => Resolve1);
+			__tmp17.Declarations.AddLazy(() => Resolve2);
+			__tmp17.Declarations.AddLazy(() => ResolveType1);
+			__tmp17.Declarations.AddLazy(() => ResolveType2);
+			__tmp17.Declarations.AddLazy(() => ResolveName1);
+			__tmp17.Declarations.AddLazy(() => ResolveName2);
+			__tmp17.Declarations.AddLazy(() => ToDefinitionList);
+			__tmp17.Declarations.AddLazy(() => Bind1);
+			__tmp17.Declarations.AddLazy(() => Bind2);
+			__tmp17.Declarations.AddLazy(() => MetaAnnotatedElement);
+			__tmp17.Declarations.AddLazy(() => MetaDocumentedElement);
+			__tmp17.Declarations.AddLazy(() => MetaNamedElement);
+			__tmp17.Declarations.AddLazy(() => MetaTypedElement);
+			__tmp17.Declarations.AddLazy(() => MetaType);
+			__tmp17.Declarations.AddLazy(() => MetaAnnotation);
+			__tmp17.Declarations.AddLazy(() => MetaAnnotationProperty);
+			__tmp17.Declarations.AddLazy(() => MetaNamespace);
+			__tmp17.Declarations.AddLazy(() => MetaDeclaration);
+			__tmp17.Declarations.AddLazy(() => MetaModel);
+			__tmp17.Declarations.AddLazy(() => MetaCollectionKind);
+			__tmp17.Declarations.AddLazy(() => MetaCollectionType);
+			__tmp17.Declarations.AddLazy(() => MetaNullableType);
+			__tmp17.Declarations.AddLazy(() => MetaPrimitiveType);
+			__tmp17.Declarations.AddLazy(() => MetaEnum);
+			__tmp17.Declarations.AddLazy(() => MetaEnumLiteral);
+			__tmp17.Declarations.AddLazy(() => MetaClass);
+			__tmp17.Declarations.AddLazy(() => MetaFunctionType);
+			__tmp17.Declarations.AddLazy(() => MetaFunction);
+			__tmp17.Declarations.AddLazy(() => MetaGlobalFunction);
+			__tmp17.Declarations.AddLazy(() => MetaOperation);
+			__tmp17.Declarations.AddLazy(() => MetaConstant);
+			__tmp17.Declarations.AddLazy(() => MetaConstructor);
+			__tmp17.Declarations.AddLazy(() => MetaParameter);
+			__tmp17.Declarations.AddLazy(() => MetaPropertyKind);
+			__tmp17.Declarations.AddLazy(() => MetaProperty);
+			__tmp17.Declarations.AddLazy(() => MetaPropertyInitializer);
+			__tmp17.Declarations.AddLazy(() => MetaSynthetizedPropertyInitializer);
+			__tmp17.Declarations.AddLazy(() => MetaInheritedPropertyInitializer);
+			__tmp17.Declarations.AddLazy(() => MetaExpression);
+			__tmp17.Declarations.AddLazy(() => MetaBracketExpression);
+			__tmp17.Declarations.AddLazy(() => MetaBoundExpression);
+			__tmp17.Declarations.AddLazy(() => MetaThisExpression);
+			__tmp17.Declarations.AddLazy(() => MetaNullExpression);
+			__tmp17.Declarations.AddLazy(() => MetaTypeConversionExpression);
+			__tmp17.Declarations.AddLazy(() => MetaTypeAsExpression);
+			__tmp17.Declarations.AddLazy(() => MetaTypeCastExpression);
+			__tmp17.Declarations.AddLazy(() => MetaTypeCheckExpression);
+			__tmp17.Declarations.AddLazy(() => MetaTypeOfExpression);
+			__tmp17.Declarations.AddLazy(() => MetaConditionalExpression);
+			__tmp17.Declarations.AddLazy(() => MetaConstantExpression);
+			__tmp17.Declarations.AddLazy(() => MetaIdentifierExpression);
+			__tmp17.Declarations.AddLazy(() => MetaMemberAccessExpression);
+			__tmp17.Declarations.AddLazy(() => MetaFunctionCallExpression);
+			__tmp17.Declarations.AddLazy(() => MetaIndexerExpression);
+			__tmp17.Declarations.AddLazy(() => MetaNewExpression);
+			__tmp17.Declarations.AddLazy(() => MetaNewPropertyInitializer);
+			__tmp17.Declarations.AddLazy(() => MetaNewCollectionExpression);
+			__tmp17.Declarations.AddLazy(() => MetaOperatorExpression);
+			__tmp17.Declarations.AddLazy(() => MetaUnaryExpression);
+			__tmp17.Declarations.AddLazy(() => MetaUnaryPlusExpression);
+			__tmp17.Declarations.AddLazy(() => MetaNegateExpression);
+			__tmp17.Declarations.AddLazy(() => MetaOnesComplementExpression);
+			__tmp17.Declarations.AddLazy(() => MetaNotExpression);
+			__tmp17.Declarations.AddLazy(() => MetaUnaryAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaPostIncrementAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaPostDecrementAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaPreIncrementAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaPreDecrementAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaBinaryExpression);
+			__tmp17.Declarations.AddLazy(() => MetaBinaryArithmeticExpression);
+			__tmp17.Declarations.AddLazy(() => MetaMultiplyExpression);
+			__tmp17.Declarations.AddLazy(() => MetaDivideExpression);
+			__tmp17.Declarations.AddLazy(() => MetaModuloExpression);
+			__tmp17.Declarations.AddLazy(() => MetaAddExpression);
+			__tmp17.Declarations.AddLazy(() => MetaSubtractExpression);
+			__tmp17.Declarations.AddLazy(() => MetaLeftShiftExpression);
+			__tmp17.Declarations.AddLazy(() => MetaRightShiftExpression);
+			__tmp17.Declarations.AddLazy(() => MetaBinaryComparisonExpression);
+			__tmp17.Declarations.AddLazy(() => MetaLessThanExpression);
+			__tmp17.Declarations.AddLazy(() => MetaLessThanOrEqualExpression);
+			__tmp17.Declarations.AddLazy(() => MetaGreaterThanExpression);
+			__tmp17.Declarations.AddLazy(() => MetaGreaterThanOrEqualExpression);
+			__tmp17.Declarations.AddLazy(() => MetaEqualExpression);
+			__tmp17.Declarations.AddLazy(() => MetaNotEqualExpression);
+			__tmp17.Declarations.AddLazy(() => MetaBinaryLogicalExpression);
+			__tmp17.Declarations.AddLazy(() => MetaAndExpression);
+			__tmp17.Declarations.AddLazy(() => MetaOrExpression);
+			__tmp17.Declarations.AddLazy(() => MetaExclusiveOrExpression);
+			__tmp17.Declarations.AddLazy(() => MetaAndAlsoExpression);
+			__tmp17.Declarations.AddLazy(() => MetaOrElseExpression);
+			__tmp17.Declarations.AddLazy(() => MetaNullCoalescingExpression);
+			__tmp17.Declarations.AddLazy(() => MetaAssignmentExpression);
+			__tmp17.Declarations.AddLazy(() => MetaAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaArithmeticAssignmentExpression);
+			__tmp17.Declarations.AddLazy(() => MetaMultiplyAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaDivideAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaModuloAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaAddAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaSubtractAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaLeftShiftAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaRightShiftAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaLogicalAssignmentExpression);
+			__tmp17.Declarations.AddLazy(() => MetaAndAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaExclusiveOrAssignExpression);
+			__tmp17.Declarations.AddLazy(() => MetaOrAssignExpression);
+			__tmp17.Name = "Core";
+			__tmp17.Documentation = null;
+			__tmp18.Uri = "http://metadslx.core/1.0";
+			__tmp18.NamespaceLazy = () => __tmp17;
+			__tmp18.Name = "Meta";
+			__tmp18.Documentation = null;
+			__tmp19.ValueLazy = () => __tmp20;
+			__tmp19.TypeLazy = () => MetaPrimitiveType;
+			__tmp19.NamespaceLazy = () => __tmp17;
+			__tmp19.Name = "Object";
+			__tmp19.Documentation = null;
+			__tmp20.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp20.PropertyInitializers.AddLazy(() => __tmp21);
+			__tmp20.TypeLazy = () => MetaPrimitiveType;
+			__tmp21.ParentLazy = () => __tmp20;
+			__tmp21.PropertyName = "Name";
+			__tmp21.ValueLazy = () => __tmp22;
+			__tmp21.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp22.Value = "object";
+			__tmp22.TypeLazy = () => __tmp2;
+			__tmp23.ValueLazy = () => __tmp24;
+			__tmp23.TypeLazy = () => MetaPrimitiveType;
+			__tmp23.NamespaceLazy = () => __tmp17;
+			__tmp23.Name = "String";
+			__tmp23.Documentation = null;
+			__tmp24.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp24.PropertyInitializers.AddLazy(() => __tmp25);
+			__tmp24.TypeLazy = () => MetaPrimitiveType;
+			__tmp25.ParentLazy = () => __tmp24;
+			__tmp25.PropertyName = "Name";
+			__tmp25.ValueLazy = () => __tmp26;
+			__tmp25.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp26.Value = "string";
+			__tmp26.TypeLazy = () => __tmp2;
+			__tmp27.ValueLazy = () => __tmp28;
+			__tmp27.TypeLazy = () => MetaPrimitiveType;
+			__tmp27.NamespaceLazy = () => __tmp17;
+			__tmp27.Name = "Int";
+			__tmp27.Documentation = null;
+			__tmp28.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp28.PropertyInitializers.AddLazy(() => __tmp29);
+			__tmp28.TypeLazy = () => MetaPrimitiveType;
+			__tmp29.ParentLazy = () => __tmp28;
+			__tmp29.PropertyName = "Name";
+			__tmp29.ValueLazy = () => __tmp30;
+			__tmp29.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp30.Value = "int";
+			__tmp30.TypeLazy = () => __tmp2;
+			__tmp31.ValueLazy = () => __tmp32;
+			__tmp31.TypeLazy = () => MetaPrimitiveType;
+			__tmp31.NamespaceLazy = () => __tmp17;
+			__tmp31.Name = "Long";
+			__tmp31.Documentation = null;
+			__tmp32.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp32.PropertyInitializers.AddLazy(() => __tmp33);
+			__tmp32.TypeLazy = () => MetaPrimitiveType;
+			__tmp33.ParentLazy = () => __tmp32;
+			__tmp33.PropertyName = "Name";
+			__tmp33.ValueLazy = () => __tmp34;
+			__tmp33.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp34.Value = "long";
+			__tmp34.TypeLazy = () => __tmp2;
+			__tmp35.ValueLazy = () => __tmp36;
+			__tmp35.TypeLazy = () => MetaPrimitiveType;
+			__tmp35.NamespaceLazy = () => __tmp17;
+			__tmp35.Name = "Float";
+			__tmp35.Documentation = null;
+			__tmp36.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp36.PropertyInitializers.AddLazy(() => __tmp37);
+			__tmp36.TypeLazy = () => MetaPrimitiveType;
+			__tmp37.ParentLazy = () => __tmp36;
+			__tmp37.PropertyName = "Name";
+			__tmp37.ValueLazy = () => __tmp38;
+			__tmp37.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp38.Value = "float";
+			__tmp38.TypeLazy = () => __tmp2;
+			__tmp39.ValueLazy = () => __tmp40;
+			__tmp39.TypeLazy = () => MetaPrimitiveType;
+			__tmp39.NamespaceLazy = () => __tmp17;
+			__tmp39.Name = "Double";
+			__tmp39.Documentation = null;
+			__tmp40.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp40.PropertyInitializers.AddLazy(() => __tmp41);
+			__tmp40.TypeLazy = () => MetaPrimitiveType;
+			__tmp41.ParentLazy = () => __tmp40;
+			__tmp41.PropertyName = "Name";
+			__tmp41.ValueLazy = () => __tmp42;
+			__tmp41.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp42.Value = "double";
+			__tmp42.TypeLazy = () => __tmp2;
+			__tmp43.ValueLazy = () => __tmp44;
+			__tmp43.TypeLazy = () => MetaPrimitiveType;
+			__tmp43.NamespaceLazy = () => __tmp17;
+			__tmp43.Name = "Byte";
+			__tmp43.Documentation = null;
+			__tmp44.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp44.PropertyInitializers.AddLazy(() => __tmp45);
+			__tmp44.TypeLazy = () => MetaPrimitiveType;
+			__tmp45.ParentLazy = () => __tmp44;
+			__tmp45.PropertyName = "Name";
+			__tmp45.ValueLazy = () => __tmp46;
+			__tmp45.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp46.Value = "byte";
+			__tmp46.TypeLazy = () => __tmp2;
+			__tmp47.ValueLazy = () => __tmp48;
+			__tmp47.TypeLazy = () => MetaPrimitiveType;
+			__tmp47.NamespaceLazy = () => __tmp17;
+			__tmp47.Name = "Bool";
+			__tmp47.Documentation = null;
+			__tmp48.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp48.PropertyInitializers.AddLazy(() => __tmp49);
+			__tmp48.TypeLazy = () => MetaPrimitiveType;
+			__tmp49.ParentLazy = () => __tmp48;
+			__tmp49.PropertyName = "Name";
+			__tmp49.ValueLazy = () => __tmp50;
+			__tmp49.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp50.Value = "bool";
+			__tmp50.TypeLazy = () => __tmp2;
+			__tmp51.ValueLazy = () => __tmp52;
+			__tmp51.TypeLazy = () => MetaPrimitiveType;
+			__tmp51.NamespaceLazy = () => __tmp17;
+			__tmp51.Name = "Void";
+			__tmp51.Documentation = null;
+			__tmp52.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp52.PropertyInitializers.AddLazy(() => __tmp53);
+			__tmp52.TypeLazy = () => MetaPrimitiveType;
+			__tmp53.ParentLazy = () => __tmp52;
+			__tmp53.PropertyName = "Name";
+			__tmp53.ValueLazy = () => __tmp54;
+			__tmp53.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp54.Value = "void";
+			__tmp54.TypeLazy = () => __tmp2;
+			__tmp55.ValueLazy = () => __tmp56;
+			__tmp55.TypeLazy = () => MetaPrimitiveType;
+			__tmp55.NamespaceLazy = () => __tmp17;
+			__tmp55.Name = "None";
+			__tmp55.Documentation = null;
+			__tmp56.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp56.PropertyInitializers.AddLazy(() => __tmp57);
+			__tmp56.TypeLazy = () => MetaPrimitiveType;
+			__tmp57.ParentLazy = () => __tmp56;
+			__tmp57.PropertyName = "Name";
+			__tmp57.ValueLazy = () => __tmp58;
+			__tmp57.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp58.Value = "*none*";
+			__tmp58.TypeLazy = () => __tmp2;
+			__tmp59.ValueLazy = () => __tmp60;
+			__tmp59.TypeLazy = () => MetaPrimitiveType;
+			__tmp59.NamespaceLazy = () => __tmp17;
+			__tmp59.Name = "Any";
+			__tmp59.Documentation = null;
+			__tmp60.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp60.PropertyInitializers.AddLazy(() => __tmp61);
+			__tmp60.TypeLazy = () => MetaPrimitiveType;
+			__tmp61.ParentLazy = () => __tmp60;
+			__tmp61.PropertyName = "Name";
+			__tmp61.ValueLazy = () => __tmp62;
+			__tmp61.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp62.Value = "*any*";
+			__tmp62.TypeLazy = () => __tmp2;
+			__tmp63.ValueLazy = () => __tmp64;
+			__tmp63.TypeLazy = () => MetaPrimitiveType;
+			__tmp63.NamespaceLazy = () => __tmp17;
+			__tmp63.Name = "Error";
+			__tmp63.Documentation = null;
+			__tmp64.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp64.PropertyInitializers.AddLazy(() => __tmp65);
+			__tmp64.TypeLazy = () => MetaPrimitiveType;
+			__tmp65.ParentLazy = () => __tmp64;
+			__tmp65.PropertyName = "Name";
+			__tmp65.ValueLazy = () => __tmp66;
+			__tmp65.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp66.Value = "*error*";
+			__tmp66.TypeLazy = () => __tmp2;
+			__tmp67.ValueLazy = () => __tmp68;
+			__tmp67.TypeLazy = () => MetaPrimitiveType;
+			__tmp67.NamespaceLazy = () => __tmp17;
+			__tmp67.Name = "ModelObject";
+			__tmp67.Documentation = null;
+			__tmp68.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp68.PropertyInitializers.AddLazy(() => __tmp69);
+			__tmp68.TypeLazy = () => MetaPrimitiveType;
+			__tmp69.ParentLazy = () => __tmp68;
+			__tmp69.PropertyName = "Name";
+			__tmp69.ValueLazy = () => __tmp70;
+			__tmp69.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp70.Value = "ModelObject";
+			__tmp70.TypeLazy = () => __tmp2;
+			__tmp71.ValueLazy = () => __tmp72;
+			__tmp71.TypeLazy = () => MetaPrimitiveType;
+			__tmp71.NamespaceLazy = () => __tmp17;
+			__tmp71.Name = "DefinitionList";
+			__tmp71.Documentation = null;
+			__tmp72.TypeReferenceLazy = () => MetaPrimitiveType;
+			__tmp72.PropertyInitializers.AddLazy(() => __tmp73);
+			__tmp72.TypeLazy = () => MetaPrimitiveType;
+			__tmp73.ParentLazy = () => __tmp72;
+			__tmp73.PropertyName = "Name";
+			__tmp73.ValueLazy = () => __tmp74;
+			__tmp73.PropertyLazy = () => MetaNamedElement_NameProperty;
+			__tmp74.Value = "DefinitionList";
+			__tmp74.TypeLazy = () => __tmp2;
+			__tmp75.ValueLazy = () => __tmp76;
+			__tmp75.TypeLazy = () => MetaCollectionType;
+			__tmp75.NamespaceLazy = () => __tmp17;
+			__tmp75.Name = "ModelObjectList";
+			__tmp75.Documentation = null;
+			__tmp76.TypeReferenceLazy = () => MetaCollectionType;
+			__tmp76.PropertyInitializers.AddLazy(() => __tmp77);
+			__tmp76.TypeLazy = () => MetaCollectionType;
+			__tmp77.ParentLazy = () => __tmp76;
+			__tmp77.PropertyName = "InnerType";
+			__tmp77.ValueLazy = () => __tmp78;
+			__tmp77.PropertyLazy = () => MetaCollectionType_InnerTypeProperty;
+			__tmp78.TypeReferenceLazy = () => __tmp13;
+			// __tmp78.Type = null;
+			__tmp79.Properties.AddLazy(() => __tmp80);
+			__tmp79.Name = "BuiltInName";
+			__tmp79.Documentation = null;
+			__tmp80.ValueLazy = () => __tmp81;
+			__tmp80.Name = "Name";
+			__tmp80.Documentation = null;
+			__tmp81.Value = "TypeOf";
+			__tmp81.TypeLazy = () => __tmp2;
+			TypeOf.Parameters.AddLazy(() => __tmp84);
+			TypeOf.ReturnTypeLazy = () => MetaType;
+			TypeOf.Name = "typeof";
+			TypeOf.Documentation = null;
+			TypeOf.Annotations.AddLazy(() => __tmp79);
+			TypeOf.NamespaceLazy = () => __tmp17;
+			__tmp82.ParameterTypes.AddLazy(() => __tmp1);
+			__tmp82.ReturnTypeLazy = () => MetaType;
+			__tmp83.ParameterTypes.AddLazy(() => __tmp1);
+			__tmp83.ReturnTypeLazy = () => MetaType;
+			__tmp84.FunctionLazy = () => TypeOf;
+			__tmp84.Name = "type";
+			__tmp84.Documentation = null;
+			__tmp84.TypeLazy = () => __tmp1;
+			__tmp85.Properties.AddLazy(() => __tmp86);
+			__tmp85.Name = "BuiltInName";
+			__tmp85.Documentation = null;
+			__tmp86.ValueLazy = () => __tmp87;
+			__tmp86.Name = "Name";
+			__tmp86.Documentation = null;
+			__tmp87.Value = "GetValueType";
+			__tmp87.TypeLazy = () => __tmp2;
+			GetValueType.Parameters.AddLazy(() => __tmp90);
+			GetValueType.ReturnTypeLazy = () => MetaType;
+			GetValueType.Name = "get_type";
+			GetValueType.Documentation = null;
+			GetValueType.Annotations.AddLazy(() => __tmp85);
+			GetValueType.NamespaceLazy = () => __tmp17;
+			__tmp88.ParameterTypes.AddLazy(() => __tmp1);
+			__tmp88.ReturnTypeLazy = () => MetaType;
+			__tmp89.ParameterTypes.AddLazy(() => __tmp1);
+			__tmp89.ReturnTypeLazy = () => MetaType;
+			__tmp90.FunctionLazy = () => GetValueType;
+			__tmp90.Name = "value";
+			__tmp90.Documentation = null;
+			__tmp90.TypeLazy = () => __tmp1;
+			__tmp91.Properties.AddLazy(() => __tmp92);
+			__tmp91.Name = "BuiltInName";
+			__tmp91.Documentation = null;
+			__tmp92.ValueLazy = () => __tmp93;
+			__tmp92.Name = "Name";
+			__tmp92.Documentation = null;
+			__tmp93.Value = "GetReturnType";
+			__tmp93.TypeLazy = () => __tmp2;
+			GetReturnType.Parameters.AddLazy(() => __tmp96);
+			GetReturnType.ReturnTypeLazy = () => MetaType;
+			GetReturnType.Name = "get_return_type";
+			GetReturnType.Documentation = null;
+			GetReturnType.Annotations.AddLazy(() => __tmp91);
+			GetReturnType.NamespaceLazy = () => __tmp17;
+			__tmp94.ParameterTypes.AddLazy(() => __tmp1);
+			__tmp94.ReturnTypeLazy = () => MetaType;
+			__tmp95.ParameterTypes.AddLazy(() => __tmp1);
+			__tmp95.ReturnTypeLazy = () => MetaType;
+			__tmp96.FunctionLazy = () => GetReturnType;
+			__tmp96.Name = "value";
+			__tmp96.Documentation = null;
+			__tmp96.TypeLazy = () => __tmp1;
+			__tmp97.Properties.AddLazy(() => __tmp98);
+			__tmp97.Name = "BuiltInName";
+			__tmp97.Documentation = null;
+			__tmp98.ValueLazy = () => __tmp99;
+			__tmp98.Name = "Name";
+			__tmp98.Documentation = null;
+			__tmp99.Value = "CurrentType";
+			__tmp99.TypeLazy = () => __tmp2;
+			CurrentType.Parameters.AddLazy(() => __tmp102);
+			CurrentType.ReturnTypeLazy = () => MetaType;
+			CurrentType.Name = "current_type";
+			CurrentType.Documentation = null;
+			CurrentType.Annotations.AddLazy(() => __tmp97);
+			CurrentType.NamespaceLazy = () => __tmp17;
+			__tmp100.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp100.ReturnTypeLazy = () => MetaType;
+			__tmp101.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp101.ReturnTypeLazy = () => MetaType;
+			__tmp102.FunctionLazy = () => CurrentType;
+			__tmp102.Name = "symbol";
+			__tmp102.Documentation = null;
+			__tmp102.TypeLazy = () => __tmp13;
+			__tmp103.Properties.AddLazy(() => __tmp104);
+			__tmp103.Name = "BuiltInName";
+			__tmp103.Documentation = null;
+			__tmp104.ValueLazy = () => __tmp105;
+			__tmp104.Name = "Name";
+			__tmp104.Documentation = null;
+			__tmp105.Value = "TypeCheck";
+			__tmp105.TypeLazy = () => __tmp2;
+			TypeCheck.Parameters.AddLazy(() => __tmp108);
+			TypeCheck.ReturnTypeLazy = () => __tmp8;
+			TypeCheck.Name = "type_check";
+			TypeCheck.Documentation = null;
+			TypeCheck.Annotations.AddLazy(() => __tmp103);
+			TypeCheck.NamespaceLazy = () => __tmp17;
+			__tmp106.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp106.ReturnTypeLazy = () => __tmp8;
+			__tmp107.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp107.ReturnTypeLazy = () => __tmp8;
+			__tmp108.FunctionLazy = () => TypeCheck;
+			__tmp108.Name = "symbol";
+			__tmp108.Documentation = null;
+			__tmp108.TypeLazy = () => __tmp13;
+			__tmp109.Properties.AddLazy(() => __tmp110);
+			__tmp109.Name = "BuiltInName";
+			__tmp109.Documentation = null;
+			__tmp110.ValueLazy = () => __tmp111;
+			__tmp110.Name = "Name";
+			__tmp110.Documentation = null;
+			__tmp111.Value = "Balance";
+			__tmp111.TypeLazy = () => __tmp2;
+			Balance.Parameters.AddLazy(() => __tmp114);
+			Balance.Parameters.AddLazy(() => __tmp115);
+			Balance.ReturnTypeLazy = () => MetaType;
+			Balance.Name = "balance";
+			Balance.Documentation = null;
+			Balance.Annotations.AddLazy(() => __tmp109);
+			Balance.NamespaceLazy = () => __tmp17;
+			__tmp112.ParameterTypes.AddLazy(() => MetaType);
+			__tmp112.ParameterTypes.AddLazy(() => MetaType);
+			__tmp112.ReturnTypeLazy = () => MetaType;
+			__tmp113.ParameterTypes.AddLazy(() => MetaType);
+			__tmp113.ParameterTypes.AddLazy(() => MetaType);
+			__tmp113.ReturnTypeLazy = () => MetaType;
+			__tmp114.FunctionLazy = () => Balance;
+			__tmp114.Name = "left";
+			__tmp114.Documentation = null;
+			__tmp114.TypeLazy = () => MetaType;
+			__tmp115.FunctionLazy = () => Balance;
+			__tmp115.Name = "right";
+			__tmp115.Documentation = null;
+			__tmp115.TypeLazy = () => MetaType;
+			__tmp116.Properties.AddLazy(() => __tmp117);
+			__tmp116.Name = "BuiltInName";
+			__tmp116.Documentation = null;
+			__tmp117.ValueLazy = () => __tmp118;
+			__tmp117.Name = "Name";
+			__tmp117.Documentation = null;
+			__tmp118.Value = "Resolve1";
+			__tmp118.TypeLazy = () => __tmp2;
+			Resolve1.Parameters.AddLazy(() => __tmp121);
+			Resolve1.ReturnTypeLazy = () => __tmp14;
+			Resolve1.Name = "resolve";
+			Resolve1.Documentation = null;
+			Resolve1.Annotations.AddLazy(() => __tmp116);
+			Resolve1.NamespaceLazy = () => __tmp17;
+			__tmp119.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp119.ReturnTypeLazy = () => __tmp14;
+			__tmp120.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp120.ReturnTypeLazy = () => __tmp14;
+			__tmp121.FunctionLazy = () => Resolve1;
+			__tmp121.Name = "name";
+			__tmp121.Documentation = null;
+			__tmp121.TypeLazy = () => __tmp2;
+			__tmp122.Properties.AddLazy(() => __tmp123);
+			__tmp122.Name = "BuiltInName";
+			__tmp122.Documentation = null;
+			__tmp123.ValueLazy = () => __tmp124;
+			__tmp123.Name = "Name";
+			__tmp123.Documentation = null;
+			__tmp124.Value = "Resolve2";
+			__tmp124.TypeLazy = () => __tmp2;
+			Resolve2.Parameters.AddLazy(() => __tmp127);
+			Resolve2.Parameters.AddLazy(() => __tmp128);
+			Resolve2.ReturnTypeLazy = () => __tmp14;
+			Resolve2.Name = "resolve";
+			Resolve2.Documentation = null;
+			Resolve2.Annotations.AddLazy(() => __tmp122);
+			Resolve2.NamespaceLazy = () => __tmp17;
+			__tmp125.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp125.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp125.ReturnTypeLazy = () => __tmp14;
+			__tmp126.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp126.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp126.ReturnTypeLazy = () => __tmp14;
+			__tmp127.FunctionLazy = () => Resolve2;
+			__tmp127.Name = "context";
+			__tmp127.Documentation = null;
+			__tmp127.TypeLazy = () => __tmp13;
+			__tmp128.FunctionLazy = () => Resolve2;
+			__tmp128.Name = "name";
+			__tmp128.Documentation = null;
+			__tmp128.TypeLazy = () => __tmp2;
+			__tmp129.Properties.AddLazy(() => __tmp130);
+			__tmp129.Name = "BuiltInName";
+			__tmp129.Documentation = null;
+			__tmp130.ValueLazy = () => __tmp131;
+			__tmp130.Name = "Name";
+			__tmp130.Documentation = null;
+			__tmp131.Value = "ResolveType1";
+			__tmp131.TypeLazy = () => __tmp2;
+			ResolveType1.Parameters.AddLazy(() => __tmp134);
+			ResolveType1.ReturnTypeLazy = () => __tmp14;
+			ResolveType1.Name = "resolve_type";
+			ResolveType1.Documentation = null;
+			ResolveType1.Annotations.AddLazy(() => __tmp129);
+			ResolveType1.NamespaceLazy = () => __tmp17;
+			__tmp132.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp132.ReturnTypeLazy = () => __tmp14;
+			__tmp133.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp133.ReturnTypeLazy = () => __tmp14;
+			__tmp134.FunctionLazy = () => ResolveType1;
+			__tmp134.Name = "name";
+			__tmp134.Documentation = null;
+			__tmp134.TypeLazy = () => __tmp2;
+			__tmp135.Properties.AddLazy(() => __tmp136);
+			__tmp135.Name = "BuiltInName";
+			__tmp135.Documentation = null;
+			__tmp136.ValueLazy = () => __tmp137;
+			__tmp136.Name = "Name";
+			__tmp136.Documentation = null;
+			__tmp137.Value = "ResolveType2";
+			__tmp137.TypeLazy = () => __tmp2;
+			ResolveType2.Parameters.AddLazy(() => __tmp140);
+			ResolveType2.Parameters.AddLazy(() => __tmp141);
+			ResolveType2.ReturnTypeLazy = () => __tmp14;
+			ResolveType2.Name = "resolve_type";
+			ResolveType2.Documentation = null;
+			ResolveType2.Annotations.AddLazy(() => __tmp135);
+			ResolveType2.NamespaceLazy = () => __tmp17;
+			__tmp138.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp138.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp138.ReturnTypeLazy = () => __tmp14;
+			__tmp139.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp139.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp139.ReturnTypeLazy = () => __tmp14;
+			__tmp140.FunctionLazy = () => ResolveType2;
+			__tmp140.Name = "context";
+			__tmp140.Documentation = null;
+			__tmp140.TypeLazy = () => __tmp13;
+			__tmp141.FunctionLazy = () => ResolveType2;
+			__tmp141.Name = "name";
+			__tmp141.Documentation = null;
+			__tmp141.TypeLazy = () => __tmp2;
+			__tmp142.Properties.AddLazy(() => __tmp143);
+			__tmp142.Name = "BuiltInName";
+			__tmp142.Documentation = null;
+			__tmp143.ValueLazy = () => __tmp144;
+			__tmp143.Name = "Name";
+			__tmp143.Documentation = null;
+			__tmp144.Value = "ResolveName1";
+			__tmp144.TypeLazy = () => __tmp2;
+			ResolveName1.Parameters.AddLazy(() => __tmp147);
+			ResolveName1.ReturnTypeLazy = () => __tmp14;
+			ResolveName1.Name = "resolve_name";
+			ResolveName1.Documentation = null;
+			ResolveName1.Annotations.AddLazy(() => __tmp142);
+			ResolveName1.NamespaceLazy = () => __tmp17;
+			__tmp145.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp145.ReturnTypeLazy = () => __tmp14;
+			__tmp146.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp146.ReturnTypeLazy = () => __tmp14;
+			__tmp147.FunctionLazy = () => ResolveName1;
+			__tmp147.Name = "name";
+			__tmp147.Documentation = null;
+			__tmp147.TypeLazy = () => __tmp2;
+			__tmp148.Properties.AddLazy(() => __tmp149);
+			__tmp148.Name = "BuiltInName";
+			__tmp148.Documentation = null;
+			__tmp149.ValueLazy = () => __tmp150;
+			__tmp149.Name = "Name";
+			__tmp149.Documentation = null;
+			__tmp150.Value = "ResolveName2";
+			__tmp150.TypeLazy = () => __tmp2;
+			ResolveName2.Parameters.AddLazy(() => __tmp153);
+			ResolveName2.Parameters.AddLazy(() => __tmp154);
+			ResolveName2.ReturnTypeLazy = () => __tmp14;
+			ResolveName2.Name = "resolve_name";
+			ResolveName2.Documentation = null;
+			ResolveName2.Annotations.AddLazy(() => __tmp148);
+			ResolveName2.NamespaceLazy = () => __tmp17;
+			__tmp151.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp151.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp151.ReturnTypeLazy = () => __tmp14;
+			__tmp152.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp152.ParameterTypes.AddLazy(() => __tmp2);
+			__tmp152.ReturnTypeLazy = () => __tmp14;
+			__tmp153.FunctionLazy = () => ResolveName2;
+			__tmp153.Name = "context";
+			__tmp153.Documentation = null;
+			__tmp153.TypeLazy = () => __tmp13;
+			__tmp154.FunctionLazy = () => ResolveName2;
+			__tmp154.Name = "name";
+			__tmp154.Documentation = null;
+			__tmp154.TypeLazy = () => __tmp2;
+			__tmp155.Properties.AddLazy(() => __tmp156);
+			__tmp155.Name = "BuiltInName";
+			__tmp155.Documentation = null;
+			__tmp156.ValueLazy = () => __tmp157;
+			__tmp156.Name = "Name";
+			__tmp156.Documentation = null;
+			__tmp157.Value = "ToDefinitionList";
+			__tmp157.TypeLazy = () => __tmp2;
+			ToDefinitionList.Parameters.AddLazy(() => __tmp160);
+			ToDefinitionList.ReturnTypeLazy = () => __tmp14;
+			ToDefinitionList.Name = "definition_list";
+			ToDefinitionList.Documentation = null;
+			ToDefinitionList.Annotations.AddLazy(() => __tmp155);
+			ToDefinitionList.NamespaceLazy = () => __tmp17;
+			__tmp158.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp158.ReturnTypeLazy = () => __tmp14;
+			__tmp159.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp159.ReturnTypeLazy = () => __tmp14;
+			__tmp160.FunctionLazy = () => ToDefinitionList;
+			__tmp160.Name = "definition";
+			__tmp160.Documentation = null;
+			__tmp160.TypeLazy = () => __tmp13;
+			__tmp161.Properties.AddLazy(() => __tmp162);
+			__tmp161.Name = "BuiltInName";
+			__tmp161.Documentation = null;
+			__tmp162.ValueLazy = () => __tmp163;
+			__tmp162.Name = "Name";
+			__tmp162.Documentation = null;
+			__tmp163.Value = "Bind1";
+			__tmp163.TypeLazy = () => __tmp2;
+			Bind1.Parameters.AddLazy(() => __tmp166);
+			Bind1.ReturnTypeLazy = () => __tmp13;
+			Bind1.Name = "bind";
+			Bind1.Documentation = null;
+			Bind1.Annotations.AddLazy(() => __tmp161);
+			Bind1.NamespaceLazy = () => __tmp17;
+			__tmp164.ParameterTypes.AddLazy(() => __tmp14);
+			__tmp164.ReturnTypeLazy = () => __tmp13;
+			__tmp165.ParameterTypes.AddLazy(() => __tmp14);
+			__tmp165.ReturnTypeLazy = () => __tmp13;
+			__tmp166.FunctionLazy = () => Bind1;
+			__tmp166.Name = "definitions";
+			__tmp166.Documentation = null;
+			__tmp166.TypeLazy = () => __tmp14;
+			__tmp167.Properties.AddLazy(() => __tmp168);
+			__tmp167.Name = "BuiltInName";
+			__tmp167.Documentation = null;
+			__tmp168.ValueLazy = () => __tmp169;
+			__tmp168.Name = "Name";
+			__tmp168.Documentation = null;
+			__tmp169.Value = "Bind2";
+			__tmp169.TypeLazy = () => __tmp2;
+			Bind2.Parameters.AddLazy(() => __tmp172);
+			Bind2.Parameters.AddLazy(() => __tmp173);
+			Bind2.ReturnTypeLazy = () => __tmp13;
+			Bind2.Name = "bind";
+			Bind2.Documentation = null;
+			Bind2.Annotations.AddLazy(() => __tmp167);
+			Bind2.NamespaceLazy = () => __tmp17;
+			__tmp170.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp170.ParameterTypes.AddLazy(() => __tmp14);
+			__tmp170.ReturnTypeLazy = () => __tmp13;
+			__tmp171.ParameterTypes.AddLazy(() => __tmp13);
+			__tmp171.ParameterTypes.AddLazy(() => __tmp14);
+			__tmp171.ReturnTypeLazy = () => __tmp13;
+			__tmp172.FunctionLazy = () => Bind2;
+			__tmp172.Name = "context";
+			__tmp172.Documentation = null;
+			__tmp172.TypeLazy = () => __tmp13;
+			__tmp173.FunctionLazy = () => Bind2;
+			__tmp173.Name = "definitions";
+			__tmp173.Documentation = null;
+			__tmp173.TypeLazy = () => __tmp14;
+			MetaAnnotatedElement.IsAbstract = true;
+			MetaAnnotatedElement.Properties.AddLazy(() => MetaAnnotatedElement_AnnotationsProperty);
+			// MetaAnnotatedElement.Constructor = null;
+			MetaAnnotatedElement.NamespaceLazy = () => __tmp17;
+			MetaAnnotatedElement.Name = "MetaAnnotatedElement";
+			MetaAnnotatedElement.Documentation = "Represents an annotated element.";
+			__tmp174.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp174.InnerTypeLazy = () => MetaAnnotation;
+			MetaAnnotatedElement_AnnotationsProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaAnnotatedElement_AnnotationsProperty.ClassLazy = () => MetaAnnotatedElement;
+			MetaAnnotatedElement_AnnotationsProperty.Name = "Annotations";
+			MetaAnnotatedElement_AnnotationsProperty.Documentation = "List of annotations";
+			MetaAnnotatedElement_AnnotationsProperty.TypeLazy = () => __tmp174;
+			MetaDocumentedElement.IsAbstract = true;
+			MetaDocumentedElement.Properties.AddLazy(() => MetaDocumentedElement_DocumentationProperty);
+			MetaDocumentedElement.Operations.AddLazy(() => __tmp176);
+			// MetaDocumentedElement.Constructor = null;
+			MetaDocumentedElement.NamespaceLazy = () => __tmp17;
+			MetaDocumentedElement.Name = "MetaDocumentedElement";
+			MetaDocumentedElement.Documentation = null;
+			// MetaDocumentedElement_DocumentationProperty.Kind = null;
+			MetaDocumentedElement_DocumentationProperty.ClassLazy = () => MetaDocumentedElement;
+			MetaDocumentedElement_DocumentationProperty.Name = "Documentation";
+			MetaDocumentedElement_DocumentationProperty.Documentation = null;
+			MetaDocumentedElement_DocumentationProperty.TypeLazy = () => __tmp2;
+			__tmp175.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp175.InnerTypeLazy = () => __tmp2;
+			__tmp176.ParentLazy = () => MetaDocumentedElement;
+			__tmp176.ReturnTypeLazy = () => __tmp175;
+			__tmp176.Name = "GetDocumentationLines";
+			__tmp176.Documentation = null;
+			__tmp177.ReturnTypeLazy = () => __tmp175;
+			__tmp178.ReturnTypeLazy = () => __tmp175;
+			MetaNamedElement.IsAbstract = true;
+			MetaNamedElement.SuperClasses.AddLazy(() => MetaDocumentedElement);
+			MetaNamedElement.Properties.AddLazy(() => MetaNamedElement_NameProperty);
+			// MetaNamedElement.Constructor = null;
+			MetaNamedElement.NamespaceLazy = () => __tmp17;
+			MetaNamedElement.Name = "MetaNamedElement";
+			MetaNamedElement.Documentation = null;
+			__tmp179.Name = "Name";
+			__tmp179.Documentation = null;
+			// MetaNamedElement_NameProperty.Kind = null;
+			MetaNamedElement_NameProperty.ClassLazy = () => MetaNamedElement;
+			MetaNamedElement_NameProperty.Name = "Name";
+			MetaNamedElement_NameProperty.Documentation = null;
+			MetaNamedElement_NameProperty.TypeLazy = () => __tmp2;
+			MetaNamedElement_NameProperty.Annotations.AddLazy(() => __tmp179);
+			MetaTypedElement.IsAbstract = true;
+			MetaTypedElement.Properties.AddLazy(() => MetaTypedElement_TypeProperty);
+			// MetaTypedElement.Constructor = null;
+			MetaTypedElement.NamespaceLazy = () => __tmp17;
+			MetaTypedElement.Name = "MetaTypedElement";
+			MetaTypedElement.Documentation = null;
+			__tmp180.Name = "Type";
+			__tmp180.Documentation = null;
+			// MetaTypedElement_TypeProperty.Kind = null;
+			MetaTypedElement_TypeProperty.ClassLazy = () => MetaTypedElement;
+			MetaTypedElement_TypeProperty.RedefiningProperties.AddLazy(() => MetaFunction_TypeProperty);
+			MetaTypedElement_TypeProperty.Name = "Type";
+			MetaTypedElement_TypeProperty.Documentation = null;
+			MetaTypedElement_TypeProperty.TypeLazy = () => MetaType;
+			MetaTypedElement_TypeProperty.Annotations.AddLazy(() => __tmp180);
+			__tmp181.Name = "Type";
+			__tmp181.Documentation = null;
+			MetaType.IsAbstract = true;
+			// MetaType.Constructor = null;
+			MetaType.NamespaceLazy = () => __tmp17;
+			MetaType.Name = "MetaType";
+			MetaType.Documentation = null;
+			MetaType.Annotations.AddLazy(() => __tmp181);
+			// MetaAnnotation.IsAbstract = null;
+			MetaAnnotation.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaAnnotation.Properties.AddLazy(() => MetaAnnotation_PropertiesProperty);
+			// MetaAnnotation.Constructor = null;
+			MetaAnnotation.NamespaceLazy = () => __tmp17;
+			MetaAnnotation.Name = "MetaAnnotation";
+			MetaAnnotation.Documentation = null;
+			__tmp182.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp182.InnerTypeLazy = () => MetaAnnotationProperty;
+			MetaAnnotation_PropertiesProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaAnnotation_PropertiesProperty.ClassLazy = () => MetaAnnotation;
+			MetaAnnotation_PropertiesProperty.Name = "Properties";
+			MetaAnnotation_PropertiesProperty.Documentation = null;
+			MetaAnnotation_PropertiesProperty.TypeLazy = () => __tmp182;
+			// MetaAnnotationProperty.IsAbstract = null;
+			MetaAnnotationProperty.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaAnnotationProperty.Properties.AddLazy(() => MetaAnnotationProperty_ValueProperty);
+			MetaAnnotationProperty.ConstructorLazy = () => __tmp183;
+			MetaAnnotationProperty.NamespaceLazy = () => __tmp17;
+			MetaAnnotationProperty.Name = "MetaAnnotationProperty";
+			MetaAnnotationProperty.Documentation = null;
+			MetaAnnotationProperty_ValueProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaAnnotationProperty_ValueProperty.ClassLazy = () => MetaAnnotationProperty;
+			MetaAnnotationProperty_ValueProperty.Name = "Value";
+			MetaAnnotationProperty_ValueProperty.Documentation = null;
+			MetaAnnotationProperty_ValueProperty.TypeLazy = () => MetaExpression;
+			__tmp183.ParentLazy = () => MetaAnnotationProperty;
+			__tmp183.Initializers.AddLazy(() => __tmp184);
+			__tmp183.Name = "MetaAnnotationProperty";
+			__tmp183.Documentation = null;
+			__tmp184.ObjectName = "Value";
+			__tmp184.ObjectLazy = () => MetaAnnotationProperty_ValueProperty;
+			__tmp184.ConstructorLazy = () => __tmp183;
+			__tmp184.PropertyName = "ExpectedType";
+			__tmp184.PropertyContextLazy = () => MetaExpression;
+			__tmp184.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp184.ValueLazy = () => __tmp185;
+			__tmp185.TypeReferenceLazy = () => __tmp11;
+			// __tmp185.Type = null;
+			__tmp186.Name = "Scope";
+			__tmp186.Documentation = null;
+			// MetaNamespace.IsAbstract = null;
+			MetaNamespace.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaNamespace.SuperClasses.AddLazy(() => MetaAnnotatedElement);
+			MetaNamespace.Properties.AddLazy(() => MetaNamespace_ParentProperty);
+			MetaNamespace.Properties.AddLazy(() => MetaNamespace_UsingsProperty);
+			MetaNamespace.Properties.AddLazy(() => MetaNamespace_MetaModelProperty);
+			MetaNamespace.Properties.AddLazy(() => MetaNamespace_NamespacesProperty);
+			MetaNamespace.Properties.AddLazy(() => MetaNamespace_DeclarationsProperty);
+			// MetaNamespace.Constructor = null;
+			MetaNamespace.NamespaceLazy = () => __tmp17;
+			MetaNamespace.Name = "MetaNamespace";
+			MetaNamespace.Documentation = null;
+			MetaNamespace.Annotations.AddLazy(() => __tmp186);
+			// MetaNamespace_ParentProperty.Kind = null;
+			MetaNamespace_ParentProperty.ClassLazy = () => MetaNamespace;
+			MetaNamespace_ParentProperty.OppositeProperties.AddLazy(() => MetaNamespace_NamespacesProperty);
+			MetaNamespace_ParentProperty.Name = "Parent";
+			MetaNamespace_ParentProperty.Documentation = null;
+			MetaNamespace_ParentProperty.TypeLazy = () => MetaNamespace;
+			__tmp187.Name = "ImportedScope";
+			__tmp187.Documentation = null;
+			__tmp188.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp188.InnerTypeLazy = () => MetaNamespace;
+			// MetaNamespace_UsingsProperty.Kind = null;
+			MetaNamespace_UsingsProperty.ClassLazy = () => MetaNamespace;
+			MetaNamespace_UsingsProperty.Name = "Usings";
+			MetaNamespace_UsingsProperty.Documentation = null;
+			MetaNamespace_UsingsProperty.TypeLazy = () => __tmp188;
+			MetaNamespace_UsingsProperty.Annotations.AddLazy(() => __tmp187);
+			MetaNamespace_MetaModelProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaNamespace_MetaModelProperty.ClassLazy = () => MetaNamespace;
+			MetaNamespace_MetaModelProperty.OppositeProperties.AddLazy(() => MetaModel_NamespaceProperty);
+			MetaNamespace_MetaModelProperty.Name = "MetaModel";
+			MetaNamespace_MetaModelProperty.Documentation = null;
+			MetaNamespace_MetaModelProperty.TypeLazy = () => MetaModel;
+			__tmp189.Name = "ScopeEntry";
+			__tmp189.Documentation = null;
+			__tmp190.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp190.InnerTypeLazy = () => MetaNamespace;
+			MetaNamespace_NamespacesProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaNamespace_NamespacesProperty.ClassLazy = () => MetaNamespace;
+			MetaNamespace_NamespacesProperty.OppositeProperties.AddLazy(() => MetaNamespace_ParentProperty);
+			MetaNamespace_NamespacesProperty.Name = "Namespaces";
+			MetaNamespace_NamespacesProperty.Documentation = null;
+			MetaNamespace_NamespacesProperty.TypeLazy = () => __tmp190;
+			MetaNamespace_NamespacesProperty.Annotations.AddLazy(() => __tmp189);
+			__tmp191.Name = "ScopeEntry";
+			__tmp191.Documentation = null;
+			__tmp192.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp192.InnerTypeLazy = () => MetaDeclaration;
+			MetaNamespace_DeclarationsProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaNamespace_DeclarationsProperty.ClassLazy = () => MetaNamespace;
+			MetaNamespace_DeclarationsProperty.OppositeProperties.AddLazy(() => MetaDeclaration_NamespaceProperty);
+			MetaNamespace_DeclarationsProperty.Name = "Declarations";
+			MetaNamespace_DeclarationsProperty.Documentation = null;
+			MetaNamespace_DeclarationsProperty.TypeLazy = () => __tmp192;
+			MetaNamespace_DeclarationsProperty.Annotations.AddLazy(() => __tmp191);
+			MetaDeclaration.IsAbstract = true;
+			MetaDeclaration.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaDeclaration.SuperClasses.AddLazy(() => MetaAnnotatedElement);
+			MetaDeclaration.Properties.AddLazy(() => MetaDeclaration_NamespaceProperty);
+			MetaDeclaration.Properties.AddLazy(() => MetaDeclaration_ModelProperty);
+			MetaDeclaration.ConstructorLazy = () => __tmp193;
+			MetaDeclaration.NamespaceLazy = () => __tmp17;
+			MetaDeclaration.Name = "MetaDeclaration";
+			MetaDeclaration.Documentation = null;
+			__tmp193.ParentLazy = () => MetaDeclaration;
+			__tmp193.Initializers.AddLazy(() => __tmp194);
+			__tmp193.Name = "MetaDeclaration";
+			__tmp193.Documentation = null;
+			__tmp194.ConstructorLazy = () => __tmp193;
+			__tmp194.PropertyName = "Model";
+			__tmp194.PropertyContextLazy = () => MetaDeclaration;
+			__tmp194.PropertyLazy = () => MetaDeclaration_ModelProperty;
+			__tmp194.ValueLazy = () => __tmp195;
+			__tmp195.ExpressionLazy = () => __tmp196;
+			__tmp195.Name = "MetaModel";
+			__tmp195.TypeLazy = () => MetaModel;
+			__tmp196.Name = "Namespace";
+			__tmp196.TypeLazy = () => MetaNamespace;
+			// MetaDeclaration_NamespaceProperty.Kind = null;
+			MetaDeclaration_NamespaceProperty.ClassLazy = () => MetaDeclaration;
+			MetaDeclaration_NamespaceProperty.OppositeProperties.AddLazy(() => MetaNamespace_DeclarationsProperty);
+			MetaDeclaration_NamespaceProperty.Name = "Namespace";
+			MetaDeclaration_NamespaceProperty.Documentation = null;
+			MetaDeclaration_NamespaceProperty.TypeLazy = () => MetaNamespace;
+			MetaDeclaration_ModelProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Derived;
+			MetaDeclaration_ModelProperty.ClassLazy = () => MetaDeclaration;
+			MetaDeclaration_ModelProperty.Name = "Model";
+			MetaDeclaration_ModelProperty.Documentation = null;
+			MetaDeclaration_ModelProperty.TypeLazy = () => MetaModel;
+			// MetaModel.IsAbstract = null;
+			MetaModel.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaModel.SuperClasses.AddLazy(() => MetaAnnotatedElement);
+			MetaModel.Properties.AddLazy(() => MetaModel_UriProperty);
+			MetaModel.Properties.AddLazy(() => MetaModel_NamespaceProperty);
+			// MetaModel.Constructor = null;
+			MetaModel.NamespaceLazy = () => __tmp17;
+			MetaModel.Name = "MetaModel";
+			MetaModel.Documentation = null;
+			// MetaModel_UriProperty.Kind = null;
+			MetaModel_UriProperty.ClassLazy = () => MetaModel;
+			MetaModel_UriProperty.Name = "Uri";
+			MetaModel_UriProperty.Documentation = null;
+			MetaModel_UriProperty.TypeLazy = () => __tmp2;
+			// MetaModel_NamespaceProperty.Kind = null;
+			MetaModel_NamespaceProperty.ClassLazy = () => MetaModel;
+			MetaModel_NamespaceProperty.OppositeProperties.AddLazy(() => MetaNamespace_MetaModelProperty);
+			MetaModel_NamespaceProperty.Name = "Namespace";
+			MetaModel_NamespaceProperty.Documentation = null;
+			MetaModel_NamespaceProperty.TypeLazy = () => MetaNamespace;
+			MetaCollectionKind.EnumLiterals.AddLazy(() => __tmp197);
+			MetaCollectionKind.EnumLiterals.AddLazy(() => __tmp198);
+			MetaCollectionKind.EnumLiterals.AddLazy(() => __tmp199);
+			MetaCollectionKind.EnumLiterals.AddLazy(() => __tmp200);
+			MetaCollectionKind.NamespaceLazy = () => __tmp17;
+			MetaCollectionKind.Name = "MetaCollectionKind";
+			MetaCollectionKind.Documentation = null;
+			__tmp197.EnumLazy = () => MetaCollectionKind;
+			__tmp197.Name = "List";
+			__tmp197.Documentation = null;
+			__tmp197.TypeLazy = () => MetaCollectionKind;
+			__tmp198.EnumLazy = () => MetaCollectionKind;
+			__tmp198.Name = "Set";
+			__tmp198.Documentation = null;
+			__tmp198.TypeLazy = () => MetaCollectionKind;
+			__tmp199.EnumLazy = () => MetaCollectionKind;
+			__tmp199.Name = "MultiList";
+			__tmp199.Documentation = null;
+			__tmp199.TypeLazy = () => MetaCollectionKind;
+			__tmp200.EnumLazy = () => MetaCollectionKind;
+			__tmp200.Name = "MultiSet";
+			__tmp200.Documentation = null;
+			__tmp200.TypeLazy = () => MetaCollectionKind;
+			// MetaCollectionType.IsAbstract = null;
+			MetaCollectionType.SuperClasses.AddLazy(() => MetaType);
+			MetaCollectionType.Properties.AddLazy(() => MetaCollectionType_KindProperty);
+			MetaCollectionType.Properties.AddLazy(() => MetaCollectionType_InnerTypeProperty);
+			// MetaCollectionType.Constructor = null;
+			MetaCollectionType.NamespaceLazy = () => __tmp17;
+			MetaCollectionType.Name = "MetaCollectionType";
+			MetaCollectionType.Documentation = null;
+			// MetaCollectionType_KindProperty.Kind = null;
+			MetaCollectionType_KindProperty.ClassLazy = () => MetaCollectionType;
+			MetaCollectionType_KindProperty.Name = "Kind";
+			MetaCollectionType_KindProperty.Documentation = null;
+			MetaCollectionType_KindProperty.TypeLazy = () => MetaCollectionKind;
+			// MetaCollectionType_InnerTypeProperty.Kind = null;
+			MetaCollectionType_InnerTypeProperty.ClassLazy = () => MetaCollectionType;
+			MetaCollectionType_InnerTypeProperty.Name = "InnerType";
+			MetaCollectionType_InnerTypeProperty.Documentation = null;
+			MetaCollectionType_InnerTypeProperty.TypeLazy = () => MetaType;
+			// MetaNullableType.IsAbstract = null;
+			MetaNullableType.SuperClasses.AddLazy(() => MetaType);
+			MetaNullableType.Properties.AddLazy(() => MetaNullableType_InnerTypeProperty);
+			// MetaNullableType.Constructor = null;
+			MetaNullableType.NamespaceLazy = () => __tmp17;
+			MetaNullableType.Name = "MetaNullableType";
+			MetaNullableType.Documentation = null;
+			// MetaNullableType_InnerTypeProperty.Kind = null;
+			MetaNullableType_InnerTypeProperty.ClassLazy = () => MetaNullableType;
+			MetaNullableType_InnerTypeProperty.Name = "InnerType";
+			MetaNullableType_InnerTypeProperty.Documentation = null;
+			MetaNullableType_InnerTypeProperty.TypeLazy = () => MetaType;
+			// MetaPrimitiveType.IsAbstract = null;
+			MetaPrimitiveType.SuperClasses.AddLazy(() => MetaType);
+			MetaPrimitiveType.SuperClasses.AddLazy(() => MetaNamedElement);
+			// MetaPrimitiveType.Constructor = null;
+			MetaPrimitiveType.NamespaceLazy = () => __tmp17;
+			MetaPrimitiveType.Name = "MetaPrimitiveType";
+			MetaPrimitiveType.Documentation = null;
+			__tmp201.Name = "Scope";
+			__tmp201.Documentation = null;
+			// MetaEnum.IsAbstract = null;
+			MetaEnum.SuperClasses.AddLazy(() => MetaType);
+			MetaEnum.SuperClasses.AddLazy(() => MetaDeclaration);
+			MetaEnum.Properties.AddLazy(() => MetaEnum_EnumLiteralsProperty);
+			MetaEnum.Properties.AddLazy(() => MetaEnum_OperationsProperty);
+			// MetaEnum.Constructor = null;
+			MetaEnum.NamespaceLazy = () => __tmp17;
+			MetaEnum.Name = "MetaEnum";
+			MetaEnum.Documentation = null;
+			MetaEnum.Annotations.AddLazy(() => __tmp201);
+			__tmp202.Name = "ScopeEntry";
+			__tmp202.Documentation = null;
+			__tmp203.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp203.InnerTypeLazy = () => MetaEnumLiteral;
+			MetaEnum_EnumLiteralsProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaEnum_EnumLiteralsProperty.ClassLazy = () => MetaEnum;
+			MetaEnum_EnumLiteralsProperty.OppositeProperties.AddLazy(() => MetaEnumLiteral_EnumProperty);
+			MetaEnum_EnumLiteralsProperty.Name = "EnumLiterals";
+			MetaEnum_EnumLiteralsProperty.Documentation = null;
+			MetaEnum_EnumLiteralsProperty.TypeLazy = () => __tmp203;
+			MetaEnum_EnumLiteralsProperty.Annotations.AddLazy(() => __tmp202);
+			__tmp204.Name = "ScopeEntry";
+			__tmp204.Documentation = null;
+			__tmp205.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp205.InnerTypeLazy = () => MetaOperation;
+			MetaEnum_OperationsProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaEnum_OperationsProperty.ClassLazy = () => MetaEnum;
+			MetaEnum_OperationsProperty.OppositeProperties.AddLazy(() => MetaOperation_ParentProperty);
+			MetaEnum_OperationsProperty.Name = "Operations";
+			MetaEnum_OperationsProperty.Documentation = null;
+			MetaEnum_OperationsProperty.TypeLazy = () => __tmp205;
+			MetaEnum_OperationsProperty.Annotations.AddLazy(() => __tmp204);
+			// MetaEnumLiteral.IsAbstract = null;
+			MetaEnumLiteral.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaEnumLiteral.SuperClasses.AddLazy(() => MetaTypedElement);
+			MetaEnumLiteral.Properties.AddLazy(() => MetaEnumLiteral_EnumProperty);
+			MetaEnumLiteral.ConstructorLazy = () => __tmp206;
+			MetaEnumLiteral.NamespaceLazy = () => __tmp17;
+			MetaEnumLiteral.Name = "MetaEnumLiteral";
+			MetaEnumLiteral.Documentation = null;
+			__tmp206.ParentLazy = () => MetaEnumLiteral;
+			__tmp206.Initializers.AddLazy(() => __tmp207);
+			__tmp206.Name = "MetaEnumLiteral";
+			__tmp206.Documentation = null;
+			__tmp207.ConstructorLazy = () => __tmp206;
+			__tmp207.PropertyName = "Type";
+			__tmp207.PropertyContextLazy = () => MetaEnumLiteral;
+			__tmp207.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp207.ValueLazy = () => __tmp208;
+			__tmp208.Name = "Enum";
+			__tmp208.TypeLazy = () => MetaEnum;
+			// MetaEnumLiteral_EnumProperty.Kind = null;
+			MetaEnumLiteral_EnumProperty.ClassLazy = () => MetaEnumLiteral;
+			MetaEnumLiteral_EnumProperty.OppositeProperties.AddLazy(() => MetaEnum_EnumLiteralsProperty);
+			MetaEnumLiteral_EnumProperty.Name = "Enum";
+			MetaEnumLiteral_EnumProperty.Documentation = null;
+			MetaEnumLiteral_EnumProperty.TypeLazy = () => MetaEnum;
+			__tmp209.Name = "Scope";
+			__tmp209.Documentation = null;
+			// MetaClass.IsAbstract = null;
+			MetaClass.SuperClasses.AddLazy(() => MetaType);
+			MetaClass.SuperClasses.AddLazy(() => MetaDeclaration);
+			MetaClass.Properties.AddLazy(() => MetaClass_IsAbstractProperty);
+			MetaClass.Properties.AddLazy(() => MetaClass_SuperClassesProperty);
+			MetaClass.Properties.AddLazy(() => MetaClass_PropertiesProperty);
+			MetaClass.Properties.AddLazy(() => MetaClass_OperationsProperty);
+			MetaClass.Properties.AddLazy(() => MetaClass_ConstructorProperty);
+			MetaClass.Operations.AddLazy(() => __tmp217);
+			MetaClass.Operations.AddLazy(() => __tmp221);
+			MetaClass.Operations.AddLazy(() => __tmp225);
+			MetaClass.Operations.AddLazy(() => __tmp229);
+			MetaClass.Operations.AddLazy(() => __tmp233);
+			// MetaClass.Constructor = null;
+			MetaClass.NamespaceLazy = () => __tmp17;
+			MetaClass.Name = "MetaClass";
+			MetaClass.Documentation = null;
+			MetaClass.Annotations.AddLazy(() => __tmp209);
+			// MetaClass_IsAbstractProperty.Kind = null;
+			MetaClass_IsAbstractProperty.ClassLazy = () => MetaClass;
+			MetaClass_IsAbstractProperty.Name = "IsAbstract";
+			MetaClass_IsAbstractProperty.Documentation = null;
+			MetaClass_IsAbstractProperty.TypeLazy = () => __tmp8;
+			__tmp210.Name = "InheritedScope";
+			__tmp210.Documentation = null;
+			__tmp211.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp211.InnerTypeLazy = () => MetaClass;
+			// MetaClass_SuperClassesProperty.Kind = null;
+			MetaClass_SuperClassesProperty.ClassLazy = () => MetaClass;
+			MetaClass_SuperClassesProperty.Name = "SuperClasses";
+			MetaClass_SuperClassesProperty.Documentation = null;
+			MetaClass_SuperClassesProperty.TypeLazy = () => __tmp211;
+			MetaClass_SuperClassesProperty.Annotations.AddLazy(() => __tmp210);
+			__tmp212.Name = "ScopeEntry";
+			__tmp212.Documentation = null;
+			__tmp213.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp213.InnerTypeLazy = () => MetaProperty;
+			MetaClass_PropertiesProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaClass_PropertiesProperty.ClassLazy = () => MetaClass;
+			MetaClass_PropertiesProperty.OppositeProperties.AddLazy(() => MetaProperty_ClassProperty);
+			MetaClass_PropertiesProperty.Name = "Properties";
+			MetaClass_PropertiesProperty.Documentation = null;
+			MetaClass_PropertiesProperty.TypeLazy = () => __tmp213;
+			MetaClass_PropertiesProperty.Annotations.AddLazy(() => __tmp212);
+			__tmp214.Name = "ScopeEntry";
+			__tmp214.Documentation = null;
+			__tmp215.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp215.InnerTypeLazy = () => MetaOperation;
+			MetaClass_OperationsProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaClass_OperationsProperty.ClassLazy = () => MetaClass;
+			MetaClass_OperationsProperty.OppositeProperties.AddLazy(() => MetaOperation_ParentProperty);
+			MetaClass_OperationsProperty.Name = "Operations";
+			MetaClass_OperationsProperty.Documentation = null;
+			MetaClass_OperationsProperty.TypeLazy = () => __tmp215;
+			MetaClass_OperationsProperty.Annotations.AddLazy(() => __tmp214);
+			MetaClass_ConstructorProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaClass_ConstructorProperty.ClassLazy = () => MetaClass;
+			MetaClass_ConstructorProperty.OppositeProperties.AddLazy(() => MetaConstructor_ParentProperty);
+			MetaClass_ConstructorProperty.Name = "Constructor";
+			MetaClass_ConstructorProperty.Documentation = null;
+			MetaClass_ConstructorProperty.TypeLazy = () => MetaConstructor;
+			__tmp216.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp216.InnerTypeLazy = () => MetaClass;
+			__tmp217.ParentLazy = () => MetaClass;
+			__tmp217.ReturnTypeLazy = () => __tmp216;
+			__tmp217.Name = "GetAllSuperClasses";
+			__tmp217.Documentation = null;
+			__tmp218.ReturnTypeLazy = () => __tmp216;
+			__tmp219.ReturnTypeLazy = () => __tmp216;
+			__tmp220.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp220.InnerTypeLazy = () => MetaProperty;
+			__tmp221.ParentLazy = () => MetaClass;
+			__tmp221.ReturnTypeLazy = () => __tmp220;
+			__tmp221.Name = "GetAllProperties";
+			__tmp221.Documentation = null;
+			__tmp222.ReturnTypeLazy = () => __tmp220;
+			__tmp223.ReturnTypeLazy = () => __tmp220;
+			__tmp224.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp224.InnerTypeLazy = () => MetaOperation;
+			__tmp225.ParentLazy = () => MetaClass;
+			__tmp225.ReturnTypeLazy = () => __tmp224;
+			__tmp225.Name = "GetAllOperations";
+			__tmp225.Documentation = null;
+			__tmp226.ReturnTypeLazy = () => __tmp224;
+			__tmp227.ReturnTypeLazy = () => __tmp224;
+			__tmp228.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp228.InnerTypeLazy = () => MetaProperty;
+			__tmp229.ParentLazy = () => MetaClass;
+			__tmp229.ReturnTypeLazy = () => __tmp228;
+			__tmp229.Name = "GetAllImplementedProperties";
+			__tmp229.Documentation = null;
+			__tmp230.ReturnTypeLazy = () => __tmp228;
+			__tmp231.ReturnTypeLazy = () => __tmp228;
+			__tmp232.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp232.InnerTypeLazy = () => MetaOperation;
+			__tmp233.ParentLazy = () => MetaClass;
+			__tmp233.ReturnTypeLazy = () => __tmp232;
+			__tmp233.Name = "GetAllImplementedOperations";
+			__tmp233.Documentation = null;
+			__tmp234.ReturnTypeLazy = () => __tmp232;
+			__tmp235.ReturnTypeLazy = () => __tmp232;
+			// MetaFunctionType.IsAbstract = null;
+			MetaFunctionType.SuperClasses.AddLazy(() => MetaType);
+			MetaFunctionType.Properties.AddLazy(() => MetaFunctionType_ParameterTypesProperty);
+			MetaFunctionType.Properties.AddLazy(() => MetaFunctionType_ReturnTypeProperty);
+			// MetaFunctionType.Constructor = null;
+			MetaFunctionType.NamespaceLazy = () => __tmp17;
+			MetaFunctionType.Name = "MetaFunctionType";
+			MetaFunctionType.Documentation = null;
+			__tmp236.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.MultiList;
+			__tmp236.InnerTypeLazy = () => MetaType;
+			// MetaFunctionType_ParameterTypesProperty.Kind = null;
+			MetaFunctionType_ParameterTypesProperty.ClassLazy = () => MetaFunctionType;
+			MetaFunctionType_ParameterTypesProperty.Name = "ParameterTypes";
+			MetaFunctionType_ParameterTypesProperty.Documentation = null;
+			MetaFunctionType_ParameterTypesProperty.TypeLazy = () => __tmp236;
+			// MetaFunctionType_ReturnTypeProperty.Kind = null;
+			MetaFunctionType_ReturnTypeProperty.ClassLazy = () => MetaFunctionType;
+			MetaFunctionType_ReturnTypeProperty.Name = "ReturnType";
+			MetaFunctionType_ReturnTypeProperty.Documentation = null;
+			MetaFunctionType_ReturnTypeProperty.TypeLazy = () => MetaType;
+			MetaFunction.IsAbstract = true;
+			MetaFunction.SuperClasses.AddLazy(() => MetaTypedElement);
+			MetaFunction.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaFunction.SuperClasses.AddLazy(() => MetaAnnotatedElement);
+			MetaFunction.Properties.AddLazy(() => MetaFunction_TypeProperty);
+			MetaFunction.Properties.AddLazy(() => MetaFunction_ParametersProperty);
+			MetaFunction.Properties.AddLazy(() => MetaFunction_ReturnTypeProperty);
+			MetaFunction.ConstructorLazy = () => __tmp237;
+			MetaFunction.NamespaceLazy = () => __tmp17;
+			MetaFunction.Name = "MetaFunction";
+			MetaFunction.Documentation = null;
+			__tmp237.ParentLazy = () => MetaFunction;
+			__tmp237.Name = "MetaFunction";
+			__tmp237.Documentation = null;
+			__tmp238.Name = "Type";
+			__tmp238.Documentation = null;
+			MetaFunction_TypeProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Readonly;
+			MetaFunction_TypeProperty.ClassLazy = () => MetaFunction;
+			MetaFunction_TypeProperty.RedefinedProperties.AddLazy(() => MetaTypedElement_TypeProperty);
+			MetaFunction_TypeProperty.Name = "Type";
+			MetaFunction_TypeProperty.Documentation = null;
+			MetaFunction_TypeProperty.TypeLazy = () => MetaFunctionType;
+			MetaFunction_TypeProperty.Annotations.AddLazy(() => __tmp238);
+			__tmp239.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp239.InnerTypeLazy = () => MetaParameter;
+			MetaFunction_ParametersProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaFunction_ParametersProperty.ClassLazy = () => MetaFunction;
+			MetaFunction_ParametersProperty.OppositeProperties.AddLazy(() => MetaParameter_FunctionProperty);
+			MetaFunction_ParametersProperty.Name = "Parameters";
+			MetaFunction_ParametersProperty.Documentation = null;
+			MetaFunction_ParametersProperty.TypeLazy = () => __tmp239;
+			// MetaFunction_ReturnTypeProperty.Kind = null;
+			MetaFunction_ReturnTypeProperty.ClassLazy = () => MetaFunction;
+			MetaFunction_ReturnTypeProperty.Name = "ReturnType";
+			MetaFunction_ReturnTypeProperty.Documentation = null;
+			MetaFunction_ReturnTypeProperty.TypeLazy = () => MetaType;
+			// MetaGlobalFunction.IsAbstract = null;
+			MetaGlobalFunction.SuperClasses.AddLazy(() => MetaFunction);
+			MetaGlobalFunction.SuperClasses.AddLazy(() => MetaDeclaration);
+			// MetaGlobalFunction.Constructor = null;
+			MetaGlobalFunction.NamespaceLazy = () => __tmp17;
+			MetaGlobalFunction.Name = "MetaGlobalFunction";
+			MetaGlobalFunction.Documentation = null;
+			// MetaOperation.IsAbstract = null;
+			MetaOperation.SuperClasses.AddLazy(() => MetaFunction);
+			MetaOperation.Properties.AddLazy(() => MetaOperation_ParentProperty);
+			// MetaOperation.Constructor = null;
+			MetaOperation.NamespaceLazy = () => __tmp17;
+			MetaOperation.Name = "MetaOperation";
+			MetaOperation.Documentation = null;
+			// MetaOperation_ParentProperty.Kind = null;
+			MetaOperation_ParentProperty.ClassLazy = () => MetaOperation;
+			MetaOperation_ParentProperty.OppositeProperties.AddLazy(() => MetaClass_OperationsProperty);
+			MetaOperation_ParentProperty.OppositeProperties.AddLazy(() => MetaEnum_OperationsProperty);
+			MetaOperation_ParentProperty.Name = "Parent";
+			MetaOperation_ParentProperty.Documentation = null;
+			MetaOperation_ParentProperty.TypeLazy = () => MetaType;
+			// MetaConstant.IsAbstract = null;
+			MetaConstant.SuperClasses.AddLazy(() => MetaTypedElement);
+			MetaConstant.SuperClasses.AddLazy(() => MetaDeclaration);
+			MetaConstant.Properties.AddLazy(() => MetaConstant_ValueProperty);
+			MetaConstant.ConstructorLazy = () => __tmp240;
+			MetaConstant.NamespaceLazy = () => __tmp17;
+			MetaConstant.Name = "MetaConstant";
+			MetaConstant.Documentation = null;
+			__tmp240.ParentLazy = () => MetaConstant;
+			__tmp240.Initializers.AddLazy(() => __tmp241);
+			__tmp240.Name = "MetaConstant";
+			__tmp240.Documentation = null;
+			__tmp241.ObjectName = "Value";
+			__tmp241.ObjectLazy = () => MetaConstant_ValueProperty;
+			__tmp241.ConstructorLazy = () => __tmp240;
+			__tmp241.PropertyName = "ExpectedType";
+			__tmp241.PropertyContextLazy = () => MetaExpression;
+			__tmp241.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp241.ValueLazy = () => __tmp242;
+			__tmp242.Name = "Type";
+			__tmp242.TypeLazy = () => MetaType;
+			MetaConstant_ValueProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaConstant_ValueProperty.ClassLazy = () => MetaConstant;
+			MetaConstant_ValueProperty.Name = "Value";
+			MetaConstant_ValueProperty.Documentation = null;
+			MetaConstant_ValueProperty.TypeLazy = () => MetaExpression;
+			// MetaConstructor.IsAbstract = null;
+			MetaConstructor.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaConstructor.SuperClasses.AddLazy(() => MetaAnnotatedElement);
+			MetaConstructor.Properties.AddLazy(() => MetaConstructor_ParentProperty);
+			MetaConstructor.Properties.AddLazy(() => MetaConstructor_InitializersProperty);
+			// MetaConstructor.Constructor = null;
+			MetaConstructor.NamespaceLazy = () => __tmp17;
+			MetaConstructor.Name = "MetaConstructor";
+			MetaConstructor.Documentation = null;
+			// MetaConstructor_ParentProperty.Kind = null;
+			MetaConstructor_ParentProperty.ClassLazy = () => MetaConstructor;
+			MetaConstructor_ParentProperty.OppositeProperties.AddLazy(() => MetaClass_ConstructorProperty);
+			MetaConstructor_ParentProperty.Name = "Parent";
+			MetaConstructor_ParentProperty.Documentation = null;
+			MetaConstructor_ParentProperty.TypeLazy = () => MetaClass;
+			__tmp243.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp243.InnerTypeLazy = () => MetaPropertyInitializer;
+			MetaConstructor_InitializersProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaConstructor_InitializersProperty.ClassLazy = () => MetaConstructor;
+			MetaConstructor_InitializersProperty.OppositeProperties.AddLazy(() => MetaPropertyInitializer_ConstructorProperty);
+			MetaConstructor_InitializersProperty.Name = "Initializers";
+			MetaConstructor_InitializersProperty.Documentation = null;
+			MetaConstructor_InitializersProperty.TypeLazy = () => __tmp243;
+			// MetaParameter.IsAbstract = null;
+			MetaParameter.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaParameter.SuperClasses.AddLazy(() => MetaTypedElement);
+			MetaParameter.SuperClasses.AddLazy(() => MetaAnnotatedElement);
+			MetaParameter.Properties.AddLazy(() => MetaParameter_FunctionProperty);
+			// MetaParameter.Constructor = null;
+			MetaParameter.NamespaceLazy = () => __tmp17;
+			MetaParameter.Name = "MetaParameter";
+			MetaParameter.Documentation = null;
+			// MetaParameter_FunctionProperty.Kind = null;
+			MetaParameter_FunctionProperty.ClassLazy = () => MetaParameter;
+			MetaParameter_FunctionProperty.OppositeProperties.AddLazy(() => MetaFunction_ParametersProperty);
+			MetaParameter_FunctionProperty.Name = "Function";
+			MetaParameter_FunctionProperty.Documentation = null;
+			MetaParameter_FunctionProperty.TypeLazy = () => MetaFunction;
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp244);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp245);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp246);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp247);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp248);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp249);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp250);
+			MetaPropertyKind.NamespaceLazy = () => __tmp17;
+			MetaPropertyKind.Name = "MetaPropertyKind";
+			MetaPropertyKind.Documentation = null;
+			__tmp244.EnumLazy = () => MetaPropertyKind;
+			__tmp244.Name = "Normal";
+			__tmp244.Documentation = null;
+			__tmp244.TypeLazy = () => MetaPropertyKind;
+			__tmp245.EnumLazy = () => MetaPropertyKind;
+			__tmp245.Name = "Readonly";
+			__tmp245.Documentation = null;
+			__tmp245.TypeLazy = () => MetaPropertyKind;
+			__tmp246.EnumLazy = () => MetaPropertyKind;
+			__tmp246.Name = "Lazy";
+			__tmp246.Documentation = null;
+			__tmp246.TypeLazy = () => MetaPropertyKind;
+			__tmp247.EnumLazy = () => MetaPropertyKind;
+			__tmp247.Name = "Derived";
+			__tmp247.Documentation = null;
+			__tmp247.TypeLazy = () => MetaPropertyKind;
+			__tmp248.EnumLazy = () => MetaPropertyKind;
+			__tmp248.Name = "Containment";
+			__tmp248.Documentation = null;
+			__tmp248.TypeLazy = () => MetaPropertyKind;
+			__tmp249.EnumLazy = () => MetaPropertyKind;
+			__tmp249.Name = "Synthetized";
+			__tmp249.Documentation = null;
+			__tmp249.TypeLazy = () => MetaPropertyKind;
+			__tmp250.EnumLazy = () => MetaPropertyKind;
+			__tmp250.Name = "Inherited";
+			__tmp250.Documentation = null;
+			__tmp250.TypeLazy = () => MetaPropertyKind;
+			// MetaProperty.IsAbstract = null;
+			MetaProperty.SuperClasses.AddLazy(() => MetaNamedElement);
+			MetaProperty.SuperClasses.AddLazy(() => MetaTypedElement);
+			MetaProperty.SuperClasses.AddLazy(() => MetaAnnotatedElement);
+			MetaProperty.Properties.AddLazy(() => MetaProperty_KindProperty);
+			MetaProperty.Properties.AddLazy(() => MetaProperty_ClassProperty);
+			MetaProperty.Properties.AddLazy(() => MetaProperty_OppositePropertiesProperty);
+			MetaProperty.Properties.AddLazy(() => MetaProperty_SubsettedPropertiesProperty);
+			MetaProperty.Properties.AddLazy(() => MetaProperty_SubsettingPropertiesProperty);
+			MetaProperty.Properties.AddLazy(() => MetaProperty_RedefinedPropertiesProperty);
+			MetaProperty.Properties.AddLazy(() => MetaProperty_RedefiningPropertiesProperty);
+			// MetaProperty.Constructor = null;
+			MetaProperty.NamespaceLazy = () => __tmp17;
+			MetaProperty.Name = "MetaProperty";
+			MetaProperty.Documentation = null;
+			// MetaProperty_KindProperty.Kind = null;
+			MetaProperty_KindProperty.ClassLazy = () => MetaProperty;
+			MetaProperty_KindProperty.Name = "Kind";
+			MetaProperty_KindProperty.Documentation = null;
+			MetaProperty_KindProperty.TypeLazy = () => MetaPropertyKind;
+			// MetaProperty_ClassProperty.Kind = null;
+			MetaProperty_ClassProperty.ClassLazy = () => MetaProperty;
+			MetaProperty_ClassProperty.OppositeProperties.AddLazy(() => MetaClass_PropertiesProperty);
+			MetaProperty_ClassProperty.Name = "Class";
+			MetaProperty_ClassProperty.Documentation = null;
+			MetaProperty_ClassProperty.TypeLazy = () => MetaClass;
+			__tmp251.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp251.InnerTypeLazy = () => MetaProperty;
+			// MetaProperty_OppositePropertiesProperty.Kind = null;
+			MetaProperty_OppositePropertiesProperty.ClassLazy = () => MetaProperty;
+			MetaProperty_OppositePropertiesProperty.OppositeProperties.AddLazy(() => MetaProperty_OppositePropertiesProperty);
+			MetaProperty_OppositePropertiesProperty.Name = "OppositeProperties";
+			MetaProperty_OppositePropertiesProperty.Documentation = null;
+			MetaProperty_OppositePropertiesProperty.TypeLazy = () => __tmp251;
+			__tmp252.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp252.InnerTypeLazy = () => MetaProperty;
+			// MetaProperty_SubsettedPropertiesProperty.Kind = null;
+			MetaProperty_SubsettedPropertiesProperty.ClassLazy = () => MetaProperty;
+			MetaProperty_SubsettedPropertiesProperty.OppositeProperties.AddLazy(() => MetaProperty_SubsettingPropertiesProperty);
+			MetaProperty_SubsettedPropertiesProperty.Name = "SubsettedProperties";
+			MetaProperty_SubsettedPropertiesProperty.Documentation = null;
+			MetaProperty_SubsettedPropertiesProperty.TypeLazy = () => __tmp252;
+			__tmp253.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp253.InnerTypeLazy = () => MetaProperty;
+			// MetaProperty_SubsettingPropertiesProperty.Kind = null;
+			MetaProperty_SubsettingPropertiesProperty.ClassLazy = () => MetaProperty;
+			MetaProperty_SubsettingPropertiesProperty.OppositeProperties.AddLazy(() => MetaProperty_SubsettedPropertiesProperty);
+			MetaProperty_SubsettingPropertiesProperty.Name = "SubsettingProperties";
+			MetaProperty_SubsettingPropertiesProperty.Documentation = null;
+			MetaProperty_SubsettingPropertiesProperty.TypeLazy = () => __tmp253;
+			__tmp254.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp254.InnerTypeLazy = () => MetaProperty;
+			// MetaProperty_RedefinedPropertiesProperty.Kind = null;
+			MetaProperty_RedefinedPropertiesProperty.ClassLazy = () => MetaProperty;
+			MetaProperty_RedefinedPropertiesProperty.OppositeProperties.AddLazy(() => MetaProperty_RedefiningPropertiesProperty);
+			MetaProperty_RedefinedPropertiesProperty.Name = "RedefinedProperties";
+			MetaProperty_RedefinedPropertiesProperty.Documentation = null;
+			MetaProperty_RedefinedPropertiesProperty.TypeLazy = () => __tmp254;
+			__tmp255.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp255.InnerTypeLazy = () => MetaProperty;
+			// MetaProperty_RedefiningPropertiesProperty.Kind = null;
+			MetaProperty_RedefiningPropertiesProperty.ClassLazy = () => MetaProperty;
+			MetaProperty_RedefiningPropertiesProperty.OppositeProperties.AddLazy(() => MetaProperty_RedefinedPropertiesProperty);
+			MetaProperty_RedefiningPropertiesProperty.Name = "RedefiningProperties";
+			MetaProperty_RedefiningPropertiesProperty.Documentation = null;
+			MetaProperty_RedefiningPropertiesProperty.TypeLazy = () => __tmp255;
+			MetaPropertyInitializer.IsAbstract = true;
+			MetaPropertyInitializer.Properties.AddLazy(() => MetaPropertyInitializer_ConstructorProperty);
+			MetaPropertyInitializer.Properties.AddLazy(() => MetaPropertyInitializer_PropertyNameProperty);
+			MetaPropertyInitializer.Properties.AddLazy(() => MetaPropertyInitializer_PropertyContextProperty);
+			MetaPropertyInitializer.Properties.AddLazy(() => MetaPropertyInitializer_PropertyProperty);
+			MetaPropertyInitializer.Properties.AddLazy(() => MetaPropertyInitializer_ValueProperty);
+			MetaPropertyInitializer.ConstructorLazy = () => __tmp256;
+			MetaPropertyInitializer.NamespaceLazy = () => __tmp17;
+			MetaPropertyInitializer.Name = "MetaPropertyInitializer";
+			MetaPropertyInitializer.Documentation = null;
+			// MetaPropertyInitializer_ConstructorProperty.Kind = null;
+			MetaPropertyInitializer_ConstructorProperty.ClassLazy = () => MetaPropertyInitializer;
+			MetaPropertyInitializer_ConstructorProperty.OppositeProperties.AddLazy(() => MetaConstructor_InitializersProperty);
+			MetaPropertyInitializer_ConstructorProperty.Name = "Constructor";
+			MetaPropertyInitializer_ConstructorProperty.Documentation = null;
+			MetaPropertyInitializer_ConstructorProperty.TypeLazy = () => MetaConstructor;
+			// MetaPropertyInitializer_PropertyNameProperty.Kind = null;
+			MetaPropertyInitializer_PropertyNameProperty.ClassLazy = () => MetaPropertyInitializer;
+			MetaPropertyInitializer_PropertyNameProperty.Name = "PropertyName";
+			MetaPropertyInitializer_PropertyNameProperty.Documentation = null;
+			MetaPropertyInitializer_PropertyNameProperty.TypeLazy = () => __tmp2;
+			// MetaPropertyInitializer_PropertyContextProperty.Kind = null;
+			MetaPropertyInitializer_PropertyContextProperty.ClassLazy = () => MetaPropertyInitializer;
+			MetaPropertyInitializer_PropertyContextProperty.Name = "PropertyContext";
+			MetaPropertyInitializer_PropertyContextProperty.Documentation = null;
+			MetaPropertyInitializer_PropertyContextProperty.TypeLazy = () => MetaClass;
+			// MetaPropertyInitializer_PropertyProperty.Kind = null;
+			MetaPropertyInitializer_PropertyProperty.ClassLazy = () => MetaPropertyInitializer;
+			MetaPropertyInitializer_PropertyProperty.Name = "Property";
+			MetaPropertyInitializer_PropertyProperty.Documentation = null;
+			MetaPropertyInitializer_PropertyProperty.TypeLazy = () => MetaProperty;
+			MetaPropertyInitializer_ValueProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaPropertyInitializer_ValueProperty.ClassLazy = () => MetaPropertyInitializer;
+			MetaPropertyInitializer_ValueProperty.Name = "Value";
+			MetaPropertyInitializer_ValueProperty.Documentation = null;
+			MetaPropertyInitializer_ValueProperty.TypeLazy = () => MetaExpression;
+			__tmp256.ParentLazy = () => MetaPropertyInitializer;
+			__tmp256.Initializers.AddLazy(() => __tmp257);
+			__tmp256.Initializers.AddLazy(() => __tmp262);
+			__tmp256.Initializers.AddLazy(() => __tmp270);
+			__tmp256.Name = "MetaPropertyInitializer";
+			__tmp256.Documentation = null;
+			__tmp257.ConstructorLazy = () => __tmp256;
+			__tmp257.PropertyName = "PropertyContext";
+			__tmp257.PropertyContextLazy = () => MetaPropertyInitializer;
+			__tmp257.PropertyLazy = () => MetaPropertyInitializer_PropertyContextProperty;
+			__tmp257.ValueLazy = () => __tmp258;
+			__tmp258.TypeReferenceLazy = () => MetaClass;
+			__tmp258.ExpressionLazy = () => __tmp259;
+			__tmp258.TypeLazy = () => MetaClass;
+			__tmp259.ExpressionLazy = () => __tmp260;
+			__tmp259.Arguments.AddLazy(() => __tmp261);
+			__tmp259.TypeLazy = () => MetaType;
+			__tmp260.Name = "current_type";
+			__tmp260.TypeLazy = () => __tmp10;
+			__tmp261.TypeLazy = () => MetaPropertyInitializer;
+			__tmp262.ConstructorLazy = () => __tmp256;
+			__tmp262.PropertyName = "Property";
+			__tmp262.PropertyContextLazy = () => MetaPropertyInitializer;
+			__tmp262.PropertyLazy = () => MetaPropertyInitializer_PropertyProperty;
+			__tmp262.ValueLazy = () => __tmp263;
+			__tmp263.ExpressionLazy = () => __tmp264;
+			__tmp263.Arguments.AddLazy(() => __tmp265);
+			__tmp263.TypeLazy = () => __tmp13;
+			__tmp264.Name = "bind";
+			__tmp264.TypeLazy = () => __tmp10;
+			__tmp265.ExpressionLazy = () => __tmp266;
+			__tmp265.Arguments.AddLazy(() => __tmp267);
+			__tmp265.Arguments.AddLazy(() => __tmp269);
+			__tmp265.TypeLazy = () => __tmp14;
+			__tmp266.Name = "resolve_name";
+			__tmp266.TypeLazy = () => __tmp10;
+			__tmp267.ExpressionLazy = () => __tmp268;
+			__tmp267.Name = "PropertyContext";
+			__tmp267.TypeLazy = () => MetaClass;
+			__tmp268.TypeLazy = () => MetaPropertyInitializer;
+			__tmp269.Name = "PropertyName";
+			__tmp269.TypeLazy = () => __tmp2;
+			__tmp270.ObjectName = "Value";
+			__tmp270.ObjectLazy = () => MetaPropertyInitializer_ValueProperty;
+			__tmp270.ConstructorLazy = () => __tmp256;
+			__tmp270.PropertyName = "ExpectedType";
+			__tmp270.PropertyContextLazy = () => MetaExpression;
+			__tmp270.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp270.ValueLazy = () => __tmp271;
+			__tmp271.ExpressionLazy = () => __tmp272;
+			__tmp271.Arguments.AddLazy(() => __tmp273);
+			__tmp271.TypeLazy = () => MetaType;
+			__tmp272.Name = "get_type";
+			__tmp272.TypeLazy = () => __tmp10;
+			__tmp273.Name = "Property";
+			__tmp273.TypeLazy = () => MetaProperty;
+			// MetaSynthetizedPropertyInitializer.IsAbstract = null;
+			MetaSynthetizedPropertyInitializer.SuperClasses.AddLazy(() => MetaPropertyInitializer);
+			// MetaSynthetizedPropertyInitializer.Constructor = null;
+			MetaSynthetizedPropertyInitializer.NamespaceLazy = () => __tmp17;
+			MetaSynthetizedPropertyInitializer.Name = "MetaSynthetizedPropertyInitializer";
+			MetaSynthetizedPropertyInitializer.Documentation = null;
+			// MetaInheritedPropertyInitializer.IsAbstract = null;
+			MetaInheritedPropertyInitializer.SuperClasses.AddLazy(() => MetaPropertyInitializer);
+			MetaInheritedPropertyInitializer.Properties.AddLazy(() => MetaInheritedPropertyInitializer_ObjectNameProperty);
+			MetaInheritedPropertyInitializer.Properties.AddLazy(() => MetaInheritedPropertyInitializer_ObjectProperty);
+			MetaInheritedPropertyInitializer.ConstructorLazy = () => __tmp274;
+			MetaInheritedPropertyInitializer.NamespaceLazy = () => __tmp17;
+			MetaInheritedPropertyInitializer.Name = "MetaInheritedPropertyInitializer";
+			MetaInheritedPropertyInitializer.Documentation = null;
+			// MetaInheritedPropertyInitializer_ObjectNameProperty.Kind = null;
+			MetaInheritedPropertyInitializer_ObjectNameProperty.ClassLazy = () => MetaInheritedPropertyInitializer;
+			MetaInheritedPropertyInitializer_ObjectNameProperty.Name = "ObjectName";
+			MetaInheritedPropertyInitializer_ObjectNameProperty.Documentation = null;
+			MetaInheritedPropertyInitializer_ObjectNameProperty.TypeLazy = () => __tmp2;
+			// MetaInheritedPropertyInitializer_ObjectProperty.Kind = null;
+			MetaInheritedPropertyInitializer_ObjectProperty.ClassLazy = () => MetaInheritedPropertyInitializer;
+			MetaInheritedPropertyInitializer_ObjectProperty.Name = "Object";
+			MetaInheritedPropertyInitializer_ObjectProperty.Documentation = null;
+			MetaInheritedPropertyInitializer_ObjectProperty.TypeLazy = () => MetaProperty;
+			__tmp274.ParentLazy = () => MetaInheritedPropertyInitializer;
+			__tmp274.Initializers.AddLazy(() => __tmp275);
+			__tmp274.Initializers.AddLazy(() => __tmp281);
+			__tmp274.Initializers.AddLazy(() => __tmp286);
+			__tmp274.Name = "MetaPropertyInitializer";
+			__tmp274.Documentation = null;
+			__tmp275.ConstructorLazy = () => __tmp274;
+			__tmp275.PropertyName = "Object";
+			__tmp275.PropertyContextLazy = () => MetaInheritedPropertyInitializer;
+			__tmp275.PropertyLazy = () => MetaInheritedPropertyInitializer_ObjectProperty;
+			__tmp275.ValueLazy = () => __tmp276;
+			__tmp276.ExpressionLazy = () => __tmp277;
+			__tmp276.Arguments.AddLazy(() => __tmp278);
+			__tmp276.TypeLazy = () => __tmp13;
+			__tmp277.Name = "bind";
+			__tmp277.TypeLazy = () => __tmp10;
+			__tmp278.ExpressionLazy = () => __tmp279;
+			__tmp278.Arguments.AddLazy(() => __tmp280);
+			__tmp278.TypeLazy = () => __tmp14;
+			__tmp279.Name = "resolve_name";
+			__tmp279.TypeLazy = () => __tmp10;
+			__tmp280.Name = "ObjectName";
+			__tmp280.TypeLazy = () => __tmp2;
+			__tmp281.ConstructorLazy = () => __tmp274;
+			__tmp281.PropertyName = "PropertyContext";
+			__tmp281.PropertyContextLazy = () => MetaInheritedPropertyInitializer;
+			__tmp281.PropertyLazy = () => MetaPropertyInitializer_PropertyContextProperty;
+			__tmp281.ValueLazy = () => __tmp282;
+			__tmp282.TypeReferenceLazy = () => MetaClass;
+			__tmp282.ExpressionLazy = () => __tmp283;
+			__tmp282.TypeLazy = () => MetaClass;
+			__tmp283.ExpressionLazy = () => __tmp284;
+			__tmp283.Arguments.AddLazy(() => __tmp285);
+			__tmp283.TypeLazy = () => MetaType;
+			__tmp284.Name = "get_type";
+			__tmp284.TypeLazy = () => __tmp10;
+			__tmp285.Name = "Object";
+			__tmp285.TypeLazy = () => MetaProperty;
+			__tmp286.ConstructorLazy = () => __tmp274;
+			__tmp286.PropertyName = "Property";
+			__tmp286.PropertyContextLazy = () => MetaInheritedPropertyInitializer;
+			__tmp286.PropertyLazy = () => MetaPropertyInitializer_PropertyProperty;
+			__tmp286.ValueLazy = () => __tmp287;
+			__tmp287.ExpressionLazy = () => __tmp288;
+			__tmp287.Arguments.AddLazy(() => __tmp289);
+			__tmp287.TypeLazy = () => __tmp13;
+			__tmp288.Name = "bind";
+			__tmp288.TypeLazy = () => __tmp10;
+			__tmp289.ExpressionLazy = () => __tmp290;
+			__tmp289.Arguments.AddLazy(() => __tmp291);
+			__tmp289.Arguments.AddLazy(() => __tmp292);
+			__tmp289.TypeLazy = () => __tmp14;
+			__tmp290.Name = "resolve_name";
+			__tmp290.TypeLazy = () => __tmp10;
+			__tmp291.Name = "PropertyContext";
+			__tmp291.TypeLazy = () => MetaClass;
+			__tmp292.Name = "PropertyName";
+			__tmp292.TypeLazy = () => __tmp2;
+			MetaExpression.IsAbstract = true;
+			MetaExpression.SuperClasses.AddLazy(() => MetaTypedElement);
+			MetaExpression.Properties.AddLazy(() => MetaExpression_NoTypeErrorProperty);
+			MetaExpression.Properties.AddLazy(() => MetaExpression_ExpectedTypeProperty);
+			MetaExpression.ConstructorLazy = () => __tmp293;
+			MetaExpression.NamespaceLazy = () => __tmp17;
+			MetaExpression.Name = "MetaExpression";
+			MetaExpression.Documentation = null;
+			__tmp293.ParentLazy = () => MetaExpression;
+			__tmp293.Initializers.AddLazy(() => __tmp294);
+			__tmp293.Name = "MetaExpression";
+			__tmp293.Documentation = null;
+			__tmp294.ConstructorLazy = () => __tmp293;
+			__tmp294.PropertyName = "NoTypeError";
+			__tmp294.PropertyContextLazy = () => MetaExpression;
+			__tmp294.PropertyLazy = () => MetaExpression_NoTypeErrorProperty;
+			__tmp294.ValueLazy = () => __tmp295;
+			__tmp295.ExpressionLazy = () => __tmp296;
+			__tmp295.Arguments.AddLazy(() => __tmp297);
+			__tmp295.TypeLazy = () => __tmp8;
+			__tmp296.Name = "type_check";
+			__tmp296.TypeLazy = () => __tmp10;
+			__tmp297.TypeLazy = () => MetaExpression;
+			MetaExpression_NoTypeErrorProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Readonly;
+			MetaExpression_NoTypeErrorProperty.ClassLazy = () => MetaExpression;
+			MetaExpression_NoTypeErrorProperty.Name = "NoTypeError";
+			MetaExpression_NoTypeErrorProperty.Documentation = null;
+			MetaExpression_NoTypeErrorProperty.TypeLazy = () => __tmp8;
+			MetaExpression_ExpectedTypeProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Inherited;
+			MetaExpression_ExpectedTypeProperty.ClassLazy = () => MetaExpression;
+			MetaExpression_ExpectedTypeProperty.Name = "ExpectedType";
+			MetaExpression_ExpectedTypeProperty.Documentation = null;
+			MetaExpression_ExpectedTypeProperty.TypeLazy = () => MetaType;
+			// MetaBracketExpression.IsAbstract = null;
+			MetaBracketExpression.SuperClasses.AddLazy(() => MetaExpression);
+			MetaBracketExpression.Properties.AddLazy(() => MetaBracketExpression_ExpressionProperty);
+			MetaBracketExpression.ConstructorLazy = () => __tmp298;
+			MetaBracketExpression.NamespaceLazy = () => __tmp17;
+			MetaBracketExpression.Name = "MetaBracketExpression";
+			MetaBracketExpression.Documentation = null;
+			__tmp298.ParentLazy = () => MetaBracketExpression;
+			__tmp298.Initializers.AddLazy(() => __tmp299);
+			__tmp298.Initializers.AddLazy(() => __tmp302);
+			__tmp298.Name = "MetaBracketExpression";
+			__tmp298.Documentation = null;
+			__tmp299.ConstructorLazy = () => __tmp298;
+			__tmp299.PropertyName = "Type";
+			__tmp299.PropertyContextLazy = () => MetaBracketExpression;
+			__tmp299.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp299.ValueLazy = () => __tmp300;
+			__tmp300.ExpressionLazy = () => __tmp301;
+			__tmp300.Name = "Type";
+			__tmp300.TypeLazy = () => MetaType;
+			__tmp301.Name = "Expression";
+			__tmp301.TypeLazy = () => MetaExpression;
+			__tmp302.ObjectName = "Expression";
+			__tmp302.ObjectLazy = () => MetaBracketExpression_ExpressionProperty;
+			__tmp302.ConstructorLazy = () => __tmp298;
+			__tmp302.PropertyName = "ExpectedType";
+			__tmp302.PropertyContextLazy = () => MetaExpression;
+			__tmp302.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp302.ValueLazy = () => __tmp303;
+			__tmp303.Name = "ExpectedType";
+			__tmp303.TypeLazy = () => MetaType;
+			MetaBracketExpression_ExpressionProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaBracketExpression_ExpressionProperty.ClassLazy = () => MetaBracketExpression;
+			MetaBracketExpression_ExpressionProperty.Name = "Expression";
+			MetaBracketExpression_ExpressionProperty.Documentation = null;
+			MetaBracketExpression_ExpressionProperty.TypeLazy = () => MetaExpression;
+			MetaBoundExpression.IsAbstract = true;
+			MetaBoundExpression.SuperClasses.AddLazy(() => MetaExpression);
+			MetaBoundExpression.Properties.AddLazy(() => MetaBoundExpression_UniqueDefinitionProperty);
+			MetaBoundExpression.Properties.AddLazy(() => MetaBoundExpression_ArgumentsProperty);
+			MetaBoundExpression.Properties.AddLazy(() => MetaBoundExpression_DefinitionsProperty);
+			MetaBoundExpression.Properties.AddLazy(() => MetaBoundExpression_DefinitionProperty);
+			MetaBoundExpression.ConstructorLazy = () => __tmp304;
+			MetaBoundExpression.NamespaceLazy = () => __tmp17;
+			MetaBoundExpression.Name = "MetaBoundExpression";
+			MetaBoundExpression.Documentation = null;
+			__tmp304.ParentLazy = () => MetaBoundExpression;
+			__tmp304.Initializers.AddLazy(() => __tmp305);
+			__tmp304.Initializers.AddLazy(() => __tmp307);
+			__tmp304.Initializers.AddLazy(() => __tmp316);
+			__tmp304.Name = "MetaBoundExpression";
+			__tmp304.Documentation = null;
+			__tmp305.ConstructorLazy = () => __tmp304;
+			__tmp305.PropertyName = "UniqueDefinition";
+			__tmp305.PropertyContextLazy = () => MetaBoundExpression;
+			__tmp305.PropertyLazy = () => MetaBoundExpression_UniqueDefinitionProperty;
+			__tmp305.ValueLazy = () => __tmp306;
+			__tmp306.Value = true;
+			__tmp306.TypeLazy = () => __tmp8;
+			__tmp307.ConstructorLazy = () => __tmp304;
+			__tmp307.PropertyName = "Definition";
+			__tmp307.PropertyContextLazy = () => MetaBoundExpression;
+			__tmp307.PropertyLazy = () => MetaBoundExpression_DefinitionProperty;
+			__tmp307.ValueLazy = () => __tmp308;
+			__tmp308.ConditionLazy = () => __tmp309;
+			// __tmp308.BalancedType = null;
+			__tmp308.ThenLazy = () => __tmp310;
+			__tmp308.ElseLazy = () => __tmp314;
+			__tmp308.TypeLazy = () => __tmp13;
+			__tmp309.Name = "UniqueDefinition";
+			__tmp309.TypeLazy = () => __tmp8;
+			__tmp310.ExpressionLazy = () => __tmp311;
+			__tmp310.Arguments.AddLazy(() => __tmp312);
+			__tmp310.Arguments.AddLazy(() => __tmp313);
+			__tmp310.TypeLazy = () => __tmp13;
+			__tmp311.Name = "bind";
+			__tmp311.TypeLazy = () => __tmp10;
+			__tmp312.TypeLazy = () => MetaBoundExpression;
+			__tmp313.Name = "Definitions";
+			__tmp313.TypeLazy = () => __tmp14;
+			__tmp314.ValueLazy = () => __tmp315;
+			__tmp314.TypeLazy = () => __tmp11;
+			__tmp315.TypeLazy = () => __tmp11;
+			__tmp316.ConstructorLazy = () => __tmp304;
+			__tmp316.PropertyName = "Type";
+			__tmp316.PropertyContextLazy = () => MetaBoundExpression;
+			__tmp316.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp316.ValueLazy = () => __tmp317;
+			__tmp317.ExpressionLazy = () => __tmp318;
+			__tmp317.Arguments.AddLazy(() => __tmp319);
+			__tmp317.TypeLazy = () => MetaType;
+			__tmp318.Name = "get_type";
+			__tmp318.TypeLazy = () => __tmp10;
+			__tmp319.Name = "Definition";
+			__tmp319.TypeLazy = () => __tmp13;
+			MetaBoundExpression_UniqueDefinitionProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Inherited;
+			MetaBoundExpression_UniqueDefinitionProperty.ClassLazy = () => MetaBoundExpression;
+			MetaBoundExpression_UniqueDefinitionProperty.Name = "UniqueDefinition";
+			MetaBoundExpression_UniqueDefinitionProperty.Documentation = null;
+			MetaBoundExpression_UniqueDefinitionProperty.TypeLazy = () => __tmp8;
+			__tmp320.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp320.InnerTypeLazy = () => MetaExpression;
+			MetaBoundExpression_ArgumentsProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaBoundExpression_ArgumentsProperty.ClassLazy = () => MetaBoundExpression;
+			MetaBoundExpression_ArgumentsProperty.Name = "Arguments";
+			MetaBoundExpression_ArgumentsProperty.Documentation = null;
+			MetaBoundExpression_ArgumentsProperty.TypeLazy = () => __tmp320;
+			MetaBoundExpression_DefinitionsProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Synthetized;
+			MetaBoundExpression_DefinitionsProperty.ClassLazy = () => MetaBoundExpression;
+			MetaBoundExpression_DefinitionsProperty.Name = "Definitions";
+			MetaBoundExpression_DefinitionsProperty.Documentation = null;
+			MetaBoundExpression_DefinitionsProperty.TypeLazy = () => __tmp14;
+			MetaBoundExpression_DefinitionProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Synthetized;
+			MetaBoundExpression_DefinitionProperty.ClassLazy = () => MetaBoundExpression;
+			MetaBoundExpression_DefinitionProperty.Name = "Definition";
+			MetaBoundExpression_DefinitionProperty.Documentation = null;
+			MetaBoundExpression_DefinitionProperty.TypeLazy = () => __tmp13;
+			// MetaThisExpression.IsAbstract = null;
+			MetaThisExpression.SuperClasses.AddLazy(() => MetaBoundExpression);
+			MetaThisExpression.ConstructorLazy = () => __tmp321;
+			MetaThisExpression.NamespaceLazy = () => __tmp17;
+			MetaThisExpression.Name = "MetaThisExpression";
+			MetaThisExpression.Documentation = null;
+			__tmp321.ParentLazy = () => MetaThisExpression;
+			__tmp321.Initializers.AddLazy(() => __tmp322);
+			__tmp321.Name = "MetaThisExpression";
+			__tmp321.Documentation = null;
+			__tmp322.ConstructorLazy = () => __tmp321;
+			__tmp322.PropertyName = "Definition";
+			__tmp322.PropertyContextLazy = () => MetaThisExpression;
+			__tmp322.PropertyLazy = () => MetaBoundExpression_DefinitionProperty;
+			__tmp322.ValueLazy = () => __tmp323;
+			__tmp323.ExpressionLazy = () => __tmp324;
+			__tmp323.Arguments.AddLazy(() => __tmp325);
+			__tmp323.TypeLazy = () => MetaType;
+			__tmp324.Name = "current_type";
+			__tmp324.TypeLazy = () => __tmp10;
+			__tmp325.TypeLazy = () => MetaThisExpression;
+			// MetaNullExpression.IsAbstract = null;
+			MetaNullExpression.SuperClasses.AddLazy(() => MetaExpression);
+			MetaNullExpression.ConstructorLazy = () => __tmp326;
+			MetaNullExpression.NamespaceLazy = () => __tmp17;
+			MetaNullExpression.Name = "MetaNullExpression";
+			MetaNullExpression.Documentation = null;
+			__tmp326.ParentLazy = () => MetaNullExpression;
+			__tmp326.Initializers.AddLazy(() => __tmp327);
+			__tmp326.Name = "NullExpression";
+			__tmp326.Documentation = null;
+			__tmp327.ConstructorLazy = () => __tmp326;
+			__tmp327.PropertyName = "Type";
+			__tmp327.PropertyContextLazy = () => MetaNullExpression;
+			__tmp327.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp327.ValueLazy = () => __tmp328;
+			__tmp328.TypeReferenceLazy = () => __tmp11;
+			// __tmp328.Type = null;
+			MetaTypeConversionExpression.IsAbstract = true;
+			MetaTypeConversionExpression.SuperClasses.AddLazy(() => MetaExpression);
+			MetaTypeConversionExpression.Properties.AddLazy(() => MetaTypeConversionExpression_TypeReferenceProperty);
+			MetaTypeConversionExpression.Properties.AddLazy(() => MetaTypeConversionExpression_ExpressionProperty);
+			MetaTypeConversionExpression.ConstructorLazy = () => __tmp329;
+			MetaTypeConversionExpression.NamespaceLazy = () => __tmp17;
+			MetaTypeConversionExpression.Name = "MetaTypeConversionExpression";
+			MetaTypeConversionExpression.Documentation = null;
+			// MetaTypeConversionExpression_TypeReferenceProperty.Kind = null;
+			MetaTypeConversionExpression_TypeReferenceProperty.ClassLazy = () => MetaTypeConversionExpression;
+			MetaTypeConversionExpression_TypeReferenceProperty.Name = "TypeReference";
+			MetaTypeConversionExpression_TypeReferenceProperty.Documentation = null;
+			MetaTypeConversionExpression_TypeReferenceProperty.TypeLazy = () => MetaType;
+			MetaTypeConversionExpression_ExpressionProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaTypeConversionExpression_ExpressionProperty.ClassLazy = () => MetaTypeConversionExpression;
+			MetaTypeConversionExpression_ExpressionProperty.Name = "Expression";
+			MetaTypeConversionExpression_ExpressionProperty.Documentation = null;
+			MetaTypeConversionExpression_ExpressionProperty.TypeLazy = () => MetaExpression;
+			__tmp329.ParentLazy = () => MetaTypeConversionExpression;
+			__tmp329.Initializers.AddLazy(() => __tmp330);
+			__tmp329.Initializers.AddLazy(() => __tmp332);
+			__tmp329.Name = "MetaTypeConversionExpression";
+			__tmp329.Documentation = null;
+			__tmp330.ConstructorLazy = () => __tmp329;
+			__tmp330.PropertyName = "Type";
+			__tmp330.PropertyContextLazy = () => MetaTypeConversionExpression;
+			__tmp330.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp330.ValueLazy = () => __tmp331;
+			__tmp331.Name = "TypeReference";
+			__tmp331.TypeLazy = () => MetaType;
+			__tmp332.ObjectName = "Expression";
+			__tmp332.ObjectLazy = () => MetaTypeConversionExpression_ExpressionProperty;
+			__tmp332.ConstructorLazy = () => __tmp329;
+			__tmp332.PropertyName = "ExpectedType";
+			__tmp332.PropertyContextLazy = () => MetaExpression;
+			__tmp332.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp332.ValueLazy = () => __tmp333;
+			__tmp333.TypeReferenceLazy = () => __tmp11;
+			// __tmp333.Type = null;
+			// MetaTypeAsExpression.IsAbstract = null;
+			MetaTypeAsExpression.SuperClasses.AddLazy(() => MetaTypeConversionExpression);
+			// MetaTypeAsExpression.Constructor = null;
+			MetaTypeAsExpression.NamespaceLazy = () => __tmp17;
+			MetaTypeAsExpression.Name = "MetaTypeAsExpression";
+			MetaTypeAsExpression.Documentation = null;
+			// MetaTypeCastExpression.IsAbstract = null;
+			MetaTypeCastExpression.SuperClasses.AddLazy(() => MetaTypeConversionExpression);
+			// MetaTypeCastExpression.Constructor = null;
+			MetaTypeCastExpression.NamespaceLazy = () => __tmp17;
+			MetaTypeCastExpression.Name = "MetaTypeCastExpression";
+			MetaTypeCastExpression.Documentation = null;
+			// MetaTypeCheckExpression.IsAbstract = null;
+			MetaTypeCheckExpression.SuperClasses.AddLazy(() => MetaExpression);
+			MetaTypeCheckExpression.Properties.AddLazy(() => MetaTypeCheckExpression_TypeReferenceProperty);
+			MetaTypeCheckExpression.Properties.AddLazy(() => MetaTypeCheckExpression_ExpressionProperty);
+			MetaTypeCheckExpression.ConstructorLazy = () => __tmp334;
+			MetaTypeCheckExpression.NamespaceLazy = () => __tmp17;
+			MetaTypeCheckExpression.Name = "MetaTypeCheckExpression";
+			MetaTypeCheckExpression.Documentation = null;
+			// MetaTypeCheckExpression_TypeReferenceProperty.Kind = null;
+			MetaTypeCheckExpression_TypeReferenceProperty.ClassLazy = () => MetaTypeCheckExpression;
+			MetaTypeCheckExpression_TypeReferenceProperty.Name = "TypeReference";
+			MetaTypeCheckExpression_TypeReferenceProperty.Documentation = null;
+			MetaTypeCheckExpression_TypeReferenceProperty.TypeLazy = () => MetaType;
+			MetaTypeCheckExpression_ExpressionProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaTypeCheckExpression_ExpressionProperty.ClassLazy = () => MetaTypeCheckExpression;
+			MetaTypeCheckExpression_ExpressionProperty.Name = "Expression";
+			MetaTypeCheckExpression_ExpressionProperty.Documentation = null;
+			MetaTypeCheckExpression_ExpressionProperty.TypeLazy = () => MetaExpression;
+			__tmp334.ParentLazy = () => MetaTypeCheckExpression;
+			__tmp334.Initializers.AddLazy(() => __tmp335);
+			__tmp334.Initializers.AddLazy(() => __tmp337);
+			__tmp334.Name = "MetaTypeCheckExpression";
+			__tmp334.Documentation = null;
+			__tmp335.ConstructorLazy = () => __tmp334;
+			__tmp335.PropertyName = "Type";
+			__tmp335.PropertyContextLazy = () => MetaTypeCheckExpression;
+			__tmp335.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp335.ValueLazy = () => __tmp336;
+			__tmp336.TypeReferenceLazy = () => __tmp8;
+			// __tmp336.Type = null;
+			__tmp337.ObjectName = "Expression";
+			__tmp337.ObjectLazy = () => MetaTypeCheckExpression_ExpressionProperty;
+			__tmp337.ConstructorLazy = () => __tmp334;
+			__tmp337.PropertyName = "ExpectedType";
+			__tmp337.PropertyContextLazy = () => MetaExpression;
+			__tmp337.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp337.ValueLazy = () => __tmp338;
+			__tmp338.TypeReferenceLazy = () => __tmp11;
+			// __tmp338.Type = null;
+			// MetaTypeOfExpression.IsAbstract = null;
+			MetaTypeOfExpression.SuperClasses.AddLazy(() => MetaExpression);
+			MetaTypeOfExpression.Properties.AddLazy(() => MetaTypeOfExpression_TypeReferenceProperty);
+			MetaTypeOfExpression.ConstructorLazy = () => __tmp339;
+			MetaTypeOfExpression.NamespaceLazy = () => __tmp17;
+			MetaTypeOfExpression.Name = "MetaTypeOfExpression";
+			MetaTypeOfExpression.Documentation = null;
+			// MetaTypeOfExpression_TypeReferenceProperty.Kind = null;
+			MetaTypeOfExpression_TypeReferenceProperty.ClassLazy = () => MetaTypeOfExpression;
+			MetaTypeOfExpression_TypeReferenceProperty.Name = "TypeReference";
+			MetaTypeOfExpression_TypeReferenceProperty.Documentation = null;
+			MetaTypeOfExpression_TypeReferenceProperty.TypeLazy = () => MetaType;
+			__tmp339.ParentLazy = () => MetaTypeOfExpression;
+			__tmp339.Initializers.AddLazy(() => __tmp340);
+			__tmp339.Name = "MetaTypeOfExpression";
+			__tmp339.Documentation = null;
+			__tmp340.ConstructorLazy = () => __tmp339;
+			__tmp340.PropertyName = "Type";
+			__tmp340.PropertyContextLazy = () => MetaTypeOfExpression;
+			__tmp340.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp340.ValueLazy = () => __tmp341;
+			__tmp341.TypeReferenceLazy = () => MetaType;
+			// __tmp341.Type = null;
+			// MetaConditionalExpression.IsAbstract = null;
+			MetaConditionalExpression.SuperClasses.AddLazy(() => MetaExpression);
+			MetaConditionalExpression.Properties.AddLazy(() => MetaConditionalExpression_ConditionProperty);
+			MetaConditionalExpression.Properties.AddLazy(() => MetaConditionalExpression_BalancedTypeProperty);
+			MetaConditionalExpression.Properties.AddLazy(() => MetaConditionalExpression_ThenProperty);
+			MetaConditionalExpression.Properties.AddLazy(() => MetaConditionalExpression_ElseProperty);
+			MetaConditionalExpression.ConstructorLazy = () => __tmp342;
+			MetaConditionalExpression.NamespaceLazy = () => __tmp17;
+			MetaConditionalExpression.Name = "MetaConditionalExpression";
+			MetaConditionalExpression.Documentation = null;
+			MetaConditionalExpression_ConditionProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaConditionalExpression_ConditionProperty.ClassLazy = () => MetaConditionalExpression;
+			MetaConditionalExpression_ConditionProperty.Name = "Condition";
+			MetaConditionalExpression_ConditionProperty.Documentation = null;
+			MetaConditionalExpression_ConditionProperty.TypeLazy = () => MetaExpression;
+			// MetaConditionalExpression_BalancedTypeProperty.Kind = null;
+			MetaConditionalExpression_BalancedTypeProperty.ClassLazy = () => MetaConditionalExpression;
+			MetaConditionalExpression_BalancedTypeProperty.Name = "BalancedType";
+			MetaConditionalExpression_BalancedTypeProperty.Documentation = null;
+			MetaConditionalExpression_BalancedTypeProperty.TypeLazy = () => MetaType;
+			MetaConditionalExpression_ThenProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaConditionalExpression_ThenProperty.ClassLazy = () => MetaConditionalExpression;
+			MetaConditionalExpression_ThenProperty.Name = "Then";
+			MetaConditionalExpression_ThenProperty.Documentation = null;
+			MetaConditionalExpression_ThenProperty.TypeLazy = () => MetaExpression;
+			MetaConditionalExpression_ElseProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaConditionalExpression_ElseProperty.ClassLazy = () => MetaConditionalExpression;
+			MetaConditionalExpression_ElseProperty.Name = "Else";
+			MetaConditionalExpression_ElseProperty.Documentation = null;
+			MetaConditionalExpression_ElseProperty.TypeLazy = () => MetaExpression;
+			__tmp342.ParentLazy = () => MetaConditionalExpression;
+			__tmp342.Initializers.AddLazy(() => __tmp343);
+			__tmp342.Initializers.AddLazy(() => __tmp345);
+			__tmp342.Initializers.AddLazy(() => __tmp352);
+			__tmp342.Initializers.AddLazy(() => __tmp354);
+			__tmp342.Name = "MetaConditionalExpression";
+			__tmp342.Documentation = null;
+			__tmp343.ObjectName = "Condition";
+			__tmp343.ObjectLazy = () => MetaConditionalExpression_ConditionProperty;
+			__tmp343.ConstructorLazy = () => __tmp342;
+			__tmp343.PropertyName = "ExpectedType";
+			__tmp343.PropertyContextLazy = () => MetaExpression;
+			__tmp343.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp343.ValueLazy = () => __tmp344;
+			__tmp344.TypeReferenceLazy = () => __tmp8;
+			// __tmp344.Type = null;
+			__tmp345.ConstructorLazy = () => __tmp342;
+			__tmp345.PropertyName = "Type";
+			__tmp345.PropertyContextLazy = () => MetaConditionalExpression;
+			__tmp345.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp345.ValueLazy = () => __tmp346;
+			__tmp346.ExpressionLazy = () => __tmp347;
+			__tmp346.Arguments.AddLazy(() => __tmp348);
+			__tmp346.Arguments.AddLazy(() => __tmp350);
+			__tmp346.TypeLazy = () => MetaType;
+			__tmp347.Name = "balance";
+			__tmp347.TypeLazy = () => __tmp10;
+			__tmp348.ExpressionLazy = () => __tmp349;
+			__tmp348.Name = "Type";
+			__tmp348.TypeLazy = () => MetaType;
+			__tmp349.Name = "Then";
+			__tmp349.TypeLazy = () => MetaExpression;
+			__tmp350.ExpressionLazy = () => __tmp351;
+			__tmp350.Name = "Type";
+			__tmp350.TypeLazy = () => MetaType;
+			__tmp351.Name = "Else";
+			__tmp351.TypeLazy = () => MetaExpression;
+			__tmp352.ObjectName = "Then";
+			__tmp352.ObjectLazy = () => MetaConditionalExpression_ThenProperty;
+			__tmp352.ConstructorLazy = () => __tmp342;
+			__tmp352.PropertyName = "ExpectedType";
+			__tmp352.PropertyContextLazy = () => MetaExpression;
+			__tmp352.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp352.ValueLazy = () => __tmp353;
+			__tmp353.Name = "ExpectedType";
+			__tmp353.TypeLazy = () => MetaType;
+			__tmp354.ObjectName = "Else";
+			__tmp354.ObjectLazy = () => MetaConditionalExpression_ElseProperty;
+			__tmp354.ConstructorLazy = () => __tmp342;
+			__tmp354.PropertyName = "ExpectedType";
+			__tmp354.PropertyContextLazy = () => MetaExpression;
+			__tmp354.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp354.ValueLazy = () => __tmp355;
+			__tmp355.Name = "ExpectedType";
+			__tmp355.TypeLazy = () => MetaType;
+			// MetaConstantExpression.IsAbstract = null;
+			MetaConstantExpression.SuperClasses.AddLazy(() => MetaExpression);
+			MetaConstantExpression.Properties.AddLazy(() => MetaConstantExpression_ValueProperty);
+			MetaConstantExpression.ConstructorLazy = () => __tmp356;
+			MetaConstantExpression.NamespaceLazy = () => __tmp17;
+			MetaConstantExpression.Name = "MetaConstantExpression";
+			MetaConstantExpression.Documentation = null;
+			// MetaConstantExpression_ValueProperty.Kind = null;
+			MetaConstantExpression_ValueProperty.ClassLazy = () => MetaConstantExpression;
+			MetaConstantExpression_ValueProperty.Name = "Value";
+			MetaConstantExpression_ValueProperty.Documentation = null;
+			MetaConstantExpression_ValueProperty.TypeLazy = () => __tmp1;
+			__tmp356.ParentLazy = () => MetaConstantExpression;
+			__tmp356.Initializers.AddLazy(() => __tmp357);
+			__tmp356.Name = "MetaConstantExpression";
+			__tmp356.Documentation = null;
+			__tmp357.ConstructorLazy = () => __tmp356;
+			__tmp357.PropertyName = "Type";
+			__tmp357.PropertyContextLazy = () => MetaConstantExpression;
+			__tmp357.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp357.ValueLazy = () => __tmp358;
+			__tmp358.ExpressionLazy = () => __tmp359;
+			__tmp358.Arguments.AddLazy(() => __tmp360);
+			__tmp358.TypeLazy = () => MetaType;
+			__tmp359.Name = "get_type";
+			__tmp359.TypeLazy = () => __tmp10;
+			__tmp360.Name = "Value";
+			__tmp360.TypeLazy = () => __tmp1;
+			// MetaIdentifierExpression.IsAbstract = null;
+			MetaIdentifierExpression.SuperClasses.AddLazy(() => MetaBoundExpression);
+			MetaIdentifierExpression.Properties.AddLazy(() => MetaIdentifierExpression_NameProperty);
+			MetaIdentifierExpression.ConstructorLazy = () => __tmp361;
+			MetaIdentifierExpression.NamespaceLazy = () => __tmp17;
+			MetaIdentifierExpression.Name = "MetaIdentifierExpression";
+			MetaIdentifierExpression.Documentation = null;
+			// MetaIdentifierExpression_NameProperty.Kind = null;
+			MetaIdentifierExpression_NameProperty.ClassLazy = () => MetaIdentifierExpression;
+			MetaIdentifierExpression_NameProperty.Name = "Name";
+			MetaIdentifierExpression_NameProperty.Documentation = null;
+			MetaIdentifierExpression_NameProperty.TypeLazy = () => __tmp2;
+			__tmp361.ParentLazy = () => MetaIdentifierExpression;
+			__tmp361.Initializers.AddLazy(() => __tmp362);
+			__tmp361.Name = "MetaIdentifierExpression";
+			__tmp361.Documentation = null;
+			__tmp362.ConstructorLazy = () => __tmp361;
+			__tmp362.PropertyName = "Definitions";
+			__tmp362.PropertyContextLazy = () => MetaIdentifierExpression;
+			__tmp362.PropertyLazy = () => MetaBoundExpression_DefinitionsProperty;
+			__tmp362.ValueLazy = () => __tmp363;
+			__tmp363.ExpressionLazy = () => __tmp364;
+			__tmp363.Arguments.AddLazy(() => __tmp365);
+			__tmp363.TypeLazy = () => __tmp14;
+			__tmp364.Name = "resolve_name";
+			__tmp364.TypeLazy = () => __tmp10;
+			__tmp365.Name = "Name";
+			__tmp365.TypeLazy = () => __tmp2;
+			// MetaMemberAccessExpression.IsAbstract = null;
+			MetaMemberAccessExpression.SuperClasses.AddLazy(() => MetaBoundExpression);
+			MetaMemberAccessExpression.Properties.AddLazy(() => MetaMemberAccessExpression_ExpressionProperty);
+			MetaMemberAccessExpression.Properties.AddLazy(() => MetaMemberAccessExpression_NameProperty);
+			MetaMemberAccessExpression.ConstructorLazy = () => __tmp366;
+			MetaMemberAccessExpression.NamespaceLazy = () => __tmp17;
+			MetaMemberAccessExpression.Name = "MetaMemberAccessExpression";
+			MetaMemberAccessExpression.Documentation = null;
+			MetaMemberAccessExpression_ExpressionProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaMemberAccessExpression_ExpressionProperty.ClassLazy = () => MetaMemberAccessExpression;
+			MetaMemberAccessExpression_ExpressionProperty.Name = "Expression";
+			MetaMemberAccessExpression_ExpressionProperty.Documentation = null;
+			MetaMemberAccessExpression_ExpressionProperty.TypeLazy = () => MetaExpression;
+			// MetaMemberAccessExpression_NameProperty.Kind = null;
+			MetaMemberAccessExpression_NameProperty.ClassLazy = () => MetaMemberAccessExpression;
+			MetaMemberAccessExpression_NameProperty.Name = "Name";
+			MetaMemberAccessExpression_NameProperty.Documentation = null;
+			MetaMemberAccessExpression_NameProperty.TypeLazy = () => __tmp2;
+			__tmp366.ParentLazy = () => MetaMemberAccessExpression;
+			__tmp366.Initializers.AddLazy(() => __tmp367);
+			__tmp366.Initializers.AddLazy(() => __tmp369);
+			__tmp366.Name = "MetaMemberAccessExpression";
+			__tmp366.Documentation = null;
+			__tmp367.ObjectName = "Expression";
+			__tmp367.ObjectLazy = () => MetaMemberAccessExpression_ExpressionProperty;
+			__tmp367.ConstructorLazy = () => __tmp366;
+			__tmp367.PropertyName = "ExpectedType";
+			__tmp367.PropertyContextLazy = () => MetaExpression;
+			__tmp367.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp367.ValueLazy = () => __tmp368;
+			__tmp368.TypeReferenceLazy = () => __tmp10;
+			// __tmp368.Type = null;
+			__tmp369.ConstructorLazy = () => __tmp366;
+			__tmp369.PropertyName = "Definitions";
+			__tmp369.PropertyContextLazy = () => MetaMemberAccessExpression;
+			__tmp369.PropertyLazy = () => MetaBoundExpression_DefinitionsProperty;
+			__tmp369.ValueLazy = () => __tmp370;
+			__tmp370.ExpressionLazy = () => __tmp371;
+			__tmp370.Arguments.AddLazy(() => __tmp372);
+			__tmp370.Arguments.AddLazy(() => __tmp374);
+			__tmp370.TypeLazy = () => __tmp14;
+			__tmp371.Name = "resolve_name";
+			__tmp371.TypeLazy = () => __tmp10;
+			__tmp372.ExpressionLazy = () => __tmp373;
+			__tmp372.Name = "Type";
+			__tmp372.TypeLazy = () => MetaType;
+			__tmp373.Name = "Expression";
+			__tmp373.TypeLazy = () => MetaExpression;
+			__tmp374.Name = "Name";
+			__tmp374.TypeLazy = () => __tmp2;
+			// MetaFunctionCallExpression.IsAbstract = null;
+			MetaFunctionCallExpression.SuperClasses.AddLazy(() => MetaBoundExpression);
+			MetaFunctionCallExpression.Properties.AddLazy(() => MetaFunctionCallExpression_ExpressionProperty);
+			MetaFunctionCallExpression.ConstructorLazy = () => __tmp375;
+			MetaFunctionCallExpression.NamespaceLazy = () => __tmp17;
+			MetaFunctionCallExpression.Name = "MetaFunctionCallExpression";
+			MetaFunctionCallExpression.Documentation = null;
+			MetaFunctionCallExpression_ExpressionProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaFunctionCallExpression_ExpressionProperty.ClassLazy = () => MetaFunctionCallExpression;
+			MetaFunctionCallExpression_ExpressionProperty.Name = "Expression";
+			MetaFunctionCallExpression_ExpressionProperty.Documentation = null;
+			MetaFunctionCallExpression_ExpressionProperty.TypeLazy = () => MetaExpression;
+			__tmp375.ParentLazy = () => MetaFunctionCallExpression;
+			__tmp375.Initializers.AddLazy(() => __tmp376);
+			__tmp375.Initializers.AddLazy(() => __tmp378);
+			__tmp375.Initializers.AddLazy(() => __tmp380);
+			__tmp375.Initializers.AddLazy(() => __tmp392);
+			__tmp375.Name = "MetaFunctionCallExpression";
+			__tmp375.Documentation = null;
+			__tmp376.ObjectName = "Expression";
+			__tmp376.ObjectLazy = () => MetaFunctionCallExpression_ExpressionProperty;
+			__tmp376.ConstructorLazy = () => __tmp375;
+			__tmp376.PropertyName = "UniqueDefinition";
+			__tmp376.PropertyContextLazy = () => MetaBoundExpression;
+			__tmp376.PropertyLazy = () => MetaBoundExpression_UniqueDefinitionProperty;
+			__tmp376.ValueLazy = () => __tmp377;
+			__tmp377.Value = false;
+			__tmp377.TypeLazy = () => __tmp8;
+			__tmp378.ObjectName = "Expression";
+			__tmp378.ObjectLazy = () => MetaFunctionCallExpression_ExpressionProperty;
+			__tmp378.ConstructorLazy = () => __tmp375;
+			__tmp378.PropertyName = "ExpectedType";
+			__tmp378.PropertyContextLazy = () => MetaExpression;
+			__tmp378.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp378.ValueLazy = () => __tmp379;
+			__tmp379.TypeReferenceLazy = () => __tmp10;
+			// __tmp379.Type = null;
+			__tmp380.ConstructorLazy = () => __tmp375;
+			__tmp380.PropertyName = "Definitions";
+			__tmp380.PropertyContextLazy = () => MetaFunctionCallExpression;
+			__tmp380.PropertyLazy = () => MetaBoundExpression_DefinitionsProperty;
+			__tmp380.ValueLazy = () => __tmp381;
+			__tmp381.ConditionLazy = () => __tmp382;
+			// __tmp381.BalancedType = null;
+			__tmp381.ThenLazy = () => __tmp384;
+			__tmp381.ElseLazy = () => __tmp388;
+			__tmp381.TypeLazy = () => __tmp14;
+			__tmp382.TypeReferenceLazy = () => MetaBoundExpression;
+			__tmp382.ExpressionLazy = () => __tmp383;
+			__tmp382.TypeLazy = () => __tmp8;
+			__tmp383.Name = "Expression";
+			__tmp383.TypeLazy = () => MetaExpression;
+			__tmp384.ExpressionLazy = () => __tmp385;
+			__tmp384.Name = "Definitions";
+			__tmp384.TypeLazy = () => __tmp14;
+			__tmp385.ExpressionLazy = () => __tmp386;
+			__tmp385.TypeLazy = () => MetaBoundExpression;
+			__tmp386.TypeReferenceLazy = () => MetaBoundExpression;
+			__tmp386.ExpressionLazy = () => __tmp387;
+			__tmp386.TypeLazy = () => MetaBoundExpression;
+			__tmp387.Name = "Expression";
+			__tmp387.TypeLazy = () => MetaExpression;
+			__tmp388.ExpressionLazy = () => __tmp389;
+			__tmp388.Arguments.AddLazy(() => __tmp390);
+			__tmp388.TypeLazy = () => __tmp14;
+			__tmp389.Name = "definition_list";
+			__tmp389.TypeLazy = () => __tmp10;
+			__tmp390.ExpressionLazy = () => __tmp391;
+			__tmp390.Name = "Type";
+			__tmp390.TypeLazy = () => MetaType;
+			__tmp391.Name = "Expression";
+			__tmp391.TypeLazy = () => MetaExpression;
+			__tmp392.ConstructorLazy = () => __tmp375;
+			__tmp392.PropertyName = "Type";
+			__tmp392.PropertyContextLazy = () => MetaFunctionCallExpression;
+			__tmp392.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp392.ValueLazy = () => __tmp393;
+			__tmp393.ExpressionLazy = () => __tmp394;
+			__tmp393.Arguments.AddLazy(() => __tmp395);
+			__tmp393.TypeLazy = () => MetaType;
+			__tmp394.Name = "get_return_type";
+			__tmp394.TypeLazy = () => __tmp10;
+			__tmp395.Name = "Definition";
+			__tmp395.TypeLazy = () => __tmp13;
+			// MetaIndexerExpression.IsAbstract = null;
+			MetaIndexerExpression.SuperClasses.AddLazy(() => MetaBoundExpression);
+			MetaIndexerExpression.Properties.AddLazy(() => MetaIndexerExpression_ExpressionProperty);
+			MetaIndexerExpression.ConstructorLazy = () => __tmp396;
+			MetaIndexerExpression.NamespaceLazy = () => __tmp17;
+			MetaIndexerExpression.Name = "MetaIndexerExpression";
+			MetaIndexerExpression.Documentation = null;
+			MetaIndexerExpression_ExpressionProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaIndexerExpression_ExpressionProperty.ClassLazy = () => MetaIndexerExpression;
+			MetaIndexerExpression_ExpressionProperty.Name = "Expression";
+			MetaIndexerExpression_ExpressionProperty.Documentation = null;
+			MetaIndexerExpression_ExpressionProperty.TypeLazy = () => MetaExpression;
+			__tmp396.ParentLazy = () => MetaIndexerExpression;
+			__tmp396.Initializers.AddLazy(() => __tmp397);
+			__tmp396.Initializers.AddLazy(() => __tmp399);
+			__tmp396.Initializers.AddLazy(() => __tmp401);
+			__tmp396.Name = "MetaIndexerExpression";
+			__tmp396.Documentation = null;
+			__tmp397.ObjectName = "Expression";
+			__tmp397.ObjectLazy = () => MetaIndexerExpression_ExpressionProperty;
+			__tmp397.ConstructorLazy = () => __tmp396;
+			__tmp397.PropertyName = "UniqueDefinition";
+			__tmp397.PropertyContextLazy = () => MetaBoundExpression;
+			__tmp397.PropertyLazy = () => MetaBoundExpression_UniqueDefinitionProperty;
+			__tmp397.ValueLazy = () => __tmp398;
+			__tmp398.Value = false;
+			__tmp398.TypeLazy = () => __tmp8;
+			__tmp399.ObjectName = "Expression";
+			__tmp399.ObjectLazy = () => MetaIndexerExpression_ExpressionProperty;
+			__tmp399.ConstructorLazy = () => __tmp396;
+			__tmp399.PropertyName = "ExpectedType";
+			__tmp399.PropertyContextLazy = () => MetaExpression;
+			__tmp399.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp399.ValueLazy = () => __tmp400;
+			__tmp400.TypeReferenceLazy = () => __tmp10;
+			// __tmp400.Type = null;
+			__tmp401.ConstructorLazy = () => __tmp396;
+			__tmp401.PropertyName = "Definitions";
+			__tmp401.PropertyContextLazy = () => MetaIndexerExpression;
+			__tmp401.PropertyLazy = () => MetaBoundExpression_DefinitionsProperty;
+			__tmp401.ValueLazy = () => __tmp402;
+			__tmp402.ConditionLazy = () => __tmp403;
+			// __tmp402.BalancedType = null;
+			__tmp402.ThenLazy = () => __tmp405;
+			__tmp402.ElseLazy = () => __tmp409;
+			__tmp402.TypeLazy = () => __tmp14;
+			__tmp403.TypeReferenceLazy = () => MetaBoundExpression;
+			__tmp403.ExpressionLazy = () => __tmp404;
+			__tmp403.TypeLazy = () => __tmp8;
+			__tmp404.Name = "Expression";
+			__tmp404.TypeLazy = () => MetaExpression;
+			__tmp405.ExpressionLazy = () => __tmp406;
+			__tmp405.Name = "Definitions";
+			__tmp405.TypeLazy = () => __tmp14;
+			__tmp406.ExpressionLazy = () => __tmp407;
+			__tmp406.TypeLazy = () => MetaBoundExpression;
+			__tmp407.TypeReferenceLazy = () => MetaBoundExpression;
+			__tmp407.ExpressionLazy = () => __tmp408;
+			__tmp407.TypeLazy = () => MetaBoundExpression;
+			__tmp408.Name = "Expression";
+			__tmp408.TypeLazy = () => MetaExpression;
+			__tmp409.ExpressionLazy = () => __tmp410;
+			__tmp409.Arguments.AddLazy(() => __tmp411);
+			__tmp409.TypeLazy = () => __tmp14;
+			__tmp410.Name = "definition_list";
+			__tmp410.TypeLazy = () => __tmp10;
+			__tmp411.ExpressionLazy = () => __tmp412;
+			__tmp411.Name = "Type";
+			__tmp411.TypeLazy = () => MetaType;
+			__tmp412.Name = "Expression";
+			__tmp412.TypeLazy = () => MetaExpression;
+			// MetaNewExpression.IsAbstract = null;
+			MetaNewExpression.SuperClasses.AddLazy(() => MetaExpression);
+			MetaNewExpression.Properties.AddLazy(() => MetaNewExpression_TypeReferenceProperty);
+			MetaNewExpression.Properties.AddLazy(() => MetaNewExpression_PropertyInitializersProperty);
+			MetaNewExpression.ConstructorLazy = () => __tmp414;
+			MetaNewExpression.NamespaceLazy = () => __tmp17;
+			MetaNewExpression.Name = "MetaNewExpression";
+			MetaNewExpression.Documentation = null;
+			// MetaNewExpression_TypeReferenceProperty.Kind = null;
+			MetaNewExpression_TypeReferenceProperty.ClassLazy = () => MetaNewExpression;
+			MetaNewExpression_TypeReferenceProperty.Name = "TypeReference";
+			MetaNewExpression_TypeReferenceProperty.Documentation = null;
+			MetaNewExpression_TypeReferenceProperty.TypeLazy = () => MetaClass;
+			__tmp413.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp413.InnerTypeLazy = () => MetaNewPropertyInitializer;
+			MetaNewExpression_PropertyInitializersProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaNewExpression_PropertyInitializersProperty.ClassLazy = () => MetaNewExpression;
+			MetaNewExpression_PropertyInitializersProperty.OppositeProperties.AddLazy(() => MetaNewPropertyInitializer_ParentProperty);
+			MetaNewExpression_PropertyInitializersProperty.Name = "PropertyInitializers";
+			MetaNewExpression_PropertyInitializersProperty.Documentation = null;
+			MetaNewExpression_PropertyInitializersProperty.TypeLazy = () => __tmp413;
+			__tmp414.ParentLazy = () => MetaNewExpression;
+			__tmp414.Initializers.AddLazy(() => __tmp415);
+			__tmp414.Name = "MetaNewExpression";
+			__tmp414.Documentation = null;
+			__tmp415.ConstructorLazy = () => __tmp414;
+			__tmp415.PropertyName = "Type";
+			__tmp415.PropertyContextLazy = () => MetaNewExpression;
+			__tmp415.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp415.ValueLazy = () => __tmp416;
+			__tmp416.Name = "TypeReference";
+			__tmp416.TypeLazy = () => MetaClass;
+			// MetaNewPropertyInitializer.IsAbstract = null;
+			MetaNewPropertyInitializer.Properties.AddLazy(() => MetaNewPropertyInitializer_ParentProperty);
+			MetaNewPropertyInitializer.Properties.AddLazy(() => MetaNewPropertyInitializer_PropertyNameProperty);
+			MetaNewPropertyInitializer.Properties.AddLazy(() => MetaNewPropertyInitializer_ValueProperty);
+			MetaNewPropertyInitializer.Properties.AddLazy(() => MetaNewPropertyInitializer_PropertyProperty);
+			MetaNewPropertyInitializer.ConstructorLazy = () => __tmp417;
+			MetaNewPropertyInitializer.NamespaceLazy = () => __tmp17;
+			MetaNewPropertyInitializer.Name = "MetaNewPropertyInitializer";
+			MetaNewPropertyInitializer.Documentation = null;
+			// MetaNewPropertyInitializer_ParentProperty.Kind = null;
+			MetaNewPropertyInitializer_ParentProperty.ClassLazy = () => MetaNewPropertyInitializer;
+			MetaNewPropertyInitializer_ParentProperty.OppositeProperties.AddLazy(() => MetaNewExpression_PropertyInitializersProperty);
+			MetaNewPropertyInitializer_ParentProperty.Name = "Parent";
+			MetaNewPropertyInitializer_ParentProperty.Documentation = null;
+			MetaNewPropertyInitializer_ParentProperty.TypeLazy = () => MetaNewExpression;
+			// MetaNewPropertyInitializer_PropertyNameProperty.Kind = null;
+			MetaNewPropertyInitializer_PropertyNameProperty.ClassLazy = () => MetaNewPropertyInitializer;
+			MetaNewPropertyInitializer_PropertyNameProperty.Name = "PropertyName";
+			MetaNewPropertyInitializer_PropertyNameProperty.Documentation = null;
+			MetaNewPropertyInitializer_PropertyNameProperty.TypeLazy = () => __tmp2;
+			MetaNewPropertyInitializer_ValueProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaNewPropertyInitializer_ValueProperty.ClassLazy = () => MetaNewPropertyInitializer;
+			MetaNewPropertyInitializer_ValueProperty.Name = "Value";
+			MetaNewPropertyInitializer_ValueProperty.Documentation = null;
+			MetaNewPropertyInitializer_ValueProperty.TypeLazy = () => MetaExpression;
+			// MetaNewPropertyInitializer_PropertyProperty.Kind = null;
+			MetaNewPropertyInitializer_PropertyProperty.ClassLazy = () => MetaNewPropertyInitializer;
+			MetaNewPropertyInitializer_PropertyProperty.Name = "Property";
+			MetaNewPropertyInitializer_PropertyProperty.Documentation = null;
+			MetaNewPropertyInitializer_PropertyProperty.TypeLazy = () => MetaProperty;
+			__tmp417.ParentLazy = () => MetaNewPropertyInitializer;
+			__tmp417.Initializers.AddLazy(() => __tmp418);
+			__tmp417.Initializers.AddLazy(() => __tmp426);
+			__tmp417.Name = "NewPropertyInitializer";
+			__tmp417.Documentation = null;
+			__tmp418.ConstructorLazy = () => __tmp417;
+			__tmp418.PropertyName = "Property";
+			__tmp418.PropertyContextLazy = () => MetaNewPropertyInitializer;
+			__tmp418.PropertyLazy = () => MetaNewPropertyInitializer_PropertyProperty;
+			__tmp418.ValueLazy = () => __tmp419;
+			__tmp419.ExpressionLazy = () => __tmp420;
+			__tmp419.Arguments.AddLazy(() => __tmp421);
+			__tmp419.TypeLazy = () => __tmp13;
+			__tmp420.Name = "bind";
+			__tmp420.TypeLazy = () => __tmp10;
+			__tmp421.ExpressionLazy = () => __tmp422;
+			__tmp421.Arguments.AddLazy(() => __tmp423);
+			__tmp421.Arguments.AddLazy(() => __tmp425);
+			__tmp421.TypeLazy = () => __tmp14;
+			__tmp422.Name = "resolve_name";
+			__tmp422.TypeLazy = () => __tmp10;
+			__tmp423.ExpressionLazy = () => __tmp424;
+			__tmp423.Name = "Type";
+			__tmp423.TypeLazy = () => MetaType;
+			__tmp424.Name = "Parent";
+			__tmp424.TypeLazy = () => MetaNewExpression;
+			__tmp425.Name = "PropertyName";
+			__tmp425.TypeLazy = () => __tmp2;
+			__tmp426.ObjectName = "Value";
+			__tmp426.ObjectLazy = () => MetaNewPropertyInitializer_ValueProperty;
+			__tmp426.ConstructorLazy = () => __tmp417;
+			__tmp426.PropertyName = "ExpectedType";
+			__tmp426.PropertyContextLazy = () => MetaExpression;
+			__tmp426.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp426.ValueLazy = () => __tmp427;
+			__tmp427.ExpressionLazy = () => __tmp428;
+			__tmp427.Arguments.AddLazy(() => __tmp429);
+			__tmp427.TypeLazy = () => MetaType;
+			__tmp428.Name = "get_type";
+			__tmp428.TypeLazy = () => __tmp10;
+			__tmp429.Name = "Property";
+			__tmp429.TypeLazy = () => MetaProperty;
+			// MetaNewCollectionExpression.IsAbstract = null;
+			MetaNewCollectionExpression.SuperClasses.AddLazy(() => MetaExpression);
+			MetaNewCollectionExpression.Properties.AddLazy(() => MetaNewCollectionExpression_TypeReferenceProperty);
+			MetaNewCollectionExpression.Properties.AddLazy(() => MetaNewCollectionExpression_ValuesProperty);
+			MetaNewCollectionExpression.ConstructorLazy = () => __tmp431;
+			MetaNewCollectionExpression.NamespaceLazy = () => __tmp17;
+			MetaNewCollectionExpression.Name = "MetaNewCollectionExpression";
+			MetaNewCollectionExpression.Documentation = null;
+			// MetaNewCollectionExpression_TypeReferenceProperty.Kind = null;
+			MetaNewCollectionExpression_TypeReferenceProperty.ClassLazy = () => MetaNewCollectionExpression;
+			MetaNewCollectionExpression_TypeReferenceProperty.Name = "TypeReference";
+			MetaNewCollectionExpression_TypeReferenceProperty.Documentation = null;
+			MetaNewCollectionExpression_TypeReferenceProperty.TypeLazy = () => MetaCollectionType;
+			__tmp430.Kind = global::MetaDslx.Core.Immutable.MetaCollectionKind.List;
+			__tmp430.InnerTypeLazy = () => MetaExpression;
+			MetaNewCollectionExpression_ValuesProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaNewCollectionExpression_ValuesProperty.ClassLazy = () => MetaNewCollectionExpression;
+			MetaNewCollectionExpression_ValuesProperty.Name = "Values";
+			MetaNewCollectionExpression_ValuesProperty.Documentation = null;
+			MetaNewCollectionExpression_ValuesProperty.TypeLazy = () => __tmp430;
+			__tmp431.ParentLazy = () => MetaNewCollectionExpression;
+			__tmp431.Initializers.AddLazy(() => __tmp432);
+			__tmp431.Name = "MetaNewCollectionExpression";
+			__tmp431.Documentation = null;
+			__tmp432.ConstructorLazy = () => __tmp431;
+			__tmp432.PropertyName = "Type";
+			__tmp432.PropertyContextLazy = () => MetaNewCollectionExpression;
+			__tmp432.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp432.ValueLazy = () => __tmp433;
+			__tmp433.Name = "TypeReference";
+			__tmp433.TypeLazy = () => MetaCollectionType;
+			MetaOperatorExpression.IsAbstract = true;
+			MetaOperatorExpression.SuperClasses.AddLazy(() => MetaBoundExpression);
+			MetaOperatorExpression.Properties.AddLazy(() => MetaOperatorExpression_NameProperty);
+			MetaOperatorExpression.ConstructorLazy = () => __tmp434;
+			MetaOperatorExpression.NamespaceLazy = () => __tmp17;
+			MetaOperatorExpression.Name = "MetaOperatorExpression";
+			MetaOperatorExpression.Documentation = null;
+			MetaOperatorExpression_NameProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Readonly;
+			MetaOperatorExpression_NameProperty.ClassLazy = () => MetaOperatorExpression;
+			MetaOperatorExpression_NameProperty.Name = "Name";
+			MetaOperatorExpression_NameProperty.Documentation = null;
+			MetaOperatorExpression_NameProperty.TypeLazy = () => __tmp2;
+			__tmp434.ParentLazy = () => MetaOperatorExpression;
+			__tmp434.Initializers.AddLazy(() => __tmp435);
+			__tmp434.Name = "MetaOperatorExpression";
+			__tmp434.Documentation = null;
+			__tmp435.ConstructorLazy = () => __tmp434;
+			__tmp435.PropertyName = "Definitions";
+			__tmp435.PropertyContextLazy = () => MetaOperatorExpression;
+			__tmp435.PropertyLazy = () => MetaBoundExpression_DefinitionsProperty;
+			__tmp435.ValueLazy = () => __tmp436;
+			__tmp436.ExpressionLazy = () => __tmp437;
+			__tmp436.Arguments.AddLazy(() => __tmp438);
+			__tmp436.TypeLazy = () => __tmp14;
+			__tmp437.Name = "resolve_name";
+			__tmp437.TypeLazy = () => __tmp10;
+			__tmp438.Name = "Name";
+			__tmp438.TypeLazy = () => __tmp2;
+			MetaUnaryExpression.IsAbstract = true;
+			MetaUnaryExpression.SuperClasses.AddLazy(() => MetaOperatorExpression);
+			MetaUnaryExpression.Properties.AddLazy(() => MetaUnaryExpression_ExpressionProperty);
+			MetaUnaryExpression.ConstructorLazy = () => __tmp439;
+			MetaUnaryExpression.NamespaceLazy = () => __tmp17;
+			MetaUnaryExpression.Name = "MetaUnaryExpression";
+			MetaUnaryExpression.Documentation = null;
+			__tmp439.ParentLazy = () => MetaUnaryExpression;
+			__tmp439.Name = "MetaUnaryExpression";
+			__tmp439.Documentation = null;
+			MetaUnaryExpression_ExpressionProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaUnaryExpression_ExpressionProperty.ClassLazy = () => MetaUnaryExpression;
+			MetaUnaryExpression_ExpressionProperty.Name = "Expression";
+			MetaUnaryExpression_ExpressionProperty.Documentation = null;
+			MetaUnaryExpression_ExpressionProperty.TypeLazy = () => MetaExpression;
+			// MetaUnaryPlusExpression.IsAbstract = null;
+			MetaUnaryPlusExpression.SuperClasses.AddLazy(() => MetaUnaryExpression);
+			MetaUnaryPlusExpression.ConstructorLazy = () => __tmp440;
+			MetaUnaryPlusExpression.NamespaceLazy = () => __tmp17;
+			MetaUnaryPlusExpression.Name = "MetaUnaryPlusExpression";
+			MetaUnaryPlusExpression.Documentation = null;
+			__tmp440.ParentLazy = () => MetaUnaryPlusExpression;
+			__tmp440.Initializers.AddLazy(() => __tmp441);
+			__tmp440.Name = "MetaUnaryPlusExpression";
+			__tmp440.Documentation = null;
+			__tmp441.ConstructorLazy = () => __tmp440;
+			__tmp441.PropertyName = "Name";
+			__tmp441.PropertyContextLazy = () => MetaUnaryPlusExpression;
+			__tmp441.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp441.ValueLazy = () => __tmp442;
+			__tmp442.Value = "operator+()";
+			__tmp442.TypeLazy = () => __tmp2;
+			// MetaNegateExpression.IsAbstract = null;
+			MetaNegateExpression.SuperClasses.AddLazy(() => MetaUnaryExpression);
+			MetaNegateExpression.ConstructorLazy = () => __tmp443;
+			MetaNegateExpression.NamespaceLazy = () => __tmp17;
+			MetaNegateExpression.Name = "MetaNegateExpression";
+			MetaNegateExpression.Documentation = null;
+			__tmp443.ParentLazy = () => MetaNegateExpression;
+			__tmp443.Initializers.AddLazy(() => __tmp444);
+			__tmp443.Name = "MetaNegateExpression";
+			__tmp443.Documentation = null;
+			__tmp444.ConstructorLazy = () => __tmp443;
+			__tmp444.PropertyName = "Name";
+			__tmp444.PropertyContextLazy = () => MetaNegateExpression;
+			__tmp444.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp444.ValueLazy = () => __tmp445;
+			__tmp445.Value = "operator-()";
+			__tmp445.TypeLazy = () => __tmp2;
+			// MetaOnesComplementExpression.IsAbstract = null;
+			MetaOnesComplementExpression.SuperClasses.AddLazy(() => MetaUnaryExpression);
+			MetaOnesComplementExpression.ConstructorLazy = () => __tmp446;
+			MetaOnesComplementExpression.NamespaceLazy = () => __tmp17;
+			MetaOnesComplementExpression.Name = "MetaOnesComplementExpression";
+			MetaOnesComplementExpression.Documentation = null;
+			__tmp446.ParentLazy = () => MetaOnesComplementExpression;
+			__tmp446.Initializers.AddLazy(() => __tmp447);
+			__tmp446.Name = "MetaOnesComplementExpression";
+			__tmp446.Documentation = null;
+			__tmp447.ConstructorLazy = () => __tmp446;
+			__tmp447.PropertyName = "Name";
+			__tmp447.PropertyContextLazy = () => MetaOnesComplementExpression;
+			__tmp447.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp447.ValueLazy = () => __tmp448;
+			__tmp448.Value = "operator~()";
+			__tmp448.TypeLazy = () => __tmp2;
+			// MetaNotExpression.IsAbstract = null;
+			MetaNotExpression.SuperClasses.AddLazy(() => MetaUnaryExpression);
+			MetaNotExpression.ConstructorLazy = () => __tmp449;
+			MetaNotExpression.NamespaceLazy = () => __tmp17;
+			MetaNotExpression.Name = "MetaNotExpression";
+			MetaNotExpression.Documentation = null;
+			__tmp449.ParentLazy = () => MetaNotExpression;
+			__tmp449.Initializers.AddLazy(() => __tmp450);
+			__tmp449.Name = "MetaNotExpression";
+			__tmp449.Documentation = null;
+			__tmp450.ConstructorLazy = () => __tmp449;
+			__tmp450.PropertyName = "Name";
+			__tmp450.PropertyContextLazy = () => MetaNotExpression;
+			__tmp450.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp450.ValueLazy = () => __tmp451;
+			__tmp451.Value = "operator!()";
+			__tmp451.TypeLazy = () => __tmp2;
+			MetaUnaryAssignExpression.IsAbstract = true;
+			MetaUnaryAssignExpression.SuperClasses.AddLazy(() => MetaUnaryExpression);
+			// MetaUnaryAssignExpression.Constructor = null;
+			MetaUnaryAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaUnaryAssignExpression.Name = "MetaUnaryAssignExpression";
+			MetaUnaryAssignExpression.Documentation = null;
+			// MetaPostIncrementAssignExpression.IsAbstract = null;
+			MetaPostIncrementAssignExpression.SuperClasses.AddLazy(() => MetaUnaryAssignExpression);
+			MetaPostIncrementAssignExpression.ConstructorLazy = () => __tmp452;
+			MetaPostIncrementAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaPostIncrementAssignExpression.Name = "MetaPostIncrementAssignExpression";
+			MetaPostIncrementAssignExpression.Documentation = null;
+			__tmp452.ParentLazy = () => MetaPostIncrementAssignExpression;
+			__tmp452.Initializers.AddLazy(() => __tmp453);
+			__tmp452.Name = "MetaPostIncrementAssignExpression";
+			__tmp452.Documentation = null;
+			__tmp453.ConstructorLazy = () => __tmp452;
+			__tmp453.PropertyName = "Name";
+			__tmp453.PropertyContextLazy = () => MetaPostIncrementAssignExpression;
+			__tmp453.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp453.ValueLazy = () => __tmp454;
+			__tmp454.Value = "operator()++";
+			__tmp454.TypeLazy = () => __tmp2;
+			// MetaPostDecrementAssignExpression.IsAbstract = null;
+			MetaPostDecrementAssignExpression.SuperClasses.AddLazy(() => MetaUnaryAssignExpression);
+			MetaPostDecrementAssignExpression.ConstructorLazy = () => __tmp455;
+			MetaPostDecrementAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaPostDecrementAssignExpression.Name = "MetaPostDecrementAssignExpression";
+			MetaPostDecrementAssignExpression.Documentation = null;
+			__tmp455.ParentLazy = () => MetaPostDecrementAssignExpression;
+			__tmp455.Initializers.AddLazy(() => __tmp456);
+			__tmp455.Name = "MetaPostDecrementAssignExpression";
+			__tmp455.Documentation = null;
+			__tmp456.ConstructorLazy = () => __tmp455;
+			__tmp456.PropertyName = "Name";
+			__tmp456.PropertyContextLazy = () => MetaPostDecrementAssignExpression;
+			__tmp456.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp456.ValueLazy = () => __tmp457;
+			__tmp457.Value = "operator()--";
+			__tmp457.TypeLazy = () => __tmp2;
+			// MetaPreIncrementAssignExpression.IsAbstract = null;
+			MetaPreIncrementAssignExpression.SuperClasses.AddLazy(() => MetaUnaryAssignExpression);
+			MetaPreIncrementAssignExpression.ConstructorLazy = () => __tmp458;
+			MetaPreIncrementAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaPreIncrementAssignExpression.Name = "MetaPreIncrementAssignExpression";
+			MetaPreIncrementAssignExpression.Documentation = null;
+			__tmp458.ParentLazy = () => MetaPreIncrementAssignExpression;
+			__tmp458.Initializers.AddLazy(() => __tmp459);
+			__tmp458.Name = "MetaPreIncrementAssignExpression";
+			__tmp458.Documentation = null;
+			__tmp459.ConstructorLazy = () => __tmp458;
+			__tmp459.PropertyName = "Name";
+			__tmp459.PropertyContextLazy = () => MetaPreIncrementAssignExpression;
+			__tmp459.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp459.ValueLazy = () => __tmp460;
+			__tmp460.Value = "operator++()";
+			__tmp460.TypeLazy = () => __tmp2;
+			// MetaPreDecrementAssignExpression.IsAbstract = null;
+			MetaPreDecrementAssignExpression.SuperClasses.AddLazy(() => MetaUnaryAssignExpression);
+			MetaPreDecrementAssignExpression.ConstructorLazy = () => __tmp461;
+			MetaPreDecrementAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaPreDecrementAssignExpression.Name = "MetaPreDecrementAssignExpression";
+			MetaPreDecrementAssignExpression.Documentation = null;
+			__tmp461.ParentLazy = () => MetaPreDecrementAssignExpression;
+			__tmp461.Initializers.AddLazy(() => __tmp462);
+			__tmp461.Name = "MetaPreDecrementAssignExpression";
+			__tmp461.Documentation = null;
+			__tmp462.ConstructorLazy = () => __tmp461;
+			__tmp462.PropertyName = "Name";
+			__tmp462.PropertyContextLazy = () => MetaPreDecrementAssignExpression;
+			__tmp462.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp462.ValueLazy = () => __tmp463;
+			__tmp463.Value = "operator--()";
+			__tmp463.TypeLazy = () => __tmp2;
+			MetaBinaryExpression.IsAbstract = true;
+			MetaBinaryExpression.SuperClasses.AddLazy(() => MetaOperatorExpression);
+			MetaBinaryExpression.Properties.AddLazy(() => MetaBinaryExpression_LeftProperty);
+			MetaBinaryExpression.Properties.AddLazy(() => MetaBinaryExpression_RightProperty);
+			MetaBinaryExpression.ConstructorLazy = () => __tmp464;
+			MetaBinaryExpression.NamespaceLazy = () => __tmp17;
+			MetaBinaryExpression.Name = "MetaBinaryExpression";
+			MetaBinaryExpression.Documentation = null;
+			__tmp464.ParentLazy = () => MetaBinaryExpression;
+			__tmp464.Name = "BinaryExpression";
+			__tmp464.Documentation = null;
+			MetaBinaryExpression_LeftProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaBinaryExpression_LeftProperty.ClassLazy = () => MetaBinaryExpression;
+			MetaBinaryExpression_LeftProperty.Name = "Left";
+			MetaBinaryExpression_LeftProperty.Documentation = null;
+			MetaBinaryExpression_LeftProperty.TypeLazy = () => MetaExpression;
+			MetaBinaryExpression_RightProperty.Kind = global::MetaDslx.Core.Immutable.MetaPropertyKind.Containment;
+			MetaBinaryExpression_RightProperty.ClassLazy = () => MetaBinaryExpression;
+			MetaBinaryExpression_RightProperty.Name = "Right";
+			MetaBinaryExpression_RightProperty.Documentation = null;
+			MetaBinaryExpression_RightProperty.TypeLazy = () => MetaExpression;
+			MetaBinaryArithmeticExpression.IsAbstract = true;
+			MetaBinaryArithmeticExpression.SuperClasses.AddLazy(() => MetaBinaryExpression);
+			// MetaBinaryArithmeticExpression.Constructor = null;
+			MetaBinaryArithmeticExpression.NamespaceLazy = () => __tmp17;
+			MetaBinaryArithmeticExpression.Name = "MetaBinaryArithmeticExpression";
+			MetaBinaryArithmeticExpression.Documentation = null;
+			// MetaMultiplyExpression.IsAbstract = null;
+			MetaMultiplyExpression.SuperClasses.AddLazy(() => MetaBinaryArithmeticExpression);
+			MetaMultiplyExpression.ConstructorLazy = () => __tmp465;
+			MetaMultiplyExpression.NamespaceLazy = () => __tmp17;
+			MetaMultiplyExpression.Name = "MetaMultiplyExpression";
+			MetaMultiplyExpression.Documentation = null;
+			__tmp465.ParentLazy = () => MetaMultiplyExpression;
+			__tmp465.Initializers.AddLazy(() => __tmp466);
+			__tmp465.Name = "MetaMultiplyExpression";
+			__tmp465.Documentation = null;
+			__tmp466.ConstructorLazy = () => __tmp465;
+			__tmp466.PropertyName = "Name";
+			__tmp466.PropertyContextLazy = () => MetaMultiplyExpression;
+			__tmp466.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp466.ValueLazy = () => __tmp467;
+			__tmp467.Value = "operator()*()";
+			__tmp467.TypeLazy = () => __tmp2;
+			// MetaDivideExpression.IsAbstract = null;
+			MetaDivideExpression.SuperClasses.AddLazy(() => MetaBinaryArithmeticExpression);
+			MetaDivideExpression.ConstructorLazy = () => __tmp468;
+			MetaDivideExpression.NamespaceLazy = () => __tmp17;
+			MetaDivideExpression.Name = "MetaDivideExpression";
+			MetaDivideExpression.Documentation = null;
+			__tmp468.ParentLazy = () => MetaDivideExpression;
+			__tmp468.Initializers.AddLazy(() => __tmp469);
+			__tmp468.Name = "MetaDivideExpression";
+			__tmp468.Documentation = null;
+			__tmp469.ConstructorLazy = () => __tmp468;
+			__tmp469.PropertyName = "Name";
+			__tmp469.PropertyContextLazy = () => MetaDivideExpression;
+			__tmp469.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp469.ValueLazy = () => __tmp470;
+			__tmp470.Value = "operator()/()";
+			__tmp470.TypeLazy = () => __tmp2;
+			// MetaModuloExpression.IsAbstract = null;
+			MetaModuloExpression.SuperClasses.AddLazy(() => MetaBinaryArithmeticExpression);
+			MetaModuloExpression.ConstructorLazy = () => __tmp471;
+			MetaModuloExpression.NamespaceLazy = () => __tmp17;
+			MetaModuloExpression.Name = "MetaModuloExpression";
+			MetaModuloExpression.Documentation = null;
+			__tmp471.ParentLazy = () => MetaModuloExpression;
+			__tmp471.Initializers.AddLazy(() => __tmp472);
+			__tmp471.Name = "MetaModuloExpression";
+			__tmp471.Documentation = null;
+			__tmp472.ConstructorLazy = () => __tmp471;
+			__tmp472.PropertyName = "Name";
+			__tmp472.PropertyContextLazy = () => MetaModuloExpression;
+			__tmp472.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp472.ValueLazy = () => __tmp473;
+			__tmp473.Value = "operator()%()";
+			__tmp473.TypeLazy = () => __tmp2;
+			// MetaAddExpression.IsAbstract = null;
+			MetaAddExpression.SuperClasses.AddLazy(() => MetaBinaryArithmeticExpression);
+			MetaAddExpression.ConstructorLazy = () => __tmp474;
+			MetaAddExpression.NamespaceLazy = () => __tmp17;
+			MetaAddExpression.Name = "MetaAddExpression";
+			MetaAddExpression.Documentation = null;
+			__tmp474.ParentLazy = () => MetaAddExpression;
+			__tmp474.Initializers.AddLazy(() => __tmp475);
+			__tmp474.Name = "MetaAddExpression";
+			__tmp474.Documentation = null;
+			__tmp475.ConstructorLazy = () => __tmp474;
+			__tmp475.PropertyName = "Name";
+			__tmp475.PropertyContextLazy = () => MetaAddExpression;
+			__tmp475.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp475.ValueLazy = () => __tmp476;
+			__tmp476.Value = "operator()+()";
+			__tmp476.TypeLazy = () => __tmp2;
+			// MetaSubtractExpression.IsAbstract = null;
+			MetaSubtractExpression.SuperClasses.AddLazy(() => MetaBinaryArithmeticExpression);
+			MetaSubtractExpression.ConstructorLazy = () => __tmp477;
+			MetaSubtractExpression.NamespaceLazy = () => __tmp17;
+			MetaSubtractExpression.Name = "MetaSubtractExpression";
+			MetaSubtractExpression.Documentation = null;
+			__tmp477.ParentLazy = () => MetaSubtractExpression;
+			__tmp477.Initializers.AddLazy(() => __tmp478);
+			__tmp477.Name = "MetaSubtractExpression";
+			__tmp477.Documentation = null;
+			__tmp478.ConstructorLazy = () => __tmp477;
+			__tmp478.PropertyName = "Name";
+			__tmp478.PropertyContextLazy = () => MetaSubtractExpression;
+			__tmp478.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp478.ValueLazy = () => __tmp479;
+			__tmp479.Value = "operator()-()";
+			__tmp479.TypeLazy = () => __tmp2;
+			// MetaLeftShiftExpression.IsAbstract = null;
+			MetaLeftShiftExpression.SuperClasses.AddLazy(() => MetaBinaryArithmeticExpression);
+			MetaLeftShiftExpression.ConstructorLazy = () => __tmp480;
+			MetaLeftShiftExpression.NamespaceLazy = () => __tmp17;
+			MetaLeftShiftExpression.Name = "MetaLeftShiftExpression";
+			MetaLeftShiftExpression.Documentation = null;
+			__tmp480.ParentLazy = () => MetaLeftShiftExpression;
+			__tmp480.Initializers.AddLazy(() => __tmp481);
+			__tmp480.Name = "MetaLeftShiftExpression";
+			__tmp480.Documentation = null;
+			__tmp481.ConstructorLazy = () => __tmp480;
+			__tmp481.PropertyName = "Name";
+			__tmp481.PropertyContextLazy = () => MetaLeftShiftExpression;
+			__tmp481.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp481.ValueLazy = () => __tmp482;
+			__tmp482.Value = "operator()<<()";
+			__tmp482.TypeLazy = () => __tmp2;
+			// MetaRightShiftExpression.IsAbstract = null;
+			MetaRightShiftExpression.SuperClasses.AddLazy(() => MetaBinaryArithmeticExpression);
+			MetaRightShiftExpression.ConstructorLazy = () => __tmp483;
+			MetaRightShiftExpression.NamespaceLazy = () => __tmp17;
+			MetaRightShiftExpression.Name = "MetaRightShiftExpression";
+			MetaRightShiftExpression.Documentation = null;
+			__tmp483.ParentLazy = () => MetaRightShiftExpression;
+			__tmp483.Initializers.AddLazy(() => __tmp484);
+			__tmp483.Name = "MetaRightShiftExpression";
+			__tmp483.Documentation = null;
+			__tmp484.ConstructorLazy = () => __tmp483;
+			__tmp484.PropertyName = "Name";
+			__tmp484.PropertyContextLazy = () => MetaRightShiftExpression;
+			__tmp484.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp484.ValueLazy = () => __tmp485;
+			__tmp485.Value = "operator()>>()";
+			__tmp485.TypeLazy = () => __tmp2;
+			MetaBinaryComparisonExpression.IsAbstract = true;
+			MetaBinaryComparisonExpression.SuperClasses.AddLazy(() => MetaBinaryExpression);
+			// MetaBinaryComparisonExpression.Constructor = null;
+			MetaBinaryComparisonExpression.NamespaceLazy = () => __tmp17;
+			MetaBinaryComparisonExpression.Name = "MetaBinaryComparisonExpression";
+			MetaBinaryComparisonExpression.Documentation = null;
+			// MetaLessThanExpression.IsAbstract = null;
+			MetaLessThanExpression.SuperClasses.AddLazy(() => MetaBinaryComparisonExpression);
+			MetaLessThanExpression.ConstructorLazy = () => __tmp486;
+			MetaLessThanExpression.NamespaceLazy = () => __tmp17;
+			MetaLessThanExpression.Name = "MetaLessThanExpression";
+			MetaLessThanExpression.Documentation = null;
+			__tmp486.ParentLazy = () => MetaLessThanExpression;
+			__tmp486.Initializers.AddLazy(() => __tmp487);
+			__tmp486.Name = "MetaLessThanExpression";
+			__tmp486.Documentation = null;
+			__tmp487.ConstructorLazy = () => __tmp486;
+			__tmp487.PropertyName = "Name";
+			__tmp487.PropertyContextLazy = () => MetaLessThanExpression;
+			__tmp487.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp487.ValueLazy = () => __tmp488;
+			__tmp488.Value = "operator()<()";
+			__tmp488.TypeLazy = () => __tmp2;
+			// MetaLessThanOrEqualExpression.IsAbstract = null;
+			MetaLessThanOrEqualExpression.SuperClasses.AddLazy(() => MetaBinaryComparisonExpression);
+			MetaLessThanOrEqualExpression.ConstructorLazy = () => __tmp489;
+			MetaLessThanOrEqualExpression.NamespaceLazy = () => __tmp17;
+			MetaLessThanOrEqualExpression.Name = "MetaLessThanOrEqualExpression";
+			MetaLessThanOrEqualExpression.Documentation = null;
+			__tmp489.ParentLazy = () => MetaLessThanOrEqualExpression;
+			__tmp489.Initializers.AddLazy(() => __tmp490);
+			__tmp489.Name = "MetaLessThanOrEqualExpression";
+			__tmp489.Documentation = null;
+			__tmp490.ConstructorLazy = () => __tmp489;
+			__tmp490.PropertyName = "Name";
+			__tmp490.PropertyContextLazy = () => MetaLessThanOrEqualExpression;
+			__tmp490.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp490.ValueLazy = () => __tmp491;
+			__tmp491.Value = "operator()<=()";
+			__tmp491.TypeLazy = () => __tmp2;
+			// MetaGreaterThanExpression.IsAbstract = null;
+			MetaGreaterThanExpression.SuperClasses.AddLazy(() => MetaBinaryComparisonExpression);
+			MetaGreaterThanExpression.ConstructorLazy = () => __tmp492;
+			MetaGreaterThanExpression.NamespaceLazy = () => __tmp17;
+			MetaGreaterThanExpression.Name = "MetaGreaterThanExpression";
+			MetaGreaterThanExpression.Documentation = null;
+			__tmp492.ParentLazy = () => MetaGreaterThanExpression;
+			__tmp492.Initializers.AddLazy(() => __tmp493);
+			__tmp492.Name = "MetaGreaterThanExpression";
+			__tmp492.Documentation = null;
+			__tmp493.ConstructorLazy = () => __tmp492;
+			__tmp493.PropertyName = "Name";
+			__tmp493.PropertyContextLazy = () => MetaGreaterThanExpression;
+			__tmp493.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp493.ValueLazy = () => __tmp494;
+			__tmp494.Value = "operator()>()";
+			__tmp494.TypeLazy = () => __tmp2;
+			// MetaGreaterThanOrEqualExpression.IsAbstract = null;
+			MetaGreaterThanOrEqualExpression.SuperClasses.AddLazy(() => MetaBinaryComparisonExpression);
+			MetaGreaterThanOrEqualExpression.ConstructorLazy = () => __tmp495;
+			MetaGreaterThanOrEqualExpression.NamespaceLazy = () => __tmp17;
+			MetaGreaterThanOrEqualExpression.Name = "MetaGreaterThanOrEqualExpression";
+			MetaGreaterThanOrEqualExpression.Documentation = null;
+			__tmp495.ParentLazy = () => MetaGreaterThanOrEqualExpression;
+			__tmp495.Initializers.AddLazy(() => __tmp496);
+			__tmp495.Name = "MetaGreaterThanOrEqualExpression";
+			__tmp495.Documentation = null;
+			__tmp496.ConstructorLazy = () => __tmp495;
+			__tmp496.PropertyName = "Name";
+			__tmp496.PropertyContextLazy = () => MetaGreaterThanOrEqualExpression;
+			__tmp496.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp496.ValueLazy = () => __tmp497;
+			__tmp497.Value = "operator()>=()";
+			__tmp497.TypeLazy = () => __tmp2;
+			// MetaEqualExpression.IsAbstract = null;
+			MetaEqualExpression.SuperClasses.AddLazy(() => MetaBinaryComparisonExpression);
+			MetaEqualExpression.ConstructorLazy = () => __tmp498;
+			MetaEqualExpression.NamespaceLazy = () => __tmp17;
+			MetaEqualExpression.Name = "MetaEqualExpression";
+			MetaEqualExpression.Documentation = null;
+			__tmp498.ParentLazy = () => MetaEqualExpression;
+			__tmp498.Initializers.AddLazy(() => __tmp499);
+			__tmp498.Name = "MetaEqualExpression";
+			__tmp498.Documentation = null;
+			__tmp499.ConstructorLazy = () => __tmp498;
+			__tmp499.PropertyName = "Name";
+			__tmp499.PropertyContextLazy = () => MetaEqualExpression;
+			__tmp499.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp499.ValueLazy = () => __tmp500;
+			__tmp500.Value = "operator()==()";
+			__tmp500.TypeLazy = () => __tmp2;
+			// MetaNotEqualExpression.IsAbstract = null;
+			MetaNotEqualExpression.SuperClasses.AddLazy(() => MetaBinaryComparisonExpression);
+			MetaNotEqualExpression.ConstructorLazy = () => __tmp501;
+			MetaNotEqualExpression.NamespaceLazy = () => __tmp17;
+			MetaNotEqualExpression.Name = "MetaNotEqualExpression";
+			MetaNotEqualExpression.Documentation = null;
+			__tmp501.ParentLazy = () => MetaNotEqualExpression;
+			__tmp501.Initializers.AddLazy(() => __tmp502);
+			__tmp501.Name = "MetaNotEqualExpression";
+			__tmp501.Documentation = null;
+			__tmp502.ConstructorLazy = () => __tmp501;
+			__tmp502.PropertyName = "Name";
+			__tmp502.PropertyContextLazy = () => MetaNotEqualExpression;
+			__tmp502.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp502.ValueLazy = () => __tmp503;
+			__tmp503.Value = "operator()!=()";
+			__tmp503.TypeLazy = () => __tmp2;
+			MetaBinaryLogicalExpression.IsAbstract = true;
+			MetaBinaryLogicalExpression.SuperClasses.AddLazy(() => MetaBinaryExpression);
+			// MetaBinaryLogicalExpression.Constructor = null;
+			MetaBinaryLogicalExpression.NamespaceLazy = () => __tmp17;
+			MetaBinaryLogicalExpression.Name = "MetaBinaryLogicalExpression";
+			MetaBinaryLogicalExpression.Documentation = null;
+			// MetaAndExpression.IsAbstract = null;
+			MetaAndExpression.SuperClasses.AddLazy(() => MetaBinaryLogicalExpression);
+			MetaAndExpression.ConstructorLazy = () => __tmp504;
+			MetaAndExpression.NamespaceLazy = () => __tmp17;
+			MetaAndExpression.Name = "MetaAndExpression";
+			MetaAndExpression.Documentation = null;
+			__tmp504.ParentLazy = () => MetaAndExpression;
+			__tmp504.Initializers.AddLazy(() => __tmp505);
+			__tmp504.Name = "MetaAndExpression";
+			__tmp504.Documentation = null;
+			__tmp505.ConstructorLazy = () => __tmp504;
+			__tmp505.PropertyName = "Name";
+			__tmp505.PropertyContextLazy = () => MetaAndExpression;
+			__tmp505.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp505.ValueLazy = () => __tmp506;
+			__tmp506.Value = "operator()&()";
+			__tmp506.TypeLazy = () => __tmp2;
+			// MetaOrExpression.IsAbstract = null;
+			MetaOrExpression.SuperClasses.AddLazy(() => MetaBinaryLogicalExpression);
+			MetaOrExpression.ConstructorLazy = () => __tmp507;
+			MetaOrExpression.NamespaceLazy = () => __tmp17;
+			MetaOrExpression.Name = "MetaOrExpression";
+			MetaOrExpression.Documentation = null;
+			__tmp507.ParentLazy = () => MetaOrExpression;
+			__tmp507.Initializers.AddLazy(() => __tmp508);
+			__tmp507.Name = "MetaOrExpression";
+			__tmp507.Documentation = null;
+			__tmp508.ConstructorLazy = () => __tmp507;
+			__tmp508.PropertyName = "Name";
+			__tmp508.PropertyContextLazy = () => MetaOrExpression;
+			__tmp508.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp508.ValueLazy = () => __tmp509;
+			__tmp509.Value = "operator()|()";
+			__tmp509.TypeLazy = () => __tmp2;
+			// MetaExclusiveOrExpression.IsAbstract = null;
+			MetaExclusiveOrExpression.SuperClasses.AddLazy(() => MetaBinaryLogicalExpression);
+			MetaExclusiveOrExpression.ConstructorLazy = () => __tmp510;
+			MetaExclusiveOrExpression.NamespaceLazy = () => __tmp17;
+			MetaExclusiveOrExpression.Name = "MetaExclusiveOrExpression";
+			MetaExclusiveOrExpression.Documentation = null;
+			__tmp510.ParentLazy = () => MetaExclusiveOrExpression;
+			__tmp510.Initializers.AddLazy(() => __tmp511);
+			__tmp510.Name = "MetaExclusiveOrExpression";
+			__tmp510.Documentation = null;
+			__tmp511.ConstructorLazy = () => __tmp510;
+			__tmp511.PropertyName = "Name";
+			__tmp511.PropertyContextLazy = () => MetaExclusiveOrExpression;
+			__tmp511.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp511.ValueLazy = () => __tmp512;
+			__tmp512.Value = "operator()^()";
+			__tmp512.TypeLazy = () => __tmp2;
+			// MetaAndAlsoExpression.IsAbstract = null;
+			MetaAndAlsoExpression.SuperClasses.AddLazy(() => MetaBinaryLogicalExpression);
+			MetaAndAlsoExpression.ConstructorLazy = () => __tmp513;
+			MetaAndAlsoExpression.NamespaceLazy = () => __tmp17;
+			MetaAndAlsoExpression.Name = "MetaAndAlsoExpression";
+			MetaAndAlsoExpression.Documentation = null;
+			__tmp513.ParentLazy = () => MetaAndAlsoExpression;
+			__tmp513.Initializers.AddLazy(() => __tmp514);
+			__tmp513.Name = "MetaAndAlsoExpression";
+			__tmp513.Documentation = null;
+			__tmp514.ConstructorLazy = () => __tmp513;
+			__tmp514.PropertyName = "Name";
+			__tmp514.PropertyContextLazy = () => MetaAndAlsoExpression;
+			__tmp514.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp514.ValueLazy = () => __tmp515;
+			__tmp515.Value = "operator()&&()";
+			__tmp515.TypeLazy = () => __tmp2;
+			// MetaOrElseExpression.IsAbstract = null;
+			MetaOrElseExpression.SuperClasses.AddLazy(() => MetaBinaryLogicalExpression);
+			MetaOrElseExpression.ConstructorLazy = () => __tmp516;
+			MetaOrElseExpression.NamespaceLazy = () => __tmp17;
+			MetaOrElseExpression.Name = "MetaOrElseExpression";
+			MetaOrElseExpression.Documentation = null;
+			__tmp516.ParentLazy = () => MetaOrElseExpression;
+			__tmp516.Initializers.AddLazy(() => __tmp517);
+			__tmp516.Name = "MetaOrElseExpression";
+			__tmp516.Documentation = null;
+			__tmp517.ConstructorLazy = () => __tmp516;
+			__tmp517.PropertyName = "Name";
+			__tmp517.PropertyContextLazy = () => MetaOrElseExpression;
+			__tmp517.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp517.ValueLazy = () => __tmp518;
+			__tmp518.Value = "operator()||()";
+			__tmp518.TypeLazy = () => __tmp2;
+			// MetaNullCoalescingExpression.IsAbstract = null;
+			MetaNullCoalescingExpression.SuperClasses.AddLazy(() => MetaBinaryExpression);
+			MetaNullCoalescingExpression.ConstructorLazy = () => __tmp519;
+			MetaNullCoalescingExpression.NamespaceLazy = () => __tmp17;
+			MetaNullCoalescingExpression.Name = "MetaNullCoalescingExpression";
+			MetaNullCoalescingExpression.Documentation = null;
+			__tmp519.ParentLazy = () => MetaNullCoalescingExpression;
+			__tmp519.Initializers.AddLazy(() => __tmp520);
+			__tmp519.Name = "MetaNullCoalescingExpression";
+			__tmp519.Documentation = null;
+			__tmp520.ConstructorLazy = () => __tmp519;
+			__tmp520.PropertyName = "Name";
+			__tmp520.PropertyContextLazy = () => MetaNullCoalescingExpression;
+			__tmp520.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp520.ValueLazy = () => __tmp521;
+			__tmp521.Value = "operator()??()";
+			__tmp521.TypeLazy = () => __tmp2;
+			MetaAssignmentExpression.IsAbstract = true;
+			MetaAssignmentExpression.SuperClasses.AddLazy(() => MetaBinaryExpression);
+			MetaAssignmentExpression.ConstructorLazy = () => __tmp522;
+			MetaAssignmentExpression.NamespaceLazy = () => __tmp17;
+			MetaAssignmentExpression.Name = "MetaAssignmentExpression";
+			MetaAssignmentExpression.Documentation = null;
+			__tmp522.ParentLazy = () => MetaAssignmentExpression;
+			__tmp522.Initializers.AddLazy(() => __tmp523);
+			__tmp522.Initializers.AddLazy(() => __tmp527);
+			__tmp522.Initializers.AddLazy(() => __tmp529);
+			__tmp522.Name = "MetaAssignmentExpression";
+			__tmp522.Documentation = null;
+			__tmp523.ConstructorLazy = () => __tmp522;
+			__tmp523.PropertyName = "Type";
+			__tmp523.PropertyContextLazy = () => MetaAssignmentExpression;
+			__tmp523.PropertyLazy = () => MetaTypedElement_TypeProperty;
+			__tmp523.ValueLazy = () => __tmp524;
+			__tmp524.ExpressionLazy = () => __tmp525;
+			__tmp524.Arguments.AddLazy(() => __tmp526);
+			__tmp524.TypeLazy = () => MetaType;
+			__tmp525.Name = "get_type";
+			__tmp525.TypeLazy = () => __tmp10;
+			__tmp526.Name = "Left";
+			__tmp526.TypeLazy = () => MetaExpression;
+			__tmp527.ObjectName = "Left";
+			__tmp527.ObjectLazy = () => MetaBinaryExpression_LeftProperty;
+			__tmp527.ConstructorLazy = () => __tmp522;
+			__tmp527.PropertyName = "ExpectedType";
+			__tmp527.PropertyContextLazy = () => MetaExpression;
+			__tmp527.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp527.ValueLazy = () => __tmp528;
+			__tmp528.Name = "ExpectedType";
+			__tmp528.TypeLazy = () => MetaType;
+			__tmp529.ObjectName = "Right";
+			__tmp529.ObjectLazy = () => MetaBinaryExpression_RightProperty;
+			__tmp529.ConstructorLazy = () => __tmp522;
+			__tmp529.PropertyName = "ExpectedType";
+			__tmp529.PropertyContextLazy = () => MetaExpression;
+			__tmp529.PropertyLazy = () => MetaExpression_ExpectedTypeProperty;
+			__tmp529.ValueLazy = () => __tmp530;
+			__tmp530.Name = "Type";
+			__tmp530.TypeLazy = () => MetaType;
+			// MetaAssignExpression.IsAbstract = null;
+			MetaAssignExpression.SuperClasses.AddLazy(() => MetaAssignmentExpression);
+			MetaAssignExpression.ConstructorLazy = () => __tmp531;
+			MetaAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaAssignExpression.Name = "MetaAssignExpression";
+			MetaAssignExpression.Documentation = null;
+			__tmp531.ParentLazy = () => MetaAssignExpression;
+			__tmp531.Initializers.AddLazy(() => __tmp532);
+			__tmp531.Name = "MetaAssignExpression";
+			__tmp531.Documentation = null;
+			__tmp532.ConstructorLazy = () => __tmp531;
+			__tmp532.PropertyName = "Name";
+			__tmp532.PropertyContextLazy = () => MetaAssignExpression;
+			__tmp532.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp532.ValueLazy = () => __tmp533;
+			__tmp533.Value = "operator()=()";
+			__tmp533.TypeLazy = () => __tmp2;
+			MetaArithmeticAssignmentExpression.IsAbstract = true;
+			MetaArithmeticAssignmentExpression.SuperClasses.AddLazy(() => MetaAssignmentExpression);
+			// MetaArithmeticAssignmentExpression.Constructor = null;
+			MetaArithmeticAssignmentExpression.NamespaceLazy = () => __tmp17;
+			MetaArithmeticAssignmentExpression.Name = "MetaArithmeticAssignmentExpression";
+			MetaArithmeticAssignmentExpression.Documentation = null;
+			// MetaMultiplyAssignExpression.IsAbstract = null;
+			MetaMultiplyAssignExpression.SuperClasses.AddLazy(() => MetaArithmeticAssignmentExpression);
+			MetaMultiplyAssignExpression.ConstructorLazy = () => __tmp534;
+			MetaMultiplyAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaMultiplyAssignExpression.Name = "MetaMultiplyAssignExpression";
+			MetaMultiplyAssignExpression.Documentation = null;
+			__tmp534.ParentLazy = () => MetaMultiplyAssignExpression;
+			__tmp534.Initializers.AddLazy(() => __tmp535);
+			__tmp534.Name = "MetaMultiplyAssignExpression";
+			__tmp534.Documentation = null;
+			__tmp535.ConstructorLazy = () => __tmp534;
+			__tmp535.PropertyName = "Name";
+			__tmp535.PropertyContextLazy = () => MetaMultiplyAssignExpression;
+			__tmp535.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp535.ValueLazy = () => __tmp536;
+			__tmp536.Value = "operator()*=()";
+			__tmp536.TypeLazy = () => __tmp2;
+			// MetaDivideAssignExpression.IsAbstract = null;
+			MetaDivideAssignExpression.SuperClasses.AddLazy(() => MetaArithmeticAssignmentExpression);
+			MetaDivideAssignExpression.ConstructorLazy = () => __tmp537;
+			MetaDivideAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaDivideAssignExpression.Name = "MetaDivideAssignExpression";
+			MetaDivideAssignExpression.Documentation = null;
+			__tmp537.ParentLazy = () => MetaDivideAssignExpression;
+			__tmp537.Initializers.AddLazy(() => __tmp538);
+			__tmp537.Name = "MetaDivideAssignExpression";
+			__tmp537.Documentation = null;
+			__tmp538.ConstructorLazy = () => __tmp537;
+			__tmp538.PropertyName = "Name";
+			__tmp538.PropertyContextLazy = () => MetaDivideAssignExpression;
+			__tmp538.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp538.ValueLazy = () => __tmp539;
+			__tmp539.Value = "operator()/=()";
+			__tmp539.TypeLazy = () => __tmp2;
+			// MetaModuloAssignExpression.IsAbstract = null;
+			MetaModuloAssignExpression.SuperClasses.AddLazy(() => MetaArithmeticAssignmentExpression);
+			MetaModuloAssignExpression.ConstructorLazy = () => __tmp540;
+			MetaModuloAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaModuloAssignExpression.Name = "MetaModuloAssignExpression";
+			MetaModuloAssignExpression.Documentation = null;
+			__tmp540.ParentLazy = () => MetaModuloAssignExpression;
+			__tmp540.Initializers.AddLazy(() => __tmp541);
+			__tmp540.Name = "MetaModuloAssignExpression";
+			__tmp540.Documentation = null;
+			__tmp541.ConstructorLazy = () => __tmp540;
+			__tmp541.PropertyName = "Name";
+			__tmp541.PropertyContextLazy = () => MetaModuloAssignExpression;
+			__tmp541.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp541.ValueLazy = () => __tmp542;
+			__tmp542.Value = "operator()%=()";
+			__tmp542.TypeLazy = () => __tmp2;
+			// MetaAddAssignExpression.IsAbstract = null;
+			MetaAddAssignExpression.SuperClasses.AddLazy(() => MetaArithmeticAssignmentExpression);
+			MetaAddAssignExpression.ConstructorLazy = () => __tmp543;
+			MetaAddAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaAddAssignExpression.Name = "MetaAddAssignExpression";
+			MetaAddAssignExpression.Documentation = null;
+			__tmp543.ParentLazy = () => MetaAddAssignExpression;
+			__tmp543.Initializers.AddLazy(() => __tmp544);
+			__tmp543.Name = "MetaAddAssignExpression";
+			__tmp543.Documentation = null;
+			__tmp544.ConstructorLazy = () => __tmp543;
+			__tmp544.PropertyName = "Name";
+			__tmp544.PropertyContextLazy = () => MetaAddAssignExpression;
+			__tmp544.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp544.ValueLazy = () => __tmp545;
+			__tmp545.Value = "operator()+=()";
+			__tmp545.TypeLazy = () => __tmp2;
+			// MetaSubtractAssignExpression.IsAbstract = null;
+			MetaSubtractAssignExpression.SuperClasses.AddLazy(() => MetaArithmeticAssignmentExpression);
+			MetaSubtractAssignExpression.ConstructorLazy = () => __tmp546;
+			MetaSubtractAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaSubtractAssignExpression.Name = "MetaSubtractAssignExpression";
+			MetaSubtractAssignExpression.Documentation = null;
+			__tmp546.ParentLazy = () => MetaSubtractAssignExpression;
+			__tmp546.Initializers.AddLazy(() => __tmp547);
+			__tmp546.Name = "MetaSubtractAssignExpression";
+			__tmp546.Documentation = null;
+			__tmp547.ConstructorLazy = () => __tmp546;
+			__tmp547.PropertyName = "Name";
+			__tmp547.PropertyContextLazy = () => MetaSubtractAssignExpression;
+			__tmp547.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp547.ValueLazy = () => __tmp548;
+			__tmp548.Value = "operator()-=()";
+			__tmp548.TypeLazy = () => __tmp2;
+			// MetaLeftShiftAssignExpression.IsAbstract = null;
+			MetaLeftShiftAssignExpression.SuperClasses.AddLazy(() => MetaArithmeticAssignmentExpression);
+			MetaLeftShiftAssignExpression.ConstructorLazy = () => __tmp549;
+			MetaLeftShiftAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaLeftShiftAssignExpression.Name = "MetaLeftShiftAssignExpression";
+			MetaLeftShiftAssignExpression.Documentation = null;
+			__tmp549.ParentLazy = () => MetaLeftShiftAssignExpression;
+			__tmp549.Initializers.AddLazy(() => __tmp550);
+			__tmp549.Name = "MetaLeftShiftAssignExpression";
+			__tmp549.Documentation = null;
+			__tmp550.ConstructorLazy = () => __tmp549;
+			__tmp550.PropertyName = "Name";
+			__tmp550.PropertyContextLazy = () => MetaLeftShiftAssignExpression;
+			__tmp550.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp550.ValueLazy = () => __tmp551;
+			__tmp551.Value = "operator()<<=()";
+			__tmp551.TypeLazy = () => __tmp2;
+			// MetaRightShiftAssignExpression.IsAbstract = null;
+			MetaRightShiftAssignExpression.SuperClasses.AddLazy(() => MetaArithmeticAssignmentExpression);
+			MetaRightShiftAssignExpression.ConstructorLazy = () => __tmp552;
+			MetaRightShiftAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaRightShiftAssignExpression.Name = "MetaRightShiftAssignExpression";
+			MetaRightShiftAssignExpression.Documentation = null;
+			__tmp552.ParentLazy = () => MetaRightShiftAssignExpression;
+			__tmp552.Initializers.AddLazy(() => __tmp553);
+			__tmp552.Name = "MetaRightShiftAssignExpression";
+			__tmp552.Documentation = null;
+			__tmp553.ConstructorLazy = () => __tmp552;
+			__tmp553.PropertyName = "Name";
+			__tmp553.PropertyContextLazy = () => MetaRightShiftAssignExpression;
+			__tmp553.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp553.ValueLazy = () => __tmp554;
+			__tmp554.Value = "operator()>>=()";
+			__tmp554.TypeLazy = () => __tmp2;
+			MetaLogicalAssignmentExpression.IsAbstract = true;
+			MetaLogicalAssignmentExpression.SuperClasses.AddLazy(() => MetaAssignmentExpression);
+			// MetaLogicalAssignmentExpression.Constructor = null;
+			MetaLogicalAssignmentExpression.NamespaceLazy = () => __tmp17;
+			MetaLogicalAssignmentExpression.Name = "MetaLogicalAssignmentExpression";
+			MetaLogicalAssignmentExpression.Documentation = null;
+			// MetaAndAssignExpression.IsAbstract = null;
+			MetaAndAssignExpression.SuperClasses.AddLazy(() => MetaLogicalAssignmentExpression);
+			MetaAndAssignExpression.ConstructorLazy = () => __tmp555;
+			MetaAndAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaAndAssignExpression.Name = "MetaAndAssignExpression";
+			MetaAndAssignExpression.Documentation = null;
+			__tmp555.ParentLazy = () => MetaAndAssignExpression;
+			__tmp555.Initializers.AddLazy(() => __tmp556);
+			__tmp555.Name = "MetaAndAssignExpression";
+			__tmp555.Documentation = null;
+			__tmp556.ConstructorLazy = () => __tmp555;
+			__tmp556.PropertyName = "Name";
+			__tmp556.PropertyContextLazy = () => MetaAndAssignExpression;
+			__tmp556.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp556.ValueLazy = () => __tmp557;
+			__tmp557.Value = "operator()&=()";
+			__tmp557.TypeLazy = () => __tmp2;
+			// MetaExclusiveOrAssignExpression.IsAbstract = null;
+			MetaExclusiveOrAssignExpression.SuperClasses.AddLazy(() => MetaLogicalAssignmentExpression);
+			MetaExclusiveOrAssignExpression.ConstructorLazy = () => __tmp558;
+			MetaExclusiveOrAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaExclusiveOrAssignExpression.Name = "MetaExclusiveOrAssignExpression";
+			MetaExclusiveOrAssignExpression.Documentation = null;
+			__tmp558.ParentLazy = () => MetaExclusiveOrAssignExpression;
+			__tmp558.Initializers.AddLazy(() => __tmp559);
+			__tmp558.Name = "MetaExclusiveOrAssignExpression";
+			__tmp558.Documentation = null;
+			__tmp559.ConstructorLazy = () => __tmp558;
+			__tmp559.PropertyName = "Name";
+			__tmp559.PropertyContextLazy = () => MetaExclusiveOrAssignExpression;
+			__tmp559.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp559.ValueLazy = () => __tmp560;
+			__tmp560.Value = "operator()^=()";
+			__tmp560.TypeLazy = () => __tmp2;
+			// MetaOrAssignExpression.IsAbstract = null;
+			MetaOrAssignExpression.SuperClasses.AddLazy(() => MetaLogicalAssignmentExpression);
+			MetaOrAssignExpression.ConstructorLazy = () => __tmp561;
+			MetaOrAssignExpression.NamespaceLazy = () => __tmp17;
+			MetaOrAssignExpression.Name = "MetaOrAssignExpression";
+			MetaOrAssignExpression.Documentation = null;
+			__tmp561.ParentLazy = () => MetaOrAssignExpression;
+			__tmp561.Initializers.AddLazy(() => __tmp562);
+			__tmp561.Name = "MetaOrAssignExpression";
+			__tmp561.Documentation = null;
+			__tmp562.ConstructorLazy = () => __tmp561;
+			__tmp562.PropertyName = "Name";
+			__tmp562.PropertyContextLazy = () => MetaOrAssignExpression;
+			__tmp562.PropertyLazy = () => MetaOperatorExpression_NameProperty;
+			__tmp562.ValueLazy = () => __tmp563;
+			__tmp563.Value = "operator()|=()";
+			__tmp563.TypeLazy = () => __tmp2;
+			
+	
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp1).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp2).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp3).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp4).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp5).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp6).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp7).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp8).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp9).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp10).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp11).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp12).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp13).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp14).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp15).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp16).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp17).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp18).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp19).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp20).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp21).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp22).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp23).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp24).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp25).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp26).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp27).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp28).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp29).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp30).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp31).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp32).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp33).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp34).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp35).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp36).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp37).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp38).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp39).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp40).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp41).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp42).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp43).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp44).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp45).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp46).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp47).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp48).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp49).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp50).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp51).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp52).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp53).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp54).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp55).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp56).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp57).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp58).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp59).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp60).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp61).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp62).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp63).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp64).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp65).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp66).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp67).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp68).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp69).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp70).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp71).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp72).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp73).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp74).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp75).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp76).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp77).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp78).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp79).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp80).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp81).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)TypeOf).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp82).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp83).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp84).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp85).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp86).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp87).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)GetValueType).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp88).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp89).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp90).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp91).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp92).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp93).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)GetReturnType).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp94).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp95).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp96).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp97).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp98).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp99).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)CurrentType).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp100).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp101).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp102).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp103).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp104).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp105).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)TypeCheck).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp106).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp107).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp108).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp109).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp110).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp111).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)Balance).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp112).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp113).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp114).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp115).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp116).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp117).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp118).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)Resolve1).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp119).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp120).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp121).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp122).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp123).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp124).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)Resolve2).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp125).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp126).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp127).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp128).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp129).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp130).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp131).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)ResolveType1).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp132).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp133).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp134).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp135).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp136).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp137).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)ResolveType2).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp138).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp139).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp140).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp141).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp142).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp143).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp144).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)ResolveName1).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp145).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp146).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp147).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp148).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp149).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp150).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)ResolveName2).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp151).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp152).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp153).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp154).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp155).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp156).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp157).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)ToDefinitionList).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp158).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp159).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp160).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp161).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp162).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp163).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)Bind1).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp164).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp165).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp166).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp167).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp168).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp169).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)Bind2).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp170).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp171).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp172).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp173).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAnnotatedElement).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp174).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAnnotatedElement_AnnotationsProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaDocumentedElement).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaDocumentedElement_DocumentationProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp175).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp176).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp177).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp178).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNamedElement).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp179).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNamedElement_NameProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypedElement).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp180).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypedElement_TypeProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp181).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaType).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAnnotation).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp182).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAnnotation_PropertiesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAnnotationProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAnnotationProperty_ValueProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp183).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp184).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp185).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp186).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNamespace).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNamespace_ParentProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp187).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp188).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNamespace_UsingsProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNamespace_MetaModelProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp189).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp190).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNamespace_NamespacesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp191).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp192).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNamespace_DeclarationsProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaDeclaration).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp193).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp194).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp195).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp196).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaDeclaration_NamespaceProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaDeclaration_ModelProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaModel).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaModel_UriProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaModel_NamespaceProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaCollectionKind).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp197).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp198).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp199).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp200).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaCollectionType).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaCollectionType_KindProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaCollectionType_InnerTypeProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNullableType).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNullableType_InnerTypeProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPrimitiveType).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp201).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaEnum).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp202).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp203).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaEnum_EnumLiteralsProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp204).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp205).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaEnum_OperationsProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaEnumLiteral).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp206).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp207).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp208).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaEnumLiteral_EnumProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp209).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaClass).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaClass_IsAbstractProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp210).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp211).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaClass_SuperClassesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp212).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp213).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaClass_PropertiesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp214).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp215).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaClass_OperationsProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaClass_ConstructorProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp216).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp217).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp218).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp219).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp220).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp221).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp222).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp223).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp224).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp225).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp226).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp227).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp228).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp229).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp230).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp231).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp232).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp233).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp234).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp235).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaFunctionType).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp236).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaFunctionType_ParameterTypesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaFunctionType_ReturnTypeProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaFunction).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp237).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp238).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaFunction_TypeProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp239).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaFunction_ParametersProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaFunction_ReturnTypeProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaGlobalFunction).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaOperation).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaOperation_ParentProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConstant).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp240).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp241).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp242).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConstant_ValueProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConstructor).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConstructor_ParentProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp243).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConstructor_InitializersProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaParameter).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaParameter_FunctionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPropertyKind).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp244).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp245).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp246).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp247).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp248).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp249).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp250).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaProperty_KindProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaProperty_ClassProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp251).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaProperty_OppositePropertiesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp252).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaProperty_SubsettedPropertiesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp253).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaProperty_SubsettingPropertiesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp254).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaProperty_RedefinedPropertiesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp255).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaProperty_RedefiningPropertiesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPropertyInitializer).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPropertyInitializer_ConstructorProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPropertyInitializer_PropertyNameProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPropertyInitializer_PropertyContextProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPropertyInitializer_PropertyProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPropertyInitializer_ValueProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp256).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp257).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp258).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp259).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp260).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp261).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp262).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp263).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp264).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp265).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp266).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp267).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp268).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp269).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp270).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp271).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp272).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp273).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaSynthetizedPropertyInitializer).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaInheritedPropertyInitializer).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaInheritedPropertyInitializer_ObjectNameProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaInheritedPropertyInitializer_ObjectProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp274).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp275).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp276).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp277).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp278).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp279).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp280).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp281).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp282).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp283).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp284).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp285).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp286).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp287).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp288).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp289).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp290).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp291).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp292).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp293).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp294).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp295).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp296).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp297).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaExpression_NoTypeErrorProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaExpression_ExpectedTypeProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBracketExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp298).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp299).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp300).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp301).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp302).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp303).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBracketExpression_ExpressionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBoundExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp304).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp305).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp306).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp307).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp308).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp309).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp310).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp311).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp312).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp313).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp314).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp315).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp316).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp317).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp318).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp319).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBoundExpression_UniqueDefinitionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp320).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBoundExpression_ArgumentsProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBoundExpression_DefinitionsProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBoundExpression_DefinitionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaThisExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp321).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp322).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp323).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp324).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp325).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNullExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp326).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp327).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp328).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypeConversionExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypeConversionExpression_TypeReferenceProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypeConversionExpression_ExpressionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp329).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp330).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp331).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp332).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp333).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypeAsExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypeCastExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypeCheckExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypeCheckExpression_TypeReferenceProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypeCheckExpression_ExpressionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp334).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp335).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp336).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp337).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp338).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypeOfExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaTypeOfExpression_TypeReferenceProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp339).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp340).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp341).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConditionalExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConditionalExpression_ConditionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConditionalExpression_BalancedTypeProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConditionalExpression_ThenProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConditionalExpression_ElseProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp342).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp343).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp344).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp345).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp346).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp347).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp348).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp349).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp350).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp351).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp352).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp353).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp354).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp355).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConstantExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaConstantExpression_ValueProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp356).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp357).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp358).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp359).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp360).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaIdentifierExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaIdentifierExpression_NameProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp361).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp362).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp363).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp364).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp365).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaMemberAccessExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaMemberAccessExpression_ExpressionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaMemberAccessExpression_NameProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp366).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp367).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp368).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp369).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp370).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp371).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp372).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp373).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp374).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaFunctionCallExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaFunctionCallExpression_ExpressionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp375).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp376).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp377).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp378).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp379).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp380).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp381).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp382).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp383).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp384).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp385).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp386).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp387).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp388).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp389).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp390).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp391).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp392).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp393).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp394).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp395).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaIndexerExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaIndexerExpression_ExpressionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp396).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp397).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp398).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp399).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp400).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp401).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp402).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp403).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp404).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp405).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp406).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp407).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp408).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp409).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp410).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp411).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp412).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewExpression_TypeReferenceProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp413).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewExpression_PropertyInitializersProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp414).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp415).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp416).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewPropertyInitializer).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewPropertyInitializer_ParentProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewPropertyInitializer_PropertyNameProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewPropertyInitializer_ValueProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewPropertyInitializer_PropertyProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp417).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp418).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp419).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp420).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp421).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp422).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp423).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp424).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp425).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp426).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp427).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp428).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp429).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewCollectionExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewCollectionExpression_TypeReferenceProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp430).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNewCollectionExpression_ValuesProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp431).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp432).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp433).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaOperatorExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaOperatorExpression_NameProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp434).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp435).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp436).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp437).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp438).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaUnaryExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp439).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaUnaryExpression_ExpressionProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaUnaryPlusExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp440).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp441).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp442).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNegateExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp443).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp444).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp445).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaOnesComplementExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp446).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp447).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp448).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNotExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp449).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp450).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp451).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaUnaryAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPostIncrementAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp452).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp453).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp454).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPostDecrementAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp455).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp456).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp457).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPreIncrementAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp458).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp459).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp460).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaPreDecrementAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp461).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp462).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp463).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBinaryExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp464).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBinaryExpression_LeftProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBinaryExpression_RightProperty).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBinaryArithmeticExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaMultiplyExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp465).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp466).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp467).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaDivideExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp468).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp469).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp470).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaModuloExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp471).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp472).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp473).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAddExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp474).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp475).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp476).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaSubtractExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp477).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp478).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp479).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaLeftShiftExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp480).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp481).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp482).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaRightShiftExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp483).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp484).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp485).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBinaryComparisonExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaLessThanExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp486).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp487).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp488).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaLessThanOrEqualExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp489).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp490).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp491).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaGreaterThanExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp492).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp493).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp494).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaGreaterThanOrEqualExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp495).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp496).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp497).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaEqualExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp498).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp499).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp500).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNotEqualExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp501).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp502).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp503).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaBinaryLogicalExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAndExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp504).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp505).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp506).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaOrExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp507).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp508).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp509).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaExclusiveOrExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp510).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp511).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp512).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAndAlsoExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp513).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp514).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp515).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaOrElseExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp516).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp517).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp518).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaNullCoalescingExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp519).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp520).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp521).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAssignmentExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp522).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp523).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp524).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp525).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp526).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp527).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp528).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp529).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp530).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp531).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp532).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp533).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaArithmeticAssignmentExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaMultiplyAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp534).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp535).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp536).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaDivideAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp537).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp538).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp539).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaModuloAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp540).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp541).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp542).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAddAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp543).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp544).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp545).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaSubtractAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp546).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp547).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp548).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaLeftShiftAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp549).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp550).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp551).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaRightShiftAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp552).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp553).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp554).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaLogicalAssignmentExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaAndAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp555).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp556).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp557).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaExclusiveOrAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp558).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp559).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp560).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)MetaOrAssignExpression).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp561).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp562).MMakeCreated();
+			((MetaDslx.Core.Immutable.MutableSymbolBase)__tmp563).MMakeCreated();
+			
+	
+	        model.EvaluateLazyValues();
 	    }
+	}
 	
-	    public static readonly global::MetaDslx.Core.Immutable.MetaModel Meta;
+	public class MetaInstance
+	{
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Object = MetaBuilderInstance.instance.Object.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType String = MetaBuilderInstance.instance.String.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Int = MetaBuilderInstance.instance.Int.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Long = MetaBuilderInstance.instance.Long.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Float = MetaBuilderInstance.instance.Float.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Double = MetaBuilderInstance.instance.Double.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Byte = MetaBuilderInstance.instance.Byte.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Bool = MetaBuilderInstance.instance.Bool.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Void = MetaBuilderInstance.instance.Void.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType None = MetaBuilderInstance.instance.None.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Any = MetaBuilderInstance.instance.Any.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Error = MetaBuilderInstance.instance.Error.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType ModelObject = MetaBuilderInstance.instance.ModelObject.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType DefinitionList = MetaBuilderInstance.instance.DefinitionList.ToImmutable();
+	    public static readonly global::MetaDslx.Core.Immutable.MetaCollectionType ModelObjectList = MetaBuilderInstance.instance.ModelObjectList.ToImmutable();
 	
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Object;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder String;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Int;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Long;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Float;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Double;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Byte;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Bool;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Void;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder None;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Any;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Error;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder ModelObject;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder DefinitionList;
-	    public static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder ModelObjectList;
-	
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp1;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp2;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp3;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp4;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp5;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp6;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp7;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp8;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp9;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp10;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp11;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp12;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp13;
-		private static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp14;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp15;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNamespaceBuilder __tmp16;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNamespaceBuilder __tmp17;
-		private static readonly global::MetaDslx.Core.Immutable.MetaModelBuilder __tmp18;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp19;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp20;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp21;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp22;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp23;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp24;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp25;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp26;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp27;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp28;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp29;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp30;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp31;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp32;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp33;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp34;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp35;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp36;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp37;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp38;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp39;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp40;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp41;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp42;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp43;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp44;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp45;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp46;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp47;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp48;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp49;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp50;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp51;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp52;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp53;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp54;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp55;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp56;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp57;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp58;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp59;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp60;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp61;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp62;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp63;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp64;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp65;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp66;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp67;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp68;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp69;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp70;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp71;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp72;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp73;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp74;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantBuilder __tmp75;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewExpressionBuilder __tmp76;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNewPropertyInitializerBuilder __tmp77;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp78;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp79;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp80;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp81;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder TypeOf;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp82;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp83;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp84;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp85;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp86;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp87;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder GetValueType;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp88;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp89;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp90;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp91;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp92;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp93;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder GetReturnType;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp94;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp95;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp96;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp97;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp98;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp99;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder CurrentType;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp100;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp101;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp102;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp103;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp104;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp105;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder TypeCheck;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp106;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp107;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp108;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp109;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp110;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp111;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder Balance;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp112;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp113;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp114;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp115;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp116;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp117;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp118;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder Resolve1;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp119;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp120;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp121;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp122;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp123;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp124;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder Resolve2;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp125;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp126;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp127;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp128;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp129;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp130;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp131;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ResolveType1;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp132;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp133;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp134;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp135;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp136;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp137;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ResolveType2;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp138;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp139;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp140;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp141;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp142;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp143;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp144;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ResolveName1;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp145;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp146;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp147;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp148;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp149;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp150;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ResolveName2;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp151;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp152;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp153;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp154;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp155;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp156;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp157;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder ToDefinitionList;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp158;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp159;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp160;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp161;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp162;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp163;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder Bind1;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp164;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp165;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp166;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp167;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationPropertyBuilder __tmp168;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp169;
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunctionBuilder Bind2;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp170;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp171;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp172;
-		private static readonly global::MetaDslx.Core.Immutable.MetaParameterBuilder __tmp173;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction TypeOf = MetaBuilderInstance.instance.TypeOf.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction GetValueType = MetaBuilderInstance.instance.GetValueType.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction GetReturnType = MetaBuilderInstance.instance.GetReturnType.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction CurrentType = MetaBuilderInstance.instance.CurrentType.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction TypeCheck = MetaBuilderInstance.instance.TypeCheck.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Balance = MetaBuilderInstance.instance.Balance.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Resolve1 = MetaBuilderInstance.instance.Resolve1.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Resolve2 = MetaBuilderInstance.instance.Resolve2.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveType1 = MetaBuilderInstance.instance.ResolveType1.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveType2 = MetaBuilderInstance.instance.ResolveType2.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveName1 = MetaBuilderInstance.instance.ResolveName1.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveName2 = MetaBuilderInstance.instance.ResolveName2.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ToDefinitionList = MetaBuilderInstance.instance.ToDefinitionList.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Bind1 = MetaBuilderInstance.instance.Bind1.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Bind2 = MetaBuilderInstance.instance.Bind2.ToImmutable();
+		
+		
+		
+		
 		/**
 		 * <summary>
 		 * Represents an annotated element.
 		 * </summary>
 		 */
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAnnotatedElement;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp174;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAnnotatedElement = MetaBuilderInstance.instance.MetaAnnotatedElement.ToImmutable();
+		
 		/**
 		 * <summary>
 		 * List of annotations
 		 * </summary>
 		 */
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaAnnotatedElement_AnnotationsProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaDocumentedElement;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaDocumentedElement_DocumentationProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp175;
-		private static readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp176;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp177;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp178;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNamedElement;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp179;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamedElement_NameProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypedElement;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp180;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypedElement_TypeProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp181;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaType;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAnnotation;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp182;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaAnnotation_PropertiesProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAnnotationProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaAnnotationProperty_ValueProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp183;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp184;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp185;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp186;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNamespace;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamespace_ParentProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp187;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp188;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamespace_UsingsProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamespace_MetaModelProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp189;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp190;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamespace_NamespacesProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp191;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp192;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNamespace_DeclarationsProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaDeclaration;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp193;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp194;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp195;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp196;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaDeclaration_NamespaceProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaDeclaration_ModelProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaModel;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaModel_UriProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaModel_NamespaceProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaEnumBuilder MetaCollectionKind;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp197;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp198;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp199;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp200;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaCollectionType;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaCollectionType_KindProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaCollectionType_InnerTypeProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNullableType;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNullableType_InnerTypeProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPrimitiveType;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp201;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaEnum;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp202;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp203;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaEnum_EnumLiteralsProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp204;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp205;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaEnum_OperationsProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaEnumLiteral;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp206;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp207;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp208;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaEnumLiteral_EnumProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp209;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaClass;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaClass_IsAbstractProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp210;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp211;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaClass_SuperClassesProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp212;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp213;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaClass_PropertiesProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp214;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp215;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaClass_OperationsProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaClass_ConstructorProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp216;
-		private static readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp217;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp218;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp219;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp220;
-		private static readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp221;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp222;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp223;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp224;
-		private static readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp225;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp226;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp227;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp228;
-		private static readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp229;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp230;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp231;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp232;
-		private static readonly global::MetaDslx.Core.Immutable.MetaOperationBuilder __tmp233;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp234;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder __tmp235;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaFunctionType;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp236;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunctionType_ParameterTypesProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunctionType_ReturnTypeProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaFunction;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp237;
-		private static readonly global::MetaDslx.Core.Immutable.MetaAnnotationBuilder __tmp238;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunction_TypeProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp239;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunction_ParametersProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunction_ReturnTypeProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaGlobalFunction;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOperation;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaOperation_ParentProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaConstant;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp240;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp241;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp242;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConstant_ValueProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaConstructor;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConstructor_ParentProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp243;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConstructor_InitializersProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaParameter;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaParameter_FunctionProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaEnumBuilder MetaPropertyKind;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp244;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp245;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp246;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp247;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp248;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp249;
-		private static readonly global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder __tmp250;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_KindProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_ClassProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp251;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_OppositePropertiesProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp252;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_SubsettedPropertiesProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp253;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_SubsettingPropertiesProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp254;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_RedefinedPropertiesProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp255;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaProperty_RedefiningPropertiesProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPropertyInitializer;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaPropertyInitializer_ConstructorProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaPropertyInitializer_PropertyNameProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaPropertyInitializer_PropertyContextProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaPropertyInitializer_PropertyProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaPropertyInitializer_ValueProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp256;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp257;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeAsExpressionBuilder __tmp258;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp259;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp260;
-		private static readonly global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder __tmp261;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp262;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp263;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp264;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp265;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp266;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp267;
-		private static readonly global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder __tmp268;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp269;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp270;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp271;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp272;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp273;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaSynthetizedPropertyInitializer;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaInheritedPropertyInitializer;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaInheritedPropertyInitializer_ObjectNameProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaInheritedPropertyInitializer_ObjectProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp274;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp275;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp276;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp277;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp278;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp279;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp280;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp281;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeAsExpressionBuilder __tmp282;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp283;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp284;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp285;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp286;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp287;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp288;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp289;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp290;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp291;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp292;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp293;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp294;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp295;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp296;
-		private static readonly global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder __tmp297;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaExpression_NoTypeErrorProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaExpression_ExpectedTypeProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBracketExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp298;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp299;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp300;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp301;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp302;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp303;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBracketExpression_ExpressionProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBoundExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp304;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp305;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp306;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp307;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConditionalExpressionBuilder __tmp308;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp309;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp310;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp311;
-		private static readonly global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder __tmp312;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp313;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp314;
-		private static readonly global::MetaDslx.Core.Immutable.MetaNullExpressionBuilder __tmp315;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp316;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp317;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp318;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp319;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBoundExpression_UniqueDefinitionProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp320;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBoundExpression_ArgumentsProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBoundExpression_DefinitionsProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBoundExpression_DefinitionProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaThisExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp321;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp322;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp323;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp324;
-		private static readonly global::MetaDslx.Core.Immutable.MetaThisExpressionBuilder __tmp325;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNullExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp326;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp327;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp328;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypeConversionExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypeConversionExpression_TypeReferenceProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypeConversionExpression_ExpressionProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp329;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp330;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp331;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp332;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp333;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypeAsExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypeCastExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypeCheckExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypeCheckExpression_TypeReferenceProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypeCheckExpression_ExpressionProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp334;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp335;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp336;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp337;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp338;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaTypeOfExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaTypeOfExpression_TypeReferenceProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp339;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp340;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp341;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaConditionalExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConditionalExpression_ConditionProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConditionalExpression_BalancedTypeProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConditionalExpression_ThenProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConditionalExpression_ElseProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp342;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp343;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp344;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp345;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp346;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp347;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp348;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp349;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp350;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp351;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp352;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp353;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp354;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp355;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaConstantExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaConstantExpression_ValueProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp356;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp357;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp358;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp359;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp360;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaIdentifierExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaIdentifierExpression_NameProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp361;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp362;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp363;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp364;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp365;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaMemberAccessExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaMemberAccessExpression_ExpressionProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaMemberAccessExpression_NameProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp366;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp367;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp368;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp369;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp370;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp371;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp372;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp373;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp374;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaFunctionCallExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaFunctionCallExpression_ExpressionProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp375;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp376;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp377;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp378;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp379;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp380;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConditionalExpressionBuilder __tmp381;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeCheckExpressionBuilder __tmp382;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp383;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp384;
-		private static readonly global::MetaDslx.Core.Immutable.MetaBracketExpressionBuilder __tmp385;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeCastExpressionBuilder __tmp386;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp387;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp388;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp389;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp390;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp391;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp392;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp393;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp394;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp395;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaIndexerExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaIndexerExpression_ExpressionProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp396;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp397;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp398;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp399;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeOfExpressionBuilder __tmp400;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp401;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConditionalExpressionBuilder __tmp402;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeCheckExpressionBuilder __tmp403;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp404;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp405;
-		private static readonly global::MetaDslx.Core.Immutable.MetaBracketExpressionBuilder __tmp406;
-		private static readonly global::MetaDslx.Core.Immutable.MetaTypeCastExpressionBuilder __tmp407;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp408;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp409;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp410;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp411;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp412;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNewExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewExpression_TypeReferenceProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp413;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewExpression_PropertyInitializersProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp414;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp415;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp416;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNewPropertyInitializer;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewPropertyInitializer_ParentProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewPropertyInitializer_PropertyNameProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewPropertyInitializer_ValueProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewPropertyInitializer_PropertyProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp417;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp418;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp419;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp420;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp421;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp422;
-		private static readonly global::MetaDslx.Core.Immutable.MetaMemberAccessExpressionBuilder __tmp423;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp424;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp425;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp426;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp427;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp428;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp429;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNewCollectionExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewCollectionExpression_TypeReferenceProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder __tmp430;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaNewCollectionExpression_ValuesProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp431;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp432;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp433;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOperatorExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaOperatorExpression_NameProperty;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp434;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp435;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp436;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp437;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp438;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaUnaryExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp439;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaUnaryExpression_ExpressionProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaUnaryPlusExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp440;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp441;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp442;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNegateExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp443;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp444;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp445;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOnesComplementExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp446;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp447;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp448;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNotExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp449;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp450;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp451;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaUnaryAssignExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPostIncrementAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp452;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp453;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp454;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPostDecrementAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp455;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp456;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp457;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPreIncrementAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp458;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp459;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp460;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaPreDecrementAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp461;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp462;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp463;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBinaryExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp464;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBinaryExpression_LeftProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaPropertyBuilder MetaBinaryExpression_RightProperty;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBinaryArithmeticExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaMultiplyExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp465;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp466;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp467;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaDivideExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp468;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp469;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp470;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaModuloExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp471;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp472;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp473;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAddExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp474;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp475;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp476;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaSubtractExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp477;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp478;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp479;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaLeftShiftExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp480;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp481;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp482;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaRightShiftExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp483;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp484;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp485;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBinaryComparisonExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaLessThanExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp486;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp487;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp488;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaLessThanOrEqualExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp489;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp490;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp491;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaGreaterThanExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp492;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp493;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp494;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaGreaterThanOrEqualExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp495;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp496;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp497;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaEqualExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp498;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp499;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp500;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNotEqualExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp501;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp502;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp503;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaBinaryLogicalExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAndExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp504;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp505;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp506;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOrExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp507;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp508;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp509;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaExclusiveOrExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp510;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp511;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp512;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAndAlsoExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp513;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp514;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp515;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOrElseExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp516;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp517;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp518;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaNullCoalescingExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp519;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp520;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp521;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAssignmentExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp522;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp523;
-		private static readonly global::MetaDslx.Core.Immutable.MetaFunctionCallExpressionBuilder __tmp524;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp525;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp526;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp527;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp528;
-		private static readonly global::MetaDslx.Core.Immutable.MetaInheritedPropertyInitializerBuilder __tmp529;
-		private static readonly global::MetaDslx.Core.Immutable.MetaIdentifierExpressionBuilder __tmp530;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp531;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp532;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp533;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaArithmeticAssignmentExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaMultiplyAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp534;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp535;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp536;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaDivideAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp537;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp538;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp539;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaModuloAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp540;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp541;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp542;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAddAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp543;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp544;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp545;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaSubtractAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp546;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp547;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp548;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaLeftShiftAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp549;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp550;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp551;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaRightShiftAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp552;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp553;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp554;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaLogicalAssignmentExpression;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaAndAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp555;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp556;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp557;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaExclusiveOrAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp558;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp559;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp560;
-		public static readonly global::MetaDslx.Core.Immutable.MetaClassBuilder MetaOrAssignExpression;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstructorBuilder __tmp561;
-		private static readonly global::MetaDslx.Core.Immutable.MetaSynthetizedPropertyInitializerBuilder __tmp562;
-		private static readonly global::MetaDslx.Core.Immutable.MetaConstantExpressionBuilder __tmp563;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaAnnotatedElement_AnnotationsProperty = MetaBuilderInstance.instance.MetaAnnotatedElement_AnnotationsProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDocumentedElement = MetaBuilderInstance.instance.MetaDocumentedElement.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaDocumentedElement_DocumentationProperty = MetaBuilderInstance.instance.MetaDocumentedElement_DocumentationProperty.ToImmutable();
 		
-	
-	    static MetaInstance()
-	    {
-	    }
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNamedElement = MetaBuilderInstance.instance.MetaNamedElement.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamedElement_NameProperty = MetaBuilderInstance.instance.MetaNamedElement_NameProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypedElement = MetaBuilderInstance.instance.MetaTypedElement.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypedElement_TypeProperty = MetaBuilderInstance.instance.MetaTypedElement_TypeProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaType = MetaBuilderInstance.instance.MetaType.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAnnotation = MetaBuilderInstance.instance.MetaAnnotation.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaAnnotation_PropertiesProperty = MetaBuilderInstance.instance.MetaAnnotation_PropertiesProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAnnotationProperty = MetaBuilderInstance.instance.MetaAnnotationProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaAnnotationProperty_ValueProperty = MetaBuilderInstance.instance.MetaAnnotationProperty_ValueProperty.ToImmutable();
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNamespace = MetaBuilderInstance.instance.MetaNamespace.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_ParentProperty = MetaBuilderInstance.instance.MetaNamespace_ParentProperty.ToImmutable();
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_UsingsProperty = MetaBuilderInstance.instance.MetaNamespace_UsingsProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_MetaModelProperty = MetaBuilderInstance.instance.MetaNamespace_MetaModelProperty.ToImmutable();
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_NamespacesProperty = MetaBuilderInstance.instance.MetaNamespace_NamespacesProperty.ToImmutable();
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_DeclarationsProperty = MetaBuilderInstance.instance.MetaNamespace_DeclarationsProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDeclaration = MetaBuilderInstance.instance.MetaDeclaration.ToImmutable();
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaDeclaration_NamespaceProperty = MetaBuilderInstance.instance.MetaDeclaration_NamespaceProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaDeclaration_ModelProperty = MetaBuilderInstance.instance.MetaDeclaration_ModelProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaModel = MetaBuilderInstance.instance.MetaModel.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaModel_UriProperty = MetaBuilderInstance.instance.MetaModel_UriProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaModel_NamespaceProperty = MetaBuilderInstance.instance.MetaModel_NamespaceProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaEnum MetaCollectionKind = MetaBuilderInstance.instance.MetaCollectionKind.ToImmutable();
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaCollectionType = MetaBuilderInstance.instance.MetaCollectionType.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaCollectionType_KindProperty = MetaBuilderInstance.instance.MetaCollectionType_KindProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaCollectionType_InnerTypeProperty = MetaBuilderInstance.instance.MetaCollectionType_InnerTypeProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNullableType = MetaBuilderInstance.instance.MetaNullableType.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNullableType_InnerTypeProperty = MetaBuilderInstance.instance.MetaNullableType_InnerTypeProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPrimitiveType = MetaBuilderInstance.instance.MetaPrimitiveType.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaEnum = MetaBuilderInstance.instance.MetaEnum.ToImmutable();
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaEnum_EnumLiteralsProperty = MetaBuilderInstance.instance.MetaEnum_EnumLiteralsProperty.ToImmutable();
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaEnum_OperationsProperty = MetaBuilderInstance.instance.MetaEnum_OperationsProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaEnumLiteral = MetaBuilderInstance.instance.MetaEnumLiteral.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaEnumLiteral_EnumProperty = MetaBuilderInstance.instance.MetaEnumLiteral_EnumProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaClass = MetaBuilderInstance.instance.MetaClass.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_IsAbstractProperty = MetaBuilderInstance.instance.MetaClass_IsAbstractProperty.ToImmutable();
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_SuperClassesProperty = MetaBuilderInstance.instance.MetaClass_SuperClassesProperty.ToImmutable();
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_PropertiesProperty = MetaBuilderInstance.instance.MetaClass_PropertiesProperty.ToImmutable();
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_OperationsProperty = MetaBuilderInstance.instance.MetaClass_OperationsProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_ConstructorProperty = MetaBuilderInstance.instance.MetaClass_ConstructorProperty.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaFunctionType = MetaBuilderInstance.instance.MetaFunctionType.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunctionType_ParameterTypesProperty = MetaBuilderInstance.instance.MetaFunctionType_ParameterTypesProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunctionType_ReturnTypeProperty = MetaBuilderInstance.instance.MetaFunctionType_ReturnTypeProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaFunction = MetaBuilderInstance.instance.MetaFunction.ToImmutable();
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunction_TypeProperty = MetaBuilderInstance.instance.MetaFunction_TypeProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunction_ParametersProperty = MetaBuilderInstance.instance.MetaFunction_ParametersProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunction_ReturnTypeProperty = MetaBuilderInstance.instance.MetaFunction_ReturnTypeProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaGlobalFunction = MetaBuilderInstance.instance.MetaGlobalFunction.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOperation = MetaBuilderInstance.instance.MetaOperation.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaOperation_ParentProperty = MetaBuilderInstance.instance.MetaOperation_ParentProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConstant = MetaBuilderInstance.instance.MetaConstant.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstant_ValueProperty = MetaBuilderInstance.instance.MetaConstant_ValueProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConstructor = MetaBuilderInstance.instance.MetaConstructor.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstructor_ParentProperty = MetaBuilderInstance.instance.MetaConstructor_ParentProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstructor_InitializersProperty = MetaBuilderInstance.instance.MetaConstructor_InitializersProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaParameter = MetaBuilderInstance.instance.MetaParameter.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaParameter_FunctionProperty = MetaBuilderInstance.instance.MetaParameter_FunctionProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaEnum MetaPropertyKind = MetaBuilderInstance.instance.MetaPropertyKind.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaProperty = MetaBuilderInstance.instance.MetaProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_KindProperty = MetaBuilderInstance.instance.MetaProperty_KindProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_ClassProperty = MetaBuilderInstance.instance.MetaProperty_ClassProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_OppositePropertiesProperty = MetaBuilderInstance.instance.MetaProperty_OppositePropertiesProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_SubsettedPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_SubsettedPropertiesProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_SubsettingPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_SubsettingPropertiesProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_RedefinedPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_RedefinedPropertiesProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_RedefiningPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_RedefiningPropertiesProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPropertyInitializer = MetaBuilderInstance.instance.MetaPropertyInitializer.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_ConstructorProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_ConstructorProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_PropertyNameProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_PropertyNameProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_PropertyContextProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_PropertyContextProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_PropertyProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_PropertyProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_ValueProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_ValueProperty.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaSynthetizedPropertyInitializer = MetaBuilderInstance.instance.MetaSynthetizedPropertyInitializer.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaInheritedPropertyInitializer = MetaBuilderInstance.instance.MetaInheritedPropertyInitializer.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaInheritedPropertyInitializer_ObjectNameProperty = MetaBuilderInstance.instance.MetaInheritedPropertyInitializer_ObjectNameProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaInheritedPropertyInitializer_ObjectProperty = MetaBuilderInstance.instance.MetaInheritedPropertyInitializer_ObjectProperty.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaExpression = MetaBuilderInstance.instance.MetaExpression.ToImmutable();
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaExpression_NoTypeErrorProperty = MetaBuilderInstance.instance.MetaExpression_NoTypeErrorProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaExpression_ExpectedTypeProperty = MetaBuilderInstance.instance.MetaExpression_ExpectedTypeProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBracketExpression = MetaBuilderInstance.instance.MetaBracketExpression.ToImmutable();
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBracketExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaBracketExpression_ExpressionProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBoundExpression = MetaBuilderInstance.instance.MetaBoundExpression.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_UniqueDefinitionProperty = MetaBuilderInstance.instance.MetaBoundExpression_UniqueDefinitionProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_ArgumentsProperty = MetaBuilderInstance.instance.MetaBoundExpression_ArgumentsProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_DefinitionsProperty = MetaBuilderInstance.instance.MetaBoundExpression_DefinitionsProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_DefinitionProperty = MetaBuilderInstance.instance.MetaBoundExpression_DefinitionProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaThisExpression = MetaBuilderInstance.instance.MetaThisExpression.ToImmutable();
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNullExpression = MetaBuilderInstance.instance.MetaNullExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeConversionExpression = MetaBuilderInstance.instance.MetaTypeConversionExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeConversionExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaTypeConversionExpression_TypeReferenceProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeConversionExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaTypeConversionExpression_ExpressionProperty.ToImmutable();
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeAsExpression = MetaBuilderInstance.instance.MetaTypeAsExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeCastExpression = MetaBuilderInstance.instance.MetaTypeCastExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeCheckExpression = MetaBuilderInstance.instance.MetaTypeCheckExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeCheckExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaTypeCheckExpression_TypeReferenceProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeCheckExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaTypeCheckExpression_ExpressionProperty.ToImmutable();
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeOfExpression = MetaBuilderInstance.instance.MetaTypeOfExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeOfExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaTypeOfExpression_TypeReferenceProperty.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConditionalExpression = MetaBuilderInstance.instance.MetaConditionalExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_ConditionProperty = MetaBuilderInstance.instance.MetaConditionalExpression_ConditionProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_BalancedTypeProperty = MetaBuilderInstance.instance.MetaConditionalExpression_BalancedTypeProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_ThenProperty = MetaBuilderInstance.instance.MetaConditionalExpression_ThenProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_ElseProperty = MetaBuilderInstance.instance.MetaConditionalExpression_ElseProperty.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConstantExpression = MetaBuilderInstance.instance.MetaConstantExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstantExpression_ValueProperty = MetaBuilderInstance.instance.MetaConstantExpression_ValueProperty.ToImmutable();
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaIdentifierExpression = MetaBuilderInstance.instance.MetaIdentifierExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaIdentifierExpression_NameProperty = MetaBuilderInstance.instance.MetaIdentifierExpression_NameProperty.ToImmutable();
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaMemberAccessExpression = MetaBuilderInstance.instance.MetaMemberAccessExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaMemberAccessExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaMemberAccessExpression_ExpressionProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaMemberAccessExpression_NameProperty = MetaBuilderInstance.instance.MetaMemberAccessExpression_NameProperty.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaFunctionCallExpression = MetaBuilderInstance.instance.MetaFunctionCallExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunctionCallExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaFunctionCallExpression_ExpressionProperty.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaIndexerExpression = MetaBuilderInstance.instance.MetaIndexerExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaIndexerExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaIndexerExpression_ExpressionProperty.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNewExpression = MetaBuilderInstance.instance.MetaNewExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaNewExpression_TypeReferenceProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewExpression_PropertyInitializersProperty = MetaBuilderInstance.instance.MetaNewExpression_PropertyInitializersProperty.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNewPropertyInitializer = MetaBuilderInstance.instance.MetaNewPropertyInitializer.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_ParentProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_ParentProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_PropertyNameProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_PropertyNameProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_ValueProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_ValueProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_PropertyProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_PropertyProperty.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNewCollectionExpression = MetaBuilderInstance.instance.MetaNewCollectionExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewCollectionExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaNewCollectionExpression_TypeReferenceProperty.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewCollectionExpression_ValuesProperty = MetaBuilderInstance.instance.MetaNewCollectionExpression_ValuesProperty.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOperatorExpression = MetaBuilderInstance.instance.MetaOperatorExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaOperatorExpression_NameProperty = MetaBuilderInstance.instance.MetaOperatorExpression_NameProperty.ToImmutable();
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaUnaryExpression = MetaBuilderInstance.instance.MetaUnaryExpression.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaUnaryExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaUnaryExpression_ExpressionProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaUnaryPlusExpression = MetaBuilderInstance.instance.MetaUnaryPlusExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNegateExpression = MetaBuilderInstance.instance.MetaNegateExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOnesComplementExpression = MetaBuilderInstance.instance.MetaOnesComplementExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNotExpression = MetaBuilderInstance.instance.MetaNotExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaUnaryAssignExpression = MetaBuilderInstance.instance.MetaUnaryAssignExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPostIncrementAssignExpression = MetaBuilderInstance.instance.MetaPostIncrementAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPostDecrementAssignExpression = MetaBuilderInstance.instance.MetaPostDecrementAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPreIncrementAssignExpression = MetaBuilderInstance.instance.MetaPreIncrementAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPreDecrementAssignExpression = MetaBuilderInstance.instance.MetaPreDecrementAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryExpression = MetaBuilderInstance.instance.MetaBinaryExpression.ToImmutable();
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBinaryExpression_LeftProperty = MetaBuilderInstance.instance.MetaBinaryExpression_LeftProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBinaryExpression_RightProperty = MetaBuilderInstance.instance.MetaBinaryExpression_RightProperty.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryArithmeticExpression = MetaBuilderInstance.instance.MetaBinaryArithmeticExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaMultiplyExpression = MetaBuilderInstance.instance.MetaMultiplyExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDivideExpression = MetaBuilderInstance.instance.MetaDivideExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaModuloExpression = MetaBuilderInstance.instance.MetaModuloExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAddExpression = MetaBuilderInstance.instance.MetaAddExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaSubtractExpression = MetaBuilderInstance.instance.MetaSubtractExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLeftShiftExpression = MetaBuilderInstance.instance.MetaLeftShiftExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaRightShiftExpression = MetaBuilderInstance.instance.MetaRightShiftExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryComparisonExpression = MetaBuilderInstance.instance.MetaBinaryComparisonExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLessThanExpression = MetaBuilderInstance.instance.MetaLessThanExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLessThanOrEqualExpression = MetaBuilderInstance.instance.MetaLessThanOrEqualExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaGreaterThanExpression = MetaBuilderInstance.instance.MetaGreaterThanExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaGreaterThanOrEqualExpression = MetaBuilderInstance.instance.MetaGreaterThanOrEqualExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaEqualExpression = MetaBuilderInstance.instance.MetaEqualExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNotEqualExpression = MetaBuilderInstance.instance.MetaNotEqualExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryLogicalExpression = MetaBuilderInstance.instance.MetaBinaryLogicalExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAndExpression = MetaBuilderInstance.instance.MetaAndExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOrExpression = MetaBuilderInstance.instance.MetaOrExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaExclusiveOrExpression = MetaBuilderInstance.instance.MetaExclusiveOrExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAndAlsoExpression = MetaBuilderInstance.instance.MetaAndAlsoExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOrElseExpression = MetaBuilderInstance.instance.MetaOrElseExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNullCoalescingExpression = MetaBuilderInstance.instance.MetaNullCoalescingExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAssignmentExpression = MetaBuilderInstance.instance.MetaAssignmentExpression.ToImmutable();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAssignExpression = MetaBuilderInstance.instance.MetaAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaArithmeticAssignmentExpression = MetaBuilderInstance.instance.MetaArithmeticAssignmentExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaMultiplyAssignExpression = MetaBuilderInstance.instance.MetaMultiplyAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDivideAssignExpression = MetaBuilderInstance.instance.MetaDivideAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaModuloAssignExpression = MetaBuilderInstance.instance.MetaModuloAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAddAssignExpression = MetaBuilderInstance.instance.MetaAddAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaSubtractAssignExpression = MetaBuilderInstance.instance.MetaSubtractAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLeftShiftAssignExpression = MetaBuilderInstance.instance.MetaLeftShiftAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaRightShiftAssignExpression = MetaBuilderInstance.instance.MetaRightShiftAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLogicalAssignmentExpression = MetaBuilderInstance.instance.MetaLogicalAssignmentExpression.ToImmutable();
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAndAssignExpression = MetaBuilderInstance.instance.MetaAndAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaExclusiveOrAssignExpression = MetaBuilderInstance.instance.MetaExclusiveOrAssignExpression.ToImmutable();
+		
+		
+		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOrAssignExpression = MetaBuilderInstance.instance.MetaOrAssignExpression.ToImmutable();
+		
+		
+		
+		
 	}
     /// <summary>
     /// Factory class for creating instances of model elements.
     /// </summary>
     public class MetaFactory : global::MetaDslx.Core.Immutable.ModelFactory
     {
-        public MetaFactory()
-            : base()
-        {
-    		MetaDescriptor.Init();
-        }
+    	private bool makeSymbolCreated = true;
     
-        public MetaFactory(global::MetaDslx.Core.Immutable.MutableModel model)
+        public MetaFactory(global::MetaDslx.Core.Immutable.MutableModel model = null, bool makeSymbolCreated = true)
             : base(model)
         {
-    		MetaDescriptor.Init();
+    		global::MetaDslx.Core.Immutable.MetaDescriptor.Init();
+    		this.makeSymbolCreated = makeSymbolCreated;
         }
     
         public override global::MetaDslx.Core.Immutable.IMutableSymbol Create(string type)
@@ -40576,7 +46068,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaAnnotationId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaAnnotationBuilder)symbol;
     	}
     
@@ -40587,7 +46079,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaAnnotationPropertyId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaAnnotationPropertyBuilder)symbol;
     	}
     
@@ -40598,7 +46090,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaNamespaceId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaNamespaceBuilder)symbol;
     	}
     
@@ -40609,7 +46101,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaModelId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaModelBuilder)symbol;
     	}
     
@@ -40620,7 +46112,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaCollectionTypeId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaCollectionTypeBuilder)symbol;
     	}
     
@@ -40631,7 +46123,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaNullableTypeId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaNullableTypeBuilder)symbol;
     	}
     
@@ -40642,7 +46134,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaPrimitiveTypeId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaPrimitiveTypeBuilder)symbol;
     	}
     
@@ -40653,7 +46145,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaEnumId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaEnumBuilder)symbol;
     	}
     
@@ -40664,7 +46156,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaEnumLiteralId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaEnumLiteralBuilder)symbol;
     	}
     
@@ -40675,7 +46167,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaClassId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaClassBuilder)symbol;
     	}
     
@@ -40686,7 +46178,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaFunctionTypeId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaFunctionTypeBuilder)symbol;
     	}
     
@@ -40697,7 +46189,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaGlobalFunctionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaGlobalFunctionBuilder)symbol;
     	}
     
@@ -40708,7 +46200,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaOperationId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaOperationBuilder)symbol;
     	}
     
@@ -40719,7 +46211,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaConstantId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaConstantBuilder)symbol;
     	}
     
@@ -40730,7 +46222,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaConstructorId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaConstructorBuilder)symbol;
     	}
     
@@ -40741,7 +46233,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaParameterId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaParameterBuilder)symbol;
     	}
     
@@ -40752,7 +46244,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaPropertyId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaPropertyBuilder)symbol;
     	}
     
@@ -40763,7 +46255,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaSynthetizedPropertyInitializerId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaSynthetizedPropertyInitializerBuilder)symbol;
     	}
     
@@ -40774,7 +46266,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaInheritedPropertyInitializerId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaInheritedPropertyInitializerBuilder)symbol;
     	}
     
@@ -40785,7 +46277,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaBracketExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaBracketExpressionBuilder)symbol;
     	}
     
@@ -40796,7 +46288,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaThisExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaThisExpressionBuilder)symbol;
     	}
     
@@ -40807,7 +46299,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaNullExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaNullExpressionBuilder)symbol;
     	}
     
@@ -40818,7 +46310,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaTypeAsExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaTypeAsExpressionBuilder)symbol;
     	}
     
@@ -40829,7 +46321,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaTypeCastExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaTypeCastExpressionBuilder)symbol;
     	}
     
@@ -40840,7 +46332,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaTypeCheckExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaTypeCheckExpressionBuilder)symbol;
     	}
     
@@ -40851,7 +46343,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaTypeOfExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaTypeOfExpressionBuilder)symbol;
     	}
     
@@ -40862,7 +46354,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaConditionalExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaConditionalExpressionBuilder)symbol;
     	}
     
@@ -40873,7 +46365,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaConstantExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaConstantExpressionBuilder)symbol;
     	}
     
@@ -40884,7 +46376,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaIdentifierExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaIdentifierExpressionBuilder)symbol;
     	}
     
@@ -40895,7 +46387,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaMemberAccessExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaMemberAccessExpressionBuilder)symbol;
     	}
     
@@ -40906,7 +46398,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaFunctionCallExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaFunctionCallExpressionBuilder)symbol;
     	}
     
@@ -40917,7 +46409,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaIndexerExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaIndexerExpressionBuilder)symbol;
     	}
     
@@ -40928,7 +46420,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaNewExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaNewExpressionBuilder)symbol;
     	}
     
@@ -40939,7 +46431,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaNewPropertyInitializerId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaNewPropertyInitializerBuilder)symbol;
     	}
     
@@ -40950,7 +46442,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaNewCollectionExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaNewCollectionExpressionBuilder)symbol;
     	}
     
@@ -40961,7 +46453,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaUnaryPlusExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaUnaryPlusExpressionBuilder)symbol;
     	}
     
@@ -40972,7 +46464,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaNegateExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaNegateExpressionBuilder)symbol;
     	}
     
@@ -40983,7 +46475,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaOnesComplementExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaOnesComplementExpressionBuilder)symbol;
     	}
     
@@ -40994,7 +46486,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaNotExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaNotExpressionBuilder)symbol;
     	}
     
@@ -41005,7 +46497,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaPostIncrementAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaPostIncrementAssignExpressionBuilder)symbol;
     	}
     
@@ -41016,7 +46508,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaPostDecrementAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaPostDecrementAssignExpressionBuilder)symbol;
     	}
     
@@ -41027,7 +46519,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaPreIncrementAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaPreIncrementAssignExpressionBuilder)symbol;
     	}
     
@@ -41038,7 +46530,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaPreDecrementAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaPreDecrementAssignExpressionBuilder)symbol;
     	}
     
@@ -41049,7 +46541,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaMultiplyExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaMultiplyExpressionBuilder)symbol;
     	}
     
@@ -41060,7 +46552,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaDivideExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaDivideExpressionBuilder)symbol;
     	}
     
@@ -41071,7 +46563,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaModuloExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaModuloExpressionBuilder)symbol;
     	}
     
@@ -41082,7 +46574,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaAddExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaAddExpressionBuilder)symbol;
     	}
     
@@ -41093,7 +46585,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaSubtractExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaSubtractExpressionBuilder)symbol;
     	}
     
@@ -41104,7 +46596,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaLeftShiftExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaLeftShiftExpressionBuilder)symbol;
     	}
     
@@ -41115,7 +46607,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaRightShiftExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaRightShiftExpressionBuilder)symbol;
     	}
     
@@ -41126,7 +46618,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaLessThanExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaLessThanExpressionBuilder)symbol;
     	}
     
@@ -41137,7 +46629,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaLessThanOrEqualExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaLessThanOrEqualExpressionBuilder)symbol;
     	}
     
@@ -41148,7 +46640,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaGreaterThanExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaGreaterThanExpressionBuilder)symbol;
     	}
     
@@ -41159,7 +46651,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaGreaterThanOrEqualExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaGreaterThanOrEqualExpressionBuilder)symbol;
     	}
     
@@ -41170,7 +46662,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaEqualExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaEqualExpressionBuilder)symbol;
     	}
     
@@ -41181,7 +46673,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaNotEqualExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaNotEqualExpressionBuilder)symbol;
     	}
     
@@ -41192,7 +46684,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaAndExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaAndExpressionBuilder)symbol;
     	}
     
@@ -41203,7 +46695,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaOrExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaOrExpressionBuilder)symbol;
     	}
     
@@ -41214,7 +46706,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaExclusiveOrExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaExclusiveOrExpressionBuilder)symbol;
     	}
     
@@ -41225,7 +46717,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaAndAlsoExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaAndAlsoExpressionBuilder)symbol;
     	}
     
@@ -41236,7 +46728,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaOrElseExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaOrElseExpressionBuilder)symbol;
     	}
     
@@ -41247,7 +46739,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaNullCoalescingExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaNullCoalescingExpressionBuilder)symbol;
     	}
     
@@ -41258,7 +46750,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaAssignExpressionBuilder)symbol;
     	}
     
@@ -41269,7 +46761,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaMultiplyAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaMultiplyAssignExpressionBuilder)symbol;
     	}
     
@@ -41280,7 +46772,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaDivideAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaDivideAssignExpressionBuilder)symbol;
     	}
     
@@ -41291,7 +46783,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaModuloAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaModuloAssignExpressionBuilder)symbol;
     	}
     
@@ -41302,7 +46794,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaAddAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaAddAssignExpressionBuilder)symbol;
     	}
     
@@ -41313,7 +46805,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaSubtractAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaSubtractAssignExpressionBuilder)symbol;
     	}
     
@@ -41324,7 +46816,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaLeftShiftAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaLeftShiftAssignExpressionBuilder)symbol;
     	}
     
@@ -41335,7 +46827,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaRightShiftAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaRightShiftAssignExpressionBuilder)symbol;
     	}
     
@@ -41346,7 +46838,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaAndAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaAndAssignExpressionBuilder)symbol;
     	}
     
@@ -41357,7 +46849,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaExclusiveOrAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaExclusiveOrAssignExpressionBuilder)symbol;
     	}
     
@@ -41368,7 +46860,7 @@ namespace MetaDslx.Core.Immutable
     	{
     		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new MetaOrAssignExpressionId());
     		symbol.MInitProperties(propertyInitializers);
-    		symbol.MMakeCreated();
+    		if (this.makeSymbolCreated) symbol.MMakeCreated();
     		return (MetaOrAssignExpressionBuilder)symbol;
     	}
     }
@@ -41470,7 +46962,7 @@ namespace MetaDslx.Core.Immutable
         public virtual void MetaAnnotationProperty(MetaAnnotationPropertyBuilder @this)
         {
             this.MetaNamedElement(@this);
-    		@this.ValueLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Any;
+    		@this.ValueLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable();
         }
     
         /// <summary>
@@ -41824,7 +47316,7 @@ namespace MetaDslx.Core.Immutable
         public virtual void MetaTypeConversionExpression(MetaTypeConversionExpressionBuilder @this)
         {
             this.MetaExpression(@this);
-    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Any;
+    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable();
         }
     
         /// <summary>
@@ -41857,7 +47349,7 @@ namespace MetaDslx.Core.Immutable
         public virtual void MetaTypeCheckExpression(MetaTypeCheckExpressionBuilder @this)
         {
             this.MetaExpression(@this);
-    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Any;
+    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable();
         }
     
         /// <summary>
@@ -41879,7 +47371,7 @@ namespace MetaDslx.Core.Immutable
         public virtual void MetaConditionalExpression(MetaConditionalExpressionBuilder @this)
         {
             this.MetaExpression(@this);
-    		@this.ConditionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Bool;
+    		@this.ConditionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Bool.ToMutable();
     		@this.ThenLazyChild.ExpectedType = () => @this.ExpectedType;
     		@this.ElseLazyChild.ExpectedType = () => @this.ExpectedType;
         }
@@ -41914,7 +47406,7 @@ namespace MetaDslx.Core.Immutable
         public virtual void MetaMemberAccessExpression(MetaMemberAccessExpressionBuilder @this)
         {
             this.MetaBoundExpression(@this);
-    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.None;
+    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable();
         }
     
         /// <summary>
@@ -41926,7 +47418,7 @@ namespace MetaDslx.Core.Immutable
         {
             this.MetaBoundExpression(@this);
     		((MutableSymbolBase)@this).MChildAddLazy(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionCallExpression.ExpressionProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => false);
-    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.None;
+    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable();
         }
     
         /// <summary>
@@ -41938,7 +47430,7 @@ namespace MetaDslx.Core.Immutable
         {
             this.MetaBoundExpression(@this);
     		((MutableSymbolBase)@this).MChildAddLazy(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIndexerExpression.ExpressionProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => false);
-    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.None;
+    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable();
         }
     
         /// <summary>
