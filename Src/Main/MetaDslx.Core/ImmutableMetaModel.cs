@@ -39673,24 +39673,23 @@ namespace MetaDslx.Core.Immutable
 	{
 		internal static MetaBuilderInstance instance = new MetaBuilderInstance();
 	
-		internal global::MetaDslx.Core.Immutable.MetaModelBuilder metaModel;
-		internal global::MetaDslx.Core.Immutable.MutableModel model;
+		internal readonly global::MetaDslx.Core.Immutable.MetaModelBuilder _MetaModel;
 	
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Object;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder String;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Int;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Long;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Float;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Double;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Byte;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Bool;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Void;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder None;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Any;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Error;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder ModelObject;
-	    public readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder DefinitionList;
-	    public readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder ModelObjectList;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Object;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder String;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Int;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Long;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Float;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Double;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Byte;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Bool;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Void;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder None;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Any;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder Error;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder ModelObject;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder DefinitionList;
+	    internal readonly global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder ModelObjectList;
 	
 		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp1;
 		private readonly global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder __tmp2;
@@ -40454,6 +40453,7 @@ namespace MetaDslx.Core.Immutable
 	
 	    private MetaBuilderInstance()
 	    {
+			global::MetaDslx.Core.Immutable.MutableModel model = new global::MetaDslx.Core.Immutable.MutableModel();
 			global::MetaDslx.Core.Immutable.MetaFactory factory = new global::MetaDslx.Core.Immutable.MetaFactory(model, false);
 	
 	        Object = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "object"));
@@ -40470,7 +40470,7 @@ namespace MetaDslx.Core.Immutable
 	        Error = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "*error*"));
 	        ModelObject = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "ModelObject"));
 	        DefinitionList = factory.MetaPrimitiveType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamedElement.NameProperty, () => "DefinitionList"));
-	        ModelObjectList = factory.MetaCollectionType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaCollectionType.InnerTypeProperty, () => global::MetaDslx.Core.Immutable.MetaInstance.ModelObject.ToMutable()));
+	        ModelObjectList = factory.MetaCollectionType(new PropertyInit(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaCollectionType.InnerTypeProperty, () => global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.ModelObject.ToMutable() : null));
 	
 			__tmp1 = factory.MetaPrimitiveType();
 			__tmp2 = factory.MetaPrimitiveType();
@@ -40490,7 +40490,7 @@ namespace MetaDslx.Core.Immutable
 			__tmp16 = factory.MetaNamespace();
 			__tmp17 = factory.MetaNamespace();
 			__tmp18 = factory.MetaModel();
-			metaModel = __tmp18;
+			_MetaModel = __tmp18;
 			__tmp19 = factory.MetaConstant();
 			__tmp20 = factory.MetaNewExpression();
 			__tmp21 = factory.MetaNewPropertyInitializer();
@@ -45179,791 +45179,456 @@ namespace MetaDslx.Core.Immutable
 	
 	public class MetaInstance
 	{
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Object = MetaBuilderInstance.instance.Object.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType String = MetaBuilderInstance.instance.String.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Int = MetaBuilderInstance.instance.Int.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Long = MetaBuilderInstance.instance.Long.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Float = MetaBuilderInstance.instance.Float.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Double = MetaBuilderInstance.instance.Double.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Byte = MetaBuilderInstance.instance.Byte.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Bool = MetaBuilderInstance.instance.Bool.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Void = MetaBuilderInstance.instance.Void.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType None = MetaBuilderInstance.instance.None.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Any = MetaBuilderInstance.instance.Any.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Error = MetaBuilderInstance.instance.Error.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType ModelObject = MetaBuilderInstance.instance.ModelObject.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType DefinitionList = MetaBuilderInstance.instance.DefinitionList.ToImmutable();
-	    public static readonly global::MetaDslx.Core.Immutable.MetaCollectionType ModelObjectList = MetaBuilderInstance.instance.ModelObjectList.ToImmutable();
 	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction TypeOf = MetaBuilderInstance.instance.TypeOf.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction GetValueType = MetaBuilderInstance.instance.GetValueType.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction GetReturnType = MetaBuilderInstance.instance.GetReturnType.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction CurrentType = MetaBuilderInstance.instance.CurrentType.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction TypeCheck = MetaBuilderInstance.instance.TypeCheck.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Balance = MetaBuilderInstance.instance.Balance.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Resolve1 = MetaBuilderInstance.instance.Resolve1.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Resolve2 = MetaBuilderInstance.instance.Resolve2.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveType1 = MetaBuilderInstance.instance.ResolveType1.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveType2 = MetaBuilderInstance.instance.ResolveType2.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveName1 = MetaBuilderInstance.instance.ResolveName1.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveName2 = MetaBuilderInstance.instance.ResolveName2.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ToDefinitionList = MetaBuilderInstance.instance.ToDefinitionList.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Bind1 = MetaBuilderInstance.instance.Bind1.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Bind2 = MetaBuilderInstance.instance.Bind2.ToImmutable();
-		
-		
-		
-		
+		private static bool initialized;
+	
+		public static bool IsInitialized
+		{
+			get { return MetaInstance.initialized; }
+		}
+	
+		public static readonly global::MetaDslx.Core.Immutable.MetaModel _MetaModel;
+	
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Object;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType String;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Int;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Long;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Float;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Double;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Byte;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Bool;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Void;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType None;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Any;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType Error;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType ModelObject;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaPrimitiveType DefinitionList;
+	    public static readonly global::MetaDslx.Core.Immutable.MetaCollectionType ModelObjectList;
+	
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction TypeOf;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction GetValueType;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction GetReturnType;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction CurrentType;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction TypeCheck;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Balance;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Resolve1;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Resolve2;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveType1;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveType2;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveName1;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ResolveName2;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction ToDefinitionList;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Bind1;
+		public static readonly global::MetaDslx.Core.Immutable.MetaGlobalFunction Bind2;
 		/**
 		 * <summary>
 		 * Represents an annotated element.
 		 * </summary>
 		 */
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAnnotatedElement = MetaBuilderInstance.instance.MetaAnnotatedElement.ToImmutable();
-		
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAnnotatedElement;
 		/**
 		 * <summary>
 		 * List of annotations
 		 * </summary>
 		 */
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaAnnotatedElement_AnnotationsProperty = MetaBuilderInstance.instance.MetaAnnotatedElement_AnnotationsProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDocumentedElement = MetaBuilderInstance.instance.MetaDocumentedElement.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaDocumentedElement_DocumentationProperty = MetaBuilderInstance.instance.MetaDocumentedElement_DocumentationProperty.ToImmutable();
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNamedElement = MetaBuilderInstance.instance.MetaNamedElement.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamedElement_NameProperty = MetaBuilderInstance.instance.MetaNamedElement_NameProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypedElement = MetaBuilderInstance.instance.MetaTypedElement.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypedElement_TypeProperty = MetaBuilderInstance.instance.MetaTypedElement_TypeProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaType = MetaBuilderInstance.instance.MetaType.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAnnotation = MetaBuilderInstance.instance.MetaAnnotation.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaAnnotation_PropertiesProperty = MetaBuilderInstance.instance.MetaAnnotation_PropertiesProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAnnotationProperty = MetaBuilderInstance.instance.MetaAnnotationProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaAnnotationProperty_ValueProperty = MetaBuilderInstance.instance.MetaAnnotationProperty_ValueProperty.ToImmutable();
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNamespace = MetaBuilderInstance.instance.MetaNamespace.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_ParentProperty = MetaBuilderInstance.instance.MetaNamespace_ParentProperty.ToImmutable();
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_UsingsProperty = MetaBuilderInstance.instance.MetaNamespace_UsingsProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_MetaModelProperty = MetaBuilderInstance.instance.MetaNamespace_MetaModelProperty.ToImmutable();
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_NamespacesProperty = MetaBuilderInstance.instance.MetaNamespace_NamespacesProperty.ToImmutable();
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_DeclarationsProperty = MetaBuilderInstance.instance.MetaNamespace_DeclarationsProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDeclaration = MetaBuilderInstance.instance.MetaDeclaration.ToImmutable();
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaDeclaration_NamespaceProperty = MetaBuilderInstance.instance.MetaDeclaration_NamespaceProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaDeclaration_ModelProperty = MetaBuilderInstance.instance.MetaDeclaration_ModelProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaModel = MetaBuilderInstance.instance.MetaModel.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaModel_UriProperty = MetaBuilderInstance.instance.MetaModel_UriProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaModel_NamespaceProperty = MetaBuilderInstance.instance.MetaModel_NamespaceProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaEnum MetaCollectionKind = MetaBuilderInstance.instance.MetaCollectionKind.ToImmutable();
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaCollectionType = MetaBuilderInstance.instance.MetaCollectionType.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaCollectionType_KindProperty = MetaBuilderInstance.instance.MetaCollectionType_KindProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaCollectionType_InnerTypeProperty = MetaBuilderInstance.instance.MetaCollectionType_InnerTypeProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNullableType = MetaBuilderInstance.instance.MetaNullableType.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNullableType_InnerTypeProperty = MetaBuilderInstance.instance.MetaNullableType_InnerTypeProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPrimitiveType = MetaBuilderInstance.instance.MetaPrimitiveType.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaEnum = MetaBuilderInstance.instance.MetaEnum.ToImmutable();
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaEnum_EnumLiteralsProperty = MetaBuilderInstance.instance.MetaEnum_EnumLiteralsProperty.ToImmutable();
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaEnum_OperationsProperty = MetaBuilderInstance.instance.MetaEnum_OperationsProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaEnumLiteral = MetaBuilderInstance.instance.MetaEnumLiteral.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaEnumLiteral_EnumProperty = MetaBuilderInstance.instance.MetaEnumLiteral_EnumProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaClass = MetaBuilderInstance.instance.MetaClass.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_IsAbstractProperty = MetaBuilderInstance.instance.MetaClass_IsAbstractProperty.ToImmutable();
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_SuperClassesProperty = MetaBuilderInstance.instance.MetaClass_SuperClassesProperty.ToImmutable();
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_PropertiesProperty = MetaBuilderInstance.instance.MetaClass_PropertiesProperty.ToImmutable();
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_OperationsProperty = MetaBuilderInstance.instance.MetaClass_OperationsProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_ConstructorProperty = MetaBuilderInstance.instance.MetaClass_ConstructorProperty.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaFunctionType = MetaBuilderInstance.instance.MetaFunctionType.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunctionType_ParameterTypesProperty = MetaBuilderInstance.instance.MetaFunctionType_ParameterTypesProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunctionType_ReturnTypeProperty = MetaBuilderInstance.instance.MetaFunctionType_ReturnTypeProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaFunction = MetaBuilderInstance.instance.MetaFunction.ToImmutable();
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunction_TypeProperty = MetaBuilderInstance.instance.MetaFunction_TypeProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunction_ParametersProperty = MetaBuilderInstance.instance.MetaFunction_ParametersProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunction_ReturnTypeProperty = MetaBuilderInstance.instance.MetaFunction_ReturnTypeProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaGlobalFunction = MetaBuilderInstance.instance.MetaGlobalFunction.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOperation = MetaBuilderInstance.instance.MetaOperation.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaOperation_ParentProperty = MetaBuilderInstance.instance.MetaOperation_ParentProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConstant = MetaBuilderInstance.instance.MetaConstant.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstant_ValueProperty = MetaBuilderInstance.instance.MetaConstant_ValueProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConstructor = MetaBuilderInstance.instance.MetaConstructor.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstructor_ParentProperty = MetaBuilderInstance.instance.MetaConstructor_ParentProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstructor_InitializersProperty = MetaBuilderInstance.instance.MetaConstructor_InitializersProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaParameter = MetaBuilderInstance.instance.MetaParameter.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaParameter_FunctionProperty = MetaBuilderInstance.instance.MetaParameter_FunctionProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaEnum MetaPropertyKind = MetaBuilderInstance.instance.MetaPropertyKind.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaProperty = MetaBuilderInstance.instance.MetaProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_KindProperty = MetaBuilderInstance.instance.MetaProperty_KindProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_ClassProperty = MetaBuilderInstance.instance.MetaProperty_ClassProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_OppositePropertiesProperty = MetaBuilderInstance.instance.MetaProperty_OppositePropertiesProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_SubsettedPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_SubsettedPropertiesProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_SubsettingPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_SubsettingPropertiesProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_RedefinedPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_RedefinedPropertiesProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_RedefiningPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_RedefiningPropertiesProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPropertyInitializer = MetaBuilderInstance.instance.MetaPropertyInitializer.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_ConstructorProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_ConstructorProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_PropertyNameProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_PropertyNameProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_PropertyContextProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_PropertyContextProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_PropertyProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_PropertyProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_ValueProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_ValueProperty.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaSynthetizedPropertyInitializer = MetaBuilderInstance.instance.MetaSynthetizedPropertyInitializer.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaInheritedPropertyInitializer = MetaBuilderInstance.instance.MetaInheritedPropertyInitializer.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaInheritedPropertyInitializer_ObjectNameProperty = MetaBuilderInstance.instance.MetaInheritedPropertyInitializer_ObjectNameProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaInheritedPropertyInitializer_ObjectProperty = MetaBuilderInstance.instance.MetaInheritedPropertyInitializer_ObjectProperty.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaExpression = MetaBuilderInstance.instance.MetaExpression.ToImmutable();
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaExpression_NoTypeErrorProperty = MetaBuilderInstance.instance.MetaExpression_NoTypeErrorProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaExpression_ExpectedTypeProperty = MetaBuilderInstance.instance.MetaExpression_ExpectedTypeProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBracketExpression = MetaBuilderInstance.instance.MetaBracketExpression.ToImmutable();
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBracketExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaBracketExpression_ExpressionProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBoundExpression = MetaBuilderInstance.instance.MetaBoundExpression.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_UniqueDefinitionProperty = MetaBuilderInstance.instance.MetaBoundExpression_UniqueDefinitionProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_ArgumentsProperty = MetaBuilderInstance.instance.MetaBoundExpression_ArgumentsProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_DefinitionsProperty = MetaBuilderInstance.instance.MetaBoundExpression_DefinitionsProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_DefinitionProperty = MetaBuilderInstance.instance.MetaBoundExpression_DefinitionProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaThisExpression = MetaBuilderInstance.instance.MetaThisExpression.ToImmutable();
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNullExpression = MetaBuilderInstance.instance.MetaNullExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeConversionExpression = MetaBuilderInstance.instance.MetaTypeConversionExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeConversionExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaTypeConversionExpression_TypeReferenceProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeConversionExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaTypeConversionExpression_ExpressionProperty.ToImmutable();
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeAsExpression = MetaBuilderInstance.instance.MetaTypeAsExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeCastExpression = MetaBuilderInstance.instance.MetaTypeCastExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeCheckExpression = MetaBuilderInstance.instance.MetaTypeCheckExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeCheckExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaTypeCheckExpression_TypeReferenceProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeCheckExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaTypeCheckExpression_ExpressionProperty.ToImmutable();
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeOfExpression = MetaBuilderInstance.instance.MetaTypeOfExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeOfExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaTypeOfExpression_TypeReferenceProperty.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConditionalExpression = MetaBuilderInstance.instance.MetaConditionalExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_ConditionProperty = MetaBuilderInstance.instance.MetaConditionalExpression_ConditionProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_BalancedTypeProperty = MetaBuilderInstance.instance.MetaConditionalExpression_BalancedTypeProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_ThenProperty = MetaBuilderInstance.instance.MetaConditionalExpression_ThenProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_ElseProperty = MetaBuilderInstance.instance.MetaConditionalExpression_ElseProperty.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConstantExpression = MetaBuilderInstance.instance.MetaConstantExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstantExpression_ValueProperty = MetaBuilderInstance.instance.MetaConstantExpression_ValueProperty.ToImmutable();
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaIdentifierExpression = MetaBuilderInstance.instance.MetaIdentifierExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaIdentifierExpression_NameProperty = MetaBuilderInstance.instance.MetaIdentifierExpression_NameProperty.ToImmutable();
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaMemberAccessExpression = MetaBuilderInstance.instance.MetaMemberAccessExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaMemberAccessExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaMemberAccessExpression_ExpressionProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaMemberAccessExpression_NameProperty = MetaBuilderInstance.instance.MetaMemberAccessExpression_NameProperty.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaFunctionCallExpression = MetaBuilderInstance.instance.MetaFunctionCallExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunctionCallExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaFunctionCallExpression_ExpressionProperty.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaIndexerExpression = MetaBuilderInstance.instance.MetaIndexerExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaIndexerExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaIndexerExpression_ExpressionProperty.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNewExpression = MetaBuilderInstance.instance.MetaNewExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaNewExpression_TypeReferenceProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewExpression_PropertyInitializersProperty = MetaBuilderInstance.instance.MetaNewExpression_PropertyInitializersProperty.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNewPropertyInitializer = MetaBuilderInstance.instance.MetaNewPropertyInitializer.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_ParentProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_ParentProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_PropertyNameProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_PropertyNameProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_ValueProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_ValueProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_PropertyProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_PropertyProperty.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNewCollectionExpression = MetaBuilderInstance.instance.MetaNewCollectionExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewCollectionExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaNewCollectionExpression_TypeReferenceProperty.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewCollectionExpression_ValuesProperty = MetaBuilderInstance.instance.MetaNewCollectionExpression_ValuesProperty.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOperatorExpression = MetaBuilderInstance.instance.MetaOperatorExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaOperatorExpression_NameProperty = MetaBuilderInstance.instance.MetaOperatorExpression_NameProperty.ToImmutable();
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaUnaryExpression = MetaBuilderInstance.instance.MetaUnaryExpression.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaUnaryExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaUnaryExpression_ExpressionProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaUnaryPlusExpression = MetaBuilderInstance.instance.MetaUnaryPlusExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNegateExpression = MetaBuilderInstance.instance.MetaNegateExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOnesComplementExpression = MetaBuilderInstance.instance.MetaOnesComplementExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNotExpression = MetaBuilderInstance.instance.MetaNotExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaUnaryAssignExpression = MetaBuilderInstance.instance.MetaUnaryAssignExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPostIncrementAssignExpression = MetaBuilderInstance.instance.MetaPostIncrementAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPostDecrementAssignExpression = MetaBuilderInstance.instance.MetaPostDecrementAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPreIncrementAssignExpression = MetaBuilderInstance.instance.MetaPreIncrementAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPreDecrementAssignExpression = MetaBuilderInstance.instance.MetaPreDecrementAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryExpression = MetaBuilderInstance.instance.MetaBinaryExpression.ToImmutable();
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBinaryExpression_LeftProperty = MetaBuilderInstance.instance.MetaBinaryExpression_LeftProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBinaryExpression_RightProperty = MetaBuilderInstance.instance.MetaBinaryExpression_RightProperty.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryArithmeticExpression = MetaBuilderInstance.instance.MetaBinaryArithmeticExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaMultiplyExpression = MetaBuilderInstance.instance.MetaMultiplyExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDivideExpression = MetaBuilderInstance.instance.MetaDivideExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaModuloExpression = MetaBuilderInstance.instance.MetaModuloExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAddExpression = MetaBuilderInstance.instance.MetaAddExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaSubtractExpression = MetaBuilderInstance.instance.MetaSubtractExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLeftShiftExpression = MetaBuilderInstance.instance.MetaLeftShiftExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaRightShiftExpression = MetaBuilderInstance.instance.MetaRightShiftExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryComparisonExpression = MetaBuilderInstance.instance.MetaBinaryComparisonExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLessThanExpression = MetaBuilderInstance.instance.MetaLessThanExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLessThanOrEqualExpression = MetaBuilderInstance.instance.MetaLessThanOrEqualExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaGreaterThanExpression = MetaBuilderInstance.instance.MetaGreaterThanExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaGreaterThanOrEqualExpression = MetaBuilderInstance.instance.MetaGreaterThanOrEqualExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaEqualExpression = MetaBuilderInstance.instance.MetaEqualExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNotEqualExpression = MetaBuilderInstance.instance.MetaNotEqualExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryLogicalExpression = MetaBuilderInstance.instance.MetaBinaryLogicalExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAndExpression = MetaBuilderInstance.instance.MetaAndExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOrExpression = MetaBuilderInstance.instance.MetaOrExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaExclusiveOrExpression = MetaBuilderInstance.instance.MetaExclusiveOrExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAndAlsoExpression = MetaBuilderInstance.instance.MetaAndAlsoExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOrElseExpression = MetaBuilderInstance.instance.MetaOrElseExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNullCoalescingExpression = MetaBuilderInstance.instance.MetaNullCoalescingExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAssignmentExpression = MetaBuilderInstance.instance.MetaAssignmentExpression.ToImmutable();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAssignExpression = MetaBuilderInstance.instance.MetaAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaArithmeticAssignmentExpression = MetaBuilderInstance.instance.MetaArithmeticAssignmentExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaMultiplyAssignExpression = MetaBuilderInstance.instance.MetaMultiplyAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDivideAssignExpression = MetaBuilderInstance.instance.MetaDivideAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaModuloAssignExpression = MetaBuilderInstance.instance.MetaModuloAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAddAssignExpression = MetaBuilderInstance.instance.MetaAddAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaSubtractAssignExpression = MetaBuilderInstance.instance.MetaSubtractAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLeftShiftAssignExpression = MetaBuilderInstance.instance.MetaLeftShiftAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaRightShiftAssignExpression = MetaBuilderInstance.instance.MetaRightShiftAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLogicalAssignmentExpression = MetaBuilderInstance.instance.MetaLogicalAssignmentExpression.ToImmutable();
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAndAssignExpression = MetaBuilderInstance.instance.MetaAndAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaExclusiveOrAssignExpression = MetaBuilderInstance.instance.MetaExclusiveOrAssignExpression.ToImmutable();
-		
-		
-		
-		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOrAssignExpression = MetaBuilderInstance.instance.MetaOrAssignExpression.ToImmutable();
-		
-		
-		
-		
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaAnnotatedElement_AnnotationsProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDocumentedElement;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaDocumentedElement_DocumentationProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNamedElement;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamedElement_NameProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypedElement;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypedElement_TypeProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaType;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAnnotation;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaAnnotation_PropertiesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAnnotationProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaAnnotationProperty_ValueProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNamespace;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_ParentProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_UsingsProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_MetaModelProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_NamespacesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNamespace_DeclarationsProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDeclaration;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaDeclaration_NamespaceProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaDeclaration_ModelProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaModel;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaModel_UriProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaModel_NamespaceProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaEnum MetaCollectionKind;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaCollectionType;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaCollectionType_KindProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaCollectionType_InnerTypeProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNullableType;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNullableType_InnerTypeProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPrimitiveType;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaEnum;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaEnum_EnumLiteralsProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaEnum_OperationsProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaEnumLiteral;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaEnumLiteral_EnumProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaClass;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_IsAbstractProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_SuperClassesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_PropertiesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_OperationsProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaClass_ConstructorProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaFunctionType;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunctionType_ParameterTypesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunctionType_ReturnTypeProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaFunction;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunction_TypeProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunction_ParametersProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunction_ReturnTypeProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaGlobalFunction;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOperation;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaOperation_ParentProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConstant;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstant_ValueProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConstructor;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstructor_ParentProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstructor_InitializersProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaParameter;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaParameter_FunctionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaEnum MetaPropertyKind;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_KindProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_ClassProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_OppositePropertiesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_SubsettedPropertiesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_SubsettingPropertiesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_RedefinedPropertiesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaProperty_RedefiningPropertiesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPropertyInitializer;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_ConstructorProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_PropertyNameProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_PropertyContextProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_PropertyProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaPropertyInitializer_ValueProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaSynthetizedPropertyInitializer;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaInheritedPropertyInitializer;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaInheritedPropertyInitializer_ObjectNameProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaInheritedPropertyInitializer_ObjectProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaExpression_NoTypeErrorProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaExpression_ExpectedTypeProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBracketExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBracketExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBoundExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_UniqueDefinitionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_ArgumentsProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_DefinitionsProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBoundExpression_DefinitionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaThisExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNullExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeConversionExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeConversionExpression_TypeReferenceProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeConversionExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeAsExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeCastExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeCheckExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeCheckExpression_TypeReferenceProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeCheckExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaTypeOfExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaTypeOfExpression_TypeReferenceProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConditionalExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_ConditionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_BalancedTypeProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_ThenProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConditionalExpression_ElseProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaConstantExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaConstantExpression_ValueProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaIdentifierExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaIdentifierExpression_NameProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaMemberAccessExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaMemberAccessExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaMemberAccessExpression_NameProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaFunctionCallExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaFunctionCallExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaIndexerExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaIndexerExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNewExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewExpression_TypeReferenceProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewExpression_PropertyInitializersProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNewPropertyInitializer;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_ParentProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_PropertyNameProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_ValueProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewPropertyInitializer_PropertyProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNewCollectionExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewCollectionExpression_TypeReferenceProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaNewCollectionExpression_ValuesProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOperatorExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaOperatorExpression_NameProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaUnaryExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaUnaryExpression_ExpressionProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaUnaryPlusExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNegateExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOnesComplementExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNotExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaUnaryAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPostIncrementAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPostDecrementAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPreIncrementAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaPreDecrementAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBinaryExpression_LeftProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaProperty MetaBinaryExpression_RightProperty;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryArithmeticExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaMultiplyExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDivideExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaModuloExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAddExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaSubtractExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLeftShiftExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaRightShiftExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryComparisonExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLessThanExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLessThanOrEqualExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaGreaterThanExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaGreaterThanOrEqualExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaEqualExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNotEqualExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaBinaryLogicalExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAndExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOrExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaExclusiveOrExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAndAlsoExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOrElseExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaNullCoalescingExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAssignmentExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaArithmeticAssignmentExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaMultiplyAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaDivideAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaModuloAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAddAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaSubtractAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLeftShiftAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaRightShiftAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaLogicalAssignmentExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaAndAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaExclusiveOrAssignExpression;
+		public static readonly global::MetaDslx.Core.Immutable.MetaClass MetaOrAssignExpression;
+	
+		static MetaInstance()
+		{
+			MetaInstance._MetaModel = MetaBuilderInstance.instance._MetaModel.ToImmutable();
+	
+			MetaInstance.Object = MetaBuilderInstance.instance.Object.ToImmutable();
+			MetaInstance.String = MetaBuilderInstance.instance.String.ToImmutable();
+			MetaInstance.Int = MetaBuilderInstance.instance.Int.ToImmutable();
+			MetaInstance.Long = MetaBuilderInstance.instance.Long.ToImmutable();
+			MetaInstance.Float = MetaBuilderInstance.instance.Float.ToImmutable();
+			MetaInstance.Double = MetaBuilderInstance.instance.Double.ToImmutable();
+			MetaInstance.Byte = MetaBuilderInstance.instance.Byte.ToImmutable();
+			MetaInstance.Bool = MetaBuilderInstance.instance.Bool.ToImmutable();
+			MetaInstance.Void = MetaBuilderInstance.instance.Void.ToImmutable();
+			MetaInstance.None = MetaBuilderInstance.instance.None.ToImmutable();
+			MetaInstance.Any = MetaBuilderInstance.instance.Any.ToImmutable();
+			MetaInstance.Error = MetaBuilderInstance.instance.Error.ToImmutable();
+			MetaInstance.ModelObject = MetaBuilderInstance.instance.ModelObject.ToImmutable();
+			MetaInstance.DefinitionList = MetaBuilderInstance.instance.DefinitionList.ToImmutable();
+			MetaInstance.ModelObjectList = MetaBuilderInstance.instance.ModelObjectList.ToImmutable();
+	
+			MetaInstance.TypeOf = MetaBuilderInstance.instance.TypeOf.ToImmutable();
+			MetaInstance.GetValueType = MetaBuilderInstance.instance.GetValueType.ToImmutable();
+			MetaInstance.GetReturnType = MetaBuilderInstance.instance.GetReturnType.ToImmutable();
+			MetaInstance.CurrentType = MetaBuilderInstance.instance.CurrentType.ToImmutable();
+			MetaInstance.TypeCheck = MetaBuilderInstance.instance.TypeCheck.ToImmutable();
+			MetaInstance.Balance = MetaBuilderInstance.instance.Balance.ToImmutable();
+			MetaInstance.Resolve1 = MetaBuilderInstance.instance.Resolve1.ToImmutable();
+			MetaInstance.Resolve2 = MetaBuilderInstance.instance.Resolve2.ToImmutable();
+			MetaInstance.ResolveType1 = MetaBuilderInstance.instance.ResolveType1.ToImmutable();
+			MetaInstance.ResolveType2 = MetaBuilderInstance.instance.ResolveType2.ToImmutable();
+			MetaInstance.ResolveName1 = MetaBuilderInstance.instance.ResolveName1.ToImmutable();
+			MetaInstance.ResolveName2 = MetaBuilderInstance.instance.ResolveName2.ToImmutable();
+			MetaInstance.ToDefinitionList = MetaBuilderInstance.instance.ToDefinitionList.ToImmutable();
+			MetaInstance.Bind1 = MetaBuilderInstance.instance.Bind1.ToImmutable();
+			MetaInstance.Bind2 = MetaBuilderInstance.instance.Bind2.ToImmutable();
+			MetaInstance.MetaAnnotatedElement = MetaBuilderInstance.instance.MetaAnnotatedElement.ToImmutable();
+			MetaInstance.MetaAnnotatedElement_AnnotationsProperty = MetaBuilderInstance.instance.MetaAnnotatedElement_AnnotationsProperty.ToImmutable();
+			MetaInstance.MetaDocumentedElement = MetaBuilderInstance.instance.MetaDocumentedElement.ToImmutable();
+			MetaInstance.MetaDocumentedElement_DocumentationProperty = MetaBuilderInstance.instance.MetaDocumentedElement_DocumentationProperty.ToImmutable();
+			MetaInstance.MetaNamedElement = MetaBuilderInstance.instance.MetaNamedElement.ToImmutable();
+			MetaInstance.MetaNamedElement_NameProperty = MetaBuilderInstance.instance.MetaNamedElement_NameProperty.ToImmutable();
+			MetaInstance.MetaTypedElement = MetaBuilderInstance.instance.MetaTypedElement.ToImmutable();
+			MetaInstance.MetaTypedElement_TypeProperty = MetaBuilderInstance.instance.MetaTypedElement_TypeProperty.ToImmutable();
+			MetaInstance.MetaType = MetaBuilderInstance.instance.MetaType.ToImmutable();
+			MetaInstance.MetaAnnotation = MetaBuilderInstance.instance.MetaAnnotation.ToImmutable();
+			MetaInstance.MetaAnnotation_PropertiesProperty = MetaBuilderInstance.instance.MetaAnnotation_PropertiesProperty.ToImmutable();
+			MetaInstance.MetaAnnotationProperty = MetaBuilderInstance.instance.MetaAnnotationProperty.ToImmutable();
+			MetaInstance.MetaAnnotationProperty_ValueProperty = MetaBuilderInstance.instance.MetaAnnotationProperty_ValueProperty.ToImmutable();
+			MetaInstance.MetaNamespace = MetaBuilderInstance.instance.MetaNamespace.ToImmutable();
+			MetaInstance.MetaNamespace_ParentProperty = MetaBuilderInstance.instance.MetaNamespace_ParentProperty.ToImmutable();
+			MetaInstance.MetaNamespace_UsingsProperty = MetaBuilderInstance.instance.MetaNamespace_UsingsProperty.ToImmutable();
+			MetaInstance.MetaNamespace_MetaModelProperty = MetaBuilderInstance.instance.MetaNamespace_MetaModelProperty.ToImmutable();
+			MetaInstance.MetaNamespace_NamespacesProperty = MetaBuilderInstance.instance.MetaNamespace_NamespacesProperty.ToImmutable();
+			MetaInstance.MetaNamespace_DeclarationsProperty = MetaBuilderInstance.instance.MetaNamespace_DeclarationsProperty.ToImmutable();
+			MetaInstance.MetaDeclaration = MetaBuilderInstance.instance.MetaDeclaration.ToImmutable();
+			MetaInstance.MetaDeclaration_NamespaceProperty = MetaBuilderInstance.instance.MetaDeclaration_NamespaceProperty.ToImmutable();
+			MetaInstance.MetaDeclaration_ModelProperty = MetaBuilderInstance.instance.MetaDeclaration_ModelProperty.ToImmutable();
+			MetaInstance.MetaModel = MetaBuilderInstance.instance.MetaModel.ToImmutable();
+			MetaInstance.MetaModel_UriProperty = MetaBuilderInstance.instance.MetaModel_UriProperty.ToImmutable();
+			MetaInstance.MetaModel_NamespaceProperty = MetaBuilderInstance.instance.MetaModel_NamespaceProperty.ToImmutable();
+			MetaInstance.MetaCollectionKind = MetaBuilderInstance.instance.MetaCollectionKind.ToImmutable();
+			MetaInstance.MetaCollectionType = MetaBuilderInstance.instance.MetaCollectionType.ToImmutable();
+			MetaInstance.MetaCollectionType_KindProperty = MetaBuilderInstance.instance.MetaCollectionType_KindProperty.ToImmutable();
+			MetaInstance.MetaCollectionType_InnerTypeProperty = MetaBuilderInstance.instance.MetaCollectionType_InnerTypeProperty.ToImmutable();
+			MetaInstance.MetaNullableType = MetaBuilderInstance.instance.MetaNullableType.ToImmutable();
+			MetaInstance.MetaNullableType_InnerTypeProperty = MetaBuilderInstance.instance.MetaNullableType_InnerTypeProperty.ToImmutable();
+			MetaInstance.MetaPrimitiveType = MetaBuilderInstance.instance.MetaPrimitiveType.ToImmutable();
+			MetaInstance.MetaEnum = MetaBuilderInstance.instance.MetaEnum.ToImmutable();
+			MetaInstance.MetaEnum_EnumLiteralsProperty = MetaBuilderInstance.instance.MetaEnum_EnumLiteralsProperty.ToImmutable();
+			MetaInstance.MetaEnum_OperationsProperty = MetaBuilderInstance.instance.MetaEnum_OperationsProperty.ToImmutable();
+			MetaInstance.MetaEnumLiteral = MetaBuilderInstance.instance.MetaEnumLiteral.ToImmutable();
+			MetaInstance.MetaEnumLiteral_EnumProperty = MetaBuilderInstance.instance.MetaEnumLiteral_EnumProperty.ToImmutable();
+			MetaInstance.MetaClass = MetaBuilderInstance.instance.MetaClass.ToImmutable();
+			MetaInstance.MetaClass_IsAbstractProperty = MetaBuilderInstance.instance.MetaClass_IsAbstractProperty.ToImmutable();
+			MetaInstance.MetaClass_SuperClassesProperty = MetaBuilderInstance.instance.MetaClass_SuperClassesProperty.ToImmutable();
+			MetaInstance.MetaClass_PropertiesProperty = MetaBuilderInstance.instance.MetaClass_PropertiesProperty.ToImmutable();
+			MetaInstance.MetaClass_OperationsProperty = MetaBuilderInstance.instance.MetaClass_OperationsProperty.ToImmutable();
+			MetaInstance.MetaClass_ConstructorProperty = MetaBuilderInstance.instance.MetaClass_ConstructorProperty.ToImmutable();
+			MetaInstance.MetaFunctionType = MetaBuilderInstance.instance.MetaFunctionType.ToImmutable();
+			MetaInstance.MetaFunctionType_ParameterTypesProperty = MetaBuilderInstance.instance.MetaFunctionType_ParameterTypesProperty.ToImmutable();
+			MetaInstance.MetaFunctionType_ReturnTypeProperty = MetaBuilderInstance.instance.MetaFunctionType_ReturnTypeProperty.ToImmutable();
+			MetaInstance.MetaFunction = MetaBuilderInstance.instance.MetaFunction.ToImmutable();
+			MetaInstance.MetaFunction_TypeProperty = MetaBuilderInstance.instance.MetaFunction_TypeProperty.ToImmutable();
+			MetaInstance.MetaFunction_ParametersProperty = MetaBuilderInstance.instance.MetaFunction_ParametersProperty.ToImmutable();
+			MetaInstance.MetaFunction_ReturnTypeProperty = MetaBuilderInstance.instance.MetaFunction_ReturnTypeProperty.ToImmutable();
+			MetaInstance.MetaGlobalFunction = MetaBuilderInstance.instance.MetaGlobalFunction.ToImmutable();
+			MetaInstance.MetaOperation = MetaBuilderInstance.instance.MetaOperation.ToImmutable();
+			MetaInstance.MetaOperation_ParentProperty = MetaBuilderInstance.instance.MetaOperation_ParentProperty.ToImmutable();
+			MetaInstance.MetaConstant = MetaBuilderInstance.instance.MetaConstant.ToImmutable();
+			MetaInstance.MetaConstant_ValueProperty = MetaBuilderInstance.instance.MetaConstant_ValueProperty.ToImmutable();
+			MetaInstance.MetaConstructor = MetaBuilderInstance.instance.MetaConstructor.ToImmutable();
+			MetaInstance.MetaConstructor_ParentProperty = MetaBuilderInstance.instance.MetaConstructor_ParentProperty.ToImmutable();
+			MetaInstance.MetaConstructor_InitializersProperty = MetaBuilderInstance.instance.MetaConstructor_InitializersProperty.ToImmutable();
+			MetaInstance.MetaParameter = MetaBuilderInstance.instance.MetaParameter.ToImmutable();
+			MetaInstance.MetaParameter_FunctionProperty = MetaBuilderInstance.instance.MetaParameter_FunctionProperty.ToImmutable();
+			MetaInstance.MetaPropertyKind = MetaBuilderInstance.instance.MetaPropertyKind.ToImmutable();
+			MetaInstance.MetaProperty = MetaBuilderInstance.instance.MetaProperty.ToImmutable();
+			MetaInstance.MetaProperty_KindProperty = MetaBuilderInstance.instance.MetaProperty_KindProperty.ToImmutable();
+			MetaInstance.MetaProperty_ClassProperty = MetaBuilderInstance.instance.MetaProperty_ClassProperty.ToImmutable();
+			MetaInstance.MetaProperty_OppositePropertiesProperty = MetaBuilderInstance.instance.MetaProperty_OppositePropertiesProperty.ToImmutable();
+			MetaInstance.MetaProperty_SubsettedPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_SubsettedPropertiesProperty.ToImmutable();
+			MetaInstance.MetaProperty_SubsettingPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_SubsettingPropertiesProperty.ToImmutable();
+			MetaInstance.MetaProperty_RedefinedPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_RedefinedPropertiesProperty.ToImmutable();
+			MetaInstance.MetaProperty_RedefiningPropertiesProperty = MetaBuilderInstance.instance.MetaProperty_RedefiningPropertiesProperty.ToImmutable();
+			MetaInstance.MetaPropertyInitializer = MetaBuilderInstance.instance.MetaPropertyInitializer.ToImmutable();
+			MetaInstance.MetaPropertyInitializer_ConstructorProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_ConstructorProperty.ToImmutable();
+			MetaInstance.MetaPropertyInitializer_PropertyNameProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_PropertyNameProperty.ToImmutable();
+			MetaInstance.MetaPropertyInitializer_PropertyContextProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_PropertyContextProperty.ToImmutable();
+			MetaInstance.MetaPropertyInitializer_PropertyProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_PropertyProperty.ToImmutable();
+			MetaInstance.MetaPropertyInitializer_ValueProperty = MetaBuilderInstance.instance.MetaPropertyInitializer_ValueProperty.ToImmutable();
+			MetaInstance.MetaSynthetizedPropertyInitializer = MetaBuilderInstance.instance.MetaSynthetizedPropertyInitializer.ToImmutable();
+			MetaInstance.MetaInheritedPropertyInitializer = MetaBuilderInstance.instance.MetaInheritedPropertyInitializer.ToImmutable();
+			MetaInstance.MetaInheritedPropertyInitializer_ObjectNameProperty = MetaBuilderInstance.instance.MetaInheritedPropertyInitializer_ObjectNameProperty.ToImmutable();
+			MetaInstance.MetaInheritedPropertyInitializer_ObjectProperty = MetaBuilderInstance.instance.MetaInheritedPropertyInitializer_ObjectProperty.ToImmutable();
+			MetaInstance.MetaExpression = MetaBuilderInstance.instance.MetaExpression.ToImmutable();
+			MetaInstance.MetaExpression_NoTypeErrorProperty = MetaBuilderInstance.instance.MetaExpression_NoTypeErrorProperty.ToImmutable();
+			MetaInstance.MetaExpression_ExpectedTypeProperty = MetaBuilderInstance.instance.MetaExpression_ExpectedTypeProperty.ToImmutable();
+			MetaInstance.MetaBracketExpression = MetaBuilderInstance.instance.MetaBracketExpression.ToImmutable();
+			MetaInstance.MetaBracketExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaBracketExpression_ExpressionProperty.ToImmutable();
+			MetaInstance.MetaBoundExpression = MetaBuilderInstance.instance.MetaBoundExpression.ToImmutable();
+			MetaInstance.MetaBoundExpression_UniqueDefinitionProperty = MetaBuilderInstance.instance.MetaBoundExpression_UniqueDefinitionProperty.ToImmutable();
+			MetaInstance.MetaBoundExpression_ArgumentsProperty = MetaBuilderInstance.instance.MetaBoundExpression_ArgumentsProperty.ToImmutable();
+			MetaInstance.MetaBoundExpression_DefinitionsProperty = MetaBuilderInstance.instance.MetaBoundExpression_DefinitionsProperty.ToImmutable();
+			MetaInstance.MetaBoundExpression_DefinitionProperty = MetaBuilderInstance.instance.MetaBoundExpression_DefinitionProperty.ToImmutable();
+			MetaInstance.MetaThisExpression = MetaBuilderInstance.instance.MetaThisExpression.ToImmutable();
+			MetaInstance.MetaNullExpression = MetaBuilderInstance.instance.MetaNullExpression.ToImmutable();
+			MetaInstance.MetaTypeConversionExpression = MetaBuilderInstance.instance.MetaTypeConversionExpression.ToImmutable();
+			MetaInstance.MetaTypeConversionExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaTypeConversionExpression_TypeReferenceProperty.ToImmutable();
+			MetaInstance.MetaTypeConversionExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaTypeConversionExpression_ExpressionProperty.ToImmutable();
+			MetaInstance.MetaTypeAsExpression = MetaBuilderInstance.instance.MetaTypeAsExpression.ToImmutable();
+			MetaInstance.MetaTypeCastExpression = MetaBuilderInstance.instance.MetaTypeCastExpression.ToImmutable();
+			MetaInstance.MetaTypeCheckExpression = MetaBuilderInstance.instance.MetaTypeCheckExpression.ToImmutable();
+			MetaInstance.MetaTypeCheckExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaTypeCheckExpression_TypeReferenceProperty.ToImmutable();
+			MetaInstance.MetaTypeCheckExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaTypeCheckExpression_ExpressionProperty.ToImmutable();
+			MetaInstance.MetaTypeOfExpression = MetaBuilderInstance.instance.MetaTypeOfExpression.ToImmutable();
+			MetaInstance.MetaTypeOfExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaTypeOfExpression_TypeReferenceProperty.ToImmutable();
+			MetaInstance.MetaConditionalExpression = MetaBuilderInstance.instance.MetaConditionalExpression.ToImmutable();
+			MetaInstance.MetaConditionalExpression_ConditionProperty = MetaBuilderInstance.instance.MetaConditionalExpression_ConditionProperty.ToImmutable();
+			MetaInstance.MetaConditionalExpression_BalancedTypeProperty = MetaBuilderInstance.instance.MetaConditionalExpression_BalancedTypeProperty.ToImmutable();
+			MetaInstance.MetaConditionalExpression_ThenProperty = MetaBuilderInstance.instance.MetaConditionalExpression_ThenProperty.ToImmutable();
+			MetaInstance.MetaConditionalExpression_ElseProperty = MetaBuilderInstance.instance.MetaConditionalExpression_ElseProperty.ToImmutable();
+			MetaInstance.MetaConstantExpression = MetaBuilderInstance.instance.MetaConstantExpression.ToImmutable();
+			MetaInstance.MetaConstantExpression_ValueProperty = MetaBuilderInstance.instance.MetaConstantExpression_ValueProperty.ToImmutable();
+			MetaInstance.MetaIdentifierExpression = MetaBuilderInstance.instance.MetaIdentifierExpression.ToImmutable();
+			MetaInstance.MetaIdentifierExpression_NameProperty = MetaBuilderInstance.instance.MetaIdentifierExpression_NameProperty.ToImmutable();
+			MetaInstance.MetaMemberAccessExpression = MetaBuilderInstance.instance.MetaMemberAccessExpression.ToImmutable();
+			MetaInstance.MetaMemberAccessExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaMemberAccessExpression_ExpressionProperty.ToImmutable();
+			MetaInstance.MetaMemberAccessExpression_NameProperty = MetaBuilderInstance.instance.MetaMemberAccessExpression_NameProperty.ToImmutable();
+			MetaInstance.MetaFunctionCallExpression = MetaBuilderInstance.instance.MetaFunctionCallExpression.ToImmutable();
+			MetaInstance.MetaFunctionCallExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaFunctionCallExpression_ExpressionProperty.ToImmutable();
+			MetaInstance.MetaIndexerExpression = MetaBuilderInstance.instance.MetaIndexerExpression.ToImmutable();
+			MetaInstance.MetaIndexerExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaIndexerExpression_ExpressionProperty.ToImmutable();
+			MetaInstance.MetaNewExpression = MetaBuilderInstance.instance.MetaNewExpression.ToImmutable();
+			MetaInstance.MetaNewExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaNewExpression_TypeReferenceProperty.ToImmutable();
+			MetaInstance.MetaNewExpression_PropertyInitializersProperty = MetaBuilderInstance.instance.MetaNewExpression_PropertyInitializersProperty.ToImmutable();
+			MetaInstance.MetaNewPropertyInitializer = MetaBuilderInstance.instance.MetaNewPropertyInitializer.ToImmutable();
+			MetaInstance.MetaNewPropertyInitializer_ParentProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_ParentProperty.ToImmutable();
+			MetaInstance.MetaNewPropertyInitializer_PropertyNameProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_PropertyNameProperty.ToImmutable();
+			MetaInstance.MetaNewPropertyInitializer_ValueProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_ValueProperty.ToImmutable();
+			MetaInstance.MetaNewPropertyInitializer_PropertyProperty = MetaBuilderInstance.instance.MetaNewPropertyInitializer_PropertyProperty.ToImmutable();
+			MetaInstance.MetaNewCollectionExpression = MetaBuilderInstance.instance.MetaNewCollectionExpression.ToImmutable();
+			MetaInstance.MetaNewCollectionExpression_TypeReferenceProperty = MetaBuilderInstance.instance.MetaNewCollectionExpression_TypeReferenceProperty.ToImmutable();
+			MetaInstance.MetaNewCollectionExpression_ValuesProperty = MetaBuilderInstance.instance.MetaNewCollectionExpression_ValuesProperty.ToImmutable();
+			MetaInstance.MetaOperatorExpression = MetaBuilderInstance.instance.MetaOperatorExpression.ToImmutable();
+			MetaInstance.MetaOperatorExpression_NameProperty = MetaBuilderInstance.instance.MetaOperatorExpression_NameProperty.ToImmutable();
+			MetaInstance.MetaUnaryExpression = MetaBuilderInstance.instance.MetaUnaryExpression.ToImmutable();
+			MetaInstance.MetaUnaryExpression_ExpressionProperty = MetaBuilderInstance.instance.MetaUnaryExpression_ExpressionProperty.ToImmutable();
+			MetaInstance.MetaUnaryPlusExpression = MetaBuilderInstance.instance.MetaUnaryPlusExpression.ToImmutable();
+			MetaInstance.MetaNegateExpression = MetaBuilderInstance.instance.MetaNegateExpression.ToImmutable();
+			MetaInstance.MetaOnesComplementExpression = MetaBuilderInstance.instance.MetaOnesComplementExpression.ToImmutable();
+			MetaInstance.MetaNotExpression = MetaBuilderInstance.instance.MetaNotExpression.ToImmutable();
+			MetaInstance.MetaUnaryAssignExpression = MetaBuilderInstance.instance.MetaUnaryAssignExpression.ToImmutable();
+			MetaInstance.MetaPostIncrementAssignExpression = MetaBuilderInstance.instance.MetaPostIncrementAssignExpression.ToImmutable();
+			MetaInstance.MetaPostDecrementAssignExpression = MetaBuilderInstance.instance.MetaPostDecrementAssignExpression.ToImmutable();
+			MetaInstance.MetaPreIncrementAssignExpression = MetaBuilderInstance.instance.MetaPreIncrementAssignExpression.ToImmutable();
+			MetaInstance.MetaPreDecrementAssignExpression = MetaBuilderInstance.instance.MetaPreDecrementAssignExpression.ToImmutable();
+			MetaInstance.MetaBinaryExpression = MetaBuilderInstance.instance.MetaBinaryExpression.ToImmutable();
+			MetaInstance.MetaBinaryExpression_LeftProperty = MetaBuilderInstance.instance.MetaBinaryExpression_LeftProperty.ToImmutable();
+			MetaInstance.MetaBinaryExpression_RightProperty = MetaBuilderInstance.instance.MetaBinaryExpression_RightProperty.ToImmutable();
+			MetaInstance.MetaBinaryArithmeticExpression = MetaBuilderInstance.instance.MetaBinaryArithmeticExpression.ToImmutable();
+			MetaInstance.MetaMultiplyExpression = MetaBuilderInstance.instance.MetaMultiplyExpression.ToImmutable();
+			MetaInstance.MetaDivideExpression = MetaBuilderInstance.instance.MetaDivideExpression.ToImmutable();
+			MetaInstance.MetaModuloExpression = MetaBuilderInstance.instance.MetaModuloExpression.ToImmutable();
+			MetaInstance.MetaAddExpression = MetaBuilderInstance.instance.MetaAddExpression.ToImmutable();
+			MetaInstance.MetaSubtractExpression = MetaBuilderInstance.instance.MetaSubtractExpression.ToImmutable();
+			MetaInstance.MetaLeftShiftExpression = MetaBuilderInstance.instance.MetaLeftShiftExpression.ToImmutable();
+			MetaInstance.MetaRightShiftExpression = MetaBuilderInstance.instance.MetaRightShiftExpression.ToImmutable();
+			MetaInstance.MetaBinaryComparisonExpression = MetaBuilderInstance.instance.MetaBinaryComparisonExpression.ToImmutable();
+			MetaInstance.MetaLessThanExpression = MetaBuilderInstance.instance.MetaLessThanExpression.ToImmutable();
+			MetaInstance.MetaLessThanOrEqualExpression = MetaBuilderInstance.instance.MetaLessThanOrEqualExpression.ToImmutable();
+			MetaInstance.MetaGreaterThanExpression = MetaBuilderInstance.instance.MetaGreaterThanExpression.ToImmutable();
+			MetaInstance.MetaGreaterThanOrEqualExpression = MetaBuilderInstance.instance.MetaGreaterThanOrEqualExpression.ToImmutable();
+			MetaInstance.MetaEqualExpression = MetaBuilderInstance.instance.MetaEqualExpression.ToImmutable();
+			MetaInstance.MetaNotEqualExpression = MetaBuilderInstance.instance.MetaNotEqualExpression.ToImmutable();
+			MetaInstance.MetaBinaryLogicalExpression = MetaBuilderInstance.instance.MetaBinaryLogicalExpression.ToImmutable();
+			MetaInstance.MetaAndExpression = MetaBuilderInstance.instance.MetaAndExpression.ToImmutable();
+			MetaInstance.MetaOrExpression = MetaBuilderInstance.instance.MetaOrExpression.ToImmutable();
+			MetaInstance.MetaExclusiveOrExpression = MetaBuilderInstance.instance.MetaExclusiveOrExpression.ToImmutable();
+			MetaInstance.MetaAndAlsoExpression = MetaBuilderInstance.instance.MetaAndAlsoExpression.ToImmutable();
+			MetaInstance.MetaOrElseExpression = MetaBuilderInstance.instance.MetaOrElseExpression.ToImmutable();
+			MetaInstance.MetaNullCoalescingExpression = MetaBuilderInstance.instance.MetaNullCoalescingExpression.ToImmutable();
+			MetaInstance.MetaAssignmentExpression = MetaBuilderInstance.instance.MetaAssignmentExpression.ToImmutable();
+			MetaInstance.MetaAssignExpression = MetaBuilderInstance.instance.MetaAssignExpression.ToImmutable();
+			MetaInstance.MetaArithmeticAssignmentExpression = MetaBuilderInstance.instance.MetaArithmeticAssignmentExpression.ToImmutable();
+			MetaInstance.MetaMultiplyAssignExpression = MetaBuilderInstance.instance.MetaMultiplyAssignExpression.ToImmutable();
+			MetaInstance.MetaDivideAssignExpression = MetaBuilderInstance.instance.MetaDivideAssignExpression.ToImmutable();
+			MetaInstance.MetaModuloAssignExpression = MetaBuilderInstance.instance.MetaModuloAssignExpression.ToImmutable();
+			MetaInstance.MetaAddAssignExpression = MetaBuilderInstance.instance.MetaAddAssignExpression.ToImmutable();
+			MetaInstance.MetaSubtractAssignExpression = MetaBuilderInstance.instance.MetaSubtractAssignExpression.ToImmutable();
+			MetaInstance.MetaLeftShiftAssignExpression = MetaBuilderInstance.instance.MetaLeftShiftAssignExpression.ToImmutable();
+			MetaInstance.MetaRightShiftAssignExpression = MetaBuilderInstance.instance.MetaRightShiftAssignExpression.ToImmutable();
+			MetaInstance.MetaLogicalAssignmentExpression = MetaBuilderInstance.instance.MetaLogicalAssignmentExpression.ToImmutable();
+			MetaInstance.MetaAndAssignExpression = MetaBuilderInstance.instance.MetaAndAssignExpression.ToImmutable();
+			MetaInstance.MetaExclusiveOrAssignExpression = MetaBuilderInstance.instance.MetaExclusiveOrAssignExpression.ToImmutable();
+			MetaInstance.MetaOrAssignExpression = MetaBuilderInstance.instance.MetaOrAssignExpression.ToImmutable();
+	
+			MetaInstance.initialized = true;
+		}
 	}
     /// <summary>
     /// Factory class for creating instances of model elements.
@@ -46962,7 +46627,7 @@ namespace MetaDslx.Core.Immutable
         public virtual void MetaAnnotationProperty(MetaAnnotationPropertyBuilder @this)
         {
             this.MetaNamedElement(@this);
-    		@this.ValueLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable();
+    		@this.ValueLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable() : null;
         }
     
         /// <summary>
@@ -47316,7 +46981,7 @@ namespace MetaDslx.Core.Immutable
         public virtual void MetaTypeConversionExpression(MetaTypeConversionExpressionBuilder @this)
         {
             this.MetaExpression(@this);
-    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable();
+    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable() : null;
         }
     
         /// <summary>
@@ -47349,7 +47014,7 @@ namespace MetaDslx.Core.Immutable
         public virtual void MetaTypeCheckExpression(MetaTypeCheckExpressionBuilder @this)
         {
             this.MetaExpression(@this);
-    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable();
+    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable() : null;
         }
     
         /// <summary>
@@ -47371,7 +47036,7 @@ namespace MetaDslx.Core.Immutable
         public virtual void MetaConditionalExpression(MetaConditionalExpressionBuilder @this)
         {
             this.MetaExpression(@this);
-    		@this.ConditionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.Bool.ToMutable();
+    		@this.ConditionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Bool.ToMutable() : null;
     		@this.ThenLazyChild.ExpectedType = () => @this.ExpectedType;
     		@this.ElseLazyChild.ExpectedType = () => @this.ExpectedType;
         }
@@ -47406,7 +47071,7 @@ namespace MetaDslx.Core.Immutable
         public virtual void MetaMemberAccessExpression(MetaMemberAccessExpressionBuilder @this)
         {
             this.MetaBoundExpression(@this);
-    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable();
+    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable() : null;
         }
     
         /// <summary>
@@ -47418,7 +47083,7 @@ namespace MetaDslx.Core.Immutable
         {
             this.MetaBoundExpression(@this);
     		((MutableSymbolBase)@this).MChildAddLazy(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaFunctionCallExpression.ExpressionProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => false);
-    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable();
+    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable() : null;
         }
     
         /// <summary>
@@ -47430,7 +47095,7 @@ namespace MetaDslx.Core.Immutable
         {
             this.MetaBoundExpression(@this);
     		((MutableSymbolBase)@this).MChildAddLazy(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaIndexerExpression.ExpressionProperty, global::MetaDslx.Core.Immutable.MetaDescriptor.MetaBoundExpression.UniqueDefinitionProperty, () => false);
-    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable();
+    		@this.ExpressionLazyChild.ExpectedType = () => global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable() : null;
         }
     
         /// <summary>
