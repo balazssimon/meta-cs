@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Core.Test", "Test\MetaDslx.Core.Test\MetaDslx.Core.Test.csproj", "{31F5D0D7-2A21-4BC7-93C6-4B411698FCE6}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio.AnnotatedAntlr4Template", "Main\MetaDslx.VisualStudio.AnnotatedAntlr4Template\MetaDslx.VisualStudio.AnnotatedAntlr4Template.csproj", "{09DE6D64-0132-48F3-A46B-4A0E659C84EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Soal", "Samples\MetaDslx.Soal\MetaDslx.Soal.csproj", "{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableModelPrototype", "Prototypes\ImmutableModelPrototype\ImmutableModelPrototype.csproj", "{385E681B-4371-4AC0-AA21-13681CE37017}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{385E681B-4371-4AC0-AA21-13681CE37017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{385E681B-4371-4AC0-AA21-13681CE37017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{385E681B-4371-4AC0-AA21-13681CE37017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{385E681B-4371-4AC0-AA21-13681CE37017}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
