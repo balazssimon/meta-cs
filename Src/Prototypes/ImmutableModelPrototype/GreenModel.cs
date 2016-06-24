@@ -11,6 +11,7 @@ namespace ImmutableModelPrototype
 {
     public abstract class SymbolId
     {
+        public abstract ModelSymbol ModelSymbol { get; }
     }
 
     public class ModelId
@@ -140,9 +141,10 @@ namespace ImmutableModelPrototype
         }
     }
 
-    public class GreenSymbol
+    internal class GreenSymbol
     {
-        public static readonly GreenSymbol Empty = new GreenSymbol();
+        internal static readonly GreenSymbol Empty = new GreenSymbol();
+        internal static readonly object Unassigned = new object();
 
         private SymbolId parent;
         private ImmutableList<SymbolId> children;
@@ -164,7 +166,7 @@ namespace ImmutableModelPrototype
             this.properties = properties;
         }
 
-        public GreenSymbol Update(
+        internal GreenSymbol Update(
             SymbolId parent, 
             ImmutableList<SymbolId> children, 
             ImmutableDictionary<ModelProperty, object> properties)
@@ -176,72 +178,91 @@ namespace ImmutableModelPrototype
             return this;
         }
 
-        public SymbolId Parent { get { return this.parent; } }
-        public ImmutableList<SymbolId> Children { get { return this.children; } }
-        public ImmutableDictionary<ModelProperty, object> Properties { get { return this.properties; } }
+        internal static GreenSymbol CreateWithProperties(ImmutableList<ModelProperty> properties)
+        {
+            return GreenSymbol.Empty.Update(
+                null, 
+                ImmutableList<SymbolId>.Empty, 
+                properties.ToImmutableDictionary(p => p, p => GreenSymbol.Unassigned));
+        }
+
+        internal SymbolId Parent { get { return this.parent; } }
+        internal ImmutableList<SymbolId> Children { get { return this.children; } }
+        internal ImmutableDictionary<ModelProperty, object> Properties { get { return this.properties; } }
     }
 
-    public class GreenModel
+    internal class GreenModel
     {
         private ModelId id;
         private ImmutableDictionary<SymbolId, GreenSymbol> symbols;
+        private ImmutableDictionary<SymbolId, ImmutableList<ModelProperty>> lazyProperties;
         private ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ModelProperty>> references;
 
-        public GreenModel(ModelId id)
+        internal GreenModel(ModelId id)
         {
             this.id = id;
             this.symbols = ImmutableDictionary<SymbolId, GreenSymbol>.Empty;
+            this.lazyProperties = ImmutableDictionary<SymbolId, ImmutableList<ModelProperty>>.Empty;
             this.references = ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ModelProperty>>.Empty;
         }
 
         private GreenModel(ModelId id, 
-            ImmutableDictionary<SymbolId, GreenSymbol> symbols, 
+            ImmutableDictionary<SymbolId, GreenSymbol> symbols,
+            ImmutableDictionary<SymbolId, ImmutableList<ModelProperty>> lazyProperties,
             ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ModelProperty>> references)
         {
             this.id = id;
             this.symbols = symbols;
+            this.lazyProperties = lazyProperties;
             this.references = references;
         }
 
-        public GreenModel Update(
+        internal GreenModel Update(
             ImmutableDictionary<SymbolId, GreenSymbol> symbols,
+            ImmutableDictionary<SymbolId, ImmutableList<ModelProperty>> lazyProperties,
             ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ModelProperty>> references)
         {
-            if (this.symbols != symbols || this.references != references)
+            if (this.symbols != symbols || this.lazyProperties != lazyProperties || this.references != references)
             {
-                return new GreenModel(this.id, symbols, references);
+                return new GreenModel(this.id, symbols, lazyProperties, references);
             }
             return this;
         }
 
-        public ModelId Id { get { return this.id; } }
-        public ImmutableDictionary<SymbolId, GreenSymbol> Symbols { get { return this.symbols; } }
-        public ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ModelProperty>> References { get { return this.references; } }
+        internal ModelId Id { get { return this.id; } }
+        internal ImmutableDictionary<SymbolId, GreenSymbol> Symbols { get { return this.symbols; } }
+        internal ImmutableDictionary<SymbolId, ImmutableList<ModelProperty>> LazyProperties { get { return this.lazyProperties; } }
+        internal ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ModelProperty>> References { get { return this.references; } }
+
+        internal GreenModel AddSymbol(SymbolId id)
+        {
+            return this.Update(this.symbols.Add(id, id.ModelSymbol.EmptyGreenSymbol), this.lazyProperties, this.references);
+        }
     }
 
-    public class GreenModelUpdater
+    /// <summary>
+    /// This class is responsible for updating a green model. The class is not thread-safe,
+    /// and it should be used only from a single thread.
+    /// </summary>
+    /// If multiple threads can update the model, create a different updater for each thread, 
+    /// and merge the results using the following pattern:
+    ///     do
+    ///     {
+    ///         oldState = someObject.State;
+    ///         newState = oldState.WithSomeChanges(); // this is where to call the updater of the current thread
+    ///     } while (Interlocked.CompareExchange(ref someObject.State, newState, oldState) != oldState;
+    internal class GreenModelUpdater
     {
         private GreenModel model;
 
-        public GreenModelUpdater(GreenModel model)
+        internal GreenModelUpdater(GreenModel model)
         {
             this.model = model;
         }
 
-        private bool Update(GreenModel oldModel, GreenModel newModel)
+        internal void AddSymbol(SymbolId id)
         {
-            return Interlocked.CompareExchange(ref this.model, newModel, oldModel) == oldModel;
-        }
-
-        public void AddSymbol(SymbolId id)
-        {
-            GreenModel oldModel;
-            GreenModel newModel;
-            do
-            {
-                oldModel = this.model;
-                newModel = oldModel.Update(oldModel.Symbols.Add(id, GreenSymbol.Empty), oldModel.References);
-            } while (!this.Update(oldModel, newModel));
+            this.model = this.model.AddSymbol(id);
         }
     }
 }

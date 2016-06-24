@@ -45,9 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GreenModel.cs" />
+    <Compile Include="ImmutableModel.cs" />
     <Compile Include="ModelProperty.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RedModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
