@@ -303,6 +303,11 @@ namespace ImmutableModelPrototype
             // TODO
         }
 
+        public bool HasAffectedProperties(ModelProperty property)
+        {
+            return this.relatedProperties.ContainsKey(property);
+        }
+
         public abstract Type MutableType { get; }
         public abstract Type ImmutableType { get; }
         protected abstract void RegisterProperties();
