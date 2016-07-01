@@ -13,7 +13,11 @@ namespace ImmutableModelPrototype
 {
     public abstract class SymbolId
     {
-        public abstract ModelSymbol ModelSymbol { get; }
+        public abstract ModelSymbolInfo ModelSymbol { get; }
+        public abstract Type MutableType { get; }
+        public abstract Type ImmutableType { get; }
+        public abstract object CreateMutable();
+        public abstract object CreateImmutable();
     }
 
     public class ModelId
@@ -879,7 +883,7 @@ namespace ImmutableModelPrototype
                 throw new ModelException("Null value cannot be assigned to property: " + this.PropertyRef(symbolRef.Id, property));
             }
             if (!(value == null || value == GreenSymbol.Unassigned || (value is GreenLazyValue) || (value is GreenDerivedValue) ||
-                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).ModelSymbol.MutableType))) ||
+                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).MutableType))) ||
                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
             {
                 throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be assigned to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
@@ -916,7 +920,7 @@ namespace ImmutableModelPrototype
                 throw new ModelException("Null value cannot be added to property: " + this.PropertyRef(symbolRef.Id, property));
             }
             if (!(value == null || (value is GreenLazyValue) || 
-                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).ModelSymbol.MutableType))) ||
+                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).MutableType))) ||
                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
             {
                 throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be added to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");

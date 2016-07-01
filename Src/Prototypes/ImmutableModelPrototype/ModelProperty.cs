@@ -3,99 +3,226 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ImmutableModelPrototype
 {
-    [Flags]
-    public enum ModelPropertyFlags : uint
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public sealed class ModelSymbolDecriptorAttribute : Attribute
     {
-        Readonly = 0x0001,
-        Derived = 0x0002,
-        NonUnique = 0x0004,
-        NonNull = 0x0008,
-        Containment = 0x0010,
+        private ImmutableArray<Type> baseSymbolDescriptors;
+
+        public ModelSymbolDecriptorAttribute(Type[] baseSymbolDescriptors)
+        {
+            this.baseSymbolDescriptors = baseSymbolDescriptors.ToImmutableArray();
+        }
+
+        public ImmutableArray<Type> BaseSymbolDescriptors { get { return this.baseSymbolDescriptors; } }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
+    public sealed class OppositeAttribute : Attribute
+    {
+        public OppositeAttribute(Type declaringType, string propertyName)
+        {
+            this.DeclaringType = declaringType;
+            this.PropertyName = propertyName;
+        }
+
+        public Type DeclaringType { get; private set; }
+        public string PropertyName { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
+    public sealed class SubsetsAttribute : Attribute
+    {
+        public SubsetsAttribute(Type declaringType, string propertyName)
+        {
+            this.DeclaringType = declaringType;
+            this.PropertyName = propertyName;
+        }
+
+        public Type DeclaringType { get; private set; }
+        public string PropertyName { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
+    public sealed class SubtypesAttribute : Attribute
+    {
+        public SubtypesAttribute(Type declaringType, string propertyName)
+        {
+            this.DeclaringType = declaringType;
+            this.PropertyName = propertyName;
+        }
+
+        public Type DeclaringType { get; private set; }
+        public string PropertyName { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
+    public sealed class RedefinesAttribute : Attribute
+    {
+        public RedefinesAttribute(Type declaringType, string propertyName)
+        {
+            this.DeclaringType = declaringType;
+            this.PropertyName = propertyName;
+        }
+
+        public Type DeclaringType { get; private set; }
+        public string PropertyName { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public sealed class ReadonlyAttribute : Attribute
+    {
+        public ReadonlyAttribute()
+        {
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public sealed class DerivedAttribute : Attribute
+    {
+        public DerivedAttribute()
+        {
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public sealed class NonUniqueAttribute : Attribute
+    {
+        public NonUniqueAttribute()
+        {
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public sealed class NonNullAttribute : Attribute
+    {
+        public NonNullAttribute()
+        {
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public sealed class ContainmentAttribute : Attribute
+    {
+        public ContainmentAttribute()
+        {
+        }
+    }
+
+
+    [Flags]
+    internal enum ModelPropertyFlags : uint
+    {
+        None = 0x0000,
+        Symbol = 0x0001,
+        Collection = 0x0002,
+        Readonly = 0x0004,
+        Derived = 0x0008,
+        Union = 0x0010,
+        NonUnique = 0x0020,
+        NonNull = 0x0040,
+        Containment = 0x0080
     }
 
     public sealed class ModelProperty
     {
-        private ModelSymbol declaringSymbol;
+        private ModelSymbolInfo declaringSymbol;
         private string name;
         private ModelPropertyFlags flags;
-        private bool isSymbol;
-        private bool isCollection;
         private ModelPropertyTypeInfo immutableTypeInfo;
         private ModelPropertyTypeInfo mutableTypeInfo;
+        private ImmutableList<Attribute> annotations;
         private ImmutableList<ModelProperty> subsettedProperties;
         private ImmutableList<ModelProperty> subtypedProperties;
         private ImmutableList<ModelProperty> redefinedProperties;
         private ImmutableList<ModelProperty> oppositeProperties;
 
-        private ModelProperty(ModelSymbol declaringSymbol, string name, ModelPropertyFlags flags, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo)
+        private ModelProperty(ModelSymbolInfo declaringSymbol, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo)
         {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (immutableTypeInfo == null) throw new ArgumentNullException(nameof(immutableTypeInfo));
+            if (mutableTypeInfo == null) throw new ArgumentNullException(nameof(mutableTypeInfo));
+            if ((immutableTypeInfo.CollectionType == null && mutableTypeInfo.CollectionType != null) ||
+                (immutableTypeInfo.CollectionType != null && mutableTypeInfo.CollectionType == null))
+            {
+                throw new ArgumentException("The immutable and mutable types must both be either a collection or a non-collection.");
+            }
             this.declaringSymbol = declaringSymbol;
             this.name = name;
-            this.flags = flags;
-            this.isSymbol = immutableTypeInfo.Type is ISymbol || mutableTypeInfo.Type is ISymbol;
-            this.isCollection = immutableTypeInfo.CollectionType != null && mutableTypeInfo.CollectionType != null;
+            this.flags = ModelPropertyFlags.None;
+            if (immutableTypeInfo.Type is ISymbol || mutableTypeInfo.Type is ISymbol)
+            {
+                this.flags |= ModelPropertyFlags.Symbol;
+            }
+            if (immutableTypeInfo.CollectionType != null && mutableTypeInfo.CollectionType != null)
+            {
+                this.flags |= ModelPropertyFlags.Collection;
+            }
             this.immutableTypeInfo = immutableTypeInfo;
             this.mutableTypeInfo = mutableTypeInfo;
+            FieldInfo info = declaringSymbol.SymbolDescriptorType.GetField(name + "Property", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            if (info == null) throw new ModelException("Cannot find static field '"+name+"Property' in "+ declaringSymbol.SymbolDescriptorType.FullName+".");
+            this.annotations = info.GetCustomAttributes().ToImmutableList();
+            this.Initialize();
         }
 
-        internal static ModelProperty Create(ModelSymbol declaringSymbol, string name, ModelPropertyFlags flags, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo)
+        public static ModelProperty Register(Type declaringType, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo)
         {
-            return new ModelProperty(declaringSymbol, name, flags, immutableTypeInfo, mutableTypeInfo);
+            ModelSymbolInfo symbolInfo = ModelSymbolInfo.GetSymbolInfo(declaringType);
+            return new ModelProperty(symbolInfo, name, immutableTypeInfo, mutableTypeInfo);
         }
 
-        internal void RegisterSubsettedProperty(ModelProperty property)
-        {
-            if (property == null) throw new ArgumentNullException(nameof(property));
-            if (!this.subsettedProperties.Contains(property))
-            {
-                this.subsettedProperties = this.subsettedProperties.Add(property);
-            }
-        }
-
-        internal void RegisterSubtypedProperty(ModelProperty property)
-        {
-            if (property == null) throw new ArgumentNullException(nameof(property));
-            if (!this.subtypedProperties.Contains(property))
-            {
-                this.subtypedProperties = this.subtypedProperties.Add(property);
-            }
-        }
-
-        internal void RegisterRedefinedProperty(ModelProperty property)
-        {
-            if (property == null) throw new ArgumentNullException(nameof(property));
-            if (!this.redefinedProperties.Contains(property))
-            {
-                this.redefinedProperties = this.redefinedProperties.Add(property);
-            }
-        }
-
-        internal void RegisterOppositeProperty(ModelProperty property)
-        {
-            if (property == null) throw new ArgumentNullException(nameof(property));
-            if (!this.oppositeProperties.Contains(property))
-            {
-                this.oppositeProperties = this.oppositeProperties.Add(property);
-            }
-        }
-
-        public ModelSymbol DeclaringSymbol { get { return this.declaringSymbol; } }
+        public ModelSymbolInfo DeclaringSymbol { get { return this.declaringSymbol; } }
         public string Name { get { return this.name; } }
-        public bool IsSymbol { get { return this.isSymbol; } }
-        public bool IsCollection { get { return this.isCollection; } }
+        public bool IsSymbol { get { return this.flags.HasFlag(ModelPropertyFlags.Symbol); } }
+        public bool IsCollection { get { return this.flags.HasFlag(ModelPropertyFlags.Collection); } }
         public bool IsReadonly { get { return this.flags.HasFlag(ModelPropertyFlags.Readonly); } }
         public bool IsDerived { get { return this.flags.HasFlag(ModelPropertyFlags.Derived); } }
+        public bool IsUnion { get { return this.flags.HasFlag(ModelPropertyFlags.Union); } }
         public bool IsNonNull { get { return this.flags.HasFlag(ModelPropertyFlags.NonNull); } }
         public bool IsUnique { get { return !this.flags.HasFlag(ModelPropertyFlags.NonUnique); } }
         public bool IsContainment { get { return this.flags.HasFlag(ModelPropertyFlags.Containment); } }
         public ModelPropertyTypeInfo ImmutableTypeInfo { get { return this.immutableTypeInfo; } }
         public ModelPropertyTypeInfo MutableTypeInfo { get { return this.mutableTypeInfo; } }
+
+        private void Initialize()
+        {
+            foreach (var annot in this.annotations)
+            {
+                if (annot is OppositeAttribute)
+                {
+                    OppositeAttribute oppositeAnnot = (OppositeAttribute)annot;
+                    ModelSymbolInfo oppositeSymbol = ModelSymbolInfo.GetSymbolInfo(oppositeAnnot.DeclaringType);
+                    ModelProperty oppositeProperty = oppositeSymbol.GetDeclaredProperty(oppositeAnnot.PropertyName);
+                    this.RegisterOppositeProperty(oppositeProperty);
+                }
+            }
+        }
+
+        private void RegisterOppositeProperty(ModelProperty property)
+        {
+            ImmutableList<ModelProperty> oldProperties;
+            ImmutableList<ModelProperty> newProperties;
+            do
+            {
+                oldProperties = this.oppositeProperties;
+                if (!oldProperties.Contains(property))
+                {
+                    newProperties = oldProperties.Add(property);
+                }
+                else
+                {
+                    newProperties = oldProperties;
+                }
+            } while (Interlocked.CompareExchange(ref this.oppositeProperties, newProperties, oldProperties) != oldProperties);
+        }
     }
 
     public sealed class ModelPropertyTypeInfo
@@ -113,7 +240,7 @@ namespace ImmutableModelPrototype
         public System.Type CollectionType { get { return this.collectionType; } }
     }
 
-    public sealed class RelatedProperties
+    public sealed class ModelPropertyInfo
     {
         private ImmutableList<ModelProperty> subsettedProperties;
         private ImmutableList<ModelProperty> subsettingProperties;
@@ -128,7 +255,7 @@ namespace ImmutableModelPrototype
         private ImmutableList<ModelProperty> addAffectedTypedProperties;
         private ImmutableList<ModelProperty> removeAffectedTypedProperties;
 
-        internal RelatedProperties()
+        internal ModelPropertyInfo()
         {
             this.subsettedProperties = ImmutableList<ModelProperty>.Empty;
             this.subsettingProperties = ImmutableList<ModelProperty>.Empty;
@@ -158,160 +285,178 @@ namespace ImmutableModelPrototype
 
     }
 
-    public abstract class ModelSymbol
+    public sealed class ModelSymbolInfo
     {
+        private static ImmutableDictionary<Type, ModelSymbolInfo> symbols = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
+
         private bool initialized;
+        private Type symbolDescriptorType;
         private GreenSymbol emptyGreenSymbol;
-        private ImmutableList<ModelSymbol> baseSymbols;
+        private ImmutableList<Attribute> annotations;
+        private ImmutableList<ModelSymbolInfo> baseSymbols;
         private ImmutableList<ModelProperty> declaredProperties;
-        private ImmutableDictionary<ModelProperty, RelatedProperties> relatedProperties;
+        private ImmutableDictionary<ModelProperty, ModelPropertyInfo> propertyInfo;
         private ImmutableList<ModelProperty> properties;
 
-        protected ModelSymbol()
+        private ModelSymbolInfo(Type symbolDescriptorType)
         {
             this.initialized = false;
-            this.baseSymbols = ImmutableList<ModelSymbol>.Empty;
+            this.symbolDescriptorType = symbolDescriptorType;
+            this.annotations = symbolDescriptorType.GetCustomAttributes(false).OfType<Attribute>().ToImmutableList();
+            this.emptyGreenSymbol = GreenSymbol.Empty;
+            this.baseSymbols = ImmutableList<ModelSymbolInfo>.Empty;
             this.declaredProperties = ImmutableList<ModelProperty>.Empty;
-            this.relatedProperties = ImmutableDictionary<ModelProperty, RelatedProperties>.Empty;
-            this.properties = null;
+            this.propertyInfo = ImmutableDictionary<ModelProperty, ModelPropertyInfo>.Empty;
+            this.properties = ImmutableList<ModelProperty>.Empty;
         }
 
-        protected void AddBaseSymbol(ModelSymbol baseSymbol)
+        internal static ModelSymbolInfo GetSymbolInfo(Type symbolDescriptorType)
         {
-            Debug.Assert(baseSymbol != null);
-            if (baseSymbol == null) return;
-            if (!this.baseSymbols.Contains(baseSymbol))
+            ImmutableDictionary<Type, ModelSymbolInfo> oldSymbols;
+            ImmutableDictionary<Type, ModelSymbolInfo> newSymbols;
+            ModelSymbolInfo newSymbolInfo = null;
+            do
             {
-                this.baseSymbols = this.baseSymbols.Add(baseSymbol);
-                this.properties = null;
-            }
+                oldSymbols = ModelSymbolInfo.symbols;
+                ModelSymbolInfo result;
+                if (oldSymbols.TryGetValue(symbolDescriptorType, out result))
+                {
+                    return result;
+                }
+                else
+                {
+                    if (newSymbolInfo == null) newSymbolInfo = new ModelSymbolInfo(symbolDescriptorType);
+                    newSymbols = oldSymbols.Add(symbolDescriptorType, newSymbolInfo);
+                }
+            } while (Interlocked.CompareExchange(ref ModelSymbolInfo.symbols, newSymbols, oldSymbols) != oldSymbols);
+            return newSymbolInfo;
         }
 
-        protected ModelProperty AddProperty(string name, ModelPropertyFlags flags, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo)
+        internal ModelProperty GetDeclaredProperty(string name)
+        {
+            RuntimeHelpers.RunClassConstructor(this.symbolDescriptorType.TypeHandle);
+            return this.declaredProperties.FirstOrDefault(p => p.Name == name);
+        }
+
+        public static ImmutableDictionary<Type, ModelSymbolInfo> Symbols
+        {
+            get { return ModelSymbolInfo.symbols; }
+        }
+
+        internal void AddBaseSymbol(ModelSymbolInfo baseSymbol)
+        {
+            if (this.initialized) throw new InvalidOperationException("Cannot add a base symbol to an initialized symbol.");
+            ImmutableList<ModelSymbolInfo> oldBaseSymbols;
+            ImmutableList<ModelSymbolInfo> newBaseSymbols;
+            do
+            {
+                oldBaseSymbols = this.baseSymbols;
+                if (!oldBaseSymbols.Contains(baseSymbol))
+                {
+                    newBaseSymbols = oldBaseSymbols.Add(baseSymbol);
+                }
+                else
+                {
+                    newBaseSymbols = oldBaseSymbols;
+                }
+            } while (Interlocked.CompareExchange(ref this.baseSymbols, newBaseSymbols, oldBaseSymbols) != oldBaseSymbols);
+        }
+
+        internal void AddProperty(ModelProperty property)
         {
             if (this.initialized) throw new InvalidOperationException("Cannot register a property into an initialized symbol.");
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (immutableTypeInfo == null) throw new ArgumentNullException(nameof(immutableTypeInfo));
-            if (mutableTypeInfo == null) throw new ArgumentNullException(nameof(mutableTypeInfo));
-            if ((immutableTypeInfo.CollectionType == null && mutableTypeInfo.CollectionType != null) ||
-                (immutableTypeInfo.CollectionType != null && mutableTypeInfo.CollectionType == null))
+            if (this.declaredProperties.Any(p => p.Name == property.Name))
             {
-                throw new ArgumentException("The immutable and mutable types must both be either a collection or a non-collection.");
-            }
-            if (this.declaredProperties.Any(p => p.Name == name))
-            {
-                throw new InvalidOperationException("A property with name '" + name + "' is already declared for " + this.ToString());
+                throw new InvalidOperationException("A property with name '" + property.Name + "' is already declared for " + this.ToString());
             }
             else
             {
-                ModelProperty property = ModelProperty.Create(this, name, flags, immutableTypeInfo, mutableTypeInfo);
-                this.declaredProperties = this.declaredProperties.Add(property);
-                this.properties = null;
-                return property;
+                ImmutableList<ModelProperty> oldDeclaredProperties;
+                ImmutableList<ModelProperty> newDeclaredProperties;
+                do
+                {
+                    oldDeclaredProperties = this.declaredProperties;
+                    newDeclaredProperties = oldDeclaredProperties.Add(property);
+                } while (Interlocked.CompareExchange(ref this.declaredProperties, newDeclaredProperties, oldDeclaredProperties) != oldDeclaredProperties);
             }
         }
 
-        protected void RegisterSubsettingProperty(ModelProperty subsettingProperty, ModelProperty subsettedProperty)
-        {
-            if (this.initialized) throw new InvalidOperationException("Cannot register a property into an initialized symbol.");
-            if (subsettingProperty == null) throw new ArgumentNullException(nameof(subsettingProperty));
-            if (subsettedProperty == null) throw new ArgumentNullException(nameof(subsettedProperty));
-            if (!this.declaredProperties.Contains(subsettingProperty)) throw new ArgumentOutOfRangeException("The subsetting property must be declared in this symbol.");
-            if (!this.Properties.Contains(subsettedProperty)) throw new ArgumentOutOfRangeException("The subsetted property must be declared in this symbol or in a base symbol.");
-            subsettingProperty.RegisterSubsettedProperty(subsettedProperty);
-        }
-
-        protected void RegisterSubtypingProperty(ModelProperty subtypingProperty, ModelProperty subtypedProperty)
-        {
-            if (this.initialized) throw new InvalidOperationException("Cannot register a property into an initialized symbol.");
-            if (subtypingProperty == null) throw new ArgumentNullException(nameof(subtypingProperty));
-            if (subtypedProperty == null) throw new ArgumentNullException(nameof(subtypedProperty));
-            if (!this.declaredProperties.Contains(subtypingProperty)) throw new ArgumentOutOfRangeException("The subtyping property must be declared in this symbol.");
-            if (!this.Properties.Contains(subtypedProperty)) throw new ArgumentOutOfRangeException("The subtyped property must be declared in this symbol or in a base symbol.");
-            subtypingProperty.RegisterSubsettedProperty(subtypedProperty);
-        }
-
-        protected void RegisterRedefiningProperty(ModelProperty redefiningProperty, ModelProperty redefinedProperty)
-        {
-            if (this.initialized) throw new InvalidOperationException("Cannot register a property into an initialized symbol.");
-            if (redefiningProperty == null) throw new ArgumentNullException(nameof(redefiningProperty));
-            if (redefinedProperty == null) throw new ArgumentNullException(nameof(redefinedProperty));
-            if (!this.declaredProperties.Contains(redefiningProperty)) throw new ArgumentOutOfRangeException("The redefining property must be declared in this symbol.");
-            if (!this.Properties.Contains(redefinedProperty)) throw new ArgumentOutOfRangeException("The redefined property must be declared in this symbol or in a base symbol.");
-            redefiningProperty.RegisterSubsettedProperty(redefinedProperty);
-        }
-
-        private void RegisterOppositeProperty(ModelProperty declaredProperty, ModelProperty oppositeProperty)
-        {
-            declaredProperty.RegisterOppositeProperty(oppositeProperty);
-        }
-
-        public static void RegisterOppositeProperties(ModelProperty firstEnd, ModelProperty otherEnd)
-        {
-            if (firstEnd == null) throw new ArgumentNullException(nameof(firstEnd));
-            if (otherEnd == null) throw new ArgumentNullException(nameof(otherEnd));
-            ModelSymbol firstSymbol = firstEnd.DeclaringSymbol;
-            ModelSymbol otherSymbol = otherEnd.DeclaringSymbol;
-            if (firstSymbol.initialized) throw new InvalidOperationException("Cannot register an opposite property into an initialized symbol.");
-            if (otherSymbol.initialized) throw new InvalidOperationException("Cannot register an opposite property into an initialized symbol.");
-            firstSymbol.RegisterOppositeProperty(firstEnd, otherEnd);
-            otherSymbol.RegisterOppositeProperty(otherEnd, firstEnd);
-        }
-
-        public bool Initialized { get { return this.initialized; } }
-        public ImmutableList<ModelSymbol> BaseSymbols { get { return this.baseSymbols; } }
+        internal bool Initialized { get { return this.initialized; } }
+        internal Type SymbolDescriptorType { get { return this.symbolDescriptorType; } }
+        public ImmutableList<Attribute> Annotations { get { return this.annotations; } }
+        public ImmutableList<ModelSymbolInfo> BaseSymbols { get { return this.baseSymbols; } }
         public ImmutableList<ModelProperty> DeclaredProperties { get { return this.declaredProperties; } }
         public ImmutableList<ModelProperty> Properties
         {
             get
             {
-                ImmutableList<ModelProperty> result = this.properties;
-                if (result != null) return result;
-                result = ImmutableList<ModelProperty>.Empty;
-                foreach (var baseSymbol in this.baseSymbols)
-                {
-                    foreach (var prop in baseSymbol.Properties)
-                    {
-                        if (!result.Contains(prop))
-                        {
-                            result = result.Add(prop);
-                        }
-                    }
-                }
-                result.AddRange(this.declaredProperties);
-                result = Interlocked.CompareExchange(ref this.properties, result, null) ?? result;
-                return result;
+                if (!this.initialized) this.Initialize();
+                return this.properties;
             }
         }
-        internal ImmutableDictionary<ModelProperty, RelatedProperties> RelatedProperties { get { return this.relatedProperties; } }
+        internal ImmutableDictionary<ModelProperty, ModelPropertyInfo> PropertyInfo
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.propertyInfo;
+            }
+        }
+        internal GreenSymbol EmptyGreenSymbol
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.emptyGreenSymbol;
+            }
+        }
 
-        public void Initialize()
+
+        private void Initialize()
         {
             if (this.initialized) return;
             lock (this)
             {
                 if (this.initialized) return;
-                this.RegisterProperties();
-                this.CreateRelatedProperties();
-                this.emptyGreenSymbol = GreenSymbol.CreateWithProperties(this.Properties);
+                RuntimeHelpers.RunClassConstructor(this.symbolDescriptorType.TypeHandle);
+                this.CreateProperties();
+                this.CreatePropertyInfo();
+                this.CreateEmptyGreenSymbol();
                 this.initialized = true;
             }
         }
 
-        private void CreateRelatedProperties()
+        private void CreateProperties()
+        {
+            ImmutableList<ModelProperty> properties = ImmutableList<ModelProperty>.Empty;
+            foreach (var baseSymbol in this.baseSymbols)
+            {
+                foreach (var prop in baseSymbol.Properties)
+                {
+                    if (!properties.Contains(prop))
+                    {
+                        properties = properties.Add(prop);
+                    }
+                }
+            }
+            properties.AddRange(this.declaredProperties);
+            Interlocked.Exchange(ref this.properties, properties);
+        }
+
+        private void CreatePropertyInfo()
         {
             // TODO
         }
 
-        public bool HasAffectedProperties(ModelProperty property)
+        private void CreateEmptyGreenSymbol()
         {
-            return this.relatedProperties.ContainsKey(property);
+            Interlocked.Exchange(ref this.emptyGreenSymbol, GreenSymbol.CreateWithProperties(this.Properties));
         }
 
-        public abstract Type MutableType { get; }
-        public abstract Type ImmutableType { get; }
-        protected abstract void RegisterProperties();
-        internal GreenSymbol EmptyGreenSymbol { get { return this.emptyGreenSymbol; } }
+        public bool HasAffectedProperties(ModelProperty property)
+        {
+            return this.propertyInfo.ContainsKey(property);
+        }
 
         public override string ToString()
         {
