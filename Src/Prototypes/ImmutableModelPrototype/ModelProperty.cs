@@ -51,19 +51,6 @@ namespace ImmutableModelPrototype
     }
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
-    public sealed class SubtypesAttribute : Attribute
-    {
-        public SubtypesAttribute(Type declaringType, string propertyName)
-        {
-            this.DeclaringType = declaringType;
-            this.PropertyName = propertyName;
-        }
-
-        public Type DeclaringType { get; private set; }
-        public string PropertyName { get; private set; }
-    }
-
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
     public sealed class RedefinesAttribute : Attribute
     {
         public RedefinesAttribute(Type declaringType, string propertyName)
@@ -88,6 +75,14 @@ namespace ImmutableModelPrototype
     public sealed class DerivedAttribute : Attribute
     {
         public DerivedAttribute()
+        {
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public sealed class UnionAttribute : Attribute
+    {
+        public UnionAttribute()
         {
         }
     }
@@ -133,6 +128,8 @@ namespace ImmutableModelPrototype
 
     public sealed class ModelProperty
     {
+        private static object lockObject = new object();
+        private bool initialized;
         private ModelSymbolInfo declaringSymbol;
         private string name;
         private ModelPropertyFlags flags;
@@ -140,7 +137,6 @@ namespace ImmutableModelPrototype
         private ModelPropertyTypeInfo mutableTypeInfo;
         private ImmutableList<Attribute> annotations;
         private ImmutableList<ModelProperty> subsettedProperties;
-        private ImmutableList<ModelProperty> subtypedProperties;
         private ImmutableList<ModelProperty> redefinedProperties;
         private ImmutableList<ModelProperty> oppositeProperties;
 
@@ -170,7 +166,7 @@ namespace ImmutableModelPrototype
             FieldInfo info = declaringSymbol.SymbolDescriptorType.GetField(name + "Property", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (info == null) throw new ModelException("Cannot find static field '"+name+"Property' in "+ declaringSymbol.SymbolDescriptorType.FullName+".");
             this.annotations = info.GetCustomAttributes().ToImmutableList();
-            this.Initialize();
+            this.initialized = false;
         }
 
         public static ModelProperty Register(Type declaringType, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo)
@@ -183,27 +179,209 @@ namespace ImmutableModelPrototype
         public string Name { get { return this.name; } }
         public bool IsSymbol { get { return this.flags.HasFlag(ModelPropertyFlags.Symbol); } }
         public bool IsCollection { get { return this.flags.HasFlag(ModelPropertyFlags.Collection); } }
-        public bool IsReadonly { get { return this.flags.HasFlag(ModelPropertyFlags.Readonly); } }
-        public bool IsDerived { get { return this.flags.HasFlag(ModelPropertyFlags.Derived); } }
-        public bool IsUnion { get { return this.flags.HasFlag(ModelPropertyFlags.Union); } }
-        public bool IsNonNull { get { return this.flags.HasFlag(ModelPropertyFlags.NonNull); } }
-        public bool IsUnique { get { return !this.flags.HasFlag(ModelPropertyFlags.NonUnique); } }
-        public bool IsContainment { get { return this.flags.HasFlag(ModelPropertyFlags.Containment); } }
+        public bool IsReadonly
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.flags.HasFlag(ModelPropertyFlags.Readonly);
+            }
+        }
+        public bool IsDerived
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.flags.HasFlag(ModelPropertyFlags.Derived);
+            }
+        }
+        public bool IsUnion
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.flags.HasFlag(ModelPropertyFlags.Union);
+            }
+        }
+        public bool IsNonNull
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.flags.HasFlag(ModelPropertyFlags.NonNull);
+            }
+        }
+        public bool IsUnique
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return !this.flags.HasFlag(ModelPropertyFlags.NonUnique);
+            }
+        }
+        public bool IsContainment
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.flags.HasFlag(ModelPropertyFlags.Containment);
+            }
+        }
         public ModelPropertyTypeInfo ImmutableTypeInfo { get { return this.immutableTypeInfo; } }
         public ModelPropertyTypeInfo MutableTypeInfo { get { return this.mutableTypeInfo; } }
+        public ImmutableList<Attribute> Annotations { get { return this.annotations; } }
+        public ImmutableList<ModelProperty> SubsettedProperties
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.subsettedProperties;
+            }
+        }
+        public ImmutableList<ModelProperty> RedefinedProperties
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.redefinedProperties;
+            }
+        }
+        public ImmutableList<ModelProperty> OppositeProperties
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.oppositeProperties;
+            }
+        }
 
         private void Initialize()
         {
-            foreach (var annot in this.annotations)
+            if (this.initialized) return;
+            lock (ModelProperty.lockObject)
             {
-                if (annot is OppositeAttribute)
+                if (this.initialized) return;
+                foreach (var annot in this.annotations)
                 {
-                    OppositeAttribute oppositeAnnot = (OppositeAttribute)annot;
-                    ModelSymbolInfo oppositeSymbol = ModelSymbolInfo.GetSymbolInfo(oppositeAnnot.DeclaringType);
-                    ModelProperty oppositeProperty = oppositeSymbol.GetDeclaredProperty(oppositeAnnot.PropertyName);
-                    this.RegisterOppositeProperty(oppositeProperty);
+                    if (annot is SubsetsAttribute)
+                    {
+                        SubsetsAttribute propAnnot = (SubsetsAttribute)annot;
+                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetSymbolInfo(propAnnot.DeclaringType);
+                        ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
+                        if (prop != null && (propSymbol == this.declaringSymbol || this.declaringSymbol.BaseSymbols.Contains(propSymbol)))
+                        {
+                            this.RegisterSubsettedProperty(prop);
+                        }
+                        else
+                        {
+                            Debug.Assert(false, "Subsetted property must come from this type or from a base type.");
+                        }
+                    }
+                    else if (annot is RedefinesAttribute)
+                    {
+                        RedefinesAttribute propAnnot = (RedefinesAttribute)annot;
+                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetSymbolInfo(propAnnot.DeclaringType);
+                        ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
+                        if (prop != null && (propSymbol == this.declaringSymbol || this.declaringSymbol.BaseSymbols.Contains(propSymbol)))
+                        {
+                            this.RegisterRedefinedProperty(prop);
+                        }
+                        else
+                        {
+                            Debug.Assert(false, "Redefined property must come from this type or from a base type.");
+                        }
+                    }
+                    else if (annot is OppositeAttribute)
+                    {
+                        OppositeAttribute propAnnot = (OppositeAttribute)annot;
+                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetSymbolInfo(propAnnot.DeclaringType);
+                        ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
+                        bool foundThisProperty = false;
+                        foreach (var oppositeAnnot in prop.annotations)
+                        {
+                            if (oppositeAnnot is OppositeAttribute)
+                            {
+                                OppositeAttribute propOppositeAnnot = (OppositeAttribute)oppositeAnnot;
+                                if (propOppositeAnnot.DeclaringType == this.declaringSymbol.SymbolDescriptorType &&
+                                    propOppositeAnnot.PropertyName == this.name)
+                                {
+                                    foundThisProperty = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (foundThisProperty)
+                        {
+                            this.RegisterOppositeProperty(prop);
+                        }
+                        else
+                        {
+                            Debug.Assert(false, "Opposite properties must be mutual: " + this.declaringSymbol.SymbolDescriptorType.Name + "." + this.name + " - " + propAnnot.DeclaringType.Name + "." + propAnnot.PropertyName);
+                        }
+                    }
+                    else if (annot is ReadonlyAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.Readonly;
+                    }
+                    else if (annot is DerivedAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.Derived | ModelPropertyFlags.Readonly;
+                    }
+                    else if (annot is UnionAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.Union | ModelPropertyFlags.Readonly;
+                    }
+                    else if (annot is NonUniqueAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.NonUnique;
+                    }
+                    else if (annot is NonNullAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.NonNull;
+                    }
+                    else if (annot is ContainmentAttribute)
+                    {
+                        this.flags |= ModelPropertyFlags.Containment;
+                    }
                 }
+                this.initialized = true;
             }
+        }
+
+        private void RegisterSubsettedProperty(ModelProperty property)
+        {
+            ImmutableList<ModelProperty> oldProperties;
+            ImmutableList<ModelProperty> newProperties;
+            do
+            {
+                oldProperties = this.subsettedProperties;
+                if (!oldProperties.Contains(property))
+                {
+                    newProperties = oldProperties.Add(property);
+                }
+                else
+                {
+                    newProperties = oldProperties;
+                }
+            } while (Interlocked.CompareExchange(ref this.subsettedProperties, newProperties, oldProperties) != oldProperties);
+        }
+
+        private void RegisterRedefinedProperty(ModelProperty property)
+        {
+            ImmutableList<ModelProperty> oldProperties;
+            ImmutableList<ModelProperty> newProperties;
+            do
+            {
+                oldProperties = this.redefinedProperties;
+                if (!oldProperties.Contains(property))
+                {
+                    newProperties = oldProperties.Add(property);
+                }
+                else
+                {
+                    newProperties = oldProperties;
+                }
+            } while (Interlocked.CompareExchange(ref this.redefinedProperties, newProperties, oldProperties) != oldProperties);
         }
 
         private void RegisterOppositeProperty(ModelProperty property)
@@ -242,47 +420,56 @@ namespace ImmutableModelPrototype
 
     public sealed class ModelPropertyInfo
     {
-        private ImmutableList<ModelProperty> subsettedProperties;
-        private ImmutableList<ModelProperty> subsettingProperties;
-        private ImmutableList<ModelProperty> subtypedProperties;
-        private ImmutableList<ModelProperty> subtypingProperties;
-        private ImmutableList<ModelProperty> redefinedProperties;
-        private ImmutableList<ModelProperty> redefiningProperties;
-        private ImmutableList<ModelProperty> oppositeProperties;
-
+        private ModelProperty property;
         private ImmutableList<ModelProperty> addAffectedProperties;
         private ImmutableList<ModelProperty> removeAffectedProperties;
-        private ImmutableList<ModelProperty> addAffectedTypedProperties;
-        private ImmutableList<ModelProperty> removeAffectedTypedProperties;
+        private ImmutableList<ModelProperty> addAffectedOppositeProperties;
+        private ImmutableList<ModelProperty> removeAffectedOppositeProperties;
 
-        internal ModelPropertyInfo()
+        internal ModelPropertyInfo(ModelProperty property)
         {
-            this.subsettedProperties = ImmutableList<ModelProperty>.Empty;
-            this.subsettingProperties = ImmutableList<ModelProperty>.Empty;
-            this.subtypedProperties = ImmutableList<ModelProperty>.Empty;
-            this.subtypingProperties = ImmutableList<ModelProperty>.Empty;
-            this.redefinedProperties = ImmutableList<ModelProperty>.Empty;
-            this.redefiningProperties = ImmutableList<ModelProperty>.Empty;
-            this.oppositeProperties = ImmutableList<ModelProperty>.Empty;
             this.addAffectedProperties = ImmutableList<ModelProperty>.Empty;
             this.removeAffectedProperties = ImmutableList<ModelProperty>.Empty;
-            this.addAffectedTypedProperties = ImmutableList<ModelProperty>.Empty;
-            this.removeAffectedTypedProperties = ImmutableList<ModelProperty>.Empty;
+            this.addAffectedOppositeProperties = ImmutableList<ModelProperty>.Empty;
+            this.removeAffectedOppositeProperties = ImmutableList<ModelProperty>.Empty;
         }
-
-        public ImmutableList<ModelProperty> SubsettedProperties { get { return this.subsettedProperties; } }
-        public ImmutableList<ModelProperty> SubsettingProperties { get { return this.subsettingProperties; } }
-        public ImmutableList<ModelProperty> SubtypedProperties { get { return this.subtypedProperties; } }
-        public ImmutableList<ModelProperty> SubtypingProperties { get { return this.subtypingProperties; } }
-        public ImmutableList<ModelProperty> RedefinedProperties { get { return this.redefinedProperties; } }
-        public ImmutableList<ModelProperty> RedefiningProperties { get { return this.redefiningProperties; } }
-        public ImmutableList<ModelProperty> OppositeProperties { get { return this.oppositeProperties; } }
 
         public ImmutableList<ModelProperty> AddAffectedProperties { get { return this.addAffectedProperties; } }
         public ImmutableList<ModelProperty> RemoveAffectedProperties { get { return this.removeAffectedProperties; } }
-        public ImmutableList<ModelProperty> AddAffectedTypedProperties { get { return this.addAffectedTypedProperties; } }
-        public ImmutableList<ModelProperty> RemoveAffectedTypedProperties { get { return this.removeAffectedTypedProperties; } }
+        public ImmutableList<ModelProperty> AddAffectedOppositeProperties { get { return this.addAffectedOppositeProperties; } }
+        public ImmutableList<ModelProperty> RemoveAffectedOppositeProperties { get { return this.removeAffectedOppositeProperties; } }
 
+        internal void AddAddAffectedProperty(ModelSymbolInfo symbolInfo, ModelProperty property)
+        {
+            if (property == null || property == this.property) return;
+            this.addAffectedProperties = this.addAffectedProperties.Add(property);
+            foreach (var remProp in this.removeAffectedProperties)
+            {
+                ModelPropertyInfo remPropInfo = symbolInfo.GetOrCreatePropertyInfo(remProp);
+                remPropInfo.AddAddAffectedProperty(symbolInfo, property);
+            }
+        }
+
+        internal void AddRemoveAffectedProperty(ModelSymbolInfo symbolInfo, ModelProperty property)
+        {
+            if (property == null || property == this.property) return;
+            this.removeAffectedProperties = this.removeAffectedProperties.Add(property);
+            foreach (var addProp in this.addAffectedProperties)
+            {
+                ModelPropertyInfo addPropInfo = symbolInfo.GetOrCreatePropertyInfo(addProp);
+                addPropInfo.AddRemoveAffectedProperty(symbolInfo, property);
+            }
+        }
+
+        internal void AddAddAffectedOppositeProperty(ModelProperty property)
+        {
+            this.addAffectedOppositeProperties = this.addAffectedOppositeProperties.Add(property);
+        }
+
+        internal void AddRemoveAffectedOppositeProperty(ModelProperty property)
+        {
+            this.removeAffectedOppositeProperties = this.removeAffectedOppositeProperties.Add(property);
+        }
     }
 
     public sealed class ModelSymbolInfo
@@ -445,7 +632,75 @@ namespace ImmutableModelPrototype
 
         private void CreatePropertyInfo()
         {
-            // TODO
+            foreach (var prop in this.properties)
+            {
+                if (prop.SubsettedProperties.Count > 0 || prop.RedefinedProperties.Count > 0)
+                {
+                    ModelPropertyInfo propInfo = this.GetOrCreatePropertyInfo(prop);
+                    foreach (var subsettedProp in prop.SubsettedProperties)
+                    {
+                        ModelPropertyInfo subsettedPropInfo = this.GetOrCreatePropertyInfo(subsettedProp);
+                        propInfo.AddRemoveAffectedProperty(this, subsettedProp);
+                        subsettedPropInfo.AddAddAffectedProperty(this, prop);
+                    }
+                    foreach (var redefinedProp in prop.RedefinedProperties)
+                    {
+                        ModelPropertyInfo redefinedPropInfo = this.GetOrCreatePropertyInfo(redefinedProp);
+                        propInfo.AddAddAffectedProperty(this, redefinedProp);
+                        propInfo.AddRemoveAffectedProperty(this, redefinedProp);
+                        redefinedPropInfo.AddAddAffectedProperty(this, prop);
+                        redefinedPropInfo.AddRemoveAffectedProperty(this, prop);
+                    }
+                }
+            }
+            foreach (var prop in this.properties)
+            {
+                if (prop.OppositeProperties.Count > 0)
+                {
+                    foreach (var currentProp in this.properties)
+                    {
+                        ModelPropertyInfo currentPropInfo = this.GetPropertyInfo(currentProp);
+                        if (currentPropInfo != null)
+                        {
+                            if (currentPropInfo.AddAffectedProperties.Contains(prop))
+                            {
+                                foreach (var oppositeProp in prop.OppositeProperties)
+                                {
+                                    currentPropInfo.AddAddAffectedOppositeProperty(oppositeProp);
+                                }
+                            }
+                            if (currentPropInfo.RemoveAffectedProperties.Contains(prop))
+                            {
+                                foreach (var oppositeProp in prop.OppositeProperties)
+                                {
+                                    currentPropInfo.AddRemoveAffectedOppositeProperty(oppositeProp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private ModelPropertyInfo GetPropertyInfo(ModelProperty property)
+        {
+            ModelPropertyInfo result;
+            if (this.propertyInfo.TryGetValue(property, out result))
+            {
+                return result;
+            }
+            return null;
+        }
+
+        internal ModelPropertyInfo GetOrCreatePropertyInfo(ModelProperty property)
+        {
+            ModelPropertyInfo result;
+            if (!this.propertyInfo.TryGetValue(property, out result))
+            {
+                result = new ModelPropertyInfo(property);
+                this.propertyInfo.Add(property, result);
+            }
+            return result;
         }
 
         private void CreateEmptyGreenSymbol()
