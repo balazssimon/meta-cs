@@ -705,12 +705,12 @@ namespace ImmutableModelPrototype
 
         internal object GetValue(ModelId mid, SymbolId sid, ModelProperty property, bool lazyEval)
         {
-            SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
-            Debug.Assert(symbolRef != null);
-            GreenSymbol symbol = symbolRef.Symbol;
-            GreenModel model = symbolRef.Model;
             if (lazyEval)
             {
+                SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
+                Debug.Assert(symbolRef != null);
+                GreenSymbol symbol = symbolRef.Symbol;
+                GreenModel model = symbolRef.Model;
                 ImmutableHashSet<ModelProperty> lazyProperties;
                 if (model.LazyProperties.TryGetValue(sid, out lazyProperties) && lazyProperties.Count > 0)
                 {
