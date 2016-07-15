@@ -249,9 +249,9 @@ namespace ImmutableModelPrototype
     internal class GreenModel
     {
         private ModelId id;
-        // TODO: replace with weak immutable dictionary:
-        private ImmutableDictionary<SymbolId, GreenSymbol> symbols;
         private ImmutableHashSet<SymbolId> strongSymbols;
+        // TODO: replace with immutable weak dictionaries:
+        private ImmutableDictionary<SymbolId, GreenSymbol> symbols;
         private ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties;
         private ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> references;
 
@@ -692,7 +692,8 @@ namespace ImmutableModelPrototype
                 }
                 else
                 {
-                    this.SlowAddValueCore(symbolRef, property, reassign, -1, value, oldValue);
+                    this.SlowRemoveValueCore(symbolRef, property, true, reassign, -1, false, oldValue, null, null);
+                    this.SlowAddValueCore(symbolRef, property, reassign, -1, value, null, null);
                 }
             }
         }
@@ -707,13 +708,14 @@ namespace ImmutableModelPrototype
             {
                 if (!sid.ModelSymbol.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
                 {
-                    if (replace) this.RemoveItemCore(symbolRef, property, reassign, index, false, null);
+                    object oldValue = null;
+                    if (replace && index >= 0) this.RemoveItemCore(symbolRef, property, true, reassign, index, false, ref oldValue);
                     this.AddItemCore(symbolRef, property, reassign, index, value);
                 }
                 else
                 {
-                    if (replace) this.SlowRemoveValueCore(symbolRef, property, reassign, index, false, null);
-                    this.SlowAddValueCore(symbolRef, property, reassign, index, value, GreenSymbol.Unassigned);
+                    if (replace && index >= 0) this.SlowRemoveValueCore(symbolRef, property, true, reassign, index, false, null, null, null);
+                    this.SlowAddValueCore(symbolRef, property, reassign, index, value, null, null);
                 }
             }
         }
@@ -728,11 +730,11 @@ namespace ImmutableModelPrototype
             {
                 if (!sid.ModelSymbol.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
                 {
-                    this.RemoveItemCore(symbolRef, property, reassign, index, removeAll, value);
+                    this.RemoveItemCore(symbolRef, property, true, reassign, index, removeAll, ref value);
                 }
                 else
                 {
-                    this.SlowRemoveValueCore(symbolRef, property, reassign, index, removeAll, value);
+                    this.SlowRemoveValueCore(symbolRef, property, true, reassign, index, removeAll, value, null, null);
                 }
             }
         }
@@ -935,10 +937,10 @@ namespace ImmutableModelPrototype
             }
         }
 
-        private void SetValueCore(SymbolRef symbolRef, ModelProperty property, bool reassign, object value, object oldValue)
+        private bool SetValueCore(SymbolRef symbolRef, ModelProperty property, bool reassign, object value, object oldValue)
         {
             Debug.Assert(symbolRef.Symbol.Properties.ContainsKey(property));
-            if (value == oldValue) return;
+            if (value == oldValue) return false;
             this.CheckOldValue(symbolRef, property, reassign, oldValue);
             this.CheckNewValue(symbolRef, property, value);
             if (oldValue != null && oldValue != GreenSymbol.Unassigned)
@@ -966,9 +968,10 @@ namespace ImmutableModelPrototype
             GreenSymbol symbol = symbolRef.Symbol;
             symbol = symbol.Update(symbol.Parent, symbol.Children, symbol.Properties.SetItem(property, value));
             symbolRef.Update(symbol);
+            return true;
         }
 
-        private void AddItemCore(SymbolRef symbolRef, ModelProperty property, bool reassign, int index, object value)
+        private bool AddItemCore(SymbolRef symbolRef, ModelProperty property, bool reassign, int index, object value)
         {
             Debug.Assert(symbolRef.Symbol.Properties.ContainsKey(property));
             this.CheckOldItem(symbolRef, property, reassign);
@@ -983,6 +986,7 @@ namespace ImmutableModelPrototype
             {
                 list = (GreenList)listValue;
             }
+            GreenList oldList = list;
             if (value is GreenLazyValue)
             {
                 list = list.AddLazy(value);
@@ -991,7 +995,7 @@ namespace ImmutableModelPrototype
             else
             {
                 bool newReference = value is SymbolId && !list.Contains(value);
-                if (index >= 0)
+                if (index >= 0 && index <= list.Count)
                 {
                     list = list.Insert(index, value);
                 }
@@ -1007,9 +1011,10 @@ namespace ImmutableModelPrototype
             GreenSymbol symbol = symbolRef.Symbol;
             symbol = symbol.Update(symbol.Parent, symbol.Children, symbol.Properties.SetItem(property, list));
             symbolRef.Update(symbol);
+            return list != oldList;
         }
 
-        private void RemoveItemCore(SymbolRef symbolRef, ModelProperty property, bool reassign, int index, bool removeAll, object value)
+        private bool RemoveItemCore(SymbolRef symbolRef, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, ref object value)
         {
             Debug.Assert(symbolRef.Symbol.Properties.ContainsKey(property));
             this.CheckOldItem(symbolRef, property, reassign);
@@ -1017,18 +1022,55 @@ namespace ImmutableModelPrototype
             object listValue;
             if (this.TryGetValueCore(symbolRef, property, false, false, out listValue))
             {
-                if (listValue == null) return;
+                if (listValue == null) return false;
                 Debug.Assert(listValue is GreenList);
                 list = (GreenList)listValue;
             }
             else
             {
-                return;
+                return false;
+            }
+            if (!forceRemove && property.IsDerivedUnion)
+            {
+                if (index >= 0)
+                {
+                    if (index < list.Count) value = list[index];
+                }
+                ModelSymbolInfo symbolInfo = symbolRef.Id.ModelSymbol;
+                if (symbolInfo != null)
+                {
+                    ModelPropertyInfo propInfo = symbolInfo.GetPropertyInfo(property);
+                    if (propInfo != null && propInfo.SubsettingProperties.Count > 0)
+                    {
+                        ImmutableDictionary<ModelProperty, object> properties = symbolRef.Symbol.Properties;
+                        foreach (var subsetProp in propInfo.SubsettingProperties)
+                        {
+                            ModelProperty representingSubsetProp = subsetProp;
+                            ModelPropertyInfo subsetPropInfo = symbolInfo.GetPropertyInfo(subsetProp);
+                            if (subsetPropInfo != null && subsetPropInfo.RepresentingProperty != null) representingSubsetProp = subsetPropInfo.RepresentingProperty;
+                            object representingSubsetValue;
+                            if (properties.TryGetValue(representingSubsetProp, out representingSubsetValue))
+                            {
+                                if (representingSubsetValue is GreenList)
+                                {
+                                    GreenList subsetList = (GreenList)representingSubsetValue;
+                                    if (subsetList.Contains(value))
+                                    {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
             GreenList oldList = list;
             if (index >= 0)
             {
-                list = list.RemoveAt(index);
+                if (index < list.Count)
+                {
+                    list = list.RemoveAt(index);
+                }
             }
             else if (removeAll)
             {
@@ -1038,9 +1080,9 @@ namespace ImmutableModelPrototype
             {
                 list = list.Remove(value);
             }
+            bool removedAll = !list.Contains(value);
             if (value is SymbolId)
             {
-                bool removedAll = removeAll || !list.Contains(value);
                 if (removedAll)
                 {
                     this.RemoveReferenceCore(symbolRef, property, (SymbolId)value);
@@ -1049,16 +1091,136 @@ namespace ImmutableModelPrototype
             GreenSymbol symbol = symbolRef.Symbol;
             symbol = symbol.Update(symbol.Parent, symbol.Children, symbol.Properties.SetItem(property, list));
             symbolRef.Update(symbol);
+            return oldList != list || removedAll;
         }
 
-        private void SlowAddValueCore(SymbolRef symbolRef, ModelProperty property, bool reassign, int index, object value, object oldValue)
+        private void SlowAddValueCore(SymbolRef symbolRef, ModelProperty property, bool reassign, int index, object value, HashSet<ModelProperty> valueAddedToSelf, HashSet<ModelProperty> valueAddedToOpposite)
         {
-
+            if (valueAddedToSelf != null && valueAddedToSelf.Contains(property)) return;
+            ModelSymbolInfo info = symbolRef.Id.ModelSymbol;
+            if (info == null) return;
+            ModelPropertyInfo propertyInfo = info.GetPropertyInfo(property);
+            if (propertyInfo == null) return;
+            ModelProperty representingProperty = propertyInfo.RepresentingProperty;
+            if (representingProperty == null) representingProperty = property;
+            // Setting the value:
+            bool valueAdded = false;
+            if (representingProperty.IsCollection)
+            {
+                valueAdded = this.AddItemCore(symbolRef, representingProperty, reassign, index, value);
+            }
+            else
+            {
+                valueAdded = this.SetValueCore(symbolRef, representingProperty, reassign, value, GreenSymbol.Unassigned);
+            }
+            if (!valueAdded)
+            {
+                if (valueAddedToSelf != null)
+                {
+                    valueAddedToSelf.UnionWith(propertyInfo.EquivalentProperties);
+                    valueAddedToSelf.Add(property);
+                }
+                return;
+            }
+            // Updating subsetted properties:
+            bool initValueAdded = true;
+            if (propertyInfo.SubsettedProperties.Count > 0)
+            {
+                initValueAdded = false;
+                if (valueAddedToSelf == null) valueAddedToSelf = new HashSet<ModelProperty>(propertyInfo.EquivalentProperties);
+                else valueAddedToSelf.UnionWith(propertyInfo.EquivalentProperties);
+                valueAddedToSelf.Add(property);
+                foreach (var subsettedProp in propertyInfo.SubsettedProperties)
+                {
+                    this.SlowAddValueCore(symbolRef, subsettedProp, reassign, -1, value, valueAddedToSelf, valueAddedToOpposite);
+                }
+            }
+            // Updating opposite properties:
+            if (value is SymbolId && propertyInfo.OppositeProperties.Count > 0)
+            {
+                SymbolRef valueSymbolRef = this.ResolveSymbol((SymbolId)value, true);
+                if (valueSymbolRef != null)
+                {
+                    if (initValueAdded)
+                    {
+                        if (valueAddedToSelf == null) valueAddedToSelf = new HashSet<ModelProperty>(propertyInfo.EquivalentProperties);
+                        else valueAddedToSelf.UnionWith(propertyInfo.EquivalentProperties);
+                        valueAddedToSelf.Add(property);
+                    }
+                    foreach (var oppositeProp in propertyInfo.OppositeProperties)
+                    {
+                        this.SlowAddValueCore(valueSymbolRef, oppositeProp, reassign, -1, symbolRef.Id, valueAddedToOpposite, valueAddedToSelf);
+                    }
+                }
+            }
         }
 
-        private void SlowRemoveValueCore(SymbolRef symbolRef, ModelProperty property, bool reassign, int index, bool removeAll, object value)
+        private void SlowRemoveValueCore(SymbolRef symbolRef, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, object value, HashSet<ModelProperty> valueRemovedFromSelf, HashSet<ModelProperty> valueRemovedFromOpposite)
         {
-
+            if (valueRemovedFromSelf != null && valueRemovedFromSelf.Contains(property)) return;
+            ModelSymbolInfo info = symbolRef.Id.ModelSymbol;
+            if (info == null) return;
+            ModelPropertyInfo propertyInfo = info.GetPropertyInfo(property);
+            if (propertyInfo == null) return;
+            ModelProperty representingProperty = propertyInfo.RepresentingProperty;
+            if (representingProperty == null) representingProperty = property;
+            // Setting the value:
+            bool valueRemoved = false;
+            if (representingProperty.IsCollection)
+            {
+                valueRemoved = this.RemoveItemCore(symbolRef, representingProperty, forceRemove, reassign, index, removeAll, ref value);
+            }
+            else
+            {
+                valueRemoved = this.SetValueCore(symbolRef, representingProperty, reassign, GreenSymbol.Unassigned, value);
+            }
+            if (!valueRemoved)
+            {
+                if (forceRemove || !property.IsDerivedUnion)
+                {
+                    if (valueRemovedFromSelf != null)
+                    {
+                        valueRemovedFromSelf.UnionWith(propertyInfo.EquivalentProperties);
+                        valueRemovedFromSelf.Add(property);
+                    }
+                }
+                return;
+            }            
+            // Updating subsetting properties:
+            bool initValueRemoved = true;
+            if (propertyInfo.SubsettingProperties.Count > 0 || propertyInfo.DerivedUnionProperties.Count > 0)
+            {
+                if (valueRemovedFromSelf == null) valueRemovedFromSelf = new HashSet<ModelProperty>(propertyInfo.EquivalentProperties);
+                else valueRemovedFromSelf.UnionWith(propertyInfo.EquivalentProperties);
+                valueRemovedFromSelf.Add(property);
+                initValueRemoved = false;
+                foreach (var subsettingProp in propertyInfo.SubsettingProperties)
+                {
+                    this.SlowRemoveValueCore(symbolRef, subsettingProp, true, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                }
+                foreach (var subsettedProp in propertyInfo.DerivedUnionProperties)
+                {
+                    this.SlowRemoveValueCore(symbolRef, subsettedProp, false, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                }
+            }
+            // Updating opposite properties:
+            if (value is SymbolId && propertyInfo.OppositeProperties.Count > 0)
+            {
+                SymbolRef valueSymbolRef = this.ResolveSymbol((SymbolId)value, true);
+                if (valueSymbolRef != null)
+                {
+                    if (initValueRemoved)
+                    {
+                        if (valueRemovedFromSelf == null) valueRemovedFromSelf = new HashSet<ModelProperty>(propertyInfo.EquivalentProperties);
+                        else valueRemovedFromSelf.UnionWith(propertyInfo.EquivalentProperties);
+                        valueRemovedFromSelf.Add(property);
+                    }
+                    foreach (var oppositeProp in propertyInfo.OppositeProperties)
+                    {
+                        this.SlowRemoveValueCore(valueSymbolRef, oppositeProp, true, reassign, -1, removeAll, symbolRef.Id, valueRemovedFromOpposite, valueRemovedFromSelf);
+                    }
+                }
+            }
         }
 
         private void AddReferenceCore(SymbolRef symbolRef, ModelProperty property, SymbolId valueSid)
