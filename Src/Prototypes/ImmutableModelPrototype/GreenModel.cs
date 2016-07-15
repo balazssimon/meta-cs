@@ -73,6 +73,28 @@ namespace ImmutableModelPrototype
         }
     }
 
+    public sealed class LazyEvalEntry : IEquatable<LazyEvalEntry>
+    {
+        private SymbolId symbol;
+        private ModelProperty property;
+
+        public LazyEvalEntry(SymbolId symbol, ModelProperty property)
+        {
+            this.symbol = symbol;
+            this.property = property;
+        }
+
+        public SymbolId Symbol { get { return this.symbol; } }
+        public ModelProperty Property { get { return this.property; } }
+
+        public bool Equals(LazyEvalEntry other)
+        {
+            if (other == null) return false;
+            return this.symbol == other.symbol && this.property == other.property;
+        }
+    }
+
+
     internal class GreenList : IEnumerable<object>
     {
         internal static readonly GreenList EmptyUnique = new GreenList(true);
@@ -80,23 +102,23 @@ namespace ImmutableModelPrototype
 
         private bool unique;
         private ImmutableList<object> items;
-        private ImmutableList<object> lazyItems;
+        private ImmutableList<GreenLazyValue> lazyItems;
 
         private GreenList(bool unique)
         {
             this.unique = unique;
             this.items = ImmutableList<object>.Empty;
-            this.lazyItems = ImmutableList<object>.Empty;
+            this.lazyItems = ImmutableList<GreenLazyValue>.Empty;
         }
 
-        private GreenList(bool unique, ImmutableList<object> items, ImmutableList<object> lazyItems)
+        private GreenList(bool unique, ImmutableList<object> items, ImmutableList<GreenLazyValue> lazyItems)
         {
             this.unique = unique;
             this.items = items;
             this.lazyItems = lazyItems;
         }
 
-        private GreenList Update(ImmutableList<object> items, ImmutableList<object> lazyItems)
+        private GreenList Update(ImmutableList<object> items, ImmutableList<GreenLazyValue> lazyItems)
         {
             if (this.items != items || this.lazyItems != lazyItems)
             {
@@ -120,7 +142,7 @@ namespace ImmutableModelPrototype
             get { return this.lazyItems.Count > 0; }
         }
 
-        internal ImmutableList<object> LazyItems
+        internal ImmutableList<GreenLazyValue> LazyItems
         {
             get { return this.lazyItems; }
         }
@@ -150,7 +172,7 @@ namespace ImmutableModelPrototype
             return this.Update(this.items.Add(value), this.lazyItems);
         }
 
-        internal GreenList AddLazy(object value)
+        internal GreenList AddLazy(GreenLazyValue value)
         {
             return this.Update(this.items, this.lazyItems.Add(value));
         }
@@ -373,6 +395,7 @@ namespace ImmutableModelPrototype
     {
         private GreenModel model;
         private GreenModelGroup group;
+        private List<LazyEvalEntry> lazyEvalStack;
 
         internal GreenModelUpdater(GreenModel model)
         {
@@ -680,6 +703,49 @@ namespace ImmutableModelPrototype
             return null;
         }
 
+        internal object GetValue(ModelId mid, SymbolId sid, ModelProperty property, bool lazyEval)
+        {
+            SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
+            Debug.Assert(symbolRef != null);
+            GreenSymbol symbol = symbolRef.Symbol;
+            GreenModel model = symbolRef.Model;
+            if (lazyEval)
+            {
+                ImmutableHashSet<ModelProperty> lazyProperties;
+                if (model.LazyProperties.TryGetValue(sid, out lazyProperties) && lazyProperties.Count > 0)
+                {
+                    ModelSymbolInfo symbolInfo = sid.ModelSymbol;
+                    if (symbolInfo != null)
+                    {
+                        ModelPropertyInfo propertyInfo = symbolInfo.GetPropertyInfo(property);
+                        if (propertyInfo != null)
+                        {
+                            if (propertyInfo.RepresentingProperty != null) property = propertyInfo.RepresentingProperty;
+                            if (lazyProperties.Contains(property))
+                            {
+                                this.LazyEvalCore(mid, sid, property);
+                            }
+                            foreach (var supersetProp in propertyInfo.SubsetProperties)
+                            {
+                                if (lazyProperties.Contains(supersetProp))
+                                {
+                                    this.LazyEvalCore(mid, sid, supersetProp);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (lazyProperties.Contains(property))
+                            {
+                                this.LazyEvalCore(mid, sid, property);
+                            }
+                        }
+                    }
+                }
+            }
+            return this.GetValue(mid, sid, property);
+        }
+
         internal void SetValue(ModelId mid, SymbolId sid, ModelProperty property, bool reassign, object value)
         {
             Debug.Assert(!property.IsCollection);
@@ -693,11 +759,13 @@ namespace ImmutableModelPrototype
                 if (!sid.ModelSymbol.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
                 {
                     this.SetValueCore(symbolRef, property, reassign, value, oldValue);
+                    this.UpdateModel(symbolRef.Model);
                 }
                 else
                 {
                     this.SlowRemoveValueCore(symbolRef, property, true, reassign, -1, false, oldValue, null, null);
                     this.SlowAddValueCore(symbolRef, property, reassign, -1, value, null, null);
+                    this.UpdateModel(symbolRef.Model);
                 }
             }
         }
@@ -716,11 +784,13 @@ namespace ImmutableModelPrototype
                     object oldValue = null;
                     if (replace && index >= 0) this.RemoveItemCore(symbolRef, property, true, reassign, index, false, ref oldValue);
                     this.AddItemCore(symbolRef, property, reassign, index, value);
+                    this.UpdateModel(symbolRef.Model);
                 }
                 else
                 {
                     if (replace && index >= 0) this.SlowRemoveValueCore(symbolRef, property, true, reassign, index, false, null, null, null);
                     this.SlowAddValueCore(symbolRef, property, reassign, index, value, null, null);
+                    this.UpdateModel(symbolRef.Model);
                 }
             }
         }
@@ -737,10 +807,12 @@ namespace ImmutableModelPrototype
                 if (!sid.ModelSymbol.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
                 {
                     this.RemoveItemCore(symbolRef, property, true, reassign, index, removeAll, ref value);
+                    this.UpdateModel(symbolRef.Model);
                 }
                 else
                 {
                     this.SlowRemoveValueCore(symbolRef, property, true, reassign, index, removeAll, value, null, null);
+                    this.UpdateModel(symbolRef.Model);
                 }
             }
         }
@@ -790,29 +862,11 @@ namespace ImmutableModelPrototype
             Debug.Assert(property.IsCollection);
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
             Debug.Assert(symbolRef != null);
-            GreenModel oldModel = symbolRef.Model;
             property = this.GetRepresentingProperty(sid, property);
-            ImmutableHashSet<ModelProperty> oldLazyProperties;
-            if (oldModel.LazyProperties.TryGetValue(sid, out oldLazyProperties) && oldLazyProperties.Contains(property))
-            {
-                object listValue;
-                if (this.TryGetValueCore(symbolRef, property, false, false, out listValue) && (listValue is GreenList))
-                {
-                    GreenList list = (GreenList)listValue;
-                    GreenSymbol oldSymbol = symbolRef.Symbol;
-                    GreenSymbol newSymbol = oldSymbol.Update(oldSymbol.Parent, oldSymbol.Children, oldSymbol.Properties.SetItem(property, list.ClearLazy()));
-                    GreenModel newModel = 
-                        oldModel.Update(
-                            oldModel.Symbols.SetItem(sid, newSymbol), 
-                            oldModel.StrongSymbols, 
-                            oldModel.LazyProperties.SetItem(sid, oldLazyProperties.Remove(property)), 
-                            oldModel.References);
-                    this.UpdateModel(newModel);
-                }
-            }
+            this.ClearLazyItemsCore(symbolRef, property, reassign);
+            this.UpdateModel(symbolRef.Model);
         }
 
-        // TODO: transform incoming properties to the representing property
         private ModelProperty GetRepresentingProperty(SymbolId symbolId, ModelProperty property)
         {
             ModelProperty result = property;
@@ -959,6 +1013,16 @@ namespace ImmutableModelPrototype
             }
         }
 
+        /// <summary>
+        /// Sets the value of a single valued property. Updates references and lazy property index. This method does not update any related properties.
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        /// <param name="reassign"></param>
+        /// <param name="value"></param>
+        /// <param name="oldValue"></param>
+        /// <returns></returns>
         private bool SetValueCore(SymbolRef symbolRef, ModelProperty property, bool reassign, object value, object oldValue)
         {
             Debug.Assert(symbolRef.Symbol.Properties.ContainsKey(property));
@@ -993,6 +1057,16 @@ namespace ImmutableModelPrototype
             return true;
         }
 
+        /// <summary>
+        /// Adds an item to a collection property. Updates references and lazy property index. This method does not update any related properties.
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        /// <param name="reassign"></param>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private bool AddItemCore(SymbolRef symbolRef, ModelProperty property, bool reassign, int index, object value)
         {
             Debug.Assert(symbolRef.Symbol.Properties.ContainsKey(property));
@@ -1011,7 +1085,7 @@ namespace ImmutableModelPrototype
             GreenList oldList = list;
             if (value is GreenLazyValue)
             {
-                list = list.AddLazy(value);
+                list = list.AddLazy((GreenLazyValue)value);
                 this.AddLazyPropertyCore(symbolRef, property, (SymbolId)value);
             }
             else
@@ -1036,6 +1110,18 @@ namespace ImmutableModelPrototype
             return list != oldList;
         }
 
+        /// <summary>
+        /// Removes an item from a collection property. Updates references and lazy property index. This method does not update any related properties.
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        /// <param name="forceRemove"></param>
+        /// <param name="reassign"></param>
+        /// <param name="index"></param>
+        /// <param name="removeAll"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private bool RemoveItemCore(SymbolRef symbolRef, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, ref object value)
         {
             Debug.Assert(symbolRef.Symbol.Properties.ContainsKey(property));
@@ -1116,6 +1202,17 @@ namespace ImmutableModelPrototype
             return oldList != list || removedAll;
         }
 
+        /// <summary>
+        /// Adds an item to a property. Updates all the related properties.
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        /// <param name="reassign"></param>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        /// <param name="valueAddedToSelf"></param>
+        /// <param name="valueAddedToOpposite"></param>
         private void SlowAddValueCore(SymbolRef symbolRef, ModelProperty property, bool reassign, int index, object value, HashSet<ModelProperty> valueAddedToSelf, HashSet<ModelProperty> valueAddedToOpposite)
         {
             if (valueAddedToSelf != null && valueAddedToSelf.Contains(property)) return;
@@ -1177,6 +1274,19 @@ namespace ImmutableModelPrototype
             }
         }
 
+        /// <summary>
+        /// Removes an item from a property. Updates all the related properties.
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        /// <param name="forceRemove"></param>
+        /// <param name="reassign"></param>
+        /// <param name="index"></param>
+        /// <param name="removeAll"></param>
+        /// <param name="value"></param>
+        /// <param name="valueRemovedFromSelf"></param>
+        /// <param name="valueRemovedFromOpposite"></param>
         private void SlowRemoveValueCore(SymbolRef symbolRef, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, object value, HashSet<ModelProperty> valueRemovedFromSelf, HashSet<ModelProperty> valueRemovedFromOpposite)
         {
             if (valueRemovedFromSelf != null && valueRemovedFromSelf.Contains(property)) return;
@@ -1246,6 +1356,13 @@ namespace ImmutableModelPrototype
             }
         }
 
+        /// <summary>
+        /// Adds a reference to a symbol. 
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        /// <param name="valueSid"></param>
         private void AddReferenceCore(SymbolRef symbolRef, ModelProperty property, SymbolId valueSid)
         {
             GreenModel model = symbolRef.Model;
@@ -1294,7 +1411,7 @@ namespace ImmutableModelPrototype
                                 {
                                     if (ids.Contains(currentId))
                                     {
-                                        throw new CircularContainmentException("Invalid containment in " + this.PropertyRef(sid, property) + ": circular containment.", ids);
+                                        throw new CircularContainmentException("Invalid containment in " + this.PropertyRef(sid, property) + ": circular containment.", ids.ToImmutableList());
                                     }
                                     ids.Add(currentId);
                                     if (model.Symbols.TryGetValue(currentId, out currentSymbol))
@@ -1329,6 +1446,13 @@ namespace ImmutableModelPrototype
             }
         }
 
+        /// <summary>
+        /// Removes a reference to a symbol. 
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        /// <param name="valueSid"></param>
         private void RemoveReferenceCore(SymbolRef symbolRef, ModelProperty property, SymbolId valueSid)
         {
             GreenModel model = symbolRef.Model;
@@ -1385,6 +1509,13 @@ namespace ImmutableModelPrototype
             }
         }
 
+        /// <summary>
+        /// Adds the property to the lazy property index. 
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        /// <param name="valueSid"></param>
         private void AddLazyPropertyCore(SymbolRef symbolRef, ModelProperty property, SymbolId valueSid)
         {
             SymbolId sid = symbolRef.Id;
@@ -1402,6 +1533,13 @@ namespace ImmutableModelPrototype
             }
         }
 
+        /// <summary>
+        /// Removes the property from the lazy property index. 
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        /// <param name="valueSid"></param>
         private void RemoveLazyPropertyCore(SymbolRef symbolRef, ModelProperty property, SymbolId valueSid)
         {
             SymbolId sid = symbolRef.Id;
@@ -1413,6 +1551,104 @@ namespace ImmutableModelPrototype
                 if (lazyProperties.IsEmpty) model = model.Update(model.Symbols, model.StrongSymbols, model.LazyProperties.Remove(sid), model.References);
                 else model = model.Update(model.Symbols, model.StrongSymbols, model.LazyProperties.SetItem(sid, lazyProperties), model.References);
                 symbolRef.Update(model, symbolRef.Symbol, false);
+            }
+        }
+
+        /// <summary>
+        /// Clears the lazy values of the property.
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        /// <param name="reassign"></param>
+        private void ClearLazyItemsCore(SymbolRef symbolRef, ModelProperty property, bool reassign)
+        {
+            Debug.Assert(property.IsCollection);
+            SymbolId sid = symbolRef.Id;
+            GreenModel oldModel = symbolRef.Model;
+            ImmutableHashSet<ModelProperty> oldLazyProperties;
+            if (oldModel.LazyProperties.TryGetValue(sid, out oldLazyProperties) && oldLazyProperties.Contains(property))
+            {
+                object listValue;
+                if (this.TryGetValueCore(symbolRef, property, false, false, out listValue) && (listValue is GreenList))
+                {
+                    GreenList list = (GreenList)listValue;
+                    GreenSymbol oldSymbol = symbolRef.Symbol;
+                    GreenSymbol newSymbol = oldSymbol.Update(oldSymbol.Parent, oldSymbol.Children, oldSymbol.Properties.SetItem(property, list.ClearLazy()));
+                    GreenModel newModel =
+                        oldModel.Update(
+                            oldModel.Symbols.SetItem(sid, newSymbol),
+                            oldModel.StrongSymbols,
+                            oldModel.LazyProperties.SetItem(sid, oldLazyProperties.Remove(property)),
+                            oldModel.References);
+                    symbolRef.Update(newModel, newSymbol, false);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Evaluates the lazy values of the property.
+        /// Make sure to convert the property to its representing version before calling this method.
+        /// </summary>
+        /// <param name="symbolRef"></param>
+        /// <param name="property"></param>
+        private void LazyEvalCore(ModelId mid, SymbolId sid, ModelProperty property)
+        {
+            object lazyValue;
+            LazyEvalEntry entry = new LazyEvalEntry(sid, property);
+            int entryIndex = this.lazyEvalStack.IndexOf(entry);
+            if (entryIndex >= 0)
+            {
+                throw new LazyEvalException("Circular dependency between lazy values.", this.lazyEvalStack.ToImmutableList());
+            }
+            try
+            {
+                this.lazyEvalStack.Add(entry);
+                if (this.TryGetValueCore(mid, sid, property, false, true, out lazyValue))
+                {
+                    if (lazyValue is GreenLazyValue)
+                    {
+                        object value = this.LazyEvalValue((GreenLazyValue)lazyValue);
+                        if (!property.IsDerived)
+                        {
+                            this.SetValue(mid, sid, property, true, value);
+                        }
+                    }
+                    else if (lazyValue is GreenList)
+                    {
+                        GreenList list = (GreenList)lazyValue;
+                        if (list.HasLazyItems)
+                        {
+                            this.ClearLazyItems(mid, sid, property, true);
+                            foreach (var lazyItem in list.LazyItems)
+                            {
+                                object value = this.LazyEvalValue(lazyItem);
+                                this.AddItem(mid, sid, property, true, false, -1, value);
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                lazyEvalStack.RemoveAt(lazyEvalStack.Count - 1);
+            }
+        }
+
+        /// <summary>
+        /// Evaluates the given lazy value.
+        /// </summary>
+        /// <param name="lazyValue"></param>
+        /// <returns></returns>
+        private object LazyEvalValue(GreenLazyValue lazyValue)
+        {
+            try
+            {
+                return lazyValue.CreateGreenValue();
+            }
+            catch (Exception ex)
+            {
+                throw new LazyEvalException("An exception was thrown by the lazy evaluator.", this.lazyEvalStack?.ToImmutableList(), ex);
             }
         }
 

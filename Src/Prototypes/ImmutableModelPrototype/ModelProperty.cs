@@ -473,6 +473,8 @@ namespace ImmutableModelPrototype
     {
         private ModelProperty representingProperty;
         private ImmutableHashSet<ModelProperty> equivalentProperties;
+        private ImmutableHashSet<ModelProperty> supersetProperties;
+        private ImmutableHashSet<ModelProperty> subsetProperties;
         private ImmutableHashSet<ModelProperty> subsettedProperties;
         private ImmutableHashSet<ModelProperty> subsettingProperties;
         private ImmutableHashSet<ModelProperty> derivedUnionProperties;
@@ -482,6 +484,8 @@ namespace ImmutableModelPrototype
         {
             this.representingProperty = null;
             this.equivalentProperties = ImmutableHashSet<ModelProperty>.Empty;
+            this.supersetProperties = ImmutableHashSet<ModelProperty>.Empty;
+            this.subsetProperties = ImmutableHashSet<ModelProperty>.Empty;
             this.subsettedProperties = ImmutableHashSet<ModelProperty>.Empty;
             this.subsettingProperties = ImmutableHashSet<ModelProperty>.Empty;
             this.derivedUnionProperties = ImmutableHashSet<ModelProperty>.Empty;
@@ -490,6 +494,8 @@ namespace ImmutableModelPrototype
 
         public ModelProperty RepresentingProperty { get { return this.representingProperty; } }
         public ImmutableHashSet<ModelProperty> EquivalentProperties { get { return this.equivalentProperties; } }
+        public ImmutableHashSet<ModelProperty> SupersetProperties { get { return this.supersetProperties; } }
+        public ImmutableHashSet<ModelProperty> SubsetProperties { get { return this.subsetProperties; } }
         public ImmutableHashSet<ModelProperty> SubsettedProperties { get { return this.subsettedProperties; } }
         public ImmutableHashSet<ModelProperty> SubsettingProperties { get { return this.subsettingProperties; } }
         public ImmutableHashSet<ModelProperty> DerivedUnionProperties { get { return this.derivedUnionProperties; } }
@@ -526,6 +532,41 @@ namespace ImmutableModelPrototype
             }
         }
 
+        internal void AddSupersetProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
+        {
+            if (property == null) return;
+            if (this.equivalentProperties.Contains(property)) return;
+            if (!this.supersetProperties.Contains(property))
+            {
+                this.supersetProperties = this.supersetProperties.Add(property);
+                if (firstCall)
+                {
+                    foreach (var eqProp in this.equivalentProperties)
+                    {
+                        ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
+                        eqPropInfo.AddSupersetProperty(symbolInfo, property, false);
+                    }
+                }
+            }
+        }
+
+        internal void AddSubsetProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
+        {
+            if (property == null) return;
+            if (this.equivalentProperties.Contains(property)) return;
+            if (!this.subsetProperties.Contains(property))
+            {
+                this.subsetProperties = this.subsetProperties.Add(property);
+                if (firstCall)
+                {
+                    foreach (var eqProp in this.equivalentProperties)
+                    {
+                        ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
+                        eqPropInfo.AddSubsetProperty(symbolInfo, property, false);
+                    }
+                }
+            }
+        }
         internal void AddSubsettedProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
         {
             if (property == null) return;
@@ -774,8 +815,22 @@ namespace ImmutableModelPrototype
                 ModelPropertyInfo propInfo = this.GetPropertyInfo(prop);
                 if (propInfo != null && propInfo.EquivalentProperties.Count > 0)
                 {
-                    ModelProperty representingProp = propInfo.EquivalentProperties.First();
-                    propInfo.SetRepresentingProperty(this, representingProp, true);
+                    int index = -1;
+                    ModelProperty representingProp = null;
+                    foreach (var eqProp in propInfo.EquivalentProperties)
+                    {
+                        int eqIndex = this.properties.IndexOf(eqProp);
+                        if (index < 0 || (eqIndex >= 0 && eqIndex < index))
+                        {
+                            index = eqIndex;
+                            representingProp = eqProp;
+                        }
+                    }
+                    Debug.Assert(representingProp != null);
+                    if (representingProp != null)
+                    {
+                        propInfo.SetRepresentingProperty(this, representingProp, true);
+                    }
                 }
             }
             foreach (var prop in this.properties)
@@ -800,6 +855,73 @@ namespace ImmutableModelPrototype
                     foreach (var oppositeProp in prop.OppositeProperties)
                     {
                         propInfo.AddOppositeProperty(this, oppositeProp, true);
+                    }
+                }
+            }
+            foreach (var prop in this.properties)
+            {
+                ModelPropertyInfo propInfo = this.GetPropertyInfo(prop);
+                if (propInfo != null && propInfo.SubsettedProperties.Count > 0)
+                {
+                    List<ModelProperty> supersetProperties = new List<ModelProperty>();
+                    ModelProperty repProp = propInfo.RepresentingProperty;
+                    if (repProp == null) repProp = prop;
+                    supersetProperties.Add(repProp);
+                    int i = 0;
+                    while(i < supersetProperties.Count)
+                    {
+                        ModelProperty currentProp = supersetProperties[i];
+                        foreach (var subsettedProp in currentProp.SubsettedProperties)
+                        {
+                            ModelPropertyInfo subsettedPropInfo = this.GetPropertyInfo(subsettedProp);
+                            if (subsettedPropInfo != null)
+                            {
+                                ModelProperty subsettedRepProp = subsettedProp;
+                                if (subsettedPropInfo.RepresentingProperty != null) subsettedRepProp = subsettedPropInfo.RepresentingProperty;
+                                if (!supersetProperties.Contains(subsettedRepProp))
+                                {
+                                    supersetProperties.Add(subsettedRepProp);
+                                }
+                            }
+                        }
+                        ++i; 
+                    }
+                    supersetProperties.Remove(repProp);
+                    foreach (var supersetProp in supersetProperties)
+                    {
+                        propInfo.AddSupersetProperty(this, supersetProp, true);
+                    }
+                }
+                if (propInfo != null && propInfo.SubsettingProperties.Count > 0)
+                {
+                    List<ModelProperty> subsetProperties = new List<ModelProperty>();
+                    ModelProperty repProp = propInfo.RepresentingProperty;
+                    if (repProp == null) repProp = prop;
+                    subsetProperties.Add(repProp);
+                    int i = 0;
+                    while (i < subsetProperties.Count)
+                    {
+                        ModelProperty currentProp = subsetProperties[i];
+                        ModelPropertyInfo currentPropInfo = this.GetPropertyInfo(currentProp);
+                        foreach (var subsettedProp in currentPropInfo.SubsettingProperties)
+                        {
+                            ModelPropertyInfo subsettedPropInfo = this.GetPropertyInfo(subsettedProp);
+                            if (subsettedPropInfo != null)
+                            {
+                                ModelProperty subsettedRepProp = subsettedProp;
+                                if (subsettedPropInfo.RepresentingProperty != null) subsettedRepProp = subsettedPropInfo.RepresentingProperty;
+                                if (!subsetProperties.Contains(subsettedRepProp))
+                                {
+                                    subsetProperties.Add(subsettedRepProp);
+                                }
+                            }
+                        }
+                        ++i;
+                    }
+                    subsetProperties.Remove(repProp);
+                    foreach (var subsetProp in subsetProperties)
+                    {
+                        propInfo.AddSubsetProperty(this, subsetProp, true);
                     }
                 }
             }
