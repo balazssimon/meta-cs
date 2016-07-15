@@ -654,6 +654,7 @@ namespace ImmutableModelPrototype
 
         internal bool TryGetValue(ModelId mid, SymbolId sid, ModelProperty property, out object value)
         {
+            property = this.GetRepresentingProperty(sid, property);
             if (this.TryGetValueCore(mid, sid, property, false, false, out value))
             {
                 return true;
@@ -663,12 +664,14 @@ namespace ImmutableModelPrototype
 
         internal bool HasValue(ModelId mid, SymbolId sid, ModelProperty property)
         {
+            property = this.GetRepresentingProperty(sid, property);
             object value;
             return this.TryGetValueCore(mid, sid, property, false, false, out value);
         }
 
         internal object GetValue(ModelId mid, SymbolId sid, ModelProperty property)
         {
+            property = this.GetRepresentingProperty(sid, property);
             object value;
             if (this.TryGetValueCore(mid, sid, property, false, false, out value))
             {
@@ -683,6 +686,7 @@ namespace ImmutableModelPrototype
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
             Debug.Assert(symbolRef != null);
             GreenSymbol symbol = symbolRef.Symbol;
+            property = this.GetRepresentingProperty(sid, property);
             object oldValue; 
             if (symbol.Properties.TryGetValue(property, out oldValue) && value != oldValue)
             {
@@ -704,6 +708,7 @@ namespace ImmutableModelPrototype
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
             Debug.Assert(symbolRef != null);
             GreenSymbol symbol = symbolRef.Symbol;
+            property = this.GetRepresentingProperty(sid, property);
             if (symbol.Properties.ContainsKey(property))
             {
                 if (!sid.ModelSymbol.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
@@ -726,6 +731,7 @@ namespace ImmutableModelPrototype
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
             Debug.Assert(symbolRef != null);
             GreenSymbol symbol = symbolRef.Symbol;
+            property = this.GetRepresentingProperty(sid, property);
             if (symbol.Properties.ContainsKey(property))
             {
                 if (!sid.ModelSymbol.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
@@ -742,6 +748,7 @@ namespace ImmutableModelPrototype
         internal void ClearItems(ModelId mid, SymbolId sid, ModelProperty property, bool reassign)
         {
             Debug.Assert(property.IsCollection);
+            property = this.GetRepresentingProperty(sid, property);
             object listValue;
             if (this.TryGetValueCore(mid, sid, property, false, false, out listValue) && (listValue is GreenList))
             {
@@ -784,6 +791,7 @@ namespace ImmutableModelPrototype
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
             Debug.Assert(symbolRef != null);
             GreenModel oldModel = symbolRef.Model;
+            property = this.GetRepresentingProperty(sid, property);
             ImmutableHashSet<ModelProperty> oldLazyProperties;
             if (oldModel.LazyProperties.TryGetValue(sid, out oldLazyProperties) && oldLazyProperties.Contains(property))
             {
@@ -802,6 +810,20 @@ namespace ImmutableModelPrototype
                     this.UpdateModel(newModel);
                 }
             }
+        }
+
+        // TODO: transform incoming properties to the representing property
+        private ModelProperty GetRepresentingProperty(SymbolId symbolId, ModelProperty property)
+        {
+            ModelProperty result = property;
+            ModelSymbolInfo symbolInfo = symbolId.ModelSymbol;
+            if (symbolInfo != null)
+            {
+                ModelPropertyInfo propInfo = symbolInfo.GetPropertyInfo(property);
+                if (propInfo != null) result = propInfo.RepresentingProperty;
+                if (result == null) result = property;
+            }
+            return result;
         }
 
         private bool TryGetValueCore(SymbolRef symbolRef, ModelProperty property, bool returnUnassignedValue, bool returnLazyValue, out object value)
@@ -1101,17 +1123,15 @@ namespace ImmutableModelPrototype
             if (info == null) return;
             ModelPropertyInfo propertyInfo = info.GetPropertyInfo(property);
             if (propertyInfo == null) return;
-            ModelProperty representingProperty = propertyInfo.RepresentingProperty;
-            if (representingProperty == null) representingProperty = property;
             // Setting the value:
             bool valueAdded = false;
-            if (representingProperty.IsCollection)
+            if (property.IsCollection)
             {
-                valueAdded = this.AddItemCore(symbolRef, representingProperty, reassign, index, value);
+                valueAdded = this.AddItemCore(symbolRef, property, reassign, index, value);
             }
             else
             {
-                valueAdded = this.SetValueCore(symbolRef, representingProperty, reassign, value, GreenSymbol.Unassigned);
+                valueAdded = this.SetValueCore(symbolRef, property, reassign, value, GreenSymbol.Unassigned);
             }
             if (!valueAdded)
             {
@@ -1132,7 +1152,8 @@ namespace ImmutableModelPrototype
                 valueAddedToSelf.Add(property);
                 foreach (var subsettedProp in propertyInfo.SubsettedProperties)
                 {
-                    this.SlowAddValueCore(symbolRef, subsettedProp, reassign, -1, value, valueAddedToSelf, valueAddedToOpposite);
+                    ModelProperty subsettedRepProp = this.GetRepresentingProperty(symbolRef.Id, subsettedProp);
+                    this.SlowAddValueCore(symbolRef, subsettedRepProp, reassign, -1, value, valueAddedToSelf, valueAddedToOpposite);
                 }
             }
             // Updating opposite properties:
@@ -1149,7 +1170,8 @@ namespace ImmutableModelPrototype
                     }
                     foreach (var oppositeProp in propertyInfo.OppositeProperties)
                     {
-                        this.SlowAddValueCore(valueSymbolRef, oppositeProp, reassign, -1, symbolRef.Id, valueAddedToOpposite, valueAddedToSelf);
+                        ModelProperty oppositeRepProp = this.GetRepresentingProperty(symbolRef.Id, oppositeProp);
+                        this.SlowAddValueCore(valueSymbolRef, oppositeRepProp, reassign, -1, symbolRef.Id, valueAddedToOpposite, valueAddedToSelf);
                     }
                 }
             }
@@ -1162,17 +1184,15 @@ namespace ImmutableModelPrototype
             if (info == null) return;
             ModelPropertyInfo propertyInfo = info.GetPropertyInfo(property);
             if (propertyInfo == null) return;
-            ModelProperty representingProperty = propertyInfo.RepresentingProperty;
-            if (representingProperty == null) representingProperty = property;
             // Setting the value:
             bool valueRemoved = false;
-            if (representingProperty.IsCollection)
+            if (property.IsCollection)
             {
-                valueRemoved = this.RemoveItemCore(symbolRef, representingProperty, forceRemove, reassign, index, removeAll, ref value);
+                valueRemoved = this.RemoveItemCore(symbolRef, property, forceRemove, reassign, index, removeAll, ref value);
             }
             else
             {
-                valueRemoved = this.SetValueCore(symbolRef, representingProperty, reassign, GreenSymbol.Unassigned, value);
+                valueRemoved = this.SetValueCore(symbolRef, property, reassign, GreenSymbol.Unassigned, value);
             }
             if (!valueRemoved)
             {
@@ -1196,11 +1216,13 @@ namespace ImmutableModelPrototype
                 initValueRemoved = false;
                 foreach (var subsettingProp in propertyInfo.SubsettingProperties)
                 {
-                    this.SlowRemoveValueCore(symbolRef, subsettingProp, true, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                    ModelProperty subsettingRepProp = this.GetRepresentingProperty(symbolRef.Id, subsettingProp);
+                    this.SlowRemoveValueCore(symbolRef, subsettingRepProp, true, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
                 }
                 foreach (var subsettedProp in propertyInfo.DerivedUnionProperties)
                 {
-                    this.SlowRemoveValueCore(symbolRef, subsettedProp, false, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                    ModelProperty subsettedRepProp = this.GetRepresentingProperty(symbolRef.Id, subsettedProp);
+                    this.SlowRemoveValueCore(symbolRef, subsettedRepProp, false, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
                 }
             }
             // Updating opposite properties:
@@ -1217,7 +1239,8 @@ namespace ImmutableModelPrototype
                     }
                     foreach (var oppositeProp in propertyInfo.OppositeProperties)
                     {
-                        this.SlowRemoveValueCore(valueSymbolRef, oppositeProp, true, reassign, -1, removeAll, symbolRef.Id, valueRemovedFromOpposite, valueRemovedFromSelf);
+                        ModelProperty oppositeRepProp = this.GetRepresentingProperty(symbolRef.Id, oppositeProp);
+                        this.SlowRemoveValueCore(valueSymbolRef, oppositeRepProp, true, reassign, -1, removeAll, symbolRef.Id, valueRemovedFromOpposite, valueRemovedFromSelf);
                     }
                 }
             }
