@@ -749,6 +749,14 @@ namespace ImmutableModelPrototype
         internal void SetValue(ModelId mid, SymbolId sid, ModelProperty property, bool reassign, object value)
         {
             Debug.Assert(!property.IsCollection);
+            if (value is SymbolId)
+            {
+                if (!this.SymbolExists((SymbolId)value))
+                {
+                    if (this.group != null) throw new ModelException("Symbol '" + value + "' cannot be assigned to property " + this.PropertyRef(sid, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model group. Either add the symbol to the model first, or make sure to reference the model which contains the symbol from the model group.");
+                    else throw new ModelException("Symbol '" + value + "' cannot be assigned to property " + this.PropertyRef(sid, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model. Either add the symbol to the model first, or create a model group referencing the model which contains the symbol.");
+                }
+            }
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
             Debug.Assert(symbolRef != null);
             GreenSymbol symbol = symbolRef.Symbol;
@@ -772,6 +780,14 @@ namespace ImmutableModelPrototype
         internal void AddItem(ModelId mid, SymbolId sid, ModelProperty property, bool reassign, bool replace, int index, object value)
         {
             Debug.Assert(property.IsCollection);
+            if (value is SymbolId)
+            {
+                if (!this.SymbolExists((SymbolId)value))
+                {
+                    if (this.group != null) throw new ModelException("Symbol '" + value + "' cannot be added to property " + this.PropertyRef(sid, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model group. Either add the symbol to the model first, or make sure to reference the model which contains the symbol from the model group.");
+                    else throw new ModelException("Symbol '" + value + "' cannot be added to property " + this.PropertyRef(sid, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model. Either add the symbol to the model first, or create a model group referencing the model which contains the symbol.");
+                }
+            }
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
             Debug.Assert(symbolRef != null);
             GreenSymbol symbol = symbolRef.Symbol;
@@ -963,14 +979,6 @@ namespace ImmutableModelPrototype
             {
                 throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be assigned to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
             }
-            if (value is SymbolId)
-            {
-                if (!this.SymbolExists((SymbolId)value))
-                {
-                    if (this.group != null) throw new ModelException("Symbol '" + value + "' cannot be assigned to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model group. Either add the symbol to the model first, or make sure to reference the model which contains the symbol from the model group.");
-                    else throw new ModelException("Symbol '" + value + "' cannot be assigned to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model. Either add the symbol to the model first, or create a model group referencing the model which contains the symbol.");
-                }
-            }
         }
 
         private void CheckOldItem(SymbolRef symbolRef, ModelProperty property, bool reassign)
@@ -999,14 +1007,6 @@ namespace ImmutableModelPrototype
                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
             {
                 throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be added to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
-            }
-            if (value is SymbolId)
-            {
-                if (!this.SymbolExists((SymbolId)value))
-                {
-                    if (this.group != null) throw new ModelException("Symbol '" + value + "' cannot be assigned to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model group. Either add the symbol to the model first, or make sure to reference the model which contains the symbol from the model group.");
-                    else throw new ModelException("Symbol '" + value + "' cannot be assigned to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model. Either add the symbol to the model first, or create a model group referencing the model which contains the symbol.");
-                }
             }
         }
 
@@ -1219,6 +1219,77 @@ namespace ImmutableModelPrototype
             if (propertyInfo == null) return;
             SymbolRef symbolRef = this.ResolveSymbol(sid, true);
             if (symbolRef == null) return;
+            SymbolId valueId = value as SymbolId;
+            // Checking the value:
+            if (!reassign)
+            {
+                foreach (var eqProp in propertyInfo.EquivalentProperties)
+                {
+                    if (eqProp.IsDerived)
+                    {
+                        throw new ModelException("Cannot reassign a derived property: " + this.PropertyRef(sid, eqProp));
+                    }
+                    if (eqProp.IsReadonly)
+                    {
+                        throw new ModelException("Cannot reassign a read-only property: " + this.PropertyRef(sid, eqProp));
+                    }
+                }
+            }
+            if (value == null)
+            {
+                foreach (var eqProp in propertyInfo.EquivalentProperties)
+                {
+                    if (eqProp.IsNonNull)
+                    {
+                        if (eqProp.IsCollection)
+                        {
+                            throw new ModelException("Null value cannot be added to property: " + this.PropertyRef(sid, eqProp));
+                        }
+                        else
+                        {
+                            throw new ModelException("Null value cannot be assigned to property: " + this.PropertyRef(sid, eqProp));
+                        }
+                    }
+                }
+            }
+            else if (value != GreenSymbol.Unassigned)
+            {
+                if (valueId != null)
+                {
+                    foreach (var eqProp in propertyInfo.EquivalentProperties)
+                    {
+                        if (!eqProp.MutableTypeInfo.Type.IsAssignableFrom(valueId.MutableType))
+                        {
+                            if (eqProp.IsCollection)
+                            {
+                                throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be added to property " + this.PropertyRef(sid, eqProp) + " of type '" + eqProp.MutableTypeInfo.Type + "'.");
+                            }
+                            else
+                            {
+                                throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be assigned to property " + this.PropertyRef(sid, eqProp) + " of type '" + eqProp.MutableTypeInfo.Type + "'.");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Type valueType = valueId.GetType();
+                    foreach (var eqProp in propertyInfo.EquivalentProperties)
+                    {
+                        if (!eqProp.MutableTypeInfo.Type.IsAssignableFrom(valueType))
+                        {
+                            if (eqProp.IsCollection)
+                            {
+                                throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be added to property " + this.PropertyRef(sid, eqProp) + " of type '" + eqProp.MutableTypeInfo.Type + "'.");
+                            }
+                            else
+                            {
+                                throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be assigned to property " + this.PropertyRef(sid, eqProp) + " of type '" + eqProp.MutableTypeInfo.Type + "'.");
+                            }
+                        }
+                    }
+                }
+            }
             // Setting the value:
             bool valueAdded = false;
             if (property.IsCollection)
@@ -1257,9 +1328,8 @@ namespace ImmutableModelPrototype
                 }
             }
             // Updating opposite properties:
-            if (value is SymbolId && propertyInfo.OppositeProperties.Count > 0)
+            if (valueId != null && propertyInfo.OppositeProperties.Count > 0)
             {
-                SymbolId valueId = (SymbolId)value;
                 SymbolRef valueSymbolRef = this.ResolveSymbol(valueId, true);
                 if (valueSymbolRef != null)
                 {
@@ -1300,6 +1370,21 @@ namespace ImmutableModelPrototype
             if (propertyInfo == null) return;
             SymbolRef symbolRef = this.ResolveSymbol(sid, true);
             if (symbolRef == null) return;
+            // Checking the value:
+            if (!reassign)
+            {
+                foreach (var eqProp in propertyInfo.EquivalentProperties)
+                {
+                    if (eqProp.IsDerived)
+                    {
+                        throw new ModelException("Cannot reassign a derived property: " + this.PropertyRef(sid, eqProp));
+                    }
+                    if (eqProp.IsReadonly)
+                    {
+                        throw new ModelException("Cannot reassign a read-only property: " + this.PropertyRef(sid, eqProp));
+                    }
+                }
+            }
             // Setting the value:
             bool valueRemoved = false;
             if (property.IsCollection)
