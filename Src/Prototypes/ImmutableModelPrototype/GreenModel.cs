@@ -763,9 +763,8 @@ namespace ImmutableModelPrototype
                 }
                 else
                 {
-                    this.SlowRemoveValueCore(symbolRef, property, true, reassign, -1, false, oldValue, null, null);
-                    this.SlowAddValueCore(symbolRef, property, reassign, -1, value, null, null);
-                    this.UpdateModel(symbolRef.Model);
+                    this.SlowRemoveValueCore(mid, sid, property, true, reassign, -1, false, oldValue, null, null);
+                    this.SlowAddValueCore(mid, sid, property, reassign, -1, value, null, null);
                 }
             }
         }
@@ -788,9 +787,8 @@ namespace ImmutableModelPrototype
                 }
                 else
                 {
-                    if (replace && index >= 0) this.SlowRemoveValueCore(symbolRef, property, true, reassign, index, false, null, null, null);
-                    this.SlowAddValueCore(symbolRef, property, reassign, index, value, null, null);
-                    this.UpdateModel(symbolRef.Model);
+                    if (replace && index >= 0) this.SlowRemoveValueCore(mid, sid, property, true, reassign, index, false, null, null, null);
+                    this.SlowAddValueCore(mid, sid, property, reassign, index, value, null, null);
                 }
             }
         }
@@ -811,8 +809,7 @@ namespace ImmutableModelPrototype
                 }
                 else
                 {
-                    this.SlowRemoveValueCore(symbolRef, property, true, reassign, index, removeAll, value, null, null);
-                    this.UpdateModel(symbolRef.Model);
+                    this.SlowRemoveValueCore(mid, sid, property, true, reassign, index, removeAll, value, null, null);
                 }
             }
         }
@@ -1213,13 +1210,15 @@ namespace ImmutableModelPrototype
         /// <param name="value"></param>
         /// <param name="valueAddedToSelf"></param>
         /// <param name="valueAddedToOpposite"></param>
-        private void SlowAddValueCore(SymbolRef symbolRef, ModelProperty property, bool reassign, int index, object value, HashSet<ModelProperty> valueAddedToSelf, HashSet<ModelProperty> valueAddedToOpposite)
+        private void SlowAddValueCore(ModelId mid, SymbolId sid, ModelProperty property, bool reassign, int index, object value, HashSet<ModelProperty> valueAddedToSelf, HashSet<ModelProperty> valueAddedToOpposite)
         {
             if (valueAddedToSelf != null && valueAddedToSelf.Contains(property)) return;
-            ModelSymbolInfo info = symbolRef.Id.ModelSymbol;
+            ModelSymbolInfo info = sid.ModelSymbol;
             if (info == null) return;
             ModelPropertyInfo propertyInfo = info.GetPropertyInfo(property);
             if (propertyInfo == null) return;
+            SymbolRef symbolRef = this.ResolveSymbol(sid, true);
+            if (symbolRef == null) return;
             // Setting the value:
             bool valueAdded = false;
             if (property.IsCollection)
@@ -1230,7 +1229,11 @@ namespace ImmutableModelPrototype
             {
                 valueAdded = this.SetValueCore(symbolRef, property, reassign, value, GreenSymbol.Unassigned);
             }
-            if (!valueAdded)
+            if (valueAdded)
+            {
+                this.UpdateModel(symbolRef.Model);
+            }
+            else
             {
                 if (valueAddedToSelf != null)
                 {
@@ -1249,14 +1252,15 @@ namespace ImmutableModelPrototype
                 valueAddedToSelf.Add(property);
                 foreach (var subsettedProp in propertyInfo.SubsettedProperties)
                 {
-                    ModelProperty subsettedRepProp = this.GetRepresentingProperty(symbolRef.Id, subsettedProp);
-                    this.SlowAddValueCore(symbolRef, subsettedRepProp, reassign, -1, value, valueAddedToSelf, valueAddedToOpposite);
+                    ModelProperty subsettedRepProp = this.GetRepresentingProperty(sid, subsettedProp);
+                    this.SlowAddValueCore(mid, sid, subsettedRepProp, reassign, -1, value, valueAddedToSelf, valueAddedToOpposite);
                 }
             }
             // Updating opposite properties:
             if (value is SymbolId && propertyInfo.OppositeProperties.Count > 0)
             {
-                SymbolRef valueSymbolRef = this.ResolveSymbol((SymbolId)value, true);
+                SymbolId valueId = (SymbolId)value;
+                SymbolRef valueSymbolRef = this.ResolveSymbol(valueId, true);
                 if (valueSymbolRef != null)
                 {
                     if (initValueAdded)
@@ -1267,8 +1271,8 @@ namespace ImmutableModelPrototype
                     }
                     foreach (var oppositeProp in propertyInfo.OppositeProperties)
                     {
-                        ModelProperty oppositeRepProp = this.GetRepresentingProperty(symbolRef.Id, oppositeProp);
-                        this.SlowAddValueCore(valueSymbolRef, oppositeRepProp, reassign, -1, symbolRef.Id, valueAddedToOpposite, valueAddedToSelf);
+                        ModelProperty oppositeRepProp = this.GetRepresentingProperty(valueId, oppositeProp);
+                        this.SlowAddValueCore(valueSymbolRef.Model.Id, valueId, oppositeRepProp, reassign, -1, sid, valueAddedToOpposite, valueAddedToSelf);
                     }
                 }
             }
@@ -1287,13 +1291,15 @@ namespace ImmutableModelPrototype
         /// <param name="value"></param>
         /// <param name="valueRemovedFromSelf"></param>
         /// <param name="valueRemovedFromOpposite"></param>
-        private void SlowRemoveValueCore(SymbolRef symbolRef, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, object value, HashSet<ModelProperty> valueRemovedFromSelf, HashSet<ModelProperty> valueRemovedFromOpposite)
+        private void SlowRemoveValueCore(ModelId mid, SymbolId sid, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, object value, HashSet<ModelProperty> valueRemovedFromSelf, HashSet<ModelProperty> valueRemovedFromOpposite)
         {
             if (valueRemovedFromSelf != null && valueRemovedFromSelf.Contains(property)) return;
-            ModelSymbolInfo info = symbolRef.Id.ModelSymbol;
+            ModelSymbolInfo info = sid.ModelSymbol;
             if (info == null) return;
             ModelPropertyInfo propertyInfo = info.GetPropertyInfo(property);
             if (propertyInfo == null) return;
+            SymbolRef symbolRef = this.ResolveSymbol(sid, true);
+            if (symbolRef == null) return;
             // Setting the value:
             bool valueRemoved = false;
             if (property.IsCollection)
@@ -1304,7 +1310,11 @@ namespace ImmutableModelPrototype
             {
                 valueRemoved = this.SetValueCore(symbolRef, property, reassign, GreenSymbol.Unassigned, value);
             }
-            if (!valueRemoved)
+            if (valueRemoved)
+            {
+                this.UpdateModel(symbolRef.Model);
+            }
+            else
             {
                 if (forceRemove || !property.IsDerivedUnion)
                 {
@@ -1326,19 +1336,20 @@ namespace ImmutableModelPrototype
                 initValueRemoved = false;
                 foreach (var subsettingProp in propertyInfo.SubsettingProperties)
                 {
-                    ModelProperty subsettingRepProp = this.GetRepresentingProperty(symbolRef.Id, subsettingProp);
-                    this.SlowRemoveValueCore(symbolRef, subsettingRepProp, true, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                    ModelProperty subsettingRepProp = this.GetRepresentingProperty(sid, subsettingProp);
+                    this.SlowRemoveValueCore(mid, sid, subsettingRepProp, true, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
                 }
                 foreach (var subsettedProp in propertyInfo.DerivedUnionProperties)
                 {
-                    ModelProperty subsettedRepProp = this.GetRepresentingProperty(symbolRef.Id, subsettedProp);
-                    this.SlowRemoveValueCore(symbolRef, subsettedRepProp, false, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
+                    ModelProperty subsettedRepProp = this.GetRepresentingProperty(sid, subsettedProp);
+                    this.SlowRemoveValueCore(mid, sid, subsettedRepProp, false, reassign, -1, removeAll, value, valueRemovedFromSelf, valueRemovedFromOpposite);
                 }
             }
             // Updating opposite properties:
             if (value is SymbolId && propertyInfo.OppositeProperties.Count > 0)
             {
-                SymbolRef valueSymbolRef = this.ResolveSymbol((SymbolId)value, true);
+                SymbolId valueId = (SymbolId)value;
+                SymbolRef valueSymbolRef = this.ResolveSymbol(valueId, true);
                 if (valueSymbolRef != null)
                 {
                     if (initValueRemoved)
@@ -1349,8 +1360,8 @@ namespace ImmutableModelPrototype
                     }
                     foreach (var oppositeProp in propertyInfo.OppositeProperties)
                     {
-                        ModelProperty oppositeRepProp = this.GetRepresentingProperty(symbolRef.Id, oppositeProp);
-                        this.SlowRemoveValueCore(valueSymbolRef, oppositeRepProp, true, reassign, -1, removeAll, symbolRef.Id, valueRemovedFromOpposite, valueRemovedFromSelf);
+                        ModelProperty oppositeRepProp = this.GetRepresentingProperty(valueId, oppositeProp);
+                        this.SlowRemoveValueCore(valueSymbolRef.Model.Id, valueId, oppositeRepProp, true, reassign, -1, removeAll, sid, valueRemovedFromOpposite, valueRemovedFromSelf);
                     }
                 }
             }
