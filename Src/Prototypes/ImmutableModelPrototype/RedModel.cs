@@ -653,14 +653,14 @@ namespace ImmutableModelPrototype
     public sealed class ImmutableModelGroup 
     {
         private GreenModelGroup green;
-        private WeakReference<MutableModelGroup> mutableGroup;
+        private WeakReference<MutableModelGroup> mutableModelGroup;
         private ConditionalWeakTable<ModelId, ImmutableModel> models;
         private ConditionalWeakTable<SymbolId, ImmutableSymbol> symbols;
 
-        internal ImmutableModelGroup(GreenModelGroup green, MutableModelGroup mutableGroup)
+        internal ImmutableModelGroup(GreenModelGroup green, MutableModelGroup mutableModelGroup)
         {
             this.green = green;
-            this.mutableGroup = new WeakReference<MutableModelGroup>(mutableGroup);
+            this.mutableModelGroup = new WeakReference<MutableModelGroup>(mutableModelGroup);
             this.models = new ConditionalWeakTable<ModelId, ImmutableModel>();
             this.symbols = new ConditionalWeakTable<SymbolId, ImmutableSymbol>();
         }
@@ -690,10 +690,10 @@ namespace ImmutableModelPrototype
 
         private MutableModel GetMutableReference(ModelId mid)
         {
-            lock (this.mutableGroup)
+            lock (this.mutableModelGroup)
             {
                 MutableModelGroup result;
-                if (this.mutableGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
+                if (this.mutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
                 {
                     return result.GetReference(mid);
                 }
@@ -703,10 +703,10 @@ namespace ImmutableModelPrototype
 
         private MutableModel GetMutableModel(ModelId mid)
         {
-            lock (this.mutableGroup)
+            lock (this.mutableModelGroup)
             {
                 MutableModelGroup result;
-                if (this.mutableGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
+                if (this.mutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
                 {
                     return result.GetModel(mid);
                 }
@@ -794,9 +794,9 @@ namespace ImmutableModelPrototype
             MutableModelGroup result;
             if (!createNew)
             {
-                lock (this.mutableGroup)
+                lock (this.mutableModelGroup)
                 {
-                    if (this.mutableGroup.TryGetTarget(out result) && result != null)
+                    if (this.mutableModelGroup.TryGetTarget(out result) && result != null)
                     {
                         return result;
                     }
@@ -805,16 +805,16 @@ namespace ImmutableModelPrototype
             result = new MutableModelGroup(this.green, this);
             if (!createNew)
             {
-                lock (this.mutableGroup)
+                lock (this.mutableModelGroup)
                 {
                     MutableModelGroup oldGroup = null;
-                    if (this.mutableGroup.TryGetTarget(out oldGroup) && oldGroup != null)
+                    if (this.mutableModelGroup.TryGetTarget(out oldGroup) && oldGroup != null)
                     {
                         return oldGroup;
                     }
                     else
                     {
-                        this.mutableGroup.SetTarget(result);
+                        this.mutableModelGroup.SetTarget(result);
                         return result;
                     }
                 }
