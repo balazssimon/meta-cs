@@ -12,32 +12,76 @@ namespace ImmutableModelPrototype
 {
     public abstract class ImmutableSymbol 
     {
-        internal SymbolId Id { get; }
+        private SymbolId id;
+        private ImmutableModel model;
+
+        protected ImmutableSymbol(SymbolId id, ImmutableModel model)
+        {
+            if (id == null) throw new ArgumentNullException(nameof(id));
+            if (model == null) throw new ArgumentNullException(nameof(model));
+            this.id = id;
+            this.model = model;
+        }
+
+        public MutableSymbol ToMutable()
+        {
+            MutableModel mutableModel = this.model.ToMutable();
+            return mutableModel.GetSymbol(this);
+        }
+
+        public MutableSymbol ToMutable(MutableModel mutableModel)
+        {
+            if (mutableModel == null) throw new ArgumentNullException(nameof(mutableModel));
+            return mutableModel.GetSymbol(this);
+        }
+
+        internal SymbolId Id { get { return this.id; } }
 
         public abstract object MMetaModel { get; }
         public abstract object MMetaClass { get; }
 
-        public ImmutableModel MModel { get; }
+        public ImmutableModel MModel { get { return this.model; } }
         public ImmutableSymbol MParent { get; }
         public IReadOnlyList<ImmutableSymbol> MChildren { get; }
 
-        public MutableSymbol ToMutable();
-        public MutableSymbol ToMutable(MutableModel model);
     }
 
     public abstract class MutableSymbol
     {
-        internal SymbolId Id { get; }
+        private bool creating;
+        private SymbolId id;
+        private MutableModel model;
+
+        protected MutableSymbol(SymbolId id, MutableModel model, bool creating)
+        {
+            if (id == null) throw new ArgumentNullException(nameof(id));
+            if (model == null) throw new ArgumentNullException(nameof(model));
+            this.id = id;
+            this.model = model;
+            this.creating = creating;
+        }
+
+        public ImmutableSymbol ToImmutable()
+        {
+            ImmutableModel immutableModel = this.model.ToImmutable();
+            return immutableModel.GetSymbol(this);
+        }
+
+        public ImmutableSymbol ToImmutable(ImmutableModel immutableModel)
+        {
+            if (immutableModel == null) throw new ArgumentNullException(nameof(immutableModel));
+            return immutableModel.GetSymbol(this);
+        }
+
+        internal SymbolId Id { get { return this.id; } }
 
         public abstract object MMetaModel { get; }
         public abstract object MMetaClass { get; }
 
-        public ImmutableModel MModel { get; }
-        public ImmutableSymbol MParent { get; }
-        public IReadOnlyList<ImmutableSymbol> MChildren { get; }
+        public MutableModel MModel { get { return this.model; } }
+        public MutableSymbol MParent { get; }
+        public IReadOnlyList<MutableSymbol> MChildren { get; }
 
-        public ImmutableSymbol ToImmutable();
-        public ImmutableSymbol ToImmutable(ImmutableModel model);
     }
 
 
