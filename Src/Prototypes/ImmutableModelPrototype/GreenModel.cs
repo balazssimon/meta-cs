@@ -13,11 +13,17 @@ namespace ImmutableModelPrototype
 {
     public abstract class SymbolId
     {
+        private string id;
+        public SymbolId()
+        {
+            this.id = Guid.NewGuid().ToString();
+        }
+        public string Id { get { return this.id; } }
         public abstract ModelSymbolInfo ModelSymbol { get; }
-        public abstract Type MutableType { get; }
         public abstract Type ImmutableType { get; }
-        public abstract object CreateMutable();
-        public abstract object CreateImmutable();
+        public abstract Type MutableType { get; }
+        public abstract ImmutableSymbol CreateImmutable(ImmutableModel model);
+        public abstract MutableSymbol CreateMutable(MutableModel model, bool creating);
     }
 
     public class ModelId
@@ -61,13 +67,13 @@ namespace ImmutableModelPrototype
         internal object CreateGreenValue()
         {
             object value = lazy();
-            if (value is MutableSymbolBase)
+            if (value is MutableSymbol)
             {
-                return ((MutableSymbolBase)value).Id;
+                return ((MutableSymbol)value).Id;
             }
-            else if (value is ImmutableSymbolBase)
+            else if (value is ImmutableSymbol)
             {
-                return ((ImmutableSymbolBase)value).Id;
+                return ((ImmutableSymbol)value).Id;
             }
             return value;
         }
@@ -328,6 +334,8 @@ namespace ImmutableModelPrototype
 
     internal class GreenModelGroup
     {
+        internal static readonly GreenModelGroup Empty = new GreenModelGroup();
+
         private ImmutableDictionary<ModelId, GreenModel> models;
         private ImmutableDictionary<ModelId, GreenModel> references;
 
@@ -377,6 +385,38 @@ namespace ImmutableModelPrototype
         {
             if (!this.models.ContainsKey(model.Id)) return this;
             return this.Update(this.models.SetItem(model.Id, model), this.references);
+        }
+
+        internal bool SymbolExists(SymbolId sid)
+        {
+            foreach (var model in this.models.Values)
+            {
+                if (model.Symbols.ContainsKey(sid)) return true;
+            }
+            foreach (var model in this.references.Values)
+            {
+                if (model.Symbols.ContainsKey(sid)) return true;
+            }
+            return false;
+        }
+
+        internal bool ContainsSymbol(SymbolId sid)
+        {
+            foreach (var model in this.models.Values)
+            {
+                if (model.Symbols.ContainsKey(sid)) return true;
+            }
+            return false;
+        }
+
+        internal bool ContainsSymbol(ModelId mid, SymbolId sid)
+        {
+            GreenModel model;
+            if (!this.models.TryGetValue(mid, out model))
+            {
+                return false;
+            }
+            return model.Symbols.ContainsKey(sid);
         }
     }
 
@@ -456,6 +496,27 @@ namespace ImmutableModelPrototype
                 }
                 return null;
             }
+        }
+
+        internal GreenModel CreateModel(ModelId mid)
+        {
+            Debug.Assert(this.group != null);
+            if (mid == null) return null;
+            GreenModel result = new GreenModel(mid);
+            this.group = this.group.AddModel(result);
+            return result;
+        }
+
+        internal void AddModelReference(GreenModel reference)
+        {
+            Debug.Assert(this.group != null);
+            this.group = this.group.AddReference(reference);
+        }
+
+        internal void AddModel(GreenModel model)
+        {
+            Debug.Assert(this.group != null);
+            this.group = this.group.AddModel(model);
         }
 
         private GreenSymbol GetSymbol(SymbolId sid, bool onlyFromModels = false)
@@ -878,6 +939,46 @@ namespace ImmutableModelPrototype
             property = this.GetRepresentingProperty(sid, property);
             this.ClearLazyItemsCore(symbolRef, property, reassign);
             this.UpdateModel(symbolRef.Model);
+        }
+
+        internal void EvaluateLazyValues(ModelId mid, SymbolId sid)
+        {
+            SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
+            Debug.Assert(symbolRef != null);
+            GreenModel model = symbolRef.Model;
+            ImmutableHashSet<ModelProperty> properties;
+            if (model.LazyProperties.TryGetValue(sid, out properties))
+            {
+                foreach (var prop in properties)
+                {
+                    this.GetValue(mid, sid, prop);
+                }
+            }
+        }
+
+        internal void EvaluateLazyValues(ModelId mid)
+        {
+            GreenModel model = this.GetModel(mid);
+            if (model == null) return;
+            foreach (var sid in model.LazyProperties.Keys)
+            {
+                this.EvaluateLazyValues(mid, sid);
+            }
+        }
+
+        internal void EvaluateLazyValues()
+        {
+            if (this.group != null)
+            {
+                foreach (var mid in this.group.Models.Keys)
+                {
+                    this.EvaluateLazyValues(mid);
+                }
+            }
+            else
+            {
+                this.EvaluateLazyValues(this.model.Id);
+            }
         }
 
         private ModelProperty GetRepresentingProperty(SymbolId symbolId, ModelProperty property)

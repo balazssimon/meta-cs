@@ -160,7 +160,7 @@ namespace ImmutableModelPrototype
             this.declaringSymbol = declaringSymbol;
             this.name = name;
             this.flags = ModelPropertyFlags.None;
-            if (immutableTypeInfo.Type is ISymbol || mutableTypeInfo.Type is ISymbol)
+            if (typeof(ImmutableSymbol).IsAssignableFrom(immutableTypeInfo.Type) || typeof(MutableSymbol).IsAssignableFrom(mutableTypeInfo.Type))
             {
                 this.flags |= ModelPropertyFlags.Symbol;
             }

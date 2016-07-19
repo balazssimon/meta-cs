@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GreenModel.cs" />
-    <Compile Include="ImmutableModel.cs" />
+    <Compile Include="ModelCollections.cs" />
     <Compile Include="ModelException.cs" />
     <Compile Include="ModelProperty.cs" />
     <Compile Include="Program.cs" />
