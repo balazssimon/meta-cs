@@ -41,9 +41,51 @@ namespace ImmutableModelPrototype
         public abstract object MMetaClass { get; }
 
         public ImmutableModel MModel { get { return this.model; } }
-        public ImmutableSymbol MParent { get; }
-        public IReadOnlyList<ImmutableSymbol> MChildren { get; }
+        public ImmutableSymbol MParent { get { return this.model.MParent(this.id); } }
+        public IReadOnlyList<ImmutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
 
+        protected T GetValue<T>(ModelProperty property, ref T value)
+            where T : struct
+        {
+            object valueObj = this.model.GetValue(this.id, property);
+            if (valueObj == null) value = default(T);
+            else value = (T)valueObj;
+            return value;
+        }
+
+        protected T GetReference<T>(ModelProperty property, ref T value)
+            where T : class
+        {
+            T result = value;
+            if (result == null)
+            {
+                result = (T)this.model.GetValue(this.id, property);
+                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            }
+            return result;
+        }
+
+        protected ImmutableModelSet<T> GetSet<T>(ModelProperty property, ref ImmutableModelSet<T> value)
+        {
+            ImmutableModelSet<T> result = value;
+            if (result == null)
+            {
+                result = this.model.GetSet<T>(this.id, property);
+                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            }
+            return result;
+        }
+
+        protected ImmutableModelList<T> GetList<T>(ModelProperty property, ref ImmutableModelList<T> value)
+        {
+            ImmutableModelList<T> result = value;
+            if (result == null)
+            {
+                result = this.model.GetList<T>(this.id, property);
+                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            }
+            return result;
+        }
     }
 
     public abstract class MutableSymbol
@@ -74,14 +116,83 @@ namespace ImmutableModelPrototype
         }
 
         internal SymbolId Id { get { return this.id; } }
+        internal bool MIsBeingCreated { get { return this.creating; } }
+        public bool MIsReadOnly { get { return this.model.IsReadOnly; } }
 
         public abstract object MMetaModel { get; }
         public abstract object MMetaClass { get; }
 
         public MutableModel MModel { get { return this.model; } }
-        public MutableSymbol MParent { get; }
-        public IReadOnlyList<MutableSymbol> MChildren { get; }
+        public MutableSymbol MParent { get { return this.model.MParent(this.id); } }
+        public IReadOnlyList<MutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
 
+        protected T GetValue<T>(ModelProperty property)
+            where T : struct
+        {
+            object valueObj = this.model.GetValue(this.id, property);
+            if (valueObj == null) return default(T);
+            else return (T)valueObj;
+        }
+
+        protected void SetValue<T>(ModelProperty property, T value)
+            where T : struct
+        {
+            this.model.SetValue(this.id, property, value, this.creating);
+        }
+
+        protected T GetReference<T>(ModelProperty property)
+            where T : class
+        {
+            return (T)this.model.GetValue(this.id, property);
+        }
+
+        protected void SetReference<T>(ModelProperty property, T value)
+            where T : class
+        {
+            if (value is MutableSymbol && ((MutableSymbol)(object)value).model != this.model)
+            {
+                value = (T)this.model.ToRedValue(this.model.ToGreenValue(value));
+            }
+            this.model.SetValue(this.id, property, value, this.creating);
+        }
+
+        protected Func<T> GetLazyValue<T>(ModelProperty property)
+            where T : struct
+        {
+            return (Func<T>)(object)this.model.GetLazyValue(this.id, property);
+        }
+
+        protected void SetLazyValue<T>(ModelProperty property, Func<T> value)
+            where T : struct
+        {
+            this.model.SetLazyValue(this.id, property, (Func<object>)(object)value, this.creating);
+        }
+
+        protected Func<T> GetLazyReference<T>(ModelProperty property)
+            where T : class
+        {
+            return (Func<T>)this.model.GetLazyValue(this.id, property);
+        }
+
+        protected void SetLazyReference<T>(ModelProperty property, Func<T> value)
+            where T : class
+        {
+            this.model.SetLazyValue(this.id, property, value, this.creating);
+        }
+
+        protected MutableModelSet<T> GetSet<T>(ModelProperty property, ref MutableModelSet<T> value)
+        {
+            MutableModelSet<T> result = this.model.GetSet(this.id, property, value);
+            result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            return result;
+        }
+
+        protected MutableModelList<T> GetList<T>(ModelProperty property, ref MutableModelList<T> value)
+        {
+            MutableModelList<T> result = this.model.GetList(this.id, property, value);
+            result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            return result;
+        }
     }
 
 
@@ -285,6 +396,67 @@ namespace ImmutableModelPrototype
             {
                 return value;
             }
+        }
+
+        internal object GetValue(SymbolId id, ModelProperty property)
+        {
+            Debug.Assert(!property.IsCollection);
+            GreenSymbol greenSymbol;
+            if (this.green.Symbols.TryGetValue(id, out greenSymbol))
+            {
+                object greenValue;
+                if (greenSymbol.Properties.TryGetValue(property, out greenValue))
+                {
+                    return greenValue;
+                }
+            }
+            return null;
+        }
+
+        internal ImmutableModelSet<T> GetSet<T>(SymbolId id, ModelProperty property)
+        {
+            Debug.Assert(property.IsCollection);
+            GreenSymbol greenSymbol;
+            if (this.green.Symbols.TryGetValue(id, out greenSymbol))
+            {
+                object greenValue;
+                if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
+                {
+                    return new ImmutableModelSet<T>((GreenList)greenValue, this);
+                }
+            }
+            return new ImmutableModelSet<T>(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
+        }
+
+        internal ImmutableModelList<T> GetList<T>(SymbolId id, ModelProperty property)
+        {
+            Debug.Assert(property.IsCollection);
+            GreenSymbol greenSymbol;
+            if (this.green.Symbols.TryGetValue(id, out greenSymbol))
+            {
+                object greenValue;
+                if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
+                {
+                    return new ImmutableModelList<T>((GreenList)greenValue, this);
+                }
+            }
+            return new ImmutableModelList<T>(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
+        }
+
+        internal ImmutableSymbol MParent(SymbolId id)
+        {
+            GreenSymbol greenSymbol;
+            if (this.green.Symbols.TryGetValue(id, out greenSymbol))
+            {
+                return this.GetExistingSymbol(greenSymbol.Parent);
+            }
+            return null;
+
+        }
+
+        internal IReadOnlyList<ImmutableSymbol> MChildren(SymbolId id)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -646,6 +818,46 @@ namespace ImmutableModelPrototype
                 ctx = this.BeginUpdate();
                 transaction();
             } while (!this.EndUpdate(ctx));
+        }
+
+        internal object GetValue(SymbolId id, ModelProperty property)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void SetValue<T>(SymbolId id, ModelProperty property, T value, bool creating) 
+        {
+            throw new NotImplementedException();
+        }
+
+        internal object GetLazyValue(SymbolId id, ModelProperty property)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void SetLazyValue(SymbolId id, ModelProperty property, Func<object> value, bool creating)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal MutableModelSet<T> GetSet<T>(SymbolId id, ModelProperty property, MutableModelSet<T> value)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal MutableModelList<T> GetList<T>(SymbolId id, ModelProperty property, MutableModelList<T> value)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal MutableSymbol MParent(SymbolId id)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal IReadOnlyList<MutableSymbol> MChildren(SymbolId id)
+        {
+            throw new NotImplementedException();
         }
     }
 
