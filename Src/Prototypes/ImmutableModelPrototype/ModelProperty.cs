@@ -21,7 +21,7 @@ namespace ImmutableModelPrototype
             this.baseSymbolDescriptors = ImmutableArray<Type>.Empty;
         }
 
-        public ModelSymbolDecriptorAttribute(Type[] baseSymbolDescriptors)
+        public ModelSymbolDecriptorAttribute(params Type[] baseSymbolDescriptors)
         {
             this.baseSymbolDescriptors = baseSymbolDescriptors.ToImmutableArray();
         }

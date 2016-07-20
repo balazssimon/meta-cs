@@ -182,7 +182,7 @@ namespace ImmutableModelPrototypeTest
                     new ModelPropertyTypeInfo(typeof(ImmutableModelPrototypeTest.ImmutablePet), typeof(ImmutableModelList<ImmutableModelPrototypeTest.ImmutablePet>)),
                     new ModelPropertyTypeInfo(typeof(ImmutableModelPrototypeTest.Pet), typeof(MutableModelList<ImmutableModelPrototypeTest.Pet>)));
         }
-        [ModelSymbolDecriptor(new Type[] { typeof(Person) })]
+        [ModelSymbolDecriptor(typeof(Person))]
         public static class Student
         {
             static Student()
@@ -219,7 +219,7 @@ namespace ImmutableModelPrototypeTest
                     new ModelPropertyTypeInfo(typeof(ImmutableModelPrototypeTest.ImmutablePerson), null),
                     new ModelPropertyTypeInfo(typeof(ImmutableModelPrototypeTest.Person), null));
         }
-        [ModelSymbolDecriptor(new Type[] { typeof(Pet) })]
+        [ModelSymbolDecriptor(typeof(Pet))]
         public static class Dog
         {
             static Dog()
