@@ -175,6 +175,7 @@ namespace ImmutableModelPrototype
 
         internal GreenList Add(object value)
         {
+            if (this.unique && this.items.Contains(value)) return this;
             return this.Update(this.items.Add(value), this.lazyItems);
         }
 
@@ -185,12 +186,32 @@ namespace ImmutableModelPrototype
 
         internal GreenList AddRange(IEnumerable<object> items)
         {
-            return this.Update(this.items.AddRange(items), this.lazyItems);
+            GreenList result = this;
+            foreach (var item in items)
+            {
+                if (!this.unique || !this.items.Contains(item))
+                {
+                    result = result.Update(this.items.Add(item), this.lazyItems);
+                }
+            }
+            return result;
         }
 
         internal GreenList Insert(int index, object element)
         {
-            return this.Update(this.items.Insert(index, element), this.lazyItems);
+            if (this.unique && this.items.Contains(element))
+            {
+                ImmutableList<object> newItems = this.items.Remove(element);
+                if (index < 0) index = 0;
+                if (index > newItems.Count) index = newItems.Count;
+                return this.Update(newItems.Insert(index, element), this.lazyItems);
+            }
+            else
+            {
+                if (index < 0) index = 0;
+                if (index > this.items.Count) index = this.items.Count;
+                return this.Update(this.items.Insert(index, element), this.lazyItems);
+            }
         }
 
         internal GreenList Remove(object value)
