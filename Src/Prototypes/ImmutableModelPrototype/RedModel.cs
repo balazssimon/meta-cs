@@ -42,7 +42,7 @@ namespace ImmutableModelPrototype
 
         public ImmutableModel MModel { get { return this.model; } }
         public ImmutableSymbol MParent { get { return this.model.MParent(this.id); } }
-        public IReadOnlyList<ImmutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
+        public ImmutableModelList<ImmutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
             where T : struct
@@ -124,7 +124,7 @@ namespace ImmutableModelPrototype
 
         public MutableModel MModel { get { return this.model; } }
         public MutableSymbol MParent { get { return this.model.MParent(this.id); } }
-        public IReadOnlyList<MutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
+        public ImmutableModelList<MutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
 
         protected T GetValue<T>(ModelProperty property)
             where T : struct
@@ -182,21 +182,29 @@ namespace ImmutableModelPrototype
 
         protected MutableModelSet<T> GetSet<T>(ModelProperty property, ref MutableModelSet<T> value)
         {
-            MutableModelSet<T> result = this.model.GetSet(this.id, property, value);
-            result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            MutableModelSet<T> result = value;
+            if (result == null)
+            {
+                result = this.model.GetSet<T>(this, property);
+                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            }
             return result;
         }
 
         protected MutableModelList<T> GetList<T>(ModelProperty property, ref MutableModelList<T> value)
         {
-            MutableModelList<T> result = this.model.GetList(this.id, property, value);
-            result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            MutableModelList<T> result = value;
+            if (result == null)
+            {
+                result = this.model.GetList<T>(this, property);
+                result = Interlocked.CompareExchange(ref value, result, null) ?? result;
+            }
             return result;
         }
     }
 
 
-    public sealed class ImmutableModel
+    public sealed class ImmutableModel 
     {
         private bool readOnly;
         private WeakReference<MutableModel> mutableModel;
@@ -398,11 +406,11 @@ namespace ImmutableModelPrototype
             }
         }
 
-        internal object GetValue(SymbolId id, ModelProperty property)
+        internal object GetValue(SymbolId sid, ModelProperty property)
         {
             Debug.Assert(!property.IsCollection);
             GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(id, out greenSymbol))
+            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue))
@@ -413,50 +421,54 @@ namespace ImmutableModelPrototype
             return null;
         }
 
-        internal ImmutableModelSet<T> GetSet<T>(SymbolId id, ModelProperty property)
+        internal ImmutableModelSet<T> GetSet<T>(SymbolId sid, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
             GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(id, out greenSymbol))
+            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
                 {
-                    return new ImmutableModelSet<T>((GreenList)greenValue, this);
+                    return ImmutableModelSet<T>.FromGreenList((GreenList)greenValue, this);
                 }
             }
-            return new ImmutableModelSet<T>(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
+            return ImmutableModelSet<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
         }
 
-        internal ImmutableModelList<T> GetList<T>(SymbolId id, ModelProperty property)
+        internal ImmutableModelList<T> GetList<T>(SymbolId sid, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
             GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(id, out greenSymbol))
+            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
                 {
-                    return new ImmutableModelList<T>((GreenList)greenValue, this);
+                    return ImmutableModelList<T>.FromGreenList((GreenList)greenValue, this);
                 }
             }
-            return new ImmutableModelList<T>(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
+            return ImmutableModelList<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
         }
 
-        internal ImmutableSymbol MParent(SymbolId id)
+        internal ImmutableSymbol MParent(SymbolId sid)
         {
             GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(id, out greenSymbol))
+            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 return this.GetExistingSymbol(greenSymbol.Parent);
             }
             return null;
-
         }
 
-        internal IReadOnlyList<ImmutableSymbol> MChildren(SymbolId id)
+        internal ImmutableModelList<ImmutableSymbol> MChildren(SymbolId sid)
         {
-            throw new NotImplementedException();
+            GreenSymbol greenSymbol;
+            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            {
+                return ImmutableModelList<ImmutableSymbol>.FromSymbolIdList(greenSymbol.Children, this);
+            }
+            return null;
         }
     }
 
@@ -820,44 +832,222 @@ namespace ImmutableModelPrototype
             } while (!this.EndUpdate(ctx));
         }
 
-        internal object GetValue(SymbolId id, ModelProperty property)
+        internal object GetValue(SymbolId sid, ModelProperty property)
         {
-            throw new NotImplementedException();
+            object value;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                value = ctx.Updater.GetValue(this.id, sid, property, true);
+            } while (!this.EndUpdate(ctx));
+            return this.ToRedValue(value);
         }
 
-        internal void SetValue<T>(SymbolId id, ModelProperty property, T value, bool creating) 
+        internal void SetValue<T>(SymbolId sid, ModelProperty property, T value, bool creating) 
         {
-            throw new NotImplementedException();
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                ctx.Updater.SetValue(this.id, sid, property, creating, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
         }
 
-        internal object GetLazyValue(SymbolId id, ModelProperty property)
+        internal object GetLazyValue(SymbolId sid, ModelProperty property)
         {
-            throw new NotImplementedException();
+            Debug.Assert(!property.IsCollection);
+            GreenSymbol greenSymbol;
+            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            {
+                object greenValue;
+                if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenLazyValue)
+                {
+                    return ((GreenLazyValue)greenValue).Lazy;
+                }
+            }
+            return null;
         }
 
-        internal void SetLazyValue(SymbolId id, ModelProperty property, Func<object> value, bool creating)
+        internal void SetLazyValue(SymbolId sid, ModelProperty property, Func<object> value, bool creating)
         {
-            throw new NotImplementedException();
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                ctx.Updater.SetValue(this.id, sid, property, creating, property.IsDerived ? (object)new GreenDerivedValue(value) : (object)new GreenLazyValue(value));
+            } while (!this.EndUpdate(ctx));
         }
 
-        internal MutableModelSet<T> GetSet<T>(SymbolId id, ModelProperty property, MutableModelSet<T> value)
+        internal GreenList GetGreenList(SymbolId sid, ModelProperty property)
         {
-            throw new NotImplementedException();
+            Debug.Assert(property.IsCollection);
+            GreenSymbol greenSymbol;
+            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            {
+                object greenValue;
+                if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
+                {
+                    return (GreenList)greenValue;
+                }
+            }
+            return property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
         }
 
-        internal MutableModelList<T> GetList<T>(SymbolId id, ModelProperty property, MutableModelList<T> value)
+        internal GreenList GetGreenList(SymbolId sid, ModelProperty property, bool lazyEval)
         {
-            throw new NotImplementedException();
+            Debug.Assert(property.IsCollection);
+            if (!lazyEval) return this.GetGreenList(sid, property);
+            object value;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                value = ctx.Updater.GetValue(this.id, sid, property, true);
+            } while (!this.EndUpdate(ctx));
+            GreenList result = value as GreenList;
+            if (result == null) result = property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
+            return result;
         }
 
-        internal MutableSymbol MParent(SymbolId id)
+        internal MutableModelSet<T> GetSet<T>(MutableSymbol symbol, ModelProperty property)
         {
-            throw new NotImplementedException();
+            Debug.Assert(property.IsCollection);
+            return MutableModelSet<T>.FromGreenList(symbol, property);
         }
 
-        internal IReadOnlyList<MutableSymbol> MChildren(SymbolId id)
+        internal MutableModelList<T> GetList<T>(MutableSymbol symbol, ModelProperty property)
         {
-            throw new NotImplementedException();
+            Debug.Assert(property.IsCollection);
+            return MutableModelList<T>.FromGreenList(symbol, property);
+        }
+
+        internal bool AddItem(SymbolId sid, ModelProperty property, object value, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool AddLazyItem(SymbolId sid, ModelProperty property, Func<object> value, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, new GreenLazyValue(value));
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool RemoveItem(SymbolId sid, ModelProperty property, object value, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, -1, false, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool RemoveAllItems(SymbolId sid, ModelProperty property, object value, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, -1, true, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool InsertItem(SymbolId sid, ModelProperty property, int index, object value, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, index, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool ReplaceItem(SymbolId sid, ModelProperty property, int index, object value, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.AddItem(this.id, sid, property, creating, true, index, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool RemoveItemAt(SymbolId sid, ModelProperty property, int index, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, index, false, null);
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool ClearItems(SymbolId sid, ModelProperty property, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.ClearItems(this.id, sid, property, creating);
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool ClearLazyItems(SymbolId sid, ModelProperty property, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.ClearLazyItems(this.id, sid, property, creating);
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal MutableSymbol MParent(SymbolId sid)
+        {
+            GreenSymbol greenSymbol;
+            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            {
+                return this.GetExistingSymbol(greenSymbol.Parent);
+            }
+            return null;
+        }
+
+        internal ImmutableModelList<MutableSymbol> MChildren(SymbolId sid)
+        {
+            GreenSymbol greenSymbol;
+            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            {
+                return ImmutableModelList<MutableSymbol>.FromSymbolIdList(greenSymbol.Children, this);
+            }
+            return null;
         }
     }
 
