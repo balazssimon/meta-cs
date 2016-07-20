@@ -22,8 +22,8 @@ namespace ImmutableModelPrototype
         public abstract ModelSymbolInfo ModelSymbol { get; }
         public abstract Type ImmutableType { get; }
         public abstract Type MutableType { get; }
-        public abstract ImmutableSymbol CreateImmutable(ImmutableModel model);
-        public abstract MutableSymbol CreateMutable(MutableModel model, bool creating);
+        public abstract ImmutableSymbolBase CreateImmutable(ImmutableModel model);
+        public abstract MutableSymbolBase CreateMutable(MutableModel model, bool creating);
     }
 
     public class ModelId
@@ -67,13 +67,13 @@ namespace ImmutableModelPrototype
         internal object CreateGreenValue()
         {
             object value = lazy();
-            if (value is MutableSymbol)
+            if (value is MutableSymbolBase)
             {
-                return ((MutableSymbol)value).Id;
+                return ((MutableSymbolBase)value).Id;
             }
-            else if (value is ImmutableSymbol)
+            else if (value is ImmutableSymbolBase)
             {
-                return ((ImmutableSymbol)value).Id;
+                return ((ImmutableSymbolBase)value).Id;
             }
             return value;
         }
@@ -1455,10 +1455,17 @@ namespace ImmutableModelPrototype
                         else valueAddedToSelf.UnionWith(propertyInfo.EquivalentProperties);
                         valueAddedToSelf.Add(property);
                     }
+                    if (valueAddedToOpposite == null)
+                    {
+                        valueAddedToOpposite = new HashSet<ModelProperty>();
+                    }
                     foreach (var oppositeProp in propertyInfo.OppositeProperties)
                     {
                         ModelProperty oppositeRepProp = this.GetRepresentingProperty(valueId, oppositeProp);
-                        this.SlowAddValueCore(valueSymbolRef.Model.Id, valueId, oppositeRepProp, reassign, -1, sid, valueAddedToOpposite, valueAddedToSelf);
+                        if (!valueAddedToOpposite.Contains(oppositeProp))
+                        {
+                            this.SlowAddValueCore(valueSymbolRef.Model.Id, valueId, oppositeRepProp, reassign, -1, sid, valueAddedToOpposite, valueAddedToSelf);
+                        }
                     }
                 }
             }
@@ -1719,7 +1726,7 @@ namespace ImmutableModelPrototype
                     }
                 }
                 model = model.Update(modelSymbols, model.StrongSymbols, model.LazyProperties, modelReferences);
-                symbolRef.Update(model, symbolRef.Symbol, symbol != symbolRef.Symbol);
+                symbolRef.Update(model, symbol, false);
             }
         }
 
@@ -1812,6 +1819,7 @@ namespace ImmutableModelPrototype
         private void LazyEvalCore(ModelId mid, SymbolId sid, ModelProperty property)
         {
             object lazyValue;
+            if (this.lazyEvalStack == null) this.lazyEvalStack = new List<LazyEvalEntry>();
             LazyEvalEntry entry = new LazyEvalEntry(sid, property);
             int entryIndex = this.lazyEvalStack.IndexOf(entry);
             if (entryIndex >= 0)

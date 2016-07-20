@@ -287,7 +287,7 @@ namespace ImmutableModelPrototype
             return this.GetEnumerator();
         }
 
-        internal static MutableModelSet<T> FromGreenList(MutableSymbol symbol, ModelProperty property)
+        internal static MutableModelSet<T> FromGreenList(MutableSymbolBase symbol, ModelProperty property)
         {
             return new MutableModelSetFromGreenList<T>(symbol, property);
         }
@@ -314,7 +314,7 @@ namespace ImmutableModelPrototype
             return this.GetEnumerator();
         }
 
-        internal static MutableModelList<T> FromGreenList(MutableSymbol symbol, ModelProperty property)
+        internal static MutableModelList<T> FromGreenList(MutableSymbolBase symbol, ModelProperty property)
         {
             return new MutableModelListFromGreenList<T>(symbol, property);
         }
@@ -322,10 +322,10 @@ namespace ImmutableModelPrototype
 
     internal class MutableModelSetFromGreenList<T> : MutableModelSet<T>
     {
-        private MutableSymbol symbol;
+        private MutableSymbolBase symbol;
         private ModelProperty property;
 
-        internal MutableModelSetFromGreenList(MutableSymbol symbol, ModelProperty property)
+        internal MutableModelSetFromGreenList(MutableSymbolBase symbol, ModelProperty property)
         {
             this.symbol = symbol;
             this.property = property;
@@ -396,10 +396,10 @@ namespace ImmutableModelPrototype
 
     internal class MutableModelListFromGreenList<T> : MutableModelList<T>
     {
-        private MutableSymbol symbol;
+        private MutableSymbolBase symbol;
         private ModelProperty property;
 
-        internal MutableModelListFromGreenList(MutableSymbol symbol, ModelProperty property)
+        internal MutableModelListFromGreenList(MutableSymbolBase symbol, ModelProperty property)
         {
             this.symbol = symbol;
             this.property = property;

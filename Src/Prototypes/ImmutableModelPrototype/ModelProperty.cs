@@ -16,6 +16,11 @@ namespace ImmutableModelPrototype
     {
         private ImmutableArray<Type> baseSymbolDescriptors;
 
+        public ModelSymbolDecriptorAttribute()
+        {
+            this.baseSymbolDescriptors = ImmutableArray<Type>.Empty;
+        }
+
         public ModelSymbolDecriptorAttribute(Type[] baseSymbolDescriptors)
         {
             this.baseSymbolDescriptors = baseSymbolDescriptors.ToImmutableArray();
@@ -160,7 +165,7 @@ namespace ImmutableModelPrototype
             this.declaringSymbol = declaringSymbol;
             this.name = name;
             this.flags = ModelPropertyFlags.None;
-            if (typeof(ImmutableSymbol).IsAssignableFrom(immutableTypeInfo.Type) || typeof(MutableSymbol).IsAssignableFrom(mutableTypeInfo.Type))
+            if (typeof(ImmutableSymbolBase).IsAssignableFrom(immutableTypeInfo.Type) || typeof(MutableSymbolBase).IsAssignableFrom(mutableTypeInfo.Type))
             {
                 this.flags |= ModelPropertyFlags.Symbol;
             }
@@ -174,12 +179,17 @@ namespace ImmutableModelPrototype
             if (info == null) throw new ModelException("Cannot find static field '" + name + "Property' in " + declaringSymbol.SymbolDescriptorType.FullName + ".");
             this.annotations = info.GetCustomAttributes().ToImmutableList();
             this.state = ModelPropertyInitState.None;
+            this.subsettedProperties = ImmutableList<ModelProperty>.Empty;
+            this.redefinedProperties = ImmutableList<ModelProperty>.Empty;
+            this.oppositeProperties = ImmutableList<ModelProperty>.Empty;
         }
 
         public static ModelProperty Register(Type declaringType, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo)
         {
             ModelSymbolInfo symbolInfo = ModelSymbolInfo.GetSymbolInfo(declaringType);
-            return new ModelProperty(symbolInfo, name, immutableTypeInfo, mutableTypeInfo);
+            ModelProperty result = new ModelProperty(symbolInfo, name, immutableTypeInfo, mutableTypeInfo);
+            symbolInfo.AddProperty(result);
+            return result;
         }
 
         public ModelSymbolInfo DeclaringSymbol { get { return this.declaringSymbol; } }
@@ -295,7 +305,7 @@ namespace ImmutableModelPrototype
             }
         }
 
-        private void Initialize()
+        public void Initialize()
         {
             if (this.state == ModelPropertyInitState.Initialized) return;
             lock (ModelProperty.lockObject)
@@ -509,6 +519,11 @@ namespace ImmutableModelPrototype
                 this.equivalentProperties = this.equivalentProperties.Add(property);
                 if (firstCall)
                 {
+                    ModelPropertyInfo propInfo = symbolInfo.GetOrCreatePropertyInfo(property);
+                    foreach (var eqProp in this.equivalentProperties)
+                    {
+                        propInfo.AddRedefinedProperty(symbolInfo, eqProp, false);
+                    }
                     foreach (var eqProp in this.equivalentProperties)
                     {
                         ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
@@ -644,6 +659,7 @@ namespace ImmutableModelPrototype
         private static ImmutableDictionary<Type, ModelSymbolInfo> symbols = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
 
         private bool initialized;
+        private bool initializedBaseSymbols;
         private Type symbolDescriptorType;
         private GreenSymbol emptyGreenSymbol;
         private ImmutableList<Attribute> annotations;
@@ -655,6 +671,7 @@ namespace ImmutableModelPrototype
         private ModelSymbolInfo(Type symbolDescriptorType)
         {
             this.initialized = false;
+            this.initializedBaseSymbols = false;
             this.symbolDescriptorType = symbolDescriptorType;
             this.annotations = symbolDescriptorType.GetCustomAttributes(false).OfType<Attribute>().ToImmutableList();
             this.emptyGreenSymbol = GreenSymbol.Empty;
@@ -664,7 +681,7 @@ namespace ImmutableModelPrototype
             this.properties = ImmutableList<ModelProperty>.Empty;
         }
 
-        internal static ModelSymbolInfo GetSymbolInfo(Type symbolDescriptorType)
+        public static ModelSymbolInfo GetSymbolInfo(Type symbolDescriptorType)
         {
             ImmutableDictionary<Type, ModelSymbolInfo> oldSymbols;
             ImmutableDictionary<Type, ModelSymbolInfo> newSymbols;
@@ -699,7 +716,7 @@ namespace ImmutableModelPrototype
 
         internal void AddBaseSymbol(ModelSymbolInfo baseSymbol)
         {
-            if (this.initialized) throw new InvalidOperationException("Cannot add a base symbol to an initialized symbol.");
+            if (this.initializedBaseSymbols) throw new InvalidOperationException("Cannot add a base symbol to an initialized symbol.");
             ImmutableList<ModelSymbolInfo> oldBaseSymbols;
             ImmutableList<ModelSymbolInfo> newBaseSymbols;
             do
@@ -738,8 +755,16 @@ namespace ImmutableModelPrototype
         internal bool Initialized { get { return this.initialized; } }
         internal Type SymbolDescriptorType { get { return this.symbolDescriptorType; } }
         public ImmutableList<Attribute> Annotations { get { return this.annotations; } }
-        public ImmutableList<ModelSymbolInfo> BaseSymbols { get { return this.baseSymbols; } }
+        public ImmutableList<ModelSymbolInfo> BaseSymbols 
+        {
+            get
+            {
+                if (!this.initializedBaseSymbols) this.InitializeBaseSymbols();
+                return this.baseSymbols;
+            }
+        }
         public ImmutableList<ModelProperty> DeclaredProperties { get { return this.declaredProperties; } }
+
         public ImmutableList<ModelProperty> Properties
         {
             get
@@ -765,6 +790,26 @@ namespace ImmutableModelPrototype
             }
         }
 
+        private void InitializeBaseSymbols()
+        {
+            if (this.initializedBaseSymbols) return;
+            lock (this)
+            {
+                if (this.initializedBaseSymbols) return;
+                foreach (var annot in this.annotations)
+                {
+                    if (annot is ModelSymbolDecriptorAttribute)
+                    {
+                        ModelSymbolDecriptorAttribute descrAnnot = (ModelSymbolDecriptorAttribute)annot;
+                        foreach (var baseType in descrAnnot.BaseSymbolDescriptors)
+                        {
+                            this.AddBaseSymbol(ModelSymbolInfo.GetSymbolInfo(baseType));
+                        }
+                    }
+                }
+                this.initializedBaseSymbols = true;
+            }
+        }
 
         private void Initialize()
         {
@@ -772,11 +817,12 @@ namespace ImmutableModelPrototype
             lock (this)
             {
                 if (this.initialized) return;
+                this.InitializeBaseSymbols();
+                this.initialized = true;
                 RuntimeHelpers.RunClassConstructor(this.symbolDescriptorType.TypeHandle);
                 this.CreateProperties();
                 this.CreatePropertyInfo();
                 this.CreateEmptyGreenSymbol();
-                this.initialized = true;
             }
         }
 
@@ -793,7 +839,7 @@ namespace ImmutableModelPrototype
                     }
                 }
             }
-            properties.AddRange(this.declaredProperties);
+            properties = properties.AddRange(this.declaredProperties);
             Interlocked.Exchange(ref this.properties, properties);
         }
 
@@ -804,6 +850,7 @@ namespace ImmutableModelPrototype
                 if (prop.RedefinedProperties.Count > 0)
                 {
                     ModelPropertyInfo propInfo = this.GetOrCreatePropertyInfo(prop);
+                    propInfo.AddRedefinedProperty(this, prop, true);
                     foreach (var redefinedProp in prop.RedefinedProperties)
                     {
                         propInfo.AddRedefinedProperty(this, redefinedProp, true);
@@ -933,7 +980,7 @@ namespace ImmutableModelPrototype
             if (!this.propertyInfo.TryGetValue(property, out result))
             {
                 result = new ModelPropertyInfo(property);
-                this.propertyInfo.Add(property, result);
+                Interlocked.Exchange(ref this.propertyInfo, this.propertyInfo.Add(property, result));
             }
             return result;
         }

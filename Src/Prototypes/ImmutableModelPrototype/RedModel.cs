@@ -10,12 +10,39 @@ using System.Threading.Tasks;
 
 namespace ImmutableModelPrototype
 {
-    public abstract class ImmutableSymbol 
+    public interface ImmutableSymbol
+    {
+        object MMetaModel { get; }
+        object MMetaClass { get; }
+
+        ImmutableModel MModel { get; }
+        ImmutableSymbol MParent { get; }
+        ImmutableModelList<ImmutableSymbol> MChildren { get; }
+
+        MutableSymbol ToMutable();
+        MutableSymbol ToMutable(MutableModel mutableModel);
+    }
+
+    public interface MutableSymbol
+    {
+        object MMetaModel { get; }
+        object MMetaClass { get; }
+
+        bool MIsReadOnly { get; }
+        MutableModel MModel { get; }
+        MutableSymbol MParent { get; }
+        ImmutableModelList<MutableSymbol> MChildren { get; }
+
+        ImmutableSymbol ToImmutable();
+        ImmutableSymbol ToImmutable(ImmutableModel immutableModel);
+    }
+
+    public abstract class ImmutableSymbolBase : ImmutableSymbol
     {
         private SymbolId id;
         private ImmutableModel model;
 
-        protected ImmutableSymbol(SymbolId id, ImmutableModel model)
+        protected ImmutableSymbolBase(SymbolId id, ImmutableModel model)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
             if (model == null) throw new ArgumentNullException(nameof(model));
@@ -88,13 +115,13 @@ namespace ImmutableModelPrototype
         }
     }
 
-    public abstract class MutableSymbol
+    public abstract class MutableSymbolBase : MutableSymbol
     {
         private bool creating;
         private SymbolId id;
         private MutableModel model;
 
-        protected MutableSymbol(SymbolId id, MutableModel model, bool creating)
+        protected MutableSymbolBase(SymbolId id, MutableModel model, bool creating)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
             if (model == null) throw new ArgumentNullException(nameof(model));
@@ -126,6 +153,15 @@ namespace ImmutableModelPrototype
         public MutableSymbol MParent { get { return this.model.MParent(this.id); } }
         public ImmutableModelList<MutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
 
+        internal protected virtual void MInit()
+        {
+        }
+
+        internal void MMakeCreated()
+        {
+            this.creating = false;
+        }
+
         protected T GetValue<T>(ModelProperty property)
             where T : struct
         {
@@ -149,7 +185,7 @@ namespace ImmutableModelPrototype
         protected void SetReference<T>(ModelProperty property, T value)
             where T : class
         {
-            if (value is MutableSymbol && ((MutableSymbol)(object)value).model != this.model)
+            if (value is MutableSymbolBase && ((MutableSymbolBase)(object)value).model != this.model)
             {
                 value = (T)this.model.ToRedValue(this.model.ToGreenValue(value));
             }
@@ -215,7 +251,7 @@ namespace ImmutableModelPrototype
 
         // Used in standalone models:
         private GreenModel green;
-        private ConditionalWeakTable<SymbolId, ImmutableSymbol> symbols;
+        private ConditionalWeakTable<SymbolId, ImmutableSymbolBase> symbols;
 
         internal ImmutableModel(ModelId id, ImmutableModelGroup group, bool readOnly, MutableModel mutableModel)
         {
@@ -233,14 +269,14 @@ namespace ImmutableModelPrototype
             this.group = null;
             this.green = green;
             this.readOnly = false;
-            this.symbols = new ConditionalWeakTable<SymbolId, ImmutableSymbol>();
+            this.symbols = new ConditionalWeakTable<SymbolId, ImmutableSymbolBase>();
             this.mutableModel = new WeakReference<MutableModel>(mutableModel);
         }
 
         internal ModelId Id { get { return this.green.Id; } }
         internal GreenModel Green { get { return this.green; } }
         public ImmutableModelGroup ModelGroup { get { return this.group; } }
-        public IEnumerable<ImmutableSymbol> Symbols
+        public IEnumerable<ImmutableSymbolBase> Symbols
         {
             get
             {
@@ -251,8 +287,9 @@ namespace ImmutableModelPrototype
             }
         }
 
-        internal ImmutableSymbol GetExistingSymbol(SymbolId sid)
+        internal ImmutableSymbolBase GetExistingSymbol(SymbolId sid)
         {
+            if (sid == null) return null;
             if (this.group != null)
             {
                 if (this.readOnly) return this.group.GetExistingReferenceSymbol(this.id, sid);
@@ -264,7 +301,7 @@ namespace ImmutableModelPrototype
             }
         }
 
-        internal ImmutableSymbol ResolveSymbol(SymbolId sid)
+        internal ImmutableSymbolBase ResolveSymbol(SymbolId sid)
         {
             if (this.group != null)
             {
@@ -277,7 +314,7 @@ namespace ImmutableModelPrototype
             }
         }
 
-        internal ImmutableSymbol GetSymbol(SymbolId sid)
+        internal ImmutableSymbolBase GetSymbol(SymbolId sid)
         {
             if (sid == null) return null;
             if (!this.ContainsSymbol(sid)) return null;
@@ -287,13 +324,13 @@ namespace ImmutableModelPrototype
         public ImmutableSymbol GetSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return null;
-            return this.GetSymbol(symbol.Id);
+            return this.GetSymbol(((MutableSymbolBase)symbol).Id);
         }
 
         public ImmutableSymbol GetSymbol(ImmutableSymbol symbol)
         {
             if (symbol == null) return null;
-            return this.GetSymbol(symbol.Id);
+            return this.GetSymbol(((ImmutableSymbolBase)symbol).Id);
         }
 
         internal bool ContainsSymbol(SymbolId sid)
@@ -305,13 +342,13 @@ namespace ImmutableModelPrototype
         public bool ContainsSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(symbol.Id);
+            return this.ContainsSymbol(((MutableSymbolBase)symbol).Id);
         }
 
-        public bool ContainsSymbol(ImmutableSymbol symbol)
+        public bool ContainsSymbol(ImmutableSymbolBase symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(symbol.Id);
+            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).Id);
         }
 
         public MutableModel ToMutable(bool createNew = false)
@@ -360,13 +397,13 @@ namespace ImmutableModelPrototype
 
         internal object ToGreenValue(object value)
         {
-            if (value is ImmutableSymbol)
+            if (value is ImmutableSymbolBase)
             {
-                return ((ImmutableSymbol)value).Id;
+                return ((ImmutableSymbolBase)value).Id;
             }
-            if (value is MutableSymbol)
+            if (value is MutableSymbolBase)
             {
-                return ((MutableSymbol)value).Id;
+                return ((MutableSymbolBase)value).Id;
             }
             return value;
         }
@@ -376,13 +413,13 @@ namespace ImmutableModelPrototype
             if (value is GreenDerivedValue)
             {
                 object redValue = ((GreenDerivedValue)value).CreateRedValue();
-                if (value is ImmutableSymbol)
+                if (value is ImmutableSymbolBase)
                 {
-                    return this.ResolveSymbol(((ImmutableSymbol)value).Id);
+                    return this.ResolveSymbol(((ImmutableSymbolBase)value).Id);
                 }
-                else if (value is MutableSymbol)
+                else if (value is MutableSymbolBase)
                 {
-                    return this.ResolveSymbol(((MutableSymbol)value).Id);
+                    return this.ResolveSymbol(((MutableSymbolBase)value).Id);
                 }
                 return redValue;
             }
@@ -415,7 +452,7 @@ namespace ImmutableModelPrototype
                 object greenValue;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue))
                 {
-                    return greenValue;
+                    return this.ToRedValue(greenValue);
                 }
             }
             return null;
@@ -506,7 +543,7 @@ namespace ImmutableModelPrototype
 
         // Used in standalone models:
         private GreenModel green;
-        private ConditionalWeakTable<SymbolId, MutableSymbol> symbols;
+        private ConditionalWeakTable<SymbolId, MutableSymbolBase> symbols;
         private ThreadLocal<GreenModelUpdater> updater;
 
         public MutableModel()
@@ -532,7 +569,7 @@ namespace ImmutableModelPrototype
             this.green = green;
             this.updater = new ThreadLocal<GreenModelUpdater>();
             this.readOnly = false;
-            this.symbols = new ConditionalWeakTable<SymbolId, MutableSymbol>();
+            this.symbols = new ConditionalWeakTable<SymbolId, MutableSymbolBase>();
             this.immutableModel = new WeakReference<ImmutableModel>(immutableModel);
         }
 
@@ -573,7 +610,7 @@ namespace ImmutableModelPrototype
         }
         public bool IsReadOnly { get { return this.readOnly; } }
         public MutableModelGroup ModelGroup { get { return this.group; } }
-        public IEnumerable<MutableSymbol> Symbols
+        public IEnumerable<MutableSymbolBase> Symbols
         {
             get
             {
@@ -584,8 +621,9 @@ namespace ImmutableModelPrototype
             }
         }
 
-        internal MutableSymbol GetExistingSymbol(SymbolId sid)
+        internal MutableSymbolBase GetExistingSymbol(SymbolId sid)
         {
+            if (sid == null) return null;
             if (this.group != null)
             {
                 if (this.readOnly) return this.group.GetExistingReferenceSymbol(this.id, sid);
@@ -597,7 +635,7 @@ namespace ImmutableModelPrototype
             }
         }
 
-        internal void RegisterSymbol(SymbolId sid, MutableSymbol symbol)
+        internal void RegisterSymbol(SymbolId sid, MutableSymbolBase symbol)
         {
             if (this.group != null)
             {
@@ -609,7 +647,7 @@ namespace ImmutableModelPrototype
             }
         }
 
-        internal MutableSymbol ResolveSymbol(SymbolId sid)
+        internal MutableSymbolBase ResolveSymbol(SymbolId sid)
         {
             if (this.group != null)
             {
@@ -622,20 +660,20 @@ namespace ImmutableModelPrototype
             }
         }
 
-        internal MutableSymbol GetSymbol(SymbolId sid)
+        internal MutableSymbolBase GetSymbol(SymbolId sid)
         {
             if (sid == null) return null;
             if (!this.ContainsSymbol(sid)) return null;
             return this.GetExistingSymbol(sid);
         }
 
-        public MutableSymbol GetSymbol(MutableSymbol symbol)
+        public MutableSymbolBase GetSymbol(MutableSymbolBase symbol)
         {
             if (symbol == null) return null;
             return this.GetSymbol(symbol.Id);
         }
 
-        public MutableSymbol GetSymbol(ImmutableSymbol symbol)
+        public MutableSymbolBase GetSymbol(ImmutableSymbolBase symbol)
         {
             if (symbol == null) return null;
             return this.GetSymbol(symbol.Id);
@@ -655,23 +693,23 @@ namespace ImmutableModelPrototype
             }
         }
 
-        public bool ContainsSymbol(MutableSymbol symbol)
+        public bool ContainsSymbol(MutableSymbolBase symbol)
         {
             if (symbol == null) return false;
             return this.ContainsSymbol(symbol.Id);
         }
 
-        public bool ContainsSymbol(ImmutableSymbol symbol)
+        public bool ContainsSymbol(ImmutableSymbolBase symbol)
         {
             if (symbol == null) return false;
             return this.ContainsSymbol(symbol.Id);
         }
 
-        internal MutableSymbol CreateSymbol(SymbolId sid, bool weakReference)
+        internal MutableSymbolBase CreateSymbol(SymbolId sid, bool weakReference)
         {
             Debug.Assert(sid != null);
             Debug.Assert(!this.ContainsSymbol(sid));
-            MutableSymbol result = sid.CreateMutable(this, true);
+            MutableSymbolBase result = sid.CreateMutable(this, true);
             this.RegisterSymbol(sid, result);
             ModelUpdateContext ctx;
             do
@@ -765,13 +803,13 @@ namespace ImmutableModelPrototype
 
         internal object ToGreenValue(object value)
         {
-            if (value is ImmutableSymbol)
+            if (value is ImmutableSymbolBase)
             {
-                return ((ImmutableSymbol)value).Id;
+                return ((ImmutableSymbolBase)value).Id;
             }
-            if (value is MutableSymbol)
+            if (value is MutableSymbolBase)
             {
-                return ((MutableSymbol)value).Id;
+                return ((MutableSymbolBase)value).Id;
             }
             return value;
         }
@@ -781,13 +819,13 @@ namespace ImmutableModelPrototype
             if (value is GreenDerivedValue)
             {
                 object redValue = ((GreenDerivedValue)value).CreateRedValue();
-                if (value is ImmutableSymbol)
+                if (value is ImmutableSymbolBase)
                 {
-                    return this.ResolveSymbol(((ImmutableSymbol)value).Id);
+                    return this.ResolveSymbol(((ImmutableSymbolBase)value).Id);
                 }
-                else if (value is MutableSymbol)
+                else if (value is MutableSymbolBase)
                 {
-                    return this.ResolveSymbol(((MutableSymbol)value).Id);
+                    return this.ResolveSymbol(((MutableSymbolBase)value).Id);
                 }
                 return redValue;
             }
@@ -858,7 +896,7 @@ namespace ImmutableModelPrototype
         {
             Debug.Assert(!property.IsCollection);
             GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenLazyValue)
@@ -883,7 +921,7 @@ namespace ImmutableModelPrototype
         {
             Debug.Assert(property.IsCollection);
             GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
@@ -910,13 +948,13 @@ namespace ImmutableModelPrototype
             return result;
         }
 
-        internal MutableModelSet<T> GetSet<T>(MutableSymbol symbol, ModelProperty property)
+        internal MutableModelSet<T> GetSet<T>(MutableSymbolBase symbol, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
             return MutableModelSet<T>.FromGreenList(symbol, property);
         }
 
-        internal MutableModelList<T> GetList<T>(MutableSymbol symbol, ModelProperty property)
+        internal MutableModelList<T> GetList<T>(MutableSymbolBase symbol, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
             return MutableModelList<T>.FromGreenList(symbol, property);
@@ -1033,7 +1071,7 @@ namespace ImmutableModelPrototype
         internal MutableSymbol MParent(SymbolId sid)
         {
             GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 return this.GetExistingSymbol(greenSymbol.Parent);
             }
@@ -1043,7 +1081,7 @@ namespace ImmutableModelPrototype
         internal ImmutableModelList<MutableSymbol> MChildren(SymbolId sid)
         {
             GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 return ImmutableModelList<MutableSymbol>.FromSymbolIdList(greenSymbol.Children, this);
             }
@@ -1057,14 +1095,14 @@ namespace ImmutableModelPrototype
         private GreenModelGroup green;
         private WeakReference<MutableModelGroup> mutableModelGroup;
         private ConditionalWeakTable<ModelId, ImmutableModel> models;
-        private ConditionalWeakTable<SymbolId, ImmutableSymbol> symbols;
+        private ConditionalWeakTable<SymbolId, ImmutableSymbolBase> symbols;
 
         internal ImmutableModelGroup(GreenModelGroup green, MutableModelGroup mutableModelGroup)
         {
             this.green = green;
             this.mutableModelGroup = new WeakReference<MutableModelGroup>(mutableModelGroup);
             this.models = new ConditionalWeakTable<ModelId, ImmutableModel>();
-            this.symbols = new ConditionalWeakTable<SymbolId, ImmutableSymbol>();
+            this.symbols = new ConditionalWeakTable<SymbolId, ImmutableSymbolBase>();
         }
 
         internal GreenModelGroup Green { get { return this.green; } }
@@ -1139,19 +1177,19 @@ namespace ImmutableModelPrototype
         }
 
 
-        internal ImmutableSymbol GetExistingReferenceSymbol(ModelId mid, SymbolId sid)
+        internal ImmutableSymbolBase GetExistingReferenceSymbol(ModelId mid, SymbolId sid)
         {
             return this.symbols.GetValue(sid, key => key.CreateImmutable(this.GetExistingReference(mid)));
         }
 
-        internal ImmutableSymbol GetExistingModelSymbol(ModelId mid, SymbolId sid)
+        internal ImmutableSymbolBase GetExistingModelSymbol(ModelId mid, SymbolId sid)
         {
             return this.symbols.GetValue(sid, key => key.CreateImmutable(this.GetExistingModel(mid)));
         }
 
-        internal ImmutableSymbol ResolveSymbol(SymbolId sid)
+        internal ImmutableSymbolBase ResolveSymbol(SymbolId sid)
         {
-            ImmutableSymbol result;
+            ImmutableSymbolBase result;
             if (this.symbols.TryGetValue(sid, out result) && result != null)
             {
                 return result;
@@ -1179,13 +1217,13 @@ namespace ImmutableModelPrototype
             return this.Green.ContainsSymbol(sid);
         }
 
-        public bool ContainsSymbol(ImmutableSymbol symbol)
+        public bool ContainsSymbol(ImmutableSymbolBase symbol)
         {
             if (symbol == null) return false;
             return this.ContainsSymbol(symbol.Id);
         }
 
-        public bool ContainsSymbol(MutableSymbol symbol)
+        public bool ContainsSymbol(MutableSymbolBase symbol)
         {
             if (symbol == null) return false;
             return this.ContainsSymbol(symbol.Id);
@@ -1231,7 +1269,7 @@ namespace ImmutableModelPrototype
         private ThreadLocal<GreenModelUpdater> updater;
         private WeakReference<ImmutableModelGroup> immutableModelGroup;
         private ConditionalWeakTable<ModelId, MutableModel> models;
-        private ConditionalWeakTable<SymbolId, MutableSymbol> symbols;
+        private ConditionalWeakTable<SymbolId, MutableSymbolBase> symbols;
 
         public MutableModelGroup()
             : this(GreenModelGroup.Empty, null)
@@ -1244,7 +1282,7 @@ namespace ImmutableModelPrototype
             this.updater = new ThreadLocal<GreenModelUpdater>();
             this.immutableModelGroup = new WeakReference<ImmutableModelGroup>(immutableModelGroup);
             this.models = new ConditionalWeakTable<ModelId, MutableModel>();
-            this.symbols = new ConditionalWeakTable<SymbolId, MutableSymbol>();
+            this.symbols = new ConditionalWeakTable<SymbolId, MutableSymbolBase>();
         }
 
         internal GreenModelGroup Green
@@ -1333,24 +1371,24 @@ namespace ImmutableModelPrototype
         }
 
 
-        internal MutableSymbol GetExistingReferenceSymbol(ModelId mid, SymbolId sid)
+        internal MutableSymbolBase GetExistingReferenceSymbol(ModelId mid, SymbolId sid)
         {
             return this.symbols.GetValue(sid, key => key.CreateMutable(this.GetExistingReference(mid), false));
         }
 
-        internal MutableSymbol GetExistingModelSymbol(ModelId mid, SymbolId sid)
+        internal MutableSymbolBase GetExistingModelSymbol(ModelId mid, SymbolId sid)
         {
             return this.symbols.GetValue(sid, key => key.CreateMutable(this.GetExistingModel(mid), false));
         }
 
-        internal void RegisterSymbol(SymbolId sid, MutableSymbol symbol)
+        internal void RegisterSymbol(SymbolId sid, MutableSymbolBase symbol)
         {
             this.symbols.Add(sid, symbol);
         }
 
-        internal MutableSymbol ResolveSymbol(SymbolId sid)
+        internal MutableSymbolBase ResolveSymbol(SymbolId sid)
         {
-            MutableSymbol result;
+            MutableSymbolBase result;
             if (this.symbols.TryGetValue(sid, out result) && result != null)
             {
                 return result;
@@ -1378,13 +1416,13 @@ namespace ImmutableModelPrototype
             return this.Green.ContainsSymbol(sid);
         }
 
-        public bool ContainsSymbol(ImmutableSymbol symbol)
+        public bool ContainsSymbol(ImmutableSymbolBase symbol)
         {
             if (symbol == null) return false;
             return this.ContainsSymbol(symbol.Id);
         }
 
-        public bool ContainsSymbol(MutableSymbol symbol)
+        public bool ContainsSymbol(MutableSymbolBase symbol)
         {
             if (symbol == null) return false;
             return this.ContainsSymbol(symbol.Id);
@@ -1512,13 +1550,15 @@ namespace ImmutableModelPrototype
 
         public MutableModel Model { get { return this.model; } }
 
-        protected MutableSymbol CreateSymbol(SymbolId id, bool weakReference)
+        protected MutableSymbolBase CreateSymbol(SymbolId id, bool weakReference)
         {
-            MutableSymbol symbol = this.model.CreateSymbol(id, weakReference);
+            MutableSymbolBase symbol = this.model.CreateSymbol(id, weakReference);
+            symbol.MInit();
+            symbol.MMakeCreated();
             return symbol;
         }
 
-        public abstract MutableSymbol Create(string type);
+        public abstract MutableSymbolBase Create(string type);
     }
 
     public class PropertyInit
