@@ -240,12 +240,9 @@ namespace ImmutableModelPrototypeTest
 
     public class TestModelFactory : ModelFactory
     {
-        private bool createWeakSymbols;
-
-        public TestModelFactory(MutableModel model, bool createWeakSymbols = false)
-            : base(model)
+        public TestModelFactory(MutableModel model, ModelFactoryFlags flags = ModelFactoryFlags.MakeSymbolsCreated)
+            : base(model, flags)
         {
-            this.createWeakSymbols = createWeakSymbols;
             TestModelDescriptor.Initialize();
         }
 
@@ -266,61 +263,61 @@ namespace ImmutableModelPrototypeTest
 
         public Husband Husband()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenHusband(), this.createWeakSymbols);
+            MutableSymbolBase symbol = this.CreateSymbol(new GreenHusband());
             return (Husband)symbol;
         }
 
         public Wife Wife()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenWife(), this.createWeakSymbols);
+            MutableSymbolBase symbol = this.CreateSymbol(new GreenWife());
             return (Wife)symbol;
         }
 
         public ListChild ListChild()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenListChild(), this.createWeakSymbols);
+            MutableSymbolBase symbol = this.CreateSymbol(new GreenListChild());
             return (ListChild)symbol;
         }
 
         public ListParent ListParent()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenListParent(), this.createWeakSymbols);
+            MutableSymbolBase symbol = this.CreateSymbol(new GreenListParent());
             return (ListParent)symbol;
         }
 
         public User User()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenUser(), this.createWeakSymbols);
+            MutableSymbolBase symbol = this.CreateSymbol(new GreenUser());
             return (User)symbol;
         }
 
         public Role Role()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenRole(), this.createWeakSymbols);
+            MutableSymbolBase symbol = this.CreateSymbol(new GreenRole());
             return (Role)symbol;
         }
 
         public Person Person()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenPerson(), this.createWeakSymbols);
+            MutableSymbolBase symbol = this.CreateSymbol(new GreenPerson());
             return (Person)symbol;
         }
 
         public Student Student()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenStudent(), this.createWeakSymbols);
+            MutableSymbolBase symbol = this.CreateSymbol(new GreenStudent());
             return (Student)symbol;
         }
 
         public Pet Pet()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenPet(), this.createWeakSymbols);
+            MutableSymbolBase symbol = this.CreateSymbol(new GreenPet());
             return (Pet)symbol;
         }
 
         public Dog Dog()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenDog(), this.createWeakSymbols);
+            MutableSymbolBase symbol = this.CreateSymbol(new GreenDog());
             return (Dog)symbol;
         }
     }

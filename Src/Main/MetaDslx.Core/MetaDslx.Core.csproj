@@ -52,12 +52,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
     </Compile>
-    <Compile Include="Immutable\ImmutableModel.cs" />
-    <Compile Include="Immutable\ImmutableModelList.cs" />
-    <Compile Include="Immutable\ImmutableModelProperties.cs" />
-    <Compile Include="Immutable\ImmutableRedModel.cs" />
-    <Compile Include="Immutable\ImmutableSymbol.cs" />
-    <Compile Include="Immutable\ImmutableGreenModel.cs" />
+    <Compile Include="Immutable\GreenModel.cs" />
+    <Compile Include="Immutable\ModelCollections.cs" />
+    <Compile Include="Immutable\ModelException.cs" />
+    <Compile Include="Immutable\ModelProperty.cs" />
+    <Compile Include="Immutable\RedModel.cs" />
     <Compile Include="MetaImplementation.cs" />
     <Compile Include="MetaModel.cs">
       <AutoGen>True</AutoGen>
@@ -93,6 +92,10 @@
       <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
     </None>
     <None Include="MetaDslxKey.snk" />
+    <None Include="ImmutableMetaModel.mm">
+      <Generator>MetaModelGenerator</Generator>
+      <LastGenOutput>ImmutableMetaModel1.cs</LastGenOutput>
+    </None>
     <None Include="MetaModel.mm">
       <Generator>MetaModelGenerator</Generator>
       <LastGenOutput>MetaModel.cs</LastGenOutput>

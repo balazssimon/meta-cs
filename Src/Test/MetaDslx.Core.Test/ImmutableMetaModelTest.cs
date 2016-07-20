@@ -3,8 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MetaDslx.Core.Immutable.Test
 {
-    using MetaDslx.Core.Immutable;
-
     [TestClass]
     public class ImmutableMetaModelTest
     {

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ImmutableModelPrototype
+namespace MetaDslx.Core.Immutable
 {
     public interface ImmutableSymbol
     {

@@ -77,26 +77,38 @@ function string GetAncestors(MetaClass cls, ClassKind classKind)
 	loop(cls->super:SuperClasses; string delim = " : "; delim = ", ")
 		result += delim+super.CSharpFullName(classKind);
 	end loop
-	if (result == "" && classKind != ClassKind.ChildBuilder) 
-		result = " : global::MetaDslx.Core.Immutable.ISymbol";
+	if (result == "" && classKind == ClassKind.Immutable) 
+		result = " : global::MetaDslx.Core.Immutable.ImmutableSymbol";
+	end if
+	if (result == "" && classKind == ClassKind.Builder) 
+		result = " : global::MetaDslx.Core.Immutable.MutableSymbol";
 	end if
 	return result;
 end function
 
+function string GetDescriptorAncestors(MetaClass cls, ClassKind classKind)
+	string result = "";
+	loop(cls->super:SuperClasses; string delim = ""; delim = ", ")
+		result += delim+"typeof("+super.CSharpFullName(classKind)+")";
+	end loop
+	return result;
+end function
+
 template GenerateImmutableInterface(MetaClass cls)
-internal class [cls.CSharpName(ClassKind.Immutable)]Id : SymbolId
+internal class [cls.CSharpName(ClassKind.Immutable)]Id : global::MetaDslx.Core.Immutable.SymbolId
 {
-    public override System.Type ImmutableType { get { return typeof([cls.CSharpName(ClassKind.Immutable)]); } }
-    public override System.Type MutableType { get { return typeof([cls.CSharpName(ClassKind.Builder)]); } }
+	public override global::MetaDslx.Core.Immutable.ModelSymbolInfo ModelSymbolInfo { get { return [cls.Model.CSharpDescriptorName()].[cls.CSharpName()].ModelSymbolInfo; } }
+    public override global::System.Type ImmutableType { get { return typeof([cls.CSharpName(ClassKind.Immutable)]); } }
+    public override global::System.Type MutableType { get { return typeof([cls.CSharpName(ClassKind.Builder)]); } }
 ^
-    public override global::MetaDslx.Core.Immutable.IImmutableSymbol CreateImmutable(global::MetaDslx.Core.Immutable.ImmutableModel model)
+    public override global::MetaDslx.Core.Immutable.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.Immutable.ImmutableModel model)
     {
         return new [cls.CSharpImplName(ClassKind.Immutable)](this, model);
     }
 ^
-    public override global::MetaDslx.Core.Immutable.IMutableSymbol CreateMutable(global::MetaDslx.Core.Immutable.MutableModel model, bool created)
+    public override global::MetaDslx.Core.Immutable.MutableSymbolBase CreateMutable(global::MetaDslx.Core.Immutable.MutableModel model, bool creating)
     {
-        return new [cls.CSharpImplName(ClassKind.Builder)](this, model, created);
+        return new [cls.CSharpImplName(ClassKind.Builder)](this, model, creating);
     }
 }
 ^
@@ -111,13 +123,8 @@ public interface [cls.CSharpName(ClassKind.Immutable)][GetAncestors(cls, ClassKi
     [GenerateOperation(op)]
 	[end loop]
 ^
-	[if (cls.SuperClasses.Count > 0)]
 	new [cls.CSharpName(ClassKind.Builder)] ToMutable();
 	new [cls.CSharpName(ClassKind.Builder)] ToMutable(global::MetaDslx.Core.Immutable.MutableModel model);
-	[else]
-	[cls.CSharpName(ClassKind.Builder)] ToMutable();
-	[cls.CSharpName(ClassKind.Builder)] ToMutable(global::MetaDslx.Core.Immutable.MutableModel model);
-	[end if]
 }
 ^
 end template
@@ -129,20 +136,8 @@ public interface [cls.CSharpName(ClassKind.Builder)][GetAncestors(cls, ClassKind
     [GenerateBuilderProperty(prop)]
 	[end loop]
 ^
-	[if (cls.SuperClasses.Count > 0)]
 	new [cls.CSharpName(ClassKind.Immutable)] ToImmutable();
 	new [cls.CSharpName(ClassKind.Immutable)] ToImmutable(global::MetaDslx.Core.Immutable.ImmutableModel model);
-	[else]
-	[cls.CSharpName(ClassKind.Immutable)] ToImmutable();
-	[cls.CSharpName(ClassKind.Immutable)] ToImmutable(global::MetaDslx.Core.Immutable.ImmutableModel model);
-	[end if]
-}
-^
-public interface [cls.CSharpName(ClassKind.ChildBuilder)][GetAncestors(cls, ClassKind.ChildBuilder)]
-{
-    [loop(cls->prop:Properties)]
-    [GenerateChildBuilderProperty(prop)]
-	[end loop]
 }
 ^
 end template
@@ -178,20 +173,6 @@ Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Name]Lazy { get;
 	[if (prop.Class.GetAllSuperPropertyNames().Contains(prop.Name))]
 new \
 	[end if]
-	[if (prop.Type is MetaCollectionType)]
-[((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Name]LazyChild { get; }
-	[else]
-[prop.Type.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Name]LazyChild { get; }
-	[end if]
-[end if]
-end template
-
-template GenerateChildBuilderProperty(MetaProperty prop)
-[if(!(prop.Type is MetaCollectionType))]
-	[if (prop.Class.GetAllSuperPropertyNames().Contains(prop.Name))]
-new \
-	[end if]
-Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Name] { set; }
 [end if]
 end template
 
@@ -208,7 +189,7 @@ function string GetParameters(MetaFunction op, ClassKind classKind)
 end function
 
 function string GetImplParameters(MetaClass cls, MetaOperation op)
-	string result = cls.CSharpFullName(ClassKind.Immutable)+" @this";
+	string result = cls.CSharpFullName(ClassKind.Immutable)+" _this";
 	string delim = ", ";
 	loop(op->param:Parameters)
 		result += delim+param.Type.CSharpFullPublicName(ClassKind.Immutable)+" "+param.Name;
@@ -217,7 +198,7 @@ function string GetImplParameters(MetaClass cls, MetaOperation op)
 end function
 
 function string GetImplParameters(MetaEnum enm, MetaOperation op)
-	string result = enm.CSharpFullName(ClassKind.Immutable)+" @this";
+	string result = enm.CSharpFullName(ClassKind.Immutable)+" _this";
 	string delim = ", ";
 	loop(op->param:Parameters)
 		result += delim+param.Type.CSharpFullPublicName(ClassKind.Immutable)+" "+param.Name;
@@ -226,7 +207,7 @@ function string GetImplParameters(MetaEnum enm, MetaOperation op)
 end function
 
 function string GetEnumImplParameters(MetaEnum enm, MetaOperation op)
-	string result = "this "+enm.CSharpFullName(ClassKind.Immutable)+" @this";
+	string result = "this "+enm.CSharpFullName(ClassKind.Immutable)+" _this";
 	string delim = ", ";
 	loop(op->param:Parameters)
 		result += delim+param.Type.CSharpFullPublicName(ClassKind.Immutable)+" "+param.Name;
@@ -235,7 +216,7 @@ function string GetEnumImplParameters(MetaEnum enm, MetaOperation op)
 end function
 
 function string GetEnumImplCallParameterNames(MetaOperation op)
-	string result = "@this";
+	string result = "_this";
 	string delim = ", ";
 	loop(op->param:Parameters)
 		result += delim+param.Name;
@@ -318,20 +299,16 @@ internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.I
     [GenerateBuilderField(cls, prop)]
 	[end loop]
 ^
-    internal [cls.CSharpImplName(ClassKind.Builder)](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableModel model, bool created)
-		: base(id, model, created)
+    internal [cls.CSharpImplName(ClassKind.Builder)](global::MetaDslx.Core.Immutable.SymbolId id, global::MetaDslx.Core.Immutable.MutableModel model, bool creating)
+		: base(id, model, creating)
     {
-		if (!created)
-		{
-			[loop(cls->prop:GetAllProperties())]
-			this.MAttachProperty([prop.CSharpFullDescriptorName(ClassKind.Immutable)]);
-			[end loop]
-			this.MInit();
-		}
     }
 ^
-    protected override void MDoInit()
+    internal protected override void MInit()
     {
+		[loop(cls->sup:GetAllSuperClasses(false))]
+		[sup.Model.Name]ImplementationProvider.Implementation.[sup.CSharpName()](this);
+		[end loop]
 		[model.Name]ImplementationProvider.Implementation.[cls.CSharpName()](this);
     }
 ^
@@ -372,18 +349,6 @@ internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.I
 	[end loop]
 }
 ^
-public class [cls.CSharpImplName(ClassKind.ChildBuilder)] : global::MetaDslx.Core.Immutable.LazyChildBuilderBase, [cls.CSharpFullName(ClassKind.ChildBuilder)]
-{
-    internal [cls.CSharpImplName(ClassKind.ChildBuilder)](global::MetaDslx.Core.Immutable.MutableSymbolBase parent, global::MetaDslx.Core.Immutable.ModelProperty property)
-		: base(parent, property)
-    {
-    }
-^
-    [loop(cls->prop:GetAllProperties())]
-    [GenerateChildBuilderPropertyImpl(model, cls, prop)]
-	[end loop]
-}
-^
 end template
 
 template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaProperty prop)
@@ -415,14 +380,14 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 [if (prop.Type is MetaCollectionType)]
 	[MetaCollectionType collType = (MetaCollectionType)prop.Type]
 public static readonly global::MetaDslx.Core.Immutable.ModelProperty [prop.Name]Property =
-    global::MetaDslx.Core.Immutable.ModelProperty.Register("[prop.Name]", typeof([prop.Class.Model.CSharpDescriptorName()].[prop.Class.CSharpName()]),
-        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpFullPublicName(ClassKind.Immutable)]), typeof([prop.Type.CSharpFullPublicName(ClassKind.Immutable)]), typeof([prop.Class.CSharpFullName(ClassKind.Immutable)])),
-        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpFullPublicName(ClassKind.Builder)]), typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)]), typeof([prop.Class.CSharpFullName(ClassKind.Builder)])));
+    global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof([prop.Class.Model.CSharpDescriptorName()].[prop.Class.CSharpName()]), "[prop.Name]",
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpFullPublicName(ClassKind.Immutable)]), typeof([prop.Type.CSharpFullPublicName(ClassKind.Immutable)])),
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpFullPublicName(ClassKind.Builder)]), typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)])));
 [else]
 public static readonly global::MetaDslx.Core.Immutable.ModelProperty [prop.Name]Property =
-    global::MetaDslx.Core.Immutable.ModelProperty.Register("[prop.Name]", typeof([prop.Class.Model.CSharpDescriptorName()].[prop.Class.CSharpName()]),
-        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName(ClassKind.Immutable)]), null, typeof([prop.Class.CSharpFullName(ClassKind.Immutable)])),
-        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)]), null, typeof([prop.Class.CSharpFullName(ClassKind.Builder)])));
+    global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof([prop.Class.Model.CSharpDescriptorName()].[prop.Class.CSharpName()]), "[prop.Name]",
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName(ClassKind.Immutable)]), null),
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)]), null));
 [end if]
 [end if]
 ^
@@ -489,51 +454,6 @@ Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Class.CSharpFull
 		[end if]
 }
 [end if]
-[if(prop.Kind == MetaPropertyKind.Containment && (((prop.Type is MetaCollectionType) && (((MetaCollectionType)prop.Type).InnerType is MetaClass)) || (!(prop.Type is MetaCollectionType) && prop.Type is MetaClass)))]
-^
-["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
-	[if (cls.GetAllFinalProperties().Contains(prop))]
-		[if (prop.Type is MetaCollectionType)]
-public [((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Name]LazyChild
-		[else]
-public [prop.Type.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Name]LazyChild
-		[end if]
-	[else]
-		[if (prop.Type is MetaCollectionType)]
-[((MetaCollectionType)prop.Type).InnerType.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Class.CSharpFullName(ClassKind.Builder)].[prop.Name]LazyChild
-		[else]
-[prop.Type.CSharpFullPublicName(ClassKind.ChildBuilder)] [prop.Class.CSharpFullName(ClassKind.Builder)].[prop.Name]LazyChild
-		[end if]
-	[end if]
-		[if (prop.Type is MetaCollectionType)]
-{
-    get { return new [((MetaClass)((MetaCollectionType)prop.Type).InnerType).CSharpFullName(ClassKind.ChildBuilder)]Impl(this, [prop.CSharpFullDescriptorName(ClassKind.Immutable)]); }
-}
-		[else]
-{
-    get { return new [((MetaClass)prop.Type).CSharpFullName(ClassKind.ChildBuilder)]Impl(this, [prop.CSharpFullDescriptorName(ClassKind.Immutable)]); }
-}
-		[end if]
-[end if]
-end template
-
-template GenerateChildBuilderPropertyImpl(MetaModel model, MetaClass cls, MetaProperty prop)
-[if(!(prop.Type is MetaCollectionType))]
-^
-["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
-	[if (cls.GetAllFinalProperties().Contains(prop))]
-public Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Name]
-	[else]
-Func<[prop.Type.CSharpFullPublicName(ClassKind.Builder)]> [prop.Class.CSharpFullName(ClassKind.ChildBuilder)].[prop.Name]
-	[end if]
-{
-		[if (prop.Type.IsReferenceType())]
-    set { this.MParent.MChildAddLazy(this.MProperty, [prop.CSharpFullDescriptorName(ClassKind.Immutable)], value); }
-		[else]
-    set { this.MParent.MChildAddLazy(this.MProperty, [prop.CSharpFullDescriptorName(ClassKind.Immutable)], () => value); }
-		[end if]
-}
-[end if]
 end template
 
 function string GetReturn(MetaOperation op)
@@ -571,21 +491,18 @@ end function
 template GenerateMetaModelDescriptor(MetaModel model)
 public static class [model.CSharpDescriptorName()]
 {
-	private static global::System.Collections.Generic.List<global::MetaDslx.Core.Immutable.ModelProperty> properties = new global::System.Collections.Generic.List<global::MetaDslx.Core.Immutable.ModelProperty>();
+    private static global::System.Collections.Generic.List<global::MetaDslx.Core.Immutable.ModelProperty> properties;
 ^
     static [model.CSharpDescriptorName()]()
     {
+        MetaDescriptor.properties = new global::System.Collections.Generic.List<global::MetaDslx.Core.Immutable.ModelProperty>();
+		global::System.Collections.Generic.List<global::MetaDslx.Core.Immutable.ModelProperty> properties = new global::System.Collections.Generic.List<global::MetaDslx.Core.Immutable.ModelProperty>();
     [loop(model->Namespace->Declarations->cls:typeof(MetaClass)->prop:Properties)]
         properties.Add([cls.CSharpName()].[prop.Name]Property);
     [end loop]
-^
-        foreach (var property in properties)
-        {
-            property.Init();
-        }
     }
 ^
-    public static void Init()
+    public static void Initialize()
     {
 
     }
@@ -602,8 +519,19 @@ end template
 
 template GenerateMetaModelClass(MetaClass cls)
 ^
+[if (cls.SuperClasses.Count > 0)]
+["[ModelSymbolDecriptor("][GetDescriptorAncestors(cls, ClassKind.Normal)][")]"]
+[else]
+["[ModelSymbolDecriptor]"]
+[end if]
 public static class [cls.CSharpName()]
 {
+    static [cls.CSharpName()]()
+    {
+        [cls.CSharpName()].ModelSymbolInfo = global::MetaDslx.Core.Immutable.ModelSymbolInfo.GetSymbolInfo(typeof([cls.CSharpName()]));
+    }
+^
+    public static global::MetaDslx.Core.Immutable.ModelSymbolInfo ModelSymbolInfo { get; }
 ^
 [if (cls.CSharpName() == "MetaClass")]
     public static global::MetaDslx.Core.Immutable.MetaClass _MetaClass
@@ -619,18 +547,6 @@ public static class [cls.CSharpName()]
     [end loop]
 }
 end template
-
-
-function MetaSynthetizedPropertyInitializer GetSynthetizedInitializerFor(MetaClass cls, MetaProperty prop)
-	MetaSynthetizedPropertyInitializer lastInit = null;
-	loop(cls->sup:GetAllSuperClasses(true)->Constructor->Initializers->init:typeof(MetaSynthetizedPropertyInitializer))
-		if (init.Property == prop)
-			lastInit = init;
-		end if
-	end loop
-	return lastInit;
-end function
-
 
 template GenerateImplementationProvider(MetaModel model)
 internal static class [model.Name]ImplementationProvider
@@ -696,12 +612,8 @@ internal abstract class [model.Name]ImplementationBase
 	[end loop]
 	/// </ul>
 	[end if]
-    public virtual void [cls.CSharpName()]([cls.CSharpName(ClassKind.Builder)] @this)
+    public virtual void [cls.CSharpName()]([cls.CSharpName(ClassKind.Builder)] _this)
     {
-		[loop(cls->sup:SuperClasses)]
-        this.[sup.CSharpName()](@this);
-		[end loop]
-		[GenerateInitImplementation(model, cls)]
     }
     [loop(cls->op:Operations)]
 ^
@@ -728,10 +640,6 @@ internal abstract class [model.Name]ImplementationBase
 	[end loop]
 ^
 	[end loop]
-^
-	[loop(model->Namespace->Declarations->func:typeof(MetaFunction))]
-	[GenerateFunction(func, ClassKind.Builder)]
-	[end loop]
 }
 ^
 end template
@@ -744,20 +652,19 @@ public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.Model
 {
 	private bool makeSymbolCreated = true;
 ^
-    public [model.CSharpFactoryName()](global::MetaDslx.Core.Immutable.MutableModel model = null, bool makeSymbolCreated = true)
-        : base(model)
+    public [model.CSharpFactoryName()](MutableModel model, ModelFactoryFlags flags = ModelFactoryFlags.MakeSymbolsCreated)
+        : base(model, flags)
     {
-		[model.CSharpFullDescriptorName(ClassKind.Immutable)].Init();
-		this.makeSymbolCreated = makeSymbolCreated;
+		[model.CSharpFullDescriptorName(ClassKind.Immutable)].Initialize();
     }
 ^
-    public override global::MetaDslx.Core.Immutable.IMutableSymbol Create(string type)
+    public override global::MetaDslx.Core.Immutable.MutableSymbolBase Create(string type)
     {
         switch (type)
         {
 			[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
 				[if (!cls.IsAbstract)]
-            case "[cls.CSharpName()]": return (global::MetaDslx.Core.Immutable.IMutableSymbol)this.[cls.CSharpName()]();
+            case "[cls.CSharpName()]": return (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.[cls.CSharpName()]();
 				[end if]
 			[end loop]
             default:
@@ -770,11 +677,9 @@ public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.Model
     /// <summary>
     /// Creates a new instance of [cls.CSharpName()].
     /// </summary>
-    public [cls.CSharpName(ClassKind.Builder)] [cls.CSharpName()](params global::MetaDslx.Core.Immutable.PropertyInit["[]"] propertyInitializers)
+    public [cls.CSharpName(ClassKind.Builder)] [cls.CSharpName()]()
 	{
-		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = (global::MetaDslx.Core.Immutable.MutableSymbolBase)this.AddSymbol(new [cls.CSharpName(ClassKind.Id)]());
-		symbol.MInitProperties(propertyInitializers);
-		if (this.makeSymbolCreated) symbol.MMakeCreated();
+		global::MetaDslx.Core.Immutable.MutableSymbolBase symbol = this.CreateSymbol(new [cls.CSharpName(ClassKind.Id)]());
 		return ([cls.CSharpName(ClassKind.Builder)])symbol;
 	}
 		[end if]
@@ -782,218 +687,6 @@ public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.Model
 }
 ^
 end template
-
-template GenerateFunction(MetaFunction func, ClassKind classKind)
-public abstract [func.ReturnType.CSharpFullPublicName(classKind)] [func.Name]([GetParameters(func, classKind)]);
-end template
-
-template GenerateInitImplementation(MetaModel model, MetaClass cls)
-[loop(cls->prop:Properties)]
-	[MetaSynthetizedPropertyInitializer synInit = GetSynthetizedInitializerFor(cls, prop)]
-	[if (synInit != null)]
-		[if (ModelCompilerContext.Current.TypeProvider.GetTypeOf(synInit.Value) is MetaCollectionType)]
-@this.[prop.Name].ClearLazy();
-			[if (synInit.Value.Type is MetaCollectionType)]
-@this.[prop.Name].LazyAddRange([GenerateExpression(synInit.Value)]);
-			[else]
-@this.[prop.Name].LazyAdd([GenerateExpression(synInit.Value)]);
-			[end if]
-		[else]
-@this.[prop.Name]Lazy = () => ([prop.Type.CSharpFullName(ClassKind.Builder)])([GenerateExpression(synInit.Value)]);
-		[end if]
-	[end if]
-[end loop]
-[loop(cls->Constructor->Initializers->init:typeof(MetaInheritedPropertyInitializer))]
-	[if (init.Object != null && init.Property != null)]
-		[if (((MetaClass)init.Object.Type).GetAllSuperClasses(true).Contains(init.PropertyContext))]
-			[if (init.Value.Type is MetaCollectionType)]
-@this.[init.ObjectName]LazyChild.[init.PropertyName] = () => [GenerateExpression(init.Value)]; 
-			[else]
-@this.[init.ObjectName]LazyChild.[init.PropertyName] = () => [GenerateExpression(init.Value)];
-			[end if]
-		[else]
-((MutableSymbolBase)@this).MChildAddLazy([init.Object.CSharpFullDescriptorName(ClassKind.Immutable)], [init.Property.CSharpFullDescriptorName(ClassKind.Immutable)], () => [GenerateExpression(init.Value)]);
-		[end if]
-	[end if]
-[end loop]
-end template
-
-template GenerateExpression(MetaExpression expr)
-[switch (expr)]
-[type as MetaBracketExpression:]([GenerateExpression(expr.Expression)])\
-[type as MetaThisExpression:]@this\
-[type as MetaNullExpression:]null\
-[type as MetaTypeAsExpression:][GenerateExpression(expr.Expression)] as [expr.TypeReference.CSharpName(ClassKind.Builder)]\
-[type as MetaTypeCastExpression:]([expr.TypeReference.CSharpName(ClassKind.Builder)])[GenerateExpression(expr.Expression)]\
-[type as MetaTypeCheckExpression:][GenerateExpression(expr.Expression)] is [expr.TypeReference.CSharpName(ClassKind.Builder)]\
-[type as MetaTypeOfExpression:][GenerateTypeOf(expr)]\
-[type as MetaConditionalExpression:][GenerateExpression(expr.Condition)] ? [GenerateExpression(expr.Then)] : [GenerateExpression(expr.Else)]\
-[type as MetaConstantExpression:][GetCSharpValue(expr.Value)]\
-[type as MetaIdentifierExpression:][GenerateIdentifierExpression(expr)]\
-[type as MetaMemberAccessExpression:][GenerateExpression(expr.Expression)].[expr.Name]\
-[type as MetaFunctionCallExpression:][GenerateFunctionCall(expr)]\
-[type as MetaIndexerExpression:][GenerateIndexerCall(expr)]\
-[type as MetaOperatorExpression:][GenerateOperator(expr)]\
-[type as MetaNewExpression:]factory.[expr.TypeReference.CSharpName(ClassKind.Immutable)]([GenerateNewPropertyInitializers(expr)])\
-[type as MetaNewCollectionExpression:]new List<Func<object>>() { [GenerateNewCollectionValues(expr)] }\
-[default:]***unknown expression type***
-[end switch]
-end template
-
-template GenerateIdentifierExpression(MetaIdentifierExpression expr)
-[if (expr.Definition is MetaProperty)]
-@this.[expr.Name]\
-[else]
-[expr.Name]\
-[end if]
-end template
-
-function bool SameFunction(MetaGlobalFunction mfunc1, MetaGlobalFunction mfunc2)
-	return mfunc1.Name == mfunc2.Name && ModelCompilerContext.Current.TypeProvider.Equals((ModelObject)mfunc1.Type, (ModelObject)mfunc2.Type);
-end function
-
-template GenerateFunctionCall(MetaFunctionCallExpression call)
-[if (call.Definition is MetaGlobalFunction && SameFunction((MetaGlobalFunction)call.Definition, MetaInstance.TypeOf))][GenerateTypeOf(call.Arguments[0])]\
-[else]this.[GenerateExpression(call.Expression)]([GenerateCallArguments(call, "")])\
-[end if]
-end template
-
-template GenerateIndexerCall(MetaIndexerExpression call)
-[GenerateExpression(call.Expression)]["["][GenerateCallArguments(call, "")]["]"]\
-end template
-
-template GenerateTypeOf(object expr)
-[switch(expr)]
-[type as MetaPrimitiveType:]
-[switch(expr.Name)]
-[case "*none*":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable() : null\
-[case "*error*":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Error.ToMutable() : null\
-[case "*any*":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable() : null\
-[case "object":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Object.ToMutable() : null\
-[case "string":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.String.ToMutable() : null\
-[case "int":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Int.ToMutable() : null\
-[case "long":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Long.ToMutable() : null\
-[case "float":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Float.ToMutable() : null\
-[case "double":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Double.ToMutable() : null\
-[case "byte":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Byte.ToMutable() : null\
-[case "bool":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Bool.ToMutable() : null\
-[case "void":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Void.ToMutable() : null\
-[case "ModelObject":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.ModelObject.ToMutable() : null\
-[case "ModelObjectList":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.ModelObjectList.ToMutable() : null\
-[case "DefinitionList":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.DefinitionList.ToMutable() : null\
-[end switch]
-[type as MetaTypeOfExpression:][GenerateTypeOf(expr.TypeReference)]\
-[type as MetaClass:][expr.CSharpFullDescriptorName(ClassKind.Immutable)].MetaClass\
-[type as MetaCollectionType:][expr.CSharpFullName(ClassKind.Immutable)]\
-[default:]***error***\
-[end switch]
-end template
-
-template GenerateCallArguments(MetaBoundExpression call, string prefix)
-[loop(call->arg:Arguments; string delim = ""; delim = ", ")]
-[delim][prefix][GenerateExpression(arg)]\
-[end loop]
-end template
-
-template GenerateOperator(MetaOperatorExpression expr)
-[switch (expr)]
-[type as MetaUnaryExpression:]
-	[if (expr is MetaPostIncrementAssignExpression || expr is MetaPostDecrementAssignExpression)]
-[GenerateExpression(expr.Expression)][GetCSharpOperator(expr)]\
-	[else]
-[GetCSharpOperator(expr)][GenerateExpression(expr.Expression)]\
-	[end if]
-[type as MetaBinaryExpression:]
-[GenerateExpression(expr.Left)][GetCSharpOperator(expr)][GenerateExpression(expr.Right)]\
-[end switch]
-end template
-
-template GenerateNewPropertyInitializers(MetaNewExpression expr)
-[if (hasloop(expr->pi:PropertyInitializers))]
-[loop(expr->pi:PropertyInitializers; string delim = ""; delim = ", ")]
-[delim]new PropertyInit([pi.Property.CSharpFullDescriptorName(ClassKind.Immutable)], () => [GenerateExpression(pi.Value)])\
-[end loop]
-[end if]
-end template
-
-template GenerateNewCollectionValues(MetaNewCollectionExpression expr)
-[loop(expr->v:Values; string delim = ""; delim = ", \n")]
-[delim][GenerateExpression(v)]\
-[end loop]
-end template
-
-function string GetCSharpValue(object value)
-	if (value == null) return "null";
-	else if (value is bool && ((bool)value) == true) return "true";
-	else if (value is bool && ((bool)value) == false) return "false";
-	else if (value is string) return "\""+value.ToString()+"\"";
-	else if (value is MetaExpression) return GenerateExpression((MetaExpression)value);
-	else return value.ToString();
-	end if
-end function
-
-function string GetCSharpIdentifier(object value)
-	if (value == null) 
-		return null;
-	end if
-	if (value is MetaConstantExpression && ((MetaConstantExpression)value).Value != null)
-		return ((MetaConstantExpression)value).Value.ToString();
-	else if (value is string) 
-		return value.ToString();
-	else
-		return null;
-	end if
-end function
-
-function string GetCSharpOperator(MetaOperatorExpression expr)
-	switch(expr)
-		type as MetaUnaryPlusExpression: return "+";
-		type as MetaNegateExpression: return "-";
-		type as MetaOnesComplementExpression: return "~";
-		type as MetaNotExpression: return "!";
-		type as MetaPostIncrementAssignExpression: return "++";
-		type as MetaPostDecrementAssignExpression: return "--";
-		type as MetaPreIncrementAssignExpression: return "++";
-		type as MetaPreDecrementAssignExpression: return "--";
-		type as MetaMultiplyExpression: return "*";
-		type as MetaDivideExpression: return "/";
-		type as MetaModuloExpression: return "%";
-		type as MetaAddExpression: return "+";
-		type as MetaSubtractExpression: return "-";
-		type as MetaLeftShiftExpression: return "<<";
-		type as MetaRightShiftExpression: return ">>";
-		type as MetaLessThanExpression: return "<";
-		type as MetaLessThanOrEqualExpression: return "<=";
-		type as MetaGreaterThanExpression: return ">";
-		type as MetaGreaterThanOrEqualExpression: return ">=";
-		type as MetaEqualExpression: return "==";
-		type as MetaNotEqualExpression: return "!=";
-		type as MetaAndExpression: return "&";
-		type as MetaOrExpression: return "|";
-		type as MetaExclusiveOrExpression: return "^";
-		type as MetaAndAlsoExpression: return "&&";
-		type as MetaOrElseExpression: return "||";
-		type as MetaNullCoalescingExpression: return "??";
-		type as MetaMultiplyAssignExpression: return "*=";
-		type as MetaDivideAssignExpression: return "/=";
-		type as MetaModuloAssignExpression: return "%=";
-		type as MetaAddAssignExpression: return "+=";
-		type as MetaSubtractAssignExpression: return "-=";
-		type as MetaLeftShiftAssignExpression: return "<<=";
-		type as MetaRightShiftAssignExpression: return ">>=";
-		type as MetaAndAssignExpression: return "&=";
-		type as MetaExclusiveOrAssignExpression: return "^=";
-		type as MetaOrAssignExpression: return "|=";
-		default: return "";
-	end switch
-end function
-
-function string GetTypeName(MetaExpression expr)
-	if (expr is MetaTypeOfExpression) return ((MetaTypeOfExpression)expr).TypeReference.CSharpFullName(ClassKind.Immutable);
-	else return null;
-	end if
-end function
-
 
 
 template GenerateMetaModelInstance(MetaModel model)
@@ -1009,10 +702,6 @@ internal class [model.CSharpInstancesName(ClassKind.Builder)]
 	internal readonly global::MetaDslx.Core.Immutable.MetaModelBuilder MetaModel;
 	[end if]
 ^
-    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
-    [GenerateModelConstant(model, c)]
-    [end loop]
-^
     [loop(mobj:Instances)]
 	[GenerateModelObjectInstanceDeclaration(mobj, mobjToName)]
     [end loop]
@@ -1020,11 +709,7 @@ internal class [model.CSharpInstancesName(ClassKind.Builder)]
     private [model.CSharpInstancesName(ClassKind.Builder)]()
     {
 		global::MetaDslx.Core.Immutable.MutableModel model = new global::MetaDslx.Core.Immutable.MutableModel();
-		[model.CSharpFullFactoryName(ClassKind.Immutable)] factory = new [model.CSharpFullFactoryName(ClassKind.Immutable)](model, false);
-^
-		[loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
-        [GenerateModelConstantImpl(model, c, mobjToName)]
-		[end loop]
+		[model.CSharpFullFactoryName(ClassKind.Immutable)] factory = new [model.CSharpFullFactoryName(ClassKind.Immutable)](model, global::MetaDslx.Core.Immutable.ModelFactoryFlags.None);
 ^
 		[loop(mobj:Instances)]
 		[GenerateModelObjectInstance(coreModel, mobj, mobjToName)]
@@ -1058,10 +743,6 @@ public class [model.CSharpInstancesName(ClassKind.Immutable)]
 	public static readonly global::MetaDslx.Core.Immutable.MetaModel MetaModel;
 	[end if]
 ^
-    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
-    [GenerateImmutableModelConstant(model, c)]
-    [end loop]
-^
     [loop(mobj:Instances where mobjToName.ContainsKey(mobj) && !mobjToName[mobj].StartsWith("__"))]
 	[GenerateImmutableModelObjectInstanceDeclaration(model, mobj, mobjToName)]
     [end loop]
@@ -1074,10 +755,6 @@ public class [model.CSharpInstancesName(ClassKind.Immutable)]
 		[model.CSharpInstancesName(ClassKind.Immutable)].MetaModel = [model.CSharpInstancesName(ClassKind.Builder)].instance.MetaModel.ToImmutable();
 		[end if]
 ^
-		[loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
-		[GenerateImmutableModelConstantInitializer(model, c)]
-		[end loop]
-^
 		[loop(mobj:Instances where mobjToName.ContainsKey(mobj) && !mobjToName[mobj].StartsWith("__"))]
 		[GenerateImmutableModelObjectInstanceDeclarationInitializer(model, mobj, mobjToName)]
 		[end loop]
@@ -1085,12 +762,6 @@ public class [model.CSharpInstancesName(ClassKind.Immutable)]
 		[model.CSharpInstancesName(ClassKind.Immutable)].initialized = true;
 	}
 }
-end template
-
-
-template GenerateImmutableModelConstant(MetaModel model, MetaConstant mconst)
-[GenerateDocumentation(mconst)]
-public static readonly [mconst.Type.CSharpFullName(ClassKind.Immutable)] [mconst.Name];
 end template
 
 template GenerateImmutableModelObjectInstanceDeclaration(MetaModel model, ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
@@ -1107,10 +778,6 @@ public static readonly global::MetaDslx.Core.Immutable.[mobj.MMetaClass.CSharpNa
 [end if]
 end template
 
-template GenerateImmutableModelConstantInitializer(MetaModel model, MetaConstant mconst)
-[model.CSharpInstancesName(ClassKind.Immutable)].[mconst.Name] = [model.CSharpInstancesName(ClassKind.Builder)].instance.[mconst.Name].ToImmutable();
-end template
-
 template GenerateImmutableModelObjectInstanceDeclarationInitializer(MetaModel model, ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
 [if (mobj != null && mobj.MMetaClass != null)]
 	[if (mobjToName.ContainsKey(mobj))]
@@ -1120,15 +787,6 @@ template GenerateImmutableModelObjectInstanceDeclarationInitializer(MetaModel mo
 		[end if]
 	[end if]
 [end if]
-end template
-
-template GenerateModelConstant(MetaModel model, MetaConstant mconst)
-[GenerateDocumentation(mconst)]
-internal readonly [mconst.Type.CSharpFullName(ClassKind.Builder)] [mconst.Name];
-end template
-
-template GenerateModelConstantImpl(MetaModel model, MetaConstant mconst, Dictionary<ModelObject, string> mobjToTmp)
-[mconst.Name] = [GenerateExpression(mconst.Value)];
 end template
 
 template GenerateModelObjectInstanceDeclaration(ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
@@ -1177,7 +835,7 @@ template GenerateModelObjectInstanceFinalizer(ModelObject mobj, Dictionary<Model
 [if (mobj != null && mobj.MMetaClass != null)]
 	[if (mobjToName.ContainsKey(mobj))]
 		[string name = mobjToName[mobj]]
-((MetaDslx.Core.Immutable.MutableSymbolBase)[name]).MMakeCreated();
+((global::MetaDslx.Core.Immutable.MutableSymbolBase)[name]).MMakeCreated();
 	[end if]
 [end if]
 end template
@@ -1199,7 +857,11 @@ template GenerateModelObjectPropertyValue(bool coreModel, ModelObject mobj, Mode
 [name].[prop.Name] = [value.ToString()];
 [else if (MetaBuiltInTypes.Types.Contains(value))]
 	[if (coreModel)]
+		[if (mobjToName.ContainsKey(moValue))]
 [name].[prop.Name]Lazy = () => [mobjToName[moValue]];
+		[else]
+//[name].[prop.Name]Lazy = () => Error: [moValue]
+		[end if]
 	[else]
 [name].[prop.Name] = [GenerateTypeOf(value)];
 	[end if]
@@ -1279,3 +941,29 @@ function string GetEnumValueOf(object enm)
 	end if
 	return result;
 end function
+
+template GenerateTypeOf(object expr)
+[switch(expr)]
+[type as MetaPrimitiveType:]
+[switch(expr.Name)]
+[case "*none*":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.None.ToMutable() : null\
+[case "*error*":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Error.ToMutable() : null\
+[case "*any*":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Any.ToMutable() : null\
+[case "object":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Object.ToMutable() : null\
+[case "string":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.String.ToMutable() : null\
+[case "int":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Int.ToMutable() : null\
+[case "long":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Long.ToMutable() : null\
+[case "float":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Float.ToMutable() : null\
+[case "double":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Double.ToMutable() : null\
+[case "byte":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Byte.ToMutable() : null\
+[case "bool":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Bool.ToMutable() : null\
+[case "void":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.Void.ToMutable() : null\
+[case "ModelObject":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.ModelObject.ToMutable() : null\
+[case "ModelObjectList":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.ModelObjectList.ToMutable() : null\
+[case "DefinitionList":]global::MetaDslx.Core.Immutable.MetaInstance.IsInitialized ? global::MetaDslx.Core.Immutable.MetaInstance.DefinitionList.ToMutable() : null\
+[end switch]
+[type as MetaClass:][expr.CSharpFullDescriptorName(ClassKind.Immutable)].MetaClass\
+[type as MetaCollectionType:][expr.CSharpFullName(ClassKind.Immutable)]\
+[default:]***error***\
+[end switch]
+end template

@@ -488,11 +488,11 @@ namespace MetaDslx.Core
                 else innerName = collection.InnerType.CSharpFullName(classKind);
                 if (classKind == ClassKind.Immutable)
                 {
-                    return "global::MetaDslx.Core.Immutable.IImmutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + innerName + ">";
                 }
                 else if (classKind == ClassKind.Builder)
                 {
-                    return "global::MetaDslx.Core.Immutable.IMutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.MutableModelList<" + innerName + ">";
                 }
                 else
                 {
@@ -527,7 +527,11 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "global::MetaDslx.Core.Immutable.ISymbol";
+                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject")
+                {
+                    if (classKind == ClassKind.Immutable) return "global::MetaDslx.Core.Immutable.ImmutableSymbol";
+                    if (classKind == ClassKind.Builder) return "global::MetaDslx.Core.Immutable.MutableSymbol";
+                }
                 return primitive.ToCSharpType();
             }
             return GetPrefix(classKind) + ((MetaNamedElement)@this).Name + GetSuffix(classKind);
@@ -564,11 +568,11 @@ namespace MetaDslx.Core
                 string innerName = collection.InnerType.CSharpFullName(classKind);
                 if (classKind == ClassKind.Immutable)
                 {
-                    return "global::MetaDslx.Core.Immutable.IImmutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + innerName + ">";
                 }
                 else if (classKind == ClassKind.Builder)
                 {
-                    return "global::MetaDslx.Core.Immutable.IMutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.MutableModelList<" + innerName + ">";
                 }
                 else
                 {
@@ -596,7 +600,11 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "global::MetaDslx.Core.Immutable.ISymbol";
+                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject")
+                {
+                    if (classKind == ClassKind.Immutable) return "global::MetaDslx.Core.Immutable.ImmutableSymbol";
+                    if (classKind == ClassKind.Builder) return "global::MetaDslx.Core.Immutable.MutableSymbol";
+                }
                 return primitive.ToCSharpType();
             }
             MetaDeclaration decl = @this as MetaDeclaration;
@@ -738,11 +746,11 @@ namespace MetaDslx.Core
                 string innerName = collection.InnerType.CSharpImplName(classKind);
                 if (classKind == ClassKind.Immutable)
                 {
-                    return "global::MetaDslx.Core.Immutable.IImmutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + innerName + ">";
                 }
                 else if (classKind == ClassKind.Builder)
                 {
-                    return "global::MetaDslx.Core.Immutable.IMutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.MutableModelList<" + innerName + ">";
                 }
                 else
                 {
@@ -767,7 +775,11 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "global::MetaDslx.Core.Immutable.ISymbol";
+                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject")
+                {
+                    if (classKind == ClassKind.Immutable) return "global::MetaDslx.Core.Immutable.ImmutableSymbol";
+                    if (classKind == ClassKind.Builder) return "global::MetaDslx.Core.Immutable.MutableSymbol";
+                }
                 return primitive.ToCSharpType();
             }
             return GetPrefix(classKind) + ((MetaNamedElement)@this).Name + GetSuffix(classKind) + "Impl";
@@ -782,11 +794,11 @@ namespace MetaDslx.Core
                 string innerName = collection.InnerType.CSharpFullPublicName(classKind);
                 if (classKind == ClassKind.Immutable)
                 {
-                    return "global::MetaDslx.Core.Immutable.IImmutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.ImmutableModelList<" + innerName + ">";
                 }
                 else if (classKind == ClassKind.Builder)
                 {
-                    return "global::MetaDslx.Core.Immutable.IMutableModelList<" + innerName + ">";
+                    return "global::MetaDslx.Core.Immutable.MutableModelList<" + innerName + ">";
                 }
                 else
                 {
@@ -811,7 +823,11 @@ namespace MetaDslx.Core
             MetaPrimitiveType primitive = @this as MetaPrimitiveType;
             if (primitive != null)
             {
-                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject") return "global::MetaDslx.Core.Immutable.ISymbol";
+                if (classKind != ClassKind.Normal && primitive.Name == "ModelObject")
+                {
+                    if (classKind == ClassKind.Immutable) return "global::MetaDslx.Core.Immutable.ImmutableSymbol";
+                    if (classKind == ClassKind.Builder) return "global::MetaDslx.Core.Immutable.MutableSymbol";
+                }
                 return primitive.ToCSharpType();
             }
             return @this.CSharpFullName(classKind);
