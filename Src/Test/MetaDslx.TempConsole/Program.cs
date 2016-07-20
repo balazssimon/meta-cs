@@ -160,7 +160,7 @@ namespace MetaDslx.TempConsole
                     }
                 }
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileImmutableMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.mm",
@@ -207,6 +207,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.VisualStudio\MetaModelLanguageService.cs",
                     false);
                 //*/
+                Console.WriteLine(MetaDslx.Core.Immutable.MetaInstance.String);
             }
             catch (System.Exception ex)
             {

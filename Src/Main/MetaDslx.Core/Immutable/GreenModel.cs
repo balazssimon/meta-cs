@@ -1182,7 +1182,7 @@ namespace MetaDslx.Core.Immutable
                 }
                 else if (value is GreenLazyValue && !(oldValue is GreenLazyValue))
                 {
-                    this.AddLazyPropertyCore(symbolRef, property, (SymbolId)value);
+                    this.AddLazyPropertyCore(symbolRef, property);
                 }
             }
             GreenSymbol symbol = symbolRef.Symbol;
@@ -1220,7 +1220,7 @@ namespace MetaDslx.Core.Immutable
             if (value is GreenLazyValue)
             {
                 list = list.AddLazy((GreenLazyValue)value);
-                this.AddLazyPropertyCore(symbolRef, property, (SymbolId)value);
+                this.AddLazyPropertyCore(symbolRef, property);
             }
             else
             {
@@ -1758,7 +1758,7 @@ namespace MetaDslx.Core.Immutable
         /// <param name="symbolRef"></param>
         /// <param name="property"></param>
         /// <param name="valueSid"></param>
-        private void AddLazyPropertyCore(SymbolRef symbolRef, ModelProperty property, SymbolId valueSid)
+        private void AddLazyPropertyCore(SymbolRef symbolRef, ModelProperty property)
         {
             SymbolId sid = symbolRef.Id;
             ImmutableHashSet<ModelProperty> lazyProperties;

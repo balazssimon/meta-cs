@@ -1,6 +1,16 @@
 ﻿namespace MetaDslx.Core
 {
 	metamodel Meta(Uri="http://metadslx.core/1.0"); 
+
+	const MetaPrimitiveType Object;
+	const MetaPrimitiveType String;
+	const MetaPrimitiveType Int;
+	const MetaPrimitiveType Long;
+	const MetaPrimitiveType Float;
+	const MetaPrimitiveType Double;
+	const MetaPrimitiveType Byte;
+	const MetaPrimitiveType Bool;
+	const MetaPrimitiveType Void;
 		
 	/*
 	Represents an annotated element.
@@ -107,6 +117,10 @@
 	}
 
 	association MetaEnumLiteral.Enum with MetaEnum.EnumLiterals;
+
+	class MetaConstant : MetaTypedElement, MetaDeclaration
+	{
+	}
 
 	[Scope]
 	class MetaClass : MetaType, MetaDeclaration

@@ -86,10 +86,10 @@ function string GetAncestors(MetaClass cls, ClassKind classKind)
 	return result;
 end function
 
-function string GetDescriptorAncestors(MetaClass cls, ClassKind classKind)
+function string GetDescriptorAncestors(MetaClass cls)
 	string result = "";
 	loop(cls->super:SuperClasses; string delim = ""; delim = ", ")
-		result += delim+"typeof("+super.CSharpFullName(classKind)+")";
+		result += delim+"typeof("+super.CSharpFullDescriptorName(ClassKind.Immutable)+")";
 	end loop
 	return result;
 end function
@@ -520,7 +520,7 @@ end template
 template GenerateMetaModelClass(MetaClass cls)
 ^
 [if (cls.SuperClasses.Count > 0)]
-["[ModelSymbolDecriptor("][GetDescriptorAncestors(cls, ClassKind.Normal)][")]"]
+["[ModelSymbolDecriptor("][GetDescriptorAncestors(cls)][")]"]
 [else]
 ["[ModelSymbolDecriptor]"]
 [end if]
@@ -580,6 +580,9 @@ public static class [enm.Name]Extensions
 /// </summary>
 internal abstract class [model.Name]ImplementationBase
 {
+	public virtual void [model.CSharpInstancesName(ClassKind.Builder)]([model.CSharpInstancesName(ClassKind.Builder)] _this, global::MetaDslx.Core.Immutable.MutableModel model)
+	{
+	}
 	[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
     /// <summary>
 	/// Implements the constructor: [cls.CSharpName()]()
@@ -650,8 +653,6 @@ template GenerateFactory(MetaModel model)
 /// </summary>
 public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.ModelFactory
 {
-	private bool makeSymbolCreated = true;
-^
     public [model.CSharpFactoryName()](MutableModel model, ModelFactoryFlags flags = ModelFactoryFlags.MakeSymbolsCreated)
         : base(model, flags)
     {
@@ -702,6 +703,10 @@ internal class [model.CSharpInstancesName(ClassKind.Builder)]
 	internal readonly global::MetaDslx.Core.Immutable.MetaModelBuilder MetaModel;
 	[end if]
 ^
+    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
+    [GenerateModelConstant(model, c)]
+    [end loop]
+^
     [loop(mobj:Instances)]
 	[GenerateModelObjectInstanceDeclaration(mobj, mobjToName)]
     [end loop]
@@ -710,6 +715,7 @@ internal class [model.CSharpInstancesName(ClassKind.Builder)]
     {
 		global::MetaDslx.Core.Immutable.MutableModel model = new global::MetaDslx.Core.Immutable.MutableModel();
 		[model.CSharpFullFactoryName(ClassKind.Immutable)] factory = new [model.CSharpFullFactoryName(ClassKind.Immutable)](model, global::MetaDslx.Core.Immutable.ModelFactoryFlags.None);
+		[model.Name]ImplementationProvider.Implementation.[model.CSharpInstancesName(ClassKind.Builder)](this, model);
 ^
 		[loop(mobj:Instances)]
 		[GenerateModelObjectInstance(coreModel, mobj, mobjToName)]
@@ -743,6 +749,10 @@ public class [model.CSharpInstancesName(ClassKind.Immutable)]
 	public static readonly global::MetaDslx.Core.Immutable.MetaModel MetaModel;
 	[end if]
 ^
+    [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
+    [GenerateImmutableModelConstant(model, c)]
+    [end loop]
+^
     [loop(mobj:Instances where mobjToName.ContainsKey(mobj) && !mobjToName[mobj].StartsWith("__"))]
 	[GenerateImmutableModelObjectInstanceDeclaration(model, mobj, mobjToName)]
     [end loop]
@@ -762,6 +772,16 @@ public class [model.CSharpInstancesName(ClassKind.Immutable)]
 		[model.CSharpInstancesName(ClassKind.Immutable)].initialized = true;
 	}
 }
+end template
+
+template GenerateImmutableModelConstant(MetaModel model, MetaConstant mconst)
+[GenerateDocumentation(mconst)]
+public static readonly [mconst.Type.CSharpFullName(ClassKind.Immutable)] [mconst.Name] = [model.CSharpInstancesName(ClassKind.Builder)].instance.[mconst.Name].ToImmutable();
+end template
+
+template GenerateModelConstant(MetaModel model, MetaConstant mconst)
+[GenerateDocumentation(mconst)]
+internal [mconst.Type.CSharpFullName(ClassKind.Builder)] [mconst.Name] = null;
 end template
 
 template GenerateImmutableModelObjectInstanceDeclaration(MetaModel model, ModelObject mobj, Dictionary<ModelObject, string> mobjToName)
@@ -860,7 +880,7 @@ template GenerateModelObjectPropertyValue(bool coreModel, ModelObject mobj, Mode
 		[if (mobjToName.ContainsKey(moValue))]
 [name].[prop.Name]Lazy = () => [mobjToName[moValue]];
 		[else]
-//[name].[prop.Name]Lazy = () => Error: [moValue]
+[name].[prop.Name]Lazy = () => this.[((MetaPrimitiveType)moValue).Name.ToPascalCase()];
 		[end if]
 	[else]
 [name].[prop.Name] = [GenerateTypeOf(value)];

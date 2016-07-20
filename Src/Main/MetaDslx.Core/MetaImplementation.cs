@@ -900,6 +900,12 @@ namespace MetaDslx.Core
 
     internal static class MetaModelJavaExtensions
     {
+        public static string ToPascalCase(this string name)
+        {
+            if (string.IsNullOrEmpty(name)) return name;
+            else return name[0].ToString().ToUpper() + name.Substring(1);
+        }
+
         public static string ToCamelCase(this string name)
         {
             if (string.IsNullOrEmpty(name)) return name;
