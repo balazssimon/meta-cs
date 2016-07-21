@@ -66,7 +66,7 @@
 	abstract class MetaDeclaration : MetaNamedElement, MetaAnnotatedElement
 	{
 		MetaNamespace Namespace;
-		derived MetaModel Model;
+		derived MetaModel MetaModel;
 	}
 
 	association MetaNamespace.Declarations with MetaDeclaration.Namespace;
@@ -133,11 +133,13 @@
 		[ScopeEntry]
 		containment list<MetaOperation> Operations;
 		containment MetaConstructor Constructor;
-		list<MetaClass> GetAllSuperClasses();
+		list<MetaClass> GetAllSuperClasses(bool includeSelf);
+		list<MetaProperty> GetAllSuperProperties(bool includeSelf);
+		list<MetaOperation> GetAllSuperOperations(bool includeSelf);
 		list<MetaProperty> GetAllProperties();
 		list<MetaOperation> GetAllOperations();
-		list<MetaProperty> GetAllImplementedProperties();
-		list<MetaOperation> GetAllImplementedOperations();
+		list<MetaProperty> GetAllFinalProperties();
+		list<MetaOperation> GetAllFinalOperations();
 	}
 	
 	class MetaFunctionType : MetaType
@@ -149,7 +151,7 @@
 	abstract class MetaFunction : MetaTypedElement, MetaNamedElement, MetaAnnotatedElement
 	{
 		[Type]
-		readonly MetaFunctionType Type redefines MetaTypedElement.Type;
+		derived MetaFunctionType Type redefines MetaTypedElement.Type;
 		containment list<MetaParameter> Parameters;
 		MetaType ReturnType;
 	}

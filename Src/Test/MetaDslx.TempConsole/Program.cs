@@ -207,7 +207,23 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.VisualStudio\MetaModelLanguageService.cs",
                     false);
                 //*/
-                Console.WriteLine(MetaDslx.Core.Immutable.MetaInstance.String);
+                //Console.WriteLine(MetaDslx.Core.Immutable.MetaInstance.String);
+                //*
+                List<string> items = new List<string>();
+                items.Add("a");
+                items.Add("x");
+                MetaDslx.Core.Immutable.ImmutableModel imodel = MetaDslx.Core.Immutable.MetaInstance.Model;
+                foreach (var symbol in imodel.Symbols)
+                {
+                    Console.WriteLine(symbol);
+                    if (symbol is MetaDslx.Core.Immutable.MetaClass)
+                    {
+                        MetaDslx.Core.Immutable.MetaClass cls = (MetaDslx.Core.Immutable.MetaClass)symbol;
+                        Console.WriteLine(cls.Name);
+                        Console.WriteLine(cls.Constructor);
+                    }
+                }
+                //*/
             }
             catch (System.Exception ex)
             {

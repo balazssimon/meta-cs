@@ -2,14 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
     public abstract class ImmutableModelSet<T> : IReadOnlyCollection<T>
     {
+        public static readonly ImmutableModelSet<T> Empty = new ImmutableModelSetFromEnumerableSet<T>();
+
         public abstract int Count { get; }
 
         public abstract IEnumerator<T> GetEnumerator();
@@ -17,6 +21,26 @@ namespace MetaDslx.Core.Immutable
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        public static ImmutableModelSet<T> CreateUnique(IEnumerable<T> items)
+        {
+            return new ImmutableModelSetFromEnumerableSet<T>(items);
+        }
+
+        public static ImmutableModelSet<T> CreateNonUnique(IEnumerable<T> items)
+        {
+            return new ImmutableModelSetFromEnumerableList<T>(items);
+        }
+
+        public static ImmutableModelSet<T> CreateUnique(ImmutableHashSet<T> items)
+        {
+            return new ImmutableModelSetFromEnumerableSet<T>(items);
+        }
+
+        public static ImmutableModelSet<T> CreateNonUnique(ImmutableList<T> items)
+        {
+            return new ImmutableModelSetFromEnumerableList<T>(items);
         }
 
         internal static ImmutableModelSet<T> FromGreenList(GreenList green, ImmutableModel model)
@@ -42,6 +66,8 @@ namespace MetaDslx.Core.Immutable
 
     public abstract class ImmutableModelList<T> : IReadOnlyList<T>
     {
+        public static readonly ImmutableModelList<T> Empty = new ImmutableModelListFromEnumerable<T>();
+
         public abstract T this[int index] { get; }
 
         public abstract int Count { get; }
@@ -51,6 +77,31 @@ namespace MetaDslx.Core.Immutable
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        public static ImmutableModelList<T> CreateUnique(IEnumerable<T> items)
+        {
+            return new ImmutableModelListFromEnumerable<T>(items, true);
+        }
+
+        public static ImmutableModelList<T> CreateNonUnique(IEnumerable<T> items)
+        {
+            return new ImmutableModelListFromEnumerable<T>(items, false);
+        }
+
+        public static ImmutableModelList<T> CreateUnique(ISet<T> items)
+        {
+            return new ImmutableModelListFromEnumerable<T>(items, true);
+        }
+
+        public static ImmutableModelList<T> CreateUnique(ImmutableHashSet<T> items)
+        {
+            return new ImmutableModelListFromEnumerable<T>(items, true);
+        }
+
+        public static ImmutableModelList<T> CreateNonUnique(ImmutableList<T> items)
+        {
+            return new ImmutableModelListFromEnumerable<T>(items, false);
         }
 
         internal static ImmutableModelList<T> FromGreenList(GreenList green, ImmutableModel model)
@@ -74,6 +125,73 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    internal class ImmutableModelSetFromEnumerableSet<T> : ImmutableModelSet<T>
+    {
+        private ImmutableHashSet<T> items;
+
+        internal ImmutableModelSetFromEnumerableSet()
+        {
+            this.items = ImmutableHashSet<T>.Empty;
+        }
+
+        internal ImmutableModelSetFromEnumerableSet(IEnumerable<T> items)
+        {
+            this.items = items.ToImmutableHashSet();
+        }
+
+        internal ImmutableModelSetFromEnumerableSet(ImmutableHashSet<T> items)
+        {
+            this.items = items;
+        }
+
+        public override int Count { get { return this.items.Count; } }
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            return this.items.GetEnumerator();
+        }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}", this.items.Count); }
+        }
+    }
+
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    internal class ImmutableModelSetFromEnumerableList<T> : ImmutableModelSet<T>
+    {
+        private ImmutableList<T> items;
+
+        internal ImmutableModelSetFromEnumerableList()
+        {
+            this.items = ImmutableList<T>.Empty;
+        }
+
+        internal ImmutableModelSetFromEnumerableList(IEnumerable<T> items)
+        {
+            this.items = items.ToImmutableList();
+        }
+
+        internal ImmutableModelSetFromEnumerableList(ImmutableList<T> items)
+        {
+            this.items = items;
+        }
+
+        public override int Count { get { return this.items.Count; } }
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            return this.items.GetEnumerator();
+        }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}", this.items.Count); }
+        }
+    }
+
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ImmutableModelSetFromGreenListImmutable<T> : ImmutableModelSet<T>
     {
         private GreenList green;
@@ -94,8 +212,14 @@ namespace MetaDslx.Core.Immutable
                 yield return (T)this.model.ToRedValue(value);
             }
         }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}, LazyCount = {1}", this.green.Count, this.green.LazyItems.Count); }
+        }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ImmutableModelSetFromGreenListMutable<T> : ImmutableModelSet<T>
     {
         private GreenList green;
@@ -116,8 +240,58 @@ namespace MetaDslx.Core.Immutable
                 yield return (T)this.model.ToRedValue(value);
             }
         }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}, LazyCount = {1}", this.green.Count, this.green.LazyItems.Count); }
+        }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    internal class ImmutableModelListFromEnumerable<T> : ImmutableModelList<T>
+    {
+        private ImmutableList<T> items;
+
+        internal ImmutableModelListFromEnumerable()
+        {
+            this.items = ImmutableList<T>.Empty;
+        }
+
+        internal ImmutableModelListFromEnumerable(IEnumerable<T> items, bool unique)
+        {
+            if (unique) this.items = items.Distinct().ToImmutableList();
+            else this.items = items.ToImmutableList();
+        }
+
+        internal ImmutableModelListFromEnumerable(ISet<T> items, bool unique)
+        {
+            this.items = items.ToImmutableList();
+        }
+
+        internal ImmutableModelListFromEnumerable(ImmutableHashSet<T> items, bool unique)
+        {
+            this.items = items.ToImmutableList();
+        }
+
+        public override T this[int index]
+        {
+            get { return this.items[index]; }
+        }
+
+        public override int Count { get { return this.items.Count; } }
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            return this.items.GetEnumerator();
+        }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}", this.items.Count); }
+        }
+    }
+
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ImmutableModelListFromGreenListImmutable<T> : ImmutableModelList<T>
     {
         private GreenList green;
@@ -143,8 +317,14 @@ namespace MetaDslx.Core.Immutable
                 yield return (T)this.model.ToRedValue(value);
             }
         }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}, LazyCount = {1}", this.green.Count, this.green.LazyItems.Count); }
+        }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ImmutableModelListFromGreenListMutable<T> : ImmutableModelList<T>
     {
         private GreenList green;
@@ -170,8 +350,14 @@ namespace MetaDslx.Core.Immutable
                 yield return (T)this.model.ToRedValue(value);
             }
         }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}, LazyCount = {1}", this.green.Count, this.green.LazyItems.Count); }
+        }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ImmutableModelSetFromSymbolIdListImmutable<T> : ImmutableModelSet<T>
     {
         private ImmutableList<SymbolId> green;
@@ -192,8 +378,14 @@ namespace MetaDslx.Core.Immutable
                 yield return (T)(object)this.model.ResolveSymbol(sid);
             }
         }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}", this.green.Count); }
+        }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ImmutableModelSetFromSymbolIdListMutable<T> : ImmutableModelSet<T>
     {
         private ImmutableList<SymbolId> green;
@@ -214,8 +406,14 @@ namespace MetaDslx.Core.Immutable
                 yield return (T)(object)this.model.ResolveSymbol(sid);
             }
         }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}", this.green.Count); }
+        }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ImmutableModelListFromSymbolIdListImmutable<T> : ImmutableModelList<T>
     {
         private ImmutableList<SymbolId> green;
@@ -241,8 +439,14 @@ namespace MetaDslx.Core.Immutable
                 yield return (T)(object)this.model.ResolveSymbol(sid);
             }
         }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}", this.green.Count); }
+        }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ImmutableModelListFromSymbolIdListMutable<T> : ImmutableModelList<T>
     {
         private ImmutableList<SymbolId> green;
@@ -268,6 +472,11 @@ namespace MetaDslx.Core.Immutable
                 yield return (T)(object)this.model.ResolveSymbol(sid);
             }
         }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}", this.green.Count); }
+        }
     }
 
     public abstract class MutableModelSet<T> : ICollection<T>
@@ -276,7 +485,9 @@ namespace MetaDslx.Core.Immutable
         public abstract int LazyCount { get; }
         public abstract bool IsReadOnly { get; }
         public abstract void Add(T item);
+        public abstract void AddRange(IEnumerable<T> items);
         public abstract void AddLazy(Func<T> item);
+        public abstract void AddRangeLazy(IEnumerable<Func<T>> items);
         public abstract void Clear();
         public abstract void ClearLazy();
         public abstract bool Contains(T item);
@@ -288,6 +499,37 @@ namespace MetaDslx.Core.Immutable
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+
+        public static MutableModelSet<T> CreateUnique()
+        {
+            return new MutableModelSetFromEnumerableSet<T>();
+        }
+
+        public static MutableModelSet<T> CreateNonUnique()
+        {
+            return new MutableModelSetFromEnumerableList<T>();
+        }
+
+        public static MutableModelSet<T> CreateUnique(IEnumerable<T> items)
+        {
+            return new MutableModelSetFromEnumerableSet<T>(items);
+        }
+
+        public static MutableModelSet<T> CreateUnique(ImmutableHashSet<T> items)
+        {
+            return new MutableModelSetFromEnumerableSet<T>(items);
+        }
+
+        public static MutableModelSet<T> CreateNonUnique(IEnumerable<T> items)
+        {
+            return new MutableModelSetFromEnumerableList<T>(items);
+        }
+
+        public static MutableModelSet<T> CreateNonUnique(ImmutableList<T> items)
+        {
+            return new MutableModelSetFromEnumerableList<T>(items);
         }
 
         internal static MutableModelSet<T> FromGreenList(MutableSymbolBase symbol, ModelProperty property)
@@ -303,7 +545,9 @@ namespace MetaDslx.Core.Immutable
         public abstract int LazyCount { get; }
         public abstract bool IsReadOnly { get; }
         public abstract void Add(T item);
+        public abstract void AddRange(IEnumerable<T> items);
         public abstract void AddLazy(Func<T> item);
+        public abstract void AddRangeLazy(IEnumerable<Func<T>> items);
         public abstract void Clear();
         public abstract void ClearLazy();
         public abstract bool Contains(T item);
@@ -320,12 +564,399 @@ namespace MetaDslx.Core.Immutable
             return this.GetEnumerator();
         }
 
+        public static MutableModelList<T> CreateUnique()
+        {
+            return new MutableModelListFromEnumerable<T>(true);
+        }
+
+        public static MutableModelList<T> CreateNonUnique()
+        {
+            return new MutableModelListFromEnumerable<T>(false);
+        }
+
+        public static MutableModelList<T> CreateUnique(IEnumerable<T> items)
+        {
+            return new MutableModelListFromEnumerable<T>(items, true);
+        }
+
+        public static MutableModelList<T> CreateUnique(ISet<T> items)
+        {
+            return new MutableModelListFromEnumerable<T>(items, true);
+        }
+
+        public static MutableModelList<T> CreateUnique(ImmutableHashSet<T> items)
+        {
+            return new MutableModelListFromEnumerable<T>(items, true);
+        }
+
+        public static MutableModelList<T> CreateNonUnique(IEnumerable<T> items)
+        {
+            return new MutableModelListFromEnumerable<T>(items, false);
+        }
+
+        public static MutableModelList<T> CreateNonUnique(ImmutableList<T> items)
+        {
+            return new MutableModelListFromEnumerable<T>(items, false);
+        }
+
         internal static MutableModelList<T> FromGreenList(MutableSymbolBase symbol, ModelProperty property)
         {
             return new MutableModelListFromGreenList<T>(symbol, property);
         }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    internal class MutableModelSetFromEnumerableSet<T> : MutableModelSet<T>
+    {
+        private ImmutableHashSet<T> items;
+        private ImmutableList<Func<T>> lazyItems;
+
+        internal MutableModelSetFromEnumerableSet()
+        {
+            this.items = ImmutableHashSet<T>.Empty;
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        internal MutableModelSetFromEnumerableSet(IEnumerable<T> items)
+        {
+            this.items = items.ToImmutableHashSet();
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        internal MutableModelSetFromEnumerableSet(ImmutableHashSet<T> items)
+        {
+            this.items = items;
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        private void EvalLazyItems()
+        {
+            if (this.lazyItems.Count == 0) return;
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = ImmutableList<Func<T>>.Empty;
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+            foreach (var lazyItem in oldLazyItems)
+            {
+                T item = lazyItem();
+                this.Add(item);
+            }
+        }
+
+        public override int Count
+        {
+            get
+            {
+                this.EvalLazyItems();
+                return this.items.Count;
+            }
+        }
+
+        public override int LazyCount
+        {
+            get { return this.lazyItems.Count; }
+        }
+
+        public override bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public override void Add(T item)
+        {
+            ImmutableHashSet<T> oldItems;
+            ImmutableHashSet<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = oldItems.Add(item);
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+        }
+
+        public override void AddRange(IEnumerable<T> items)
+        {
+            ImmutableHashSet<T> oldItems;
+            ImmutableHashSet<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = oldItems.Union(items);
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+        }
+
+        public override void AddLazy(Func<T> item)
+        {
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = oldLazyItems.Add(item);
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+        }
+
+        public override void AddRangeLazy(IEnumerable<Func<T>> items)
+        {
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = oldLazyItems.AddRange(items);
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+        }
+
+        public override void Clear()
+        {
+            this.ClearLazy();
+            ImmutableHashSet<T> oldItems;
+            ImmutableHashSet<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = ImmutableHashSet<T>.Empty;
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+        }
+
+        public override void ClearLazy()
+        {
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = ImmutableList<Func<T>>.Empty;
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+        }
+
+        public override bool Contains(T item)
+        {
+            this.EvalLazyItems();
+            return this.items.Contains(item);
+        }
+
+        public override void CopyTo(T[] array, int arrayIndex)
+        {
+            this.EvalLazyItems();
+            ImmutableList<T> items = this.items.ToImmutableList();
+            for (int i = 0; i < items.Count && arrayIndex+i < array.Length; i++)
+            {
+                array[arrayIndex + i] = items[i];
+            }
+        }
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            this.EvalLazyItems();
+            return this.items.GetEnumerator();
+        }
+
+        public override bool Remove(T item)
+        {
+            ImmutableHashSet<T> oldItems;
+            ImmutableHashSet<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = oldItems.Remove(item);
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+            return newItems != oldItems;
+        }
+
+        public override bool RemoveAll(T item)
+        {
+            return this.Remove(item);
+        }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}, LazyCount = {1}", this.items.Count, this.lazyItems.Count); }
+        }
+    }
+
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    internal class MutableModelSetFromEnumerableList<T> : MutableModelSet<T>
+    {
+        private ImmutableList<T> items;
+        private ImmutableList<Func<T>> lazyItems;
+
+        internal MutableModelSetFromEnumerableList()
+        {
+            this.items = ImmutableList<T>.Empty;
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        internal MutableModelSetFromEnumerableList(IEnumerable<T> items)
+        {
+            this.items = items.ToImmutableList();
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        internal MutableModelSetFromEnumerableList(ImmutableList<T> items)
+        {
+            this.items = items;
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        private void EvalLazyItems()
+        {
+            if (this.lazyItems.Count == 0) return;
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = ImmutableList<Func<T>>.Empty;
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+            foreach (var lazyItem in oldLazyItems)
+            {
+                T item = lazyItem();
+                this.Add(item);
+            }
+        }
+
+        public override int Count
+        {
+            get
+            {
+                this.EvalLazyItems();
+                return this.items.Count;
+            }
+        }
+
+        public override int LazyCount
+        {
+            get { return this.lazyItems.Count; }
+        }
+
+        public override bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public override void Add(T item)
+        {
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = oldItems.Add(item);
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+        }
+
+        public override void AddRange(IEnumerable<T> items)
+        {
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = oldItems.AddRange(items);
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+        }
+
+        public override void AddLazy(Func<T> item)
+        {
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = oldLazyItems.Add(item);
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+        }
+
+        public override void AddRangeLazy(IEnumerable<Func<T>> items)
+        {
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = oldLazyItems.AddRange(items);
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+        }
+
+        public override void Clear()
+        {
+            this.ClearLazy();
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = ImmutableList<T>.Empty;
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+        }
+
+        public override void ClearLazy()
+        {
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = ImmutableList<Func<T>>.Empty;
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+        }
+
+        public override bool Contains(T item)
+        {
+            this.EvalLazyItems();
+            return this.items.Contains(item);
+        }
+
+        public override void CopyTo(T[] array, int arrayIndex)
+        {
+            this.EvalLazyItems();
+            ImmutableList<T> items = this.items;
+            for (int i = 0; i < items.Count && arrayIndex + i < array.Length; i++)
+            {
+                array[arrayIndex + i] = items[i];
+            }
+        }
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            this.EvalLazyItems();
+            return this.items.GetEnumerator();
+        }
+
+        public override bool Remove(T item)
+        {
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = oldItems.Remove(item);
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+            return newItems != oldItems;
+        }
+
+        public override bool RemoveAll(T item)
+        {
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = oldItems.RemoveAll(it => (it == null && item == null) || (it != null && it.Equals(item)));
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+            return newItems != oldItems;
+        }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}, LazyCount = {1}", this.items.Count, this.lazyItems.Count); }
+        }
+    }
+
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class MutableModelSetFromGreenList<T> : MutableModelSet<T>
     {
         private MutableSymbolBase symbol;
@@ -339,7 +970,7 @@ namespace MetaDslx.Core.Immutable
 
         private GreenList GetGreen(bool lazyEval)
         {
-            return this.symbol.MModel.GetGreenList(this.symbol.Id, property, lazyEval); 
+            return this.symbol.MModel.GetGreenList(this.symbol.Id, property, lazyEval);
         }
 
         public override int Count
@@ -362,9 +993,25 @@ namespace MetaDslx.Core.Immutable
             this.symbol.MModel.AddItem(this.symbol.Id, this.property, item, this.symbol.MIsBeingCreated);
         }
 
+        public override void AddRange(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                this.Add(item);
+            }
+        }
+
         public override void AddLazy(Func<T> item)
         {
             this.symbol.MModel.AddLazyItem(this.symbol.Id, this.property, (Func<object>)(object)item, this.symbol.MIsBeingCreated);
+        }
+
+        public override void AddRangeLazy(IEnumerable<Func<T>> items)
+        {
+            foreach (var item in items)
+            {
+                this.AddLazy(item);
+            }
         }
 
         public override void Clear()
@@ -413,8 +1060,313 @@ namespace MetaDslx.Core.Immutable
         {
             return this.symbol.MModel.RemoveAllItems(this.symbol.Id, this.property, item, this.symbol.MIsBeingCreated);
         }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                GreenList green = this.GetGreen(false);
+                return string.Format("Count = {0}, LazyCount = {1}", green.Count, green.LazyItems.Count);
+            }
+        }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    internal class MutableModelListFromEnumerable<T> : MutableModelList<T>
+    {
+        private bool unique;
+        private ImmutableList<T> items;
+        private ImmutableList<Func<T>> lazyItems;
+
+        internal MutableModelListFromEnumerable(bool unique)
+        {
+            this.unique = unique;
+            this.items = ImmutableList<T>.Empty;
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        internal MutableModelListFromEnumerable(IEnumerable<T> items, bool unique)
+        {
+            this.unique = unique;
+            if (this.unique)
+            {
+                this.items = ImmutableList<T>.Empty;
+                this.AddRange(items);
+            }
+            else
+            {
+                this.items = items.ToImmutableList();
+            }
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        internal MutableModelListFromEnumerable(ISet<T> items, bool unique)
+        {
+            this.unique = unique;
+            this.items = items.ToImmutableList();
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        internal MutableModelListFromEnumerable(ImmutableHashSet<T> items, bool unique)
+        {
+            this.unique = unique;
+            this.items = items.ToImmutableList();
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        internal MutableModelListFromEnumerable(ImmutableList<T> items, bool unique)
+        {
+            this.unique = unique;
+            if (this.unique)
+            {
+                this.items = ImmutableList<T>.Empty;
+                this.AddRange(items);
+            }
+            else
+            {
+                this.items = items;
+            }
+            this.lazyItems = ImmutableList<Func<T>>.Empty;
+        }
+
+        private void EvalLazyItems()
+        {
+            if (this.lazyItems.Count == 0) return;
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = ImmutableList<Func<T>>.Empty;
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+            foreach (var lazyItem in oldLazyItems)
+            {
+                T item = lazyItem();
+                this.Add(item);
+            }
+        }
+
+        public override int Count
+        {
+            get
+            {
+                this.EvalLazyItems();
+                return this.items.Count;
+            }
+        }
+
+        public override int LazyCount
+        {
+            get { return this.lazyItems.Count; }
+        }
+
+        public override bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public override T this[int index]
+        {
+            get
+            {
+                return this.items[index];
+            }
+            set
+            {
+                ImmutableList<T> oldItems;
+                ImmutableList<T> newItems;
+                do
+                {
+                    oldItems = this.items;
+                    if (this.unique)
+                    {
+                        newItems = oldItems.RemoveAt(index).Remove(value);
+                        if (index > newItems.Count) index = newItems.Count;
+                        newItems = newItems.Insert(index, value);
+                    }
+                    else
+                    {
+                        newItems = oldItems.SetItem(index, value);
+                    }
+                } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+            }
+        }
+
+        public override void Add(T item)
+        {
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                if (this.unique)
+                {
+                    if (oldItems.Contains(item)) newItems = oldItems;
+                    else newItems = oldItems.Add(item);
+                }
+                else
+                {
+                    newItems = oldItems.Add(item);
+                }
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+        }
+
+        public override void AddRange(IEnumerable<T> items)
+        {
+            if (this.unique)
+            {
+                foreach (var item in items)
+                {
+                    this.Add(item);
+                }
+            }
+            else
+            {
+                ImmutableList<T> oldItems;
+                ImmutableList<T> newItems;
+                do
+                {
+                    oldItems = this.items;
+                    newItems = oldItems.AddRange(items);
+                } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+            }
+        }
+
+        public override void AddLazy(Func<T> item)
+        {
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = oldLazyItems.Add(item);
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+        }
+
+        public override void AddRangeLazy(IEnumerable<Func<T>> items)
+        {
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = oldLazyItems.AddRange(items);
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+        }
+
+        public override void Clear()
+        {
+            this.ClearLazy();
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = ImmutableList<T>.Empty;
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+        }
+
+        public override void ClearLazy()
+        {
+            ImmutableList<Func<T>> oldLazyItems;
+            ImmutableList<Func<T>> newLazyItems;
+            do
+            {
+                oldLazyItems = this.lazyItems;
+                newLazyItems = ImmutableList<Func<T>>.Empty;
+            } while (Interlocked.CompareExchange(ref this.lazyItems, newLazyItems, oldLazyItems) != oldLazyItems);
+        }
+
+        public override bool Contains(T item)
+        {
+            this.EvalLazyItems();
+            return this.items.Contains(item);
+        }
+
+        public override void CopyTo(T[] array, int arrayIndex)
+        {
+            this.EvalLazyItems();
+            ImmutableList<T> items = this.items;
+            for (int i = 0; i < items.Count && arrayIndex + i < array.Length; i++)
+            {
+                array[arrayIndex + i] = items[i];
+            }
+        }
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            this.EvalLazyItems();
+            return this.items.GetEnumerator();
+        }
+
+        public override int IndexOf(T item)
+        {
+            this.EvalLazyItems();
+            return this.items.IndexOf(item);
+        }
+
+        public override void Insert(int index, T item)
+        {
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                if (this.unique)
+                {
+                    newItems = oldItems.Remove(item);
+                    if (index > newItems.Count) index = newItems.Count;
+                    newItems = newItems.Insert(index, item);
+                }
+                else
+                {
+                    newItems = oldItems.Insert(index, item);
+                }
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+        }
+
+        public override bool Remove(T item)
+        {
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = oldItems.Remove(item);
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+            return newItems != oldItems;
+        }
+
+        public override bool RemoveAll(T item)
+        {
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = oldItems.RemoveAll(it => (it == null && item == null) || (it != null && it.Equals(item)));
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+            return newItems != oldItems;
+        }
+
+        public override void RemoveAt(int index)
+        {
+            ImmutableList<T> oldItems;
+            ImmutableList<T> newItems;
+            do
+            {
+                oldItems = this.items;
+                newItems = oldItems.RemoveAt(index);
+            } while (Interlocked.CompareExchange(ref this.items, newItems, oldItems) != oldItems);
+        }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count = {0}, LazyCount = {1}", this.items.Count, this.lazyItems.Count); }
+        }
+    }
+
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class MutableModelListFromGreenList<T> : MutableModelList<T>
     {
         private MutableSymbolBase symbol;
@@ -450,7 +1402,7 @@ namespace MetaDslx.Core.Immutable
         {
             get
             {
-                GreenList green = this.GetGreen(true);
+                GreenList green = this.GetGreen(false);
                 return (T)this.symbol.MModel.ToRedValue(green[index]);
             }
             set
@@ -464,9 +1416,25 @@ namespace MetaDslx.Core.Immutable
             this.symbol.MModel.AddItem(this.symbol.Id, this.property, item, this.symbol.MIsBeingCreated);
         }
 
+        public override void AddRange(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                this.Add(item);
+            }
+        }
+
         public override void AddLazy(Func<T> item)
         {
             this.symbol.MModel.AddLazyItem(this.symbol.Id, this.property, (Func<object>)(object)item, this.symbol.MIsBeingCreated);
+        }
+
+        public override void AddRangeLazy(IEnumerable<Func<T>> items)
+        {
+            foreach (var item in items)
+            {
+                this.AddLazy(item);
+            }
         }
 
         public override void Clear()
@@ -531,6 +1499,15 @@ namespace MetaDslx.Core.Immutable
         public override void RemoveAt(int index)
         {
             this.symbol.MModel.RemoveItemAt(this.symbol.Id, this.property, index, this.symbol.MIsBeingCreated);
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                GreenList green = this.GetGreen(false);
+                return string.Format("Count = {0}, LazyCount = {1}", green.Count, green.LazyItems.Count);
+            }
         }
     }
 

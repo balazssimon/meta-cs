@@ -100,7 +100,7 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class GreenList : IEnumerable<object>
     {
         internal static readonly GreenList EmptyUnique = new GreenList(true);
@@ -243,12 +243,22 @@ namespace MetaDslx.Core.Immutable
         {
             return this.GetEnumerator();
         }
+
+        private string DebuggerDisplay
+        {
+            get { return string.Format("Count={0}, LazyCount={1}", this.items.Count, this.lazyItems.Count); }
+        }
+    }
+
+    internal class Unassigned
+    {
+
     }
 
     internal class GreenSymbol
     {
         internal static readonly GreenSymbol Empty = new GreenSymbol();
-        internal static readonly object Unassigned = new object();
+        internal static readonly object Unassigned = new Unassigned();
 
         private SymbolId parent;
         private ImmutableList<SymbolId> children;
@@ -848,7 +858,7 @@ namespace MetaDslx.Core.Immutable
             {
                 if (!sid.ModelSymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
                 {
-                    this.SetValueCore(symbolRef, property, reassign, value, oldValue);
+                    this.SetValueCore(symbolRef, property, reassign, value);
                     this.UpdateModel(symbolRef.Model);
                 }
                 else
@@ -981,9 +991,10 @@ namespace MetaDslx.Core.Immutable
             {
                 foreach (var prop in properties)
                 {
-                    this.GetValue(mid, sid, prop);
+                    this.GetValue(mid, sid, prop, true);
                 }
                 changed = properties.Count > 0;
+                Debug.Assert(!this.GetModel(mid).LazyProperties.ContainsKey(sid));
             }
             return changed;
         }
@@ -997,6 +1008,7 @@ namespace MetaDslx.Core.Immutable
             {
                 changed = this.EvaluateLazyValues(mid, sid) || changed;
             }
+            Debug.Assert(this.GetModel(mid).LazyProperties.Count == 0);
             return changed;
         }
 
@@ -1049,9 +1061,12 @@ namespace MetaDslx.Core.Immutable
                     if (!returnUnassignedValue)
                     {
                         value = null;
+                        return false;
                     }
+                    return true;
                 }
             }
+            value = null;
             return false;
         }
 
@@ -1157,9 +1172,11 @@ namespace MetaDslx.Core.Immutable
         /// <param name="value"></param>
         /// <param name="oldValue"></param>
         /// <returns></returns>
-        private bool SetValueCore(SymbolRef symbolRef, ModelProperty property, bool reassign, object value, object oldValue)
+        private bool SetValueCore(SymbolRef symbolRef, ModelProperty property, bool reassign, object value)
         {
             Debug.Assert(symbolRef.Symbol.Properties.ContainsKey(property));
+            object oldValue;
+            if (!this.TryGetValueCore(symbolRef, property, true, true, out oldValue)) return false;
             if (value == oldValue) return false;
             this.CheckOldValue(symbolRef, property, reassign, oldValue);
             this.CheckNewValue(symbolRef, property, value);
@@ -1171,7 +1188,7 @@ namespace MetaDslx.Core.Immutable
                 }
                 else if (oldValue is GreenLazyValue && !(value is GreenLazyValue))
                 {
-                    this.RemoveLazyPropertyCore(symbolRef, property, (SymbolId)oldValue);
+                    this.RemoveLazyPropertyCore(symbolRef, property);
                 }
             }
             if (value != null && value != GreenSymbol.Unassigned)
@@ -1435,7 +1452,7 @@ namespace MetaDslx.Core.Immutable
             }
             else
             {
-                valueAdded = this.SetValueCore(symbolRef, property, reassign, value, GreenSymbol.Unassigned);
+                valueAdded = this.SetValueCore(symbolRef, property, reassign, value);
             }
             if (valueAdded)
             {
@@ -1538,7 +1555,7 @@ namespace MetaDslx.Core.Immutable
             }
             else
             {
-                valueRemoved = this.SetValueCore(symbolRef, property, reassign, GreenSymbol.Unassigned, value);
+                valueRemoved = this.SetValueCore(symbolRef, property, reassign, GreenSymbol.Unassigned);
             }
             if (valueRemoved)
             {
@@ -1712,10 +1729,10 @@ namespace MetaDslx.Core.Immutable
             if (properties.Contains(property))
             {
                 properties = properties.Remove(property);
-                if (properties.IsEmpty) references = references.Remove(sid);
+                if (properties.Count == 0) references = references.Remove(sid);
                 else references = references.SetItem(sid, properties.Remove(property));
                 ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> modelReferences;
-                if (references.IsEmpty) modelReferences = model.References.Remove(valueSid);
+                if (references.Count == 0) modelReferences = model.References.Remove(valueSid);
                 else modelReferences = model.References.SetItem(valueSid, references);
                 ImmutableDictionary<SymbolId, GreenSymbol> modelSymbols = model.Symbols;
                 GreenSymbol symbol = symbolRef.Symbol;
@@ -1782,7 +1799,7 @@ namespace MetaDslx.Core.Immutable
         /// <param name="symbolRef"></param>
         /// <param name="property"></param>
         /// <param name="valueSid"></param>
-        private void RemoveLazyPropertyCore(SymbolRef symbolRef, ModelProperty property, SymbolId valueSid)
+        private void RemoveLazyPropertyCore(SymbolRef symbolRef, ModelProperty property)
         {
             SymbolId sid = symbolRef.Id;
             ImmutableHashSet<ModelProperty> lazyProperties;
@@ -1790,7 +1807,7 @@ namespace MetaDslx.Core.Immutable
             if (model.LazyProperties.TryGetValue(sid, out lazyProperties))
             {
                 lazyProperties = lazyProperties.Remove(property);
-                if (lazyProperties.IsEmpty) model = model.Update(model.Symbols, model.StrongSymbols, model.LazyProperties.Remove(sid), model.References);
+                if (lazyProperties.Count == 0) model = model.Update(model.Symbols, model.StrongSymbols, model.LazyProperties.Remove(sid), model.References);
                 else model = model.Update(model.Symbols, model.StrongSymbols, model.LazyProperties.SetItem(sid, lazyProperties), model.References);
                 symbolRef.Update(model, symbolRef.Symbol, false);
             }
@@ -1818,12 +1835,26 @@ namespace MetaDslx.Core.Immutable
                     GreenList list = (GreenList)listValue;
                     GreenSymbol oldSymbol = symbolRef.Symbol;
                     GreenSymbol newSymbol = oldSymbol.Update(oldSymbol.Parent, oldSymbol.Children, oldSymbol.Properties.SetItem(property, list.ClearLazy()));
-                    GreenModel newModel =
-                        oldModel.Update(
-                            oldModel.Symbols.SetItem(sid, newSymbol),
-                            oldModel.StrongSymbols,
-                            oldModel.LazyProperties.SetItem(sid, oldLazyProperties.Remove(property)),
-                            oldModel.References);
+                    ImmutableHashSet<ModelProperty> newLazyProperties = oldLazyProperties.Remove(property);
+                    GreenModel newModel;
+                    if (newLazyProperties.Count == 0)
+                    {
+                        newModel =
+                            oldModel.Update(
+                                oldModel.Symbols.SetItem(sid, newSymbol),
+                                oldModel.StrongSymbols,
+                                oldModel.LazyProperties.Remove(sid),
+                                oldModel.References);
+                    }
+                    else
+                    {
+                        newModel =
+                            oldModel.Update(
+                                oldModel.Symbols.SetItem(sid, newSymbol),
+                                oldModel.StrongSymbols,
+                                oldModel.LazyProperties.SetItem(sid, newLazyProperties),
+                                oldModel.References);
+                    }
                     symbolRef.Update(newModel, newSymbol, false);
                     changed = true;
                 }
@@ -1855,10 +1886,7 @@ namespace MetaDslx.Core.Immutable
                     if (lazyValue is GreenLazyValue)
                     {
                         object value = this.LazyEvalValue((GreenLazyValue)lazyValue);
-                        if (!property.IsDerived)
-                        {
-                            this.SetValue(mid, sid, property, true, value);
-                        }
+                        this.SetValue(mid, sid, property, true, value);
                     }
                     else if (lazyValue is GreenList)
                     {

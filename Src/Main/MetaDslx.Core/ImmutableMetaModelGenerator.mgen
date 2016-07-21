@@ -580,7 +580,7 @@ public static class [enm.Name]Extensions
 /// </summary>
 internal abstract class [model.Name]ImplementationBase
 {
-	public virtual void [model.CSharpInstancesName(ClassKind.Builder)]([model.CSharpInstancesName(ClassKind.Builder)] _this, global::MetaDslx.Core.Immutable.MutableModel model)
+	public virtual void [model.CSharpInstancesName(ClassKind.Builder)]([model.CSharpInstancesName(ClassKind.Builder)] _this)
 	{
 	}
 	[loop(model->Namespace->Declarations->cls:typeof(MetaClass))]
@@ -653,7 +653,7 @@ template GenerateFactory(MetaModel model)
 /// </summary>
 public class [model.CSharpFactoryName()] : global::MetaDslx.Core.Immutable.ModelFactory
 {
-    public [model.CSharpFactoryName()](MutableModel model, ModelFactoryFlags flags = ModelFactoryFlags.MakeSymbolsCreated)
+    public [model.CSharpFactoryName()](MutableModel model, ModelFactoryFlags flags = ModelFactoryFlags.None)
         : base(model, flags)
     {
 		[model.CSharpFullDescriptorName(ClassKind.Immutable)].Initialize();
@@ -702,6 +702,7 @@ internal class [model.CSharpInstancesName(ClassKind.Builder)]
 	[else]
 	internal readonly global::MetaDslx.Core.Immutable.MetaModelBuilder MetaModel;
 	[end if]
+	internal readonly global::MetaDslx.Core.Immutable.MutableModel Model;
 ^
     [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
     [GenerateModelConstant(model, c)]
@@ -713,9 +714,9 @@ internal class [model.CSharpInstancesName(ClassKind.Builder)]
 ^
     private [model.CSharpInstancesName(ClassKind.Builder)]()
     {
-		global::MetaDslx.Core.Immutable.MutableModel model = new global::MetaDslx.Core.Immutable.MutableModel();
-		[model.CSharpFullFactoryName(ClassKind.Immutable)] factory = new [model.CSharpFullFactoryName(ClassKind.Immutable)](model, global::MetaDslx.Core.Immutable.ModelFactoryFlags.None);
-		[model.Name]ImplementationProvider.Implementation.[model.CSharpInstancesName(ClassKind.Builder)](this, model);
+		this.Model = new global::MetaDslx.Core.Immutable.MutableModel();
+		[model.CSharpFullFactoryName(ClassKind.Immutable)] factory = new [model.CSharpFullFactoryName(ClassKind.Immutable)](this.Model, global::MetaDslx.Core.Immutable.ModelFactoryFlags.DontMakeSymbolsCreated);
+		[model.Name]ImplementationProvider.Implementation.[model.CSharpInstancesName(ClassKind.Builder)](this);
 ^
 		[loop(mobj:Instances)]
 		[GenerateModelObjectInstance(coreModel, mobj, mobjToName)]
@@ -729,7 +730,7 @@ internal class [model.CSharpInstancesName(ClassKind.Builder)]
 		[GenerateModelObjectInstanceFinalizer(mobj, mobjToName)]
 		[end loop]
 ^
-        model.EvaluateLazyValues();
+        this.Model.EvaluateLazyValues();
     }
 }
 ^
@@ -748,6 +749,7 @@ public class [model.CSharpInstancesName(ClassKind.Immutable)]
 	[else]
 	public static readonly global::MetaDslx.Core.Immutable.MetaModel MetaModel;
 	[end if]
+	public static readonly global::MetaDslx.Core.Immutable.ImmutableModel Model;
 ^
     [loop(model->Namespace->Declarations->c:typeof(MetaConstant))]
     [GenerateImmutableModelConstant(model, c)]
@@ -759,10 +761,12 @@ public class [model.CSharpInstancesName(ClassKind.Immutable)]
 ^
 	static [model.CSharpInstancesName(ClassKind.Immutable)]()
 	{
+		[model.CSharpInstancesName(ClassKind.Immutable)].Model = [model.CSharpInstancesName(ClassKind.Builder)].instance.Model.ToImmutable();
+		global::MetaDslx.Core.Immutable.ImmutableModel model = [model.CSharpInstancesName(ClassKind.Immutable)].Model;
 		[if (coreModel)]
-		[model.CSharpInstancesName(ClassKind.Immutable)]._MetaModel = [model.CSharpInstancesName(ClassKind.Builder)].instance._MetaModel.ToImmutable();
+		[model.CSharpInstancesName(ClassKind.Immutable)]._MetaModel = [model.CSharpInstancesName(ClassKind.Builder)].instance._MetaModel.ToImmutable(model);
 		[else]
-		[model.CSharpInstancesName(ClassKind.Immutable)].MetaModel = [model.CSharpInstancesName(ClassKind.Builder)].instance.MetaModel.ToImmutable();
+		[model.CSharpInstancesName(ClassKind.Immutable)].MetaModel = [model.CSharpInstancesName(ClassKind.Builder)].instance.MetaModel.ToImmutable(model);
 		[end if]
 ^
 		[loop(mobj:Instances where mobjToName.ContainsKey(mobj) && !mobjToName[mobj].StartsWith("__"))]
@@ -803,7 +807,7 @@ template GenerateImmutableModelObjectInstanceDeclarationInitializer(MetaModel mo
 	[if (mobjToName.ContainsKey(mobj))]
 		[if (!mobjToName[mobj].StartsWith("__"))]
 [string name = mobjToName[mobj]]
-[model.CSharpInstancesName(ClassKind.Immutable)].[name] = [model.CSharpInstancesName(ClassKind.Builder)].instance.[name].ToImmutable();
+[model.CSharpInstancesName(ClassKind.Immutable)].[name] = [model.CSharpInstancesName(ClassKind.Builder)].instance.[name].ToImmutable(model);
 		[end if]
 	[end if]
 [end if]
@@ -924,13 +928,21 @@ template GenerateModelObjectPropertyCollectionValue(bool coreModel, ModelObject 
 [name].[prop.Name].Add([value.ToString()]);
 [else if (MetaBuiltInTypes.Types.Contains(value))]
 	[if (coreModel)]
+		[if (mobjToName.ContainsKey(moValue))]
 [name].[prop.Name].AddLazy(() => [mobjToName[moValue]]);
+		[else]
+[name].[prop.Name].AddLazy(() => this.[((MetaPrimitiveType)value).Name.ToPascalCase()]);
+		[end if]
 	[else]
 [name].[prop.Name].Add([GenerateTypeOf(value)]);
 	[end if]
 [else if (value is MetaPrimitiveType)]
 	[if (coreModel)]
+		[if (mobjToName.ContainsKey(moValue))]
 [name].[prop.Name].AddLazy(() => [mobjToName[moValue]]);
+		[else]
+[name].[prop.Name].AddLazy(() => this.[((MetaPrimitiveType)value).Name.ToPascalCase()]);
+		[end if]
 	[else]
 [name].[prop.Name].Add([GenerateTypeOf(value)]);
 	[end if]

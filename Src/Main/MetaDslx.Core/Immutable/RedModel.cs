@@ -425,7 +425,10 @@ namespace MetaDslx.Core.Immutable
             }
             else if (value is GreenLazyValue)
             {
-                Debug.Assert(false);
+                return null;
+            }
+            else if (value == GreenSymbol.Unassigned)
+            {
                 return null;
             }
             else if (value is GreenList)
@@ -837,6 +840,10 @@ namespace MetaDslx.Core.Immutable
             else if (value is GreenList)
             {
                 Debug.Assert(false);
+                return null;
+            }
+            else if (value == GreenSymbol.Unassigned)
+            {
                 return null;
             }
             else if (value is SymbolId)
@@ -1542,8 +1549,9 @@ namespace MetaDslx.Core.Immutable
     public enum ModelFactoryFlags
     {
         None = 0x00,
-        MakeSymbolsCreated = 0x01,
-        CreateWeakSymbols = 0x02
+        DontMakeSymbolsCreated = 0x01,
+        CreateWeakSymbols = 0x02,
+        CreateStrongSymbols = 0x04
     }
 
     public abstract class ModelFactory
@@ -1564,7 +1572,7 @@ namespace MetaDslx.Core.Immutable
         {
             MutableSymbolBase symbol = this.model.CreateSymbol(id, this.flags.HasFlag(ModelFactoryFlags.CreateWeakSymbols));
             symbol.MInit();
-            if (this.flags.HasFlag(ModelFactoryFlags.MakeSymbolsCreated)) symbol.MMakeCreated();
+            if (!this.flags.HasFlag(ModelFactoryFlags.DontMakeSymbolsCreated)) symbol.MMakeCreated();
             return symbol;
         }
 

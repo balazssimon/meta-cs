@@ -239,7 +239,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     public class TestModelFactory : ModelFactory
     {
-        public TestModelFactory(MutableModel model, ModelFactoryFlags flags = ModelFactoryFlags.MakeSymbolsCreated)
+        public TestModelFactory(MutableModel model, ModelFactoryFlags flags = ModelFactoryFlags.None)
             : base(model, flags)
         {
             TestModelDescriptor.Initialize();
