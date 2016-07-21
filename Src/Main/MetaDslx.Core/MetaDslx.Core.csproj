@@ -47,7 +47,11 @@
   <ItemGroup>
     <Compile Include="ImmutableMetaImplementation.cs" />
     <Compile Include="ImmutableMetaModel.cs" />
-    <Compile Include="ImmutableMetaModelGeneratorOld.cs" />
+    <Compile Include="ImmutableMetaModelGeneratorOld.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImmutableMetaModelGeneratorOld.mgen</DependentUpon>
+    </Compile>
     <Compile Include="Immutable\GreenModel.cs" />
     <Compile Include="Immutable\ModelCollections.cs" />
     <Compile Include="Immutable\ModelException.cs" />

@@ -44,9 +44,8 @@ package [enm.Namespace.JavaName()];
 ^
 [GenerateAnnotations(enm)]
 public enum [enm.JavaName()] {
-    [loop(enm->value:EnumLiterals; string delim = ""; delim = ",")]
-[delim]
-    [value.Name]\
+    [loop(enm->value:EnumLiterals; separator delim = ",")]
+    [value.Name][delim]
 	[end loop]
 ;
 [loop(enm->op:Operations)]
@@ -61,9 +60,12 @@ end template
 
 function string GetAncestors(MetaClass cls)
 	string result = "";
-	loop(cls->super:SuperClasses; string delim = " extends "; delim = ", ")
+	loop(cls->super:SuperClasses; separator delim = ", ")
 		result += delim+super.JavaFullName();
 	end loop
+	if (result != "")
+		result = " extends "+result;
+	end if
 	return result;
 end function
 
@@ -93,8 +95,8 @@ end template
 
 function string GetParameters(MetaOperation op, bool defaultValues)
 	string result = "";
-	loop(op->param:Parameters; string delim = ""; delim = ", ")
-		result += delim+param.Type.JavaFullPublicName()+" "+param.Name;
+	loop(op->param:Parameters; separator delim = ", ")
+		result += param.Type.JavaFullPublicName()+" "+param.Name+delim;
 	end loop
 	return result;
 end function
@@ -334,8 +336,8 @@ template GenerateTypeOf(object expr)
 end template
 
 template GenerateCallArguments(MetaBoundExpression call, string prefix)
-[loop(call->arg:Arguments; string delim = ""; delim = ", ")]
-[delim][prefix][GenerateExpression(arg)]\
+[loop(call->arg:Arguments; separator delim = ", ")]
+[prefix][GenerateExpression(arg)][delim]\
 [end loop]
 end template
 
@@ -355,16 +357,16 @@ end template
 template GenerateNewPropertyInitializers(MetaNewExpression expr)
 [if (hasloop(expr->pi:PropertyInitializers))]
 java.util.Arrays.asList(new metadslx.core.ModelPropertyInitializer["[]"] {\
-[loop(expr->pi:PropertyInitializers; string delim = ""; delim = ", ")]
-[delim]new metadslx.core.ModelPropertyInitializer([pi.Property.JavaFullDescriptorName()], metadslx.core.Lazy.create(() -> [GenerateExpression(pi.Value)], true))\
+[loop(expr->pi:PropertyInitializers; separator delim = ", ")]
+new metadslx.core.ModelPropertyInitializer([pi.Property.JavaFullDescriptorName()], metadslx.core.Lazy.create(() -> [GenerateExpression(pi.Value)], true))[delim]\
 [end loop]
 })\
 [end if]
 end template
 
 template GenerateNewCollectionValues(MetaNewCollectionExpression expr)
-[loop(expr->v:Values; string delim = ""; delim = ", \n")]
-[delim][GenerateExpression(v)]\
+[loop(expr->v:Values; separator delim = ", \n")]
+[GenerateExpression(v)][delim]\
 [end loop]
 end template
 
@@ -520,16 +522,16 @@ end template
 
 function string GetSuperClasses(MetaClass cls)
 	string result = "";
-    loop(cls->sup:SuperClasses; string delim = ""; delim = ", ")
-		result += delim+sup.JavaFullName();
+    loop(cls->sup:SuperClasses; separator delim = ", ")
+		result += sup.JavaFullName()+delim;
 	end loop
 	return result;
 end function
 
 function string GetAllSuperClasses(MetaClass cls)
 	string result = "";
-    loop(cls->sup:GetAllSuperClasses(false); string delim = ""; delim = ", ")
-		result += delim+sup.JavaFullName();
+    loop(cls->sup:GetAllSuperClasses(false); separator delim = ", ")
+		result += sup.JavaFullName()+delim;
 	end loop
 	return result;
 end function

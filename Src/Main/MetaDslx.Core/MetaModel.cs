@@ -10975,7 +10975,7 @@ namespace MetaDslx.Core
      * Represents an annotated element.
      * </summary>
      */
-    public interface MetaAnnotatedElement
+    public interface MetaAnnotatedElement : global::MetaDslx.Core.IModelObject
     {
         /**
          * <summary>
@@ -11021,7 +11021,7 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaDocumentedElement
+    public interface MetaDocumentedElement : global::MetaDslx.Core.IModelObject
     {
         string Documentation { get; set; }
     
@@ -11125,7 +11125,7 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaTypedElement
+    public interface MetaTypedElement : global::MetaDslx.Core.IModelObject
     {
         global::MetaDslx.Core.MetaType Type { get; set; }
     
@@ -11167,7 +11167,7 @@ namespace MetaDslx.Core
     }
     
     [Type]
-    public interface MetaType
+    public interface MetaType : global::MetaDslx.Core.IModelObject
     {
     
     }
@@ -13049,7 +13049,7 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaPropertyInitializer
+    public interface MetaPropertyInitializer : global::MetaDslx.Core.IModelObject
     {
         global::MetaDslx.Core.MetaConstructor Constructor { get; set; }
         string PropertyName { get; set; }
@@ -14951,7 +14951,7 @@ namespace MetaDslx.Core
         }
     }
     
-    public interface MetaNewPropertyInitializer
+    public interface MetaNewPropertyInitializer : global::MetaDslx.Core.IModelObject
     {
         global::MetaDslx.Core.MetaNewExpression Parent { get; set; }
         string PropertyName { get; set; }
