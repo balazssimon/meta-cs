@@ -9,8 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MetaDslx.Core.Immutable;
 using System.Diagnostics;
+using MetaDslx.Core.Immutable;
 ^
 	[loop(Instances->mm:typeof(MetaModel))]
 [GenerateMetamodel(mm)]

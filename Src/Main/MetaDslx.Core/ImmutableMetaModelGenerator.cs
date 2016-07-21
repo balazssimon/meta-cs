@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable //1:1
 {
-    using __Hidden_ImmutableMetaModelGenerator_894354589;
-    namespace __Hidden_ImmutableMetaModelGenerator_894354589
+    using __Hidden_ImmutableMetaModelGenerator_56029506;
+    namespace __Hidden_ImmutableMetaModelGenerator_56029506
     {
         internal static class __Extensions
         {
@@ -74,10 +74,10 @@ namespace MetaDslx.Core.Immutable //1:1
             __out.AppendLine(false); //10:24
             __out.Append("using System.Threading.Tasks;"); //11:1
             __out.AppendLine(false); //11:30
-            __out.Append("using MetaDslx.Core.Immutable;"); //12:1
-            __out.AppendLine(false); //12:31
-            __out.Append("using System.Diagnostics;"); //13:1
-            __out.AppendLine(false); //13:26
+            __out.Append("using System.Diagnostics;"); //12:1
+            __out.AppendLine(false); //12:26
+            __out.Append("using MetaDslx.Core.Immutable;"); //13:1
+            __out.AppendLine(false); //13:31
             __out.AppendLine(true); //14:1
             var __loop1_results = 
                 (from __loop1_var1 in __Enumerate((Instances).GetEnumerator()) //15:8
@@ -614,4 +614,3 @@ namespace MetaDslx.Core.Immutable //1:1
         }
     }
 }
-
