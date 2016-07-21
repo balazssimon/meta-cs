@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace MetaDslx.Core.Immutable
     {
         public override void MetaBuilderInstance(MetaBuilderInstance _this)
         {
-            MetaFactory f = new Immutable.MetaFactory(_this.Model);
+            MetaFactory f = new MetaFactory(_this.Model);
             _this.Object = f.MetaPrimitiveType();
             _this.Object.Name = "object";
             _this.String = f.MetaPrimitiveType();
@@ -52,6 +53,30 @@ namespace MetaDslx.Core.Immutable
                     ft.ReturnType = _this.ReturnType;
                     return ft;
                 };
+        }
+
+        public override ImmutableModelList<string> MetaDocumentedElement_GetDocumentationLines(MetaDocumentedElement _this)
+        {
+            if (_this.Documentation == null) return ImmutableModelList<string>.Empty;
+            List<string> result = new List<string>();
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(_this.Documentation);
+            writer.Flush();
+            stream.Position = 0;
+            StringBuilder sb = new StringBuilder();
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        result.Add(line);
+                    }
+                }
+            }
+            return ImmutableModelList<string>.CreateNonUnique(result);
         }
 
         public override ImmutableModelList<MetaClass> MetaClass_GetAllSuperClasses(MetaClass _this, bool includeSelf)

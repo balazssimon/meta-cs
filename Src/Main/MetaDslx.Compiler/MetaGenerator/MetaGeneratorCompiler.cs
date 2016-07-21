@@ -1250,6 +1250,11 @@ namespace MetaDslx.Compiler
                 int endIndex = lastIndex;
                 string prefix = NewTmp() + "Prefix";
                 string prefixText = null;
+                string outputWrittenTmp = NewTmp()+ "OutputWritten";
+                if (!forceNewLine && !noNewLine)
+                {
+                    WriteLine("bool {0} = false;", outputWrittenTmp);
+                }
                 if (lastIndex >= 1)
                 {
                     MetaGeneratorParser.TemplateOutputContext output;
@@ -1289,12 +1294,10 @@ namespace MetaDslx.Compiler
                                 WriteLine("using(StreamReader {0}Reader = new StreamReader(this.__ToStream({0}.ToString())))", tmp);
                                 WriteLine("{");
                                 IncIndent();
-                                WriteLine("bool {0}_first = true;", tmp);
                                 WriteLine("bool {0}_last = {0}Reader.EndOfStream;", tmp);
-                                WriteLine("while({0}_first || !{0}_last)", tmp);
+                                WriteLine("while(!{0}_last)", tmp);
                                 WriteLine("{");
                                 IncIndent();
-                                WriteLine("{0}_first = false;", tmp);
                                 WriteLine("string {0}Line = {0}Reader.ReadLine();", tmp);
                                 WriteLine("{0}_last = {0}Reader.EndOfStream;", tmp);
                                 hasOutput = true;
@@ -1307,21 +1310,54 @@ namespace MetaDslx.Compiler
                     }
                     if (startIndex > 0 && i == startIndex)
                     {
+                        WriteLine("if (!string.IsNullOrEmpty({0}))", prefix);
+                        WriteLine("{");
+                        IncIndent();
                         WriteLine("__out.Append({0});", prefix);
+                        if (!forceNewLine && !noNewLine)
+                        {
+                            WriteLine("{0} = true;", outputWrittenTmp);
+                        }
+                        DecIndent();
+                        WriteLine("}");
                     }
                     if (hasOutput)
                     {
-                        WriteLine("if ({0}Line != null) __out.Append({0}Line);", tmp);
-                        if (closeBraces)
+                        WriteLine("if (!string.IsNullOrEmpty({0}Line))", tmp);
+                        WriteLine("{");
+                        IncIndent();
+                        WriteLine("__out.Append({0}Line);", tmp);
+                        if (!forceNewLine && !noNewLine)
                         {
-                            WriteLine("if (!{0}_last) __out.AppendLine(true);", tmp);
+                            WriteLine("{0} = true;", outputWrittenTmp);
                         }
+                        DecIndent();
+                        WriteLine("}");
                     }
                     if (i == endIndex)
                     {
-                        if (forceNewLine || !noNewLine)
+                        if (forceNewLine)
                         {
                             VisitTemplateLineEnd(context.templateLineEnd());
+                        }
+                        else if (!noNewLine)
+                        {
+                            WriteLine("if ({0})", outputWrittenTmp);
+                            WriteLine("{");
+                            IncIndent();
+                            VisitTemplateLineEnd(context.templateLineEnd());
+                            DecIndent();
+                            WriteLine("}");
+                        }
+                    }
+                    else
+                    {
+                        if (hasOutput)
+                        {
+                            if (closeBraces)
+                            {
+                                WriteLine("if (!{0}_last) __out.AppendLine(true);", tmp);
+                            }
                         }
                     }
                     if (hasOutput)
@@ -1330,6 +1366,22 @@ namespace MetaDslx.Compiler
                         {
                             DecIndent();
                             WriteLine("}");
+                            DecIndent();
+                            WriteLine("}");
+                        }
+                    }
+                    if (i == endIndex)
+                    {
+                        if (forceNewLine)
+                        {
+                            VisitTemplateLineEnd(context.templateLineEnd());
+                        }
+                        else if (!noNewLine)
+                        {
+                            WriteLine("if ({0})", outputWrittenTmp);
+                            WriteLine("{");
+                            IncIndent();
+                            VisitTemplateLineEnd(context.templateLineEnd());
                             DecIndent();
                             WriteLine("}");
                         }

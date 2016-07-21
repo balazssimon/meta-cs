@@ -632,12 +632,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get{ return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -668,12 +668,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -704,12 +704,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -735,12 +735,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -766,12 +766,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -797,12 +797,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -828,12 +828,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -860,12 +860,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -896,12 +896,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -928,12 +928,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -966,12 +966,12 @@ namespace MetaDslx.Core.Immutable.Test
             return (ImmutableHusband)base.ToImmutable();
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -1009,12 +1009,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -1044,12 +1044,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -1076,12 +1076,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -1108,12 +1108,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -1140,12 +1140,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -1172,12 +1172,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -1205,12 +1205,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -1240,12 +1240,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }
@@ -1270,12 +1270,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
             get { return null; }
         }
 
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
             get { return null; }
         }

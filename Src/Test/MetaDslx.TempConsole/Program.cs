@@ -131,13 +131,6 @@ namespace MetaDslx.TempConsole
                 //*/
                 /*
                 Console.WriteLine("----");
-                CompileGenerator(
-                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModelGeneratorOld.mgen",
-                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModelGeneratorOld.cs"
-                    );
-                //*/
-                /*
-                Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel1.cs"
@@ -166,13 +159,6 @@ namespace MetaDslx.TempConsole
                         writer.WriteLine(generator.Generate());
                     }
                 }
-                //*/
-                /*
-                Console.WriteLine("----");
-                CompileImmutableMeta(
-                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.mm",
-                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.cs"
-                    );
                 //*/
                 /*
                 using (ModelContextScope scope = new ModelContextScope(MetaInstance.Model))
@@ -230,6 +216,25 @@ namespace MetaDslx.TempConsole
                         Console.WriteLine(cls.Constructor);
                     }
                 }
+                //*/
+                /*
+                Console.WriteLine("----");
+                CompileGenerator(
+                    @"..\..\..\..\Main\MetaDslx.Core\Mutable\ImmutableMetaModelGeneratorOld.mgen",
+                    @"..\..\..\..\Main\MetaDslx.Core\Mutable\ImmutableMetaModelGeneratorOld.cs"
+                    );
+                Console.WriteLine("----");
+                CompileGenerator(
+                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModelGenerator.mgen",
+                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModelGenerator.cs"
+                    );
+                //*/
+                /*
+                Console.WriteLine("----");
+                CompileImmutableMeta(
+                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.mm",
+                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel1.cs"
+                    );
                 //*/
                 //*
                 GenerateImmutableMeta(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel2.cs");

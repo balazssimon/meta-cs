@@ -20,16 +20,51 @@ end template
 template GenerateMetamodel(MetaModel model)
 namespace [model.Namespace.Name]
 {
+	[GenerateMetaModelDescriptor(model)]
+	[GenerateMetaModelInstance(model)]
+    [GenerateFactory(model)]
+    [GenerateImplementationProvider(model)]
 	[loop(model->Namespace->Declarations->enm:typeof(MetaEnum))]
     [GenerateEnum(enm)]
 	[end loop]
 }
 end template
 
+template GenerateMetaModelDescriptor(MetaModel model)
+
+end template
+
+template GenerateMetaModelInstance(MetaModel model)
+
+end template
+
+template GenerateFactory(MetaModel model)
+
+end template
+
+template GenerateImplementationProvider(MetaModel model)
+
+end template
+
+template GenerateDocumentation(MetaDocumentedElement elem)
+[ImmutableModelList<string> lines = elem.GetDocumentationLines()]
+[if (lines.Count > 0)]
+/**
+ * <summary>
+	[loop(line:lines)]
+ * [line]
+	[end loop]
+ * </summary>
+ */
+[end if]
+end template
+
 template GenerateEnum(MetaEnum enm)
+[GenerateDocumentation(enm)]
 public enum [enm.CSharpName()]
 {
     [loop(enm->value:EnumLiterals; separator delim = ",")]
+	[GenerateDocumentation(value)]
 	[value.Name][delim]
 	[end loop]
 }
