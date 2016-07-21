@@ -30,6 +30,7 @@ KHasLoop : 'hasloop';
 KWhere : 'where';
 KOrderBy : 'orderby';
 KDescending : 'descending';
+KSeparator : 'separator';
 KNull : 'null';
 KTrue : 'true';
 KFalse : 'false';

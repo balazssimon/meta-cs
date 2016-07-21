@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\fijmhpzj.5bv\MetaGeneratorParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\gduuenvr.gy0\MetaGeneratorParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -442,29 +442,17 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLoopRunExpression([NotNull] MetaGeneratorParser.LoopRunExpressionContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.loopRunList"/>.
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.separatorStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterLoopRunList([NotNull] MetaGeneratorParser.LoopRunListContext context) { }
+	public virtual void EnterSeparatorStatement([NotNull] MetaGeneratorParser.SeparatorStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.loopRunList"/>.
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.separatorStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitLoopRunList([NotNull] MetaGeneratorParser.LoopRunListContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.loopRun"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterLoopRun([NotNull] MetaGeneratorParser.LoopRunContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.loopRun"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitLoopRun([NotNull] MetaGeneratorParser.LoopRunContext context) { }
+	public virtual void ExitSeparatorStatement([NotNull] MetaGeneratorParser.SeparatorStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.switchStatement"/>.
 	/// <para>The default implementation does nothing.</para>

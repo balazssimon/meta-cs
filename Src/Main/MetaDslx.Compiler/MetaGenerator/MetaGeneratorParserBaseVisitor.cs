@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\fijmhpzj.5bv\MetaGeneratorParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\gduuenvr.gy0\MetaGeneratorParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -373,7 +373,7 @@ public partial class MetaGeneratorParserBaseVisitor<Result> : AbstractParseTreeV
 	/// <return>The visitor result.</return>
 	public virtual Result VisitLoopRunExpression([NotNull] MetaGeneratorParser.LoopRunExpressionContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.loopRunList"/>.
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.separatorStatement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -381,17 +381,7 @@ public partial class MetaGeneratorParserBaseVisitor<Result> : AbstractParseTreeV
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitLoopRunList([NotNull] MetaGeneratorParser.LoopRunListContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.loopRun"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitLoopRun([NotNull] MetaGeneratorParser.LoopRunContext context) { return VisitChildren(context); }
+	public virtual Result VisitSeparatorStatement([NotNull] MetaGeneratorParser.SeparatorStatementContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.switchStatement"/>.
 	/// <para>

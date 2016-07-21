@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\fijmhpzj.5bv\MetaGeneratorParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\gduuenvr.gy0\MetaGeneratorParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -386,25 +386,15 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitLoopRunExpression([NotNull] MetaGeneratorParser.LoopRunExpressionContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.loopRunList"/>.
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.separatorStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterLoopRunList([NotNull] MetaGeneratorParser.LoopRunListContext context);
+	void EnterSeparatorStatement([NotNull] MetaGeneratorParser.SeparatorStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.loopRunList"/>.
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.separatorStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitLoopRunList([NotNull] MetaGeneratorParser.LoopRunListContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.loopRun"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterLoopRun([NotNull] MetaGeneratorParser.LoopRunContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.loopRun"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitLoopRun([NotNull] MetaGeneratorParser.LoopRunContext context);
+	void ExitSeparatorStatement([NotNull] MetaGeneratorParser.SeparatorStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.switchStatement"/>.
 	/// </summary>

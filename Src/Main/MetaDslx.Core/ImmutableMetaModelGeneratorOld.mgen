@@ -74,22 +74,25 @@ end template
 
 function string GetAncestors(MetaClass cls, ClassKind classKind)
 	string result = "";
-	loop(cls->super:SuperClasses; string delim = " : "; delim = ", ")
-		result += delim+super.CSharpFullName(classKind);
+	loop(cls->super:SuperClasses; separator delim = ", ")
+		result += super.CSharpFullName(classKind)+delim;
 	end loop
 	if (result == "" && classKind == ClassKind.Immutable) 
-		result = " : global::MetaDslx.Core.Immutable.ImmutableSymbol";
+		result = "global::MetaDslx.Core.Immutable.ImmutableSymbol";
 	end if
 	if (result == "" && classKind == ClassKind.Builder) 
-		result = " : global::MetaDslx.Core.Immutable.MutableSymbol";
+		result = "global::MetaDslx.Core.Immutable.MutableSymbol";
+	end if
+	if (result != "") 
+		result = " : "+result;
 	end if
 	return result;
 end function
 
 function string GetDescriptorAncestors(MetaClass cls)
 	string result = "";
-	loop(cls->super:SuperClasses; string delim = ""; delim = ", ")
-		result += delim+"typeof("+super.CSharpFullDescriptorName(ClassKind.Immutable)+")";
+	loop(cls->super:SuperClasses; separator delim = ", ")
+		result += "typeof("+super.CSharpFullDescriptorName(ClassKind.Immutable)+")"+delim;
 	end loop
 	return result;
 end function
@@ -182,8 +185,8 @@ end template
 
 function string GetParameters(MetaFunction op, ClassKind classKind)
 	string result = "";
-	loop(op->param:Parameters; string delim = ""; delim = ", ")
-		result += delim+param.Type.CSharpFullPublicName(classKind)+" "+param.Name;
+	loop(op->param:Parameters; separator delim = ", ")
+		result += param.Type.CSharpFullPublicName(classKind)+" "+param.Name+delim;
 	end loop
 	return result;
 end function
@@ -474,16 +477,16 @@ end template
 
 function string GetSuperClasses(MetaClass cls)
 	string result = "";
-    loop(cls->sup:SuperClasses; string delim = ""; delim = ", ")
-		result += delim+sup.CSharpFullName();
+    loop(cls->sup:SuperClasses; separator delim = ", ")
+		result += sup.CSharpFullName()+delim;
 	end loop
 	return result;
 end function
 
 function string GetAllSuperClasses(MetaClass cls)
 	string result = "";
-    loop(cls->sup:GetAllSuperClasses(false); string delim = ""; delim = ", ")
-		result += delim+sup.CSharpFullName();
+    loop(cls->sup:GetAllSuperClasses(false); separator delim = ", ")
+		result += sup.CSharpFullName()+delim;
 	end loop
 	return result;
 end function

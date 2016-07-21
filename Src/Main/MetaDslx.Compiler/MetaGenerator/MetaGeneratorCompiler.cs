@@ -1486,40 +1486,22 @@ namespace MetaDslx.Compiler
             WriteLine(").ToList(); {0}", context.ToComment());
             DecIndent();
             string tmp1 = NewTmp();
-            WriteLine("int {0}_iteration = 0;", li.Name);
-            if (context.loopRunExpression() != null)
-            {
-                var lrl = context.loopRunExpression().children[1] as MetaGeneratorParser.LoopRunListContext;
-                Visit(lrl);
-            }
-            WriteLine("foreach (var {1} in {0}_results)", li.Name, tmp1);
+            WriteLine("for (int {0}_iteration = 0; {0}_iteration < {0}_results.Count; ++{0}_iteration)", li.Name);
             WriteLine("{");
             IncIndent();
-            WriteLine("++{0}_iteration;", li.Name);
-            if (context.loopRunExpression() != null)
+            if (context.loopRunExpression() != null && context.loopRunExpression().separatorStatement() != null)
             {
-                var lre = context.loopRunExpression();
-                for (int i = lre.ChildCount - 1; i >= 2; --i)
-                {
-                    MetaGeneratorParser.LoopRunListContext lrl = lre.children[i] as MetaGeneratorParser.LoopRunListContext;
-                    if (lrl != null)
-                    {
-                        if (i == lre.ChildCount - 1) WriteIndent();
-                        Write("if ({0}_iteration >= {1}) {2}", li.Name, i / 2 + 1, lrl.ToComment());
-                        AppendLine();
-                        WriteLine("{");
-                        IncIndent();
-                        Visit(lrl);
-                        DecIndent();
-                        WriteLine("}");
-                        if (i >= 5)
-                        {
-                            WriteIndent();
-                            Write("else ");
-                        }
-                    }
-                }
+                var separatorStatement = context.loopRunExpression().separatorStatement();
+                string separatorVariable = separatorStatement.identifier().GetText();
+                WriteLine("string {0}; {1}", separatorVariable, separatorStatement.ToComment());
+                WriteIndent();
+                Write("if ({0}_iteration+1 < {0}_results.Count) {1} = ", li.Name, separatorVariable);
+                Write(separatorStatement.stringLiteral().GetText());
+                Write(";");
+                AppendLine();
+                WriteLine("else {0} = string.Empty;", separatorVariable);
             }
+            WriteLine("var {1} = {0}_results[{0}_iteration];", li.Name, tmp1);
             foreach (var lii in li.Items)
             {
                 WriteLine("var {1} = {0}.{1};", tmp1, lii.Name);

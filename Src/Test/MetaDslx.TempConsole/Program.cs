@@ -131,6 +131,13 @@ namespace MetaDslx.TempConsole
                 //*/
                 /*
                 Console.WriteLine("----");
+                CompileGenerator(
+                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModelGeneratorOld.mgen",
+                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModelGeneratorOld.cs"
+                    );
+                //*/
+                /*
+                Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel.mm",
                     @"..\..\..\..\Main\MetaDslx.Core\MetaModel1.cs"
@@ -160,7 +167,7 @@ namespace MetaDslx.TempConsole
                     }
                 }
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileImmutableMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.mm",
@@ -208,7 +215,7 @@ namespace MetaDslx.TempConsole
                     false);
                 //*/
                 //Console.WriteLine(MetaDslx.Core.Immutable.MetaInstance.String);
-                //*
+                /*
                 List<string> items = new List<string>();
                 items.Add("a");
                 items.Add("x");

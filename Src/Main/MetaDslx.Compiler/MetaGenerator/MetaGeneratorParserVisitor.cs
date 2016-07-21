@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\fijmhpzj.5bv\MetaGeneratorParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\gduuenvr.gy0\MetaGeneratorParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -243,17 +243,11 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	/// <return>The visitor result.</return>
 	Result VisitLoopRunExpression([NotNull] MetaGeneratorParser.LoopRunExpressionContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.loopRunList"/>.
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.separatorStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLoopRunList([NotNull] MetaGeneratorParser.LoopRunListContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.loopRun"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitLoopRun([NotNull] MetaGeneratorParser.LoopRunContext context);
+	Result VisitSeparatorStatement([NotNull] MetaGeneratorParser.SeparatorStatementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.switchStatement"/>.
 	/// </summary>

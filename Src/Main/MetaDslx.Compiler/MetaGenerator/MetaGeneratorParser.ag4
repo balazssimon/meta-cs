@@ -58,9 +58,11 @@ loopChainExpression
     | loopChainExpression TOpenParenthesis expressionList? TCloseParenthesis #loopChainMethodCallExpression;
 loopWhereExpression : KWhere expression;
 //loopOrderByExpression : KOrderBy expression KDescending?;
-loopRunExpression : (TSemicolon loopRunList)+;
-loopRunList : loopRun (TComma loopRun)*;
-loopRun : variableDeclarationStatement | expressionStatement;
+//loopRunExpression : (TSemicolon loopRunList)+;
+//loopRunList : loopRun (TComma loopRun)*;
+//loopRun : separatorStatement | variableDeclarationStatement | expressionStatement;
+loopRunExpression : separatorStatement;
+separatorStatement : TSemicolon KSeparator identifier TAssign stringLiteral;
 switchStatement : switchStatementBegin switchBranchStatement* switchDefaultStatement? switchStatementEnd;
 switchStatementBegin : KSwitch TOpenParenthesis expression TCloseParenthesis;
 switchStatementEnd : KEnd KSwitch;

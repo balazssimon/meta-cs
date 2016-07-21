@@ -309,16 +309,10 @@ namespace MetaDslx.Compiler
             return base.VisitLoopRunExpression(context);
         }
         
-        public override object VisitLoopRunList(MetaGeneratorParser.LoopRunListContext context)
+        public override object VisitSeparatorStatement(MetaGeneratorParser.SeparatorStatementContext context)
         {
             this.HandleSymbolType(context);
-            return base.VisitLoopRunList(context);
-        }
-        
-        public override object VisitLoopRun(MetaGeneratorParser.LoopRunContext context)
-        {
-            this.HandleSymbolType(context);
-            return base.VisitLoopRun(context);
+            return base.VisitSeparatorStatement(context);
         }
         
         public override object VisitSwitchStatement(MetaGeneratorParser.SwitchStatementContext context)
@@ -1033,12 +1027,7 @@ namespace MetaDslx.Compiler
             return this.VisitChildren(context);
         }
         
-        public virtual object VisitLoopRunList(MetaGeneratorParser.LoopRunListContext context)
-        {
-            return this.VisitChildren(context);
-        }
-        
-        public virtual object VisitLoopRun(MetaGeneratorParser.LoopRunContext context)
+        public virtual object VisitSeparatorStatement(MetaGeneratorParser.SeparatorStatementContext context)
         {
             return this.VisitChildren(context);
         }
