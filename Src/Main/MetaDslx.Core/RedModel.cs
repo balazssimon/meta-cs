@@ -12,8 +12,8 @@ namespace MetaDslx.Core.Immutable
 {
     public interface ImmutableSymbol
     {
-        object MMetaModel { get; }
-        object MMetaClass { get; }
+        MetaModel MMetaModel { get; }
+        MetaClass MMetaClass { get; }
 
         ImmutableModel MModel { get; }
         ImmutableSymbol MParent { get; }
@@ -25,8 +25,8 @@ namespace MetaDslx.Core.Immutable
 
     public interface MutableSymbol
     {
-        object MMetaModel { get; }
-        object MMetaClass { get; }
+        MetaModel MMetaModel { get; }
+        MetaClass MMetaClass { get; }
 
         bool MIsReadOnly { get; }
         MutableModel MModel { get; }
@@ -64,8 +64,8 @@ namespace MetaDslx.Core.Immutable
 
         internal SymbolId Id { get { return this.id; } }
 
-        public abstract object MMetaModel { get; }
-        public abstract object MMetaClass { get; }
+        public abstract MetaModel MMetaModel { get; }
+        public abstract MetaClass MMetaClass { get; }
 
         public ImmutableModel MModel { get { return this.model; } }
         public ImmutableSymbol MParent { get { return this.model.MParent(this.id); } }
@@ -146,8 +146,8 @@ namespace MetaDslx.Core.Immutable
         internal bool MIsBeingCreated { get { return this.creating; } }
         public bool MIsReadOnly { get { return this.model.IsReadOnly; } }
 
-        public abstract object MMetaModel { get; }
-        public abstract object MMetaClass { get; }
+        public abstract MetaModel MMetaModel { get; }
+        public abstract MetaClass MMetaClass { get; }
 
         public MutableModel MModel { get { return this.model; } }
         public MutableSymbol MParent { get { return this.model.MParent(this.id); } }

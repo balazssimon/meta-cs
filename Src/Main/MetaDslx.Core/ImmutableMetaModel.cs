@@ -85,7 +85,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty AnnotationsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaAnnotatedElement), "Annotations",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaAnnotation), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotation>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaAnnotationBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaAnnotationBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaAnnotationBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaAnnotatedElement_AnnotationsProperty);
             
         }
         
@@ -107,7 +108,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty DocumentationProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaDocumentedElement), "Documentation",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaDocumentedElement_DocumentationProperty);
             
         }
         
@@ -130,7 +132,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty NameProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaNamedElement), "Name",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaNamedElement_NameProperty);
             
         }
         
@@ -153,7 +156,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty TypeProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaTypedElement), "Type",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaType), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaTypedElement_TypeProperty);
             
         }
         
@@ -210,20 +214,23 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ParentProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaNamespace), "Parent",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespace), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaNamespace_ParentProperty);
             
             [ImportedScope]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty UsingsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaNamespace), "Usings",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespace), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaNamespace>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaNamespace_UsingsProperty);
             
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaModel), "Namespace")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty MetaModelProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaNamespace), "MetaModel",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaModel), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaModelBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaModelBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaNamespace_MetaModelProperty);
             
             [ScopeEntry]
             [ContainmentAttribute]
@@ -231,7 +238,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty NamespacesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaNamespace), "Namespaces",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespace), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaNamespace>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaNamespaceBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaNamespace_NamespacesProperty);
             
             [ScopeEntry]
             [ContainmentAttribute]
@@ -239,7 +247,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty DeclarationsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaNamespace), "Declarations",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaDeclaration), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaDeclaration>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaDeclarationBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaDeclarationBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaDeclarationBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaDeclarationBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaNamespace_DeclarationsProperty);
             
         }
         
@@ -262,13 +271,15 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty NamespaceProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaDeclaration), "Namespace",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespace), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaDeclaration_NamespaceProperty);
             
             [ReadonlyAttribute]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty MetaModelProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaDeclaration), "MetaModel",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaModel), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaModelBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaModelBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaDeclaration_MetaModelProperty);
             
         }
         
@@ -290,13 +301,15 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty UriProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaModel), "Uri",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(string), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaModel_UriProperty);
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaNamespace), "MetaModel")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty NamespaceProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaModel), "Namespace",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespace), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaNamespaceBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaModel_NamespaceProperty);
             
         }
         
@@ -318,12 +331,14 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty KindProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaCollectionType), "Kind",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaCollectionKind), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaCollectionKind), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaCollectionKind), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaCollectionType_KindProperty);
             
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty InnerTypeProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaCollectionType), "InnerType",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaType), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaCollectionType_InnerTypeProperty);
             
         }
         
@@ -345,7 +360,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty InnerTypeProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaNullableType), "InnerType",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaType), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaNullableType_InnerTypeProperty);
             
         }
         
@@ -387,7 +403,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty EnumLiteralsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaEnum), "EnumLiterals",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaEnumLiteral), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaEnumLiteral>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaEnum_EnumLiteralsProperty);
             
             [ScopeEntry]
             [ContainmentAttribute]
@@ -395,7 +412,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty OperationsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaEnum), "Operations",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaOperation), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaOperationBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaOperationBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaEnum_OperationsProperty);
             
         }
         
@@ -419,7 +437,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty EnumProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaEnumLiteral), "Enum",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaEnum), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaEnumBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaEnumBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaEnumLiteral_EnumProperty);
             
         }
         
@@ -458,13 +477,15 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty IsAbstractProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaClass), "IsAbstract",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(bool), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(bool), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(bool), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaClass_IsAbstractProperty);
             
             [InheritedScope]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty SuperClassesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaClass), "SuperClasses",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClass), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaClass>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClassBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaClassBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClassBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaClassBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaClass_SuperClassesProperty);
             
             [ScopeEntry]
             [ContainmentAttribute]
@@ -472,7 +493,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty PropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaClass), "Properties",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaClass_PropertiesProperty);
             
             [ScopeEntry]
             [ContainmentAttribute]
@@ -480,14 +502,16 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty OperationsProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaClass), "Operations",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaOperation), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaOperation>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaOperationBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaOperationBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaOperationBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaClass_OperationsProperty);
             
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaConstructor), "Parent")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ConstructorProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaClass), "Constructor",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaConstructor), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaConstructorBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaConstructorBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaClass_ConstructorProperty);
             
         }
         
@@ -509,12 +533,14 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ParameterTypesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaFunctionType), "ParameterTypes",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaType), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaType>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaTypeBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaTypeBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaFunctionType_ParameterTypesProperty);
             
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ReturnTypeProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaFunctionType), "ReturnType",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaType), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaFunctionType_ReturnTypeProperty);
             
         }
         
@@ -539,19 +565,22 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty TypeProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaFunction), "Type",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaFunctionType), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaFunction_TypeProperty);
             
             [ContainmentAttribute]
             [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaParameter), "Function")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ParametersProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaFunction), "Parameters",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaParameter), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaParameter>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaParameterBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaParameterBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaParameterBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaFunction_ParametersProperty);
             
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ReturnTypeProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaFunction), "ReturnType",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaType), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaFunction_ReturnTypeProperty);
             
         }
         
@@ -575,7 +604,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ParentProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaOperation), "Parent",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaType), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaTypeBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaOperation_ParentProperty);
             
         }
         
@@ -598,7 +628,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ParentProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaConstructor), "Parent",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClass), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClassBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClassBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaConstructor_ParentProperty);
             
         }
         
@@ -621,7 +652,8 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty FunctionProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaParameter), "Function",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaFunction), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaFunctionBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaFunctionBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaParameter_FunctionProperty);
             
         }
         
@@ -643,43 +675,50 @@ namespace MetaDslx.Core.Immutable
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty KindProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaProperty), "Kind",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyKind), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyKind), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyKind), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaProperty_KindProperty);
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaClass), "Properties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty ClassProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaProperty), "Class",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClass), null),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClassBuilder), null));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaClassBuilder), null),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaProperty_ClassProperty);
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "OppositeProperties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty OppositePropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaProperty), "OppositeProperties",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaProperty_OppositePropertiesProperty);
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "SubsettingProperties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty SubsettedPropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaProperty), "SubsettedProperties",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaProperty_SubsettedPropertiesProperty);
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "SubsettedProperties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty SubsettingPropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaProperty), "SubsettingProperties",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaProperty_SubsettingPropertiesProperty);
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "RedefiningProperties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty RedefinedPropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaProperty), "RedefinedProperties",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaProperty_RedefinedPropertiesProperty);
             
             [OppositeAttribute(typeof(global::MetaDslx.Core.Immutable.MetaDescriptor.MetaProperty), "RedefinedProperties")]
             public static readonly global::MetaDslx.Core.Immutable.ModelProperty RedefiningPropertiesProperty =
                 global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof(MetaDescriptor.MetaProperty), "RedefiningProperties",
                     new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaProperty), typeof(global::MetaDslx.Core.Immutable.ImmutableModelList<global::MetaDslx.Core.Immutable.MetaProperty>)),
-                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)));
+                    new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof(global::MetaDslx.Core.Immutable.MetaPropertyBuilder), typeof(global::MetaDslx.Core.Immutable.MutableModelList<global::MetaDslx.Core.Immutable.MetaPropertyBuilder>)),
+            		() => global::MetaDslx.Core.Immutable.MetaInstance.MetaProperty_RedefiningPropertiesProperty);
             
         }
     }
@@ -1529,14 +1568,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAnnotatedElement;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaAnnotatedElement; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaAnnotatedElementBuilder ToMutable()
@@ -1566,14 +1605,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaDocumentedElement;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaDocumentedElement; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaDocumentedElementBuilder ToMutable()
@@ -1611,14 +1650,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNamedElement;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaNamedElement; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaNamedElementBuilder ToMutable()
@@ -1670,14 +1709,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaTypedElement;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaTypedElement; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaTypedElementBuilder ToMutable()
@@ -1705,14 +1744,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaType;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaType; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaTypeBuilder ToMutable()
@@ -1738,14 +1777,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaAnnotation;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaAnnotation; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaAnnotationBuilder ToMutable()
@@ -1821,14 +1860,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNamespace;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaNamespace; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaNamespaceBuilder ToMutable()
@@ -1944,14 +1983,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaDeclaration;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaDeclaration; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaDeclarationBuilder ToMutable()
@@ -2049,14 +2088,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaModel;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaModel; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaModelBuilder ToMutable()
@@ -2148,14 +2187,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaCollectionType;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaCollectionType; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaCollectionTypeBuilder ToMutable()
@@ -2201,14 +2240,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaNullableType;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaNullableType; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaNullableTypeBuilder ToMutable()
@@ -2250,14 +2289,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaPrimitiveType;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaPrimitiveType; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaPrimitiveTypeBuilder ToMutable()
@@ -2341,14 +2380,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaEnum;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaEnum; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaEnumBuilder ToMutable()
@@ -2476,14 +2515,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaEnumLiteral;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaEnumLiteral; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaEnumLiteralBuilder ToMutable()
@@ -2577,14 +2616,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaConstant;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaConstant; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaConstantBuilder ToMutable()
@@ -2718,14 +2757,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaClass;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaClass; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaClassBuilder ToMutable()
@@ -2909,14 +2948,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaFunctionType;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaFunctionType; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaFunctionTypeBuilder ToMutable()
@@ -2974,14 +3013,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaFunction;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaFunction; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaFunctionBuilder ToMutable()
@@ -3108,14 +3147,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaOperation;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaOperation; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaOperationBuilder ToMutable()
@@ -3250,14 +3289,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaConstructor;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaConstructor; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaConstructorBuilder ToMutable()
@@ -3349,14 +3388,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaParameter;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaParameter; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaParameterBuilder ToMutable()
@@ -3476,14 +3515,14 @@ namespace MetaDslx.Core.Immutable
         {
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null; /*global::MetaDslx.Core.MetaInstance.MetaProperty;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaProperty; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaPropertyBuilder ToMutable()
@@ -3623,14 +3662,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaAnnotatedElement(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAnnotatedElement;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaAnnotatedElement; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaAnnotatedElement ToImmutable()
@@ -3663,14 +3702,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaDocumentedElement(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaDocumentedElement;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaDocumentedElement; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaDocumentedElement ToImmutable()
@@ -3711,14 +3750,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaNamedElement(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNamedElement;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaNamedElement; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaNamedElement ToImmutable()
@@ -3781,14 +3820,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaTypedElement(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaTypedElement;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaTypedElement; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaTypedElement ToImmutable()
@@ -3828,14 +3867,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaType(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaType;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaType; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaType ToImmutable()
@@ -3864,14 +3903,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaAnnotation(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaAnnotation;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaAnnotation; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaAnnotation ToImmutable()
@@ -3951,14 +3990,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaNamespace(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNamespace;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaNamespace; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaNamespace ToImmutable()
@@ -4095,14 +4134,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaDeclaration(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaDeclaration;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaDeclaration; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaDeclaration ToImmutable()
@@ -4220,14 +4259,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaModel(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaModel;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaModel; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaModel ToImmutable()
@@ -4343,14 +4382,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaCollectionType(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaCollectionType;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaCollectionType; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaCollectionType ToImmutable()
@@ -4414,14 +4453,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaNullableType(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaNullableType;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaNullableType; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaNullableType ToImmutable()
@@ -4474,14 +4513,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaPrimitiveType(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaPrimitiveType;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaPrimitiveType; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaPrimitiveType ToImmutable()
@@ -4572,14 +4611,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaEnum(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaEnum;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaEnum; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaEnum ToImmutable()
@@ -4728,14 +4767,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaEnumLiteral(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaEnumLiteral;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaEnumLiteral; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaEnumLiteral ToImmutable()
@@ -4850,14 +4889,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaConstant(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaConstant;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaConstant; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaConstant ToImmutable()
@@ -5013,14 +5052,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaClass(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaClass;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaClass; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaClass ToImmutable()
@@ -5200,14 +5239,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaFunctionType(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaFunctionType;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaFunctionType; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaFunctionType ToImmutable()
@@ -5269,14 +5308,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaFunction(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaFunction;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaFunction; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaFunction ToImmutable()
@@ -5428,14 +5467,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaOperation(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaOperation;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaOperation; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaOperation ToImmutable()
@@ -5607,14 +5646,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaConstructor(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaConstructor;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaConstructor; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaConstructor ToImmutable()
@@ -5721,14 +5760,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaParameter(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaParameter;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaParameter; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaParameter ToImmutable()
@@ -5863,14 +5902,14 @@ namespace MetaDslx.Core.Immutable
     		MetaImplementationProvider.Implementation.MetaProperty(this);
         }
     
-        public override object MMetaModel
+        public override MetaModel MMetaModel
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.Meta;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance._MetaModel; }
         }
     
-        public override object MMetaClass
+        public override MetaClass MMetaClass
         {
-            get { return null;/*global::MetaDslx.Core.MetaInstance.MetaProperty;*/ }
+            get { return global::MetaDslx.Core.Immutable.MetaInstance.MetaProperty; }
         }
     
         public new global::MetaDslx.Core.Immutable.MetaProperty ToImmutable()

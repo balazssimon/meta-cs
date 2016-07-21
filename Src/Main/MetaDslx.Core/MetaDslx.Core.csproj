@@ -47,47 +47,57 @@
   <ItemGroup>
     <Compile Include="ImmutableMetaImplementation.cs" />
     <Compile Include="ImmutableMetaModel.cs" />
-    <Compile Include="ImmutableMetaModelGeneratorOld.cs">
+    <Compile Include="ImmutableMetaModel2.cs" />
+    <Compile Include="ImmutableMetaModelGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
+    </Compile>
+    <Compile Include="Mutable\ImmutableMetaModelGeneratorOld.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModelGeneratorOld.mgen</DependentUpon>
     </Compile>
-    <Compile Include="Immutable\GreenModel.cs" />
-    <Compile Include="Immutable\ModelCollections.cs" />
-    <Compile Include="Immutable\ModelException.cs" />
-    <Compile Include="Immutable\ModelProperty.cs" />
-    <Compile Include="Immutable\RedModel.cs" />
-    <Compile Include="MetaImplementation.cs" />
-    <Compile Include="MetaModel.cs">
+    <Compile Include="GreenModel.cs" />
+    <Compile Include="ModelCollections.cs" />
+    <Compile Include="ModelException.cs" />
+    <Compile Include="ModelProperty.cs" />
+    <Compile Include="RedModel.cs" />
+    <Compile Include="Mutable\MetaImplementation.cs" />
+    <Compile Include="Mutable\MetaModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MetaModel.mm</DependentUpon>
     </Compile>
-    <Compile Include="MetaModelCSharpGenerator.cs">
+    <Compile Include="Mutable\MetaModelCSharpGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MetaModelCSharpGenerator.mgen</DependentUpon>
     </Compile>
-    <Compile Include="MetaModelJavaGenerator.cs">
+    <Compile Include="Mutable\MetaModelJavaGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MetaModelJavaGenerator.mgen</DependentUpon>
     </Compile>
-    <Compile Include="ModelCollection.cs" />
-    <Compile Include="ModelCompiler.cs" />
-    <Compile Include="ModelContext.cs" />
-    <Compile Include="ModelException.cs" />
-    <Compile Include="ModelExchange.cs" />
-    <Compile Include="ModelFactory.cs" />
-    <Compile Include="ModelList.cs" />
-    <Compile Include="ModelObject.cs" />
-    <Compile Include="ModelProperty.cs" />
-    <Compile Include="ModelPropertyAttribute.cs" />
-    <Compile Include="ModelSet.cs" />
+    <Compile Include="Mutable\ModelCollection.cs" />
+    <Compile Include="Mutable\ModelCompiler.cs" />
+    <Compile Include="Mutable\ModelContext.cs" />
+    <Compile Include="Mutable\ModelException.cs" />
+    <Compile Include="Mutable\ModelExchange.cs" />
+    <Compile Include="Mutable\ModelFactory.cs" />
+    <Compile Include="Mutable\ModelList.cs" />
+    <Compile Include="Mutable\ModelObject.cs" />
+    <Compile Include="Mutable\ModelProperty.cs" />
+    <Compile Include="Mutable\ModelPropertyAttribute.cs" />
+    <Compile Include="Mutable\ModelSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ImmutableMetaModelGeneratorOld.mgen">
+    <None Include="ImmutableMetaModelGenerator.mgen">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Mutable\ImmutableMetaModelGeneratorOld.mgen">
       <Generator>MetaGenerator</Generator>
       <LastGenOutput>ImmutableMetaModelGeneratorOld.cs</LastGenOutput>
     </None>
@@ -96,15 +106,15 @@
       <Generator>MetaModelGenerator</Generator>
       <LastGenOutput>ImmutableMetaModel1.cs</LastGenOutput>
     </None>
-    <None Include="MetaModel.mm">
+    <None Include="Mutable\MetaModel.mm">
       <Generator>MetaModelGenerator</Generator>
       <LastGenOutput>MetaModel.cs</LastGenOutput>
     </None>
-    <None Include="MetaModelCSharpGenerator.mgen">
+    <None Include="Mutable\MetaModelCSharpGenerator.mgen">
       <Generator>MetaGenerator</Generator>
       <LastGenOutput>MetaModelCSharpGenerator.cs</LastGenOutput>
     </None>
-    <None Include="MetaModelJavaGenerator.mgen">
+    <None Include="Mutable\MetaModelJavaGenerator.mgen">
       <Generator>MetaGenerator</Generator>
       <LastGenOutput>MetaModelJavaGenerator.cs</LastGenOutput>
     </None>

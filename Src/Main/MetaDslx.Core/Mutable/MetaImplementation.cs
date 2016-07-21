@@ -724,6 +724,7 @@ namespace MetaDslx.Core
 
         public static string CSharpFullInstanceName(this MetaModel @this, ClassKind classKind = ClassKind.Normal)
         {
+            if (classKind == ClassKind.Immutable) return @this.CSharpFullInstancesName(classKind) + "._MetaModel";
             return @this.CSharpFullInstancesName(classKind) + ".Meta";
         }
 

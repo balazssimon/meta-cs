@@ -1,5 +1,5 @@
 ﻿namespace MetaDslx.Core;
-generator ImmutableMetaModelGenerator for IEnumerable<ModelObject>;
+generator ImmutableMetaModelGeneratorOld for IEnumerable<ModelObject>;
 
 template Generate()
 using System;
@@ -252,14 +252,14 @@ internal class [cls.CSharpImplName(ClassKind.Immutable)] : global::MetaDslx.Core
     {
     }
 ^
-    public override object MMetaModel
+    public override MetaModel MMetaModel
     {
-        get { return null;/*[cls.Model.CSharpFullInstanceName()];*/ }
+        get { return [cls.Model.CSharpFullInstanceName(ClassKind.Immutable)]; }
     }
 ^
-    public override object MMetaClass
+    public override MetaClass MMetaClass
     {
-        get { return null; /*[cls.CSharpFullInstanceName()];*/ }
+        get { return [cls.CSharpFullInstanceName(ClassKind.Immutable)]; }
     }
 ^
     public new [cls.CSharpFullName(ClassKind.Builder)] ToMutable()
@@ -315,14 +315,14 @@ internal class [cls.CSharpImplName(ClassKind.Builder)] : global::MetaDslx.Core.I
 		[model.Name]ImplementationProvider.Implementation.[cls.CSharpName()](this);
     }
 ^
-    public override object MMetaModel
+    public override MetaModel MMetaModel
     {
-        get { return null;/*[cls.Model.CSharpFullInstanceName()];*/ }
+        get { return [cls.Model.CSharpFullInstanceName(ClassKind.Immutable)]; }
     }
 ^
-    public override object MMetaClass
+    public override MetaClass MMetaClass
     {
-        get { return null;/*[cls.CSharpFullInstanceName()];*/ }
+        get { return [cls.CSharpFullInstanceName(ClassKind.Immutable)]; }
     }
 ^
     public new [cls.CSharpFullName(ClassKind.Immutable)] ToImmutable()
@@ -385,12 +385,14 @@ template GeneratePropertyDeclaration(MetaModel model, MetaClass cls, MetaPropert
 public static readonly global::MetaDslx.Core.Immutable.ModelProperty [prop.Name]Property =
     global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof([prop.Class.Model.CSharpDescriptorName()].[prop.Class.CSharpName()]), "[prop.Name]",
         new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpFullPublicName(ClassKind.Immutable)]), typeof([prop.Type.CSharpFullPublicName(ClassKind.Immutable)])),
-        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpFullPublicName(ClassKind.Builder)]), typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)])));
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpFullPublicName(ClassKind.Builder)]), typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)])),
+		() => [prop.CSharpFullInstanceName(ClassKind.Immutable)]);
 [else]
 public static readonly global::MetaDslx.Core.Immutable.ModelProperty [prop.Name]Property =
     global::MetaDslx.Core.Immutable.ModelProperty.Register(typeof([prop.Class.Model.CSharpDescriptorName()].[prop.Class.CSharpName()]), "[prop.Name]",
         new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName(ClassKind.Immutable)]), null),
-        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)]), null));
+        new global::MetaDslx.Core.Immutable.ModelPropertyTypeInfo(typeof([prop.Type.CSharpFullPublicName(ClassKind.Builder)]), null),
+		() => [prop.CSharpFullInstanceName(ClassKind.Immutable)]);
 [end if]
 [end if]
 ^

@@ -1,0 +1,37 @@
+﻿namespace MetaDslx.Core.Immutable;
+generator ImmutableMetaModelGenerator for IEnumerable<ImmutableSymbol>;
+
+template Generate()
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using MetaDslx.Core.Immutable;
+using System.Diagnostics;
+^
+	[loop(Instances->mm:typeof(MetaModel))]
+[GenerateMetamodel(mm)]
+	[end loop]
+end template
+
+template GenerateMetamodel(MetaModel model)
+namespace [model.Namespace.Name]
+{
+	[loop(model->Namespace->Declarations->enm:typeof(MetaEnum))]
+    [GenerateEnum(enm)]
+	[end loop]
+}
+end template
+
+template GenerateEnum(MetaEnum enm)
+public enum [enm.CSharpName()]
+{
+    [loop(enm->value:EnumLiterals; separator delim = ",")]
+	[value.Name][delim]
+	[end loop]
+}
+^
+end template

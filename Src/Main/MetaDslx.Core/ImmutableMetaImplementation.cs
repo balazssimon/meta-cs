@@ -150,4 +150,12 @@ namespace MetaDslx.Core.Immutable
         }
     }
     //*/
+
+    internal static class ImmutableMetaExtensions
+    {
+        public static string CSharpName(this MetaEnum enm)
+        {
+            return enm.Name;
+        }
+    }
 }
