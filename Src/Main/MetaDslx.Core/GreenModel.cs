@@ -308,7 +308,7 @@ namespace MetaDslx.Core.Immutable
     internal class GreenModel
     {
         private ModelId id;
-        private ImmutableHashSet<SymbolId> strongSymbols;
+        private ImmutableList<SymbolId> strongSymbols;
         // TODO: replace with immutable weak dictionaries:
         private ImmutableDictionary<SymbolId, GreenSymbol> symbols;
         private ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties;
@@ -318,14 +318,14 @@ namespace MetaDslx.Core.Immutable
         {
             this.id = id;
             this.symbols = ImmutableDictionary<SymbolId, GreenSymbol>.Empty;
-            this.strongSymbols = ImmutableHashSet<SymbolId>.Empty;
+            this.strongSymbols = ImmutableList<SymbolId>.Empty;
             this.lazyProperties = ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>.Empty;
             this.references = ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>>.Empty;
         }
 
         private GreenModel(ModelId id,
             ImmutableDictionary<SymbolId, GreenSymbol> symbols,
-            ImmutableHashSet<SymbolId> strongSymbols,
+            ImmutableList<SymbolId> strongSymbols,
             ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties,
             ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> references)
         {
@@ -338,7 +338,7 @@ namespace MetaDslx.Core.Immutable
 
         internal GreenModel Update(
             ImmutableDictionary<SymbolId, GreenSymbol> symbols,
-            ImmutableHashSet<SymbolId> strongSymbols,
+            ImmutableList<SymbolId> strongSymbols,
             ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties,
             ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> references)
         {
@@ -352,7 +352,7 @@ namespace MetaDslx.Core.Immutable
 
         internal ModelId Id { get { return this.id; } }
         internal ImmutableDictionary<SymbolId, GreenSymbol> Symbols { get { return this.symbols; } }
-        internal ImmutableHashSet<SymbolId> StrongSymbols { get { return this.strongSymbols; } }
+        internal ImmutableList<SymbolId> StrongSymbols { get { return this.strongSymbols; } }
         internal ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> LazyProperties { get { return this.lazyProperties; } }
         internal ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> References { get { return this.references; } }
 
@@ -989,11 +989,20 @@ namespace MetaDslx.Core.Immutable
             bool changed = false;
             if (model.LazyProperties.TryGetValue(sid, out properties))
             {
+                changed = properties.Count > 0;
+                var propList = symbolRef.Id.ModelSymbolInfo.Properties;
+                foreach (var prop in propList)
+                {
+                    if (properties.Contains(prop))
+                    {
+                        properties = properties.Remove(prop);
+                        this.GetValue(mid, sid, prop, true);
+                    }
+                }
                 foreach (var prop in properties)
                 {
                     this.GetValue(mid, sid, prop, true);
                 }
-                changed = properties.Count > 0;
                 Debug.Assert(!this.GetModel(mid).LazyProperties.ContainsKey(sid));
             }
             return changed;
@@ -1003,7 +1012,16 @@ namespace MetaDslx.Core.Immutable
         {
             GreenModel model = this.GetModel(mid);
             if (model == null) return false;
+            if (model.LazyProperties.Count == 0) return false;
             bool changed = false;
+            foreach (var sid in model.StrongSymbols)
+            {
+                if (model.LazyProperties.ContainsKey(sid))
+                {
+                    changed = this.EvaluateLazyValues(mid, sid) || changed;
+                }
+            }
+            model = this.GetModel(mid);
             foreach (var sid in model.LazyProperties.Keys)
             {
                 changed = this.EvaluateLazyValues(mid, sid) || changed;

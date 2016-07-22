@@ -42,9 +42,18 @@ template GenerateDocumentation(MetaDocumentedElement elem)
 [end if]
 end template
 
+template GenerateAnnotations(MetaAnnotatedElement elem)
+[loop(elem->annot:Annotations)]
+["["][annot.Name]["]"]
+[end loop]
+end template
+
 template GenerateMetamodel(MetaModel model)
 namespace [model.Namespace.CSharpName(NamespaceKind.Public, true)]
 {
+	using global::[model.Namespace.CSharpName(NamespaceKind.Internal, true)];
+	using global::[model.Namespace.CSharpName(NamespaceKind.Implementation, true)];
+^
 	[GenerateMetaModelInstance(model)]
 ^
 	[GenerateFactory(model)]
@@ -71,29 +80,226 @@ namespace [model.Namespace.CSharpName(NamespaceKind.Internal, true)]
 end template
 
 template GenerateMetaModelInstance(MetaModel model)
+[string coreNs = model.IsCoreModel() ? "" : Properties.CoreNs + "."]
+[bool coreModel = model.IsCoreModel()]
 public class [model.CSharpName(ModelKind.ImmutableInstance)]
 {
-	[if (model.IsCoreModel())]
-	internal readonly [model.CSharpName(ModelKind.BuilderInstance)] _MetaModel;
+	private static bool initialized;
+^
+	public static bool IsInitialized
+	{
+		get { return [model.CSharpName(ModelKind.ImmutableInstance)].initialized; }
+	}
+^
+	[if (coreModel)]
+	public static readonly [coreNs]MetaModel _MetaModel;
 	[else]
-	internal readonly [model.CSharpName(ModelKind.BuilderInstance)] MetaModel;
+	public static readonly [coreNs]MetaModel MetaModel;
 	[end if]
-	internal readonly [Properties.CoreNs].MutableModel Model;
+	public static readonly [Properties.CoreNs].ImmutableModel Model;
 ^
 	[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
 	[GenerateDocumentation(cst)]
-	public static readonly [cst.Type.CSharpName(model, ClassKind.Immutable, true)] [cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)];
+		[if (coreModel)]
+	public static readonly [cst.Type.CSharpName(model, ClassKind.Immutable)] [cst.CSharpName(model, ClassKind.ImmutableInstance)];
+		[else]
+	public static readonly [cst.Type.CSharpName(model, ClassKind.Immutable, true)] [cst.CSharpName(model, ClassKind.ImmutableInstance)];
+		[end if]
 	[end loop]
 ^
 	[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
 	[GenerateDocumentation(cls)]
-	public static readonly [Properties.CoreNs].MetaClass [cls.CSharpName(model, ClassKind.ImmutableInstance)] = [cls.CSharpName(model, ClassKind.BuilderInstance, true)];
+	public static readonly [coreNs]MetaClass [cls.CSharpName(model, ClassKind.ImmutableInstance)];
 		[loop(cls->prop:Properties)]
 	[GenerateDocumentation(prop)]
-	public static readonly [Properties.CoreNs].MetaProperty [prop.CSharpName(model, ClassKind.ImmutableInstance)] = [prop.CSharpName(model, ClassKind.BuilderInstance, true)];
+	public static readonly [coreNs]MetaProperty [prop.CSharpName(model, PropertyKind.ImmutableInstance)];
 		[end loop]
 	[end loop]
+^
+	static [model.CSharpName(ModelKind.ImmutableInstance)]()
+	{
+		[if (coreModel)]
+		_MetaModel = [model.CSharpName(ModelKind.BuilderInstance)]._MetaModel.ToImmutable();
+		[else]
+		MetaModel = [model.CSharpName(ModelKind.BuilderInstance)].MetaModel.ToImmutable();
+		[end if]
+		Model = [model.CSharpName(ModelKind.BuilderInstance)].Model.ToImmutable();
+^
+		[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
+			[if (coreModel)]
+		[cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(Model);
+			[else]
+		[cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(Model);
+			[end if]
+		[end loop]
+^
+		[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
+		[cls.CSharpName(model, ClassKind.ImmutableInstance)] = [cls.CSharpName(model, ClassKind.BuilderInstance, true)].ToImmutable(Model);
+			[loop(cls->prop:Properties)]
+		[prop.CSharpName(model, PropertyKind.ImmutableInstance)] = [prop.CSharpName(model, PropertyKind.BuilderInstance, true)].ToImmutable(Model);
+			[end loop]
+		[end loop]
+^
+		[model.CSharpName(ModelKind.ImmutableInstance)].initialized = true;
+	}
 }
+end template
+
+template GenerateFactory(MetaModel model)
+/// <summary>
+/// Factory class for creating instances of model elements.
+/// </summary>
+public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFactory
+{
+    public [model.CSharpName(ModelKind.Factory)]([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
+        : base(model, flags)
+    {
+		[model.CSharpName(ModelKind.Descriptor)].Initialize();
+    }
+^
+    public override [Properties.CoreNs].MutableSymbolBase Create(string type)
+    {
+        switch (type)
+        {
+			[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
+				[if (!cls.IsAbstract)]
+            case "[cls.CSharpName(model)]": return ([Properties.CoreNs].MutableSymbolBase)this.[cls.CSharpName(model)]();
+				[end if]
+			[end loop]
+            default:
+                throw new [Properties.CoreNs].ModelException("Unknown type name: " + type);
+        }
+    }
+	[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
+		[if (!cls.IsAbstract)]
+^
+    /// <summary>
+    /// Creates a new instance of [cls.CSharpName(model)].
+    /// </summary>
+    public [cls.CSharpName(model, ClassKind.Builder)] [cls.CSharpName(model, ClassKind.FactoryMethod)]()
+	{
+		[Properties.CoreNs].MutableSymbolBase symbol = this.CreateSymbol(new [cls.CSharpName(model, ClassKind.Id)]());
+		return ([cls.CSharpName(model, ClassKind.Builder)])symbol;
+	}
+		[end if]
+	[end loop]
+}
+^
+end template
+
+template GenerateMetaModelDescriptor(MetaModel model)
+[string coreNs = model.IsCoreModel() ? "" : Properties.CoreNs + "."]
+[bool coreModel = model.IsCoreModel()]
+public static class [model.CSharpName(ModelKind.Descriptor)]
+{
+	private static global::System.Collections.Generic.List<[Properties.CoreNs].ModelProperty> properties;
+^
+	static [model.CSharpName(ModelKind.Descriptor)]()
+	{
+		properties = new global::System.Collections.Generic.List<[Properties.CoreNs].ModelProperty>();
+		[loop(model.Namespace.Declarations->cls:typeof(MetaClass)->prop:Properties)]
+		properties.Add([prop.CSharpName(model, PropertyKind.Descriptor, true)]);
+		[end loop]
+	}
+^
+	public static void Initialize()
+	{
+	}
+^
+	public const string Uri = "[model.Uri]";
+	[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
+^
+	[GenerateDescriptorClass(model, cls)]
+	[end loop]
+}
+end template
+
+template GenerateDescriptorClass(MetaModel model, MetaClass cls)
+[GenerateDocumentation(cls)]
+[GenerateAnnotations(cls)]
+[if (cls.SuperClasses.Count > 0)]
+["["+Properties.CoreNs+".ModelSymbolDecriptorAttribute("][GetDescriptorAncestors(model, cls)][")]"]
+[else]
+["["+Properties.CoreNs+".ModelSymbolDecriptorAttribute]"]
+[end if]
+public static class [cls.CSharpName(model, ClassKind.Descriptor)]
+{
+	private static [Properties.CoreNs].ModelSymbolInfo modelSymbolInfo;
+^
+	static [cls.CSharpName(model, ClassKind.Descriptor)]()
+	{
+		modelSymbolInfo = [Properties.CoreNs].ModelSymbolInfo.GetSymbolInfo(typeof([cls.CSharpName(model, ClassKind.Descriptor)]));
+	}
+^
+	public static [Properties.CoreNs].ModelSymbolInfo ModelSymbolInfo
+	{
+		get { return modelSymbolInfo; }
+	}
+^
+	[if (cls.Name == "MetaClass")]
+	public static [Properties.CoreNs].MetaClass _MetaClass
+	[else]
+	public static [Properties.CoreNs].MetaClass MetaClass
+	[end if]
+	{
+		get { return [cls.CSharpName(null, ClassKind.ImmutableInstance, true)]; }
+	}
+	[loop(cls->prop:Properties)]
+	[GenerateDescriptorProperty(model, cls, prop)]
+	[end loop]
+}
+end template
+
+function string GetDescriptorAncestors(MetaModel model, MetaClass cls)
+	string result = "";
+	loop(cls->super:SuperClasses; separator delim = ", ")
+		result += "typeof("+super.CSharpName(model, ClassKind.Descriptor, true)+")"+delim;
+	end loop
+	return result;
+end function
+
+template GenerateDescriptorProperty(MetaModel model, MetaClass cls, MetaProperty prop)
+^
+[GenerateDocumentation(prop)]
+[GenerateAnnotations(prop)]
+[GenerateDescriptorPropertyAnnotations(model, cls, prop)]
+public static readonly [Properties.CoreNs].ModelProperty [prop.CSharpName(model, PropertyKind.Descriptor)] =
+    [Properties.CoreNs].ModelProperty.Register(typeof([cls.CSharpName(model, ClassKind.Descriptor)]), "[prop.CSharpName(model)]",
+[if (prop.Type is MetaCollectionType)]
+	[MetaCollectionType collType = (MetaCollectionType)prop.Type]
+        new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpName(null, ClassKind.Immutable, true)]), typeof([prop.Type.CSharpName(null, ClassKind.Immutable, true)])),
+        new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpName(null, ClassKind.Builder, true)]), typeof([prop.Type.CSharpName(null, ClassKind.Builder, true)])),
+[else]
+        new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([prop.Type.CSharpName(null, ClassKind.Immutable, true)]), null),
+        new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([prop.Type.CSharpName(null, ClassKind.Builder, true)]), null),
+[end if]
+		() => [prop.CSharpName(null, PropertyKind.ImmutableInstance, true)]);
+end template
+
+template GenerateDescriptorPropertyAnnotations(MetaModel model, MetaClass cls, MetaProperty prop)
+[if(prop.Kind == MetaPropertyKind.Containment)]
+["["+Properties.CoreNs+".ContainmentAttribute]"]
+[end if]
+[if(prop.Kind != MetaPropertyKind.Normal && prop.Kind != MetaPropertyKind.Containment)]
+["["+Properties.CoreNs+".ReadonlyAttribute]"]
+[end if]
+[loop(p:prop.OppositeProperties)]
+["["+Properties.CoreNs+".OppositeAttribute(typeof("][p.Class.CSharpName(model, ClassKind.Descriptor, true)]["), \""][p.CSharpName(model)]["\")]"]
+[end if]
+[loop(p:prop.SubsettedProperties)]
+	[if(cls.GetAllSuperClasses(true).Contains(p.Class))]
+["["+Properties.CoreNs+".SubsetsAttribute(typeof("][p.Class.CSharpName(model, ClassKind.Descriptor, true)]["), \""][p.CSharpName(model)]["\")]"]
+	[else]
+// ERROR: subsetted property '[p.CSharpName(model, PropertyKind.Descriptor, true)]' must be a property of this class or an ancestor class
+	[end if]
+[end if]
+[loop(p:prop.RedefinedProperties)]
+	[if(cls.GetAllSuperClasses(true).Contains(p.Class))]
+["["+Properties.CoreNs+".RedefinesAttribute(typeof("][p.Class.CSharpName(model, ClassKind.Descriptor, true)]["), \""][p.CSharpName(model)]["\")]"]
+	[else]
+// ERROR: redefined property '[p.CSharpName(model, PropertyKind.Descriptor, true)]' must be a property of this class or an ancestor class
+	[end if]
+[end if]
 end template
 
 template GenerateMetaModelBuilderInstance(MetaModel model)
@@ -102,29 +308,141 @@ public class [model.CSharpName(ModelKind.BuilderInstance)]
 }
 end template
 
-template GenerateFactory(MetaModel model)
-public class [model.CSharpName(ModelKind.Factory)]
-{
-}
-end template
-
-template GenerateMetaModelDescriptor(MetaModel model)
-public static class [model.CSharpName(ModelKind.Descriptor)]
-{
-}
-end template
-
 template GenerateImplementationProvider(MetaModel model)
 public class [model.CSharpName(ModelKind.ImplementationProvider)]
 {
+	// If there is a compile error at this line, create a new class called [model.CSharpName(ModelKind.Implementation)]
+	// which is a subclass of [model.CSharpName(ModelKind.ImplementationBase, true)]:
+	private static [model.CSharpName(ModelKind.Implementation)] implementation = new [model.CSharpName(ModelKind.Implementation)]();
+^
+	public static [model.CSharpName(ModelKind.Implementation)] Implementation
+	{
+		get { return implementation; }
+	}
 }
 end template
 
 template GenerateImplementationBase(MetaModel model)
-public class [model.CSharpName(ModelKind.ImplementationBase)]
+/// <summary>
+/// Base class for implementing the behavior of the model elements.
+/// This class has to be be overriden in [model.CSharpName(ModelKind.Implementation, true)] to provide custom
+/// implementation for the constructors, operations and property values.
+/// </summary>
+internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 {
+	/// <summary>
+	/// Implements the constructor: [model.CSharpName(ModelKind.BuilderInstance)]()
+	/// </summary>
+	public virtual void [model.CSharpName(ModelKind.BuilderInstance)]([model.CSharpName(ModelKind.BuilderInstance)] _this)
+	{
+	}
+	[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
+^
+	/// <summary>
+	/// Implements the constructor: [cls.CSharpName(model, ClassKind.Immutable)]()
+	/// </summary>
+	[if (hasloop(cls->sup:SuperClasses))]
+	/// Direct superclasses: 
+	/// <ul>
+	[loop(cls->sup:SuperClasses)]
+	///     <li>[sup.CSharpName(model, ClassKind.Immutable, true)]</li>
+	[end loop]
+	/// </ul>
+	/// All superclasses:
+	/// <ul>
+	[loop(cls->sup:GetAllSuperClasses(false))]
+	///     <li>[sup.CSharpName(model, ClassKind.Immutable, true)]</li>
+	[end loop]
+	/// </ul>
+	[end if]
+	[if (hasloop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly))]
+	/// Initializes the following readonly properties:
+	/// <ul>
+	[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly)]
+	///     <li>[prop.CSharpName(model)]</li>
+	[end loop]
+	/// </ul>
+	[end if]
+	[if (hasloop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Lazy))]
+	/// Initializes the following lazy properties:
+	/// <ul>
+	[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Lazy)]
+	///     <li>[prop.CSharpName(model)]</li>
+	[end loop]
+	/// </ul>
+	[end if]
+	[if (hasloop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Derived))]
+	/// Initializes the following derived properties:
+	/// <ul>
+	[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Derived)]
+	///     <li>[prop.CSharpName(model)]</li>
+	[end loop]
+	/// </ul>
+	[end if]
+	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]([cls.CSharpName(model, ClassKind.Builder)] _this)
+	{
+		this.Call[cls.CSharpName(model, ClassKind.Immutable)]SuperConstructors(_this);
+	}
+^
+	/// <summary>
+	/// Calls the super constructors of [cls.CSharpName(model, ClassKind.Immutable)]
+	/// </summary>
+	protected virtual void Call[cls.CSharpName(model, ClassKind.Immutable)]SuperConstructors([cls.CSharpName(model, ClassKind.Builder)] _this)
+	{
+	[loop(cls->sup:GetAllSuperClasses(false))]
+		[if (model.Namespace.Declarations.Contains(sup))]
+		this.[sup.CSharpName(model, ClassKind.Immutable)](_this);
+		[else]
+		[sup.MetaModel.CSharpName(ModelKind.ImplementationProvider, true)].[sup.CSharpName(model, ClassKind.Immutable)](_this);
+		[end if]
+	[end loop]
+	}
+	[loop(cls->op:Operations)]
+	^
+	/// <summary>
+	/// Implements the operation: [cls.CSharpName(model, ClassKind.Immutable)].[op.Name]()
+	/// </summary>
+	public virtual [op.ReturnType.CSharpName(model, ClassKind.Immutable, true)] [cls.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, cls, op)])
+	{
+		throw new NotImplementedException();
+	}
+	[end loop]
+	^
+	[end loop]
+	[loop(model->Namespace->Declarations->enm:typeof(MetaEnum))]
+	[loop(enm->op:Operations)]
+	^
+	/// <summary>
+	/// Implements the operation: [enm.CSharpName(model, ClassKind.Immutable)].[op.Name]
+	/// </summary>
+	public virtual [op.ReturnType.CSharpName(model, ClassKind.Immutable, true)] [enm.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, enm, op)])
+	{
+		throw new NotImplementedException();
+	}
+	[end loop]
+	^
+	[end loop]
 }
 end template
+
+function string GetImplParameters(MetaModel model, MetaClass cls, MetaOperation op)
+	string result = cls.CSharpName(model, ClassKind.Immutable)+" _this";
+	string delim = ", ";
+	loop(op->param:Parameters)
+		result += delim+param.Type.CSharpName(model, ClassKind.Immutable, true)+" "+param.Name;
+	end loop
+	return result;
+end function
+
+function string GetImplParameters(MetaModel model, MetaEnum enm, MetaOperation op)
+	string result = enm.CSharpName(model, ClassKind.Immutable)+" _this";
+	string delim = ", ";
+	loop(op->param:Parameters)
+		result += delim+param.Type.CSharpName(model, ClassKind.Immutable, true)+" "+param.Name;
+	end loop
+	return result;
+end function
+
 
 template GenerateEnum(MetaModel mmodel, MetaEnum enm)
 [GenerateDocumentation(enm)]

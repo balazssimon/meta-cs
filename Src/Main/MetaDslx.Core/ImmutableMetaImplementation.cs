@@ -97,6 +97,7 @@ namespace MetaDslx.Core.Immutable
                 ++i;
             }
             if (!includeSelf) result.RemoveAt(0);
+            result.Reverse();
             return ImmutableModelList<MetaClass>.CreateUnique(result);
         }
 
