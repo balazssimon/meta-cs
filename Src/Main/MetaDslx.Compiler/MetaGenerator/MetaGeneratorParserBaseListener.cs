@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\vyevl5oe.tbp\MetaGeneratorParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\mb2rek4o.0od\MetaGeneratorParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -141,6 +141,18 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMethodDeclaration([NotNull] MetaGeneratorParser.MethodDeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.externFunctionDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExternFunctionDeclaration([NotNull] MetaGeneratorParser.ExternFunctionDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.externFunctionDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExternFunctionDeclaration([NotNull] MetaGeneratorParser.ExternFunctionDeclarationContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.functionDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>

@@ -14,6 +14,7 @@ KConfiguration : 'configuration';
 KProperties : 'properties';
 KTemplate : 'template' {Mode(TEMPLATE_HEADER); _templateParenthesis=0;};
 KFunction : 'function';
+KExtern : 'extern';
 KReturn : 'return';
 KSwitch : 'switch';
 KCase : 'case';

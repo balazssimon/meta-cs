@@ -17,6 +17,10 @@ using MetaDslx.Core.Immutable;
 	[end loop]
 end template
 
+extern function string ToCamelCase(string identifier)
+extern function string ToPascalCase(string identifier)
+extern function string CSharpName(MetaModel mm)
+
 template GenerateMetamodel(MetaModel model)
 namespace [model.Namespace.Name]
 {
@@ -31,7 +35,8 @@ namespace [model.Namespace.Name]
 end template
 
 template GenerateMetaModelDescriptor(MetaModel model)
-
+[CSharpName(model).ToPascalCase()]
+[model.CSharpName().ToCamelCase()]
 end template
 
 template GenerateMetaModelInstance(MetaModel model)

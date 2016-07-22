@@ -71,10 +71,17 @@ namespace MetaDslx.Compiler
             var cl = new MetaGenCSharpClassVisitor(sb);
             cl.Loops = ul.Loops;
             cl.HasLoops = ul.HasLoops;
+            cl.ExternFunctions = ul.ExternFunctions;
             cl.Visit(this.ParseTree);
             cl.Close();
             return sb.ToString();
         }
+    }
+
+    internal class ExternFunctionInfo
+    {
+        public string Name { get; set; }
+        public MetaGeneratorParser.ExternFunctionDeclarationContext ExternFunction { get; set; }
     }
 
     internal class LoopInfo
@@ -119,6 +126,7 @@ namespace MetaDslx.Compiler
         private StringBuilder sb;
         private string indent;
         private int loopCounter;
+        public Dictionary<MetaGeneratorParser.ExternFunctionDeclarationContext, ExternFunctionInfo> ExternFunctions { get; set; }
         public Dictionary<MetaGeneratorParser.LoopStatementBeginContext, LoopInfo> Loops { get; set; }
         public Dictionary<MetaGeneratorParser.HasLoopExpressionContext, LoopInfo> HasLoops { get; set; }
 
@@ -127,6 +135,7 @@ namespace MetaDslx.Compiler
             this.sb = sb;
             this.indent = "";
             this.loopCounter = 0;
+            this.ExternFunctions = new Dictionary<MetaGeneratorParser.ExternFunctionDeclarationContext, ExternFunctionInfo>();
             this.Loops = new Dictionary<MetaGeneratorParser.LoopStatementBeginContext, LoopInfo>();
             this.HasLoops = new Dictionary<MetaGeneratorParser.HasLoopExpressionContext, LoopInfo>();
         }
@@ -178,6 +187,12 @@ namespace MetaDslx.Compiler
         public virtual void Close()
         {
 
+        }
+
+        public override object VisitExternFunctionDeclaration([NotNull] MetaGeneratorParser.ExternFunctionDeclarationContext context)
+        {
+            this.ExternFunctions.Add(context, new ExternFunctionInfo() { Name = context.functionSignature().identifier().GetText(), ExternFunction = context });
+            return base.VisitExternFunctionDeclaration(context);
         }
 
         protected string GetLoopChainItemName(MetaGeneratorParser.LoopChainExpressionContext context)
@@ -308,6 +323,7 @@ namespace MetaDslx.Compiler
     {
         private int tmpCounter = 0;
         private List<SwitchInfo> switchStack = new List<SwitchInfo>();
+        private HashSet<string> externFunctionNames = new HashSet<string>();
 
         public MetaGenCSharpClassVisitor(StringBuilder sb)
             : base(sb)
@@ -396,6 +412,35 @@ namespace MetaDslx.Compiler
             WriteLine("}");
         }
 
+        private void GenerateExtensionsField(string generatorName)
+        {
+            if (this.ExternFunctions.Count > 0)
+            {
+                WriteLine("// If you see an error at this line, create a class called {0}Extensions", generatorName);
+                WriteLine("// which implements the interface I{0}Extensions", generatorName);
+                WriteLine("private I{0}Extensions extensionFunctions = new {0}Extensions();", generatorName);
+            }
+        }
+
+        private void GenerateExtensionsInterface(string generatorName)
+        {
+            if (this.ExternFunctions.Count > 0)
+            {
+                AppendLine();
+                WriteLine("public interface I{0}Extensions", generatorName);
+                WriteLine("{");
+                IncIndent();
+                var extensionFunctions = this.ExternFunctions.Values.OrderBy(v => v.ExternFunction.Start.TokenIndex);
+                foreach (var extensionFunction in extensionFunctions)
+                {
+                    this.VisitFunctionSignatureExtension(extensionFunction.ExternFunction.functionSignature());
+                }
+                DecIndent();
+                WriteLine("}");
+                this.externFunctionNames.UnionWith(this.ExternFunctions.Values.Select(v => v.Name));
+            }
+        }
+
         public override object VisitNamespaceDeclaration(MetaGeneratorParser.NamespaceDeclarationContext context)
         {
             WriteLine("namespace {0} {1}", context.qualifiedName().GetText(), context.ToComment());
@@ -428,9 +473,12 @@ namespace MetaDslx.Compiler
             DecIndent();
             WriteLine("}");
             AppendLine();
+            this.GenerateExtensionsInterface(name);
+            AppendLine();
             WriteLine("public class {0} {1}", name, context.ToComment());
             WriteLine("{");
             this.IncIndent();
+            this.GenerateExtensionsField(name);
             string instancesType = "object";
             if (context.typeReference() != null)
             {
@@ -630,6 +678,33 @@ namespace MetaDslx.Compiler
             return null;
         }
 
+        public override object VisitExternFunctionDeclaration([NotNull] MetaGeneratorParser.ExternFunctionDeclarationContext context)
+        {
+            Visit(context.functionSignature());
+            WriteLine("{");
+            IncIndent();
+            tmpCounter = 0;
+            VisitExternFunctionCall(context.functionSignature());
+            DecIndent();
+            WriteLine("}");
+            AppendLine();
+            return null;
+        }
+
+        public object VisitExternFunctionCall(MetaGeneratorParser.FunctionSignatureContext context)
+        {
+            WriteIndent();
+            if (context.returnType().GetText() != "void") Write("return ");
+            Write("this.extensionFunctions.{0}(", context.identifier().GetText());
+            if (context.paramList() != null)
+            {
+                VisitParamListCall(context.paramList());
+            }
+            Write("); {0}", context.ToComment());
+            AppendLine();
+            return null;
+        }
+
         public override object VisitFunctionDeclaration(MetaGeneratorParser.FunctionDeclarationContext context)
         {
             Visit(context.functionSignature());
@@ -652,6 +727,19 @@ namespace MetaDslx.Compiler
                 Visit(context.paramList());
             }
             Write(") {0}", context.ToComment());
+            AppendLine();
+            return null;
+        }
+
+        public object VisitFunctionSignatureExtension(MetaGeneratorParser.FunctionSignatureContext context)
+        {
+            WriteIndent();
+            Write("{0} {1}(", context.returnType().GetText(), context.identifier().GetText());
+            if (context.paramList() != null)
+            {
+                Visit(context.paramList());
+            }
+            Write("); {0}", context.ToComment());
             AppendLine();
             return null;
         }
@@ -691,6 +779,18 @@ namespace MetaDslx.Compiler
             {
                 Write(comma);
                 Visit(param);
+                comma = ", ";
+            }
+            return null;
+        }
+
+        public object VisitParamListCall(MetaGeneratorParser.ParamListContext context)
+        {
+            string comma = "";
+            foreach (var param in context.parameter())
+            {
+                Write(comma);
+                Write(param.identifier().GetText());
                 comma = ", ";
             }
             return null;
@@ -930,6 +1030,28 @@ namespace MetaDslx.Compiler
 
         public override object VisitFunctionCallExpression(MetaGeneratorParser.FunctionCallExpressionContext context)
         {
+            if (this.externFunctionNames.Count > 0)
+            {
+                if (context.expression() is MetaGeneratorParser.MemberAccessExpressionContext)
+                {
+                    MetaGeneratorParser.MemberAccessExpressionContext mac = (MetaGeneratorParser.MemberAccessExpressionContext)context.expression();
+                    string name = mac.identifier().GetText();
+                    if (this.externFunctionNames.Contains(name))
+                    {
+                        Write(name);
+                        if (mac.typeArgumentList() != null) Visit(mac.typeArgumentList());
+                        Write("(");
+                        Visit(mac.expression());
+                        if (context.expressionList() != null)
+                        {
+                            Write(", ");
+                            Visit(context.expressionList());
+                        }
+                        Write(")");
+                        return null;
+                    }
+                }
+            }
             Visit(context.expression());
             Write("(");
             if (context.expressionList() != null)

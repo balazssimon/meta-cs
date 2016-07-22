@@ -223,6 +223,8 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\Mutable\ImmutableMetaModelGeneratorOld.mgen",
                     @"..\..\..\..\Main\MetaDslx.Core\Mutable\ImmutableMetaModelGeneratorOld.cs"
                     );
+                //*/
+                //*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModelGenerator.mgen",
@@ -236,7 +238,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel1.cs"
                     );
                 //*/
-                //*
+                /*
                 GenerateImmutableMeta(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel2.cs");
                 //*/
             }
@@ -680,10 +682,10 @@ namespace MetaDslx.TempConsole
         private static void GenerateImmutableMeta(string outputFileName)
         {
             MetaDslx.Core.Immutable.ImmutableModel model = MetaDslx.Core.Immutable.MetaInstance.Model;
-            MetaDslx.Core.Immutable.ImmutableMetaModelGenerator generator = new MetaDslx.Core.Immutable.ImmutableMetaModelGenerator(model.Symbols);
+            //MetaDslx.Core.Immutable.ImmutableMetaModelGenerator generator = new MetaDslx.Core.Immutable.ImmutableMetaModelGenerator(model.Symbols);
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
-                writer.WriteLine(generator.Generate());
+                //writer.WriteLine(generator.Generate());
             }
             //PrintScope("", compiler.GlobalScope);
             Console.WriteLine("=");

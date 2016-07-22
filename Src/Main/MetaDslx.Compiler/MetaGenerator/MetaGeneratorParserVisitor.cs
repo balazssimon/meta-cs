@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\vyevl5oe.tbp\MetaGeneratorParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\mb2rek4o.0od\MetaGeneratorParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -88,6 +88,12 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitMethodDeclaration([NotNull] MetaGeneratorParser.MethodDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.externFunctionDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExternFunctionDeclaration([NotNull] MetaGeneratorParser.ExternFunctionDeclarationContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.functionDeclaration"/>.
 	/// </summary>

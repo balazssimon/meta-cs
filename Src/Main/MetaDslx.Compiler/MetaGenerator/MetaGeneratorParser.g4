@@ -22,8 +22,9 @@ configProperty
     : typeReference identifier (TAssign expression)? TSemicolon #configPropertyDeclaration
     | KProperties identifier configProperty* KEnd KProperties  #configPropertyGroupDeclaration;
 
-methodDeclaration : functionDeclaration | templateDeclaration;
+methodDeclaration : functionDeclaration | templateDeclaration | externFunctionDeclaration;
 
+externFunctionDeclaration : KExtern functionSignature;
 functionDeclaration : functionSignature body KEnd KFunction;
 functionSignature : KFunction returnType identifier TOpenParenthesis paramList? TCloseParenthesis;
 paramList : parameter (TComma parameter)*;

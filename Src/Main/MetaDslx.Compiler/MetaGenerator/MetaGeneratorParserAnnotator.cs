@@ -159,6 +159,12 @@ namespace MetaDslx.Compiler
             return base.VisitMethodDeclaration(context);
         }
         
+        public override object VisitExternFunctionDeclaration(MetaGeneratorParser.ExternFunctionDeclarationContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitExternFunctionDeclaration(context);
+        }
+        
         public override object VisitFunctionDeclaration(MetaGeneratorParser.FunctionDeclarationContext context)
         {
             this.HandleSymbolType(context);
@@ -898,6 +904,11 @@ namespace MetaDslx.Compiler
         }
         
         public virtual object VisitMethodDeclaration(MetaGeneratorParser.MethodDeclarationContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitExternFunctionDeclaration(MetaGeneratorParser.ExternFunctionDeclarationContext context)
         {
             return this.VisitChildren(context);
         }
