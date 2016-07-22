@@ -1,16 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
+    using MetaDslx.Core.Immutable.Internal;
+
+    public static class MetaConstants
+    {
+        private static ImmutableList<MetaType> types = ImmutableList<MetaType>.Empty;
+
+        public static ImmutableList<MetaType> Types
+        {
+            get
+            {
+                if (MetaConstants.types.Count == 0 && MetaInstance.IsInitialized)
+                {
+                    ImmutableList<MetaType>.Builder typesBuilder = ImmutableList.CreateBuilder<MetaType>();
+                    typesBuilder.Add(MetaInstance.Object);
+                    typesBuilder.Add(MetaInstance.String);
+                    typesBuilder.Add(MetaInstance.Int);
+                    typesBuilder.Add(MetaInstance.Long);
+                    typesBuilder.Add(MetaInstance.Float);
+                    typesBuilder.Add(MetaInstance.Double);
+                    typesBuilder.Add(MetaInstance.Byte);
+                    typesBuilder.Add(MetaInstance.Bool);
+                    typesBuilder.Add(MetaInstance.Void);
+                    Interlocked.Exchange(ref MetaConstants.types, typesBuilder.ToImmutable());
+                }
+                return MetaConstants.types;
+            }
+        }
+    }
+
     //*
     internal class MetaImplementation : MetaImplementationBase
     {
-        public override void MetaBuilderInstance(MetaBuilderInstance _this)
+        internal override void MetaBuilderInstance(MetaBuilderInstance _this)
         {
             MetaFactory f = new MetaFactory(_this.Model);
             _this.Object = f.MetaPrimitiveType();
@@ -143,10 +174,11 @@ namespace MetaDslx.Core.Immutable
         {
             ImmutableModelList<MetaProperty> props = _this.GetAllProperties();
             List<MetaProperty> result = new List<MetaProperty>(props);
+            result.Reverse();
             int i = result.Count - 1;
             while (i >= 0)
             {
-                string name = props[i].Name;
+                string name = result[i].Name;
                 MetaProperty prop = result.First(p => p.Name == name);
                 if (prop != result[i])
                 {
@@ -161,10 +193,11 @@ namespace MetaDslx.Core.Immutable
         {
             ImmutableModelList<MetaOperation> ops = _this.GetAllOperations();
             List<MetaOperation> result = new List<MetaOperation>(ops);
+            result.Reverse();
             int i = result.Count - 1;
             while (i >= 0)
             {
-                string name = ops[i].Name;
+                string name = result[i].Name;
                 MetaOperation op = result.First(o => o.Name == name);
                 if (op != result[i])
                 {
@@ -177,11 +210,4 @@ namespace MetaDslx.Core.Immutable
     }
     //*/
 
-    internal static class ImmutableMetaExtensions
-    {
-        public static string CSharpName(this MetaEnum enm)
-        {
-            return enm.Name;
-        }
-    }
 }

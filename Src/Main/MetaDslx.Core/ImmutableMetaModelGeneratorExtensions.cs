@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,8 +22,7 @@ namespace MetaDslx.Core.Immutable
     internal enum NamespaceKind
     {
         Public,
-        Internal,
-        Implementation
+        Internal
     }
 
     internal enum ClassKind
@@ -35,7 +35,9 @@ namespace MetaDslx.Core.Immutable
         ImmutableInstance,
         BuilderInstance,
         FactoryMethod,
-        Implementation
+        Implementation,
+        ImmutableImpl,
+        BuilderImpl
     }
 
     internal enum PropertyKind
@@ -65,13 +67,11 @@ namespace MetaDslx.Core.Immutable
                 result = currentNs.Name + result;
                 currentNs = currentNs.Parent;
             }
+            result = result + ".Immutable";
             switch (kind)
             {
                 case NamespaceKind.Internal:
                     result = result + ".Internal";
-                    break;
-                case NamespaceKind.Implementation:
-                    result = result + ".Implementation";
                     break;
                 default:
                     break;
@@ -227,8 +227,11 @@ namespace MetaDslx.Core.Immutable
                 case ClassKind.Builder:
                     result = result + "Builder";
                     break;
-                case ClassKind.Implementation:
+                case ClassKind.ImmutableImpl:
                     result = result + "Impl";
+                    break;
+                case ClassKind.BuilderImpl:
+                    result = result + "BuilderImpl";
                     break;
                 default:
                     break;
@@ -243,6 +246,7 @@ namespace MetaDslx.Core.Immutable
                         fullNamePrefix = this.CSharpName(mtype.MetaModel, this.ToModelKind(kind), !modelContainsType);
                         result = fullNamePrefix + ".instance." + result;
                         break;
+                    case ClassKind.Descriptor:
                     case ClassKind.ImmutableInstance:
                     case ClassKind.FactoryMethod:
                     case ClassKind.Implementation:
@@ -253,6 +257,38 @@ namespace MetaDslx.Core.Immutable
                         if (!modelContainsType)
                         {
                             fullNamePrefix = this.CSharpName(mtype.Namespace, this.ToNamespaceKind(kind), true);
+                            result = "global::" + fullNamePrefix + "." + result;
+                        }
+                        break;
+                }
+            }
+            return result;
+        }
+
+        private string CSharpName(MetaDeclaration mdecl, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
+        {
+            if (mdecl is MetaType) return this.CSharpName((MetaType)mdecl, mmodel, kind, fullName);
+            string result = mdecl.Name;
+            if (fullName)
+            {
+                string fullNamePrefix;
+                bool modelContainsDecl = this.ContainsDeclaration(mmodel, mdecl);
+                switch (kind)
+                {
+                    case ClassKind.BuilderInstance:
+                        fullNamePrefix = this.CSharpName(mdecl.MetaModel, this.ToModelKind(kind), !modelContainsDecl);
+                        result = fullNamePrefix + ".instance." + result;
+                        break;
+                    case ClassKind.ImmutableInstance:
+                    case ClassKind.FactoryMethod:
+                    case ClassKind.Implementation:
+                        fullNamePrefix = this.CSharpName(mdecl.MetaModel, this.ToModelKind(kind), !modelContainsDecl);
+                        result = fullNamePrefix + "." + result;
+                        break;
+                    default:
+                        if (!modelContainsDecl)
+                        {
+                            fullNamePrefix = this.CSharpName(mdecl.Namespace, this.ToNamespaceKind(kind), true);
                             result = "global::" + fullNamePrefix + "." + result;
                         }
                         break;
@@ -314,13 +350,13 @@ namespace MetaDslx.Core.Immutable
                 switch (kind)
                 {
                     case ClassKind.BuilderInstance:
-                        fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), !this.ContainsConst(mmodel, mconst));
+                        fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), !this.ContainsDeclaration(mmodel, mconst));
                         result = fullNamePrefix + ".instance." + result;
                         break;
                     case ClassKind.ImmutableInstance:
                     case ClassKind.FactoryMethod:
                     case ClassKind.Implementation:
-                        fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), !this.ContainsConst(mmodel, mconst));
+                        fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), !this.ContainsDeclaration(mmodel, mconst));
                         result = fullNamePrefix + "." + result;
                         break;
                     default:
@@ -369,10 +405,9 @@ namespace MetaDslx.Core.Immutable
             {
                 case ModelKind.Implementation:
                 case ModelKind.ImplementationBase:
-                    return NamespaceKind.Internal;
-                case ModelKind.BuilderInstance:
                 case ModelKind.ImplementationProvider:
-                    return NamespaceKind.Implementation;
+                case ModelKind.BuilderInstance:
+                    return NamespaceKind.Internal;
                 default:
                     return NamespaceKind.Public;
             }
@@ -405,7 +440,7 @@ namespace MetaDslx.Core.Immutable
         public bool IsCoreModel(MetaModel mmodel)
         {
             if (mmodel == null) return false;
-            return this.CSharpName(mmodel, ModelKind.None, true) == "global::MetaDslx.Core.Meta";
+            return this.CSharpName(mmodel, ModelKind.None, true) == "global::MetaDslx.Core.Immutable.Meta";
         }
 
         private bool IsSameModel(MetaModel m1, MetaModel m2)
@@ -428,11 +463,84 @@ namespace MetaDslx.Core.Immutable
             return false;
         }
 
-        private bool ContainsConst(MetaModel mmodel, MetaConstant mconst)
+        private bool ContainsDeclaration(MetaModel mmodel, MetaDeclaration mdecl)
         {
             if (mmodel == null) return false;
             if (this.IsCoreModel(mmodel)) return true;
-            return mmodel.Namespace.Declarations.Contains((MetaDeclaration)mconst);
+            return mmodel.Namespace.Declarations.Contains(mdecl);
+        }
+
+        public ImmutableDictionary<ImmutableSymbol, string> GetSymbolInstanceNames(MetaModel mmodel)
+        {
+            ImmutableDictionary<ImmutableSymbol, string>.Builder result = ImmutableDictionary.CreateBuilder<ImmutableSymbol, string>();
+            int tmpCounter = 0;
+            foreach (var item in mmodel.MModel.Symbols)
+            {
+                string name = null;
+                MetaProperty prop = item as MetaProperty;
+                MetaDeclaration decl = item as MetaDeclaration;
+                MetaType type = item as MetaType;
+                if (prop != null)
+                {
+                    name = this.CSharpName(prop, mmodel, PropertyKind.BuilderInstance);
+                }
+                else if (decl != null && !(decl is MetaConstant))
+                {
+                    name = this.CSharpName(decl, mmodel, ClassKind.BuilderInstance);
+                }
+                if ((decl == null || decl.Namespace == mmodel.Namespace) && (type == null || !MetaConstants.Types.Contains(type)))
+                {
+                    if (name == null)
+                    {
+                        ++tmpCounter;
+                        name = "__tmp" + tmpCounter;
+                    }
+                    result.Add(item, name);
+                }
+            }
+            return result.ToImmutable();
+        }
+
+        public string GetEnumValueOf(Enum menum)
+        {
+            string result = "global::" + menum.GetType().FullName.Replace("+", ".") + "." + menum.ToString();
+            return result;
+        }
+
+        public string EscapeText(string text)
+        {
+            if (text == null) return null;
+            return ImmutableUtils.EscapeStringLiteral(text);
+        }
+
+        public string GetFieldName(MetaProperty mproperty, MetaClass mclass)
+        {
+            if (mproperty == null) return "";
+            var allProps = mclass.GetAllProperties();
+            int counter = 0;
+            for (int i = 0; i < allProps.Count; i++)
+            {
+                if (allProps[i] == mproperty) break;
+                if (allProps[i].Name == mproperty.Name)
+                {
+                    ++counter;
+                }
+            }
+            return mproperty.Name.ToCamelCase() + counter;
+        }
+
+        public bool IsReferenceType(MetaType mtype)
+        {
+            if (mtype == null) return false;
+            if (mtype is MetaCollectionType) return true;
+            if (mtype is MetaNullableType) return true;
+            MetaPrimitiveType primitive = mtype as MetaPrimitiveType;
+            if (primitive != null)
+            {
+                return primitive.Name == "string" || primitive.Name == "object";
+            }
+            if (mtype is MetaClass) return true;
+            return false;
         }
     }
     //*/

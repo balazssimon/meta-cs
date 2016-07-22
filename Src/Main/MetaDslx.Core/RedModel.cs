@@ -19,6 +19,10 @@ namespace MetaDslx.Core.Immutable
         ImmutableSymbol MParent { get; }
         ImmutableModelList<ImmutableSymbol> MChildren { get; }
 
+        ImmutableList<ModelProperty> MProperties { get; }
+        ImmutableList<ModelProperty> MAllProperties { get; }
+        object MGet(ModelProperty property);
+
         MutableSymbol ToMutable();
         MutableSymbol ToMutable(MutableModel mutableModel);
     }
@@ -70,6 +74,13 @@ namespace MetaDslx.Core.Immutable
         public ImmutableModel MModel { get { return this.model; } }
         public ImmutableSymbol MParent { get { return this.model.MParent(this.id); } }
         public ImmutableModelList<ImmutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
+
+        public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
+        public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
+        public object MGet(ModelProperty property)
+        {
+            return this.model.MGet(this.id, property);
+        }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
             where T : struct
@@ -453,6 +464,8 @@ namespace MetaDslx.Core.Immutable
             if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
+                ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue))
                 {
                     return this.ToRedValue(greenValue);
@@ -468,6 +481,8 @@ namespace MetaDslx.Core.Immutable
             if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
+                ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
                 {
                     return ImmutableModelSet<T>.FromGreenList((GreenList)greenValue, this);
@@ -483,6 +498,8 @@ namespace MetaDslx.Core.Immutable
             if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
+                ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
                 {
                     return ImmutableModelList<T>.FromGreenList((GreenList)greenValue, this);
@@ -508,7 +525,39 @@ namespace MetaDslx.Core.Immutable
             {
                 return ImmutableModelList<ImmutableSymbol>.FromSymbolIdList(greenSymbol.Children, this);
             }
-            return null;
+            return ImmutableModelList<ImmutableSymbol>.Empty;
+        }
+
+        internal ImmutableList<ModelProperty> MProperties(SymbolId sid)
+        {
+            ModelSymbolInfo msi = sid.ModelSymbolInfo;
+            if (msi != null)
+            {
+                return msi.Properties;
+            }
+            return ImmutableList<ModelProperty>.Empty;
+        }
+
+        internal ImmutableList<ModelProperty> MAllProperties(SymbolId sid)
+        {
+            GreenSymbol greenSymbol;
+            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            {
+                return greenSymbol.Properties.Keys.ToImmutableList();
+            }
+            return ImmutableList<ModelProperty>.Empty;
+        }
+
+        internal object MGet(SymbolId sid, ModelProperty property)
+        {
+            if (property.IsCollection)
+            {
+                return this.GetList<object>(sid, property);
+            }
+            else
+            {
+                return this.GetValue(sid, property);
+            }
         }
     }
 
@@ -906,6 +955,8 @@ namespace MetaDslx.Core.Immutable
             if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
+                ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenLazyValue)
                 {
                     return ((GreenLazyValue)greenValue).Lazy;
@@ -931,6 +982,8 @@ namespace MetaDslx.Core.Immutable
             if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
+                ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
                 {
                     return (GreenList)greenValue;

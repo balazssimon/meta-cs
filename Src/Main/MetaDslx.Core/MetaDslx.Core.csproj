@@ -53,6 +53,7 @@
       <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
     </Compile>
     <Compile Include="ImmutableMetaModelGeneratorExtensions.cs" />
+    <Compile Include="ImmutableUtils.cs" />
     <Compile Include="Mutable\ImmutableMetaModelGeneratorOld.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

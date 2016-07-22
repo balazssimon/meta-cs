@@ -239,7 +239,7 @@ namespace MetaDslx.TempConsole
                     );
                 //*/
                 //*
-                GenerateImmutableMeta(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel2.cs");
+                GenerateImmutableMeta(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.cs");
                 //*/
             }
             catch (System.Exception ex)
