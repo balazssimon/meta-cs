@@ -224,7 +224,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\Mutable\ImmutableMetaModelGeneratorOld.cs"
                     );
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModelGenerator.mgen",
@@ -238,7 +238,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel1.cs"
                     );
                 //*/
-                //*
+                /*
                 GenerateImmutableMeta(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel2.cs");
                 //*/
             }

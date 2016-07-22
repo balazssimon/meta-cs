@@ -220,8 +220,11 @@ namespace MetaDslx.Core.Immutable
                 bool modelContainsType = this.ContainsType(mmodel, mtype);
                 switch (kind)
                 {
-                    case ClassKind.ImmutableInstance:
                     case ClassKind.BuilderInstance:
+                        fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), !modelContainsType);
+                        result = fullNamePrefix + ".instance." + result;
+                        break;
+                    case ClassKind.ImmutableInstance:
                     case ClassKind.FactoryMethod:
                     case ClassKind.Implementation:
                         fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), !modelContainsType);
@@ -279,6 +282,32 @@ namespace MetaDslx.Core.Immutable
             return result;
         }
 
+        public string CSharpName(MetaConstant mconst, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
+        {
+            string result = mconst.Name;
+            if (fullName)
+            {
+                string fullNamePrefix;
+                switch (kind)
+                {
+                    case ClassKind.BuilderInstance:
+                        fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), fullName);
+                        result = fullNamePrefix + ".instance." + result;
+                        break;
+                    case ClassKind.ImmutableInstance:
+                    case ClassKind.FactoryMethod:
+                    case ClassKind.Implementation:
+                        fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), fullName);
+                        result = fullNamePrefix + "." + result;
+                        break;
+                    default:
+                        fullNamePrefix = this.CSharpName(mmodel.Namespace, this.ToNamespaceKind(kind), fullName);
+                        result = fullNamePrefix + "." + result;
+                        break;
+                }
+            }
+            return result;
+        }
 
         public string ToCamelCase(string identifier)
         {
@@ -350,7 +379,7 @@ namespace MetaDslx.Core.Immutable
             }
         }
 
-        private bool IsCoreModel(MetaModel mmodel)
+        public bool IsCoreModel(MetaModel mmodel)
         {
             if (mmodel == null) return false;
             return this.CSharpName(mmodel, ModelKind.None, true) == "global::MetaDslx.Core.Meta";

@@ -1,6 +1,10 @@
 ﻿namespace MetaDslx.Core.Immutable;
 generator ImmutableMetaModelGenerator for IEnumerable<ImmutableSymbol>;
 
+properties Properties
+	string CoreNs = "global::MetaDslx.Core.Immutable";
+end properties
+
 template Generate()
 using System;
 using System.Collections.Generic;
@@ -18,10 +22,25 @@ end template
 
 extern function string ToCamelCase(string identifier)
 extern function string ToPascalCase(string identifier)
+extern function bool IsCoreModel(MetaModel mmodel)
 extern function string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false)
 extern function string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
 extern function string CSharpName(MetaType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
 extern function string CSharpName(MetaProperty mproperty, MetaModel mmodel, PropertyKind kind = PropertyKind.None, bool fullName = false)
+extern function string CSharpName(MetaConstant mconst, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
+
+template GenerateDocumentation(MetaDocumentedElement elem)
+[ImmutableModelList<string> lines = elem.GetDocumentationLines()]
+[if (lines.Count > 0)]
+/**
+ * <summary>
+	[loop(line:lines)]
+ * [line]
+	[end loop]
+ * </summary>
+ */
+[end if]
+end template
 
 template GenerateMetamodel(MetaModel model)
 namespace [model.Namespace.CSharpName(NamespaceKind.Public, true)]
@@ -51,15 +70,29 @@ namespace [model.Namespace.CSharpName(NamespaceKind.Internal, true)]
 }
 end template
 
-template GenerateMetaModelDescriptor(MetaModel model)
-public static class [model.CSharpName(ModelKind.Descriptor)]
-{
-}
-end template
-
 template GenerateMetaModelInstance(MetaModel model)
 public class [model.CSharpName(ModelKind.ImmutableInstance)]
 {
+	[if (model.IsCoreModel())]
+	internal readonly [model.CSharpName(ModelKind.BuilderInstance)] _MetaModel;
+	[else]
+	internal readonly [model.CSharpName(ModelKind.BuilderInstance)] MetaModel;
+	[end if]
+	internal readonly [Properties.CoreNs].MutableModel Model;
+^
+	[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
+	[GenerateDocumentation(cst)]
+	public static readonly [cst.Type.CSharpName(model, ClassKind.Immutable, true)] [cst.CSharpName(model, ClassKind.ImmutableInstance)] = [cst.CSharpName(model, ClassKind.BuilderInstance, true)];
+	[end loop]
+^
+	[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
+	[GenerateDocumentation(cls)]
+	public static readonly [Properties.CoreNs].MetaClass [cls.CSharpName(model, ClassKind.ImmutableInstance)] = [cls.CSharpName(model, ClassKind.BuilderInstance, true)];
+		[loop(cls->prop:Properties)]
+	[GenerateDocumentation(prop)]
+	public static readonly [Properties.CoreNs].MetaProperty [prop.CSharpName(model, ClassKind.ImmutableInstance)] = [prop.CSharpName(model, ClassKind.BuilderInstance, true)];
+		[end loop]
+	[end loop]
 }
 end template
 
@@ -71,6 +104,12 @@ end template
 
 template GenerateFactory(MetaModel model)
 public class [model.CSharpName(ModelKind.Factory)]
+{
+}
+end template
+
+template GenerateMetaModelDescriptor(MetaModel model)
+public static class [model.CSharpName(ModelKind.Descriptor)]
 {
 }
 end template
@@ -87,26 +126,13 @@ public class [model.CSharpName(ModelKind.ImplementationBase)]
 }
 end template
 
-template GenerateDocumentation(MetaDocumentedElement elem)
-[ImmutableModelList<string> lines = elem.GetDocumentationLines()]
-[if (lines.Count > 0)]
-/**
- * <summary>
-	[loop(line:lines)]
- * [line]
-	[end loop]
- * </summary>
- */
-[end if]
-end template
-
 template GenerateEnum(MetaModel mmodel, MetaEnum enm)
 [GenerateDocumentation(enm)]
 public enum [enm.CSharpName(mmodel)]
 {
 	[loop(enm->value:EnumLiterals; separator delim = ",")]
 	[GenerateDocumentation(value)]
-	[value.Name][delim]\
+	[value.Name][delim]
 	[end loop]
 }
 end template

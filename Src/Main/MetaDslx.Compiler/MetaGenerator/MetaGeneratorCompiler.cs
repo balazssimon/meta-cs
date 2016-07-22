@@ -1484,12 +1484,14 @@ namespace MetaDslx.Compiler
                         }
                         else if (!noNewLine)
                         {
-                            WriteLine("if (!{0}_last || {1})", tmp, outputWrittenTmp);
-                            WriteLine("{");
-                            IncIndent();
-                            WriteLine("if (!{0}_last) __out.AppendLine(true);", tmp);
-                            DecIndent();
-                            WriteLine("}");
+                            if (closeBraces)
+                            {
+                                WriteLine("if (!{0}_last || {1}) __out.AppendLine(true);", tmp, outputWrittenTmp);
+                            }
+                            else
+                            {
+                                WriteLine("if ({0}) __out.AppendLine(true);", outputWrittenTmp);
+                            }
                         }
                     }
                     else
