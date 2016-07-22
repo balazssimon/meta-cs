@@ -226,3 +226,4 @@ FakesAssemblies/
 /Install/v02
 /Install/v01/MetaDslx.VisualStudio.vsix
 /Install/v01
+/Src/Main/MetaDslx.Core/ImmutableMetaModel2.cs

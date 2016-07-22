@@ -1385,7 +1385,7 @@ namespace MetaDslx.Compiler
                 int endIndex = lastIndex;
                 string prefix = NewTmp() + "Prefix";
                 string prefixText = null;
-                string outputWrittenTmp = NewTmp()+ "OutputWritten";
+                string outputWrittenTmp = NewTmp()+ "_outputWritten";
                 if (!forceNewLine && !noNewLine)
                 {
                     WriteLine("bool {0} = false;", outputWrittenTmp);
@@ -1413,7 +1413,7 @@ namespace MetaDslx.Compiler
                     if (child is MetaGeneratorParser.TemplateOutputContext)
                     {
                         MetaGeneratorParser.TemplateOutputContext output = child as MetaGeneratorParser.TemplateOutputContext;
-                        WriteLine("string {0}Line = \"{1}\"; {2}", tmp, EscapeText(output.GetText()), output.ToComment());
+                        WriteLine("string {0}_line = \"{1}\"; {2}", tmp, EscapeText(output.GetText()), output.ToComment());
                         hasOutput = true;
                     }
                     else if (child is MetaGeneratorParser.TemplateStatementStartEndContext)
@@ -1433,7 +1433,7 @@ namespace MetaDslx.Compiler
                                 WriteLine("while(!{0}_last)", tmp);
                                 WriteLine("{");
                                 IncIndent();
-                                WriteLine("string {0}Line = {0}Reader.ReadLine();", tmp);
+                                WriteLine("string {0}_line = {0}Reader.ReadLine();", tmp);
                                 WriteLine("{0}_last = {0}Reader.EndOfStream;", tmp);
                                 hasOutput = true;
                             }
@@ -1458,10 +1458,17 @@ namespace MetaDslx.Compiler
                     }
                     if (hasOutput)
                     {
-                        WriteLine("if (!string.IsNullOrEmpty({0}Line))", tmp);
+                        if (closeBraces)
+                        {
+                            WriteLine("if (({0}_last && !string.IsNullOrEmpty({0}_line)) || (!{0}_last && {0}_line != null))", tmp);
+                        }
+                        else
+                        {
+                            WriteLine("if (!string.IsNullOrEmpty({0}_line))", tmp);
+                        }
                         WriteLine("{");
                         IncIndent();
-                        WriteLine("__out.Append({0}Line);", tmp);
+                        WriteLine("__out.Append({0}_line);", tmp);
                         if (!forceNewLine && !noNewLine)
                         {
                             WriteLine("{0} = true;", outputWrittenTmp);
@@ -1477,10 +1484,10 @@ namespace MetaDslx.Compiler
                         }
                         else if (!noNewLine)
                         {
-                            WriteLine("if ({0})", outputWrittenTmp);
+                            WriteLine("if (!{0}_last || {1})", tmp, outputWrittenTmp);
                             WriteLine("{");
                             IncIndent();
-                            VisitTemplateLineEnd(context.templateLineEnd());
+                            WriteLine("if (!{0}_last) __out.AppendLine(true);", tmp);
                             DecIndent();
                             WriteLine("}");
                         }

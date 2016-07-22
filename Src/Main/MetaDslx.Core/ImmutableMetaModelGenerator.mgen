@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using MetaDslx.Core.Immutable;
 ^
 	[loop(Instances->mm:typeof(MetaModel))]
 [GenerateMetamodel(mm)]
@@ -19,38 +18,73 @@ end template
 
 extern function string ToCamelCase(string identifier)
 extern function string ToPascalCase(string identifier)
-extern function string CSharpName(MetaNamespace mnamespace, bool fullName = false)
+extern function string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false)
 extern function string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
-extern function string CSharpName(MetaType mtype, ClassKind kind = ClassKind.None, bool fullName = false)
-extern function string CSharpName(MetaProperty mproperty, PropertyKind kind = PropertyKind.None, bool fullName = false)
+extern function string CSharpName(MetaType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
+extern function string CSharpName(MetaProperty mproperty, MetaModel mmodel, PropertyKind kind = PropertyKind.None, bool fullName = false)
 
 template GenerateMetamodel(MetaModel model)
-namespace [model.Namespace.Name]
+namespace [model.Namespace.CSharpName(NamespaceKind.Public, true)]
 {
-	[GenerateMetaModelDescriptor(model)]
 	[GenerateMetaModelInstance(model)]
-    [GenerateFactory(model)]
-    [GenerateImplementationProvider(model)]
+^
+	[GenerateFactory(model)]
+^
 	[loop(model->Namespace->Declarations->enm:typeof(MetaEnum))]
-    [GenerateEnum(enm)]
+^
+	[GenerateEnum(model, enm)]
 	[end loop]
+^
+	[GenerateMetaModelDescriptor(model)]
+}
+^
+namespace [model.Namespace.CSharpName(NamespaceKind.Implementation, true)]
+{
+	[GenerateMetaModelBuilderInstance(model)]
+^
+	[GenerateImplementationProvider(model)]
+}
+^
+namespace [model.Namespace.CSharpName(NamespaceKind.Internal, true)]
+{
+	[GenerateImplementationBase(model)]
 }
 end template
 
 template GenerateMetaModelDescriptor(MetaModel model)
-
+public static class [model.CSharpName(ModelKind.Descriptor)]
+{
+}
 end template
 
 template GenerateMetaModelInstance(MetaModel model)
+public class [model.CSharpName(ModelKind.ImmutableInstance)]
+{
+}
+end template
 
+template GenerateMetaModelBuilderInstance(MetaModel model)
+public class [model.CSharpName(ModelKind.BuilderInstance)]
+{
+}
 end template
 
 template GenerateFactory(MetaModel model)
-
+public class [model.CSharpName(ModelKind.Factory)]
+{
+}
 end template
 
 template GenerateImplementationProvider(MetaModel model)
+public class [model.CSharpName(ModelKind.ImplementationProvider)]
+{
+}
+end template
 
+template GenerateImplementationBase(MetaModel model)
+public class [model.CSharpName(ModelKind.ImplementationBase)]
+{
+}
 end template
 
 template GenerateDocumentation(MetaDocumentedElement elem)
@@ -66,14 +100,13 @@ template GenerateDocumentation(MetaDocumentedElement elem)
 [end if]
 end template
 
-template GenerateEnum(MetaEnum enm)
+template GenerateEnum(MetaModel mmodel, MetaEnum enm)
 [GenerateDocumentation(enm)]
-public enum [enm.CSharpName()]
+public enum [enm.CSharpName(mmodel)]
 {
-    [loop(enm->value:EnumLiterals; separator delim = ",")]
+	[loop(enm->value:EnumLiterals; separator delim = ",")]
 	[GenerateDocumentation(value)]
-	[value.Name][delim]
+	[value.Name][delim]\
 	[end loop]
 }
-^
 end template

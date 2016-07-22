@@ -16,6 +16,8 @@ namespace MetaDslx.Core.Immutable
 
         public abstract int Count { get; }
 
+        public abstract bool Contains(T item);
+
         public abstract IEnumerator<T> GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -71,6 +73,8 @@ namespace MetaDslx.Core.Immutable
         public abstract T this[int index] { get; }
 
         public abstract int Count { get; }
+
+        public abstract bool Contains(T item);
 
         public abstract IEnumerator<T> GetEnumerator();
 
@@ -147,6 +151,11 @@ namespace MetaDslx.Core.Immutable
 
         public override int Count { get { return this.items.Count; } }
 
+        public override bool Contains(T item)
+        {
+            return this.items.Contains(item);
+        }
+
         public override IEnumerator<T> GetEnumerator()
         {
             return this.items.GetEnumerator();
@@ -180,6 +189,11 @@ namespace MetaDslx.Core.Immutable
 
         public override int Count { get { return this.items.Count; } }
 
+        public override bool Contains(T item)
+        {
+            return this.items.Contains(item);
+        }
+
         public override IEnumerator<T> GetEnumerator()
         {
             return this.items.GetEnumerator();
@@ -204,6 +218,11 @@ namespace MetaDslx.Core.Immutable
         }
 
         public override int Count { get { return this.green.Count; } }
+
+        public override bool Contains(T item)
+        {
+            return this.green.Contains(this.model.ToGreenValue(item));
+        }
 
         public override IEnumerator<T> GetEnumerator()
         {
@@ -232,6 +251,11 @@ namespace MetaDslx.Core.Immutable
         }
 
         public override int Count { get { return this.green.Count; } }
+
+        public override bool Contains(T item)
+        {
+            return this.green.Contains(this.model.ToGreenValue(item));
+        }
 
         public override IEnumerator<T> GetEnumerator()
         {
@@ -280,6 +304,11 @@ namespace MetaDslx.Core.Immutable
 
         public override int Count { get { return this.items.Count; } }
 
+        public override bool Contains(T item)
+        {
+            return this.items.Contains(item);
+        }
+
         public override IEnumerator<T> GetEnumerator()
         {
             return this.items.GetEnumerator();
@@ -309,6 +338,11 @@ namespace MetaDslx.Core.Immutable
         }
 
         public override int Count { get { return this.green.Count; } }
+
+        public override bool Contains(T item)
+        {
+            return this.green.Contains(this.model.ToGreenValue(item));
+        }
 
         public override IEnumerator<T> GetEnumerator()
         {
@@ -343,6 +377,11 @@ namespace MetaDslx.Core.Immutable
 
         public override int Count { get { return this.green.Count; } }
 
+        public override bool Contains(T item)
+        {
+            return this.green.Contains(this.model.ToGreenValue(item));
+        }
+
         public override IEnumerator<T> GetEnumerator()
         {
             foreach (var value in this.green)
@@ -371,6 +410,11 @@ namespace MetaDslx.Core.Immutable
 
         public override int Count { get { return this.green.Count; } }
 
+        public override bool Contains(T item)
+        {
+            return this.green.Contains(this.model.ToGreenValue(item));
+        }
+
         public override IEnumerator<T> GetEnumerator()
         {
             foreach (var sid in this.green)
@@ -398,6 +442,11 @@ namespace MetaDslx.Core.Immutable
         }
 
         public override int Count { get { return this.green.Count; } }
+
+        public override bool Contains(T item)
+        {
+            return this.green.Contains(this.model.ToGreenValue(item));
+        }
 
         public override IEnumerator<T> GetEnumerator()
         {
@@ -432,6 +481,11 @@ namespace MetaDslx.Core.Immutable
 
         public override int Count { get { return this.green.Count; } }
 
+        public override bool Contains(T item)
+        {
+            return this.green.Contains(this.model.ToGreenValue(item));
+        }
+
         public override IEnumerator<T> GetEnumerator()
         {
             foreach (var sid in this.green)
@@ -464,6 +518,11 @@ namespace MetaDslx.Core.Immutable
         }
 
         public override int Count { get { return this.green.Count; } }
+
+        public override bool Contains(T item)
+        {
+            return this.green.Contains(this.model.ToGreenValue(item));
+        }
 
         public override IEnumerator<T> GetEnumerator()
         {
