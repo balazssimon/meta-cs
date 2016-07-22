@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable //1:1
 {
-    using __Hidden_ImmutableMetaModelGenerator_1980626616;
-    namespace __Hidden_ImmutableMetaModelGenerator_1980626616
+    using __Hidden_ImmutableMetaModelGenerator_996980477;
+    namespace __Hidden_ImmutableMetaModelGenerator_996980477
     {
         internal static class __Extensions
         {
@@ -132,17 +132,17 @@ namespace MetaDslx.Core.Immutable //1:1
             return __out.ToString();
         }
 
-        public string ToCamelCase(string identifier) //20:8
+        internal string ToCamelCase(string identifier) //20:8
         {
             return this.extensionFunctions.ToCamelCase(identifier); //20:8
         }
 
-        public string ToPascalCase(string identifier) //21:8
+        internal string ToPascalCase(string identifier) //21:8
         {
             return this.extensionFunctions.ToPascalCase(identifier); //21:8
         }
 
-        public string CSharpName(MetaNamespace mnamespace, bool fullName = false) //22:8
+        internal string CSharpName(MetaNamespace mnamespace, bool fullName = false) //22:8
         {
             return this.extensionFunctions.CSharpName(mnamespace, fullName); //22:8
         }

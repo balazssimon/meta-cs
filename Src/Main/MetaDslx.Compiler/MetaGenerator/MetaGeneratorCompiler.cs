@@ -680,7 +680,7 @@ namespace MetaDslx.Compiler
 
         public override object VisitExternFunctionDeclaration([NotNull] MetaGeneratorParser.ExternFunctionDeclarationContext context)
         {
-            Visit(context.functionSignature());
+            VisitExternFunctionSignature(context.functionSignature());
             WriteLine("{");
             IncIndent();
             tmpCounter = 0;
