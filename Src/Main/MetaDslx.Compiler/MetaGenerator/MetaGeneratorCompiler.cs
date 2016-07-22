@@ -427,7 +427,7 @@ namespace MetaDslx.Compiler
             if (this.ExternFunctions.Count > 0)
             {
                 AppendLine();
-                WriteLine("public interface I{0}Extensions", generatorName);
+                WriteLine("internal interface I{0}Extensions", generatorName);
                 WriteLine("{");
                 IncIndent();
                 var extensionFunctions = this.ExternFunctions.Values.OrderBy(v => v.ExternFunction.Start.TokenIndex);
@@ -687,6 +687,19 @@ namespace MetaDslx.Compiler
             VisitExternFunctionCall(context.functionSignature());
             DecIndent();
             WriteLine("}");
+            AppendLine();
+            return null;
+        }
+
+        public object VisitExternFunctionSignature(MetaGeneratorParser.FunctionSignatureContext context)
+        {
+            WriteIndent();
+            Write("internal {0} {1}(", context.returnType().GetText(), context.identifier().GetText());
+            if (context.paramList() != null)
+            {
+                Visit(context.paramList());
+            }
+            Write(") {0}", context.ToComment());
             AppendLine();
             return null;
         }

@@ -19,7 +19,10 @@ end template
 
 extern function string ToCamelCase(string identifier)
 extern function string ToPascalCase(string identifier)
-extern function string CSharpName(MetaModel mm)
+extern function string CSharpName(MetaNamespace mnamespace, bool fullName = false)
+extern function string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
+extern function string CSharpName(MetaType mtype, ClassKind kind = ClassKind.None, bool fullName = false)
+extern function string CSharpName(MetaProperty mproperty, PropertyKind kind = PropertyKind.None, bool fullName = false)
 
 template GenerateMetamodel(MetaModel model)
 namespace [model.Namespace.Name]
@@ -35,8 +38,7 @@ namespace [model.Namespace.Name]
 end template
 
 template GenerateMetaModelDescriptor(MetaModel model)
-[CSharpName(model).ToPascalCase()]
-[model.CSharpName().ToCamelCase()]
+
 end template
 
 template GenerateMetaModelInstance(MetaModel model)
