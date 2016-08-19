@@ -8,8 +8,8 @@ using System.Collections.Immutable; //4:1
 
 namespace MetaDslx.Core.Immutable //1:1
 {
-    using __Hidden_ImmutableMetaModelGenerator_383301024;
-    namespace __Hidden_ImmutableMetaModelGenerator_383301024
+    using __Hidden_ImmutableMetaModelGenerator_191522971;
+    namespace __Hidden_ImmutableMetaModelGenerator_191522971
     {
         internal static class __Extensions
         {
