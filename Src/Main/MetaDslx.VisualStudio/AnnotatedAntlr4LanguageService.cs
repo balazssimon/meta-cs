@@ -551,13 +551,13 @@ namespace MetaDslx.VisualStudio
                         Severity severity = Severity.Error;
                         switch (msg.Severity)
                         {
-                            case MetaDslx.Core.Severity.Error:
+                            case MetaDslx.Core.Immutable.Severity.Error:
                                 severity = Severity.Error;
                                 break;
-                            case MetaDslx.Core.Severity.Warning:
+                            case MetaDslx.Core.Immutable.Severity.Warning:
                                 severity = Severity.Warning;
                                 break;
-                            case MetaDslx.Core.Severity.Info:
+                            case MetaDslx.Core.Immutable.Severity.Info:
                                 severity = Severity.Hint;
                                 break;
                         }

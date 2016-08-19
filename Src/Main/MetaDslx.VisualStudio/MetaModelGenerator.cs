@@ -1,5 +1,5 @@
 ﻿using MetaDslx.Compiler;
-using MetaDslx.Core;
+using MetaDslx.Core.Immutable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +32,7 @@ namespace MetaDslx.VisualStudio
             }
             else
             {
-                MetaModelCSharpGenerator generator = new MetaModelCSharpGenerator(compiler.Model.CachedInstances);
+                ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(compiler.Model.ToImmutable().Symbols);
                 return generator.Generate();
             }
         }
