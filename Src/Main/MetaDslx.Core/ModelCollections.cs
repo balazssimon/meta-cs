@@ -10,7 +10,21 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
-    public abstract class ImmutableModelSet<T> : IReadOnlyCollection<T>
+    public interface IModelCollection<out T> : IReadOnlyCollection<T>
+    {
+    }
+
+    public interface IImmutableModelCollection<out T> : IModelCollection<T>
+    {
+
+    }
+
+    public interface IMutableModelCollection<T> : IModelCollection<T>, ICollection<T>
+    {
+
+    }
+
+    public abstract class ImmutableModelSet<T> : IImmutableModelCollection<T>
     {
         public static readonly ImmutableModelSet<T> Empty = new ImmutableModelSetFromEnumerableSet<T>();
 
@@ -66,7 +80,7 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    public abstract class ImmutableModelList<T> : IReadOnlyList<T>
+    public abstract class ImmutableModelList<T> : IImmutableModelCollection<T>, IReadOnlyList<T>
     {
         public static readonly ImmutableModelList<T> Empty = new ImmutableModelListFromEnumerable<T>();
 
@@ -538,7 +552,7 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    public abstract class MutableModelSet<T> : ICollection<T>
+    public abstract class MutableModelSet<T> : IMutableModelCollection<T>
     {
         public abstract int Count { get; }
         public abstract int LazyCount { get; }
@@ -597,7 +611,7 @@ namespace MetaDslx.Core.Immutable
         }
     }
 
-    public abstract class MutableModelList<T> : IList<T>
+    public abstract class MutableModelList<T> : IMutableModelCollection<T>, IList<T>, IReadOnlyList<T>
     {
         public abstract T this[int index] { get; set; }
         public abstract int Count { get; }

@@ -1,5 +1,8 @@
 ﻿namespace MetaDslx.Core
 {
+	/*
+	Represents the MetaModel.
+	*/
 	metamodel Meta(Uri="http://metadslx.core/1.0"); 
 
 	const MetaPrimitiveType Object;
@@ -11,7 +14,17 @@
 	const MetaPrimitiveType Byte;
 	const MetaPrimitiveType Bool;
 	const MetaPrimitiveType Void;
-		
+	const MetaPrimitiveType Symbol;
+
+	[Scope]
+	class RootScope
+	{
+		[ScopeEntry]
+		list<object> BuiltInEntries;
+		[ScopeEntry]
+		containment list<object> Entries;
+	}
+
 	/*
 	Represents an annotated element.
 	*/

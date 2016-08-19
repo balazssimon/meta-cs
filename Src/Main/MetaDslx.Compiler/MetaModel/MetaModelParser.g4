@@ -19,14 +19,16 @@ qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
                       
                        
-annotation : TOpenBracket                        identifier annotationParams? TCloseBracket;
+annotation : TOpenBracket                        identifier /*annotationParams?*/ TCloseBracket;
+
+/*
 annotationParams : TOpenParen annotationParamList? TCloseParen;
 annotationParamList : annotationParam (TComma annotationParam)*;
 
-                     
-                               
-annotationParam :                        identifier TAssign                  expression;
-
+$Property(Properties)
+$Symbol(MetaAnnotationProperty)
+annotationParam : $Property(Name) $Value identifier;
+*/
 
                                                                         
                       
@@ -42,7 +44,7 @@ metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
          
 metamodelProperty : identifier TAssign        stringLiteral;
 
-declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | functionDeclaration;
+declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
                         
                   
@@ -63,7 +65,6 @@ classAncestor :                                                                 
 classMemberDeclaration 
 	:                       fieldDeclaration 
 	|                       operationDeclaration
-	|                        constructorDeclaration
 	;
 
                       
@@ -74,8 +75,6 @@ fieldModifier
 	|                                   KReadonly 
 	|                               KLazy 
 	|                                  KDerived
-	|                                      KSynthetized
-	|                                    KInherited
 	;
 
 redefinitions : KRedefines                                nameUseList?;
@@ -86,17 +85,12 @@ nameUseList :                        qualifiedName (TComma qualifiedName)*;
                         
                       
                       
-constDeclaration : KConst                 typeReference identifier (TAssign                  expressionOrNewExpression)? TSemicolon;
-
-                        
-                                                     
-                      
-functionDeclaration : annotation* KExtern                       returnType identifier TOpenParen                       parameterList? TCloseParen TSemicolon;
+constDeclaration : KConst                 typeReference identifier TSemicolon;
 
         
 returnType : typeReference | voidType;
         
-typeOfReference : invisibleType | typeReference;
+typeOfReference : typeReference;
         
 typeReference : collectionType | simpleType;
         
@@ -107,6 +101,7 @@ classType : qualifiedName;
      
 objectType 
 	: KObject 
+	| KSymbol
 	| KString
 	;
      
@@ -121,12 +116,6 @@ primitiveType
      
 voidType 
 	: KVoid
-	;
-
-invisibleType
-	:                                 KAny
-	|                                  KNone
-	|                                   KError
 	;
 
                           
@@ -150,142 +139,6 @@ parameterList : parameter (TComma parameter)*;
                       
 parameter : annotation*                 typeReference identifier /*(TAssign expression)? { expression.ExpectedType = typeReference; }*/;
 
-                         
-                      
-constructorDeclaration : annotation* identifier TOpenParen TCloseParen TOpenBrace                         initializerDeclaration* TCloseBrace;
-
-initializerDeclaration 
-	: synthetizedPropertyInitializer
-	| inheritedPropertyInitializer
-	;
-
-                                           
-synthetizedPropertyInitializer
-	: (KThis TDot)? (TOpenBracket                                                qualifiedName TCloseBracket)?                                property=identifier TAssign                  expression TSemicolon;
-
-                                         
-inheritedPropertyInitializer
-	: (KThis TDot)?                              object=identifier TDot (TOpenBracket                                                qualifiedName TCloseBracket)?                                property=identifier TAssign                  expression TSemicolon;
-
-expressionList : expression (',' expression)*;
-
-expressionOrNewExpressionList : expressionOrNewExpression (',' expressionOrNewExpression)*;
-expressionOrNewExpression : expression | newExpression;
-
-       
-             
-           
-expression 
-	: TOpenParen typeReference TCloseParen expression #castExpression                                    
-    | KTypeof TOpenParen                          typeOfReference TCloseParen #typeofExpression                                  
-	| TOpenParen expression TCloseParen #bracketExpression                                   
-	| KThis #thisExpression                                
-	| value=literalExpression #constantExpression                                    
-	|        name=identifier #identifierExpression                                      
-    | expression TOpenBracket                      expressionList TCloseBracket #indexerExpression                                   
-    | expression TOpenParen                      expressionList? TCloseParen #functionCallExpression                                        
-    | expression TDot        name=identifier #memberAccessExpression                                        
-    | expression kind=postOperator #postExpression 
-    | kind=preOperator expression #preExpression 
-    | kind=unaryOperator expression #unaryExpression 
-    | expression KAs typeReference #typeConversionExpression                                  
-    | expression KIs typeReference #typeCheckExpression                                     
-    | left=expression kind=multiplicativeOperator right=expression #multiplicativeExpression
-    | left=expression kind=additiveOperator right=expression #additiveExpression
-    | left=expression kind=shiftOperator right=expression #shiftExpression
-    | left=expression kind=comparisonOperator right=expression #comparisonExpression
-    | left=expression kind=equalityOperator right=expression #equalityExpression
-    | left=expression TAmpersand right=expression #bitwiseAndExpression                               
-    | left=expression THat right=expression #bitwiseXorExpression                                       
-    | left=expression TBar right=expression #bitwiseOrExpression                              
-    | left=expression TAndAlso right=expression #logicalAndExpression                                   
-    | left=expression TOrElse right=expression #logicalOrExpression                                  
-    | left=expression TQuestionQuestion right=expression #nullCoalescingExpression                                          
-    | condition=expression TQuestion then=expression TColon else=expression #conditionalExpression                                       
-    | left=expression operator=assignmentOperator right=expression #assignmentExpression 
-	;
-
-literalExpression 
-    :                             nullLiteral
-	|        booleanLiteral
-	|        integerLiteral
-	|        decimalLiteral
-	|        scientificLiteral
-    |        stringLiteral
-	;
-
-       
-             
-           
-newExpression 
-	: KNew                          classType TOpenParen TCloseParen (TOpenBrace newPropertyInitList? TCloseBrace)? #newObjectExpression                               
-	| KNew                          collectionType TOpenParen TCloseParen (TOpenBrace                   expressionOrNewExpression? TCloseBrace)? #newCollectionExpression                                         
-	;
-
-newPropertyInitList : newPropertyInit (TComma newPropertyInit)* TComma?;
-
-                               
-                                   
-newPropertyInit :                                identifier TAssign                  expressionOrNewExpression;
-
-postOperator
-	:                                                TPlusPlus
-	|                                                TMinusMinus
-	;
-
-preOperator
-	:                                               TPlusPlus
-	|                                               TMinusMinus
-	;
-
-unaryOperator
-	:                                      TPlus
-	|                                   TMinus
-	|                                           TTilde
-	|                                TExclamation
-	;
-
-multiplicativeOperator
-	:                                     TAsterisk
-	|                                   TSlash
-	|                                   TPercent
-	;
-
-additiveOperator
-	:                                TPlus
-	|                                     TMinus
-	;
-
-shiftOperator
-	:                                      TLessThan TLessThan
-	|                                       TGreaterThan TGreaterThan
-	;
-
-comparisonOperator
-	:                                     TLessThan
-	|                                        TGreaterThan
-	|                                            TLessThanOrEqual
-	|                                               TGreaterThanOrEqual
-	;
-
-equalityOperator
-	:                                  TEqual
-	|                                     TNotEqual
-	;
-
-assignmentOperator
-	:                                   TAssign  
-	|                                           TAsteriskAssign 
-	|                                         TSlashAssign
-	|                                         TPercentAssign
-	|                                      TPlusAssign
-	|                                           TMinusAssign
-	|                                            TLeftShiftAssign
-	|                                             TRightShiftAssign
-	|                                      TAmpersandAssign
-	|                                              THatAssign
-	|                                     TBarAssign
-	;
 
 associationDeclaration : annotation* KAssociation                        source=qualifiedName KWith                        target=qualifiedName TSemicolon 
 	                                          
@@ -324,30 +177,3 @@ scientificLiteral : ScientificLiteral;
 // String literals
 stringLiteral : RegularStringLiteral;
 
-
-/*
-
- | DoubleQuoteVerbatimStringLiteral | SingleQuoteVerbatimStringLiteral
-
-// Date and time literals  
-dateOrTimeLiteral 
-    : dateTimeLiteral | dateTimeOffsetLiteral | dateLiteral | timeLiteral;
-dateTimeOffsetLiteral : DateTimeOffsetLiteral;
-dateTimeLiteral : DateTimeLiteral;
-dateLiteral : DateLiteral;
-timeLiteral : TimeLiteral;
-
-// Guid literal
-guidLiteral : GuidLiteral;
-
-$Symbol(MetaClass)
-$TypeDef
-classDeclaration : $Property(IsAbstract) $Value(true) KAbstract? KClass $NameDef identifier $Property(TypeParams) genericTypeParams? (TColon $Property(SuperClasses) classAncestors)? TOpenBrace classMemberDeclaration* TCloseBrace;
-
-genericTypeParams : LT genericTypeParam (COMMA genericTypeParam)* GT;
-
-$Symbol(MetaTypeParam)
-$TypeParam
-genericTypeParam : identifier;
-
-*/

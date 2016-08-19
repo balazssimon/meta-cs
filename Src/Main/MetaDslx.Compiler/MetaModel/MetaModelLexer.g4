@@ -19,6 +19,7 @@ KTrue : 'true';
 KFalse : 'false';
 KVoid : 'void';
 KObject : 'object';
+KSymbol : 'symbol';
 KString : 'string';
 KInt : 'int';
 KLong : 'long';

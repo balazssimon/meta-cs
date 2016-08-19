@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using MetaDslx.Core;
+using MetaDslx.Core.Immutable;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +13,12 @@ namespace MetaDslx.Compiler
 {
     public class Antlr4DefaultNameProvider : DefaultNameProvider
     {
+        public Antlr4DefaultNameProvider(IModelCompiler compiler)
+            : base(compiler)
+        {
+
+        }
+
         public override string GetName(object node)
         {
             IParseTree parseTree = node as IParseTree;
@@ -54,12 +60,11 @@ namespace MetaDslx.Compiler
 
     public class Antlr4DefaultTriviaProvider : DefaultTriviaProvider
     {
-        private IAntlr4Compiler compiler;
         private int channel;
 
         public Antlr4DefaultTriviaProvider(IAntlr4Compiler compiler, int channel = -1)
+            : base(compiler)
         {
-            this.compiler = compiler;
             this.channel = channel;
             this.CleanTrivia = true;
             this.TrimTriviaLines = true;
@@ -76,6 +81,10 @@ namespace MetaDslx.Compiler
             this.TriviaLineStartTokens.Add("*");
         }
 
+        public new IAntlr4Compiler Compiler
+        {
+            get { return (IAntlr4Compiler)base.Compiler; }
+        }
         public bool CleanTrivia { get; set; }
         public bool TrimTriviaLines { get; set; }
         public bool ConcatTriviaLines { get; set; }
@@ -189,35 +198,43 @@ namespace MetaDslx.Compiler
             ParserRuleContext context = node as ParserRuleContext;
             if (context != null)
             {
-                IList<IToken> triviaTokens = AnnotatedAntlr4Channels.GetLeadingTriviaTokens(context.Start, this.compiler.CommonTokenStream, this.channel);
+                IList<IToken> triviaTokens = AnnotatedAntlr4Channels.GetLeadingTriviaTokens(context.Start, this.Compiler.CommonTokenStream, this.channel);
                 return this.GetTriviaText(triviaTokens);
             }
             IToken token = node as IToken;
             if (token != null)
             {
-                IList<IToken> triviaTokens = AnnotatedAntlr4Channels.GetLeadingTriviaTokens(token, this.compiler.CommonTokenStream, this.channel);
+                IList<IToken> triviaTokens = AnnotatedAntlr4Channels.GetLeadingTriviaTokens(token, this.Compiler.CommonTokenStream, this.channel);
                 return this.GetTriviaText(triviaTokens);
             }
-            ModelObject mo = node as ModelObject;
-            if (mo != null)
+            IReadOnlyList<object> treeNodes = null;
+            MutableSymbol mutableSymbol = node as MutableSymbol;
+            if (mutableSymbol != null)
             {
-                IList<object> treeNodes = mo.MGet(MetaScopeEntryProperties.SymbolTreeNodesProperty) as IList<object>;
-                if (treeNodes != null && treeNodes.Count > 0)
+                object treeNodesObj = mutableSymbol.MGet(ModelCompilerAttachedProperties.SymbolTreeNodesProperty);
+                treeNodes = treeNodesObj as IReadOnlyList<object>;
+            }
+            ImmutableSymbol immutableSymbol = node as ImmutableSymbol;
+            if (immutableSymbol != null)
+            {
+                object treeNodesObj = immutableSymbol.MGet(ModelCompilerAttachedProperties.SymbolTreeNodesProperty);
+                treeNodes = treeNodesObj as IReadOnlyList<object>;
+            }
+            if (treeNodes != null && treeNodes.Count > 0)
+            {
+                StringBuilder builder = new StringBuilder();
+                foreach (var treeNode in treeNodes)
                 {
-                    StringBuilder builder = new StringBuilder();
-                    foreach (var treeNode in treeNodes)
+                    string trivia = this.GetLeadingTrivia(treeNode);
+                    if (!string.IsNullOrWhiteSpace(trivia))
                     {
-                        string trivia = this.GetLeadingTrivia(treeNode);
-                        if (!string.IsNullOrWhiteSpace(trivia))
-                        {
-                            builder.Append(trivia);
-                        }
+                        builder.Append(trivia);
                     }
-                    string result = builder.ToString();
-                    if (!string.IsNullOrWhiteSpace(result))
-                    {
-                        return result;
-                    }
+                }
+                string result = builder.ToString();
+                if (!string.IsNullOrWhiteSpace(result))
+                {
+                    return result;
                 }
             }
             return base.GetLeadingTrivia(node);
@@ -228,35 +245,41 @@ namespace MetaDslx.Compiler
             ParserRuleContext context = node as ParserRuleContext;
             if (context != null)
             {
-                IList<IToken> triviaTokens = AnnotatedAntlr4Channels.GetTrailingTriviaTokens(context.Stop, this.compiler.CommonTokenStream, this.channel);
+                IList<IToken> triviaTokens = AnnotatedAntlr4Channels.GetTrailingTriviaTokens(context.Stop, this.Compiler.CommonTokenStream, this.channel);
                 return this.GetTriviaText(triviaTokens);
             }
             IToken token = node as IToken;
             if (token != null)
             {
-                IList<IToken> triviaTokens = AnnotatedAntlr4Channels.GetTrailingTriviaTokens(token, this.compiler.CommonTokenStream, this.channel);
+                IList<IToken> triviaTokens = AnnotatedAntlr4Channels.GetTrailingTriviaTokens(token, this.Compiler.CommonTokenStream, this.channel);
                 return this.GetTriviaText(triviaTokens);
             }
-            ModelObject mo = node as ModelObject;
-            if (mo != null)
+            IReadOnlyList<object> treeNodes = null;
+            MutableSymbol mutableSymbol = node as MutableSymbol;
+            if (mutableSymbol != null)
             {
-                IList<object> treeNodes = mo.MGet(MetaScopeEntryProperties.SymbolTreeNodesProperty) as IList<object>;
-                if (treeNodes != null && treeNodes.Count > 0)
+                treeNodes = mutableSymbol.MGet(ModelCompilerAttachedProperties.SymbolTreeNodesProperty) as IReadOnlyList<object>;
+            }
+            ImmutableSymbol immutableSymbol = node as ImmutableSymbol;
+            if (immutableSymbol != null)
+            {
+                treeNodes = immutableSymbol.MGet(ModelCompilerAttachedProperties.SymbolTreeNodesProperty) as IReadOnlyList<object>;
+            }
+            if (treeNodes != null && treeNodes.Count > 0)
+            {
+                StringBuilder builder = new StringBuilder();
+                foreach (var treeNode in treeNodes)
                 {
-                    StringBuilder builder = new StringBuilder();
-                    foreach (var treeNode in treeNodes)
+                    string trivia = this.GetTrailingTrivia(treeNode);
+                    if (!string.IsNullOrWhiteSpace(trivia))
                     {
-                        string trivia = this.GetTrailingTrivia(treeNode);
-                        if (!string.IsNullOrWhiteSpace(trivia))
-                        {
-                            builder.Append(trivia);
-                        }
+                        builder.Append(trivia);
                     }
-                    string result = builder.ToString();
-                    if (!string.IsNullOrWhiteSpace(result))
-                    {
-                        return result;
-                    }
+                }
+                string result = builder.ToString();
+                if (!string.IsNullOrWhiteSpace(result))
+                {
+                    return result;
                 }
             }
             return base.GetTrailingTrivia(node);

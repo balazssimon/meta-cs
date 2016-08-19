@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core.Immutable
 {
-    using MetaDslx.Core.Immutable.Internal;
-
     public static class MetaConstants
     {
         private static ImmutableList<MetaType> types = ImmutableList<MetaType>.Empty;
@@ -31,6 +29,7 @@ namespace MetaDslx.Core.Immutable
                     typesBuilder.Add(MetaInstance.Byte);
                     typesBuilder.Add(MetaInstance.Bool);
                     typesBuilder.Add(MetaInstance.Void);
+                    typesBuilder.Add(MetaInstance.Symbol);
                     Interlocked.Exchange(ref MetaConstants.types, typesBuilder.ToImmutable());
                 }
                 return MetaConstants.types;
@@ -39,9 +38,9 @@ namespace MetaDslx.Core.Immutable
     }
 
     //*
-    internal class MetaImplementation : MetaImplementationBase
+    internal class MetaImplementation : MetaDslx.Core.Immutable.Internal.MetaImplementationBase
     {
-        internal override void MetaBuilderInstance(MetaBuilderInstance _this)
+        internal override void MetaBuilderInstance(Internal.MetaBuilderInstance _this)
         {
             MetaFactory f = new MetaFactory(_this.Model);
             _this.Object = f.MetaPrimitiveType();
@@ -62,6 +61,8 @@ namespace MetaDslx.Core.Immutable
             _this.Bool.Name = "bool";
             _this.Void = f.MetaPrimitiveType();
             _this.Void.Name = "void";
+            _this.Symbol = f.MetaPrimitiveType();
+            _this.Symbol.Name = "symbol";
         }
 
         public override void MetaDeclaration(MetaDeclarationBuilder _this)
@@ -210,4 +211,18 @@ namespace MetaDslx.Core.Immutable
     }
     //*/
 
+    internal static class MetaModelExtensions
+    {
+        public static string ToPascalCase(this string name)
+        {
+            if (string.IsNullOrEmpty(name)) return name;
+            else return name[0].ToString().ToUpper() + name.Substring(1);
+        }
+
+        public static string ToCamelCase(this string name)
+        {
+            if (string.IsNullOrEmpty(name)) return name;
+            else return name[0].ToString().ToLower() + name.Substring(1);
+        }
+    }
 }

@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using MetaDslx.Core;
+using MetaDslx.Core.Immutable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -263,7 +263,7 @@ namespace MetaDslx.Compiler
 
 
 
-    public interface IAntlr4Compiler : IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
+    public interface IAntlr4Compiler : IModelCompiler, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
     {
         CommonTokenStream CommonTokenStream { get; }
     }
@@ -274,8 +274,10 @@ namespace MetaDslx.Compiler
         public string FileName { get; private set; }
         public string Source { get; private set; }
         public string DefaultNamespace { get; set; }
-        public RootScope GlobalScope { get; protected set; }
-        public Model Model { get; protected set; }
+        public RootScopeBuilder GlobalScope { get; protected set; }
+        public MutableModelGroup ModelGroup { get; protected set; }
+        public MutableModel Model { get; protected set; }
+        public MetaFactory Factory { get; protected set; }
         public ITriviaProvider TriviaProvider { get; protected set; }
         public INameProvider NameProvider { get; protected set; }
         public ITypeProvider TypeProvider { get; protected set; }
@@ -284,26 +286,24 @@ namespace MetaDslx.Compiler
 
         public MetaCompiler(string source, string fileName)
         {
-            this.Diagnostics = new ModelCompilerDiagnostics();
+            this.ModelGroup = new MutableModelGroup();
+            this.Model = this.ModelGroup.CreateModel();
+            this.Factory = new MetaFactory(this.Model);
+            this.GlobalScope = this.Factory.RootScope();
+            this.Diagnostics = new ModelCompilerDiagnostics(this);
             this.Source = source;
             this.FileName = fileName;
-            this.GlobalScope = new RootScope();
-            this.Model = new Model();
             this.Data = new MetaCompilerData(this);
             this.TriviaProvider = new Antlr4DefaultTriviaProvider(this);
-            this.NameProvider = new Antlr4DefaultNameProvider();
-            this.TypeProvider = new DefaultTypeProvider();
-            this.ResolutionProvider = new DefaultResolutionProvider();
-            this.BindingProvider = new DefaultBindingProvider();
+            this.NameProvider = new Antlr4DefaultNameProvider(this);
+            this.TypeProvider = new DefaultTypeProvider(this);
+            this.ResolutionProvider = new DefaultResolutionProvider(this);
+            this.BindingProvider = new DefaultBindingProvider(this);
         }
 
         public void Compile()
         {
-            using (new ModelContextScope(this.Model))
-            using (new ModelCompilerContextScope(this))
-            {
-                this.DoCompile();
-            }
+            this.DoCompile();
         }
 
         protected abstract void DoCompile();
@@ -344,25 +344,33 @@ namespace MetaDslx.Compiler
 
     }
 
+    public static class MetaCompilerExtensions
+    {
+        public static bool IsMetaScope(this Type symbolType)
+        {
+            if (symbolType == null) return false;
+            var attributes = symbolType.GetCustomAttributes(typeof(ScopeAttribute), true);
+            return attributes.Length > 0;
+        }
+    }
+
     public class MetaCompilerData
     {
-        private HashSet<ModelObject> symbols;
+        private HashSet<MutableSymbol> symbols;
 
         public MetaCompilerData(MetaCompiler compiler)
         {
             this.Compiler = compiler;
-            this.ModelFactory = new ModelFactory();
-            this.symbols = new HashSet<ModelObject>();
-            this.NodeToSymbol = new Dictionary<IParseTree, ModelObject>();
-            this.LazyNodeToSymbol = new Dictionary<IParseTree, Lazy<object>>();
+            this.symbols = new HashSet<MutableSymbol>();
+            this.NodeToSymbol = new Dictionary<IParseTree, MutableSymbol>();
+            this.LazyNodeToSymbol = new Dictionary<IParseTree, Func<object>>();
         }
 
         public MetaCompiler Compiler { get; private set; }
-        public ModelFactory ModelFactory { get; private set; }
-        public Dictionary<IParseTree, ModelObject> NodeToSymbol { get; private set; }
-        public Dictionary<IParseTree, Lazy<object>> LazyNodeToSymbol { get; private set; }
+        public Dictionary<IParseTree, MutableSymbol> NodeToSymbol { get; private set; }
+        public Dictionary<IParseTree, Func<object>> LazyNodeToSymbol { get; private set; }
 
-        public void RegisterSymbol(IParseTree node, ModelObject symbol)
+        public void RegisterSymbol(IParseTree node, MutableSymbol symbol)
         {
             if (symbol == null) return;
             if (node != null)
@@ -372,7 +380,7 @@ namespace MetaDslx.Compiler
             this.symbols.Add(symbol);
         }
 
-        public void RegisterLazySymbol(IParseTree node, Lazy<object> symbol)
+        public void RegisterLazySymbol(IParseTree node, Func<object> symbol)
         {
             if (symbol == null) return;
             if (node != null)
@@ -381,7 +389,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        public void ReplaceSymbol(IParseTree node, ModelObject oldSymbol, ModelObject newSymbol)
+        public void ReplaceSymbol(IParseTree node, MutableSymbol oldSymbol, MutableSymbol newSymbol)
         {
             if (oldSymbol == null) return;
             if (newSymbol == null) return;
@@ -394,17 +402,17 @@ namespace MetaDslx.Compiler
             this.symbols.Add(newSymbol);
         }
 
-        public ModelObject GetSymbol(IParseTree node)
+        public MutableSymbol GetSymbol(IParseTree node)
         {
-            ModelObject symbol = null;
+            MutableSymbol symbol = null;
             if (this.NodeToSymbol.TryGetValue(node, out symbol))
             {
                 return symbol;
             }
-            Lazy<object> lazySymbol = null;
+            Func<object> lazySymbol = null;
             if (this.LazyNodeToSymbol.TryGetValue(node, out lazySymbol))
             {
-                symbol = lazySymbol.Value as ModelObject;
+                symbol = lazySymbol() as MutableSymbol;
                 if (symbol != null)
                 {
                     this.NodeToSymbol[node] = symbol;
@@ -414,7 +422,7 @@ namespace MetaDslx.Compiler
             return null;
         }
 
-        public IEnumerable<ModelObject> GetSymbols()
+        public IEnumerable<MutableSymbol> GetSymbols()
         {
             return this.symbols;
         }
@@ -470,13 +478,11 @@ namespace MetaDslx.Compiler
             };
 
         protected MetaCompiler Compiler { get; private set; }
-        protected ModelFactory ModelFactory { get; private set; }
 
         public MetaCompilerPhase(MetaCompiler compiler)
         {
             this.Compiler = compiler;
-            this.ModelFactory = new ModelFactory();
-            this.SymbolStack = new List<ModelObject>();
+            this.SymbolStack = new List<MutableSymbol>();
             this.PropertyStack = new List<PropertyAnnotation>();
             this.ScopeKindStack = new List<IParseTree>();
             this.ScopeKindRestoreStack = new List<int>();
@@ -489,14 +495,14 @@ namespace MetaDslx.Compiler
             get { return this.Compiler.Data; }
         }
 
-        protected List<ModelObject> SymbolStack { get; private set; }
+        protected List<MutableSymbol> SymbolStack { get; private set; }
         protected List<PropertyAnnotation> PropertyStack { get; private set; }
         protected List<int> ScopeKindRestoreStack { get; private set; }
         protected List<IParseTree> ScopeKindStack { get; private set; }
         protected List<int> NameKindRestoreStack { get; private set; }
         protected List<IParseTree> NameKindStack { get; private set; }
 
-        protected ModelObject CurrentSymbol
+        protected MutableSymbol CurrentSymbol
         {
             get
             {
@@ -511,12 +517,12 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected ModelObject ActiveScopeSymbol
+        protected MutableSymbol ActiveScopeSymbol
         {
             get
             {
                 int index = this.SymbolStack.Count - 1;
-                while (index >= 0 && (this.SymbolStack[index] == null || !this.SymbolStack[index].IsMetaScope())) --index;
+                while (index >= 0 && (this.SymbolStack[index] == null || !this.SymbolStack[index].MIsScope)) --index;
                 if (index >= 0)
                 {
                     return this.SymbolStack[index];
@@ -528,7 +534,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected ModelObject ActiveSymbol
+        protected MutableSymbol ActiveSymbol
         {
             get
             {
@@ -545,13 +551,13 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected ModelObject ParentSymbol
+        protected MutableSymbol ParentSymbol
         {
             get
             {
                 int index = this.SymbolStack.Count - 1;
                 while (index >= 0 && this.SymbolStack[index] == null) --index;
-                ModelObject activeSymbol = null;
+                MutableSymbol activeSymbol = null;
                 if (index >= 0)
                 {
                     activeSymbol = this.SymbolStack[index];
@@ -661,7 +667,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected void AddSymbol(IParseTree node, ModelObject symbol)
+        protected void AddSymbol(IParseTree node, MutableSymbol symbol)
         {
             if (symbol == null) return;
             if (this.SymbolStack.Count > 0)
@@ -755,7 +761,7 @@ namespace MetaDslx.Compiler
 
         protected virtual void HandleSymbols(IParseTree node)
         {
-            ModelObject symbol = this.Compiler.Data.GetSymbol(node);
+            MutableSymbol symbol = this.Compiler.Data.GetSymbol(node);
             if (symbol != null)
             {
                 this.AddSymbol(node, symbol);
@@ -931,7 +937,7 @@ namespace MetaDslx.Compiler
             return this.Compiler.NameProvider.GetName(node);
         }
 
-        protected virtual bool SetProperty(IParseTree node, ModelObject symbol, PropertyAnnotation propertyAnnotation, object value)
+        protected virtual bool SetProperty(IParseTree node, MutableSymbol symbol, PropertyAnnotation propertyAnnotation, object value)
         {
             if (symbol == null) return false;
             if (propertyAnnotation == null) return false;
@@ -953,15 +959,15 @@ namespace MetaDslx.Compiler
             }
             if (symbolOK)
             {
-                ModelObject mo = symbol;
-                ModelProperty prop = mo.MFindProperties(propertyAnnotation.Name).FirstOrDefault();
+                MutableSymbol mo = symbol;
+                ModelProperty prop = mo.MGetProperty(propertyAnnotation.Name);
                 if (prop != null)
                 {
                     if (value != null)
                     {
-                        if (prop.IsAssignableFrom(value.GetType()))
+                        if (prop.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))
                         {
-                            if (!mo.MIsDefault(prop))
+                            if (!prop.IsCollection && mo.MIsSet(prop))
                             {
                                 object oldValue = mo.MGet(prop);
                                 if (!value.Equals(oldValue))
@@ -977,14 +983,17 @@ namespace MetaDslx.Compiler
                             this.Compiler.Diagnostics.AddError("Value '" + value + "' cannot be assigned to '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, node, true);
                         }
                     }
-                    else if (prop.Type.IsClass)
+                    else if (prop.MutableTypeInfo.Type.IsClass)
                     {
-                        if (!mo.MIsDefault(prop) && mo.MGet(prop) != null)
+                        if (!prop.IsCollection)
                         {
-                            this.Compiler.Diagnostics.AddWarning("Reassigning '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, node, true);
+                            if (mo.MIsSet(prop) && mo.MGet(prop) != null)
+                            {
+                                this.Compiler.Diagnostics.AddWarning("Reassigning '" + mo + "." + prop.Name + "'.", this.Compiler.FileName, node, true);
+                            }
+                            mo.MAdd(prop, value);
+                            return true;
                         }
-                        mo.MAdd(prop, value);
-                        return true;
                     }
                     else
                     {
@@ -1003,7 +1012,7 @@ namespace MetaDslx.Compiler
             return false;
         }
 
-        protected virtual bool SetLazyProperty(IParseTree node, ModelObject symbol, PropertyAnnotation propertyAnnotation, Lazy<object> value)
+        protected virtual bool SetLazyProperty(IParseTree node, MutableSymbol symbol, PropertyAnnotation propertyAnnotation, Func<object> value)
         {
             if (symbol == null) return false;
             if (propertyAnnotation == null) return false;
@@ -1026,71 +1035,47 @@ namespace MetaDslx.Compiler
             }
             if (symbolOK)
             {
-                ModelObject mo = symbol as ModelObject;
-                ModelProperty prop = mo.MFindProperty(propertyAnnotation.Name);
+                MutableSymbol mo = symbol as MutableSymbol;
+                ModelProperty prop = mo.MGetProperty(propertyAnnotation.Name);
                 if (prop != null)
                 {
-                    mo.MLazyAdd(prop, value);
+                    mo.MAddLazy(prop, value);
                     return true;
                 }
             }
             return false;
         }
 
-        protected virtual bool SetNameProperty(IParseTree node, ModelObject symbol, object value)
+        protected virtual bool SetNameProperty(IParseTree node, MutableSymbol symbol, string value)
         {
             if (symbol == null) return false;
-            bool success = false;
-            foreach (var prop in symbol.MGetProperties())
-            {
-                if (prop.Annotations.Any(a => a is NameAttribute))
-                {
-                    symbol.MAdd(prop, value);
-                    success = true;
-                }
-            }
-            if (!success)
+            if (symbol.MSymbolInfo.NameProperty == null)
             {
                 this.Compiler.Diagnostics.AddError("Could not find property with [Name] annotation in '" + symbol + "'.", this.Compiler.FileName, node, true);
+                return false;
             }
-            return success;
+            symbol.MName = value;
+            return true;
         }
 
-        protected virtual object GetNameProperty(IParseTree node, ModelObject symbol)
+        protected virtual string GetNameProperty(IParseTree node, MutableSymbol symbol)
         {
-            if (symbol == null) return false;
-            int counter = 0;
-            object result = null;
-            foreach (var prop in symbol.MGetProperties())
-            {
-                if (prop.Annotations.Any(a => a is NameAttribute))
-                {
-                    object value = symbol.MGet(prop);
-                    if (result == null && value != result)
-                    {
-                        result = value;
-                        ++counter;
-                    }
-                }
-            }
-            if (counter == 0)
+            if (symbol == null) return null;
+            if (symbol.MSymbolInfo.NameProperty == null)
             {
                 this.Compiler.Diagnostics.AddError("Could not find property with [Name] annotation in '" + symbol + "'.", this.Compiler.FileName, node, true);
+                return null;
             }
-            else if (counter > 1)
-            {
-                this.Compiler.Diagnostics.AddError("There are multiple properties with [Name] annotation having different values in '" + symbol + "'.", this.Compiler.FileName, node, true);
-            }
-            return result;
+            return symbol.MName;
         }
 
-        protected virtual bool IsNameProperty(ModelObject symbol, PropertyAnnotation propertyAnnotation)
+        protected virtual bool IsNameProperty(MutableSymbol symbol, PropertyAnnotation propertyAnnotation)
         {
             if (symbol == null) return false;
             if (propertyAnnotation == null) return false;
-            ModelProperty prop = symbol.MFindProperty(propertyAnnotation.Name);
+            ModelProperty prop = symbol.MGetProperty(propertyAnnotation.Name);
             if (prop == null) return false;
-            return prop.IsMetaName();
+            return prop.IsName;
         }
     }
 
@@ -1150,27 +1135,27 @@ namespace MetaDslx.Compiler
                     string name = this.Compiler.NameProvider.GetName(node);
                     if (pdsa.Name == name)
                     {
-                        ModelObject symbol = pdsa.Value as ModelObject;
+                        MutableSymbol symbol = pdsa.Value as MutableSymbol;
                         if (symbol != null)
                         {
                             this.RegisterSymbol(node, symbol);
                         }
                         else
                         {
-                            this.Compiler.Diagnostics.AddError("The predefined symbol must be a ModelObject.", this.Compiler.FileName, node, true);
+                            this.Compiler.Diagnostics.AddError("The predefined symbol must be a MutableSymbol.", this.Compiler.FileName, node, true);
                         }
                     }
                 }
                 else
                 {
-                    ModelObject symbol = pdsa.Value as ModelObject;
+                    MutableSymbol symbol = pdsa.Value as MutableSymbol;
                     if (symbol != null)
                     {
                         this.RegisterSymbol(node, symbol);
                     }
                     else
                     {
-                        this.Compiler.Diagnostics.AddError("The predefined symbol must be a ModelObject.", this.Compiler.FileName, node, true);
+                        this.Compiler.Diagnostics.AddError("The predefined symbol must be a MutableSymbol.", this.Compiler.FileName, node, true);
                     }
                 }
             }
@@ -1242,7 +1227,7 @@ namespace MetaDslx.Compiler
                 string name = this.GetName(node);
                 if (name != null)
                 {
-                    ModelObject typeDef = this.TypeDef(name, tda, this.CurrentNameKind, node, true);
+                    MutableSymbol typeDef = this.TypeDef(name, tda, this.CurrentNameKind, node, true);
                     if (typeDef != null)
                     {
                         if (!this.IsNameProperty(typeDef, this.ActiveProperty) || !this.SetProperty(node, typeDef, this.ActiveProperty, name))
@@ -1266,7 +1251,7 @@ namespace MetaDslx.Compiler
                         string currentName = this.GetName(names[i]);
                         if (currentName != null)
                         {
-                            ModelObject nameDef = this.NameDef(currentName, nda, this.CurrentNameKind, names[i], i == names.Count - 1);
+                            MutableSymbol nameDef = this.NameDef(currentName, nda, this.CurrentNameKind, names[i], i == names.Count - 1);
                             if (nameDef != null)
                             {
                                 if (!this.IsNameProperty(nameDef, this.ActiveProperty) || !this.SetProperty(node, nameDef, this.ActiveProperty, currentName))
@@ -1291,7 +1276,7 @@ namespace MetaDslx.Compiler
                     string name = this.GetName(node);
                     if (name != null)
                     {
-                        ModelObject nameDef = this.NameDef(name, nda, this.CurrentNameKind, node, true);
+                        MutableSymbol nameDef = this.NameDef(name, nda, this.CurrentNameKind, node, true);
                         if (nameDef != null)
                         {
                             if (!this.IsNameProperty(nameDef, this.ActiveProperty) || !this.SetProperty(node, nameDef, this.ActiveProperty, name))
@@ -1316,10 +1301,11 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected virtual ModelObject TypeDef(string name, TypeDefAnnotation typeDefAnnotation, IParseTree typeDefNode, IParseTree nameNode, bool registerSymbol)
+        protected virtual MutableSymbol TypeDef(string name, TypeDefAnnotation typeDefAnnotation, IParseTree typeDefNode, IParseTree nameNode, bool registerSymbol)
         {
-            ModelObject typeDef = this.CreateSymbol(nameNode, typeDefAnnotation.SymbolType);
-            typeDef.MSet(MetaScopeEntryProperties.CanMergeProperty, typeDefAnnotation.Merge && !typeDefAnnotation.Overload);
+            MutableSymbol typeDef = this.CreateSymbol(nameNode, typeDefAnnotation.SymbolType);
+            typeDef.MAttachProperty(ModelCompilerAttachedProperties.CanMergeProperty);
+            typeDef.MSet(ModelCompilerAttachedProperties.CanMergeProperty, typeDefAnnotation.Merge && !typeDefAnnotation.Overload);
             if (registerSymbol)
             {
                 this.RegisterSymbol(typeDefNode, typeDef);
@@ -1327,10 +1313,11 @@ namespace MetaDslx.Compiler
             return typeDef;
         }
 
-        protected virtual ModelObject NameDef(string name, NameDefAnnotation nameDefAnnotation, IParseTree nameDefNode, IParseTree nameNode, bool registerSymbol)
+        protected virtual MutableSymbol NameDef(string name, NameDefAnnotation nameDefAnnotation, IParseTree nameDefNode, IParseTree nameNode, bool registerSymbol)
         {
-            ModelObject nameDef = this.CreateSymbol(nameNode, nameDefAnnotation.SymbolType);
-            nameDef.MSet(MetaScopeEntryProperties.CanMergeProperty, nameDefAnnotation.Merge && !nameDefAnnotation.Overload);
+            MutableSymbol nameDef = this.CreateSymbol(nameNode, nameDefAnnotation.SymbolType);
+            nameDef.MAttachProperty(ModelCompilerAttachedProperties.CanMergeProperty);
+            nameDef.MSet(ModelCompilerAttachedProperties.CanMergeProperty, nameDefAnnotation.Merge && !nameDefAnnotation.Overload);
             if (registerSymbol)
             {
                 this.RegisterSymbol(nameDefNode, nameDef);
@@ -1338,14 +1325,12 @@ namespace MetaDslx.Compiler
             return nameDef;
         }
 
-        protected virtual ModelObject CreateSymbol(IParseTree node, Type symbolType)
+        protected virtual MutableSymbol CreateSymbol(IParseTree node, Type symbolType)
         {
             if (symbolType == null) return null;
-            ModelObject symbol = this.ModelFactory.Create(symbolType);
+            MutableSymbol symbol = this.Compiler.Factory.Create(symbolType);
             if (symbol != null)
             {
-                symbol.MSet(MetaScopeEntryProperties.NameTreeNodesProperty, new ModelList<object>(symbol, MetaScopeEntryProperties.NameTreeNodesProperty));
-                symbol.MSet(MetaScopeEntryProperties.SymbolTreeNodesProperty, new ModelList<object>(symbol, MetaScopeEntryProperties.SymbolTreeNodesProperty));
                 this.RegisterSymbol(node, symbol);
                 return symbol;
             }
@@ -1356,19 +1341,18 @@ namespace MetaDslx.Compiler
             return null;
         }
 
-        protected virtual void RegisterSymbol(IParseTree node, ModelObject symbol)
+        protected virtual void RegisterSymbol(IParseTree node, MutableSymbol symbol)
         {
             if (symbol == null) return;
             this.Compiler.Data.RegisterSymbol(node, symbol);
+            symbol.MAttachProperty(ModelCompilerAttachedProperties.SymbolTreeNodesProperty);
+            symbol.MAdd(ModelCompilerAttachedProperties.SymbolTreeNodesProperty, node);
             NameAnnotation na = this.GetAnnotationFor<NameAnnotation>(node);
             QualifiedNameAnnotation qna = this.GetAnnotationFor<QualifiedNameAnnotation>(node);
-            if (na == null && qna == null)
+            if (na != null || qna != null)
             {
-                symbol.MAdd(MetaScopeEntryProperties.SymbolTreeNodesProperty, node);
-            }
-            else
-            {
-                symbol.MAdd(MetaScopeEntryProperties.NameTreeNodesProperty, node);
+                symbol.MAttachProperty(ModelCompilerAttachedProperties.NameTreeNodesProperty);
+                symbol.MAdd(ModelCompilerAttachedProperties.NameTreeNodesProperty, node);
             }
         }
     }
@@ -1380,7 +1364,7 @@ namespace MetaDslx.Compiler
         {
         }
 
-        protected void ReplaceSymbol(IParseTree node, ModelObject oldSymbol, ModelObject newSymbol)
+        protected void ReplaceSymbol(IParseTree node, MutableSymbol oldSymbol, MutableSymbol newSymbol)
         {
             this.Data.ReplaceSymbol(node, oldSymbol, newSymbol);
             for (int i = 0; i < this.SymbolStack.Count; ++i)
@@ -1390,12 +1374,8 @@ namespace MetaDslx.Compiler
                     this.SymbolStack[i] = newSymbol;
                 }
             }
-            Model model = ModelContext.Current;
-            if (model != null)
-            {
-                model.RemoveInstance(oldSymbol);
-                model.AddInstance(newSymbol);
-            }
+            MutableModel model = this.Compiler.Model;
+            model.MergeSymbols(newSymbol, oldSymbol);
         }
 
         protected override void HandleNode(IParseTree node)
@@ -1419,7 +1399,7 @@ namespace MetaDslx.Compiler
             {
                 if (pa != null && !pa.HasValue)
                 {
-                    ModelObject typeDef = this.CurrentSymbol;
+                    MutableSymbol typeDef = this.CurrentSymbol;
                     this.MergeNamedSymbols(this.CurrentNameKind, node, this.ParentSymbol, pa.Name, typeDef, tda.Merge && !tda.Overload);
                 }
             }
@@ -1432,18 +1412,18 @@ namespace MetaDslx.Compiler
                     {
                         propertyName = pa.Name;
                     }
-                    ModelObject parentSymbol = this.ParentSymbol;
+                    MutableSymbol parentSymbol = this.ParentSymbol;
                     if (parentSymbol == null)
                     {
                         parentSymbol = this.Compiler.GlobalScope;
-                        propertyName = RootScope.EntriesProperty.Name;
+                        propertyName = MetaDescriptor.RootScope.EntriesProperty.Name;
                     }
                     List<IParseTree> names = this.GetNames(node);
                     for (int i = 0; i < names.Count; ++i)
                     {
                         IParseTree nameNode = names[i];
-                        ModelObject nameDef = this.Data.GetSymbol(nameNode);
-                        ModelObject mergedNameDef;
+                        MutableSymbol nameDef = this.Data.GetSymbol(nameNode);
+                        MutableSymbol mergedNameDef;
                         mergedNameDef = this.MergeNamedSymbols(i == names.Count - 1 ? this.CurrentNameKind : null, nameNode, parentSymbol, propertyName, nameDef, nda.Merge && !nda.Overload);
                         parentSymbol = mergedNameDef;
                         propertyName = nda.NestingProperty;
@@ -1453,21 +1433,21 @@ namespace MetaDslx.Compiler
                 {
                     if (pa != null && !pa.HasValue)
                     {
-                        ModelObject nameDef = this.CurrentSymbol;
+                        MutableSymbol nameDef = this.CurrentSymbol;
                         this.MergeNamedSymbols(this.CurrentNameKind, node, this.ParentSymbol, pa.Name, nameDef, nda.Merge && !nda.Overload);
                     }
                 }
             }
         }
 
-        protected virtual ModelObject MergeNamedSymbols(IParseTree defNode, IParseTree nameNode, ModelObject parent, string propertyName, ModelObject symbol, bool merge)
+        protected virtual MutableSymbol MergeNamedSymbols(IParseTree defNode, IParseTree nameNode, MutableSymbol parent, string propertyName, MutableSymbol symbol, bool merge)
         {
             if (parent == null) return symbol;
             if (propertyName == null) return symbol;
             if (symbol == null) return symbol;
             object name = this.GetNameProperty(nameNode, symbol);
             // TODO: if (propertyAnnotation.SymbolTypes)
-            ModelProperty prop = parent.MFindProperty(propertyName);
+            ModelProperty prop = parent.MGetProperty(propertyName);
             if (prop != null)
             {
                 if (merge)
@@ -1480,7 +1460,7 @@ namespace MetaDslx.Compiler
                         {
                             foreach (var entry in collection)
                             {
-                                ModelObject mo = entry as ModelObject;
+                                MutableSymbol mo = entry as MutableSymbol;
                                 object existingName = this.GetNameProperty(null, mo);
                                 if (existingName != null && existingName.Equals(name))
                                 {
@@ -1496,7 +1476,7 @@ namespace MetaDslx.Compiler
                         object existingEntry = parent.MGet(prop);
                         if (existingEntry != null)
                         {
-                            ModelObject mo = existingEntry as ModelObject;
+                            MutableSymbol mo = existingEntry as MutableSymbol;
                             object existingName = this.GetNameProperty(null, mo);
                             if (existingName != null && existingName.Equals(name))
                             {
@@ -1541,12 +1521,12 @@ namespace MetaDslx.Compiler
             if (na == null && qna == null) return;
             TypeUseAnnotation tua = this.GetAnnotationFor<TypeUseAnnotation>(this.CurrentNameKind);
             NameUseAnnotation nua = this.GetAnnotationFor<NameUseAnnotation>(this.CurrentNameKind);
-            ModelObject symbol = this.CurrentSymbol;
+            MutableSymbol symbol = this.CurrentSymbol;
             if (symbol != null)
             {
                 if (tua != null || nua != null)
                 {
-                    ModelObject parentSymbol = this.ParentSymbol;
+                    MutableSymbol parentSymbol = this.ParentSymbol;
                     PropertyAnnotation activeProperty = this.ActiveProperty;
                     this.SetProperty(node, parentSymbol, activeProperty, symbol);
                 }
@@ -1556,8 +1536,8 @@ namespace MetaDslx.Compiler
                 if (tua != null)
                 {
                     List<IParseTree> names = this.GetNames(node);
-                    ModelObject activeScopeSymbol = this.ActiveScopeSymbol;
-                    ModelObject activeSymbol = this.ActiveSymbol;
+                    MutableSymbol activeScopeSymbol = this.ActiveScopeSymbol;
+                    MutableSymbol activeSymbol = this.ActiveSymbol;
                     PropertyAnnotation activeProperty = this.ActiveProperty;
                     ResolutionInfo ri = new ResolutionInfo();
                     ri.Kind = ResolveKind.Type;
@@ -1565,17 +1545,16 @@ namespace MetaDslx.Compiler
                     ri.QualifiedNameNodes.AddRange(names);
                     ri.Location = tua.Location;
                     ri.SymbolTypes.AddRange(tua.SymbolTypes);
-                    Func<ModelObject> lazySymbol =
+                    Func<MutableSymbol> lazySymbol =
                         () => this.Compiler.BindingProvider.Bind(null, this.Compiler.ResolutionProvider.Resolve(ri));
-                    Lazy <object> lazyValue = new Lazy<object>(lazySymbol, LazyThreadSafetyMode.ExecutionAndPublication);
-                    this.SetLazyProperty(node, activeSymbol, activeProperty, lazyValue);
-                    this.Data.RegisterLazySymbol(node, lazyValue);
+                    this.SetLazyProperty(node, activeSymbol, activeProperty, lazySymbol);
+                    this.Data.RegisterLazySymbol(node, lazySymbol);
                 }
                 if (nua != null)
                 {
                     List<IParseTree> names = this.GetNames(node);
-                    ModelObject activeScopeSymbol = this.ActiveScopeSymbol;
-                    ModelObject activeSymbol = this.ActiveSymbol;
+                    MutableSymbol activeScopeSymbol = this.ActiveScopeSymbol;
+                    MutableSymbol activeSymbol = this.ActiveSymbol;
                     PropertyAnnotation activeProperty = this.ActiveProperty;
                     ResolutionInfo ri = new ResolutionInfo();
                     ri.Kind = ResolveKind.Name;
@@ -1583,19 +1562,18 @@ namespace MetaDslx.Compiler
                     ri.QualifiedNameNodes.AddRange(names);
                     ri.Location = nua.Location;
                     ri.SymbolTypes.AddRange(nua.SymbolTypes);
-                    Func<ModelObject> lazySymbol =
+                    Func<MutableSymbol> lazySymbol =
                         () => this.Compiler.BindingProvider.Bind(null, this.Compiler.ResolutionProvider.Resolve(ri));
-                    Lazy<object> lazyValue = new Lazy<object>(lazySymbol, LazyThreadSafetyMode.ExecutionAndPublication);
-                    this.SetLazyProperty(node, activeSymbol, activeProperty, lazyValue);
-                    this.Data.RegisterLazySymbol(node, lazyValue);
+                    this.SetLazyProperty(node, activeSymbol, activeProperty, lazySymbol);
+                    this.Data.RegisterLazySymbol(node, lazySymbol);
                 }
             }
         }
 
-        private IEnumerable<ModelObject> FilterByTypes(IEnumerable<ModelObject> mobjs, List<Type> types)
+        private IEnumerable<MutableSymbol> FilterByTypes(IEnumerable<MutableSymbol> mobjs, List<Type> types)
         {
             if (types.Count == 0) return mobjs;
-            List<ModelObject> result = new List<ModelObject>();
+            List<MutableSymbol> result = new List<MutableSymbol>();
             foreach (var mobj in mobjs)
             {
                 bool valid = false;
@@ -1629,17 +1607,18 @@ namespace MetaDslx.Compiler
             NameCtrAnnotation nca = this.GetAnnotationFor<NameCtrAnnotation>(node);
             if (tca != null || nca != null)
             {
-                ModelObject symbol = this.CurrentSymbol;
+                MutableSymbol symbol = this.CurrentSymbol;
                 if (symbol != null)
                 {
-                    ModelObject parent = this.ParentSymbol;
+                    MutableSymbol parent = this.ParentSymbol;
                     if (parent != null)
                     {
-                        symbol.MParent = parent;
+                        // TODO ???
+                        //symbol.MParent = parent;
                     }
                     else
                     {
-                        symbol.MParent = this.Compiler.GlobalScope;
+                        this.Compiler.GlobalScope.Entries.Add(symbol);
                     }
                 }
             }
@@ -1768,7 +1747,7 @@ namespace MetaDslx.Compiler
                     }
                     else
                     {
-                        ModelObject symbol = this.CurrentSymbol;
+                        MutableSymbol symbol = this.CurrentSymbol;
                         if (symbol != null)
                         {
                             this.SetProperty(node, this.ParentSymbol, pa, symbol);
@@ -1780,7 +1759,7 @@ namespace MetaDslx.Compiler
 
         protected virtual void HandleTrivia(IParseTree node)
         {
-            ModelObject symbol = this.CurrentSymbol;
+            MutableSymbol symbol = this.CurrentSymbol;
             if (symbol != null)
             {
                 bool retrievedTrivia = false;
@@ -1809,10 +1788,9 @@ namespace MetaDslx.Compiler
                         }
                         if (symbolOK)
                         {
-                            ModelProperty prop = symbol.MFindProperty(ta.Property);
+                            ModelProperty prop = symbol.MGetProperty(ta.Property);
                             if (prop != null)
                             {
-
                                 if (!retrievedTrivia)
                                 {
                                     leadingTrivia = this.Compiler.TriviaProvider.GetLeadingTrivia(symbol);
@@ -1853,12 +1831,10 @@ namespace MetaDslx.Compiler
     public class MetaCompilerPropertyEvaluator : AbstractParseTreeVisitor<object>
     {
         public MetaCompiler Compiler { get; private set; }
-        protected ModelFactory ModelFactory { get; private set; }
 
         public MetaCompilerPropertyEvaluator(MetaCompiler compiler)
         {
             this.Compiler = compiler;
-            this.ModelFactory = new ModelFactory();
         }
 
         public override object Visit(IParseTree tree)
@@ -1887,9 +1863,9 @@ namespace MetaDslx.Compiler
             return null;
         }
 
-        public virtual ModelObject Symbol(IParseTree node)
+        public virtual MutableSymbol Symbol(IParseTree node)
         {
-            ModelObject symbol = this.Compiler.Data.GetSymbol(node);
+            MutableSymbol symbol = this.Compiler.Data.GetSymbol(node);
             if (symbol == null)
             {
                 this.Compiler.Diagnostics.AddError("Cannot resolve symbol. No symbols found for the node.", this.Compiler.FileName, node, true);
@@ -1902,10 +1878,10 @@ namespace MetaDslx.Compiler
             if (node == null) return null;
             if (property == null) return null;
             object symbol = this.Symbol(node);
-            ModelObject mo = symbol as ModelObject;
+            MutableSymbol mo = symbol as MutableSymbol;
             if (mo != null)
             {
-                ModelProperty prop = mo.MFindProperty(property);
+                ModelProperty prop = mo.MGetProperty(property);
                 if (prop != null)
                 {
                     return mo.MGet(prop);
@@ -1914,25 +1890,25 @@ namespace MetaDslx.Compiler
             return null;
         }
 
-        public virtual void SetValue(IParseTree node, string property, Lazy<object> value)
+        public virtual void SetValue(IParseTree node, string property, Func<object> value)
         {
             if (node == null) return;
             if (property == null) return;
             if (value == null) return;
             object symbol = this.Symbol(node);
-            ModelObject mo = symbol as ModelObject;
+            MutableSymbol mo = symbol as MutableSymbol;
             if (mo != null)
             {
-                ModelProperty prop = mo.MFindProperty(property);
+                ModelProperty prop = mo.MGetProperty(property);
                 if (prop != null)
                 {
                     if (prop.IsCollection)
                     {
-                        mo.MLazyAdd(prop, value);
+                        mo.MAddLazy(prop, value);
                     }
                     else
                     {
-                        mo.MLazySet(prop, value);
+                        mo.MSetLazy(prop, value);
                     }
                 }
             }

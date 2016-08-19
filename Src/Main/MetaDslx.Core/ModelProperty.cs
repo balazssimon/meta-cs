@@ -12,16 +12,16 @@ using System.Threading.Tasks;
 namespace MetaDslx.Core.Immutable
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public sealed class ModelSymbolDecriptorAttribute : Attribute
+    public sealed class ModelSymbolDescriptorAttribute : Attribute
     {
         private ImmutableArray<Type> baseSymbolDescriptors;
 
-        public ModelSymbolDecriptorAttribute()
+        public ModelSymbolDescriptorAttribute()
         {
             this.baseSymbolDescriptors = ImmutableArray<Type>.Empty;
         }
 
-        public ModelSymbolDecriptorAttribute(params Type[] baseSymbolDescriptors)
+        public ModelSymbolDescriptorAttribute(params Type[] baseSymbolDescriptors)
         {
             this.baseSymbolDescriptors = baseSymbolDescriptors.ToImmutableArray();
         }
@@ -117,6 +117,45 @@ namespace MetaDslx.Core.Immutable
     }
 
 
+
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class NameAttribute : Attribute
+    {
+
+    }
+
+    [System.AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class TypeAttribute : Attribute
+    {
+
+    }
+
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class ScopeEntryAttribute : Attribute
+    {
+    }
+
+    [System.AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+    public sealed class ScopeAttribute : Attribute
+    {
+    }
+
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class ImportedScopeAttribute : Attribute
+    {
+    }
+
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class ImportedScopeEntryAttribute : Attribute
+    {
+    }
+
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class InheritedScopeAttribute : Attribute
+    {
+    }
+
+
     [Flags]
     internal enum ModelPropertyFlags : uint
     {
@@ -129,6 +168,26 @@ namespace MetaDslx.Core.Immutable
         NonUnique = 0x0020,
         NonNull = 0x0040,
         Containment = 0x0080
+    }
+
+    [Flags]
+    internal enum MetaModelPropertyFlags : uint
+    {
+        None = 0x0000,
+        Name = 0x0001,
+        Type = 0x0002,
+        ScopeEntry = 0x0004,
+        ImportedScope = 0x0008,
+        ImportedScopeEntry = 0x0010,
+        InheritedScope = 0x0020
+    }
+
+    [Flags]
+    internal enum MetaModelSymbolFlags : uint
+    {
+        None = 0x0000,
+        Scope = 0x0001,
+        Type = 0x0002
     }
 
     internal enum ModelPropertyInitState
@@ -145,6 +204,7 @@ namespace MetaDslx.Core.Immutable
         private ModelSymbolInfo declaringSymbol;
         private string name;
         private ModelPropertyFlags flags;
+        private MetaModelPropertyFlags metaFlags;
         private ModelPropertyTypeInfo immutableTypeInfo;
         private ModelPropertyTypeInfo mutableTypeInfo;
         private ImmutableList<Attribute> annotations;
@@ -247,6 +307,57 @@ namespace MetaDslx.Core.Immutable
                 return this.flags.HasFlag(ModelPropertyFlags.Containment);
             }
         }
+
+        public bool IsName
+        {
+            get
+            {
+                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
+                return this.metaFlags.HasFlag(MetaModelPropertyFlags.Name);
+            }
+        }
+        public bool IsType
+        {
+            get
+            {
+                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
+                return this.metaFlags.HasFlag(MetaModelPropertyFlags.Type);
+            }
+        }
+        public bool IsScopeEntry
+        {
+            get
+            {
+                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
+                return this.metaFlags.HasFlag(MetaModelPropertyFlags.ScopeEntry);
+            }
+        }
+        public bool IsImportedScope
+        {
+            get
+            {
+                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
+                return this.metaFlags.HasFlag(MetaModelPropertyFlags.ImportedScope);
+            }
+        }
+        public bool IsImportedScopeEntry
+        {
+            get
+            {
+                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
+                return this.metaFlags.HasFlag(MetaModelPropertyFlags.ImportedScopeEntry);
+            }
+        }
+        public bool IsInheritedScope
+        {
+            get
+            {
+                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
+                return this.metaFlags.HasFlag(MetaModelPropertyFlags.InheritedScope);
+            }
+        }
+
+
         public ModelPropertyTypeInfo ImmutableTypeInfo { get { return this.immutableTypeInfo; } }
         public ModelPropertyTypeInfo MutableTypeInfo { get { return this.mutableTypeInfo; } }
         public ImmutableList<Attribute> Annotations { get { return this.annotations; } }
@@ -306,6 +417,30 @@ namespace MetaDslx.Core.Immutable
                     else if (annot is ContainmentAttribute)
                     {
                         this.flags |= ModelPropertyFlags.Containment;
+                    }
+                    else if (annot is NameAttribute)
+                    {
+                        this.metaFlags |= MetaModelPropertyFlags.Name;
+                    }
+                    else if (annot is TypeAttribute)
+                    {
+                        this.metaFlags |= MetaModelPropertyFlags.Type;
+                    }
+                    else if (annot is ScopeEntryAttribute)
+                    {
+                        this.metaFlags |= MetaModelPropertyFlags.ScopeEntry;
+                    }
+                    else if (annot is ImportedScopeAttribute)
+                    {
+                        this.metaFlags |= MetaModelPropertyFlags.ImportedScope;
+                    }
+                    else if (annot is ImportedScopeAttribute)
+                    {
+                        this.metaFlags |= MetaModelPropertyFlags.ImportedScopeEntry;
+                    }
+                    else if (annot is InheritedScopeAttribute)
+                    {
+                        this.metaFlags |= MetaModelPropertyFlags.InheritedScope;
                     }
                 }
                 this.state = ModelPropertyInitState.FlagsSet;
@@ -670,6 +805,9 @@ namespace MetaDslx.Core.Immutable
         private bool initializedBaseSymbols;
         private Type symbolDescriptorType;
         private GreenSymbol emptyGreenSymbol;
+        private MetaModelSymbolFlags metaFlags;
+        private ModelProperty nameProperty;
+        private ModelProperty typeProperty;
         private ImmutableList<Attribute> annotations;
         private ImmutableList<ModelSymbolInfo> baseSymbols;
         private ImmutableList<ModelProperty> declaredProperties;
@@ -682,6 +820,20 @@ namespace MetaDslx.Core.Immutable
             this.initializedBaseSymbols = false;
             this.symbolDescriptorType = symbolDescriptorType;
             this.annotations = symbolDescriptorType.GetCustomAttributes(false).OfType<Attribute>().ToImmutableList();
+            this.metaFlags = MetaModelSymbolFlags.None;
+            foreach (var annot in this.annotations)
+            {
+                if (annot is ScopeAttribute)
+                {
+                    this.metaFlags |= MetaModelSymbolFlags.Scope;
+                }
+                else if (annot is TypeAttribute)
+                {
+                    this.metaFlags |= MetaModelSymbolFlags.Type;
+                }
+            }
+            this.nameProperty = null;
+            this.typeProperty = null;
             this.emptyGreenSymbol = GreenSymbol.Empty;
             this.baseSymbols = ImmutableList<ModelSymbolInfo>.Empty;
             this.declaredProperties = ImmutableList<ModelProperty>.Empty;
@@ -722,7 +874,7 @@ namespace MetaDslx.Core.Immutable
             get { return ModelSymbolInfo.symbols; }
         }
 
-        internal void AddBaseSymbol(ModelSymbolInfo baseSymbol)
+        private void AddBaseSymbol(ModelSymbolInfo baseSymbol)
         {
             if (this.initializedBaseSymbols) throw new InvalidOperationException("Cannot add a base symbol to an initialized symbol.");
             ImmutableList<ModelSymbolInfo> oldBaseSymbols;
@@ -739,6 +891,14 @@ namespace MetaDslx.Core.Immutable
                     newBaseSymbols = oldBaseSymbols;
                 }
             } while (Interlocked.CompareExchange(ref this.baseSymbols, newBaseSymbols, oldBaseSymbols) != oldBaseSymbols);
+            if (baseSymbol.IsScope)
+            {
+                this.metaFlags |= MetaModelSymbolFlags.Scope;
+            }
+            if (baseSymbol.IsType)
+            {
+                this.metaFlags |= MetaModelSymbolFlags.Type;
+            }
         }
 
         internal void AddProperty(ModelProperty property)
@@ -773,6 +933,38 @@ namespace MetaDslx.Core.Immutable
         }
         public ImmutableList<ModelProperty> DeclaredProperties { get { return this.declaredProperties; } }
 
+        public bool IsScope
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.metaFlags.HasFlag(MetaModelSymbolFlags.Scope);
+            }
+        }
+        public bool IsType
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.metaFlags.HasFlag(MetaModelSymbolFlags.Type);
+            }
+        }
+        public ModelProperty NameProperty
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.nameProperty;
+            }
+        }
+        public ModelProperty TypeProperty
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.typeProperty;
+            }
+        }
         public ImmutableList<ModelProperty> Properties
         {
             get
@@ -806,9 +998,9 @@ namespace MetaDslx.Core.Immutable
                 if (this.initializedBaseSymbols) return;
                 foreach (var annot in this.annotations)
                 {
-                    if (annot is ModelSymbolDecriptorAttribute)
+                    if (annot is ModelSymbolDescriptorAttribute)
                     {
-                        ModelSymbolDecriptorAttribute descrAnnot = (ModelSymbolDecriptorAttribute)annot;
+                        ModelSymbolDescriptorAttribute descrAnnot = (ModelSymbolDescriptorAttribute)annot;
                         foreach (var baseType in descrAnnot.BaseSymbolDescriptors)
                         {
                             this.AddBaseSymbol(ModelSymbolInfo.GetSymbolInfo(baseType));
@@ -837,13 +1029,32 @@ namespace MetaDslx.Core.Immutable
         private void CreateProperties()
         {
             ImmutableList<ModelProperty> properties = ImmutableList<ModelProperty>.Empty;
-            foreach (var baseSymbol in this.baseSymbols)
+            foreach (var prop in this.declaredProperties)
             {
-                foreach (var prop in baseSymbol.Properties)
+                if (prop.IsName)
+                {
+                    this.nameProperty = prop;
+                }
+                if (prop.IsType)
+                {
+                    this.typeProperty = prop;
+                }
+            }
+            foreach (var baseSymbol in this.baseSymbols.Reverse())
+            {
+                foreach (var prop in baseSymbol.Properties.Reverse())
                 {
                     if (!properties.Contains(prop))
                     {
                         properties = properties.Add(prop);
+                        if (this.nameProperty == null && prop.IsName)
+                        {
+                            this.nameProperty = prop;
+                        }
+                        if (this.typeProperty == null && prop.IsType)
+                        {
+                            this.typeProperty = prop;
+                        }
                     }
                 }
             }

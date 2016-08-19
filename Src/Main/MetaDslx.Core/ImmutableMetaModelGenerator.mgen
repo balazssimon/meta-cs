@@ -295,7 +295,7 @@ template GenerateSymbolInstancePropertyValue(MetaModel model, bool coreModel, Im
 [name].[prop.Name] = [value.ToString()];
 [else if (value is Enum)]
 [name].[prop.Name] = [GetEnumValueOf((Enum)value)];
-[else if (value is MetaPrimitiveType && MetaConstants.Types.Contains((MetaType)value))]
+[else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
 	[if (coreModel)]
 [name].[prop.Name]Lazy = () => [((MetaPrimitiveType)value).Name.ToPascalCase()];
 	[else]
@@ -335,7 +335,7 @@ template GenerateSymbolInstancePropertyCollectionValue(MetaModel model, bool cor
 [name].[prop.Name].Add([value.ToString()]);
 [else if (value is Enum)]
 [name].[prop.Name].Add([GetEnumValueOf((Enum)value)]);
-[else if (value is MetaPrimitiveType && MetaConstants.Types.Contains((MetaType)value))]
+[else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
 	[if (coreModel)]
 [name].[prop.Name].AddLazy(() => [((MetaPrimitiveType)value).Name.ToPascalCase()]);
 	[else]
@@ -425,9 +425,9 @@ template GenerateDescriptorClass(MetaModel model, MetaClass cls)
 [GenerateDocumentation(cls)]
 [GenerateAnnotations(cls)]
 [if (cls.SuperClasses.Count > 0)]
-["["+Properties.CoreNs+".ModelSymbolDecriptorAttribute("][GetDescriptorAncestors(model, cls)][")]"]
+["["+Properties.CoreNs+".ModelSymbolDescriptorAttribute("][GetDescriptorAncestors(model, cls)][")]"]
 [else]
-["["+Properties.CoreNs+".ModelSymbolDecriptorAttribute]"]
+["["+Properties.CoreNs+".ModelSymbolDescriptorAttribute]"]
 [end if]
 public static class [cls.CSharpName(model, ClassKind.Descriptor)]
 {
@@ -756,6 +756,7 @@ end template
 
 template GenerateImmutableClass(MetaModel model, MetaClass cls)
 [GenerateDocumentation(cls)]
+[GenerateAnnotations(cls)]
 public interface [cls.CSharpName(model, ClassKind.Immutable)][GetImmutableAncestors(model, cls)]
 {
 	[loop(cls->prop:Properties)]
@@ -804,6 +805,7 @@ end function
 
 template GenerateBuilderClass(MetaModel model, MetaClass cls)
 [GenerateDocumentation(cls)]
+[GenerateAnnotations(cls)]
 public interface [cls.CSharpName(model, ClassKind.Builder)][GetBuilderAncestors(model, cls)]
 {
 	[loop(cls->prop:Properties)]

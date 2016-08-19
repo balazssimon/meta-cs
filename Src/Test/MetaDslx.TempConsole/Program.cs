@@ -1,6 +1,5 @@
 ﻿using MetaDslx.Compiler;
-using MetaDslx.Core;
-using MetaDslx.Soal;
+using MetaDslx.Core.Immutable;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -170,7 +169,7 @@ namespace MetaDslx.TempConsole
                     }
                 }
                 //*/
-                //PrintScope("", (ModelObject)MetaDescriptor.MetaModel.GetMetaClass().Namespace.Parent);
+                //PrintScope("", (MutableSymbol)MetaDescriptor.MetaModel.GetMetaClass().Namespace.Parent);
                 /*
                 Console.WriteLine("----");
                 CompileGenerator(
@@ -239,7 +238,14 @@ namespace MetaDslx.TempConsole
                     );
                 //*/
                 //*
-                GenerateImmutableMeta(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.cs");
+                GenerateImmutableMeta(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel2.cs");
+                //*/
+                /*
+                Console.WriteLine("----");
+                CompileMeta(
+                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.mm",
+                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel1.cs"
+                    );
                 //*/
             }
             catch (System.Exception ex)
@@ -280,12 +286,12 @@ namespace MetaDslx.TempConsole
             }
         }
 
-        private static void PrintScope(string indent, ModelObject scope)
+        private static void PrintScope(string indent, MutableSymbol scope)
         {
             foreach (var entry in scope.MChildren)
             {
                 Console.WriteLine(indent + entry);
-                if (entry.IsMetaScope())
+                if (entry.MIsScope)
                 {
                     PrintScope(indent + "  ", entry);
                 }
@@ -300,171 +306,104 @@ namespace MetaDslx.TempConsole
             }
         }
 
-        private static void CompileMeta(string fileName, string outputFileName, bool javaOutput = false)
+        private static void CompileMeta(string fileName, string outputFileName)
         {
-            //Meta.MetaTypedElement.StaticInit();
-            //Console.WriteLine(Meta.MetaTypedElement.TypeProperty);
-            //Meta.StaticInit();
-            //Console.WriteLine(Meta.Model);
-                        
-            //Model model = new Model();
-            //using (new ModelContextScope(model))
+            string source;
+            using (StreamReader reader = new StreamReader(fileName))
             {
-                string source;
-                using (StreamReader reader = new StreamReader(fileName))
+                source = reader.ReadToEnd();
+            }
+            Console.WriteLine(MetaInstance.Bool);
+            MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
+            compiler.Compile();
+            MutableModel model = compiler.Model;
+            ImmutableModel immutableModel = model.ToImmutable();
+            if (!compiler.Diagnostics.HasErrors())
+            {
+                using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
-                    source = reader.ReadToEnd();
+                    ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(immutableModel.Symbols);
+                    writer.WriteLine(generator.Generate());
                 }
-                MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
-                compiler.Compile();
-                Model model = compiler.Model;
-                if (!compiler.Diagnostics.HasErrors())
-                {
-                    ModelExchange.SaveToFile("MetaModel.xmi", model);
-                    using (StreamWriter writer = new StreamWriter(outputFileName))
-                    {
-                        if (javaOutput)
-                        {
-                            MetaModelJavaGenerator mmjg = new MetaModelJavaGenerator(model.Instances);
-                            string javaSource = mmjg.Generate();
-                            writer.WriteLine(javaSource);
-                            string javaDir = @"k:\VersionControl\soal-java\src\metadslx.soal.runtime\src\generated\java\metadslx\languages\soal\";
-                            //string javaDir = @"k:\VersionControl\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
-                            //string javaDir = @"c:\Users\Balazs\Documents\git\meta-java\src\metadslx.core\src\generated\java\metadslx\core\";
-                            MetaModel mm = (MetaModel)model.Instances.FirstOrDefault(obj => obj is MetaModel);
-                            SaveToFile(javaDir + mm.Name + "Descriptor.java", mmjg.GenerateMetaModelDescriptor(mm));
-                            SaveToFile(javaDir + mm.Name + "Instance.java", mmjg.GenerateMetaModelInstance(mm));
-                            foreach (var enm in mm.Namespace.Declarations.OfType<MetaEnum>())
-                            {
-                                SaveToFile(javaDir + enm.Name + ".java", mmjg.GenerateEnum(enm));
-                            }
-                            foreach (var cls in mm.Namespace.Declarations.OfType<MetaClass>())
-                            {
-                                SaveToFile(javaDir + cls.Name + ".java", mmjg.GenerateInterface(cls));
-                                SaveToFile(javaDir + cls.Name + "Impl.java", mmjg.GenerateInterfaceImpl(mm, cls));
-                            }
-                            SaveToFile(javaDir + mm.Name + "Factory.java", mmjg.GenerateFactory(mm));
-                            SaveToFile(javaDir + mm.Name + "ImplementationProvider.java", mmjg.GenerateImplementationProvider(mm));
-                            SaveToFile(javaDir + mm.Name + "ImplementationBase.java", mmjg.GenerateImplementationBase(mm));
-                        }
-                        else
-                        {
-                            MetaModelCSharpGenerator generator = new MetaModelCSharpGenerator(model.Instances);
-                            writer.WriteLine(generator.Generate());
-                        }
-                    }
-                }
-                //PrintScope("", compiler.GlobalScope);
-                Console.WriteLine("=");
+            }
+            //PrintScope("", compiler.GlobalScope);
+            Console.WriteLine("=");
 
-                using (StreamWriter writer = new StreamWriter("symbols.txt"))
+            using (StreamWriter writer = new StreamWriter("symbols.txt"))
+            {
+                foreach (var symbol in immutableModel.Symbols)
                 {
-                    foreach (var symbol in model.Instances)
+                    ImmutableSymbol mo = symbol;
+                    if (mo != null)
                     {
-                        ModelObject mo = symbol as ModelObject;
-                        if (mo != null)
+                        writer.WriteLine(mo);
+                        Console.WriteLine(mo);
+                        string leading = compiler.TriviaProvider.GetLeadingTrivia(mo);
+                        string trailing = compiler.TriviaProvider.GetTrailingTrivia(mo);
+                        if (!string.IsNullOrWhiteSpace(leading))
                         {
-                            writer.WriteLine(mo);
-                            Console.WriteLine(mo);
-                            string leading = compiler.TriviaProvider.GetLeadingTrivia(mo);
-                            string trailing = compiler.TriviaProvider.GetTrailingTrivia(mo);
-                            if (!string.IsNullOrWhiteSpace(leading))
+                            writer.WriteLine("  Leading trivia: "+leading);
+                            Console.WriteLine("  Leading trivia: "+ leading);
+                        }
+                        if (!string.IsNullOrWhiteSpace(trailing))
+                        {
+                            writer.WriteLine("  Trailing trivia: "+ trailing);
+                            Console.WriteLine("  Trailing trivia: "+trailing);
+                        }
+                        writer.WriteLine("  Parent=" + mo.MParent);
+                        Console.WriteLine("  Parent=" + mo.MParent);
+                        ModelProperty mp;
+                        mp = mo.MGetProperty("Documentation");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  Documentation=" + mo.MGet(mp));
+                            Console.WriteLine("  Documentation=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("Name");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  Name=" + mo.MGet(mp));
+                            Console.WriteLine("  Name=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("Uri");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  Uri=" + mo.MGet(mp));
+                            Console.WriteLine("  Uri=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("IsAbstract");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  IsAbstract=" + mo.MGet(mp));
+                            Console.WriteLine("  IsAbstract=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("Type");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  Type=" + mo.MGet(mp));
+                            Console.WriteLine("  Type=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("InnerType");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  InnerType=" + mo.MGet(mp));
+                            Console.WriteLine("  InnerType=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("ReturnType");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  ReturnType=" + mo.MGet(mp));
+                            Console.WriteLine("  ReturnType=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("EnumLiterals");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  EnumLiterals:");
+                            Console.WriteLine("  EnumLiterals:");
+                            foreach (var elo in (IEnumerable<object>)mo.MGet(mp))
                             {
-                                writer.WriteLine("  Leading trivia: "+leading);
-                                Console.WriteLine("  Leading trivia: "+ leading);
-                            }
-                            if (!string.IsNullOrWhiteSpace(trailing))
-                            {
-                                writer.WriteLine("  Trailing trivia: "+ trailing);
-                                Console.WriteLine("  Trailing trivia: "+trailing);
-                            }
-                            writer.WriteLine("  Parent=" + mo.MParent);
-                            Console.WriteLine("  Parent=" + mo.MParent);
-                            ModelProperty mp;
-                            mp = mo.MFindProperty("Documentation");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Documentation=" + mo.MGet(mp));
-                                Console.WriteLine("  Documentation=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Name");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Name=" + mo.MGet(mp));
-                                Console.WriteLine("  Name=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Uri");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Uri=" + mo.MGet(mp));
-                                Console.WriteLine("  Uri=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("IsAbstract");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  IsAbstract=" + mo.MGet(mp));
-                                Console.WriteLine("  IsAbstract=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("NoTypeError");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  NoTypeError=" + mo.MGet(mp));
-                                Console.WriteLine("  NoTypeError=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperties("ExpectedType").FirstOrDefault();
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  ExpectedType=" + mo.MGet(mp));
-                                Console.WriteLine("  ExpectedType=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperties("Type").FirstOrDefault();
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Type=" + mo.MGet(mp));
-                                Console.WriteLine("  Type=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperties("InnerType").FirstOrDefault();
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  InnerType=" + mo.MGet(mp));
-                                Console.WriteLine("  InnerType=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperties("ReturnType").FirstOrDefault();
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  ReturnType=" + mo.MGet(mp));
-                                Console.WriteLine("  ReturnType=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Object");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Object=" + mo.MGet(mp));
-                                Console.WriteLine("  Object=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Property");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Property=" + mo.MGet(mp));
-                                Console.WriteLine("  Property=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Value");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Value=" + mo.MGet(mp));
-                                Console.WriteLine("  Value=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Definition");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Definition=" + mo.MGet(mp));
-                                Console.WriteLine("  Definition=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("EnumLiterals");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  EnumLiterals:");
-                                Console.WriteLine("  EnumLiterals:");
-                                foreach (var el in (IList<MetaEnumLiteral>)mo.MGet(mp))
+                                MetaEnumLiteral el = elo as MetaEnumLiteral;
+                                if (el != null)
                                 {
                                     writer.WriteLine("    " + el);
                                     Console.WriteLine("    " + el);
@@ -473,169 +412,18 @@ namespace MetaDslx.TempConsole
                         }
                     }
                 }
-
-                using (StreamWriter writer = new StreamWriter("messages_meta.txt"))
-                {
-                    foreach (var msg in compiler.Diagnostics.GetMessages(true))
-                    {
-                        writer.WriteLine(msg);
-                        Console.WriteLine(msg);
-                    }
-                }
             }
-        }
 
-
-        private static void CompileImmutableMeta(string fileName, string outputFileName)
-        {
+            using (StreamWriter writer = new StreamWriter("messages_meta.txt"))
             {
-                string source;
-                using (StreamReader reader = new StreamReader(fileName))
+                foreach (var msg in compiler.Diagnostics.GetMessages(true))
                 {
-                    source = reader.ReadToEnd();
-                }
-                MetaModelCompiler compiler = new MetaModelCompiler(source, fileName);
-                compiler.Compile();
-                Model model = compiler.Model;
-                if (!compiler.Diagnostics.HasErrors())
-                {
-                    ModelExchange.SaveToFile("MetaModel.xmi", model);
-                    ImmutableMetaModelGeneratorOld generator = new ImmutableMetaModelGeneratorOld(compiler.Model.Instances);
-                    using (StreamWriter writer = new StreamWriter(outputFileName))
-                    {
-                        writer.WriteLine(generator.Generate());
-                    }
-                }
-                //PrintScope("", compiler.GlobalScope);
-                Console.WriteLine("=");
-
-                using (StreamWriter writer = new StreamWriter("symbols.txt"))
-                {
-                    foreach (var symbol in model.Instances)
-                    {
-                        ModelObject mo = symbol as ModelObject;
-                        if (mo != null)
-                        {
-                            writer.WriteLine(mo);
-                            Console.WriteLine(mo);
-                            string leading = compiler.TriviaProvider.GetLeadingTrivia(mo);
-                            string trailing = compiler.TriviaProvider.GetTrailingTrivia(mo);
-                            if (!string.IsNullOrWhiteSpace(leading))
-                            {
-                                writer.WriteLine("  Leading trivia: " + leading);
-                                Console.WriteLine("  Leading trivia: " + leading);
-                            }
-                            if (!string.IsNullOrWhiteSpace(trailing))
-                            {
-                                writer.WriteLine("  Trailing trivia: " + trailing);
-                                Console.WriteLine("  Trailing trivia: " + trailing);
-                            }
-                            writer.WriteLine("  Parent=" + mo.MParent);
-                            Console.WriteLine("  Parent=" + mo.MParent);
-                            ModelProperty mp;
-                            mp = mo.MFindProperty("Documentation");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Documentation=" + mo.MGet(mp));
-                                Console.WriteLine("  Documentation=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Name");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Name=" + mo.MGet(mp));
-                                Console.WriteLine("  Name=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Uri");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Uri=" + mo.MGet(mp));
-                                Console.WriteLine("  Uri=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("IsAbstract");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  IsAbstract=" + mo.MGet(mp));
-                                Console.WriteLine("  IsAbstract=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("NoTypeError");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  NoTypeError=" + mo.MGet(mp));
-                                Console.WriteLine("  NoTypeError=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperties("ExpectedType").FirstOrDefault();
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  ExpectedType=" + mo.MGet(mp));
-                                Console.WriteLine("  ExpectedType=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperties("Type").FirstOrDefault();
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Type=" + mo.MGet(mp));
-                                Console.WriteLine("  Type=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperties("InnerType").FirstOrDefault();
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  InnerType=" + mo.MGet(mp));
-                                Console.WriteLine("  InnerType=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperties("ReturnType").FirstOrDefault();
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  ReturnType=" + mo.MGet(mp));
-                                Console.WriteLine("  ReturnType=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Object");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Object=" + mo.MGet(mp));
-                                Console.WriteLine("  Object=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Property");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Property=" + mo.MGet(mp));
-                                Console.WriteLine("  Property=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Value");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Value=" + mo.MGet(mp));
-                                Console.WriteLine("  Value=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("Definition");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  Definition=" + mo.MGet(mp));
-                                Console.WriteLine("  Definition=" + mo.MGet(mp));
-                            }
-                            mp = mo.MFindProperty("EnumLiterals");
-                            if (mp != null)
-                            {
-                                writer.WriteLine("  EnumLiterals:");
-                                Console.WriteLine("  EnumLiterals:");
-                                foreach (var el in (IList<MetaEnumLiteral>)mo.MGet(mp))
-                                {
-                                    writer.WriteLine("    " + el);
-                                    Console.WriteLine("    " + el);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                using (StreamWriter writer = new StreamWriter("messages_meta.txt"))
-                {
-                    foreach (var msg in compiler.Diagnostics.GetMessages(true))
-                    {
-                        writer.WriteLine(msg);
-                        Console.WriteLine(msg);
-                    }
+                    writer.WriteLine(msg);
+                    Console.WriteLine(msg);
                 }
             }
         }
+
 
         private static void CompileGenerator(string fileName, string outputFileName)
         {
@@ -701,96 +489,64 @@ namespace MetaDslx.TempConsole
                         Console.WriteLine(mo);
                         writer.WriteLine("  Parent=" + mo.MParent);
                         Console.WriteLine("  Parent=" + mo.MParent);
-                        //ModelProperty mp;
-                        /*mp = mo.MFindProperty("Documentation");
+                        ModelProperty mp;
+                        mp = mo.MGetProperty("Documentation");
                         if (mp != null)
                         {
                             writer.WriteLine("  Documentation=" + mo.MGet(mp));
                             Console.WriteLine("  Documentation=" + mo.MGet(mp));
                         }
-                        mp = mo.MFindProperty("Name");
+                        mp = mo.MGetProperty("Name");
                         if (mp != null)
                         {
                             writer.WriteLine("  Name=" + mo.MGet(mp));
                             Console.WriteLine("  Name=" + mo.MGet(mp));
                         }
-                        mp = mo.MFindProperty("Uri");
+                        mp = mo.MGetProperty("Uri");
                         if (mp != null)
                         {
                             writer.WriteLine("  Uri=" + mo.MGet(mp));
                             Console.WriteLine("  Uri=" + mo.MGet(mp));
                         }
-                        mp = mo.MFindProperty("IsAbstract");
+                        mp = mo.MGetProperty("IsAbstract");
                         if (mp != null)
                         {
                             writer.WriteLine("  IsAbstract=" + mo.MGet(mp));
                             Console.WriteLine("  IsAbstract=" + mo.MGet(mp));
                         }
-                        mp = mo.MFindProperty("NoTypeError");
-                        if (mp != null)
-                        {
-                            writer.WriteLine("  NoTypeError=" + mo.MGet(mp));
-                            Console.WriteLine("  NoTypeError=" + mo.MGet(mp));
-                        }
-                        mp = mo.MFindProperties("ExpectedType").FirstOrDefault();
-                        if (mp != null)
-                        {
-                            writer.WriteLine("  ExpectedType=" + mo.MGet(mp));
-                            Console.WriteLine("  ExpectedType=" + mo.MGet(mp));
-                        }
-                        mp = mo.MFindProperties("Type").FirstOrDefault();
+                        mp = mo.MGetProperty("Type");
                         if (mp != null)
                         {
                             writer.WriteLine("  Type=" + mo.MGet(mp));
                             Console.WriteLine("  Type=" + mo.MGet(mp));
                         }
-                        mp = mo.MFindProperties("InnerType").FirstOrDefault();
+                        mp = mo.MGetProperty("InnerType");
                         if (mp != null)
                         {
                             writer.WriteLine("  InnerType=" + mo.MGet(mp));
                             Console.WriteLine("  InnerType=" + mo.MGet(mp));
                         }
-                        mp = mo.MFindProperties("ReturnType").FirstOrDefault();
+                        mp = mo.MGetProperty("ReturnType");
                         if (mp != null)
                         {
                             writer.WriteLine("  ReturnType=" + mo.MGet(mp));
                             Console.WriteLine("  ReturnType=" + mo.MGet(mp));
                         }
-                        mp = mo.MFindProperty("Object");
-                        if (mp != null)
-                        {
-                            writer.WriteLine("  Object=" + mo.MGet(mp));
-                            Console.WriteLine("  Object=" + mo.MGet(mp));
-                        }
-                        mp = mo.MFindProperty("Property");
-                        if (mp != null)
-                        {
-                            writer.WriteLine("  Property=" + mo.MGet(mp));
-                            Console.WriteLine("  Property=" + mo.MGet(mp));
-                        }
-                        mp = mo.MFindProperty("Value");
-                        if (mp != null)
-                        {
-                            writer.WriteLine("  Value=" + mo.MGet(mp));
-                            Console.WriteLine("  Value=" + mo.MGet(mp));
-                        }
-                        mp = mo.MFindProperty("Definition");
-                        if (mp != null)
-                        {
-                            writer.WriteLine("  Definition=" + mo.MGet(mp));
-                            Console.WriteLine("  Definition=" + mo.MGet(mp));
-                        }
-                        mp = mo.MFindProperty("EnumLiterals");
+                        mp = mo.MGetProperty("EnumLiterals");
                         if (mp != null)
                         {
                             writer.WriteLine("  EnumLiterals:");
                             Console.WriteLine("  EnumLiterals:");
-                            foreach (var el in (IList<MetaEnumLiteral>)mo.MGet(mp))
+                            foreach (var elo in (IEnumerable<object>)mo.MGet(mp))
                             {
-                                writer.WriteLine("    " + el);
-                                Console.WriteLine("    " + el);
+                                MetaEnumLiteral el = elo as MetaEnumLiteral;
+                                if (el != null)
+                                {
+                                    writer.WriteLine("    " + el);
+                                    Console.WriteLine("    " + el);
+                                }
                             }
-                        }*/
+                        }
                     }
                 }
             }

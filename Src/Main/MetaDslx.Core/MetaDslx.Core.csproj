@@ -37,7 +37,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,71 +57,23 @@
     </Compile>
     <Compile Include="ImmutableMetaModelGeneratorExtensions.cs" />
     <Compile Include="ImmutableUtils.cs" />
-    <Compile Include="Mutable\ImmutableMetaModelGeneratorOld.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ImmutableMetaModelGeneratorOld.mgen</DependentUpon>
-    </Compile>
     <Compile Include="GreenModel.cs" />
     <Compile Include="ModelCollections.cs" />
+    <Compile Include="ModelCompiler.cs" />
     <Compile Include="ModelException.cs" />
     <Compile Include="ModelProperty.cs" />
     <Compile Include="RedModel.cs" />
-    <Compile Include="Mutable\MetaImplementation.cs" />
-    <Compile Include="Mutable\MetaModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MetaModel.mm</DependentUpon>
-    </Compile>
-    <Compile Include="Mutable\MetaModelCSharpGenerator.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MetaModelCSharpGenerator.mgen</DependentUpon>
-    </Compile>
-    <Compile Include="Mutable\MetaModelJavaGenerator.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MetaModelJavaGenerator.mgen</DependentUpon>
-    </Compile>
-    <Compile Include="Mutable\ModelCollection.cs" />
-    <Compile Include="Mutable\ModelCompiler.cs" />
-    <Compile Include="Mutable\ModelContext.cs" />
-    <Compile Include="Mutable\ModelException.cs" />
-    <Compile Include="Mutable\ModelExchange.cs" />
-    <Compile Include="Mutable\ModelFactory.cs" />
-    <Compile Include="Mutable\ModelList.cs" />
-    <Compile Include="Mutable\ModelObject.cs" />
-    <Compile Include="Mutable\ModelProperty.cs" />
-    <Compile Include="Mutable\ModelPropertyAttribute.cs" />
-    <Compile Include="Mutable\ModelSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ImmutableMetaModelGenerator.mgen">
       <Generator>MetaGenerator</Generator>
-      <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
-    </None>
-    <None Include="Mutable\ImmutableMetaModelGeneratorOld.mgen">
-      <Generator>MetaGenerator</Generator>
-      <LastGenOutput>ImmutableMetaModelGeneratorOld.cs</LastGenOutput>
     </None>
     <None Include="MetaDslxKey.snk" />
     <None Include="ImmutableMetaModel.mm">
       <Generator>MetaModelGenerator</Generator>
-      <LastGenOutput>ImmutableMetaModel1.cs</LastGenOutput>
     </None>
-    <None Include="Mutable\MetaModel.mm">
-      <Generator>MetaModelGenerator</Generator>
-      <LastGenOutput>MetaModel.cs</LastGenOutput>
-    </None>
-    <None Include="Mutable\MetaModelCSharpGenerator.mgen">
-      <Generator>MetaGenerator</Generator>
-      <LastGenOutput>MetaModelCSharpGenerator.cs</LastGenOutput>
-    </None>
-    <None Include="Mutable\MetaModelJavaGenerator.mgen">
-      <Generator>MetaGenerator</Generator>
-      <LastGenOutput>MetaModelJavaGenerator.cs</LastGenOutput>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -127,14 +127,14 @@ namespace MetaDslx.Compiler
         private void ProcessAntlr4ErrorLine(string line)
         {
             if (string.IsNullOrWhiteSpace(line)) return;
-            Core.Severity severity = Core.Severity.Info;
+            MetaDslx.Core.Immutable.Severity severity = MetaDslx.Core.Immutable.Severity.Info;
             if (line.StartsWith("error"))
             {
-                severity = Core.Severity.Error;
+                severity = MetaDslx.Core.Immutable.Severity.Error;
             }
             else if (line.StartsWith("warning"))
             {
-                severity = Core.Severity.Warning;
+                severity = MetaDslx.Core.Immutable.Severity.Warning;
             }
             int colonIndex = line.IndexOf(':');
             if (colonIndex >= 0)
@@ -1185,14 +1185,19 @@ namespace MetaDslx.Compiler
             WriteLine();
             if (this.compiler.IsParser)
             {
-                WriteLine("public {0}Annotator()", this.parserName);
+                WriteLine("private IModelCompiler compiler;");
+                WriteLine();
+                WriteLine("public {0}Annotator(IModelCompiler compiler)", this.parserName);
+                WriteLine("{");
+                IncIndent();
+                WriteLine("this.compiler = compiler;");
             }
             else
             {
                 WriteLine("public {0}Annotator()", this.lexerName);
+                WriteLine("{");
+                IncIndent();
             }
-            WriteLine("{");
-            IncIndent();
             WriteLine("List<object> annotList = null;");
             foreach (var annot in currentGrammar.Annotations)
             {
@@ -1391,9 +1396,7 @@ namespace MetaDslx.Compiler
             WriteLine("if (sta.HasName)");
             WriteLine("{");
             IncIndent();
-            WriteLine("ModelCompilerContext.RequireContext();");
-            WriteLine("IModelCompiler compiler = ModelCompilerContext.Current;");
-            WriteLine("string name = compiler.NameProvider.GetName(node);");
+            WriteLine("string name = this.compiler.NameProvider.GetName(node);");
             WriteLine("if (sta.Name == name)");
             WriteLine("{");
             IncIndent();

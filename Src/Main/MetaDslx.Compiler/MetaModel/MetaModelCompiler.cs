@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using MetaDslx.Core;
+using MetaDslx.Core.Immutable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,12 @@ namespace MetaDslx.Compiler
         public MetaModelCompiler(string source, string fileName)
             : base(source, fileName)
         {
-            this.GlobalScope.AddMetaBuiltInEntries();
+            MutableModel metaInstance = MetaInstance.Model.ToMutable(true);
+            this.ModelGroup.AddReference(metaInstance);
+            foreach (var type in MetaConstants.Types)
+            {
+                this.GlobalScope.BuiltInEntries.Add(type.ToMutable(metaInstance));
+            }
         }
 
     }

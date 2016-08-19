@@ -45,27 +45,6 @@ namespace MetaDslx.Compiler
             List<object> treeAnnotList = null;
             if (this.treeAnnotations.TryGetValue(node, out treeAnnotList))
             {
-                foreach (var treeAnnot in treeAnnotList)
-                {
-                    SymbolTypeAnnotation sta = treeAnnot as SymbolTypeAnnotation;
-                    if (sta != null)
-                    {
-                        if (sta.HasName)
-                        {
-                            ModelCompilerContext.RequireContext();
-                            IModelCompiler compiler = ModelCompilerContext.Current;
-                            string name = compiler.NameProvider.GetName(node);
-                            if (sta.Name == name)
-                            {
-                                this.OverrideSymbolType(node, sta.SymbolType);
-                            }
-                        }
-                        else
-                        {
-                            this.OverrideSymbolType(node, sta.SymbolType);
-                        }
-                    }
-                }
                 treeAnnotList.RemoveAll(a => a is SymbolTypeAnnotation);
             }
         }
