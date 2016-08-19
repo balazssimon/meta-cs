@@ -1,4 +1,4 @@
-﻿/*
+/*
  * [The "BSD license"]
  *  Copyright (c) 2013 Terence Parr
  *  Copyright (c) 2013 Sam Harwell
@@ -411,4 +411,5 @@ identifier : TOKEN_REF | RULE_REF | ID;
 boolLiteral : TRUE | FALSE;
 
 nullLiteral : NULL;
+
 

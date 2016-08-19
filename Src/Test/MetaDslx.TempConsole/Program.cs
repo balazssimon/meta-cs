@@ -104,7 +104,7 @@ namespace MetaDslx.TempConsole
                 CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\MetaGenerator", @"MetaGeneratorParser");
                 Console.WriteLine("----");
                 //*/
-                /*
+                //*
                 CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\MetaModel", @"MetaModelLexer");
                 CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler\MetaModel", @"MetaModelParser");
                 Console.WriteLine("----");
@@ -237,7 +237,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel1.cs"
                     );
                 //*/
-                //*
+                /*
                 GenerateImmutableMeta(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel2.cs");
                 //*/
                 /*

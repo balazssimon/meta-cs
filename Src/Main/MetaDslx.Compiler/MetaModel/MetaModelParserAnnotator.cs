@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Core.Immutable;
+using MetaDslx.Core;
 using MetaDslx.Compiler;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
@@ -14,7 +14,7 @@ using Antlr4.Runtime.Tree;
 namespace MetaDslx.Compiler
 {
     
-using MetaDslx.Core;
+using MetaDslx.Core.Immutable;
 
     public class MetaModelParserAnnotator : MetaModelParserBaseVisitor<object>
     {
@@ -29,10 +29,11 @@ using MetaDslx.Core;
         public Dictionary<int, List<object>> ModeAnnotations { get { return this.lexerAnnotator.ModeAnnotations; } }
         public Dictionary<Type, List<object>> RuleAnnotations { get { return this.ruleAnnotations; } }
         public Dictionary<object, List<object>> TreeAnnotations { get { return this.treeAnnotations; } }
-
-        private IModelCompiler compiler;
-
-        public MetaModelParserAnnotator(IModelCompiler compiler)
+        
+        
+        private MetaDslx.Core.Immutable.IModelCompiler compiler;
+        
+        public MetaModelParserAnnotator(MetaDslx.Core.Immutable.IModelCompiler compiler)
         {
             this.compiler = compiler;
             List<object> annotList = null;
@@ -57,7 +58,7 @@ using MetaDslx.Core;
                     {
                         if (sta.HasName)
                         {
-                            string name = compiler.NameProvider.GetName(node);
+                            string name = this.compiler.NameProvider.GetName(node);
                             if (sta.Name == name)
                             {
                                 this.OverrideSymbolType(node, sta.SymbolType);
@@ -1372,7 +1373,7 @@ using MetaDslx.Core;
             referencePhase.VisitNode(this.ParseTree);
             MetaModelParserPropertyEvaluator propertyEvaluator = new MetaModelParserPropertyEvaluator(this);
             propertyEvaluator.Visit(this.ParseTree);
-
+            
             this.Model.EvaluateLazyValues();
         }
         
@@ -1381,3 +1382,4 @@ using MetaDslx.Core;
         public MetaModelParser Parser { get; private set; }
     }
 }
+

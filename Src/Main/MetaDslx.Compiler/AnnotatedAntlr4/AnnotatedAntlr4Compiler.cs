@@ -395,7 +395,8 @@ namespace MetaDslx.Compiler
 
         internal protected void DecIndent()
         {
-            indent = indent.Substring(4);
+            if (indent.Length >= 4) indent = indent.Substring(4);
+            else indent = string.Empty;
         }
 
         internal protected void WriteIndent()
@@ -1185,9 +1186,9 @@ namespace MetaDslx.Compiler
             WriteLine();
             if (this.compiler.IsParser)
             {
-                WriteLine("private IModelCompiler compiler;");
+                WriteLine("private MetaDslx.Core.Immutable.IModelCompiler compiler;");
                 WriteLine();
-                WriteLine("public {0}Annotator(IModelCompiler compiler)", this.parserName);
+                WriteLine("public {0}Annotator(MetaDslx.Core.Immutable.IModelCompiler compiler)", this.parserName);
                 WriteLine("{");
                 IncIndent();
                 WriteLine("this.compiler = compiler;");
@@ -1864,7 +1865,7 @@ namespace MetaDslx.Compiler
             WriteLine("this.Parser = new {0}(this.CommonTokenStream);", this.parserName);
             WriteLine("this.Parser.AddErrorListener(this);");
             WriteLine("this.ParseTree = this.Parser.{0};", rootName);
-            WriteLine("{0}Annotator annotator = new {0}Annotator();", this.parserName);
+            WriteLine("{0}Annotator annotator = new {0}Annotator(this);", this.parserName);
             WriteLine("annotator.Visit(this.ParseTree);");
             WriteLine("this.LexerAnnotations = annotator.LexerAnnotations;");
             WriteLine("this.ParserAnnotations = annotator.ParserAnnotations;");
@@ -1881,18 +1882,7 @@ namespace MetaDslx.Compiler
             WriteLine("{0}PropertyEvaluator propertyEvaluator = new {0}PropertyEvaluator(this);", this.parserName);
             WriteLine("propertyEvaluator.Visit(this.ParseTree);");
             WriteLine();
-            WriteLine("this.Model.EvalLazyValues();");
-            WriteLine("foreach (var symbol in this.Data.GetSymbols())");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("if (symbol.MHasUninitializedValue())");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("this.Diagnostics.AddError(\"The symbol '\" + symbol + \"' has uninitialized lazy values.\", this.FileName, new TextSpan(), true);");
-            DecIndent();
-            WriteLine("}");
-            DecIndent();
-            WriteLine("}");
+            WriteLine("this.Model.EvaluateLazyValues();");
             DecIndent();
             WriteLine("}");
             WriteLine();
@@ -2211,7 +2201,7 @@ namespace MetaDslx.Compiler
                                 output.WriteLine("{");
                                 output.IncIndent();
                                 output.WriteIndent();
-                                output.Write("this.SetValue(context.{0}[{2}], \"{1}\", new Lazy<object>(() => ", elem.GetAccessorName(), propName, selName);
+                                output.Write("this.SetValue(context.{0}[{2}], \"{1}\", () => ", elem.GetAccessorName(), propName, selName);
                                 closeScopes = 2;
                             }
                             else if (propSels[1].selector != null)
@@ -2226,7 +2216,7 @@ namespace MetaDslx.Compiler
                         else
                         {
                             output.WriteIndent();
-                            output.Write("this.SetValue(context.{0}, \"{1}\", new Lazy<object>(() => ", elem.GetAccessorName(), propName);
+                            output.Write("this.SetValue(context.{0}, \"{1}\", () => ", elem.GetAccessorName(), propName);
                         }
                         started = true;
                         closeFunction = true;
@@ -2240,7 +2230,7 @@ namespace MetaDslx.Compiler
                         else
                         {
                             output.WriteIndent();
-                            output.Write("this.SetValue(context, \"{0}\", new Lazy<object>(() => ", propName);
+                            output.Write("this.SetValue(context, \"{0}\", () => ", propName);
                         }
                         started = true;
                         closeFunction = true;
@@ -2265,12 +2255,12 @@ namespace MetaDslx.Compiler
                         {
                             string selName = propSels[0].selector.GetText();
                             output.WriteIndent();
-                            output.Write("this.SetValue(context, \"{0}\", {1}, new Lazy<object>(() => ", propName, selName);
+                            output.Write("this.SetValue(context, \"{0}\", {1}, () => ", propName, selName);
                         }
                         else
                         {
                             output.WriteIndent();
-                            output.Write("this.SetValue(context, \"{0}\", new Lazy<object>(() => ", propName);
+                            output.Write("this.SetValue(context, \"{0}\", () => ", propName);
                         }
                     }
                     started = true;
@@ -2283,7 +2273,7 @@ namespace MetaDslx.Compiler
                 base.VisitExpression(context.expression());
                 if (closeFunction)
                 {
-                    output.Write("))");
+                    output.Write(")");
                 }
                 if (started)
                 {
