@@ -2,9 +2,10 @@
 MetaDslx is a user friendly metamodeling framework for .NET.
 
 MetaDslx supports the following features:
-* implementing domain specific languages
-* extending ANTLR4 grammars with annotations
-* creating compilers with semantic analysis for domain specific languages
+* implementing domain specific languages (DSLs)
+* lock-free thread-safe immutable semantic object models
+* auto generated syntactic and semantic compilation of DSLs to semantic models
+* compilers with a Roslyn-style public API, based on ANTLR4 grammars extended with semantic annotations
 * creating user friendly template-based code generators
 * generating syntax highlighters for Visual Studio
 
