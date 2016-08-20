@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +14,7 @@ using Antlr4.Runtime.Tree;
 namespace MetaDslx.Compiler
 {
     
-using MetaDslx.Core.Immutable;
+using MetaDslx.Core;
 
     public class MetaModelParserAnnotator : MetaModelParserBaseVisitor<object>
     {
@@ -31,9 +31,9 @@ using MetaDslx.Core.Immutable;
         public Dictionary<object, List<object>> TreeAnnotations { get { return this.treeAnnotations; } }
         
         
-        private MetaDslx.Core.Immutable.IModelCompiler compiler;
+        private MetaDslx.Compiler.IModelCompiler compiler;
         
-        public MetaModelParserAnnotator(MetaDslx.Core.Immutable.IModelCompiler compiler)
+        public MetaModelParserAnnotator(MetaDslx.Compiler.IModelCompiler compiler)
         {
             this.compiler = compiler;
             List<object> annotList = null;
@@ -1357,24 +1357,27 @@ using MetaDslx.Core.Immutable;
             this.Parser = new MetaModelParser(this.CommonTokenStream);
             this.Parser.AddErrorListener(this);
             this.ParseTree = this.Parser.main();
-            MetaModelParserAnnotator annotator = new MetaModelParserAnnotator(this);
-            annotator.Visit(this.ParseTree);
-            this.LexerAnnotations = annotator.LexerAnnotations;
-            this.ParserAnnotations = annotator.ParserAnnotations;
-            this.ModeAnnotations = annotator.ModeAnnotations;
-            this.TokenAnnotations = annotator.TokenAnnotations;
-            this.RuleAnnotations = annotator.RuleAnnotations;
-            this.TreeAnnotations = annotator.TreeAnnotations;
-            MetaCompilerDefinitionPhase definitionPhase = new MetaCompilerDefinitionPhase(this);
-            definitionPhase.VisitNode(this.ParseTree);
-            MetaCompilerMergePhase mergePhase = new MetaCompilerMergePhase(this);
-            mergePhase.VisitNode(this.ParseTree);
-            MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);
-            referencePhase.VisitNode(this.ParseTree);
-            MetaModelParserPropertyEvaluator propertyEvaluator = new MetaModelParserPropertyEvaluator(this);
-            propertyEvaluator.Visit(this.ParseTree);
-            
-            this.Model.EvaluateLazyValues();
+            if (!this.Diagnostics.HasErrors())
+            {
+                MetaModelParserAnnotator annotator = new MetaModelParserAnnotator(this);
+                annotator.Visit(this.ParseTree);
+                this.LexerAnnotations = annotator.LexerAnnotations;
+                this.ParserAnnotations = annotator.ParserAnnotations;
+                this.ModeAnnotations = annotator.ModeAnnotations;
+                this.TokenAnnotations = annotator.TokenAnnotations;
+                this.RuleAnnotations = annotator.RuleAnnotations;
+                this.TreeAnnotations = annotator.TreeAnnotations;
+                MetaCompilerDefinitionPhase definitionPhase = new MetaCompilerDefinitionPhase(this);
+                definitionPhase.VisitNode(this.ParseTree);
+                MetaCompilerMergePhase mergePhase = new MetaCompilerMergePhase(this);
+                mergePhase.VisitNode(this.ParseTree);
+                MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);
+                referencePhase.VisitNode(this.ParseTree);
+                MetaModelParserPropertyEvaluator propertyEvaluator = new MetaModelParserPropertyEvaluator(this);
+                propertyEvaluator.Visit(this.ParseTree);
+                
+                this.Model.EvaluateLazyValues();
+            }
         }
         
         public MetaModelParser.MainContext ParseTree { get; private set; }
@@ -1382,4 +1385,3 @@ using MetaDslx.Core.Immutable;
         public MetaModelParser Parser { get; private set; }
     }
 }
-

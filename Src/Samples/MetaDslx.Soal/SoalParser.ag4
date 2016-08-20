@@ -23,13 +23,13 @@ declaration : structDeclaration | exceptionDeclaration | entityDeclaration | dat
 // Structs and exceptions
 
 $TypeDef(Struct)
-structDeclaration : KStruct identifier (TColon $Property(BaseType) $TypeUse(symbolType=Struct,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : KStruct identifier (TColon $Property(BaseType) $TypeUse(symbolType=Struct,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $TypeDef(Exception)
-exceptionDeclaration : KException identifier (TColon $Property(BaseType) $TypeUse(symbolType=Exception,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+exceptionDeclaration : KException identifier (TColon $Property(BaseType) $TypeUse(symbolType=Exception,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $TypeDef(Entity)
-entityDeclaration : KEntity identifier (TColon $Property(BaseType) $TypeUse(symbolType=Entity,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+entityDeclaration : KEntity identifier (TColon $Property(BaseType) $TypeUse(symbolType=Entity,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
 $Property(Properties)
 $NameDef(Property)
@@ -64,7 +64,7 @@ parameter : $Property(Type) typeReference identifier;
 // Component
 
 $TypeDef(Component)
-componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent identifier (TColon $Property(BaseComponent) $TypeUse(symbolType=Component,resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent identifier (TColon $Property(BaseComponent) $TypeUse(symbolType=Component,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace componentElements? TCloseBrace;
 
 componentElements : componentElement+;
 
@@ -103,7 +103,7 @@ $NameDef(Language)
 componentLanguage : KLanguage identifier TSemicolon;
 
 $TypeDef
-compositeDeclaration : ($SymbolType(Assembly) KAssembly | $SymbolType(Composite) KComposite) identifier (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),resolveFlags=ResolveFlags.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+compositeDeclaration : ($SymbolType(Assembly) KAssembly | $SymbolType(Composite) KComposite) identifier (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
 compositeElements : compositeElement+;
 

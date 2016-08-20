@@ -12,7 +12,6 @@ using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Antlr4.Runtime;
-using MetaDslx.Compiler;
 using System.Drawing;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -245,8 +244,8 @@ namespace MetaDslx.VisualStudio
     {
         protected override SingleFileGenerator CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
 		{
-            // If there is a compile error in the following line, create a class MetaGeneratorGenerator
-            // which is a subclass of SingleFileGenerator
+			// If there is a compile error in the following line, create a class MetaGeneratorGenerator
+			// which is a subclass of SingleFileGenerator
 			return new MetaGeneratorGenerator(inputFilePath, inputFileContents, defaultNamespace);
 		}
 
@@ -260,8 +259,8 @@ namespace MetaDslx.VisualStudio
         private int currentOffset;
         private string currentLine;
         private MetaDslx.Compiler.MetaGeneratorLexer lexer;
-        private IEnumerable<SyntaxAnnotation> modeAnnotations;
-        private IEnumerable<SyntaxAnnotation> syntaxAnnotations;
+        private IEnumerable<MetaDslx.Compiler.SyntaxAnnotation> modeAnnotations;
+        private IEnumerable<MetaDslx.Compiler.SyntaxAnnotation> syntaxAnnotations;
         private Dictionary<LanguageScannerState, int> inverseStates;
         private Dictionary<int, LanguageScannerState> states;
         private int lastState;
@@ -271,26 +270,26 @@ namespace MetaDslx.VisualStudio
             this.states = new Dictionary<int, LanguageScannerState>();
             this.lastState = 0;
             MetaDslx.Compiler.MetaGeneratorLexerAnnotator annotator = new MetaDslx.Compiler.MetaGeneratorLexerAnnotator();
-            List<SyntaxAnnotation> mal = new List<SyntaxAnnotation>();
+            List<MetaDslx.Compiler.SyntaxAnnotation> mal = new List<MetaDslx.Compiler.SyntaxAnnotation>();
             foreach (var annotList in annotator.ModeAnnotations.Values)
             {
                 foreach (var annot in annotList)
                 {
-                    if (annot is SyntaxAnnotation)
+                    if (annot is MetaDslx.Compiler.SyntaxAnnotation)
                     {
-                        mal.Add((SyntaxAnnotation)annot);
+                        mal.Add((MetaDslx.Compiler.SyntaxAnnotation)annot);
                     }
                 }
             }
             this.modeAnnotations = mal;
-            List<SyntaxAnnotation> sal = new List<SyntaxAnnotation>();
+            List<MetaDslx.Compiler.SyntaxAnnotation> sal = new List<MetaDslx.Compiler.SyntaxAnnotation>();
             foreach (var annotList in annotator.TokenAnnotations.Values)
             {
                 foreach (var annot in annotList)
                 {
-                    if (annot is SyntaxAnnotation)
+                    if (annot is MetaDslx.Compiler.SyntaxAnnotation)
                     {
-                        sal.Add((SyntaxAnnotation)annot);
+                        sal.Add((MetaDslx.Compiler.SyntaxAnnotation)annot);
                     }
                 }
             }
@@ -529,41 +528,48 @@ namespace MetaDslx.VisualStudio
         }
         public override AuthoringScope ParseSource(ParseRequest req)
         {
-            MetaGeneratorLanguageSource source = (MetaGeneratorLanguageSource)this.GetSource(req.FileName);
-            switch (req.Reason)
-            {
-                case ParseReason.Check:
-                    // This is where you perform your syntax highlighting.
-                    // Parse entire source as given in req.Text.
-                    // Store results in the AuthoringScope object.
-                    string fileName = Path.GetFileName(req.FileName);
-                    string outputDir = Path.GetDirectoryName(req.FileName);
-                    MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(req.Text, fileName);
-                    compiler.Compile();
-                    foreach (var msg in compiler.Diagnostics.GetMessages())
-                    {
-                        TextSpan span = new TextSpan();
-                        span.iStartLine = msg.TextSpan.StartLine - 1;
-                        span.iEndLine = msg.TextSpan.EndLine - 1;
-                        span.iStartIndex = msg.TextSpan.StartPosition - 1;
-                        span.iEndIndex = msg.TextSpan.EndPosition - 1;
-                        Severity severity = Severity.Error;
-                        switch (msg.Severity)
-                        {
-                            case MetaDslx.Core.Immutable.Severity.Error:
-                                severity = Severity.Error;
-                                break;
-                            case MetaDslx.Core.Immutable.Severity.Warning:
-                                severity = Severity.Warning;
-                                break;
-                            case MetaDslx.Core.Immutable.Severity.Info:
-                                severity = Severity.Hint;
-                                break;
-                        }
-                        req.Sink.AddError(req.FileName, msg.Message, span, severity);
-                    }
-                    break;
-            }
+			try
+			{
+				MetaGeneratorLanguageSource source = (MetaGeneratorLanguageSource)this.GetSource(req.FileName);
+				switch (req.Reason)
+				{
+					case ParseReason.Check:
+						// This is where you perform your syntax highlighting.
+						// Parse entire source as given in req.Text.
+						// Store results in the AuthoringScope object.
+						string fileName = Path.GetFileName(req.FileName);
+						string outputDir = Path.GetDirectoryName(req.FileName);
+						MetaDslx.Compiler.MetaGeneratorCompiler compiler = new MetaDslx.Compiler.MetaGeneratorCompiler(req.Text, fileName);
+						compiler.Compile();
+						foreach (var msg in compiler.Diagnostics.GetMessages())
+						{
+							TextSpan span = new TextSpan();
+							span.iStartLine = msg.TextSpan.StartLine - 1;
+							span.iEndLine = msg.TextSpan.EndLine - 1;
+							span.iStartIndex = msg.TextSpan.StartPosition - 1;
+							span.iEndIndex = msg.TextSpan.EndPosition - 1;
+							Severity severity = Severity.Error;
+							switch (msg.Severity)
+							{
+								case MetaDslx.Compiler.Severity.Error:
+									severity = Severity.Error;
+									break;
+								case MetaDslx.Compiler.Severity.Warning:
+									severity = Severity.Warning;
+									break;
+								case MetaDslx.Compiler.Severity.Info:
+									severity = Severity.Hint;
+									break;
+							}
+							req.Sink.AddError(req.FileName, msg.Message, span, severity);
+						}
+						break;
+				}
+			}
+			catch(Exception ex)
+			{
+				req.Sink.AddError(req.FileName, "Error while parsing source: "+ex.ToString(), new TextSpan(), Severity.Error);
+			}
             return new MetaGeneratorLanguageAuthoringScope();
         }
     }

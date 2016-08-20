@@ -23,7 +23,6 @@ using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Antlr4.Runtime;
-using MetaDslx.Compiler;
 using System.Drawing;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -283,8 +282,8 @@ namespace [Properties.LanguageServiceNamespace]
     {
         protected override MultipleFileGenerator<object> CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
 		{
-            // If there is a compile error in the following line, create a class [Properties.LanguageClassName]Generator
-            // which is a subclass of MultipleFileGenerator<object>
+			// If there is a compile error in the following line, create a class [Properties.LanguageClassName]Generator
+			// which is a subclass of MultipleFileGenerator<object>
 			return new [Properties.LanguageClassName]Generator(inputFilePath, inputFileContents, defaultNamespace);
 		}
 ^
@@ -298,8 +297,8 @@ namespace [Properties.LanguageServiceNamespace]
     {
         protected override SingleFileGenerator CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
 		{
-            // If there is a compile error in the following line, create a class [Properties.LanguageClassName]Generator
-            // which is a subclass of SingleFileGenerator
+			// If there is a compile error in the following line, create a class [Properties.LanguageClassName]Generator
+			// which is a subclass of SingleFileGenerator
 			return new [Properties.LanguageClassName]Generator(inputFilePath, inputFileContents, defaultNamespace);
 		}
 ^
@@ -316,8 +315,8 @@ namespace [Properties.LanguageServiceNamespace]
         private int currentOffset;
         private string currentLine;
         private [Properties.LanguageFullName]Lexer lexer;
-        private IEnumerable<SyntaxAnnotation> modeAnnotations;
-        private IEnumerable<SyntaxAnnotation> syntaxAnnotations;
+        private IEnumerable<MetaDslx.Compiler.SyntaxAnnotation> modeAnnotations;
+        private IEnumerable<MetaDslx.Compiler.SyntaxAnnotation> syntaxAnnotations;
         private Dictionary<LanguageScannerState, int> inverseStates;
         private Dictionary<int, LanguageScannerState> states;
         private int lastState;
@@ -328,26 +327,26 @@ namespace [Properties.LanguageServiceNamespace]
             this.states = new Dictionary<int, LanguageScannerState>();
             this.lastState = 0;
             [Properties.LanguageFullName]LexerAnnotator annotator = new [Properties.LanguageFullName]LexerAnnotator();
-            List<SyntaxAnnotation> mal = new List<SyntaxAnnotation>();
+            List<MetaDslx.Compiler.SyntaxAnnotation> mal = new List<MetaDslx.Compiler.SyntaxAnnotation>();
             foreach (var annotList in annotator.ModeAnnotations.Values)
             {
                 foreach (var annot in annotList)
                 {
-                    if (annot is SyntaxAnnotation)
+                    if (annot is MetaDslx.Compiler.SyntaxAnnotation)
                     {
-                        mal.Add((SyntaxAnnotation)annot);
+                        mal.Add((MetaDslx.Compiler.SyntaxAnnotation)annot);
                     }
                 }
             }
             this.modeAnnotations = mal;
-            List<SyntaxAnnotation> sal = new List<SyntaxAnnotation>();
+            List<MetaDslx.Compiler.SyntaxAnnotation> sal = new List<MetaDslx.Compiler.SyntaxAnnotation>();
             foreach (var annotList in annotator.TokenAnnotations.Values)
             {
                 foreach (var annot in annotList)
                 {
-                    if (annot is SyntaxAnnotation)
+                    if (annot is MetaDslx.Compiler.SyntaxAnnotation)
                     {
-                        sal.Add((SyntaxAnnotation)annot);
+                        sal.Add((MetaDslx.Compiler.SyntaxAnnotation)annot);
                     }
                 }
             }
@@ -611,41 +610,53 @@ namespace [Properties.LanguageServiceNamespace]
 
         public override AuthoringScope ParseSource(ParseRequest req)
         {
-            [Properties.LanguageClassName]LanguageSource source = ([Properties.LanguageClassName]LanguageSource)this.GetSource(req.FileName);
-            switch (req.Reason)
-            {
-                case ParseReason.Check:
-                    // This is where you perform your syntax highlighting.
-                    // Parse entire source as given in req.Text.
-                    // Store results in the AuthoringScope object.
-                    string fileName = Path.GetFileName(req.FileName);
-                    string outputDir = Path.GetDirectoryName(req.FileName);
-                    [Properties.LanguageClassName]Compiler compiler = new [Properties.LanguageClassName]Compiler(req.Text, fileName);
-                    compiler.Compile();
-                    foreach (var msg in compiler.Diagnostics.GetMessages())
-                    {
-                        TextSpan span = new TextSpan();
-                        span.iStartLine = msg.TextSpan.StartLine - 1;
-                        span.iEndLine = msg.TextSpan.EndLine - 1;
-                        span.iStartIndex = msg.TextSpan.StartPosition - 1;
-                        span.iEndIndex = msg.TextSpan.EndPosition - 1;
-                        Severity severity = Severity.Error;
-                        switch (msg.Severity)
-                        {
-                            case MetaDslx.Core.Immutable.Severity.Error:
-                                severity = Severity.Error;
-                                break;
-                            case MetaDslx.Core.Immutable.Severity.Warning:
-                                severity = Severity.Warning;
-                                break;
-                            case MetaDslx.Core.Immutable.Severity.Info:
-                                severity = Severity.Hint;
-                                break;
-                        }
-                        req.Sink.AddError(req.FileName, msg.Message, span, severity);
-                    }
-                    break;
-            }
+			try
+			{
+				[Properties.LanguageClassName]LanguageSource source = ([Properties.LanguageClassName]LanguageSource)this.GetSource(req.FileName);
+				switch (req.Reason)
+				{
+					case ParseReason.Check:
+						// This is where you perform your syntax highlighting.
+						// Parse entire source as given in req.Text.
+						// Store results in the AuthoringScope object.
+						string fileName = Path.GetFileName(req.FileName);
+						string outputDir = Path.GetDirectoryName(req.FileName);
+						[if (Properties.GenerateMultipleFiles)]
+						[Properties.LanguageFullName]Compiler compiler = new [Properties.LanguageFullName]Compiler(req.Text, outputDir, fileName);
+						[else]
+						[Properties.LanguageFullName]Compiler compiler = new [Properties.LanguageFullName]Compiler(req.Text, fileName);
+						[end if]
+						compiler.GenerateOutput = false;
+						compiler.Compile();
+						foreach (var msg in compiler.Diagnostics.GetMessages())
+						{
+							TextSpan span = new TextSpan();
+							span.iStartLine = msg.TextSpan.StartLine - 1;
+							span.iEndLine = msg.TextSpan.EndLine - 1;
+							span.iStartIndex = msg.TextSpan.StartPosition - 1;
+							span.iEndIndex = msg.TextSpan.EndPosition - 1;
+							Severity severity = Severity.Error;
+							switch (msg.Severity)
+							{
+								case MetaDslx.Compiler.Severity.Error:
+									severity = Severity.Error;
+									break;
+								case MetaDslx.Compiler.Severity.Warning:
+									severity = Severity.Warning;
+									break;
+								case MetaDslx.Compiler.Severity.Info:
+									severity = Severity.Hint;
+									break;
+							}
+							req.Sink.AddError(req.FileName, msg.Message, span, severity);
+						}
+						break;
+				}
+			}
+			catch(Exception ex)
+			{
+				req.Sink.AddError(req.FileName, "Error while parsing source: "+ex.ToString(), new TextSpan(), Severity.Error);
+			}
             return new [Properties.LanguageClassName]LanguageAuthoringScope();
         }
     }

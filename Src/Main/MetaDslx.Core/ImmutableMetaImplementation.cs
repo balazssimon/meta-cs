@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Core.Immutable
+namespace MetaDslx.Core
 {
     public static class MetaConstants
     {
@@ -36,9 +36,11 @@ namespace MetaDslx.Core.Immutable
             }
         }
     }
-
+}
+namespace MetaDslx.Core.Internal
+{
     //*
-    internal class MetaImplementation : MetaDslx.Core.Immutable.Internal.MetaImplementationBase
+    internal class MetaImplementation : MetaImplementationBase
     {
         internal override void MetaBuilderInstance(Internal.MetaBuilderInstance _this)
         {

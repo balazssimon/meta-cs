@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.Core;
+using MetaDslx.Core.Internal;
 
-namespace MetaDslx.Core.Immutable
+namespace MetaDslx.Compiler
 {
-    using MetaDslx.Core.Immutable.Internal;
 
     [ModelSymbolDescriptor]
     public static class ModelCompilerAttachedProperties
@@ -601,16 +602,16 @@ namespace MetaDslx.Core.Immutable
 
         public MetaTypeBuilder GetTypeOf(object value)
         {
-            if (value == null) return MetaBuilderInstance.instance.Object;
+            if (value == null) return MetaInstance.Object.ToMutable();
             MutableSymbol mutableSymbol = value as MutableSymbol;
             if (mutableSymbol != null) return this.GetTypeOf(mutableSymbol);
-            if (value is string) return MetaBuilderInstance.instance.String;
-            if (value is bool) return MetaBuilderInstance.instance.Bool;
-            if (value is byte) return MetaBuilderInstance.instance.Byte;
-            if (value is int) return MetaBuilderInstance.instance.Int;
-            if (value is long) return MetaBuilderInstance.instance.Long;
-            if (value is float) return MetaBuilderInstance.instance.Float;
-            if (value is double) return MetaBuilderInstance.instance.Double;
+            if (value is string) return MetaInstance.String.ToMutable();
+            if (value is bool) return MetaInstance.Bool.ToMutable();
+            if (value is byte) return MetaInstance.Byte.ToMutable();
+            if (value is int) return MetaInstance.Int.ToMutable();
+            if (value is long) return MetaInstance.Long.ToMutable();
+            if (value is float) return MetaInstance.Float.ToMutable();
+            if (value is double) return MetaInstance.Double.ToMutable();
             return null;
         }
 
@@ -879,8 +880,8 @@ namespace MetaDslx.Core.Immutable
                         {
                             foreach (var symbolType in symbolTypes)
                             {
-                                // TODO:
-                                //if (symbolType.IsAssignableFrom(entryObject.MSymbolInfo.ImmutableType))
+                                if (symbolType.IsAssignableFrom(entryObject.MSymbolImmutableType) ||
+                                    symbolType.IsAssignableFrom(entryObject.MSymbolMutableType))
                                 {
                                     typeOK = true;
                                     break;

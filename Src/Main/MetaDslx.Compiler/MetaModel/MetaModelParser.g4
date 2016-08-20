@@ -1,4 +1,4 @@
-parser grammar MetaModelParser;
+﻿parser grammar MetaModelParser;
 
 options
 {
@@ -7,7 +7,7 @@ options
 }
 
 @header {
-using MetaDslx.Core.Immutable;
+using MetaDslx.Core;
 }
 
 main: namespaceDeclaration;
@@ -176,5 +176,4 @@ scientificLiteral : ScientificLiteral;
 
 // String literals
 stringLiteral : RegularStringLiteral;
-
 

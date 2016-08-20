@@ -267,31 +267,39 @@ namespace MetaDslx.VisualStudio
         {
             rgbOutputFileContents[0] = IntPtr.Zero;
             pcbOutput = 0;
-            string inputPath = Path.GetFullPath(wszInputFilePath);
-            if (project == null)
+            try
             {
-                EnvDTE.DTE dte = (EnvDTE.DTE)Package.GetGlobalService(typeof(EnvDTE.DTE));
-                EnvDTE.Projects projects = dte.Solution.Projects;
-                if (projects.Count > 0)
+                string inputPath = Path.GetFullPath(wszInputFilePath);
+                if (project == null)
                 {
-                    foreach (var prjObj in projects)
+                    EnvDTE.DTE dte = (EnvDTE.DTE)Package.GetGlobalService(typeof(EnvDTE.DTE));
+                    EnvDTE.Projects projects = dte.Solution.Projects;
+                    if (projects.Count > 0)
                     {
-                        EnvDTE.Project prj = prjObj as EnvDTE.Project;
-                        if (prj != null)
+                        foreach (var prjObj in projects)
                         {
-                            string projectPath = Path.GetFullPath(Path.GetDirectoryName(prj.FullName));
-                            if (inputPath.StartsWith(projectPath))
+                            try
                             {
-                                project = prj;
-                                break;
+                                EnvDTE.Project prj = prjObj as EnvDTE.Project;
+                                if (prj != null)
+                                {
+                                    string projectPath = Path.GetFullPath(Path.GetDirectoryName(prj.FullName));
+                                    if (inputPath.StartsWith(projectPath))
+                                    {
+                                        project = prj;
+                                        break;
+                                    }
+                                }
+                            }
+                            catch(Exception)
+                            {
+                                // nop
                             }
                         }
                     }
                 }
-            }
-            if (project == null) return Microsoft.VisualStudio.VSConstants.S_FALSE;
-            try
-            {
+                if (project == null) return Microsoft.VisualStudio.VSConstants.S_FALSE;
+
                 MultipleFileGenerator<T> generator = this.CreateGenerator(wszInputFilePath, bstrInputFileContents, wszDefaultNamespace);
                 this.newFileNames.Clear();
 

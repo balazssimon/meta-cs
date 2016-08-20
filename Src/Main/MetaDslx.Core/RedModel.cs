@@ -8,11 +8,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Core.Immutable
+namespace MetaDslx.Core
 {
     public interface ImmutableSymbol
     {
         ModelSymbolInfo MSymbolInfo { get; }
+        Type MSymbolImmutableType { get; }
+        Type MSymbolMutableType { get; }
         MetaModel MMetaModel { get; }
         MetaClass MMetaClass { get; }
 
@@ -40,6 +42,8 @@ namespace MetaDslx.Core.Immutable
     public interface MutableSymbol
     {
         ModelSymbolInfo MSymbolInfo { get; }
+        Type MSymbolImmutableType { get; }
+        Type MSymbolMutableType { get; }
         MetaModel MMetaModel { get; }
         MetaClass MMetaClass { get; }
 
@@ -65,6 +69,7 @@ namespace MetaDslx.Core.Immutable
         void MSetLazy(ModelProperty property, Func<object> value);
         void MAdd(ModelProperty property, object value);
         void MAddLazy(ModelProperty property, Func<object> value);
+        void MMakeCreated();
 
         ImmutableSymbol ToImmutable();
         ImmutableSymbol ToImmutable(ImmutableModel immutableModel);
@@ -98,6 +103,8 @@ namespace MetaDslx.Core.Immutable
         internal SymbolId Id { get { return this.id; } }
 
         public ModelSymbolInfo MSymbolInfo { get { return this.Id.ModelSymbolInfo; } }
+        public Type MSymbolImmutableType { get { return this.Id.ImmutableType; } }
+        public Type MSymbolMutableType { get { return this.Id.MutableType; } }
         public abstract MetaModel MMetaModel { get; }
         public abstract MetaClass MMetaClass { get; }
 
@@ -249,6 +256,8 @@ namespace MetaDslx.Core.Immutable
         public bool MIsReadOnly { get { return this.model.IsReadOnly; } }
 
         public ModelSymbolInfo MSymbolInfo { get { return this.Id.ModelSymbolInfo; } }
+        public Type MSymbolImmutableType { get { return this.Id.ImmutableType; } }
+        public Type MSymbolMutableType { get { return this.Id.MutableType; } }
         public abstract MetaModel MMetaModel { get; }
         public abstract MetaClass MMetaClass { get; }
 
@@ -323,8 +332,13 @@ namespace MetaDslx.Core.Immutable
         public bool MIsScope { get { return this.id.ModelSymbolInfo.IsScope; } }
         public bool MIsType { get { return this.id.ModelSymbolInfo.IsType; } }
 
-        internal protected virtual void MInit()
+        protected virtual void MInit()
         {
+        }
+
+        internal void MCallInit()
+        {
+            this.MInit();
         }
 
         public void MMakeCreated()
@@ -1600,16 +1614,16 @@ namespace MetaDslx.Core.Immutable
             return this.Green.ContainsSymbol(sid);
         }
 
-        public bool ContainsSymbol(ImmutableSymbolBase symbol)
+        public bool ContainsSymbol(ImmutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(symbol.Id);
+            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).Id);
         }
 
-        public bool ContainsSymbol(MutableSymbolBase symbol)
+        public bool ContainsSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(symbol.Id);
+            return this.ContainsSymbol(((MutableSymbolBase)symbol).Id);
         }
 
         public MutableModelGroup ToMutable(bool createNew = false)
@@ -1799,16 +1813,16 @@ namespace MetaDslx.Core.Immutable
             return this.Green.ContainsSymbol(sid);
         }
 
-        public bool ContainsSymbol(ImmutableSymbolBase symbol)
+        public bool ContainsSymbol(ImmutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(symbol.Id);
+            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).Id);
         }
 
-        public bool ContainsSymbol(MutableSymbolBase symbol)
+        public bool ContainsSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(symbol.Id);
+            return this.ContainsSymbol(((MutableSymbolBase)symbol).Id);
         }
 
         public ImmutableModelGroup ToImmutable()
@@ -1944,20 +1958,20 @@ namespace MetaDslx.Core.Immutable
 
         public MutableModel Model { get { return this.model; } }
 
-        protected MutableSymbolBase CreateSymbol(SymbolId id)
+        protected MutableSymbol CreateSymbol(SymbolId id)
         {
             MutableSymbolBase symbol = this.model.CreateSymbol(id, this.flags.HasFlag(ModelFactoryFlags.CreateWeakSymbols));
-            symbol.MInit();
+            symbol.MCallInit();
             if (!this.flags.HasFlag(ModelFactoryFlags.DontMakeSymbolsCreated)) symbol.MMakeCreated();
             return symbol;
         }
 
-        public MutableSymbolBase Create(Type type)
+        public MutableSymbol Create(Type type)
         {
             // TODO: instantiate any type from any model
             return this.Create(type.Name);
         }
-        public abstract MutableSymbolBase Create(string type);
+        public abstract MutableSymbol Create(string type);
     }
 
     public class PropertyInit

@@ -21,7 +21,43 @@ namespace MetaDslx.VisualStudio
         public AnnotatedAntlr4GeneratorItemKind Kind { get; set; }
         public string FileName { get; set; }
     }
+    /*
+    internal class AnnotatedAntlr4Generator : SingleFileGenerator
+    {
+        public const string DefaultExtension = ".g4";
+        private AnnotatedAntlr4Compiler compiler;
 
+        public AnnotatedAntlr4Generator(string inputFilePath, string inputFileContents, string defaultNamespace) 
+            : base(inputFilePath, inputFileContents, defaultNamespace)
+        {
+            using (StreamWriter writer = new StreamWriter(inputFilePath+".log"))
+            {
+                try
+                {
+                    writer.Write("Generating from " + inputFilePath+ "...");
+                    if (this.InputFileContents != null)
+                    {
+                        compiler = new AnnotatedAntlr4Compiler(this.InputFileContents, this.InputDirectory, this.InputFileName);
+                        compiler.DefaultNamespace = defaultNamespace;
+                        compiler.Compile();
+                    }
+                    writer.WriteLine("DONE.");
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteLine("ERROR:");
+                    writer.WriteLine(ex);
+                }
+            }
+        }
+
+        public override string GenerateStringContent()
+        {
+            return "Hello$";
+        }
+    }
+    */
+    
     internal class AnnotatedAntlr4Generator : MultipleFileGenerator<object>
     {
         private AnnotatedAntlr4Compiler compiler;

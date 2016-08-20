@@ -28,8 +28,11 @@ namespace MetaDslx.Compiler
         public Dictionary<object, List<object>> TreeAnnotations { get { return this.treeAnnotations; } }
         
         
-        public MetaGeneratorParserAnnotator()
+        private MetaDslx.Compiler.IModelCompiler compiler;
+        
+        public MetaGeneratorParserAnnotator(MetaDslx.Compiler.IModelCompiler compiler)
         {
+            this.compiler = compiler;
             List<object> annotList = null;
         }
         
@@ -45,6 +48,25 @@ namespace MetaDslx.Compiler
             List<object> treeAnnotList = null;
             if (this.treeAnnotations.TryGetValue(node, out treeAnnotList))
             {
+                foreach (var treeAnnot in treeAnnotList)
+                {
+                    SymbolTypeAnnotation sta = treeAnnot as SymbolTypeAnnotation;
+                    if (sta != null)
+                    {
+                        if (sta.HasName)
+                        {
+                            string name = this.compiler.NameProvider.GetName(node);
+                            if (sta.Name == name)
+                            {
+                                this.OverrideSymbolType(node, sta.SymbolType);
+                            }
+                        }
+                        else
+                        {
+                            this.OverrideSymbolType(node, sta.SymbolType);
+                        }
+                    }
+                }
                 treeAnnotList.RemoveAll(a => a is SymbolTypeAnnotation);
             }
         }

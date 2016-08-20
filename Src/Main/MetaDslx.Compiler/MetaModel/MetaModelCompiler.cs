@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using MetaDslx.Core.Immutable;
+using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

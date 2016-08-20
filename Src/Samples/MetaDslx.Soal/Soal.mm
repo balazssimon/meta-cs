@@ -2,18 +2,17 @@
 {
 	metamodel Soal(Uri="http://MetaDslx.Soal/1.0");
 
-	const PrimitiveType Object = new PrimitiveType() { Name = "object" };
-	const PrimitiveType String = new PrimitiveType() { Name = "string" };
-	const PrimitiveType Int = new PrimitiveType() { Name = "int" };
-	const PrimitiveType Long = new PrimitiveType() { Name = "long" };
-	const PrimitiveType Float = new PrimitiveType() { Name = "float" };
-	const PrimitiveType Double = new PrimitiveType() { Name = "double" };
-	const PrimitiveType Byte = new PrimitiveType() { Name = "byte" };
-	const PrimitiveType Bool = new PrimitiveType() { Name = "bool" };
-	const PrimitiveType Void = new PrimitiveType() { Name = "void" };
-	const PrimitiveType DateTime = new PrimitiveType() { Name = "DateTime" };
-	const PrimitiveType TimeSpan = new PrimitiveType() { Name = "TimeSpan" };
-
+	const PrimitiveType Object;
+	const PrimitiveType String;
+	const PrimitiveType Int;
+	const PrimitiveType Long;
+	const PrimitiveType Float;
+	const PrimitiveType Double;
+	const PrimitiveType Byte;
+	const PrimitiveType Bool;
+	const PrimitiveType Void;
+	const PrimitiveType DateTime;
+	const PrimitiveType TimeSpan;
 	
 	abstract class NamedElement
 	{
@@ -48,10 +47,10 @@
 
 	class ArrayType : SoalType
 	{
-		ArrayType()
+		/*ArrayType()
 		{
 			Namespace = InnerType is Declaration ? ((Declaration)InnerType).Namespace : null;
-		}
+		}*/
 
 		SoalType InnerType;
 		derived Namespace Namespace;
@@ -59,10 +58,10 @@
 
 	class NullableType : SoalType
 	{
-		NullableType()
+		/*NullableType()
 		{
 			Namespace = InnerType is Declaration ? ((Declaration)InnerType).Namespace : null;
-		}
+		}*/
 
 		SoalType InnerType;
 		derived Namespace Namespace;
@@ -81,10 +80,10 @@
 
 	class EnumLiteral : NamedElement, TypedElement
 	{
-		EnumLiteral()
+		/*EnumLiteral()
 		{
 			Type = Enum;
-		}
+		}*/
 
 		Enum Enum;
 	}
@@ -189,10 +188,10 @@
 
 	class InterfaceReference
 	{
-		InterfaceReference()
+		/*InterfaceReference()
 		{
 			// this.Name = this.OptionalName != "" ? this.OptionalName : this.Interface.Name;
-		}
+		}*/
 
 		[Name]
 		derived string Name;

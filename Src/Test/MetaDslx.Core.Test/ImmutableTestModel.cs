@@ -245,7 +245,7 @@ namespace MetaDslx.Core.Immutable.Test
             TestModelDescriptor.Initialize();
         }
 
-        public override MutableSymbolBase Create(string type)
+        public override MutableSymbol Create(string type)
         {
             switch (type)
             {
@@ -262,61 +262,61 @@ namespace MetaDslx.Core.Immutable.Test
 
         public Husband Husband()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenHusband());
+            MutableSymbol symbol = this.CreateSymbol(new GreenHusband());
             return (Husband)symbol;
         }
 
         public Wife Wife()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenWife());
+            MutableSymbol symbol = this.CreateSymbol(new GreenWife());
             return (Wife)symbol;
         }
 
         public ListChild ListChild()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenListChild());
+            MutableSymbol symbol = this.CreateSymbol(new GreenListChild());
             return (ListChild)symbol;
         }
 
         public ListParent ListParent()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenListParent());
+            MutableSymbol symbol = this.CreateSymbol(new GreenListParent());
             return (ListParent)symbol;
         }
 
         public User User()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenUser());
+            MutableSymbol symbol = this.CreateSymbol(new GreenUser());
             return (User)symbol;
         }
 
         public Role Role()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenRole());
+            MutableSymbol symbol = this.CreateSymbol(new GreenRole());
             return (Role)symbol;
         }
 
         public Person Person()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenPerson());
+            MutableSymbol symbol = this.CreateSymbol(new GreenPerson());
             return (Person)symbol;
         }
 
         public Student Student()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenStudent());
+            MutableSymbol symbol = this.CreateSymbol(new GreenStudent());
             return (Student)symbol;
         }
 
         public Pet Pet()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenPet());
+            MutableSymbol symbol = this.CreateSymbol(new GreenPet());
             return (Pet)symbol;
         }
 
         public Dog Dog()
         {
-            MutableSymbolBase symbol = this.CreateSymbol(new GreenDog());
+            MutableSymbol symbol = this.CreateSymbol(new GreenDog());
             return (Dog)symbol;
         }
     }

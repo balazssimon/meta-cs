@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\rmqw2p1n.5td\MetaModelParser.g4 by ANTLR 4.5.1
+// Generated from C:\Users\balaz\AppData\Local\Temp\dy3g25jl.fox\MetaModelParser.g4 by ANTLR 4.5.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -19,7 +19,7 @@
 
 namespace MetaDslx.Compiler {
 
-using MetaDslx.Core.Immutable;
+using MetaDslx.Core;
 
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;

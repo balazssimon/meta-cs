@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Immutable; //4:1
 
-namespace MetaDslx.Core.Immutable //1:1
+namespace MetaDslx.Core //1:1
 {
-    using __Hidden_ImmutableMetaModelGenerator_191522971;
-    namespace __Hidden_ImmutableMetaModelGenerator_191522971
+    using __Hidden_ImmutableMetaModelGenerator_1584211302;
+    namespace __Hidden_ImmutableMetaModelGenerator_1584211302
     {
         internal static class __Extensions
         {
@@ -86,7 +86,7 @@ namespace MetaDslx.Core.Immutable //1:1
         {
             internal __Properties()
             {
-                this.CoreNs = "global::MetaDslx.Core.Immutable"; //7:18
+                this.CoreNs = "global::MetaDslx.Core"; //7:18
             }
             public string CoreNs { get; set; } //7:2
         }
@@ -299,7 +299,7 @@ namespace MetaDslx.Core.Immutable //1:1
                     }
                 }
                 StringBuilder __tmp5 = new StringBuilder();
-                __tmp5.Append(annot.Name);
+                __tmp5.Append(Properties.CoreNs);
                 using(StreamReader __tmp5Reader = new StreamReader(this.__ToStream(__tmp5.ToString())))
                 {
                     bool __tmp5_last = __tmp5Reader.EndOfStream;
@@ -315,26 +315,49 @@ namespace MetaDslx.Core.Immutable //1:1
                         if (!__tmp5_last) __out.AppendLine(true);
                     }
                 }
-                StringBuilder __tmp6 = new StringBuilder();
-                __tmp6.Append("]");
-                using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
+                string __tmp6_line = "."; //54:25
+                if (!string.IsNullOrEmpty(__tmp6_line))
                 {
-                    bool __tmp6_last = __tmp6Reader.EndOfStream;
-                    while(!__tmp6_last)
+                    __out.Append(__tmp6_line);
+                    __tmp3_outputWritten = true;
+                }
+                StringBuilder __tmp7 = new StringBuilder();
+                __tmp7.Append(annot.Name);
+                using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
+                {
+                    bool __tmp7_last = __tmp7Reader.EndOfStream;
+                    while(!__tmp7_last)
                     {
-                        string __tmp6_line = __tmp6Reader.ReadLine();
-                        __tmp6_last = __tmp6Reader.EndOfStream;
-                        if ((__tmp6_last && !string.IsNullOrEmpty(__tmp6_line)) || (!__tmp6_last && __tmp6_line != null))
+                        string __tmp7_line = __tmp7Reader.ReadLine();
+                        __tmp7_last = __tmp7Reader.EndOfStream;
+                        if ((__tmp7_last && !string.IsNullOrEmpty(__tmp7_line)) || (!__tmp7_last && __tmp7_line != null))
                         {
-                            __out.Append(__tmp6_line);
+                            __out.Append(__tmp7_line);
                             __tmp3_outputWritten = true;
                         }
-                        if (!__tmp6_last || __tmp3_outputWritten) __out.AppendLine(true);
+                        if (!__tmp7_last) __out.AppendLine(true);
+                    }
+                }
+                StringBuilder __tmp8 = new StringBuilder();
+                __tmp8.Append("]");
+                using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
+                {
+                    bool __tmp8_last = __tmp8Reader.EndOfStream;
+                    while(!__tmp8_last)
+                    {
+                        string __tmp8_line = __tmp8Reader.ReadLine();
+                        __tmp8_last = __tmp8Reader.EndOfStream;
+                        if ((__tmp8_last && !string.IsNullOrEmpty(__tmp8_line)) || (!__tmp8_last && __tmp8_line != null))
+                        {
+                            __out.Append(__tmp8_line);
+                            __tmp3_outputWritten = true;
+                        }
+                        if (!__tmp8_last || __tmp3_outputWritten) __out.AppendLine(true);
                     }
                 }
                 if (__tmp3_outputWritten)
                 {
-                    __out.AppendLine(false); //54:23
+                    __out.AppendLine(false); //54:43
                 }
             }
             return __out.ToString();
@@ -2339,8 +2362,41 @@ namespace MetaDslx.Core.Immutable //1:1
             }
             __out.Append("	{"); //192:1
             __out.AppendLine(false); //192:3
-            __out.Append("		this.Model = new global::MetaDslx.Core.Immutable.MutableModel();"); //193:1
-            __out.AppendLine(false); //193:67
+            bool __tmp55_outputWritten = false;
+            string __tmp56_line = "		this.Model = new "; //193:1
+            if (!string.IsNullOrEmpty(__tmp56_line))
+            {
+                __out.Append(__tmp56_line);
+                __tmp55_outputWritten = true;
+            }
+            StringBuilder __tmp57 = new StringBuilder();
+            __tmp57.Append(Properties.CoreNs);
+            using(StreamReader __tmp57Reader = new StreamReader(this.__ToStream(__tmp57.ToString())))
+            {
+                bool __tmp57_last = __tmp57Reader.EndOfStream;
+                while(!__tmp57_last)
+                {
+                    string __tmp57_line = __tmp57Reader.ReadLine();
+                    __tmp57_last = __tmp57Reader.EndOfStream;
+                    if ((__tmp57_last && !string.IsNullOrEmpty(__tmp57_line)) || (!__tmp57_last && __tmp57_line != null))
+                    {
+                        __out.Append(__tmp57_line);
+                        __tmp55_outputWritten = true;
+                    }
+                    if (!__tmp57_last) __out.AppendLine(true);
+                }
+            }
+            string __tmp58_line = ".MutableModel();"; //193:39
+            if (!string.IsNullOrEmpty(__tmp58_line))
+            {
+                __out.Append(__tmp58_line);
+                __tmp55_outputWritten = true;
+            }
+            if (__tmp55_outputWritten) __out.AppendLine(true);
+            if (__tmp55_outputWritten)
+            {
+                __out.AppendLine(false); //193:55
+            }
             __out.Append("	}"); //194:1
             __out.AppendLine(false); //194:3
             __out.AppendLine(true); //195:1
@@ -2358,61 +2414,61 @@ namespace MetaDslx.Core.Immutable //1:1
             __out.AppendLine(false); //201:25
             __out.Append("		}"); //202:1
             __out.AppendLine(false); //202:4
-            bool __tmp55_outputWritten = false;
-            string __tmp54Prefix = "		"; //203:1
-            StringBuilder __tmp56 = new StringBuilder();
-            __tmp56.Append(CSharpName(model, ModelKind.ImplementationProvider));
-            using(StreamReader __tmp56Reader = new StreamReader(this.__ToStream(__tmp56.ToString())))
+            bool __tmp60_outputWritten = false;
+            string __tmp59Prefix = "		"; //203:1
+            StringBuilder __tmp61 = new StringBuilder();
+            __tmp61.Append(CSharpName(model, ModelKind.ImplementationProvider));
+            using(StreamReader __tmp61Reader = new StreamReader(this.__ToStream(__tmp61.ToString())))
             {
-                bool __tmp56_last = __tmp56Reader.EndOfStream;
-                while(!__tmp56_last)
+                bool __tmp61_last = __tmp61Reader.EndOfStream;
+                while(!__tmp61_last)
                 {
-                    string __tmp56_line = __tmp56Reader.ReadLine();
-                    __tmp56_last = __tmp56Reader.EndOfStream;
-                    if (!string.IsNullOrEmpty(__tmp54Prefix))
+                    string __tmp61_line = __tmp61Reader.ReadLine();
+                    __tmp61_last = __tmp61Reader.EndOfStream;
+                    if (!string.IsNullOrEmpty(__tmp59Prefix))
                     {
-                        __out.Append(__tmp54Prefix);
-                        __tmp55_outputWritten = true;
+                        __out.Append(__tmp59Prefix);
+                        __tmp60_outputWritten = true;
                     }
-                    if ((__tmp56_last && !string.IsNullOrEmpty(__tmp56_line)) || (!__tmp56_last && __tmp56_line != null))
+                    if ((__tmp61_last && !string.IsNullOrEmpty(__tmp61_line)) || (!__tmp61_last && __tmp61_line != null))
                     {
-                        __out.Append(__tmp56_line);
-                        __tmp55_outputWritten = true;
+                        __out.Append(__tmp61_line);
+                        __tmp60_outputWritten = true;
                     }
-                    if (!__tmp56_last) __out.AppendLine(true);
+                    if (!__tmp61_last) __out.AppendLine(true);
                 }
             }
-            string __tmp57_line = ".Implementation."; //203:55
-            if (!string.IsNullOrEmpty(__tmp57_line))
+            string __tmp62_line = ".Implementation."; //203:55
+            if (!string.IsNullOrEmpty(__tmp62_line))
             {
-                __out.Append(__tmp57_line);
-                __tmp55_outputWritten = true;
+                __out.Append(__tmp62_line);
+                __tmp60_outputWritten = true;
             }
-            StringBuilder __tmp58 = new StringBuilder();
-            __tmp58.Append(CSharpName(model, ModelKind.BuilderInstance));
-            using(StreamReader __tmp58Reader = new StreamReader(this.__ToStream(__tmp58.ToString())))
+            StringBuilder __tmp63 = new StringBuilder();
+            __tmp63.Append(CSharpName(model, ModelKind.BuilderInstance));
+            using(StreamReader __tmp63Reader = new StreamReader(this.__ToStream(__tmp63.ToString())))
             {
-                bool __tmp58_last = __tmp58Reader.EndOfStream;
-                while(!__tmp58_last)
+                bool __tmp63_last = __tmp63Reader.EndOfStream;
+                while(!__tmp63_last)
                 {
-                    string __tmp58_line = __tmp58Reader.ReadLine();
-                    __tmp58_last = __tmp58Reader.EndOfStream;
-                    if ((__tmp58_last && !string.IsNullOrEmpty(__tmp58_line)) || (!__tmp58_last && __tmp58_line != null))
+                    string __tmp63_line = __tmp63Reader.ReadLine();
+                    __tmp63_last = __tmp63Reader.EndOfStream;
+                    if ((__tmp63_last && !string.IsNullOrEmpty(__tmp63_line)) || (!__tmp63_last && __tmp63_line != null))
                     {
-                        __out.Append(__tmp58_line);
-                        __tmp55_outputWritten = true;
+                        __out.Append(__tmp63_line);
+                        __tmp60_outputWritten = true;
                     }
-                    if (!__tmp58_last) __out.AppendLine(true);
+                    if (!__tmp63_last) __out.AppendLine(true);
                 }
             }
-            string __tmp59_line = "(this);"; //203:116
-            if (!string.IsNullOrEmpty(__tmp59_line))
+            string __tmp64_line = "(this);"; //203:116
+            if (!string.IsNullOrEmpty(__tmp64_line))
             {
-                __out.Append(__tmp59_line);
-                __tmp55_outputWritten = true;
+                __out.Append(__tmp64_line);
+                __tmp60_outputWritten = true;
             }
-            if (__tmp55_outputWritten) __out.AppendLine(true);
-            if (__tmp55_outputWritten)
+            if (__tmp60_outputWritten) __out.AppendLine(true);
+            if (__tmp60_outputWritten)
             {
                 __out.AppendLine(false); //203:123
             }
@@ -2444,86 +2500,86 @@ namespace MetaDslx.Core.Immutable //1:1
             __out.AppendLine(false); //217:30
             __out.Append("	{"); //218:1
             __out.AppendLine(false); //218:3
-            bool __tmp61_outputWritten = false;
-            string __tmp60Prefix = "		"; //219:1
-            StringBuilder __tmp62 = new StringBuilder();
-            __tmp62.Append(CSharpName(model, ModelKind.Factory));
-            using(StreamReader __tmp62Reader = new StreamReader(this.__ToStream(__tmp62.ToString())))
+            bool __tmp66_outputWritten = false;
+            string __tmp65Prefix = "		"; //219:1
+            StringBuilder __tmp67 = new StringBuilder();
+            __tmp67.Append(Properties.CoreNs);
+            using(StreamReader __tmp67Reader = new StreamReader(this.__ToStream(__tmp67.ToString())))
             {
-                bool __tmp62_last = __tmp62Reader.EndOfStream;
-                while(!__tmp62_last)
+                bool __tmp67_last = __tmp67Reader.EndOfStream;
+                while(!__tmp67_last)
                 {
-                    string __tmp62_line = __tmp62Reader.ReadLine();
-                    __tmp62_last = __tmp62Reader.EndOfStream;
-                    if (!string.IsNullOrEmpty(__tmp60Prefix))
+                    string __tmp67_line = __tmp67Reader.ReadLine();
+                    __tmp67_last = __tmp67Reader.EndOfStream;
+                    if (!string.IsNullOrEmpty(__tmp65Prefix))
                     {
-                        __out.Append(__tmp60Prefix);
-                        __tmp61_outputWritten = true;
+                        __out.Append(__tmp65Prefix);
+                        __tmp66_outputWritten = true;
                     }
-                    if ((__tmp62_last && !string.IsNullOrEmpty(__tmp62_line)) || (!__tmp62_last && __tmp62_line != null))
+                    if ((__tmp67_last && !string.IsNullOrEmpty(__tmp67_line)) || (!__tmp67_last && __tmp67_line != null))
                     {
-                        __out.Append(__tmp62_line);
-                        __tmp61_outputWritten = true;
+                        __out.Append(__tmp67_line);
+                        __tmp66_outputWritten = true;
                     }
-                    if (!__tmp62_last) __out.AppendLine(true);
+                    if (!__tmp67_last) __out.AppendLine(true);
                 }
             }
-            string __tmp63_line = " factory = new "; //219:40
-            if (!string.IsNullOrEmpty(__tmp63_line))
+            string __tmp68_line = ".MetaFactory factory = new "; //219:22
+            if (!string.IsNullOrEmpty(__tmp68_line))
             {
-                __out.Append(__tmp63_line);
-                __tmp61_outputWritten = true;
+                __out.Append(__tmp68_line);
+                __tmp66_outputWritten = true;
             }
-            StringBuilder __tmp64 = new StringBuilder();
-            __tmp64.Append(CSharpName(model, ModelKind.Factory));
-            using(StreamReader __tmp64Reader = new StreamReader(this.__ToStream(__tmp64.ToString())))
+            StringBuilder __tmp69 = new StringBuilder();
+            __tmp69.Append(Properties.CoreNs);
+            using(StreamReader __tmp69Reader = new StreamReader(this.__ToStream(__tmp69.ToString())))
             {
-                bool __tmp64_last = __tmp64Reader.EndOfStream;
-                while(!__tmp64_last)
+                bool __tmp69_last = __tmp69Reader.EndOfStream;
+                while(!__tmp69_last)
                 {
-                    string __tmp64_line = __tmp64Reader.ReadLine();
-                    __tmp64_last = __tmp64Reader.EndOfStream;
-                    if ((__tmp64_last && !string.IsNullOrEmpty(__tmp64_line)) || (!__tmp64_last && __tmp64_line != null))
+                    string __tmp69_line = __tmp69Reader.ReadLine();
+                    __tmp69_last = __tmp69Reader.EndOfStream;
+                    if ((__tmp69_last && !string.IsNullOrEmpty(__tmp69_line)) || (!__tmp69_last && __tmp69_line != null))
                     {
-                        __out.Append(__tmp64_line);
-                        __tmp61_outputWritten = true;
+                        __out.Append(__tmp69_line);
+                        __tmp66_outputWritten = true;
                     }
-                    if (!__tmp64_last) __out.AppendLine(true);
+                    if (!__tmp69_last) __out.AppendLine(true);
                 }
             }
-            string __tmp65_line = "(this.Model, "; //219:92
-            if (!string.IsNullOrEmpty(__tmp65_line))
+            string __tmp70_line = ".MetaFactory(this.Model, "; //219:68
+            if (!string.IsNullOrEmpty(__tmp70_line))
             {
-                __out.Append(__tmp65_line);
-                __tmp61_outputWritten = true;
+                __out.Append(__tmp70_line);
+                __tmp66_outputWritten = true;
             }
-            StringBuilder __tmp66 = new StringBuilder();
-            __tmp66.Append(Properties.CoreNs);
-            using(StreamReader __tmp66Reader = new StreamReader(this.__ToStream(__tmp66.ToString())))
+            StringBuilder __tmp71 = new StringBuilder();
+            __tmp71.Append(Properties.CoreNs);
+            using(StreamReader __tmp71Reader = new StreamReader(this.__ToStream(__tmp71.ToString())))
             {
-                bool __tmp66_last = __tmp66Reader.EndOfStream;
-                while(!__tmp66_last)
+                bool __tmp71_last = __tmp71Reader.EndOfStream;
+                while(!__tmp71_last)
                 {
-                    string __tmp66_line = __tmp66Reader.ReadLine();
-                    __tmp66_last = __tmp66Reader.EndOfStream;
-                    if ((__tmp66_last && !string.IsNullOrEmpty(__tmp66_line)) || (!__tmp66_last && __tmp66_line != null))
+                    string __tmp71_line = __tmp71Reader.ReadLine();
+                    __tmp71_last = __tmp71Reader.EndOfStream;
+                    if ((__tmp71_last && !string.IsNullOrEmpty(__tmp71_line)) || (!__tmp71_last && __tmp71_line != null))
                     {
-                        __out.Append(__tmp66_line);
-                        __tmp61_outputWritten = true;
+                        __out.Append(__tmp71_line);
+                        __tmp66_outputWritten = true;
                     }
-                    if (!__tmp66_last) __out.AppendLine(true);
+                    if (!__tmp71_last) __out.AppendLine(true);
                 }
             }
-            string __tmp67_line = ".ModelFactoryFlags.DontMakeSymbolsCreated);"; //219:124
-            if (!string.IsNullOrEmpty(__tmp67_line))
+            string __tmp72_line = ".ModelFactoryFlags.DontMakeSymbolsCreated);"; //219:112
+            if (!string.IsNullOrEmpty(__tmp72_line))
             {
-                __out.Append(__tmp67_line);
-                __tmp61_outputWritten = true;
+                __out.Append(__tmp72_line);
+                __tmp66_outputWritten = true;
             }
-            if (__tmp61_outputWritten) __out.AppendLine(true);
-            if (__tmp61_outputWritten)
+            if (__tmp66_outputWritten) __out.AppendLine(true);
+            if (__tmp66_outputWritten)
             {
-                __out.AppendLine(false); //219:167
+                __out.AppendLine(false); //219:155
             }
             __out.AppendLine(true); //220:1
             var __loop15_results = 
@@ -2532,33 +2588,33 @@ namespace MetaDslx.Core.Immutable //1:1
                 ).ToList(); //221:4
             for (int __loop15_iteration = 0; __loop15_iteration < __loop15_results.Count; ++__loop15_iteration)
             {
-                var __tmp68 = __loop15_results[__loop15_iteration];
-                var symbol = __tmp68.symbol;
-                bool __tmp70_outputWritten = false;
-                string __tmp69Prefix = "		"; //222:1
-                StringBuilder __tmp71 = new StringBuilder();
-                __tmp71.Append(GenerateSymbolInstance(model, coreModel, symbol, symbolNames));
-                using(StreamReader __tmp71Reader = new StreamReader(this.__ToStream(__tmp71.ToString())))
+                var __tmp73 = __loop15_results[__loop15_iteration];
+                var symbol = __tmp73.symbol;
+                bool __tmp75_outputWritten = false;
+                string __tmp74Prefix = "		"; //222:1
+                StringBuilder __tmp76 = new StringBuilder();
+                __tmp76.Append(GenerateSymbolInstance(model, coreModel, symbol, symbolNames));
+                using(StreamReader __tmp76Reader = new StreamReader(this.__ToStream(__tmp76.ToString())))
                 {
-                    bool __tmp71_last = __tmp71Reader.EndOfStream;
-                    while(!__tmp71_last)
+                    bool __tmp76_last = __tmp76Reader.EndOfStream;
+                    while(!__tmp76_last)
                     {
-                        string __tmp71_line = __tmp71Reader.ReadLine();
-                        __tmp71_last = __tmp71Reader.EndOfStream;
-                        if (!string.IsNullOrEmpty(__tmp69Prefix))
+                        string __tmp76_line = __tmp76Reader.ReadLine();
+                        __tmp76_last = __tmp76Reader.EndOfStream;
+                        if (!string.IsNullOrEmpty(__tmp74Prefix))
                         {
-                            __out.Append(__tmp69Prefix);
-                            __tmp70_outputWritten = true;
+                            __out.Append(__tmp74Prefix);
+                            __tmp75_outputWritten = true;
                         }
-                        if ((__tmp71_last && !string.IsNullOrEmpty(__tmp71_line)) || (!__tmp71_last && __tmp71_line != null))
+                        if ((__tmp76_last && !string.IsNullOrEmpty(__tmp76_line)) || (!__tmp76_last && __tmp76_line != null))
                         {
-                            __out.Append(__tmp71_line);
-                            __tmp70_outputWritten = true;
+                            __out.Append(__tmp76_line);
+                            __tmp75_outputWritten = true;
                         }
-                        if (!__tmp71_last || __tmp70_outputWritten) __out.AppendLine(true);
+                        if (!__tmp76_last || __tmp75_outputWritten) __out.AppendLine(true);
                     }
                 }
-                if (__tmp70_outputWritten)
+                if (__tmp75_outputWritten)
                 {
                     __out.AppendLine(false); //222:66
                 }
@@ -2570,40 +2626,40 @@ namespace MetaDslx.Core.Immutable //1:1
                 ).ToList(); //225:4
             for (int __loop16_iteration = 0; __loop16_iteration < __loop16_results.Count; ++__loop16_iteration)
             {
-                var __tmp72 = __loop16_results[__loop16_iteration];
-                var symbol = __tmp72.symbol;
-                bool __tmp74_outputWritten = false;
-                string __tmp73Prefix = "		"; //226:1
-                StringBuilder __tmp75 = new StringBuilder();
-                __tmp75.Append(GenerateSymbolInstanceProperties(model, coreModel, symbol, symbolNames));
-                using(StreamReader __tmp75Reader = new StreamReader(this.__ToStream(__tmp75.ToString())))
+                var __tmp77 = __loop16_results[__loop16_iteration];
+                var symbol = __tmp77.symbol;
+                bool __tmp79_outputWritten = false;
+                string __tmp78Prefix = "		"; //226:1
+                StringBuilder __tmp80 = new StringBuilder();
+                __tmp80.Append(GenerateSymbolInstanceProperties(model, coreModel, symbol, symbolNames));
+                using(StreamReader __tmp80Reader = new StreamReader(this.__ToStream(__tmp80.ToString())))
                 {
-                    bool __tmp75_last = __tmp75Reader.EndOfStream;
-                    while(!__tmp75_last)
+                    bool __tmp80_last = __tmp80Reader.EndOfStream;
+                    while(!__tmp80_last)
                     {
-                        string __tmp75_line = __tmp75Reader.ReadLine();
-                        __tmp75_last = __tmp75Reader.EndOfStream;
-                        if (!string.IsNullOrEmpty(__tmp73Prefix))
+                        string __tmp80_line = __tmp80Reader.ReadLine();
+                        __tmp80_last = __tmp80Reader.EndOfStream;
+                        if (!string.IsNullOrEmpty(__tmp78Prefix))
                         {
-                            __out.Append(__tmp73Prefix);
-                            __tmp74_outputWritten = true;
+                            __out.Append(__tmp78Prefix);
+                            __tmp79_outputWritten = true;
                         }
-                        if ((__tmp75_last && !string.IsNullOrEmpty(__tmp75_line)) || (!__tmp75_last && __tmp75_line != null))
+                        if ((__tmp80_last && !string.IsNullOrEmpty(__tmp80_line)) || (!__tmp80_last && __tmp80_line != null))
                         {
-                            __out.Append(__tmp75_line);
-                            __tmp74_outputWritten = true;
+                            __out.Append(__tmp80_line);
+                            __tmp79_outputWritten = true;
                         }
-                        if (!__tmp75_last || __tmp74_outputWritten) __out.AppendLine(true);
+                        if (!__tmp80_last || __tmp79_outputWritten) __out.AppendLine(true);
                     }
                 }
-                if (__tmp74_outputWritten)
+                if (__tmp79_outputWritten)
                 {
                     __out.AppendLine(false); //226:76
                 }
             }
             __out.AppendLine(true); //228:1
-            __out.Append("		foreach (MutableSymbolBase symbol in this.Model.Symbols)"); //229:1
-            __out.AppendLine(false); //229:59
+            __out.Append("		foreach (global::MetaDslx.Core.MutableSymbol symbol in this.Model.Symbols)"); //229:1
+            __out.AppendLine(false); //229:77
             __out.Append("		{"); //230:1
             __out.AppendLine(false); //230:4
             __out.Append("			symbol.MMakeCreated();"); //231:1
@@ -3630,7 +3686,7 @@ namespace MetaDslx.Core.Immutable //1:1
                         __tmp55_outputWritten = true;
                     }
                     StringBuilder __tmp60 = new StringBuilder();
-                    __tmp60.Append(CSharpName(((MetaPrimitiveType)value), model, ClassKind.Immutable, true));
+                    __tmp60.Append(CSharpName(((MetaPrimitiveType)value), model, ClassKind.ImmutableInstance, true));
                     using(StreamReader __tmp60Reader = new StreamReader(this.__ToStream(__tmp60.ToString())))
                     {
                         bool __tmp60_last = __tmp60Reader.EndOfStream;
@@ -3646,7 +3702,7 @@ namespace MetaDslx.Core.Immutable //1:1
                             if (!__tmp60_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp61_line = ".ToMutable();"; //302:105
+                    string __tmp61_line = ".ToMutable();"; //302:113
                     if (!string.IsNullOrEmpty(__tmp61_line))
                     {
                         __out.Append(__tmp61_line);
@@ -3655,7 +3711,7 @@ namespace MetaDslx.Core.Immutable //1:1
                     if (__tmp55_outputWritten) __out.AppendLine(true);
                     if (__tmp55_outputWritten)
                     {
-                        __out.AppendLine(false); //302:118
+                        __out.AppendLine(false); //302:126
                     }
                 }
             }
@@ -4552,7 +4608,7 @@ namespace MetaDslx.Core.Immutable //1:1
                         __tmp55_outputWritten = true;
                     }
                     StringBuilder __tmp60 = new StringBuilder();
-                    __tmp60.Append(CSharpName(((MetaPrimitiveType)value), model, ClassKind.Immutable, true));
+                    __tmp60.Append(CSharpName(((MetaPrimitiveType)value), model, ClassKind.ImmutableInstance, true));
                     using(StreamReader __tmp60Reader = new StreamReader(this.__ToStream(__tmp60.ToString())))
                     {
                         bool __tmp60_last = __tmp60Reader.EndOfStream;
@@ -4568,7 +4624,7 @@ namespace MetaDslx.Core.Immutable //1:1
                             if (!__tmp60_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp61_line = ".ToMutable());"; //342:107
+                    string __tmp61_line = ".ToMutable());"; //342:115
                     if (!string.IsNullOrEmpty(__tmp61_line))
                     {
                         __out.Append(__tmp61_line);
@@ -4577,7 +4633,7 @@ namespace MetaDslx.Core.Immutable //1:1
                     if (__tmp55_outputWritten) __out.AppendLine(true);
                     if (__tmp55_outputWritten)
                     {
-                        __out.AppendLine(false); //342:121
+                        __out.AppendLine(false); //342:129
                     }
                 }
             }
@@ -5111,7 +5167,7 @@ namespace MetaDslx.Core.Immutable //1:1
                     if (!__tmp26_last) __out.AppendLine(true);
                 }
             }
-            string __tmp27_line = ".MutableSymbolBase Create(string type)"; //367:37
+            string __tmp27_line = ".MutableSymbol Create(string type)"; //367:37
             if (!string.IsNullOrEmpty(__tmp27_line))
             {
                 __out.Append(__tmp27_line);
@@ -5120,7 +5176,7 @@ namespace MetaDslx.Core.Immutable //1:1
             if (__tmp24_outputWritten) __out.AppendLine(true);
             if (__tmp24_outputWritten)
             {
-                __out.AppendLine(false); //367:75
+                __out.AppendLine(false); //367:71
             }
             __out.Append("	{"); //368:1
             __out.AppendLine(false); //368:3
@@ -5164,14 +5220,14 @@ namespace MetaDslx.Core.Immutable //1:1
                             if (!__tmp32_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp33_line = "\": return ("; //373:33
+                    string __tmp33_line = "\": return this."; //373:33
                     if (!string.IsNullOrEmpty(__tmp33_line))
                     {
                         __out.Append(__tmp33_line);
                         __tmp30_outputWritten = true;
                     }
                     StringBuilder __tmp34 = new StringBuilder();
-                    __tmp34.Append(Properties.CoreNs);
+                    __tmp34.Append(CSharpName(cls, model));
                     using(StreamReader __tmp34Reader = new StreamReader(this.__ToStream(__tmp34.ToString())))
                     {
                         bool __tmp34_last = __tmp34Reader.EndOfStream;
@@ -5187,76 +5243,53 @@ namespace MetaDslx.Core.Immutable //1:1
                             if (!__tmp34_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp35_line = ".MutableSymbolBase)this."; //373:63
+                    string __tmp35_line = "();"; //373:71
                     if (!string.IsNullOrEmpty(__tmp35_line))
                     {
                         __out.Append(__tmp35_line);
                         __tmp30_outputWritten = true;
                     }
-                    StringBuilder __tmp36 = new StringBuilder();
-                    __tmp36.Append(CSharpName(cls, model));
-                    using(StreamReader __tmp36Reader = new StreamReader(this.__ToStream(__tmp36.ToString())))
-                    {
-                        bool __tmp36_last = __tmp36Reader.EndOfStream;
-                        while(!__tmp36_last)
-                        {
-                            string __tmp36_line = __tmp36Reader.ReadLine();
-                            __tmp36_last = __tmp36Reader.EndOfStream;
-                            if ((__tmp36_last && !string.IsNullOrEmpty(__tmp36_line)) || (!__tmp36_last && __tmp36_line != null))
-                            {
-                                __out.Append(__tmp36_line);
-                                __tmp30_outputWritten = true;
-                            }
-                            if (!__tmp36_last) __out.AppendLine(true);
-                        }
-                    }
-                    string __tmp37_line = "();"; //373:110
-                    if (!string.IsNullOrEmpty(__tmp37_line))
-                    {
-                        __out.Append(__tmp37_line);
-                        __tmp30_outputWritten = true;
-                    }
                     if (__tmp30_outputWritten) __out.AppendLine(true);
                     if (__tmp30_outputWritten)
                     {
-                        __out.AppendLine(false); //373:113
+                        __out.AppendLine(false); //373:74
                     }
                 }
             }
             __out.Append("			default:"); //376:1
             __out.AppendLine(false); //376:12
-            bool __tmp39_outputWritten = false;
-            string __tmp40_line = "				throw new "; //377:1
+            bool __tmp37_outputWritten = false;
+            string __tmp38_line = "				throw new "; //377:1
+            if (!string.IsNullOrEmpty(__tmp38_line))
+            {
+                __out.Append(__tmp38_line);
+                __tmp37_outputWritten = true;
+            }
+            StringBuilder __tmp39 = new StringBuilder();
+            __tmp39.Append(Properties.CoreNs);
+            using(StreamReader __tmp39Reader = new StreamReader(this.__ToStream(__tmp39.ToString())))
+            {
+                bool __tmp39_last = __tmp39Reader.EndOfStream;
+                while(!__tmp39_last)
+                {
+                    string __tmp39_line = __tmp39Reader.ReadLine();
+                    __tmp39_last = __tmp39Reader.EndOfStream;
+                    if ((__tmp39_last && !string.IsNullOrEmpty(__tmp39_line)) || (!__tmp39_last && __tmp39_line != null))
+                    {
+                        __out.Append(__tmp39_line);
+                        __tmp37_outputWritten = true;
+                    }
+                    if (!__tmp39_last) __out.AppendLine(true);
+                }
+            }
+            string __tmp40_line = ".ModelException(\"Unknown type name: \" + type);"; //377:34
             if (!string.IsNullOrEmpty(__tmp40_line))
             {
                 __out.Append(__tmp40_line);
-                __tmp39_outputWritten = true;
+                __tmp37_outputWritten = true;
             }
-            StringBuilder __tmp41 = new StringBuilder();
-            __tmp41.Append(Properties.CoreNs);
-            using(StreamReader __tmp41Reader = new StreamReader(this.__ToStream(__tmp41.ToString())))
-            {
-                bool __tmp41_last = __tmp41Reader.EndOfStream;
-                while(!__tmp41_last)
-                {
-                    string __tmp41_line = __tmp41Reader.ReadLine();
-                    __tmp41_last = __tmp41Reader.EndOfStream;
-                    if ((__tmp41_last && !string.IsNullOrEmpty(__tmp41_line)) || (!__tmp41_last && __tmp41_line != null))
-                    {
-                        __out.Append(__tmp41_line);
-                        __tmp39_outputWritten = true;
-                    }
-                    if (!__tmp41_last) __out.AppendLine(true);
-                }
-            }
-            string __tmp42_line = ".ModelException(\"Unknown type name: \" + type);"; //377:34
-            if (!string.IsNullOrEmpty(__tmp42_line))
-            {
-                __out.Append(__tmp42_line);
-                __tmp39_outputWritten = true;
-            }
-            if (__tmp39_outputWritten) __out.AppendLine(true);
-            if (__tmp39_outputWritten)
+            if (__tmp37_outputWritten) __out.AppendLine(true);
+            if (__tmp37_outputWritten)
             {
                 __out.AppendLine(false); //377:80
             }
@@ -5271,60 +5304,83 @@ namespace MetaDslx.Core.Immutable //1:1
                 ).ToList(); //380:3
             for (int __loop20_iteration = 0; __loop20_iteration < __loop20_results.Count; ++__loop20_iteration)
             {
-                var __tmp43 = __loop20_results[__loop20_iteration];
-                var __loop20_var1 = __tmp43.__loop20_var1;
-                var cls = __tmp43.cls;
+                var __tmp41 = __loop20_results[__loop20_iteration];
+                var __loop20_var1 = __tmp41.__loop20_var1;
+                var cls = __tmp41.cls;
                 if (!cls.IsAbstract) //381:4
                 {
                     __out.AppendLine(true); //382:1
                     __out.Append("	/// <summary>"); //383:1
                     __out.AppendLine(false); //383:15
-                    bool __tmp45_outputWritten = false;
-                    string __tmp46_line = "	/// Creates a new instance of "; //384:1
+                    bool __tmp43_outputWritten = false;
+                    string __tmp44_line = "	/// Creates a new instance of "; //384:1
+                    if (!string.IsNullOrEmpty(__tmp44_line))
+                    {
+                        __out.Append(__tmp44_line);
+                        __tmp43_outputWritten = true;
+                    }
+                    StringBuilder __tmp45 = new StringBuilder();
+                    __tmp45.Append(CSharpName(cls, model));
+                    using(StreamReader __tmp45Reader = new StreamReader(this.__ToStream(__tmp45.ToString())))
+                    {
+                        bool __tmp45_last = __tmp45Reader.EndOfStream;
+                        while(!__tmp45_last)
+                        {
+                            string __tmp45_line = __tmp45Reader.ReadLine();
+                            __tmp45_last = __tmp45Reader.EndOfStream;
+                            if ((__tmp45_last && !string.IsNullOrEmpty(__tmp45_line)) || (!__tmp45_last && __tmp45_line != null))
+                            {
+                                __out.Append(__tmp45_line);
+                                __tmp43_outputWritten = true;
+                            }
+                            if (!__tmp45_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp46_line = "."; //384:55
                     if (!string.IsNullOrEmpty(__tmp46_line))
                     {
                         __out.Append(__tmp46_line);
-                        __tmp45_outputWritten = true;
+                        __tmp43_outputWritten = true;
                     }
-                    StringBuilder __tmp47 = new StringBuilder();
-                    __tmp47.Append(CSharpName(cls, model));
-                    using(StreamReader __tmp47Reader = new StreamReader(this.__ToStream(__tmp47.ToString())))
-                    {
-                        bool __tmp47_last = __tmp47Reader.EndOfStream;
-                        while(!__tmp47_last)
-                        {
-                            string __tmp47_line = __tmp47Reader.ReadLine();
-                            __tmp47_last = __tmp47Reader.EndOfStream;
-                            if ((__tmp47_last && !string.IsNullOrEmpty(__tmp47_line)) || (!__tmp47_last && __tmp47_line != null))
-                            {
-                                __out.Append(__tmp47_line);
-                                __tmp45_outputWritten = true;
-                            }
-                            if (!__tmp47_last) __out.AppendLine(true);
-                        }
-                    }
-                    string __tmp48_line = "."; //384:55
-                    if (!string.IsNullOrEmpty(__tmp48_line))
-                    {
-                        __out.Append(__tmp48_line);
-                        __tmp45_outputWritten = true;
-                    }
-                    if (__tmp45_outputWritten) __out.AppendLine(true);
-                    if (__tmp45_outputWritten)
+                    if (__tmp43_outputWritten) __out.AppendLine(true);
+                    if (__tmp43_outputWritten)
                     {
                         __out.AppendLine(false); //384:56
                     }
                     __out.Append("	/// </summary>"); //385:1
                     __out.AppendLine(false); //385:16
-                    bool __tmp50_outputWritten = false;
-                    string __tmp51_line = "	public "; //386:1
+                    bool __tmp48_outputWritten = false;
+                    string __tmp49_line = "	public "; //386:1
+                    if (!string.IsNullOrEmpty(__tmp49_line))
+                    {
+                        __out.Append(__tmp49_line);
+                        __tmp48_outputWritten = true;
+                    }
+                    StringBuilder __tmp50 = new StringBuilder();
+                    __tmp50.Append(CSharpName(cls, model, ClassKind.Builder));
+                    using(StreamReader __tmp50Reader = new StreamReader(this.__ToStream(__tmp50.ToString())))
+                    {
+                        bool __tmp50_last = __tmp50Reader.EndOfStream;
+                        while(!__tmp50_last)
+                        {
+                            string __tmp50_line = __tmp50Reader.ReadLine();
+                            __tmp50_last = __tmp50Reader.EndOfStream;
+                            if ((__tmp50_last && !string.IsNullOrEmpty(__tmp50_line)) || (!__tmp50_last && __tmp50_line != null))
+                            {
+                                __out.Append(__tmp50_line);
+                                __tmp48_outputWritten = true;
+                            }
+                            if (!__tmp50_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp51_line = " "; //386:51
                     if (!string.IsNullOrEmpty(__tmp51_line))
                     {
                         __out.Append(__tmp51_line);
-                        __tmp50_outputWritten = true;
+                        __tmp48_outputWritten = true;
                     }
                     StringBuilder __tmp52 = new StringBuilder();
-                    __tmp52.Append(CSharpName(cls, model, ClassKind.Builder));
+                    __tmp52.Append(CSharpName(cls, model, ClassKind.FactoryMethod));
                     using(StreamReader __tmp52Reader = new StreamReader(this.__ToStream(__tmp52.ToString())))
                     {
                         bool __tmp52_last = __tmp52Reader.EndOfStream;
@@ -5335,51 +5391,56 @@ namespace MetaDslx.Core.Immutable //1:1
                             if ((__tmp52_last && !string.IsNullOrEmpty(__tmp52_line)) || (!__tmp52_last && __tmp52_line != null))
                             {
                                 __out.Append(__tmp52_line);
-                                __tmp50_outputWritten = true;
+                                __tmp48_outputWritten = true;
                             }
                             if (!__tmp52_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp53_line = " "; //386:51
+                    string __tmp53_line = "()"; //386:100
                     if (!string.IsNullOrEmpty(__tmp53_line))
                     {
                         __out.Append(__tmp53_line);
-                        __tmp50_outputWritten = true;
+                        __tmp48_outputWritten = true;
                     }
-                    StringBuilder __tmp54 = new StringBuilder();
-                    __tmp54.Append(CSharpName(cls, model, ClassKind.FactoryMethod));
-                    using(StreamReader __tmp54Reader = new StreamReader(this.__ToStream(__tmp54.ToString())))
-                    {
-                        bool __tmp54_last = __tmp54Reader.EndOfStream;
-                        while(!__tmp54_last)
-                        {
-                            string __tmp54_line = __tmp54Reader.ReadLine();
-                            __tmp54_last = __tmp54Reader.EndOfStream;
-                            if ((__tmp54_last && !string.IsNullOrEmpty(__tmp54_line)) || (!__tmp54_last && __tmp54_line != null))
-                            {
-                                __out.Append(__tmp54_line);
-                                __tmp50_outputWritten = true;
-                            }
-                            if (!__tmp54_last) __out.AppendLine(true);
-                        }
-                    }
-                    string __tmp55_line = "()"; //386:100
-                    if (!string.IsNullOrEmpty(__tmp55_line))
-                    {
-                        __out.Append(__tmp55_line);
-                        __tmp50_outputWritten = true;
-                    }
-                    if (__tmp50_outputWritten) __out.AppendLine(true);
-                    if (__tmp50_outputWritten)
+                    if (__tmp48_outputWritten) __out.AppendLine(true);
+                    if (__tmp48_outputWritten)
                     {
                         __out.AppendLine(false); //386:102
                     }
                     __out.Append("	{"); //387:1
                     __out.AppendLine(false); //387:3
-                    bool __tmp57_outputWritten = false;
-                    string __tmp56Prefix = "		"; //388:1
+                    bool __tmp55_outputWritten = false;
+                    string __tmp54Prefix = "		"; //388:1
+                    StringBuilder __tmp56 = new StringBuilder();
+                    __tmp56.Append(Properties.CoreNs);
+                    using(StreamReader __tmp56Reader = new StreamReader(this.__ToStream(__tmp56.ToString())))
+                    {
+                        bool __tmp56_last = __tmp56Reader.EndOfStream;
+                        while(!__tmp56_last)
+                        {
+                            string __tmp56_line = __tmp56Reader.ReadLine();
+                            __tmp56_last = __tmp56Reader.EndOfStream;
+                            if (!string.IsNullOrEmpty(__tmp54Prefix))
+                            {
+                                __out.Append(__tmp54Prefix);
+                                __tmp55_outputWritten = true;
+                            }
+                            if ((__tmp56_last && !string.IsNullOrEmpty(__tmp56_line)) || (!__tmp56_last && __tmp56_line != null))
+                            {
+                                __out.Append(__tmp56_line);
+                                __tmp55_outputWritten = true;
+                            }
+                            if (!__tmp56_last) __out.AppendLine(true);
+                        }
+                    }
+                    string __tmp57_line = ".MutableSymbol symbol = this.CreateSymbol(new "; //388:22
+                    if (!string.IsNullOrEmpty(__tmp57_line))
+                    {
+                        __out.Append(__tmp57_line);
+                        __tmp55_outputWritten = true;
+                    }
                     StringBuilder __tmp58 = new StringBuilder();
-                    __tmp58.Append(Properties.CoreNs);
+                    __tmp58.Append(CSharpName(cls, model, ClassKind.Id));
                     using(StreamReader __tmp58Reader = new StreamReader(this.__ToStream(__tmp58.ToString())))
                     {
                         bool __tmp58_last = __tmp58Reader.EndOfStream;
@@ -5387,85 +5448,57 @@ namespace MetaDslx.Core.Immutable //1:1
                         {
                             string __tmp58_line = __tmp58Reader.ReadLine();
                             __tmp58_last = __tmp58Reader.EndOfStream;
-                            if (!string.IsNullOrEmpty(__tmp56Prefix))
-                            {
-                                __out.Append(__tmp56Prefix);
-                                __tmp57_outputWritten = true;
-                            }
                             if ((__tmp58_last && !string.IsNullOrEmpty(__tmp58_line)) || (!__tmp58_last && __tmp58_line != null))
                             {
                                 __out.Append(__tmp58_line);
-                                __tmp57_outputWritten = true;
+                                __tmp55_outputWritten = true;
                             }
                             if (!__tmp58_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp59_line = ".MutableSymbolBase symbol = this.CreateSymbol(new "; //388:22
+                    string __tmp59_line = "());"; //388:105
                     if (!string.IsNullOrEmpty(__tmp59_line))
                     {
                         __out.Append(__tmp59_line);
-                        __tmp57_outputWritten = true;
+                        __tmp55_outputWritten = true;
                     }
-                    StringBuilder __tmp60 = new StringBuilder();
-                    __tmp60.Append(CSharpName(cls, model, ClassKind.Id));
-                    using(StreamReader __tmp60Reader = new StreamReader(this.__ToStream(__tmp60.ToString())))
+                    if (__tmp55_outputWritten) __out.AppendLine(true);
+                    if (__tmp55_outputWritten)
                     {
-                        bool __tmp60_last = __tmp60Reader.EndOfStream;
-                        while(!__tmp60_last)
+                        __out.AppendLine(false); //388:109
+                    }
+                    bool __tmp61_outputWritten = false;
+                    string __tmp62_line = "		return ("; //389:1
+                    if (!string.IsNullOrEmpty(__tmp62_line))
+                    {
+                        __out.Append(__tmp62_line);
+                        __tmp61_outputWritten = true;
+                    }
+                    StringBuilder __tmp63 = new StringBuilder();
+                    __tmp63.Append(CSharpName(cls, model, ClassKind.Builder));
+                    using(StreamReader __tmp63Reader = new StreamReader(this.__ToStream(__tmp63.ToString())))
+                    {
+                        bool __tmp63_last = __tmp63Reader.EndOfStream;
+                        while(!__tmp63_last)
                         {
-                            string __tmp60_line = __tmp60Reader.ReadLine();
-                            __tmp60_last = __tmp60Reader.EndOfStream;
-                            if ((__tmp60_last && !string.IsNullOrEmpty(__tmp60_line)) || (!__tmp60_last && __tmp60_line != null))
+                            string __tmp63_line = __tmp63Reader.ReadLine();
+                            __tmp63_last = __tmp63Reader.EndOfStream;
+                            if ((__tmp63_last && !string.IsNullOrEmpty(__tmp63_line)) || (!__tmp63_last && __tmp63_line != null))
                             {
-                                __out.Append(__tmp60_line);
-                                __tmp57_outputWritten = true;
+                                __out.Append(__tmp63_line);
+                                __tmp61_outputWritten = true;
                             }
-                            if (!__tmp60_last) __out.AppendLine(true);
+                            if (!__tmp63_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp61_line = "());"; //388:109
-                    if (!string.IsNullOrEmpty(__tmp61_line))
-                    {
-                        __out.Append(__tmp61_line);
-                        __tmp57_outputWritten = true;
-                    }
-                    if (__tmp57_outputWritten) __out.AppendLine(true);
-                    if (__tmp57_outputWritten)
-                    {
-                        __out.AppendLine(false); //388:113
-                    }
-                    bool __tmp63_outputWritten = false;
-                    string __tmp64_line = "		return ("; //389:1
+                    string __tmp64_line = ")symbol;"; //389:53
                     if (!string.IsNullOrEmpty(__tmp64_line))
                     {
                         __out.Append(__tmp64_line);
-                        __tmp63_outputWritten = true;
+                        __tmp61_outputWritten = true;
                     }
-                    StringBuilder __tmp65 = new StringBuilder();
-                    __tmp65.Append(CSharpName(cls, model, ClassKind.Builder));
-                    using(StreamReader __tmp65Reader = new StreamReader(this.__ToStream(__tmp65.ToString())))
-                    {
-                        bool __tmp65_last = __tmp65Reader.EndOfStream;
-                        while(!__tmp65_last)
-                        {
-                            string __tmp65_line = __tmp65Reader.ReadLine();
-                            __tmp65_last = __tmp65Reader.EndOfStream;
-                            if ((__tmp65_last && !string.IsNullOrEmpty(__tmp65_line)) || (!__tmp65_last && __tmp65_line != null))
-                            {
-                                __out.Append(__tmp65_line);
-                                __tmp63_outputWritten = true;
-                            }
-                            if (!__tmp65_last) __out.AppendLine(true);
-                        }
-                    }
-                    string __tmp66_line = ")symbol;"; //389:53
-                    if (!string.IsNullOrEmpty(__tmp66_line))
-                    {
-                        __out.Append(__tmp66_line);
-                        __tmp63_outputWritten = true;
-                    }
-                    if (__tmp63_outputWritten) __out.AppendLine(true);
-                    if (__tmp63_outputWritten)
+                    if (__tmp61_outputWritten) __out.AppendLine(true);
+                    if (__tmp61_outputWritten)
                     {
                         __out.AppendLine(false); //389:61
                     }
@@ -12466,8 +12499,8 @@ namespace MetaDslx.Core.Immutable //1:1
             __out.Append("	}"); //955:1
             __out.AppendLine(false); //955:3
             __out.AppendLine(true); //956:2
-            __out.Append("	internal protected override void MInit()"); //957:1
-            __out.AppendLine(false); //957:42
+            __out.Append("	protected override void MInit()"); //957:1
+            __out.AppendLine(false); //957:33
             __out.Append("	{"); //958:1
             __out.AppendLine(false); //958:3
             bool __tmp23_outputWritten = false;

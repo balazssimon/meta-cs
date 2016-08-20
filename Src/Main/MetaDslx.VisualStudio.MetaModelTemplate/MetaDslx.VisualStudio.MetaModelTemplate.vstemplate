@@ -16,6 +16,9 @@
         <Assembly>System</Assembly>
       </Reference>
       <Reference>
+        <Assembly>System.Collections.Immutable</Assembly>
+      </Reference>
+      <Reference>
         <Assembly>MetaDslx.Core</Assembly>
       </Reference>
     </References>

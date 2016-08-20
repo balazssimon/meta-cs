@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Core.Immutable
+namespace MetaDslx.Core
 {
     public interface IModelCollection<out T> : IReadOnlyCollection<T>
     {

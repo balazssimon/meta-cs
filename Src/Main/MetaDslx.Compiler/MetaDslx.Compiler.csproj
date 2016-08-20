@@ -158,6 +158,7 @@
     <Compile Include="MetaModel\MetaModelParserVisitor.cs">
       <DependentUpon>MetaModelParser.ag4</DependentUpon>
     </Compile>
+    <Compile Include="ModelCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -184,8 +185,8 @@
     </None>
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
-      <LastGenOutput>AnnotatedAntlr4Lexer.g4</LastGenOutput>
       <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <LastGenOutput>AnnotatedAntlr4Lexer.g4</LastGenOutput>
     </None>
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.g4">
       <AutoGen>True</AutoGen>
@@ -212,17 +213,6 @@
       <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
     </None>
     <None Include="MetaDslxKey.snk" />
-    <None Include="MetaGenerator\MetaGeneratorLexer.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
-      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
-    </None>
-    <None Include="MetaGenerator\MetaGeneratorLexer.tokens">
-      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
-    </None>
-    <None Include="MetaGenerator\MetaGeneratorParser.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
-      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
-    </None>
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
@@ -237,12 +227,41 @@
       <Generator>MetaGenerator</Generator>
       <LastGenOutput>MetaLanguageServiceGenerator.cs</LastGenOutput>
     </None>
+    <None Include="MetaGenerator\MetaGeneratorLexer.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <LastGenOutput>MetaGeneratorLexer.g4</LastGenOutput>
+    </None>
+    <None Include="MetaGenerator\MetaGeneratorLexer.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
+    </None>
+    <None Include="MetaGenerator\MetaGeneratorLexer.tokens">
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
+    </None>
+    <None Include="MetaGenerator\MetaGeneratorParser.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <LastGenOutput>MetaGeneratorParser.g4</LastGenOutput>
+    </None>
+    <None Include="MetaGenerator\MetaGeneratorParser.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </None>
     <None Include="MetaGenerator\MetaGeneratorParser.tokens">
       <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
     </None>
     <None Include="MetaModel\MetaModelLexer.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <LastGenOutput>MetaModelLexer.g4</LastGenOutput>
+    </None>
+    <None Include="MetaModel\MetaModelLexer.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelLexer.ag4</DependentUpon>
     </None>
     <None Include="MetaModel\MetaModelLexer.tokens">
       <DependentUpon>MetaModelLexer.ag4</DependentUpon>
@@ -250,6 +269,7 @@
     <None Include="MetaModel\MetaModelParser.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <CustomToolNamespace>MetaDslx.Compiler</CustomToolNamespace>
+      <LastGenOutput>MetaModelParser.g4</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +286,11 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="MetaModel\MetaModelParser.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </None>
     <None Include="MetaModel\MetaModelParser.tokens">
       <DependentUpon>MetaModelParser.ag4</DependentUpon>
     </None>

@@ -1,10 +1,10 @@
-﻿namespace MetaDslx.Core.Immutable;
+﻿namespace MetaDslx.Core;
 generator ImmutableMetaModelGenerator for IEnumerable<ImmutableSymbol>;
 
 using System.Collections.Immutable;
 
 properties Properties
-	string CoreNs = "global::MetaDslx.Core.Immutable";
+	string CoreNs = "global::MetaDslx.Core";
 end properties
 
 template Generate()
@@ -51,7 +51,7 @@ end template
 
 template GenerateAnnotations(MetaAnnotatedElement elem)
 [loop(elem->annot:Annotations)]
-["["][annot.Name]["]"]
+["["][Properties.CoreNs].[annot.Name]["]"]
 [end loop]
 end template
 
@@ -190,7 +190,7 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 ^
 	internal [model.CSharpName(ModelKind.BuilderInstance)]()
 	{
-		this.Model = new global::MetaDslx.Core.Immutable.MutableModel();
+		this.Model = new [Properties.CoreNs].MutableModel();
 	}
 ^
 	internal void Create()
@@ -216,7 +216,7 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 ^
 	private void CreateSymbols()
 	{
-		[model.CSharpName(ModelKind.Factory)] factory = new [model.CSharpName(ModelKind.Factory)](this.Model, [Properties.CoreNs].ModelFactoryFlags.DontMakeSymbolsCreated);
+		[Properties.CoreNs].MetaFactory factory = new [Properties.CoreNs].MetaFactory(this.Model, [Properties.CoreNs].ModelFactoryFlags.DontMakeSymbolsCreated);
 ^
 		[loop(symbol:Instances)]
 		[GenerateSymbolInstance(model, coreModel, symbol, symbolNames)]
@@ -226,7 +226,7 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 		[GenerateSymbolInstanceProperties(model, coreModel, symbol, symbolNames)]
 		[end loop]
 ^
-		foreach (MutableSymbolBase symbol in this.Model.Symbols)
+		foreach (global::MetaDslx.Core.MutableSymbol symbol in this.Model.Symbols)
 		{
 			symbol.MMakeCreated();
 		}
@@ -299,7 +299,7 @@ template GenerateSymbolInstancePropertyValue(MetaModel model, bool coreModel, Im
 	[if (coreModel)]
 [name].[prop.Name]Lazy = () => [((MetaPrimitiveType)value).Name.ToPascalCase()];
 	[else]
-[name].[prop.Name]Lazy = () => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.Immutable, true)].ToMutable();
+[name].[prop.Name]Lazy = () => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.ImmutableInstance, true)].ToMutable();
 	[end if]
 [else if (valueSymbol != null && symbolNames.ContainsKey(valueSymbol))]
 [name].[prop.Name]Lazy = () => [symbolNames[valueSymbol]];
@@ -339,7 +339,7 @@ template GenerateSymbolInstancePropertyCollectionValue(MetaModel model, bool cor
 	[if (coreModel)]
 [name].[prop.Name].AddLazy(() => [((MetaPrimitiveType)value).Name.ToPascalCase()]);
 	[else]
-[name].[prop.Name].AddLazy(() => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.Immutable, true)].ToMutable());
+[name].[prop.Name].AddLazy(() => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.ImmutableInstance, true)].ToMutable());
 	[end if]
 [else if (valueSymbol != null && symbolNames.ContainsKey(valueSymbol))]
 [name].[prop.Name].AddLazy(() => [symbolNames[valueSymbol]]);
@@ -364,13 +364,13 @@ public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFa
 		[model.CSharpName(ModelKind.Descriptor)].Initialize();
 	}
 ^
-	public override [Properties.CoreNs].MutableSymbolBase Create(string type)
+	public override [Properties.CoreNs].MutableSymbol Create(string type)
 	{
 		switch (type)
 		{
 			[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
 				[if (!cls.IsAbstract)]
-			case "[cls.CSharpName(model)]": return ([Properties.CoreNs].MutableSymbolBase)this.[cls.CSharpName(model)]();
+			case "[cls.CSharpName(model)]": return this.[cls.CSharpName(model)]();
 				[end if]
 			[end loop]
 			default:
@@ -385,7 +385,7 @@ public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFa
 	/// </summary>
 	public [cls.CSharpName(model, ClassKind.Builder)] [cls.CSharpName(model, ClassKind.FactoryMethod)]()
 	{
-		[Properties.CoreNs].MutableSymbolBase symbol = this.CreateSymbol(new [cls.CSharpName(model, ClassKind.Id)]());
+		[Properties.CoreNs].MutableSymbol symbol = this.CreateSymbol(new [cls.CSharpName(model, ClassKind.Id)]());
 		return ([cls.CSharpName(model, ClassKind.Builder)])symbol;
 	}
 		[end if]
@@ -954,7 +954,7 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 	{
 	}
 	^
-	internal protected override void MInit()
+	protected override void MInit()
 	{
 		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)](this);
 	}

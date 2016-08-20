@@ -5,20 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Soal
+namespace MetaDslx.Soal.Internal
 {
     internal class SoalImplementation : SoalImplementationBase
     {
-        public override string InterfaceReference_Name(InterfaceReference @this)
+        public override void InterfaceReference(InterfaceReferenceBuilder _this)
         {
-            if (((ModelObject)@this).MIsValueCreated(SoalDescriptor.InterfaceReference.InterfaceProperty))
-            {
-                return @this.OptionalName != null ? @this.OptionalName : @this.Interface.Name;
-            }
-            else
-            {
-                return @this.OptionalName ?? string.Empty;
-            }
+            base.InterfaceReference(_this);
+            _this.OptionalNameLazy = () => _this.OptionalName != null ? _this.OptionalName : (_this.Interface != null ? _this.Interface.Name : string.Empty);
         }
+
     }
 }

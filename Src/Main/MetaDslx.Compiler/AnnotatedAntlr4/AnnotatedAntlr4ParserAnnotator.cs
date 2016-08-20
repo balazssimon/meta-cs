@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,9 +28,9 @@ namespace MetaDslx.Compiler
         public Dictionary<object, List<object>> TreeAnnotations { get { return this.treeAnnotations; } }
         
         
-        private MetaDslx.Core.Immutable.IModelCompiler compiler;
+        private MetaDslx.Compiler.IModelCompiler compiler;
         
-        public AnnotatedAntlr4ParserAnnotator(MetaDslx.Core.Immutable.IModelCompiler compiler)
+        public AnnotatedAntlr4ParserAnnotator(MetaDslx.Compiler.IModelCompiler compiler)
         {
             this.compiler = compiler;
             List<object> annotList = null;
@@ -907,4 +907,3 @@ namespace MetaDslx.Compiler
         }
     }
 }
-

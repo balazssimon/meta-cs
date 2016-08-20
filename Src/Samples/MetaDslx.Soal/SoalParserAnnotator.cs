@@ -8,6 +8,9 @@ using MetaDslx.Compiler;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 
+// The variable '...' is assigned but its value is never used
+#pragma warning disable 0219
+
 namespace MetaDslx.Soal
 {
     public class SoalParserAnnotator : SoalParserBaseVisitor<object>
@@ -25,8 +28,11 @@ namespace MetaDslx.Soal
         public Dictionary<object, List<object>> TreeAnnotations { get { return this.treeAnnotations; } }
         
         
-        public SoalParserAnnotator()
+        private MetaDslx.Compiler.IModelCompiler compiler;
+        
+        public SoalParserAnnotator(MetaDslx.Compiler.IModelCompiler compiler)
         {
+            this.compiler = compiler;
             List<object> annotList = null;
         }
         
@@ -49,9 +55,7 @@ namespace MetaDslx.Soal
                     {
                         if (sta.HasName)
                         {
-                            ModelCompilerContext.RequireContext();
-                            IModelCompiler compiler = ModelCompilerContext.Current;
-                            string name = compiler.NameProvider.GetName(node);
+                            string name = this.compiler.NameProvider.GetName(node);
                             if (sta.Name == name)
                             {
                                 this.OverrideSymbolType(node, sta.SymbolType);
@@ -1835,33 +1839,26 @@ namespace MetaDslx.Soal
             this.Parser = new SoalParser(this.CommonTokenStream);
             this.Parser.AddErrorListener(this);
             this.ParseTree = this.Parser.main();
-            SoalParserAnnotator annotator = new SoalParserAnnotator();
-            annotator.Visit(this.ParseTree);
-            this.LexerAnnotations = annotator.LexerAnnotations;
-            this.ParserAnnotations = annotator.ParserAnnotations;
-            this.ModeAnnotations = annotator.ModeAnnotations;
-            this.TokenAnnotations = annotator.TokenAnnotations;
-            this.RuleAnnotations = annotator.RuleAnnotations;
-            this.TreeAnnotations = annotator.TreeAnnotations;
-            MetaCompilerDefinitionPhase definitionPhase = new MetaCompilerDefinitionPhase(this);
-            definitionPhase.VisitNode(this.ParseTree);
-            MetaCompilerMergePhase mergePhase = new MetaCompilerMergePhase(this);
-            mergePhase.VisitNode(this.ParseTree);
-            MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);
-            referencePhase.VisitNode(this.ParseTree);
-            SoalParserPropertyEvaluator propertyEvaluator = new SoalParserPropertyEvaluator(this);
-            propertyEvaluator.Visit(this.ParseTree);
-            
-            foreach (var symbol in this.Data.GetSymbols())
+            if (!this.Diagnostics.HasErrors())
             {
-                symbol.MEvalLazyValues();
-            }
-            foreach (var symbol in this.Data.GetSymbols())
-            {
-                if (symbol.MHasUninitializedValue())
-                {
-                    this.Diagnostics.AddError("The symbol '" + symbol + "' has uninitialized lazy values.", this.FileName, new TextSpan(), true);
-                }
+                SoalParserAnnotator annotator = new SoalParserAnnotator(this);
+                annotator.Visit(this.ParseTree);
+                this.LexerAnnotations = annotator.LexerAnnotations;
+                this.ParserAnnotations = annotator.ParserAnnotations;
+                this.ModeAnnotations = annotator.ModeAnnotations;
+                this.TokenAnnotations = annotator.TokenAnnotations;
+                this.RuleAnnotations = annotator.RuleAnnotations;
+                this.TreeAnnotations = annotator.TreeAnnotations;
+                MetaCompilerDefinitionPhase definitionPhase = new MetaCompilerDefinitionPhase(this);
+                definitionPhase.VisitNode(this.ParseTree);
+                MetaCompilerMergePhase mergePhase = new MetaCompilerMergePhase(this);
+                mergePhase.VisitNode(this.ParseTree);
+                MetaCompilerReferencePhase referencePhase = new MetaCompilerReferencePhase(this);
+                referencePhase.VisitNode(this.ParseTree);
+                SoalParserPropertyEvaluator propertyEvaluator = new SoalParserPropertyEvaluator(this);
+                propertyEvaluator.Visit(this.ParseTree);
+                
+                this.Model.EvaluateLazyValues();
             }
         }
         

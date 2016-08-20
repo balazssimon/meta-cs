@@ -60,7 +60,6 @@
     <Compile Include="ImmutableUtils.cs" />
     <Compile Include="GreenModel.cs" />
     <Compile Include="ModelCollections.cs" />
-    <Compile Include="ModelCompiler.cs" />
     <Compile Include="ModelException.cs" />
     <Compile Include="ModelProperty.cs" />
     <Compile Include="RedModel.cs" />

@@ -127,14 +127,14 @@ namespace MetaDslx.Compiler
         private void ProcessAntlr4ErrorLine(string line)
         {
             if (string.IsNullOrWhiteSpace(line)) return;
-            MetaDslx.Core.Immutable.Severity severity = MetaDslx.Core.Immutable.Severity.Info;
+            Severity severity = Severity.Info;
             if (line.StartsWith("error"))
             {
-                severity = MetaDslx.Core.Immutable.Severity.Error;
+                severity = Severity.Error;
             }
             else if (line.StartsWith("warning"))
             {
-                severity = MetaDslx.Core.Immutable.Severity.Warning;
+                severity = Severity.Warning;
             }
             int colonIndex = line.IndexOf(':');
             if (colonIndex >= 0)
@@ -1186,9 +1186,9 @@ namespace MetaDslx.Compiler
             WriteLine();
             if (this.compiler.IsParser)
             {
-                WriteLine("private MetaDslx.Core.Immutable.IModelCompiler compiler;");
+                WriteLine("private MetaDslx.Compiler.IModelCompiler compiler;");
                 WriteLine();
-                WriteLine("public {0}Annotator(MetaDslx.Core.Immutable.IModelCompiler compiler)", this.parserName);
+                WriteLine("public {0}Annotator(MetaDslx.Compiler.IModelCompiler compiler)", this.parserName);
                 WriteLine("{");
                 IncIndent();
                 WriteLine("this.compiler = compiler;");
@@ -1865,6 +1865,9 @@ namespace MetaDslx.Compiler
             WriteLine("this.Parser = new {0}(this.CommonTokenStream);", this.parserName);
             WriteLine("this.Parser.AddErrorListener(this);");
             WriteLine("this.ParseTree = this.Parser.{0};", rootName);
+            WriteLine("if (!this.Diagnostics.HasErrors())");
+            WriteLine("{");
+            IncIndent();
             WriteLine("{0}Annotator annotator = new {0}Annotator(this);", this.parserName);
             WriteLine("annotator.Visit(this.ParseTree);");
             WriteLine("this.LexerAnnotations = annotator.LexerAnnotations;");
@@ -1883,6 +1886,8 @@ namespace MetaDslx.Compiler
             WriteLine("propertyEvaluator.Visit(this.ParseTree);");
             WriteLine();
             WriteLine("this.Model.EvaluateLazyValues();");
+            DecIndent();
+            WriteLine("}");
             DecIndent();
             WriteLine("}");
             WriteLine();

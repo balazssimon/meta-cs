@@ -22,6 +22,9 @@
         <Assembly>System.Data</Assembly>
       </Reference>
       <Reference>
+        <Assembly>System.Collections.Immutable</Assembly>
+      </Reference>
+      <Reference>
         <Assembly>Antlr4.Runtime</Assembly>
       </Reference>
       <Reference>

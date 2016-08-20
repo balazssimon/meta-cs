@@ -1,5 +1,5 @@
 ﻿using MetaDslx.Compiler;
-using MetaDslx.Core.Immutable;
+using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

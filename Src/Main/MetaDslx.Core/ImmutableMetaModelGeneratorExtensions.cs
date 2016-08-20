@@ -1,11 +1,12 @@
-﻿using System;
+﻿using MetaDslx.Core.Internal;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Core.Immutable
+namespace MetaDslx.Core
 {
     internal enum ModelKind
     {
@@ -53,7 +54,7 @@ namespace MetaDslx.Core.Immutable
     //*
     internal class ImmutableMetaModelGeneratorExtensions : IImmutableMetaModelGeneratorExtensions
     {
-        public static string CoreNs = "global::MetaDslx.Core.Immutable";
+        public static string CoreNs = "global::MetaDslx.Core";
 
         public string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false)
         {
@@ -67,7 +68,7 @@ namespace MetaDslx.Core.Immutable
                 result = currentNs.Name + result;
                 currentNs = currentNs.Parent;
             }
-            result = result + ".Immutable";
+            //result = result + ".Immutable";
             switch (kind)
             {
                 case NamespaceKind.Internal:
@@ -151,8 +152,8 @@ namespace MetaDslx.Core.Immutable
             {
                 if (kind == ClassKind.ImmutableInstance || kind == ClassKind.BuilderInstance || kind == ClassKind.FactoryMethod)
                 {
-                    string fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), !this.ContainsType(mmodel, mtype));
-                    result = "global::" + fullNamePrefix + "." + result;
+                    //string fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), !this.ContainsType(mmodel, mtype));
+                    result = "global::MetaDslx.Core.MetaInstance." + result;
                 }
             }
             return result;
@@ -440,7 +441,7 @@ namespace MetaDslx.Core.Immutable
         public bool IsCoreModel(MetaModel mmodel)
         {
             if (mmodel == null) return false;
-            return this.CSharpName(mmodel, ModelKind.None, true) == "global::MetaDslx.Core.Immutable.Meta";
+            return this.CSharpName(mmodel, ModelKind.None, true) == "global::MetaDslx.Core.Meta";
         }
 
         private bool IsSameModel(MetaModel m1, MetaModel m2)
@@ -476,26 +477,29 @@ namespace MetaDslx.Core.Immutable
             int tmpCounter = 0;
             foreach (var item in mmodel.MModel.Symbols)
             {
-                string name = null;
-                MetaProperty prop = item as MetaProperty;
-                MetaDeclaration decl = item as MetaDeclaration;
-                MetaType type = item as MetaType;
-                if (prop != null)
+                if (!(item is RootScope))
                 {
-                    name = this.CSharpName(prop, mmodel, PropertyKind.BuilderInstance);
-                }
-                else if (decl != null && !(decl is MetaConstant))
-                {
-                    name = this.CSharpName(decl, mmodel, ClassKind.BuilderInstance);
-                }
-                if ((decl == null || decl.Namespace == mmodel.Namespace) && (type == null || !MetaConstants.Types.Contains(type)))
-                {
-                    if (name == null)
+                    string name = null;
+                    MetaProperty prop = item as MetaProperty;
+                    MetaDeclaration decl = item as MetaDeclaration;
+                    MetaType type = item as MetaType;
+                    if (prop != null)
                     {
-                        ++tmpCounter;
-                        name = "__tmp" + tmpCounter;
+                        name = this.CSharpName(prop, mmodel, PropertyKind.BuilderInstance);
                     }
-                    result.Add(item, name);
+                    else if (decl != null && !(decl is MetaConstant))
+                    {
+                        name = this.CSharpName(decl, mmodel, ClassKind.BuilderInstance);
+                    }
+                    if ((decl == null || decl.Namespace == mmodel.Namespace) && (type == null || !MetaConstants.Types.Contains(type)))
+                    {
+                        if (name == null)
+                        {
+                            ++tmpCounter;
+                            name = "__tmp" + tmpCounter;
+                        }
+                        result.Add(item, name);
+                    }
                 }
             }
             return result.ToImmutable();

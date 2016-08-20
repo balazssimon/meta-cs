@@ -23,13 +23,13 @@ declaration : structDeclaration | exceptionDeclaration | entityDeclaration | dat
 // Structs and exceptions
 
                 
-structDeclaration : KStruct identifier (TColon                                                                                  qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : KStruct identifier (TColon                                                                                    qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
                    
-exceptionDeclaration : KException identifier (TColon                                                                                     qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+exceptionDeclaration : KException identifier (TColon                                                                                       qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
                 
-entityDeclaration : KEntity identifier (TColon                                                                                  qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+entityDeclaration : KEntity identifier (TColon                                                                                    qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
                      
                   
@@ -64,7 +64,7 @@ parameter :                 typeReference identifier;
 // Component
 
                    
-componentDeclaration :                                       KAbstract? KComponent identifier (TColon                                                                                          qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+componentDeclaration :                                       KAbstract? KComponent identifier (TColon                                                                                            qualifiedName)? TOpenBrace componentElements? TCloseBrace;
 
 componentElements : componentElement+;
 
@@ -103,7 +103,7 @@ componentImplementation : KImplementation identifier TSemicolon;
 componentLanguage : KLanguage identifier TSemicolon;
 
         
-compositeDeclaration : (                      KAssembly |                        KComposite) identifier (TColon                                                                                                       qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+compositeDeclaration : (                      KAssembly |                        KComposite) identifier (TColon                                                                                                         qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
 compositeElements : compositeElement+;
 
