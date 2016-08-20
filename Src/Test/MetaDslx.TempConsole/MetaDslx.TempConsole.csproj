@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="HelloWorld.soal" />
     <None Include="SoalTest1.soal" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +60,10 @@
     <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj">
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
       <Name>MetaDslx.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Samples\MetaDslx.Soal\MetaDslx.Soal.csproj">
+      <Project>{baace3cc-f257-49d1-9832-e07db36df2be}</Project>
+      <Name>MetaDslx.Soal</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

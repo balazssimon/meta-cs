@@ -277,7 +277,7 @@ namespace MetaDslx.Compiler
         public RootScopeBuilder GlobalScope { get; protected set; }
         public MutableModelGroup ModelGroup { get; protected set; }
         public MutableModel Model { get; protected set; }
-        public MetaFactory Factory { get; protected set; }
+        public ModelFactory Factory { get; protected set; }
         public ITriviaProvider TriviaProvider { get; protected set; }
         public INameProvider NameProvider { get; protected set; }
         public ITypeProvider TypeProvider { get; protected set; }
@@ -288,8 +288,9 @@ namespace MetaDslx.Compiler
         {
             this.ModelGroup = new MutableModelGroup();
             this.Model = this.ModelGroup.CreateModel();
-            this.Factory = new MetaFactory(this.Model);
-            this.GlobalScope = this.Factory.RootScope();
+            MetaFactory metaFactory = new MetaFactory(this.Model);
+            this.Factory = metaFactory;
+            this.GlobalScope = metaFactory.RootScope();
             this.Diagnostics = new ModelCompilerDiagnostics(this);
             this.Source = source;
             this.FileName = fileName;
@@ -950,7 +951,8 @@ namespace MetaDslx.Compiler
             {
                 foreach (var symbolType in propertyAnnotation.SymbolTypes)
                 {
-                    if (symbolType.IsAssignableFrom(symbol.GetType()))
+                    if (symbolType.IsAssignableFrom(symbol.MSymbolImmutableType) ||
+                        symbolType.IsAssignableFrom(symbol.MSymbolMutableType))
                     {
                         symbolOK = true;
                         break;
@@ -965,7 +967,8 @@ namespace MetaDslx.Compiler
                 {
                     if (value != null)
                     {
-                        if (prop.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))
+                        if (prop.ImmutableTypeInfo.Type.IsAssignableFrom(value.GetType()) ||
+                            prop.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))
                         {
                             if (!prop.IsCollection && mo.MIsSet(prop))
                             {
@@ -1026,7 +1029,8 @@ namespace MetaDslx.Compiler
             {
                 foreach (var symbolType in propertyAnnotation.SymbolTypes)
                 {
-                    if (symbolType.IsAssignableFrom(symbol.GetType()))
+                    if (symbolType.IsAssignableFrom(symbol.MSymbolImmutableType) ||
+                        symbolType.IsAssignableFrom(symbol.MSymbolMutableType))
                     {
                         symbolOK = true;
                         break;
@@ -1579,7 +1583,8 @@ namespace MetaDslx.Compiler
                 bool valid = false;
                 foreach (var type in types)
                 {
-                    if (type.IsAssignableFrom(mobj.GetType()))
+                    if (type.IsAssignableFrom(mobj.MSymbolImmutableType) ||
+                        type.IsAssignableFrom(mobj.MSymbolMutableType))
                     {
                         valid = true;
                         break;
@@ -1779,7 +1784,8 @@ namespace MetaDslx.Compiler
                         {
                             foreach (var symbolType in ta.SymbolTypes)
                             {
-                                if (symbolType.IsAssignableFrom(symbol.GetType()))
+                                if (symbolType.IsAssignableFrom(symbol.MSymbolImmutableType) ||
+                                    symbolType.IsAssignableFrom(symbol.MSymbolMutableType))
                                 {
                                     symbolOK = true;
                                     break;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,87 +23,137 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaModel MetaModel;
 		public static readonly global::MetaDslx.Core.ImmutableModel Model;
 	
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "object", Nullable = true };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType Object;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "string", Nullable = true };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType String;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "int" };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType Int;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "long" };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType Long;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "float" };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType Float;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "double" };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType Double;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "byte" };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType Byte;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "bool" };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType Bool;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "void" };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType Void;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "Date" };
+		 * </summary>
+		 */
+		public static readonly PrimitiveType Date;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "Time" };
+		 * </summary>
+		 */
+		public static readonly PrimitiveType Time;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "DateTime" };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType DateTime;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "TimeSpan" };
+		 * </summary>
+		 */
 		public static readonly PrimitiveType TimeSpan;
 	
+		public static readonly global::MetaDslx.Core.MetaClass AnnotatedElement;
+		public static readonly global::MetaDslx.Core.MetaProperty AnnotatedElement_Annotations;
+		public static readonly global::MetaDslx.Core.MetaClass Annotation;
+		public static readonly global::MetaDslx.Core.MetaProperty Annotation_AnnotatedElement;
+		public static readonly global::MetaDslx.Core.MetaProperty Annotation_Properties;
+		public static readonly global::MetaDslx.Core.MetaClass AnnotationProperty;
+		public static readonly global::MetaDslx.Core.MetaProperty AnnotationProperty_Value;
 		public static readonly global::MetaDslx.Core.MetaClass NamedElement;
 		public static readonly global::MetaDslx.Core.MetaProperty NamedElement_Name;
 		public static readonly global::MetaDslx.Core.MetaClass TypedElement;
 		public static readonly global::MetaDslx.Core.MetaProperty TypedElement_Type;
 		public static readonly global::MetaDslx.Core.MetaClass SoalType;
 		public static readonly global::MetaDslx.Core.MetaClass Namespace;
+		public static readonly global::MetaDslx.Core.MetaProperty Namespace_Uri;
+		public static readonly global::MetaDslx.Core.MetaProperty Namespace_Prefix;
+		public static readonly global::MetaDslx.Core.MetaProperty Namespace_FullName;
 		public static readonly global::MetaDslx.Core.MetaProperty Namespace_Declarations;
 		public static readonly global::MetaDslx.Core.MetaClass Declaration;
 		public static readonly global::MetaDslx.Core.MetaProperty Declaration_Namespace;
 		public static readonly global::MetaDslx.Core.MetaClass ArrayType;
-		/**
-		 * <summary>
-		 * ArrayType()
-		 * {
-		 * Namespace = InnerType is Declaration ? ((Declaration)InnerType).Namespace : null;
-		 * }
-		 * </summary>
-		 */
 		public static readonly global::MetaDslx.Core.MetaProperty ArrayType_InnerType;
-		public static readonly global::MetaDslx.Core.MetaProperty ArrayType_Namespace;
 		public static readonly global::MetaDslx.Core.MetaClass NullableType;
-		/**
-		 * <summary>
-		 * NullableType()
-		 * {
-		 * Namespace = InnerType is Declaration ? ((Declaration)InnerType).Namespace : null;
-		 * }
-		 * </summary>
-		 */
 		public static readonly global::MetaDslx.Core.MetaProperty NullableType_InnerType;
-		public static readonly global::MetaDslx.Core.MetaProperty NullableType_Namespace;
+		public static readonly global::MetaDslx.Core.MetaClass NonNullableType;
+		public static readonly global::MetaDslx.Core.MetaProperty NonNullableType_InnerType;
 		public static readonly global::MetaDslx.Core.MetaClass PrimitiveType;
+		public static readonly global::MetaDslx.Core.MetaProperty PrimitiveType_Nullable;
 		public static readonly global::MetaDslx.Core.MetaClass Enum;
+		public static readonly global::MetaDslx.Core.MetaProperty Enum_BaseType;
 		public static readonly global::MetaDslx.Core.MetaProperty Enum_EnumLiterals;
 		public static readonly global::MetaDslx.Core.MetaClass EnumLiteral;
-		/**
-		 * <summary>
-		 * EnumLiteral()
-		 * {
-		 * Type = Enum;
-		 * }
-		 * </summary>
-		 */
 		public static readonly global::MetaDslx.Core.MetaProperty EnumLiteral_Enum;
-		public static readonly global::MetaDslx.Core.MetaClass StructuredType;
-		public static readonly global::MetaDslx.Core.MetaProperty StructuredType_Properties;
 		public static readonly global::MetaDslx.Core.MetaClass Property;
-		public static readonly global::MetaDslx.Core.MetaProperty Property_Parent;
 		public static readonly global::MetaDslx.Core.MetaClass Struct;
 		public static readonly global::MetaDslx.Core.MetaProperty Struct_BaseType;
-		public static readonly global::MetaDslx.Core.MetaClass Exception;
-		public static readonly global::MetaDslx.Core.MetaProperty Exception_BaseType;
-		public static readonly global::MetaDslx.Core.MetaClass Entity;
-		public static readonly global::MetaDslx.Core.MetaProperty Entity_BaseType;
+		public static readonly global::MetaDslx.Core.MetaProperty Struct_Properties;
 		public static readonly global::MetaDslx.Core.MetaClass Interface;
 		public static readonly global::MetaDslx.Core.MetaProperty Interface_Operations;
 		public static readonly global::MetaDslx.Core.MetaClass Database;
 		public static readonly global::MetaDslx.Core.MetaProperty Database_Entities;
 		public static readonly global::MetaDslx.Core.MetaClass Operation;
-		public static readonly global::MetaDslx.Core.MetaProperty Operation_Parent;
-		public static readonly global::MetaDslx.Core.MetaProperty Operation_IsOneway;
-		public static readonly global::MetaDslx.Core.MetaProperty Operation_ReturnType;
+		public static readonly global::MetaDslx.Core.MetaProperty Operation_Action;
 		public static readonly global::MetaDslx.Core.MetaProperty Operation_Parameters;
+		public static readonly global::MetaDslx.Core.MetaProperty Operation_Result;
 		public static readonly global::MetaDslx.Core.MetaProperty Operation_Exceptions;
-		public static readonly global::MetaDslx.Core.MetaClass Parameter;
-		public static readonly global::MetaDslx.Core.MetaProperty Parameter_Operation;
+		public static readonly global::MetaDslx.Core.MetaClass InputParameter;
+		public static readonly global::MetaDslx.Core.MetaClass OutputParameter;
+		public static readonly global::MetaDslx.Core.MetaProperty OutputParameter_IsOneway;
 		public static readonly global::MetaDslx.Core.MetaClass Component;
 		public static readonly global::MetaDslx.Core.MetaProperty Component_BaseComponent;
 		public static readonly global::MetaDslx.Core.MetaProperty Component_IsAbstract;
+		public static readonly global::MetaDslx.Core.MetaProperty Component_Ports;
 		public static readonly global::MetaDslx.Core.MetaProperty Component_Services;
 		public static readonly global::MetaDslx.Core.MetaProperty Component_References;
 		public static readonly global::MetaDslx.Core.MetaProperty Component_Properties;
@@ -116,19 +166,12 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaClass Wire;
 		public static readonly global::MetaDslx.Core.MetaProperty Wire_Source;
 		public static readonly global::MetaDslx.Core.MetaProperty Wire_Target;
-		public static readonly global::MetaDslx.Core.MetaClass InterfaceReference;
-		/**
-		 * <summary>
-		 * InterfaceReference()
-		 * {
-		 * // this.Name = this.OptionalName != "" ? this.OptionalName : this.Interface.Name;
-		 * }
-		 * </summary>
-		 */
-		public static readonly global::MetaDslx.Core.MetaProperty InterfaceReference_Name;
-		public static readonly global::MetaDslx.Core.MetaProperty InterfaceReference_OptionalName;
-		public static readonly global::MetaDslx.Core.MetaProperty InterfaceReference_Interface;
-		public static readonly global::MetaDslx.Core.MetaProperty InterfaceReference_Binding;
+		public static readonly global::MetaDslx.Core.MetaClass Port;
+		public static readonly global::MetaDslx.Core.MetaProperty Port_Component;
+		public static readonly global::MetaDslx.Core.MetaProperty Port_Name;
+		public static readonly global::MetaDslx.Core.MetaProperty Port_OptionalName;
+		public static readonly global::MetaDslx.Core.MetaProperty Port_Interface;
+		public static readonly global::MetaDslx.Core.MetaProperty Port_Binding;
 		public static readonly global::MetaDslx.Core.MetaClass Service;
 		public static readonly global::MetaDslx.Core.MetaClass Reference;
 		public static readonly global::MetaDslx.Core.MetaClass Implementation;
@@ -154,11 +197,14 @@ namespace MetaDslx.Soal
 		public static readonly global::MetaDslx.Core.MetaClass EncodingBindingElement;
 		public static readonly global::MetaDslx.Core.MetaClass ProtocolBindingElement;
 		public static readonly global::MetaDslx.Core.MetaClass HttpTransportBindingElement;
+		public static readonly global::MetaDslx.Core.MetaProperty HttpTransportBindingElement_Ssl;
+		public static readonly global::MetaDslx.Core.MetaProperty HttpTransportBindingElement_ClientAuthentication;
 		public static readonly global::MetaDslx.Core.MetaClass RestTransportBindingElement;
 		public static readonly global::MetaDslx.Core.MetaClass WebSocketTransportBindingElement;
 		public static readonly global::MetaDslx.Core.MetaClass SoapEncodingBindingElement;
+		public static readonly global::MetaDslx.Core.MetaProperty SoapEncodingBindingElement_Style;
 		public static readonly global::MetaDslx.Core.MetaProperty SoapEncodingBindingElement_Version;
-		public static readonly global::MetaDslx.Core.MetaProperty SoapEncodingBindingElement_MtomEnabled;
+		public static readonly global::MetaDslx.Core.MetaProperty SoapEncodingBindingElement_Mtom;
 		public static readonly global::MetaDslx.Core.MetaClass XmlEncodingBindingElement;
 		public static readonly global::MetaDslx.Core.MetaClass JsonEncodingBindingElement;
 		public static readonly global::MetaDslx.Core.MetaClass WsProtocolBindingElement;
@@ -180,54 +226,63 @@ namespace MetaDslx.Soal
 			Byte = SoalBuilderInstance.instance.Byte.ToImmutable(Model);
 			Bool = SoalBuilderInstance.instance.Bool.ToImmutable(Model);
 			Void = SoalBuilderInstance.instance.Void.ToImmutable(Model);
+			Date = SoalBuilderInstance.instance.Date.ToImmutable(Model);
+			Time = SoalBuilderInstance.instance.Time.ToImmutable(Model);
 			DateTime = SoalBuilderInstance.instance.DateTime.ToImmutable(Model);
 			TimeSpan = SoalBuilderInstance.instance.TimeSpan.ToImmutable(Model);
 	
+			AnnotatedElement = SoalBuilderInstance.instance.AnnotatedElement.ToImmutable(Model);
+			AnnotatedElement_Annotations = SoalBuilderInstance.instance.AnnotatedElement_Annotations.ToImmutable(Model);
+			Annotation = SoalBuilderInstance.instance.Annotation.ToImmutable(Model);
+			Annotation_AnnotatedElement = SoalBuilderInstance.instance.Annotation_AnnotatedElement.ToImmutable(Model);
+			Annotation_Properties = SoalBuilderInstance.instance.Annotation_Properties.ToImmutable(Model);
+			AnnotationProperty = SoalBuilderInstance.instance.AnnotationProperty.ToImmutable(Model);
+			AnnotationProperty_Value = SoalBuilderInstance.instance.AnnotationProperty_Value.ToImmutable(Model);
 			NamedElement = SoalBuilderInstance.instance.NamedElement.ToImmutable(Model);
 			NamedElement_Name = SoalBuilderInstance.instance.NamedElement_Name.ToImmutable(Model);
 			TypedElement = SoalBuilderInstance.instance.TypedElement.ToImmutable(Model);
 			TypedElement_Type = SoalBuilderInstance.instance.TypedElement_Type.ToImmutable(Model);
 			SoalType = SoalBuilderInstance.instance.SoalType.ToImmutable(Model);
 			Namespace = SoalBuilderInstance.instance.Namespace.ToImmutable(Model);
+			Namespace_Uri = SoalBuilderInstance.instance.Namespace_Uri.ToImmutable(Model);
+			Namespace_Prefix = SoalBuilderInstance.instance.Namespace_Prefix.ToImmutable(Model);
+			Namespace_FullName = SoalBuilderInstance.instance.Namespace_FullName.ToImmutable(Model);
 			Namespace_Declarations = SoalBuilderInstance.instance.Namespace_Declarations.ToImmutable(Model);
 			Declaration = SoalBuilderInstance.instance.Declaration.ToImmutable(Model);
 			Declaration_Namespace = SoalBuilderInstance.instance.Declaration_Namespace.ToImmutable(Model);
 			ArrayType = SoalBuilderInstance.instance.ArrayType.ToImmutable(Model);
 			ArrayType_InnerType = SoalBuilderInstance.instance.ArrayType_InnerType.ToImmutable(Model);
-			ArrayType_Namespace = SoalBuilderInstance.instance.ArrayType_Namespace.ToImmutable(Model);
 			NullableType = SoalBuilderInstance.instance.NullableType.ToImmutable(Model);
 			NullableType_InnerType = SoalBuilderInstance.instance.NullableType_InnerType.ToImmutable(Model);
-			NullableType_Namespace = SoalBuilderInstance.instance.NullableType_Namespace.ToImmutable(Model);
+			NonNullableType = SoalBuilderInstance.instance.NonNullableType.ToImmutable(Model);
+			NonNullableType_InnerType = SoalBuilderInstance.instance.NonNullableType_InnerType.ToImmutable(Model);
 			PrimitiveType = SoalBuilderInstance.instance.PrimitiveType.ToImmutable(Model);
+			PrimitiveType_Nullable = SoalBuilderInstance.instance.PrimitiveType_Nullable.ToImmutable(Model);
 			Enum = SoalBuilderInstance.instance.Enum.ToImmutable(Model);
+			Enum_BaseType = SoalBuilderInstance.instance.Enum_BaseType.ToImmutable(Model);
 			Enum_EnumLiterals = SoalBuilderInstance.instance.Enum_EnumLiterals.ToImmutable(Model);
 			EnumLiteral = SoalBuilderInstance.instance.EnumLiteral.ToImmutable(Model);
 			EnumLiteral_Enum = SoalBuilderInstance.instance.EnumLiteral_Enum.ToImmutable(Model);
-			StructuredType = SoalBuilderInstance.instance.StructuredType.ToImmutable(Model);
-			StructuredType_Properties = SoalBuilderInstance.instance.StructuredType_Properties.ToImmutable(Model);
 			Property = SoalBuilderInstance.instance.Property.ToImmutable(Model);
-			Property_Parent = SoalBuilderInstance.instance.Property_Parent.ToImmutable(Model);
 			Struct = SoalBuilderInstance.instance.Struct.ToImmutable(Model);
 			Struct_BaseType = SoalBuilderInstance.instance.Struct_BaseType.ToImmutable(Model);
-			Exception = SoalBuilderInstance.instance.Exception.ToImmutable(Model);
-			Exception_BaseType = SoalBuilderInstance.instance.Exception_BaseType.ToImmutable(Model);
-			Entity = SoalBuilderInstance.instance.Entity.ToImmutable(Model);
-			Entity_BaseType = SoalBuilderInstance.instance.Entity_BaseType.ToImmutable(Model);
+			Struct_Properties = SoalBuilderInstance.instance.Struct_Properties.ToImmutable(Model);
 			Interface = SoalBuilderInstance.instance.Interface.ToImmutable(Model);
 			Interface_Operations = SoalBuilderInstance.instance.Interface_Operations.ToImmutable(Model);
 			Database = SoalBuilderInstance.instance.Database.ToImmutable(Model);
 			Database_Entities = SoalBuilderInstance.instance.Database_Entities.ToImmutable(Model);
 			Operation = SoalBuilderInstance.instance.Operation.ToImmutable(Model);
-			Operation_Parent = SoalBuilderInstance.instance.Operation_Parent.ToImmutable(Model);
-			Operation_IsOneway = SoalBuilderInstance.instance.Operation_IsOneway.ToImmutable(Model);
-			Operation_ReturnType = SoalBuilderInstance.instance.Operation_ReturnType.ToImmutable(Model);
+			Operation_Action = SoalBuilderInstance.instance.Operation_Action.ToImmutable(Model);
 			Operation_Parameters = SoalBuilderInstance.instance.Operation_Parameters.ToImmutable(Model);
+			Operation_Result = SoalBuilderInstance.instance.Operation_Result.ToImmutable(Model);
 			Operation_Exceptions = SoalBuilderInstance.instance.Operation_Exceptions.ToImmutable(Model);
-			Parameter = SoalBuilderInstance.instance.Parameter.ToImmutable(Model);
-			Parameter_Operation = SoalBuilderInstance.instance.Parameter_Operation.ToImmutable(Model);
+			InputParameter = SoalBuilderInstance.instance.InputParameter.ToImmutable(Model);
+			OutputParameter = SoalBuilderInstance.instance.OutputParameter.ToImmutable(Model);
+			OutputParameter_IsOneway = SoalBuilderInstance.instance.OutputParameter_IsOneway.ToImmutable(Model);
 			Component = SoalBuilderInstance.instance.Component.ToImmutable(Model);
 			Component_BaseComponent = SoalBuilderInstance.instance.Component_BaseComponent.ToImmutable(Model);
 			Component_IsAbstract = SoalBuilderInstance.instance.Component_IsAbstract.ToImmutable(Model);
+			Component_Ports = SoalBuilderInstance.instance.Component_Ports.ToImmutable(Model);
 			Component_Services = SoalBuilderInstance.instance.Component_Services.ToImmutable(Model);
 			Component_References = SoalBuilderInstance.instance.Component_References.ToImmutable(Model);
 			Component_Properties = SoalBuilderInstance.instance.Component_Properties.ToImmutable(Model);
@@ -240,11 +295,12 @@ namespace MetaDslx.Soal
 			Wire = SoalBuilderInstance.instance.Wire.ToImmutable(Model);
 			Wire_Source = SoalBuilderInstance.instance.Wire_Source.ToImmutable(Model);
 			Wire_Target = SoalBuilderInstance.instance.Wire_Target.ToImmutable(Model);
-			InterfaceReference = SoalBuilderInstance.instance.InterfaceReference.ToImmutable(Model);
-			InterfaceReference_Name = SoalBuilderInstance.instance.InterfaceReference_Name.ToImmutable(Model);
-			InterfaceReference_OptionalName = SoalBuilderInstance.instance.InterfaceReference_OptionalName.ToImmutable(Model);
-			InterfaceReference_Interface = SoalBuilderInstance.instance.InterfaceReference_Interface.ToImmutable(Model);
-			InterfaceReference_Binding = SoalBuilderInstance.instance.InterfaceReference_Binding.ToImmutable(Model);
+			Port = SoalBuilderInstance.instance.Port.ToImmutable(Model);
+			Port_Component = SoalBuilderInstance.instance.Port_Component.ToImmutable(Model);
+			Port_Name = SoalBuilderInstance.instance.Port_Name.ToImmutable(Model);
+			Port_OptionalName = SoalBuilderInstance.instance.Port_OptionalName.ToImmutable(Model);
+			Port_Interface = SoalBuilderInstance.instance.Port_Interface.ToImmutable(Model);
+			Port_Binding = SoalBuilderInstance.instance.Port_Binding.ToImmutable(Model);
 			Service = SoalBuilderInstance.instance.Service.ToImmutable(Model);
 			Reference = SoalBuilderInstance.instance.Reference.ToImmutable(Model);
 			Implementation = SoalBuilderInstance.instance.Implementation.ToImmutable(Model);
@@ -270,11 +326,14 @@ namespace MetaDslx.Soal
 			EncodingBindingElement = SoalBuilderInstance.instance.EncodingBindingElement.ToImmutable(Model);
 			ProtocolBindingElement = SoalBuilderInstance.instance.ProtocolBindingElement.ToImmutable(Model);
 			HttpTransportBindingElement = SoalBuilderInstance.instance.HttpTransportBindingElement.ToImmutable(Model);
+			HttpTransportBindingElement_Ssl = SoalBuilderInstance.instance.HttpTransportBindingElement_Ssl.ToImmutable(Model);
+			HttpTransportBindingElement_ClientAuthentication = SoalBuilderInstance.instance.HttpTransportBindingElement_ClientAuthentication.ToImmutable(Model);
 			RestTransportBindingElement = SoalBuilderInstance.instance.RestTransportBindingElement.ToImmutable(Model);
 			WebSocketTransportBindingElement = SoalBuilderInstance.instance.WebSocketTransportBindingElement.ToImmutable(Model);
 			SoapEncodingBindingElement = SoalBuilderInstance.instance.SoapEncodingBindingElement.ToImmutable(Model);
+			SoapEncodingBindingElement_Style = SoalBuilderInstance.instance.SoapEncodingBindingElement_Style.ToImmutable(Model);
 			SoapEncodingBindingElement_Version = SoalBuilderInstance.instance.SoapEncodingBindingElement_Version.ToImmutable(Model);
-			SoapEncodingBindingElement_MtomEnabled = SoalBuilderInstance.instance.SoapEncodingBindingElement_MtomEnabled.ToImmutable(Model);
+			SoapEncodingBindingElement_Mtom = SoalBuilderInstance.instance.SoapEncodingBindingElement_Mtom.ToImmutable(Model);
 			XmlEncodingBindingElement = SoalBuilderInstance.instance.XmlEncodingBindingElement.ToImmutable(Model);
 			JsonEncodingBindingElement = SoalBuilderInstance.instance.JsonEncodingBindingElement.ToImmutable(Model);
 			WsProtocolBindingElement = SoalBuilderInstance.instance.WsProtocolBindingElement.ToImmutable(Model);
@@ -299,25 +358,27 @@ namespace MetaDslx.Soal
 		{
 			switch (type)
 			{
+				case "Annotation": return this.Annotation();
+				case "AnnotationProperty": return this.AnnotationProperty();
 				case "Namespace": return this.Namespace();
 				case "ArrayType": return this.ArrayType();
 				case "NullableType": return this.NullableType();
+				case "NonNullableType": return this.NonNullableType();
 				case "PrimitiveType": return this.PrimitiveType();
 				case "Enum": return this.Enum();
 				case "EnumLiteral": return this.EnumLiteral();
 				case "Property": return this.Property();
 				case "Struct": return this.Struct();
-				case "Exception": return this.Exception();
-				case "Entity": return this.Entity();
 				case "Interface": return this.Interface();
 				case "Database": return this.Database();
 				case "Operation": return this.Operation();
-				case "Parameter": return this.Parameter();
+				case "InputParameter": return this.InputParameter();
+				case "OutputParameter": return this.OutputParameter();
 				case "Component": return this.Component();
 				case "Composite": return this.Composite();
 				case "Assembly": return this.Assembly();
 				case "Wire": return this.Wire();
-				case "InterfaceReference": return this.InterfaceReference();
+				case "Port": return this.Port();
 				case "Service": return this.Service();
 				case "Reference": return this.Reference();
 				case "Implementation": return this.Implementation();
@@ -337,6 +398,24 @@ namespace MetaDslx.Soal
 				default:
 					throw new global::MetaDslx.Core.ModelException("Unknown type name: " + type);
 			}
+		}
+	
+		/// <summary>
+		/// Creates a new instance of Annotation.
+		/// </summary>
+		public AnnotationBuilder Annotation()
+		{
+			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new AnnotationId());
+			return (AnnotationBuilder)symbol;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of AnnotationProperty.
+		/// </summary>
+		public AnnotationPropertyBuilder AnnotationProperty()
+		{
+			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new AnnotationPropertyId());
+			return (AnnotationPropertyBuilder)symbol;
 		}
 	
 		/// <summary>
@@ -364,6 +443,15 @@ namespace MetaDslx.Soal
 		{
 			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new NullableTypeId());
 			return (NullableTypeBuilder)symbol;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of NonNullableType.
+		/// </summary>
+		public NonNullableTypeBuilder NonNullableType()
+		{
+			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new NonNullableTypeId());
+			return (NonNullableTypeBuilder)symbol;
 		}
 	
 		/// <summary>
@@ -412,24 +500,6 @@ namespace MetaDslx.Soal
 		}
 	
 		/// <summary>
-		/// Creates a new instance of Exception.
-		/// </summary>
-		public ExceptionBuilder Exception()
-		{
-			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new ExceptionId());
-			return (ExceptionBuilder)symbol;
-		}
-	
-		/// <summary>
-		/// Creates a new instance of Entity.
-		/// </summary>
-		public EntityBuilder Entity()
-		{
-			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new EntityId());
-			return (EntityBuilder)symbol;
-		}
-	
-		/// <summary>
 		/// Creates a new instance of Interface.
 		/// </summary>
 		public InterfaceBuilder Interface()
@@ -457,12 +527,21 @@ namespace MetaDslx.Soal
 		}
 	
 		/// <summary>
-		/// Creates a new instance of Parameter.
+		/// Creates a new instance of InputParameter.
 		/// </summary>
-		public ParameterBuilder Parameter()
+		public InputParameterBuilder InputParameter()
 		{
-			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new ParameterId());
-			return (ParameterBuilder)symbol;
+			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new InputParameterId());
+			return (InputParameterBuilder)symbol;
+		}
+	
+		/// <summary>
+		/// Creates a new instance of OutputParameter.
+		/// </summary>
+		public OutputParameterBuilder OutputParameter()
+		{
+			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new OutputParameterId());
+			return (OutputParameterBuilder)symbol;
 		}
 	
 		/// <summary>
@@ -502,12 +581,12 @@ namespace MetaDslx.Soal
 		}
 	
 		/// <summary>
-		/// Creates a new instance of InterfaceReference.
+		/// Creates a new instance of Port.
 		/// </summary>
-		public InterfaceReferenceBuilder InterfaceReference()
+		public PortBuilder Port()
 		{
-			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new InterfaceReferenceId());
-			return (InterfaceReferenceBuilder)symbol;
+			global::MetaDslx.Core.MutableSymbol symbol = this.CreateSymbol(new PortId());
+			return (PortBuilder)symbol;
 		}
 	
 		/// <summary>
@@ -667,6 +746,81 @@ namespace MetaDslx.Soal
 	{
 	}
 	
+	public enum SoapEncodingStyle
+	{
+		DocumentWrapped,
+		DocumentLiteral,
+		RpcLiteral,
+		RpcEncoded
+	}
+	
+	public static class SoapEncodingStyleExtensions
+	{
+	}
+	
+	public interface AnnotatedElement : global::MetaDslx.Core.ImmutableSymbol
+	{
+		global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations { get; }
+	
+		bool HasAnnotation(string name);
+		Annotation GetAnnotation(string name);
+		global::MetaDslx.Core.ImmutableModelList<Annotation> GetAnnotations(string name);
+		bool HasAnnotationProperty(string annotationName, string propertyName);
+		object GetAnnotationPropertyValue(string annotationName, string propertyName);
+	
+		new AnnotatedElementBuilder ToMutable();
+		new AnnotatedElementBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
+	}
+	
+	public interface AnnotatedElementBuilder : global::MetaDslx.Core.MutableSymbol
+	{
+		global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations { get; }
+	
+		new AnnotatedElement ToImmutable();
+		new AnnotatedElement ToImmutable(global::MetaDslx.Core.ImmutableModel model);
+	}
+	
+	public interface Annotation : NamedElement
+	{
+		AnnotatedElement AnnotatedElement { get; }
+		global::MetaDslx.Core.ImmutableModelList<AnnotationProperty> Properties { get; }
+	
+		bool HasProperty(string name);
+		AnnotationProperty GetProperty(string name);
+		object GetPropertyValue(string name);
+	
+		new AnnotationBuilder ToMutable();
+		new AnnotationBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
+	}
+	
+	public interface AnnotationBuilder : NamedElementBuilder
+	{
+		AnnotatedElementBuilder AnnotatedElement { get; set; }
+		Func<AnnotatedElementBuilder> AnnotatedElementLazy { get; set; }
+		global::MetaDslx.Core.MutableModelList<AnnotationPropertyBuilder> Properties { get; }
+	
+		new Annotation ToImmutable();
+		new Annotation ToImmutable(global::MetaDslx.Core.ImmutableModel model);
+	}
+	
+	public interface AnnotationProperty : NamedElement
+	{
+		object Value { get; }
+	
+	
+		new AnnotationPropertyBuilder ToMutable();
+		new AnnotationPropertyBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
+	}
+	
+	public interface AnnotationPropertyBuilder : NamedElementBuilder
+	{
+		object Value { get; set; }
+		Func<object> ValueLazy { get; set; }
+	
+		new AnnotationProperty ToImmutable();
+		new AnnotationProperty ToImmutable(global::MetaDslx.Core.ImmutableModel model);
+	}
+	
 	public interface NamedElement : global::MetaDslx.Core.ImmutableSymbol
 	{
 		string Name { get; }
@@ -723,6 +877,9 @@ namespace MetaDslx.Soal
 	[global::MetaDslx.Core.Scope]
 	public interface Namespace : Declaration
 	{
+		string Uri { get; }
+		string Prefix { get; }
+		string FullName { get; }
 		global::MetaDslx.Core.ImmutableModelList<Declaration> Declarations { get; }
 	
 	
@@ -733,13 +890,19 @@ namespace MetaDslx.Soal
 	[global::MetaDslx.Core.Scope]
 	public interface NamespaceBuilder : DeclarationBuilder
 	{
+		string Uri { get; set; }
+		Func<string> UriLazy { get; set; }
+		string Prefix { get; set; }
+		Func<string> PrefixLazy { get; set; }
+		string FullName { get; }
+		Func<string> FullNameLazy { get; set; }
 		global::MetaDslx.Core.MutableModelList<DeclarationBuilder> Declarations { get; }
 	
 		new Namespace ToImmutable();
 		new Namespace ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface Declaration : NamedElement
+	public interface Declaration : NamedElement, AnnotatedElement
 	{
 		Namespace Namespace { get; }
 	
@@ -748,7 +911,7 @@ namespace MetaDslx.Soal
 		new DeclarationBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface DeclarationBuilder : NamedElementBuilder
+	public interface DeclarationBuilder : NamedElementBuilder, AnnotatedElementBuilder
 	{
 		NamespaceBuilder Namespace { get; set; }
 		Func<NamespaceBuilder> NamespaceLazy { get; set; }
@@ -760,7 +923,6 @@ namespace MetaDslx.Soal
 	public interface ArrayType : SoalType
 	{
 		SoalType InnerType { get; }
-		Namespace Namespace { get; }
 	
 	
 		new ArrayTypeBuilder ToMutable();
@@ -771,8 +933,6 @@ namespace MetaDslx.Soal
 	{
 		SoalTypeBuilder InnerType { get; set; }
 		Func<SoalTypeBuilder> InnerTypeLazy { get; set; }
-		NamespaceBuilder Namespace { get; }
-		Func<NamespaceBuilder> NamespaceLazy { get; set; }
 	
 		new ArrayType ToImmutable();
 		new ArrayType ToImmutable(global::MetaDslx.Core.ImmutableModel model);
@@ -781,7 +941,6 @@ namespace MetaDslx.Soal
 	public interface NullableType : SoalType
 	{
 		SoalType InnerType { get; }
-		Namespace Namespace { get; }
 	
 	
 		new NullableTypeBuilder ToMutable();
@@ -792,23 +951,42 @@ namespace MetaDslx.Soal
 	{
 		SoalTypeBuilder InnerType { get; set; }
 		Func<SoalTypeBuilder> InnerTypeLazy { get; set; }
-		NamespaceBuilder Namespace { get; }
-		Func<NamespaceBuilder> NamespaceLazy { get; set; }
 	
 		new NullableType ToImmutable();
 		new NullableType ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface PrimitiveType : SoalType, NamedElement
+	public interface NonNullableType : SoalType
 	{
+		SoalType InnerType { get; }
+	
+	
+		new NonNullableTypeBuilder ToMutable();
+		new NonNullableTypeBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
+	}
+	
+	public interface NonNullableTypeBuilder : SoalTypeBuilder
+	{
+		SoalTypeBuilder InnerType { get; set; }
+		Func<SoalTypeBuilder> InnerTypeLazy { get; set; }
+	
+		new NonNullableType ToImmutable();
+		new NonNullableType ToImmutable(global::MetaDslx.Core.ImmutableModel model);
+	}
+	
+	public interface PrimitiveType : SoalType, Declaration
+	{
+		bool Nullable { get; }
 	
 	
 		new PrimitiveTypeBuilder ToMutable();
 		new PrimitiveTypeBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface PrimitiveTypeBuilder : SoalTypeBuilder, NamedElementBuilder
+	public interface PrimitiveTypeBuilder : SoalTypeBuilder, DeclarationBuilder
 	{
+		bool Nullable { get; set; }
+		Func<bool> NullableLazy { get; set; }
 	
 		new PrimitiveType ToImmutable();
 		new PrimitiveType ToImmutable(global::MetaDslx.Core.ImmutableModel model);
@@ -817,6 +995,7 @@ namespace MetaDslx.Soal
 	[global::MetaDslx.Core.Scope]
 	public interface Enum : SoalType, Declaration
 	{
+		Enum BaseType { get; }
 		global::MetaDslx.Core.ImmutableModelList<EnumLiteral> EnumLiterals { get; }
 	
 	
@@ -827,13 +1006,15 @@ namespace MetaDslx.Soal
 	[global::MetaDslx.Core.Scope]
 	public interface EnumBuilder : SoalTypeBuilder, DeclarationBuilder
 	{
+		EnumBuilder BaseType { get; set; }
+		Func<EnumBuilder> BaseTypeLazy { get; set; }
 		global::MetaDslx.Core.MutableModelList<EnumLiteralBuilder> EnumLiterals { get; }
 	
 		new Enum ToImmutable();
 		new Enum ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface EnumLiteral : NamedElement, TypedElement
+	public interface EnumLiteral : NamedElement, TypedElement, AnnotatedElement
 	{
 		Enum Enum { get; }
 	
@@ -842,7 +1023,7 @@ namespace MetaDslx.Soal
 		new EnumLiteralBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface EnumLiteralBuilder : NamedElementBuilder, TypedElementBuilder
+	public interface EnumLiteralBuilder : NamedElementBuilder, TypedElementBuilder, AnnotatedElementBuilder
 	{
 		EnumBuilder Enum { get; set; }
 		Func<EnumBuilder> EnumLazy { get; set; }
@@ -851,95 +1032,41 @@ namespace MetaDslx.Soal
 		new EnumLiteral ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	[global::MetaDslx.Core.Scope]
-	public interface StructuredType : SoalType, Declaration
+	public interface Property : NamedElement, TypedElement, AnnotatedElement
 	{
-		global::MetaDslx.Core.ImmutableModelList<Property> Properties { get; }
-	
-	
-		new StructuredTypeBuilder ToMutable();
-		new StructuredTypeBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
-	}
-	
-	[global::MetaDslx.Core.Scope]
-	public interface StructuredTypeBuilder : SoalTypeBuilder, DeclarationBuilder
-	{
-		global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties { get; }
-	
-		new StructuredType ToImmutable();
-		new StructuredType ToImmutable(global::MetaDslx.Core.ImmutableModel model);
-	}
-	
-	public interface Property : NamedElement, TypedElement
-	{
-		StructuredType Parent { get; }
 	
 	
 		new PropertyBuilder ToMutable();
 		new PropertyBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface PropertyBuilder : NamedElementBuilder, TypedElementBuilder
+	public interface PropertyBuilder : NamedElementBuilder, TypedElementBuilder, AnnotatedElementBuilder
 	{
-		StructuredTypeBuilder Parent { get; set; }
-		Func<StructuredTypeBuilder> ParentLazy { get; set; }
 	
 		new Property ToImmutable();
 		new Property ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface Struct : StructuredType
+	[global::MetaDslx.Core.Scope]
+	public interface Struct : SoalType, Declaration
 	{
 		Struct BaseType { get; }
+		global::MetaDslx.Core.ImmutableModelList<Property> Properties { get; }
 	
 	
 		new StructBuilder ToMutable();
 		new StructBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface StructBuilder : StructuredTypeBuilder
+	[global::MetaDslx.Core.Scope]
+	public interface StructBuilder : SoalTypeBuilder, DeclarationBuilder
 	{
 		StructBuilder BaseType { get; set; }
 		Func<StructBuilder> BaseTypeLazy { get; set; }
+		global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties { get; }
 	
 		new Struct ToImmutable();
 		new Struct ToImmutable(global::MetaDslx.Core.ImmutableModel model);
-	}
-	
-	public interface Exception : StructuredType
-	{
-		Exception BaseType { get; }
-	
-	
-		new ExceptionBuilder ToMutable();
-		new ExceptionBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
-	}
-	
-	public interface ExceptionBuilder : StructuredTypeBuilder
-	{
-		ExceptionBuilder BaseType { get; set; }
-		Func<ExceptionBuilder> BaseTypeLazy { get; set; }
-	
-		new Exception ToImmutable();
-		new Exception ToImmutable(global::MetaDslx.Core.ImmutableModel model);
-	}
-	
-	public interface Entity : StructuredType
-	{
-		Entity BaseType { get; }
-	
-	
-		new EntityBuilder ToMutable();
-		new EntityBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
-	}
-	
-	public interface EntityBuilder : StructuredTypeBuilder
-	{
-		EntityBuilder BaseType { get; set; }
-		Func<EntityBuilder> BaseTypeLazy { get; set; }
-	
-		new Entity ToImmutable();
-		new Entity ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
 	[global::MetaDslx.Core.Scope]
@@ -963,7 +1090,7 @@ namespace MetaDslx.Soal
 	
 	public interface Database : Interface
 	{
-		global::MetaDslx.Core.ImmutableModelList<Entity> Entities { get; }
+		global::MetaDslx.Core.ImmutableModelList<Struct> Entities { get; }
 	
 	
 		new DatabaseBuilder ToMutable();
@@ -972,66 +1099,79 @@ namespace MetaDslx.Soal
 	
 	public interface DatabaseBuilder : InterfaceBuilder
 	{
-		global::MetaDslx.Core.MutableModelList<EntityBuilder> Entities { get; }
+		global::MetaDslx.Core.MutableModelList<StructBuilder> Entities { get; }
 	
 		new Database ToImmutable();
 		new Database ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface Operation : NamedElement
+	public interface Operation : NamedElement, AnnotatedElement
 	{
-		Interface Parent { get; }
-		bool IsOneway { get; }
-		SoalType ReturnType { get; }
-		global::MetaDslx.Core.ImmutableModelList<Parameter> Parameters { get; }
-		global::MetaDslx.Core.ImmutableModelList<Exception> Exceptions { get; }
+		string Action { get; }
+		global::MetaDslx.Core.ImmutableModelList<InputParameter> Parameters { get; }
+		OutputParameter Result { get; }
+		global::MetaDslx.Core.ImmutableModelList<Struct> Exceptions { get; }
 	
 	
 		new OperationBuilder ToMutable();
 		new OperationBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface OperationBuilder : NamedElementBuilder
+	public interface OperationBuilder : NamedElementBuilder, AnnotatedElementBuilder
 	{
-		InterfaceBuilder Parent { get; set; }
-		Func<InterfaceBuilder> ParentLazy { get; set; }
-		bool IsOneway { get; set; }
-		Func<bool> IsOnewayLazy { get; set; }
-		SoalTypeBuilder ReturnType { get; set; }
-		Func<SoalTypeBuilder> ReturnTypeLazy { get; set; }
-		global::MetaDslx.Core.MutableModelList<ParameterBuilder> Parameters { get; }
-		global::MetaDslx.Core.MutableModelList<ExceptionBuilder> Exceptions { get; }
+		string Action { get; set; }
+		Func<string> ActionLazy { get; set; }
+		global::MetaDslx.Core.MutableModelList<InputParameterBuilder> Parameters { get; }
+		OutputParameterBuilder Result { get; }
+		Func<OutputParameterBuilder> ResultLazy { get; set; }
+		global::MetaDslx.Core.MutableModelList<StructBuilder> Exceptions { get; }
 	
 		new Operation ToImmutable();
 		new Operation ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface Parameter : NamedElement, TypedElement
+	public interface InputParameter : NamedElement, TypedElement, AnnotatedElement
 	{
-		Operation Operation { get; }
 	
 	
-		new ParameterBuilder ToMutable();
-		new ParameterBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
+		new InputParameterBuilder ToMutable();
+		new InputParameterBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface ParameterBuilder : NamedElementBuilder, TypedElementBuilder
+	public interface InputParameterBuilder : NamedElementBuilder, TypedElementBuilder, AnnotatedElementBuilder
 	{
-		OperationBuilder Operation { get; set; }
-		Func<OperationBuilder> OperationLazy { get; set; }
 	
-		new Parameter ToImmutable();
-		new Parameter ToImmutable(global::MetaDslx.Core.ImmutableModel model);
+		new InputParameter ToImmutable();
+		new InputParameter ToImmutable(global::MetaDslx.Core.ImmutableModel model);
+	}
+	
+	public interface OutputParameter : TypedElement, AnnotatedElement
+	{
+		bool IsOneway { get; }
+	
+	
+		new OutputParameterBuilder ToMutable();
+		new OutputParameterBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
+	}
+	
+	public interface OutputParameterBuilder : TypedElementBuilder, AnnotatedElementBuilder
+	{
+		bool IsOneway { get; set; }
+		Func<bool> IsOnewayLazy { get; set; }
+	
+		new OutputParameter ToImmutable();
+		new OutputParameter ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
 	[global::MetaDslx.Core.Scope]
-	public interface Component : Declaration, StructuredType
+	public interface Component : Declaration
 	{
 		Component BaseComponent { get; }
 		bool IsAbstract { get; }
+		global::MetaDslx.Core.ImmutableModelList<Port> Ports { get; }
 		global::MetaDslx.Core.ImmutableModelList<Service> Services { get; }
 		global::MetaDslx.Core.ImmutableModelList<Reference> References { get; }
-		new global::MetaDslx.Core.ImmutableModelList<Property> Properties { get; }
+		global::MetaDslx.Core.ImmutableModelList<Property> Properties { get; }
 		Implementation Implementation { get; }
 		Language Language { get; }
 	
@@ -1041,15 +1181,16 @@ namespace MetaDslx.Soal
 	}
 	
 	[global::MetaDslx.Core.Scope]
-	public interface ComponentBuilder : DeclarationBuilder, StructuredTypeBuilder
+	public interface ComponentBuilder : DeclarationBuilder
 	{
 		ComponentBuilder BaseComponent { get; set; }
 		Func<ComponentBuilder> BaseComponentLazy { get; set; }
 		bool IsAbstract { get; set; }
 		Func<bool> IsAbstractLazy { get; set; }
+		global::MetaDslx.Core.MutableModelList<PortBuilder> Ports { get; }
 		global::MetaDslx.Core.MutableModelList<ServiceBuilder> Services { get; }
 		global::MetaDslx.Core.MutableModelList<ReferenceBuilder> References { get; }
-		new global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties { get; }
+		global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties { get; }
 		ImplementationBuilder Implementation { get; set; }
 		Func<ImplementationBuilder> ImplementationLazy { get; set; }
 		LanguageBuilder Language { get; set; }
@@ -1095,8 +1236,8 @@ namespace MetaDslx.Soal
 	
 	public interface Wire : global::MetaDslx.Core.ImmutableSymbol
 	{
-		InterfaceReference Source { get; }
-		InterfaceReference Target { get; }
+		Port Source { get; }
+		Port Target { get; }
 	
 	
 		new WireBuilder ToMutable();
@@ -1105,29 +1246,32 @@ namespace MetaDslx.Soal
 	
 	public interface WireBuilder : global::MetaDslx.Core.MutableSymbol
 	{
-		InterfaceReferenceBuilder Source { get; set; }
-		Func<InterfaceReferenceBuilder> SourceLazy { get; set; }
-		InterfaceReferenceBuilder Target { get; set; }
-		Func<InterfaceReferenceBuilder> TargetLazy { get; set; }
+		PortBuilder Source { get; set; }
+		Func<PortBuilder> SourceLazy { get; set; }
+		PortBuilder Target { get; set; }
+		Func<PortBuilder> TargetLazy { get; set; }
 	
 		new Wire ToImmutable();
 		new Wire ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface InterfaceReference : global::MetaDslx.Core.ImmutableSymbol
+	public interface Port : global::MetaDslx.Core.ImmutableSymbol
 	{
+		Component Component { get; }
 		string Name { get; }
 		string OptionalName { get; }
 		Interface Interface { get; }
 		Binding Binding { get; }
 	
 	
-		new InterfaceReferenceBuilder ToMutable();
-		new InterfaceReferenceBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
+		new PortBuilder ToMutable();
+		new PortBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface InterfaceReferenceBuilder : global::MetaDslx.Core.MutableSymbol
+	public interface PortBuilder : global::MetaDslx.Core.MutableSymbol
 	{
+		ComponentBuilder Component { get; set; }
+		Func<ComponentBuilder> ComponentLazy { get; set; }
 		string Name { get; }
 		Func<string> NameLazy { get; set; }
 		string OptionalName { get; set; }
@@ -1137,11 +1281,11 @@ namespace MetaDslx.Soal
 		BindingBuilder Binding { get; set; }
 		Func<BindingBuilder> BindingLazy { get; set; }
 	
-		new InterfaceReference ToImmutable();
-		new InterfaceReference ToImmutable(global::MetaDslx.Core.ImmutableModel model);
+		new Port ToImmutable();
+		new Port ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface Service : InterfaceReference
+	public interface Service : Port
 	{
 	
 	
@@ -1149,14 +1293,14 @@ namespace MetaDslx.Soal
 		new ServiceBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface ServiceBuilder : InterfaceReferenceBuilder
+	public interface ServiceBuilder : PortBuilder
 	{
 	
 		new Service ToImmutable();
 		new Service ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface Reference : InterfaceReference
+	public interface Reference : Port
 	{
 	
 	
@@ -1164,7 +1308,7 @@ namespace MetaDslx.Soal
 		new ReferenceBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface ReferenceBuilder : InterfaceReferenceBuilder
+	public interface ReferenceBuilder : PortBuilder
 	{
 	
 		new Reference ToImmutable();
@@ -1365,6 +1509,8 @@ namespace MetaDslx.Soal
 	
 	public interface HttpTransportBindingElement : TransportBindingElement
 	{
+		bool Ssl { get; }
+		bool ClientAuthentication { get; }
 	
 	
 		new HttpTransportBindingElementBuilder ToMutable();
@@ -1373,6 +1519,10 @@ namespace MetaDslx.Soal
 	
 	public interface HttpTransportBindingElementBuilder : TransportBindingElementBuilder
 	{
+		bool Ssl { get; set; }
+		Func<bool> SslLazy { get; set; }
+		bool ClientAuthentication { get; set; }
+		Func<bool> ClientAuthenticationLazy { get; set; }
 	
 		new HttpTransportBindingElement ToImmutable();
 		new HttpTransportBindingElement ToImmutable(global::MetaDslx.Core.ImmutableModel model);
@@ -1410,8 +1560,9 @@ namespace MetaDslx.Soal
 	
 	public interface SoapEncodingBindingElement : EncodingBindingElement
 	{
+		SoapEncodingStyle Style { get; }
 		SoapVersion Version { get; }
-		bool MtomEnabled { get; }
+		bool Mtom { get; }
 	
 	
 		new SoapEncodingBindingElementBuilder ToMutable();
@@ -1420,10 +1571,12 @@ namespace MetaDslx.Soal
 	
 	public interface SoapEncodingBindingElementBuilder : EncodingBindingElementBuilder
 	{
+		SoapEncodingStyle Style { get; set; }
+		Func<SoapEncodingStyle> StyleLazy { get; set; }
 		SoapVersion Version { get; set; }
 		Func<SoapVersion> VersionLazy { get; set; }
-		bool MtomEnabled { get; set; }
-		Func<bool> MtomEnabledLazy { get; set; }
+		bool Mtom { get; set; }
+		Func<bool> MtomLazy { get; set; }
 	
 		new SoapEncodingBindingElement ToImmutable();
 		new SoapEncodingBindingElement ToImmutable(global::MetaDslx.Core.ImmutableModel model);
@@ -1496,31 +1649,36 @@ namespace MetaDslx.Soal
 		static SoalDescriptor()
 		{
 			properties = new global::System.Collections.Generic.List<global::MetaDslx.Core.ModelProperty>();
+			properties.Add(SoalDescriptor.AnnotatedElement.AnnotationsProperty);
+			properties.Add(SoalDescriptor.Annotation.AnnotatedElementProperty);
+			properties.Add(SoalDescriptor.Annotation.PropertiesProperty);
+			properties.Add(SoalDescriptor.AnnotationProperty.ValueProperty);
 			properties.Add(SoalDescriptor.NamedElement.NameProperty);
 			properties.Add(SoalDescriptor.TypedElement.TypeProperty);
+			properties.Add(SoalDescriptor.Namespace.UriProperty);
+			properties.Add(SoalDescriptor.Namespace.PrefixProperty);
+			properties.Add(SoalDescriptor.Namespace.FullNameProperty);
 			properties.Add(SoalDescriptor.Namespace.DeclarationsProperty);
 			properties.Add(SoalDescriptor.Declaration.NamespaceProperty);
 			properties.Add(SoalDescriptor.ArrayType.InnerTypeProperty);
-			properties.Add(SoalDescriptor.ArrayType.NamespaceProperty);
 			properties.Add(SoalDescriptor.NullableType.InnerTypeProperty);
-			properties.Add(SoalDescriptor.NullableType.NamespaceProperty);
+			properties.Add(SoalDescriptor.NonNullableType.InnerTypeProperty);
+			properties.Add(SoalDescriptor.PrimitiveType.NullableProperty);
+			properties.Add(SoalDescriptor.Enum.BaseTypeProperty);
 			properties.Add(SoalDescriptor.Enum.EnumLiteralsProperty);
 			properties.Add(SoalDescriptor.EnumLiteral.EnumProperty);
-			properties.Add(SoalDescriptor.StructuredType.PropertiesProperty);
-			properties.Add(SoalDescriptor.Property.ParentProperty);
 			properties.Add(SoalDescriptor.Struct.BaseTypeProperty);
-			properties.Add(SoalDescriptor.Exception.BaseTypeProperty);
-			properties.Add(SoalDescriptor.Entity.BaseTypeProperty);
+			properties.Add(SoalDescriptor.Struct.PropertiesProperty);
 			properties.Add(SoalDescriptor.Interface.OperationsProperty);
 			properties.Add(SoalDescriptor.Database.EntitiesProperty);
-			properties.Add(SoalDescriptor.Operation.ParentProperty);
-			properties.Add(SoalDescriptor.Operation.IsOnewayProperty);
-			properties.Add(SoalDescriptor.Operation.ReturnTypeProperty);
+			properties.Add(SoalDescriptor.Operation.ActionProperty);
 			properties.Add(SoalDescriptor.Operation.ParametersProperty);
+			properties.Add(SoalDescriptor.Operation.ResultProperty);
 			properties.Add(SoalDescriptor.Operation.ExceptionsProperty);
-			properties.Add(SoalDescriptor.Parameter.OperationProperty);
+			properties.Add(SoalDescriptor.OutputParameter.IsOnewayProperty);
 			properties.Add(SoalDescriptor.Component.BaseComponentProperty);
 			properties.Add(SoalDescriptor.Component.IsAbstractProperty);
+			properties.Add(SoalDescriptor.Component.PortsProperty);
 			properties.Add(SoalDescriptor.Component.ServicesProperty);
 			properties.Add(SoalDescriptor.Component.ReferencesProperty);
 			properties.Add(SoalDescriptor.Component.PropertiesProperty);
@@ -1530,10 +1688,11 @@ namespace MetaDslx.Soal
 			properties.Add(SoalDescriptor.Composite.WiresProperty);
 			properties.Add(SoalDescriptor.Wire.SourceProperty);
 			properties.Add(SoalDescriptor.Wire.TargetProperty);
-			properties.Add(SoalDescriptor.InterfaceReference.NameProperty);
-			properties.Add(SoalDescriptor.InterfaceReference.OptionalNameProperty);
-			properties.Add(SoalDescriptor.InterfaceReference.InterfaceProperty);
-			properties.Add(SoalDescriptor.InterfaceReference.BindingProperty);
+			properties.Add(SoalDescriptor.Port.ComponentProperty);
+			properties.Add(SoalDescriptor.Port.NameProperty);
+			properties.Add(SoalDescriptor.Port.OptionalNameProperty);
+			properties.Add(SoalDescriptor.Port.InterfaceProperty);
+			properties.Add(SoalDescriptor.Port.BindingProperty);
 			properties.Add(SoalDescriptor.Deployment.EnvironmentsProperty);
 			properties.Add(SoalDescriptor.Deployment.WiresProperty);
 			properties.Add(SoalDescriptor.Environment.RuntimeProperty);
@@ -1545,8 +1704,11 @@ namespace MetaDslx.Soal
 			properties.Add(SoalDescriptor.Endpoint.InterfaceProperty);
 			properties.Add(SoalDescriptor.Endpoint.BindingProperty);
 			properties.Add(SoalDescriptor.Endpoint.AddressProperty);
+			properties.Add(SoalDescriptor.HttpTransportBindingElement.SslProperty);
+			properties.Add(SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty);
+			properties.Add(SoalDescriptor.SoapEncodingBindingElement.StyleProperty);
 			properties.Add(SoalDescriptor.SoapEncodingBindingElement.VersionProperty);
-			properties.Add(SoalDescriptor.SoapEncodingBindingElement.MtomEnabledProperty);
+			properties.Add(SoalDescriptor.SoapEncodingBindingElement.MtomProperty);
 		}
 	
 		public static void Initialize()
@@ -1554,6 +1716,97 @@ namespace MetaDslx.Soal
 		}
 	
 		public const string Uri = "http://MetaDslx.Soal/1.0";
+	
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute]
+		public static class AnnotatedElement
+		{
+			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
+		
+			static AnnotatedElement()
+			{
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(AnnotatedElement));
+			}
+		
+			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			{
+				get { return modelSymbolInfo; }
+			}
+		
+			public static global::MetaDslx.Core.MetaClass MetaClass
+			{
+				get { return global::MetaDslx.Soal.SoalInstance.AnnotatedElement; }
+			}
+			
+			[global::MetaDslx.Core.ContainmentAttribute]
+			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.Annotation), "AnnotatedElement")]
+			public static readonly global::MetaDslx.Core.ModelProperty AnnotationsProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(AnnotatedElement), "Annotations",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Annotation), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Annotation>)),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.AnnotationBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.AnnotationBuilder>)),
+					() => global::MetaDslx.Soal.SoalInstance.AnnotatedElement_Annotations);
+		}
+	
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement))]
+		public static class Annotation
+		{
+			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
+		
+			static Annotation()
+			{
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(Annotation));
+			}
+		
+			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			{
+				get { return modelSymbolInfo; }
+			}
+		
+			public static global::MetaDslx.Core.MetaClass MetaClass
+			{
+				get { return global::MetaDslx.Soal.SoalInstance.Annotation; }
+			}
+			
+			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.AnnotatedElement), "Annotations")]
+			public static readonly global::MetaDslx.Core.ModelProperty AnnotatedElementProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Annotation), "AnnotatedElement",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.AnnotatedElement), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.AnnotatedElementBuilder), null),
+					() => global::MetaDslx.Soal.SoalInstance.Annotation_AnnotatedElement);
+			
+			[global::MetaDslx.Core.ContainmentAttribute]
+			public static readonly global::MetaDslx.Core.ModelProperty PropertiesProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Annotation), "Properties",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.AnnotationProperty), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.AnnotationProperty>)),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.AnnotationPropertyBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.AnnotationPropertyBuilder>)),
+					() => global::MetaDslx.Soal.SoalInstance.Annotation_Properties);
+		}
+	
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement))]
+		public static class AnnotationProperty
+		{
+			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
+		
+			static AnnotationProperty()
+			{
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(AnnotationProperty));
+			}
+		
+			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			{
+				get { return modelSymbolInfo; }
+			}
+		
+			public static global::MetaDslx.Core.MetaClass MetaClass
+			{
+				get { return global::MetaDslx.Soal.SoalInstance.AnnotationProperty; }
+			}
+			
+			public static readonly global::MetaDslx.Core.ModelProperty ValueProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(AnnotationProperty), "Value",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(object), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(object), null),
+					() => global::MetaDslx.Soal.SoalInstance.AnnotationProperty_Value);
+		}
 	
 		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute]
 		public static class NamedElement
@@ -1654,6 +1907,25 @@ namespace MetaDslx.Soal
 				get { return global::MetaDslx.Soal.SoalInstance.Namespace; }
 			}
 			
+			public static readonly global::MetaDslx.Core.ModelProperty UriProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Namespace), "Uri",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
+					() => global::MetaDslx.Soal.SoalInstance.Namespace_Uri);
+			
+			public static readonly global::MetaDslx.Core.ModelProperty PrefixProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Namespace), "Prefix",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
+					() => global::MetaDslx.Soal.SoalInstance.Namespace_Prefix);
+			
+			[global::MetaDslx.Core.ReadonlyAttribute]
+			public static readonly global::MetaDslx.Core.ModelProperty FullNameProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Namespace), "FullName",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
+					() => global::MetaDslx.Soal.SoalInstance.Namespace_FullName);
+			
 			[global::MetaDslx.Core.ScopeEntry]
 			[global::MetaDslx.Core.ContainmentAttribute]
 			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.Declaration), "Namespace")]
@@ -1664,7 +1936,7 @@ namespace MetaDslx.Soal
 					() => global::MetaDslx.Soal.SoalInstance.Namespace_Declarations);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement), typeof(SoalDescriptor.AnnotatedElement))]
 		public static class Declaration
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -1712,26 +1984,11 @@ namespace MetaDslx.Soal
 				get { return global::MetaDslx.Soal.SoalInstance.ArrayType; }
 			}
 			
-			/**
-			 * <summary>
-			 * ArrayType()
-			 * {
-			 * Namespace = InnerType is Declaration ? ((Declaration)InnerType).Namespace : null;
-			 * }
-			 * </summary>
-			 */
 			public static readonly global::MetaDslx.Core.ModelProperty InnerTypeProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(ArrayType), "InnerType",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoalType), null),
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoalTypeBuilder), null),
 					() => global::MetaDslx.Soal.SoalInstance.ArrayType_InnerType);
-			
-			[global::MetaDslx.Core.ReadonlyAttribute]
-			public static readonly global::MetaDslx.Core.ModelProperty NamespaceProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(ArrayType), "Namespace",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Namespace), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.NamespaceBuilder), null),
-					() => global::MetaDslx.Soal.SoalInstance.ArrayType_Namespace);
 		}
 	
 		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.SoalType))]
@@ -1754,29 +2011,41 @@ namespace MetaDslx.Soal
 				get { return global::MetaDslx.Soal.SoalInstance.NullableType; }
 			}
 			
-			/**
-			 * <summary>
-			 * NullableType()
-			 * {
-			 * Namespace = InnerType is Declaration ? ((Declaration)InnerType).Namespace : null;
-			 * }
-			 * </summary>
-			 */
 			public static readonly global::MetaDslx.Core.ModelProperty InnerTypeProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(NullableType), "InnerType",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoalType), null),
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoalTypeBuilder), null),
 					() => global::MetaDslx.Soal.SoalInstance.NullableType_InnerType);
-			
-			[global::MetaDslx.Core.ReadonlyAttribute]
-			public static readonly global::MetaDslx.Core.ModelProperty NamespaceProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(NullableType), "Namespace",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Namespace), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.NamespaceBuilder), null),
-					() => global::MetaDslx.Soal.SoalInstance.NullableType_Namespace);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.SoalType), typeof(SoalDescriptor.NamedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.SoalType))]
+		public static class NonNullableType
+		{
+			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
+		
+			static NonNullableType()
+			{
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(NonNullableType));
+			}
+		
+			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			{
+				get { return modelSymbolInfo; }
+			}
+		
+			public static global::MetaDslx.Core.MetaClass MetaClass
+			{
+				get { return global::MetaDslx.Soal.SoalInstance.NonNullableType; }
+			}
+			
+			public static readonly global::MetaDslx.Core.ModelProperty InnerTypeProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(NonNullableType), "InnerType",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoalType), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoalTypeBuilder), null),
+					() => global::MetaDslx.Soal.SoalInstance.NonNullableType_InnerType);
+		}
+	
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.SoalType), typeof(SoalDescriptor.Declaration))]
 		public static class PrimitiveType
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -1795,6 +2064,12 @@ namespace MetaDslx.Soal
 			{
 				get { return global::MetaDslx.Soal.SoalInstance.PrimitiveType; }
 			}
+			
+			public static readonly global::MetaDslx.Core.ModelProperty NullableProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(PrimitiveType), "Nullable",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
+					() => global::MetaDslx.Soal.SoalInstance.PrimitiveType_Nullable);
 		}
 	
 		[global::MetaDslx.Core.Scope]
@@ -1818,6 +2093,13 @@ namespace MetaDslx.Soal
 				get { return global::MetaDslx.Soal.SoalInstance.Enum; }
 			}
 			
+			[global::MetaDslx.Core.InheritedScope]
+			public static readonly global::MetaDslx.Core.ModelProperty BaseTypeProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Enum), "BaseType",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Enum), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.EnumBuilder), null),
+					() => global::MetaDslx.Soal.SoalInstance.Enum_BaseType);
+			
 			[global::MetaDslx.Core.ScopeEntry]
 			[global::MetaDslx.Core.ContainmentAttribute]
 			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.EnumLiteral), "Enum")]
@@ -1828,7 +2110,7 @@ namespace MetaDslx.Soal
 					() => global::MetaDslx.Soal.SoalInstance.Enum_EnumLiterals);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement), typeof(SoalDescriptor.TypedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement), typeof(SoalDescriptor.TypedElement), typeof(SoalDescriptor.AnnotatedElement))]
 		public static class EnumLiteral
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -1848,15 +2130,8 @@ namespace MetaDslx.Soal
 				get { return global::MetaDslx.Soal.SoalInstance.EnumLiteral; }
 			}
 			
-			/**
-			 * <summary>
-			 * EnumLiteral()
-			 * {
-			 * Type = Enum;
-			 * }
-			 * </summary>
-			 */
 			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.Enum), "EnumLiterals")]
+			[global::MetaDslx.Core.RedefinesAttribute(typeof(SoalDescriptor.TypedElement), "Type")]
 			public static readonly global::MetaDslx.Core.ModelProperty EnumProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(EnumLiteral), "Enum",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Enum), null),
@@ -1864,38 +2139,7 @@ namespace MetaDslx.Soal
 					() => global::MetaDslx.Soal.SoalInstance.EnumLiteral_Enum);
 		}
 	
-		[global::MetaDslx.Core.Scope]
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.SoalType), typeof(SoalDescriptor.Declaration))]
-		public static class StructuredType
-		{
-			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
-		
-			static StructuredType()
-			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(StructuredType));
-			}
-		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
-			{
-				get { return modelSymbolInfo; }
-			}
-		
-			public static global::MetaDslx.Core.MetaClass MetaClass
-			{
-				get { return global::MetaDslx.Soal.SoalInstance.StructuredType; }
-			}
-			
-			[global::MetaDslx.Core.ScopeEntry]
-			[global::MetaDslx.Core.ContainmentAttribute]
-			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.Property), "Parent")]
-			public static readonly global::MetaDslx.Core.ModelProperty PropertiesProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(StructuredType), "Properties",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Property), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Property>)),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.PropertyBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.PropertyBuilder>)),
-					() => global::MetaDslx.Soal.SoalInstance.StructuredType_Properties);
-		}
-	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement), typeof(SoalDescriptor.TypedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement), typeof(SoalDescriptor.TypedElement), typeof(SoalDescriptor.AnnotatedElement))]
 		public static class Property
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -1914,16 +2158,10 @@ namespace MetaDslx.Soal
 			{
 				get { return global::MetaDslx.Soal.SoalInstance.Property; }
 			}
-			
-			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.StructuredType), "Properties")]
-			public static readonly global::MetaDslx.Core.ModelProperty ParentProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(Property), "Parent",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.StructuredType), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.StructuredTypeBuilder), null),
-					() => global::MetaDslx.Soal.SoalInstance.Property_Parent);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.StructuredType))]
+		[global::MetaDslx.Core.Scope]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.SoalType), typeof(SoalDescriptor.Declaration))]
 		public static class Struct
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -1949,62 +2187,14 @@ namespace MetaDslx.Soal
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Struct), null),
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.StructBuilder), null),
 					() => global::MetaDslx.Soal.SoalInstance.Struct_BaseType);
-		}
-	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.StructuredType))]
-		public static class Exception
-		{
-			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
-		
-			static Exception()
-			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(Exception));
-			}
-		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
-			{
-				get { return modelSymbolInfo; }
-			}
-		
-			public static global::MetaDslx.Core.MetaClass MetaClass
-			{
-				get { return global::MetaDslx.Soal.SoalInstance.Exception; }
-			}
 			
-			[global::MetaDslx.Core.InheritedScope]
-			public static readonly global::MetaDslx.Core.ModelProperty BaseTypeProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(Exception), "BaseType",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Exception), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.ExceptionBuilder), null),
-					() => global::MetaDslx.Soal.SoalInstance.Exception_BaseType);
-		}
-	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.StructuredType))]
-		public static class Entity
-		{
-			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
-		
-			static Entity()
-			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(Entity));
-			}
-		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
-			{
-				get { return modelSymbolInfo; }
-			}
-		
-			public static global::MetaDslx.Core.MetaClass MetaClass
-			{
-				get { return global::MetaDslx.Soal.SoalInstance.Entity; }
-			}
-			
-			[global::MetaDslx.Core.InheritedScope]
-			public static readonly global::MetaDslx.Core.ModelProperty BaseTypeProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(Entity), "BaseType",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Entity), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.EntityBuilder), null),
-					() => global::MetaDslx.Soal.SoalInstance.Entity_BaseType);
+			[global::MetaDslx.Core.ScopeEntry]
+			[global::MetaDslx.Core.ContainmentAttribute]
+			public static readonly global::MetaDslx.Core.ModelProperty PropertiesProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Struct), "Properties",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Property), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Property>)),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.PropertyBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.PropertyBuilder>)),
+					() => global::MetaDslx.Soal.SoalInstance.Struct_Properties);
 		}
 	
 		[global::MetaDslx.Core.Scope]
@@ -2030,7 +2220,6 @@ namespace MetaDslx.Soal
 			
 			[global::MetaDslx.Core.ScopeEntry]
 			[global::MetaDslx.Core.ContainmentAttribute]
-			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.Operation), "Parent")]
 			public static readonly global::MetaDslx.Core.ModelProperty OperationsProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(Interface), "Operations",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Operation), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Operation>)),
@@ -2061,12 +2250,12 @@ namespace MetaDslx.Soal
 			[global::MetaDslx.Core.ScopeEntry]
 			public static readonly global::MetaDslx.Core.ModelProperty EntitiesProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(Database), "Entities",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Entity), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Entity>)),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.EntityBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.EntityBuilder>)),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Struct), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Struct>)),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.StructBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.StructBuilder>)),
 					() => global::MetaDslx.Soal.SoalInstance.Database_Entities);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement), typeof(SoalDescriptor.AnnotatedElement))]
 		public static class Operation
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -2086,48 +2275,41 @@ namespace MetaDslx.Soal
 				get { return global::MetaDslx.Soal.SoalInstance.Operation; }
 			}
 			
-			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.Interface), "Operations")]
-			public static readonly global::MetaDslx.Core.ModelProperty ParentProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(Operation), "Parent",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Interface), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.InterfaceBuilder), null),
-					() => global::MetaDslx.Soal.SoalInstance.Operation_Parent);
-			
-			public static readonly global::MetaDslx.Core.ModelProperty IsOnewayProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(Operation), "IsOneway",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
-					() => global::MetaDslx.Soal.SoalInstance.Operation_IsOneway);
-			
-			public static readonly global::MetaDslx.Core.ModelProperty ReturnTypeProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(Operation), "ReturnType",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoalType), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoalTypeBuilder), null),
-					() => global::MetaDslx.Soal.SoalInstance.Operation_ReturnType);
+			public static readonly global::MetaDslx.Core.ModelProperty ActionProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Operation), "Action",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
+					() => global::MetaDslx.Soal.SoalInstance.Operation_Action);
 			
 			[global::MetaDslx.Core.ContainmentAttribute]
-			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.Parameter), "Operation")]
 			public static readonly global::MetaDslx.Core.ModelProperty ParametersProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(Operation), "Parameters",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Parameter), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Parameter>)),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.ParameterBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.ParameterBuilder>)),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.InputParameter), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.InputParameter>)),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.InputParameterBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.InputParameterBuilder>)),
 					() => global::MetaDslx.Soal.SoalInstance.Operation_Parameters);
+			
+			[global::MetaDslx.Core.ReadonlyAttribute]
+			public static readonly global::MetaDslx.Core.ModelProperty ResultProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Operation), "Result",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.OutputParameter), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.OutputParameterBuilder), null),
+					() => global::MetaDslx.Soal.SoalInstance.Operation_Result);
 			
 			public static readonly global::MetaDslx.Core.ModelProperty ExceptionsProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(Operation), "Exceptions",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Exception), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Exception>)),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.ExceptionBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.ExceptionBuilder>)),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Struct), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Struct>)),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.StructBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.StructBuilder>)),
 					() => global::MetaDslx.Soal.SoalInstance.Operation_Exceptions);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement), typeof(SoalDescriptor.TypedElement))]
-		public static class Parameter
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.NamedElement), typeof(SoalDescriptor.TypedElement), typeof(SoalDescriptor.AnnotatedElement))]
+		public static class InputParameter
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
-			static Parameter()
+			static InputParameter()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(Parameter));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(InputParameter));
 			}
 		
 			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
@@ -2137,19 +2319,39 @@ namespace MetaDslx.Soal
 		
 			public static global::MetaDslx.Core.MetaClass MetaClass
 			{
-				get { return global::MetaDslx.Soal.SoalInstance.Parameter; }
+				get { return global::MetaDslx.Soal.SoalInstance.InputParameter; }
+			}
+		}
+	
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.TypedElement), typeof(SoalDescriptor.AnnotatedElement))]
+		public static class OutputParameter
+		{
+			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
+		
+			static OutputParameter()
+			{
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(OutputParameter));
+			}
+		
+			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			{
+				get { return modelSymbolInfo; }
+			}
+		
+			public static global::MetaDslx.Core.MetaClass MetaClass
+			{
+				get { return global::MetaDslx.Soal.SoalInstance.OutputParameter; }
 			}
 			
-			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.Operation), "Parameters")]
-			public static readonly global::MetaDslx.Core.ModelProperty OperationProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(Parameter), "Operation",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Operation), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.OperationBuilder), null),
-					() => global::MetaDslx.Soal.SoalInstance.Parameter_Operation);
+			public static readonly global::MetaDslx.Core.ModelProperty IsOnewayProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(OutputParameter), "IsOneway",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
+					() => global::MetaDslx.Soal.SoalInstance.OutputParameter_IsOneway);
 		}
 	
 		[global::MetaDslx.Core.Scope]
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.Declaration), typeof(SoalDescriptor.StructuredType))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.Declaration))]
 		public static class Component
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -2184,14 +2386,23 @@ namespace MetaDslx.Soal
 			
 			[global::MetaDslx.Core.ScopeEntry]
 			[global::MetaDslx.Core.ContainmentAttribute]
+			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.Port), "Component")]
+			public static readonly global::MetaDslx.Core.ModelProperty PortsProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Component), "Ports",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Port), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Port>)),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.PortBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.PortBuilder>)),
+					() => global::MetaDslx.Soal.SoalInstance.Component_Ports);
+			
+			[global::MetaDslx.Core.ContainmentAttribute]
+			[global::MetaDslx.Core.SubsetsAttribute(typeof(SoalDescriptor.Component), "Ports")]
 			public static readonly global::MetaDslx.Core.ModelProperty ServicesProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(Component), "Services",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Service), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Service>)),
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.ServiceBuilder), typeof(global::MetaDslx.Core.MutableModelList<global::MetaDslx.Soal.ServiceBuilder>)),
 					() => global::MetaDslx.Soal.SoalInstance.Component_Services);
 			
-			[global::MetaDslx.Core.ScopeEntry]
 			[global::MetaDslx.Core.ContainmentAttribute]
+			[global::MetaDslx.Core.SubsetsAttribute(typeof(SoalDescriptor.Component), "Ports")]
 			public static readonly global::MetaDslx.Core.ModelProperty ReferencesProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(Component), "References",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Reference), typeof(global::MetaDslx.Core.ImmutableModelList<global::MetaDslx.Soal.Reference>)),
@@ -2299,25 +2510,25 @@ namespace MetaDslx.Soal
 			
 			public static readonly global::MetaDslx.Core.ModelProperty SourceProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(Wire), "Source",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.InterfaceReference), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.InterfaceReferenceBuilder), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Port), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.PortBuilder), null),
 					() => global::MetaDslx.Soal.SoalInstance.Wire_Source);
 			
 			public static readonly global::MetaDslx.Core.ModelProperty TargetProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(Wire), "Target",
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.InterfaceReference), null),
-			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.InterfaceReferenceBuilder), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Port), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.PortBuilder), null),
 					() => global::MetaDslx.Soal.SoalInstance.Wire_Target);
 		}
 	
 		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute]
-		public static class InterfaceReference
+		public static class Port
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
-			static InterfaceReference()
+			static Port()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(InterfaceReference));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(Port));
 			}
 		
 			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
@@ -2327,45 +2538,44 @@ namespace MetaDslx.Soal
 		
 			public static global::MetaDslx.Core.MetaClass MetaClass
 			{
-				get { return global::MetaDslx.Soal.SoalInstance.InterfaceReference; }
+				get { return global::MetaDslx.Soal.SoalInstance.Port; }
 			}
 			
-			/**
-			 * <summary>
-			 * InterfaceReference()
-			 * {
-			 * // this.Name = this.OptionalName != "" ? this.OptionalName : this.Interface.Name;
-			 * }
-			 * </summary>
-			 */
+			[global::MetaDslx.Core.OppositeAttribute(typeof(SoalDescriptor.Component), "Ports")]
+			public static readonly global::MetaDslx.Core.ModelProperty ComponentProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Port), "Component",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Component), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.ComponentBuilder), null),
+					() => global::MetaDslx.Soal.SoalInstance.Port_Component);
+			
 			[global::MetaDslx.Core.Name]
 			[global::MetaDslx.Core.ReadonlyAttribute]
 			public static readonly global::MetaDslx.Core.ModelProperty NameProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(InterfaceReference), "Name",
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Port), "Name",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
-					() => global::MetaDslx.Soal.SoalInstance.InterfaceReference_Name);
+					() => global::MetaDslx.Soal.SoalInstance.Port_Name);
 			
 			public static readonly global::MetaDslx.Core.ModelProperty OptionalNameProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(InterfaceReference), "OptionalName",
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Port), "OptionalName",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(string), null),
-					() => global::MetaDslx.Soal.SoalInstance.InterfaceReference_OptionalName);
+					() => global::MetaDslx.Soal.SoalInstance.Port_OptionalName);
 			
 			public static readonly global::MetaDslx.Core.ModelProperty InterfaceProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(InterfaceReference), "Interface",
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Port), "Interface",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Interface), null),
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.InterfaceBuilder), null),
-					() => global::MetaDslx.Soal.SoalInstance.InterfaceReference_Interface);
+					() => global::MetaDslx.Soal.SoalInstance.Port_Interface);
 			
 			public static readonly global::MetaDslx.Core.ModelProperty BindingProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(InterfaceReference), "Binding",
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(Port), "Binding",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.Binding), null),
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.BindingBuilder), null),
-					() => global::MetaDslx.Soal.SoalInstance.InterfaceReference_Binding);
+					() => global::MetaDslx.Soal.SoalInstance.Port_Binding);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.InterfaceReference))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.Port))]
 		public static class Service
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -2386,7 +2596,7 @@ namespace MetaDslx.Soal
 			}
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.InterfaceReference))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.Port))]
 		public static class Reference
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -2729,6 +2939,18 @@ namespace MetaDslx.Soal
 			{
 				get { return global::MetaDslx.Soal.SoalInstance.HttpTransportBindingElement; }
 			}
+			
+			public static readonly global::MetaDslx.Core.ModelProperty SslProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(HttpTransportBindingElement), "Ssl",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
+					() => global::MetaDslx.Soal.SoalInstance.HttpTransportBindingElement_Ssl);
+			
+			public static readonly global::MetaDslx.Core.ModelProperty ClientAuthenticationProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(HttpTransportBindingElement), "ClientAuthentication",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
+					() => global::MetaDslx.Soal.SoalInstance.HttpTransportBindingElement_ClientAuthentication);
 		}
 	
 		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.TransportBindingElement))]
@@ -2793,17 +3015,23 @@ namespace MetaDslx.Soal
 				get { return global::MetaDslx.Soal.SoalInstance.SoapEncodingBindingElement; }
 			}
 			
+			public static readonly global::MetaDslx.Core.ModelProperty StyleProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(SoapEncodingBindingElement), "Style",
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoapEncodingStyle), null),
+			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoapEncodingStyle), null),
+					() => global::MetaDslx.Soal.SoalInstance.SoapEncodingBindingElement_Style);
+			
 			public static readonly global::MetaDslx.Core.ModelProperty VersionProperty =
 			    global::MetaDslx.Core.ModelProperty.Register(typeof(SoapEncodingBindingElement), "Version",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoapVersion), null),
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(global::MetaDslx.Soal.SoapVersion), null),
 					() => global::MetaDslx.Soal.SoalInstance.SoapEncodingBindingElement_Version);
 			
-			public static readonly global::MetaDslx.Core.ModelProperty MtomEnabledProperty =
-			    global::MetaDslx.Core.ModelProperty.Register(typeof(SoapEncodingBindingElement), "MtomEnabled",
+			public static readonly global::MetaDslx.Core.ModelProperty MtomProperty =
+			    global::MetaDslx.Core.ModelProperty.Register(typeof(SoapEncodingBindingElement), "Mtom",
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
 			        new global::MetaDslx.Core.ModelPropertyTypeInfo(typeof(bool), null),
-					() => global::MetaDslx.Soal.SoalInstance.SoapEncodingBindingElement_MtomEnabled);
+					() => global::MetaDslx.Soal.SoalInstance.SoapEncodingBindingElement_Mtom);
 		}
 	
 		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(SoalDescriptor.EncodingBindingElement))]
@@ -2894,6 +3122,448 @@ namespace MetaDslx.Soal
 
 namespace MetaDslx.Soal.Internal
 {
+	
+	internal class AnnotatedElementId : global::MetaDslx.Core.SymbolId
+	{
+		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.ModelSymbolInfo; } }
+		public override global::System.Type ImmutableType { get { return typeof(AnnotatedElement); } }
+		public override global::System.Type MutableType { get { return typeof(AnnotatedElementBuilder); } }
+	
+		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return new AnnotatedElementImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
+		{
+			return new AnnotatedElementBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class AnnotatedElementImpl : global::MetaDslx.Core.ImmutableSymbolBase, AnnotatedElement
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+	
+		internal AnnotatedElementImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.AnnotatedElement; }
+		}
+	
+		public new AnnotatedElementBuilder ToMutable()
+		{
+			return (AnnotatedElementBuilder)base.ToMutable();
+		}
+	
+		public new AnnotatedElementBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return (AnnotatedElementBuilder)base.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
+	}
+	
+	internal class AnnotatedElementBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, AnnotatedElementBuilder
+	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
+	
+		internal AnnotatedElementBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			SoalImplementationProvider.Implementation.AnnotatedElement(this);
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.AnnotatedElement; }
+		}
+	
+		public new AnnotatedElement ToImmutable()
+		{
+			return (AnnotatedElement)base.ToImmutable();
+		}
+	
+		public new AnnotatedElement ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return (AnnotatedElement)base.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	}
+	
+	internal class AnnotationId : global::MetaDslx.Core.SymbolId
+	{
+		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.Annotation.ModelSymbolInfo; } }
+		public override global::System.Type ImmutableType { get { return typeof(Annotation); } }
+		public override global::System.Type MutableType { get { return typeof(AnnotationBuilder); } }
+	
+		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return new AnnotationImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
+		{
+			return new AnnotationBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class AnnotationImpl : global::MetaDslx.Core.ImmutableSymbolBase, Annotation
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private AnnotatedElement annotatedElement0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<AnnotationProperty> properties0;
+	
+		internal AnnotationImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.Annotation; }
+		}
+	
+		public new AnnotationBuilder ToMutable()
+		{
+			return (AnnotationBuilder)base.ToMutable();
+		}
+	
+		public new AnnotationBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return (AnnotationBuilder)base.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public AnnotatedElement AnnotatedElement
+		{
+		    get { return this.GetReference<AnnotatedElement>(global::MetaDslx.Soal.SoalDescriptor.Annotation.AnnotatedElementProperty, ref annotatedElement0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<AnnotationProperty> Properties
+		{
+		    get { return this.GetList<AnnotationProperty>(global::MetaDslx.Soal.SoalDescriptor.Annotation.PropertiesProperty, ref properties0); }
+		}
+	
+		
+		bool Annotation.HasProperty(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.Annotation_HasProperty(this, name);
+		}
+	
+		
+		AnnotationProperty Annotation.GetProperty(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.Annotation_GetProperty(this, name);
+		}
+	
+		
+		object Annotation.GetPropertyValue(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.Annotation_GetPropertyValue(this, name);
+		}
+	}
+	
+	internal class AnnotationBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, AnnotationBuilder
+	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationPropertyBuilder> properties0;
+	
+		internal AnnotationBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			SoalImplementationProvider.Implementation.Annotation(this);
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.Annotation; }
+		}
+	
+		public new Annotation ToImmutable()
+		{
+			return (Annotation)base.ToImmutable();
+		}
+	
+		public new Annotation ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return (Annotation)base.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public AnnotatedElementBuilder AnnotatedElement
+		{
+			get { return this.GetReference<AnnotatedElementBuilder>(global::MetaDslx.Soal.SoalDescriptor.Annotation.AnnotatedElementProperty); }
+			set { this.SetReference<AnnotatedElementBuilder>(global::MetaDslx.Soal.SoalDescriptor.Annotation.AnnotatedElementProperty, value); }
+		}
+		
+		public Func<AnnotatedElementBuilder> AnnotatedElementLazy
+		{
+			get { return this.GetLazyReference<AnnotatedElementBuilder>(global::MetaDslx.Soal.SoalDescriptor.Annotation.AnnotatedElementProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Annotation.AnnotatedElementProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationPropertyBuilder> Properties
+		{
+			get { return this.GetList<AnnotationPropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.Annotation.PropertiesProperty, ref properties0); }
+		}
+	}
+	
+	internal class AnnotationPropertyId : global::MetaDslx.Core.SymbolId
+	{
+		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.AnnotationProperty.ModelSymbolInfo; } }
+		public override global::System.Type ImmutableType { get { return typeof(AnnotationProperty); } }
+		public override global::System.Type MutableType { get { return typeof(AnnotationPropertyBuilder); } }
+	
+		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return new AnnotationPropertyImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
+		{
+			return new AnnotationPropertyBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class AnnotationPropertyImpl : global::MetaDslx.Core.ImmutableSymbolBase, AnnotationProperty
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private object value0;
+	
+		internal AnnotationPropertyImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.AnnotationProperty; }
+		}
+	
+		public new AnnotationPropertyBuilder ToMutable()
+		{
+			return (AnnotationPropertyBuilder)base.ToMutable();
+		}
+	
+		public new AnnotationPropertyBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return (AnnotationPropertyBuilder)base.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public object Value
+		{
+		    get { return this.GetReference<object>(global::MetaDslx.Soal.SoalDescriptor.AnnotationProperty.ValueProperty, ref value0); }
+		}
+	}
+	
+	internal class AnnotationPropertyBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, AnnotationPropertyBuilder
+	{
+	
+		internal AnnotationPropertyBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			SoalImplementationProvider.Implementation.AnnotationProperty(this);
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.AnnotationProperty; }
+		}
+	
+		public new AnnotationProperty ToImmutable()
+		{
+			return (AnnotationProperty)base.ToImmutable();
+		}
+	
+		public new AnnotationProperty ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return (AnnotationProperty)base.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public object Value
+		{
+			get { return this.GetReference<object>(global::MetaDslx.Soal.SoalDescriptor.AnnotationProperty.ValueProperty); }
+			set { this.SetReference<object>(global::MetaDslx.Soal.SoalDescriptor.AnnotationProperty.ValueProperty, value); }
+		}
+		
+		public Func<object> ValueLazy
+		{
+			get { return this.GetLazyReference<object>(global::MetaDslx.Soal.SoalDescriptor.AnnotationProperty.ValueProperty); }
+			set { this.SetLazyReference(SoalDescriptor.AnnotationProperty.ValueProperty, value); }
+		}
+	}
 	
 	internal class NamedElementId : global::MetaDslx.Core.SymbolId
 	{
@@ -3197,9 +3867,17 @@ namespace MetaDslx.Soal.Internal
 	internal class NamespaceImpl : global::MetaDslx.Core.ImmutableSymbolBase, Namespace
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string uri0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string prefix0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Declaration> declarations0;
 	
@@ -3228,6 +3906,16 @@ namespace MetaDslx.Soal.Internal
 			return (NamespaceBuilder)base.ToMutable(model);
 		}
 	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -3249,6 +3937,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
@@ -3261,14 +3955,63 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public string Uri
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.UriProperty, ref uri0); }
+		}
+	
+		
+		public string Prefix
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.PrefixProperty, ref prefix0); }
+		}
+	
+		
+		public string FullName
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.FullNameProperty, ref fullName0); }
+		}
+	
+		
 		public global::MetaDslx.Core.ImmutableModelList<Declaration> Declarations
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Soal.SoalDescriptor.Namespace.DeclarationsProperty, ref declarations0); }
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
 		}
 	}
 	
 	internal class NamespaceBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, NamespaceBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<DeclarationBuilder> declarations0;
 	
 		internal NamespaceBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
@@ -3301,6 +4044,16 @@ namespace MetaDslx.Soal.Internal
 			return (Namespace)base.ToImmutable(model);
 		}
 	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -3319,6 +4072,12 @@ namespace MetaDslx.Soal.Internal
 		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -3348,6 +4107,44 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public string Uri
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.UriProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.UriProperty, value); }
+		}
+		
+		public Func<string> UriLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.UriProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Namespace.UriProperty, value); }
+		}
+	
+		
+		public string Prefix
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.PrefixProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.PrefixProperty, value); }
+		}
+		
+		public Func<string> PrefixLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.PrefixProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Namespace.PrefixProperty, value); }
+		}
+	
+		
+		public string FullName
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.FullNameProperty); }
+		}
+		
+		public Func<string> FullNameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.Namespace.FullNameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Namespace.FullNameProperty, value); }
+		}
+	
+		
 		public global::MetaDslx.Core.MutableModelList<DeclarationBuilder> Declarations
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Soal.SoalDescriptor.Namespace.DeclarationsProperty, ref declarations0); }
@@ -3373,6 +4170,8 @@ namespace MetaDslx.Soal.Internal
 	
 	internal class DeclarationImpl : global::MetaDslx.Core.ImmutableSymbolBase, Declaration
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3403,6 +4202,16 @@ namespace MetaDslx.Soal.Internal
 			return (DeclarationBuilder)base.ToMutable(model);
 		}
 	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -3411,6 +4220,12 @@ namespace MetaDslx.Soal.Internal
 		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -3424,10 +4239,41 @@ namespace MetaDslx.Soal.Internal
 		{
 		    get { return this.GetReference<Namespace>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
 		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
 	}
 	
 	internal class DeclarationBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, DeclarationBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal DeclarationBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -3459,6 +4305,16 @@ namespace MetaDslx.Soal.Internal
 			return (Declaration)base.ToImmutable(model);
 		}
 	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -3467,6 +4323,12 @@ namespace MetaDslx.Soal.Internal
 		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -3517,8 +4379,6 @@ namespace MetaDslx.Soal.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoalType innerType0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
 	
 		internal ArrayTypeImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -3559,12 +4419,6 @@ namespace MetaDslx.Soal.Internal
 		public SoalType InnerType
 		{
 		    get { return this.GetReference<SoalType>(global::MetaDslx.Soal.SoalDescriptor.ArrayType.InnerTypeProperty, ref innerType0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Soal.SoalDescriptor.ArrayType.NamespaceProperty, ref namespace0); }
 		}
 	}
 	
@@ -3623,18 +4477,6 @@ namespace MetaDslx.Soal.Internal
 			get { return this.GetLazyReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.ArrayType.InnerTypeProperty); }
 			set { this.SetLazyReference(SoalDescriptor.ArrayType.InnerTypeProperty, value); }
 		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.ArrayType.NamespaceProperty); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.ArrayType.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.ArrayType.NamespaceProperty, value); }
-		}
 	}
 	
 	internal class NullableTypeId : global::MetaDslx.Core.SymbolId
@@ -3658,8 +4500,6 @@ namespace MetaDslx.Soal.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoalType innerType0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
 	
 		internal NullableTypeImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -3700,12 +4540,6 @@ namespace MetaDslx.Soal.Internal
 		public SoalType InnerType
 		{
 		    get { return this.GetReference<SoalType>(global::MetaDslx.Soal.SoalDescriptor.NullableType.InnerTypeProperty, ref innerType0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Soal.SoalDescriptor.NullableType.NamespaceProperty, ref namespace0); }
 		}
 	}
 	
@@ -3764,17 +4598,126 @@ namespace MetaDslx.Soal.Internal
 			get { return this.GetLazyReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.NullableType.InnerTypeProperty); }
 			set { this.SetLazyReference(SoalDescriptor.NullableType.InnerTypeProperty, value); }
 		}
+	}
+	
+	internal class NonNullableTypeId : global::MetaDslx.Core.SymbolId
+	{
+		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.NonNullableType.ModelSymbolInfo; } }
+		public override global::System.Type ImmutableType { get { return typeof(NonNullableType); } }
+		public override global::System.Type MutableType { get { return typeof(NonNullableTypeBuilder); } }
+	
+		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return new NonNullableTypeImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
+		{
+			return new NonNullableTypeBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class NonNullableTypeImpl : global::MetaDslx.Core.ImmutableSymbolBase, NonNullableType
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private SoalType innerType0;
+	
+		internal NonNullableTypeImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.NonNullableType; }
+		}
+	
+		public new NonNullableTypeBuilder ToMutable()
+		{
+			return (NonNullableTypeBuilder)base.ToMutable();
+		}
+	
+		public new NonNullableTypeBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return (NonNullableTypeBuilder)base.ToMutable(model);
+		}
+	
+		SoalTypeBuilder SoalType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
 	
 		
-		public NamespaceBuilder Namespace
+		public SoalType InnerType
 		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.NullableType.NamespaceProperty); }
+		    get { return this.GetReference<SoalType>(global::MetaDslx.Soal.SoalDescriptor.NonNullableType.InnerTypeProperty, ref innerType0); }
+		}
+	}
+	
+	internal class NonNullableTypeBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, NonNullableTypeBuilder
+	{
+	
+		internal NonNullableTypeBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			SoalImplementationProvider.Implementation.NonNullableType(this);
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.NonNullableType; }
+		}
+	
+		public new NonNullableType ToImmutable()
+		{
+			return (NonNullableType)base.ToImmutable();
+		}
+	
+		public new NonNullableType ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return (NonNullableType)base.ToImmutable(model);
+		}
+	
+		SoalType SoalTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public SoalTypeBuilder InnerType
+		{
+			get { return this.GetReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.NonNullableType.InnerTypeProperty); }
+			set { this.SetReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.NonNullableType.InnerTypeProperty, value); }
 		}
 		
-		public Func<NamespaceBuilder> NamespaceLazy
+		public Func<SoalTypeBuilder> InnerTypeLazy
 		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.NullableType.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NullableType.NamespaceProperty, value); }
+			get { return this.GetLazyReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.NonNullableType.InnerTypeProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NonNullableType.InnerTypeProperty, value); }
 		}
 	}
 	
@@ -3798,7 +4741,13 @@ namespace MetaDslx.Soal.Internal
 	internal class PrimitiveTypeImpl : global::MetaDslx.Core.ImmutableSymbolBase, PrimitiveType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool nullable0;
 	
 		internal PrimitiveTypeImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -3825,149 +4774,14 @@ namespace MetaDslx.Soal.Internal
 			return (PrimitiveTypeBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		SoalTypeBuilder SoalType.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	}
-	
-	internal class PrimitiveTypeBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, PrimitiveTypeBuilder
-	{
-	
-		internal PrimitiveTypeBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			SoalImplementationProvider.Implementation.PrimitiveType(this);
-		}
-	
-		public override global::MetaDslx.Core.MetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
-		}
-	
-		public override global::MetaDslx.Core.MetaClass MMetaClass
-		{
-			get { return SoalInstance.PrimitiveType; }
-		}
-	
-		public new PrimitiveType ToImmutable()
-		{
-			return (PrimitiveType)base.ToImmutable();
-		}
-	
-		public new PrimitiveType ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return (PrimitiveType)base.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		SoalType SoalTypeBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	}
-	
-	internal class EnumId : global::MetaDslx.Core.SymbolId
-	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.Enum.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(Enum); } }
-		public override global::System.Type MutableType { get { return typeof(EnumBuilder); } }
-	
-		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return new EnumImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
-		{
-			return new EnumBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class EnumImpl : global::MetaDslx.Core.ImmutableSymbolBase, Enum
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<EnumLiteral> enumLiterals0;
-	
-		internal EnumImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Core.MetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
-		}
-	
-		public override global::MetaDslx.Core.MetaClass MMetaClass
-		{
-			get { return SoalInstance.Enum; }
-		}
-	
-		public new EnumBuilder ToMutable()
-		{
-			return (EnumBuilder)base.ToMutable();
-		}
-	
-		public new EnumBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return (EnumBuilder)base.ToMutable(model);
 		}
 	
 		NamedElementBuilder NamedElement.ToMutable()
@@ -4001,6 +4815,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
@@ -4013,24 +4833,54 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<EnumLiteral> EnumLiterals
+		public bool Nullable
 		{
-		    get { return this.GetList<EnumLiteral>(global::MetaDslx.Soal.SoalDescriptor.Enum.EnumLiteralsProperty, ref enumLiterals0); }
+		    get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.PrimitiveType.NullableProperty, ref nullable0); }
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
 		}
 	}
 	
-	internal class EnumBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, EnumBuilder
+	internal class PrimitiveTypeBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, PrimitiveTypeBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<EnumLiteralBuilder> enumLiterals0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
-		internal EnumBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
+		internal PrimitiveTypeBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
 	
 		protected override void MInit()
 		{
-			SoalImplementationProvider.Implementation.Enum(this);
+			SoalImplementationProvider.Implementation.PrimitiveType(this);
 		}
 	
 		public override global::MetaDslx.Core.MetaModel MMetaModel
@@ -4040,17 +4890,27 @@ namespace MetaDslx.Soal.Internal
 	
 		public override global::MetaDslx.Core.MetaClass MMetaClass
 		{
-			get { return SoalInstance.Enum; }
+			get { return SoalInstance.PrimitiveType; }
 		}
 	
-		public new Enum ToImmutable()
+		public new PrimitiveType ToImmutable()
 		{
-			return (Enum)base.ToImmutable();
+			return (PrimitiveType)base.ToImmutable();
 		}
 	
-		public new Enum ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		public new PrimitiveType ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
-			return (Enum)base.ToImmutable(model);
+			return (PrimitiveType)base.ToImmutable(model);
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
 		}
 	
 		NamedElement NamedElementBuilder.ToImmutable()
@@ -4084,6 +4944,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public string Name
 		{
 			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
@@ -4107,6 +4973,296 @@ namespace MetaDslx.Soal.Internal
 		{
 			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); }
 			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+	
+		
+		public bool Nullable
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.PrimitiveType.NullableProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.PrimitiveType.NullableProperty, value); }
+		}
+		
+		public Func<bool> NullableLazy
+		{
+			get { return this.GetLazyValue<bool>(global::MetaDslx.Soal.SoalDescriptor.PrimitiveType.NullableProperty); }
+			set { this.SetLazyValue(SoalDescriptor.PrimitiveType.NullableProperty, value); }
+		}
+	}
+	
+	internal class EnumId : global::MetaDslx.Core.SymbolId
+	{
+		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.Enum.ModelSymbolInfo; } }
+		public override global::System.Type ImmutableType { get { return typeof(Enum); } }
+		public override global::System.Type MutableType { get { return typeof(EnumBuilder); } }
+	
+		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return new EnumImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
+		{
+			return new EnumBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class EnumImpl : global::MetaDslx.Core.ImmutableSymbolBase, Enum
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Enum baseType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<EnumLiteral> enumLiterals0;
+	
+		internal EnumImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.Enum; }
+		}
+	
+		public new EnumBuilder ToMutable()
+		{
+			return (EnumBuilder)base.ToMutable();
+		}
+	
+		public new EnumBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return (EnumBuilder)base.ToMutable(model);
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		DeclarationBuilder Declaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		SoalTypeBuilder SoalType.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public Namespace Namespace
+		{
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public Enum BaseType
+		{
+		    get { return this.GetReference<Enum>(global::MetaDslx.Soal.SoalDescriptor.Enum.BaseTypeProperty, ref baseType0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<EnumLiteral> EnumLiterals
+		{
+		    get { return this.GetList<EnumLiteral>(global::MetaDslx.Soal.SoalDescriptor.Enum.EnumLiteralsProperty, ref enumLiterals0); }
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
+	}
+	
+	internal class EnumBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, EnumBuilder
+	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
+		private global::MetaDslx.Core.MutableModelList<EnumLiteralBuilder> enumLiterals0;
+	
+		internal EnumBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			SoalImplementationProvider.Implementation.Enum(this);
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.Enum; }
+		}
+	
+		public new Enum ToImmutable()
+		{
+			return (Enum)base.ToImmutable();
+		}
+	
+		public new Enum ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return (Enum)base.ToImmutable(model);
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		Declaration DeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		SoalType SoalTypeBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public NamespaceBuilder Namespace
+		{
+			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+		
+		public Func<NamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+	
+		
+		public EnumBuilder BaseType
+		{
+			get { return this.GetReference<EnumBuilder>(global::MetaDslx.Soal.SoalDescriptor.Enum.BaseTypeProperty); }
+			set { this.SetReference<EnumBuilder>(global::MetaDslx.Soal.SoalDescriptor.Enum.BaseTypeProperty, value); }
+		}
+		
+		public Func<EnumBuilder> BaseTypeLazy
+		{
+			get { return this.GetLazyReference<EnumBuilder>(global::MetaDslx.Soal.SoalDescriptor.Enum.BaseTypeProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Enum.BaseTypeProperty, value); }
 		}
 	
 		
@@ -4135,6 +5291,8 @@ namespace MetaDslx.Soal.Internal
 	
 	internal class EnumLiteralImpl : global::MetaDslx.Core.ImmutableSymbolBase, EnumLiteral
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoalType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4167,6 +5325,16 @@ namespace MetaDslx.Soal.Internal
 			return (EnumLiteralBuilder)base.ToMutable(model);
 		}
 	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		TypedElementBuilder TypedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4188,6 +5356,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public SoalType Type
 		{
 		    get { return this.GetReference<SoalType>(global::MetaDslx.Soal.SoalDescriptor.TypedElement.TypeProperty, ref type0); }
@@ -4204,10 +5378,41 @@ namespace MetaDslx.Soal.Internal
 		{
 		    get { return this.GetReference<Enum>(global::MetaDslx.Soal.SoalDescriptor.EnumLiteral.EnumProperty, ref enum0); }
 		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
 	}
 	
 	internal class EnumLiteralBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, EnumLiteralBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal EnumLiteralBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -4239,6 +5444,16 @@ namespace MetaDslx.Soal.Internal
 			return (EnumLiteral)base.ToImmutable(model);
 		}
 	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		TypedElement TypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4257,6 +5472,12 @@ namespace MetaDslx.Soal.Internal
 		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -4299,203 +5520,6 @@ namespace MetaDslx.Soal.Internal
 		}
 	}
 	
-	internal class StructuredTypeId : global::MetaDslx.Core.SymbolId
-	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.StructuredType.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(StructuredType); } }
-		public override global::System.Type MutableType { get { return typeof(StructuredTypeBuilder); } }
-	
-		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return new StructuredTypeImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
-		{
-			return new StructuredTypeBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class StructuredTypeImpl : global::MetaDslx.Core.ImmutableSymbolBase, StructuredType
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
-	
-		internal StructuredTypeImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Core.MetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
-		}
-	
-		public override global::MetaDslx.Core.MetaClass MMetaClass
-		{
-			get { return SoalInstance.StructuredType; }
-		}
-	
-		public new StructuredTypeBuilder ToMutable()
-		{
-			return (StructuredTypeBuilder)base.ToMutable();
-		}
-	
-		public new StructuredTypeBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return (StructuredTypeBuilder)base.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		DeclarationBuilder Declaration.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		SoalTypeBuilder SoalType.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Property> Properties
-		{
-		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
-		}
-	}
-	
-	internal class StructuredTypeBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, StructuredTypeBuilder
-	{
-		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
-	
-		internal StructuredTypeBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			SoalImplementationProvider.Implementation.StructuredType(this);
-		}
-	
-		public override global::MetaDslx.Core.MetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
-		}
-	
-		public override global::MetaDslx.Core.MetaClass MMetaClass
-		{
-			get { return SoalInstance.StructuredType; }
-		}
-	
-		public new StructuredType ToImmutable()
-		{
-			return (StructuredType)base.ToImmutable();
-		}
-	
-		public new StructuredType ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return (StructuredType)base.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		Declaration DeclarationBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		SoalType SoalTypeBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties
-		{
-			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
-		}
-	}
-	
 	internal class PropertyId : global::MetaDslx.Core.SymbolId
 	{
 		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.Property.ModelSymbolInfo; } }
@@ -4516,11 +5540,11 @@ namespace MetaDslx.Soal.Internal
 	internal class PropertyImpl : global::MetaDslx.Core.ImmutableSymbolBase, Property
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoalType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private StructuredType parent0;
 	
 		internal PropertyImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -4547,6 +5571,16 @@ namespace MetaDslx.Soal.Internal
 			return (PropertyBuilder)base.ToMutable(model);
 		}
 	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		TypedElementBuilder TypedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4568,6 +5602,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public SoalType Type
 		{
 		    get { return this.GetReference<SoalType>(global::MetaDslx.Soal.SoalDescriptor.TypedElement.TypeProperty, ref type0); }
@@ -4580,14 +5620,39 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public StructuredType Parent
+		bool AnnotatedElement.HasAnnotation(string name)
 		{
-		    get { return this.GetReference<StructuredType>(global::MetaDslx.Soal.SoalDescriptor.Property.ParentProperty, ref parent0); }
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
 		}
 	}
 	
 	internal class PropertyBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, PropertyBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal PropertyBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -4619,6 +5684,16 @@ namespace MetaDslx.Soal.Internal
 			return (Property)base.ToImmutable(model);
 		}
 	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		TypedElement TypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4637,6 +5712,12 @@ namespace MetaDslx.Soal.Internal
 		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -4664,19 +5745,6 @@ namespace MetaDslx.Soal.Internal
 			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
 			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
-	
-		
-		public StructuredTypeBuilder Parent
-		{
-			get { return this.GetReference<StructuredTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.Property.ParentProperty); }
-			set { this.SetReference<StructuredTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.Property.ParentProperty, value); }
-		}
-		
-		public Func<StructuredTypeBuilder> ParentLazy
-		{
-			get { return this.GetLazyReference<StructuredTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.Property.ParentProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Property.ParentProperty, value); }
-		}
 	}
 	
 	internal class StructId : global::MetaDslx.Core.SymbolId
@@ -4699,13 +5767,15 @@ namespace MetaDslx.Soal.Internal
 	internal class StructImpl : global::MetaDslx.Core.ImmutableSymbolBase, Struct
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Struct baseType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
 	
 		internal StructImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -4730,6 +5800,16 @@ namespace MetaDslx.Soal.Internal
 		public new StructBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return (StructBuilder)base.ToMutable(model);
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
 		}
 	
 		NamedElementBuilder NamedElement.ToMutable()
@@ -4762,14 +5842,10 @@ namespace MetaDslx.Soal.Internal
 			return this.ToMutable(model);
 		}
 	
-		StructuredTypeBuilder StructuredType.ToMutable()
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
 		{
-			return this.ToMutable();
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -4785,20 +5861,51 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Property> Properties
-		{
-		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
-		}
-	
-		
 		public Struct BaseType
 		{
 		    get { return this.GetReference<Struct>(global::MetaDslx.Soal.SoalDescriptor.Struct.BaseTypeProperty, ref baseType0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Property> Properties
+		{
+		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.Struct.PropertiesProperty, ref properties0); }
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
 		}
 	}
 	
 	internal class StructBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, StructBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
 	
 		internal StructBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
@@ -4831,6 +5938,16 @@ namespace MetaDslx.Soal.Internal
 			return (Struct)base.ToImmutable(model);
 		}
 	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4861,14 +5978,10 @@ namespace MetaDslx.Soal.Internal
 			return this.ToImmutable(model);
 		}
 	
-		StructuredType StructuredTypeBuilder.ToImmutable()
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
 		{
-			return this.ToImmutable();
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -4895,12 +6008,6 @@ namespace MetaDslx.Soal.Internal
 		{
 			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); }
 			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties
-		{
-			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
 		}
 	
 		
@@ -4915,481 +6022,11 @@ namespace MetaDslx.Soal.Internal
 			get { return this.GetLazyReference<StructBuilder>(global::MetaDslx.Soal.SoalDescriptor.Struct.BaseTypeProperty); }
 			set { this.SetLazyReference(SoalDescriptor.Struct.BaseTypeProperty, value); }
 		}
-	}
-	
-	internal class ExceptionId : global::MetaDslx.Core.SymbolId
-	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.Exception.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(Exception); } }
-		public override global::System.Type MutableType { get { return typeof(ExceptionBuilder); } }
-	
-		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return new ExceptionImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
-		{
-			return new ExceptionBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class ExceptionImpl : global::MetaDslx.Core.ImmutableSymbolBase, Exception
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Exception baseType0;
-	
-		internal ExceptionImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Core.MetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
-		}
-	
-		public override global::MetaDslx.Core.MetaClass MMetaClass
-		{
-			get { return SoalInstance.Exception; }
-		}
-	
-		public new ExceptionBuilder ToMutable()
-		{
-			return (ExceptionBuilder)base.ToMutable();
-		}
-	
-		public new ExceptionBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return (ExceptionBuilder)base.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		DeclarationBuilder Declaration.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		SoalTypeBuilder SoalType.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Property> Properties
-		{
-		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
-		}
-	
-		
-		public Exception BaseType
-		{
-		    get { return this.GetReference<Exception>(global::MetaDslx.Soal.SoalDescriptor.Exception.BaseTypeProperty, ref baseType0); }
-		}
-	}
-	
-	internal class ExceptionBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, ExceptionBuilder
-	{
-		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
-	
-		internal ExceptionBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			SoalImplementationProvider.Implementation.Exception(this);
-		}
-	
-		public override global::MetaDslx.Core.MetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
-		}
-	
-		public override global::MetaDslx.Core.MetaClass MMetaClass
-		{
-			get { return SoalInstance.Exception; }
-		}
-	
-		public new Exception ToImmutable()
-		{
-			return (Exception)base.ToImmutable();
-		}
-	
-		public new Exception ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return (Exception)base.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		Declaration DeclarationBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		SoalType SoalTypeBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
 	
 		
 		public global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties
 		{
-			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
-		}
-	
-		
-		public ExceptionBuilder BaseType
-		{
-			get { return this.GetReference<ExceptionBuilder>(global::MetaDslx.Soal.SoalDescriptor.Exception.BaseTypeProperty); }
-			set { this.SetReference<ExceptionBuilder>(global::MetaDslx.Soal.SoalDescriptor.Exception.BaseTypeProperty, value); }
-		}
-		
-		public Func<ExceptionBuilder> BaseTypeLazy
-		{
-			get { return this.GetLazyReference<ExceptionBuilder>(global::MetaDslx.Soal.SoalDescriptor.Exception.BaseTypeProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Exception.BaseTypeProperty, value); }
-		}
-	}
-	
-	internal class EntityId : global::MetaDslx.Core.SymbolId
-	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.Entity.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(Entity); } }
-		public override global::System.Type MutableType { get { return typeof(EntityBuilder); } }
-	
-		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return new EntityImpl(this, model);
-		}
-	
-		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
-		{
-			return new EntityBuilderImpl(this, model, creating);
-		}
-	}
-	
-	internal class EntityImpl : global::MetaDslx.Core.ImmutableSymbolBase, Entity
-	{
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Entity baseType0;
-	
-		internal EntityImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
-			: base(id, model)
-		{
-		}
-	
-		public override global::MetaDslx.Core.MetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
-		}
-	
-		public override global::MetaDslx.Core.MetaClass MMetaClass
-		{
-			get { return SoalInstance.Entity; }
-		}
-	
-		public new EntityBuilder ToMutable()
-		{
-			return (EntityBuilder)base.ToMutable();
-		}
-	
-		public new EntityBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return (EntityBuilder)base.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		DeclarationBuilder Declaration.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		SoalTypeBuilder SoalType.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Property> Properties
-		{
-		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
-		}
-	
-		
-		public Entity BaseType
-		{
-		    get { return this.GetReference<Entity>(global::MetaDslx.Soal.SoalDescriptor.Entity.BaseTypeProperty, ref baseType0); }
-		}
-	}
-	
-	internal class EntityBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, EntityBuilder
-	{
-		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
-	
-		internal EntityBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
-			: base(id, model, creating)
-		{
-		}
-	
-		protected override void MInit()
-		{
-			SoalImplementationProvider.Implementation.Entity(this);
-		}
-	
-		public override global::MetaDslx.Core.MetaModel MMetaModel
-		{
-			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
-		}
-	
-		public override global::MetaDslx.Core.MetaClass MMetaClass
-		{
-			get { return SoalInstance.Entity; }
-		}
-	
-		public new Entity ToImmutable()
-		{
-			return (Entity)base.ToImmutable();
-		}
-	
-		public new Entity ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return (Entity)base.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		Declaration DeclarationBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		SoalType SoalTypeBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties
-		{
-			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
-		}
-	
-		
-		public EntityBuilder BaseType
-		{
-			get { return this.GetReference<EntityBuilder>(global::MetaDslx.Soal.SoalDescriptor.Entity.BaseTypeProperty); }
-			set { this.SetReference<EntityBuilder>(global::MetaDslx.Soal.SoalDescriptor.Entity.BaseTypeProperty, value); }
-		}
-		
-		public Func<EntityBuilder> BaseTypeLazy
-		{
-			get { return this.GetLazyReference<EntityBuilder>(global::MetaDslx.Soal.SoalDescriptor.Entity.BaseTypeProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Entity.BaseTypeProperty, value); }
+			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.Struct.PropertiesProperty, ref properties0); }
 		}
 	}
 	
@@ -5412,6 +6049,8 @@ namespace MetaDslx.Soal.Internal
 	
 	internal class InterfaceImpl : global::MetaDslx.Core.ImmutableSymbolBase, Interface
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -5444,6 +6083,16 @@ namespace MetaDslx.Soal.Internal
 			return (InterfaceBuilder)base.ToMutable(model);
 		}
 	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -5475,6 +6124,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
@@ -5491,10 +6146,41 @@ namespace MetaDslx.Soal.Internal
 		{
 		    get { return this.GetList<Operation>(global::MetaDslx.Soal.SoalDescriptor.Interface.OperationsProperty, ref operations0); }
 		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
 	}
 	
 	internal class InterfaceBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, InterfaceBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<OperationBuilder> operations0;
 	
 		internal InterfaceBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
@@ -5527,6 +6213,16 @@ namespace MetaDslx.Soal.Internal
 			return (Interface)base.ToImmutable(model);
 		}
 	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -5555,6 +6251,12 @@ namespace MetaDslx.Soal.Internal
 		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -5610,13 +6312,15 @@ namespace MetaDslx.Soal.Internal
 	internal class DatabaseImpl : global::MetaDslx.Core.ImmutableSymbolBase, Database
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Operation> operations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Entity> entities0;
+		private global::MetaDslx.Core.ImmutableModelList<Struct> entities0;
 	
 		internal DatabaseImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -5641,6 +6345,16 @@ namespace MetaDslx.Soal.Internal
 		public new DatabaseBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return (DatabaseBuilder)base.ToMutable(model);
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
 		}
 	
 		NamedElementBuilder NamedElement.ToMutable()
@@ -5684,6 +6398,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
@@ -5702,16 +6422,47 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Entity> Entities
+		public global::MetaDslx.Core.ImmutableModelList<Struct> Entities
 		{
-		    get { return this.GetList<Entity>(global::MetaDslx.Soal.SoalDescriptor.Database.EntitiesProperty, ref entities0); }
+		    get { return this.GetList<Struct>(global::MetaDslx.Soal.SoalDescriptor.Database.EntitiesProperty, ref entities0); }
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
 		}
 	}
 	
 	internal class DatabaseBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, DatabaseBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<OperationBuilder> operations0;
-		private global::MetaDslx.Core.MutableModelList<EntityBuilder> entities0;
+		private global::MetaDslx.Core.MutableModelList<StructBuilder> entities0;
 	
 		internal DatabaseBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -5741,6 +6492,16 @@ namespace MetaDslx.Soal.Internal
 		public new Database ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return (Database)base.ToImmutable(model);
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
 		}
 	
 		NamedElement NamedElementBuilder.ToImmutable()
@@ -5784,6 +6545,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public string Name
 		{
 			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
@@ -5816,9 +6583,9 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<EntityBuilder> Entities
+		public global::MetaDslx.Core.MutableModelList<StructBuilder> Entities
 		{
-			get { return this.GetList<EntityBuilder>(global::MetaDslx.Soal.SoalDescriptor.Database.EntitiesProperty, ref entities0); }
+			get { return this.GetList<StructBuilder>(global::MetaDslx.Soal.SoalDescriptor.Database.EntitiesProperty, ref entities0); }
 		}
 	}
 	
@@ -5842,17 +6609,17 @@ namespace MetaDslx.Soal.Internal
 	internal class OperationImpl : global::MetaDslx.Core.ImmutableSymbolBase, Operation
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Interface parent0;
+		private string action0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private bool isOneway0;
+		private global::MetaDslx.Core.ImmutableModelList<InputParameter> parameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private SoalType returnType0;
+		private OutputParameter result0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Parameter> parameters0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Exception> exceptions0;
+		private global::MetaDslx.Core.ImmutableModelList<Struct> exceptions0;
 	
 		internal OperationImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -5879,6 +6646,16 @@ namespace MetaDslx.Soal.Internal
 			return (OperationBuilder)base.ToMutable(model);
 		}
 	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -5890,46 +6667,77 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	
 		
-		public Interface Parent
+		public string Action
 		{
-		    get { return this.GetReference<Interface>(global::MetaDslx.Soal.SoalDescriptor.Operation.ParentProperty, ref parent0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Operation.ActionProperty, ref action0); }
 		}
 	
 		
-		public bool IsOneway
+		public global::MetaDslx.Core.ImmutableModelList<InputParameter> Parameters
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.Operation.IsOnewayProperty, ref isOneway0); }
+		    get { return this.GetList<InputParameter>(global::MetaDslx.Soal.SoalDescriptor.Operation.ParametersProperty, ref parameters0); }
 		}
 	
 		
-		public SoalType ReturnType
+		public OutputParameter Result
 		{
-		    get { return this.GetReference<SoalType>(global::MetaDslx.Soal.SoalDescriptor.Operation.ReturnTypeProperty, ref returnType0); }
+		    get { return this.GetReference<OutputParameter>(global::MetaDslx.Soal.SoalDescriptor.Operation.ResultProperty, ref result0); }
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Parameter> Parameters
+		public global::MetaDslx.Core.ImmutableModelList<Struct> Exceptions
 		{
-		    get { return this.GetList<Parameter>(global::MetaDslx.Soal.SoalDescriptor.Operation.ParametersProperty, ref parameters0); }
+		    get { return this.GetList<Struct>(global::MetaDslx.Soal.SoalDescriptor.Operation.ExceptionsProperty, ref exceptions0); }
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Exception> Exceptions
+		bool AnnotatedElement.HasAnnotation(string name)
 		{
-		    get { return this.GetList<Exception>(global::MetaDslx.Soal.SoalDescriptor.Operation.ExceptionsProperty, ref exceptions0); }
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
 		}
 	}
 	
 	internal class OperationBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, OperationBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<ParameterBuilder> parameters0;
-		private global::MetaDslx.Core.MutableModelList<ExceptionBuilder> exceptions0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
+		private global::MetaDslx.Core.MutableModelList<InputParameterBuilder> parameters0;
+		private global::MetaDslx.Core.MutableModelList<StructBuilder> exceptions0;
 	
 		internal OperationBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -5961,6 +6769,16 @@ namespace MetaDslx.Soal.Internal
 			return (Operation)base.ToImmutable(model);
 		}
 	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -5969,6 +6787,12 @@ namespace MetaDslx.Soal.Internal
 		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -5985,84 +6809,70 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public InterfaceBuilder Parent
+		public string Action
 		{
-			get { return this.GetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ParentProperty); }
-			set { this.SetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ParentProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Operation.ActionProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Operation.ActionProperty, value); }
 		}
 		
-		public Func<InterfaceBuilder> ParentLazy
+		public Func<string> ActionLazy
 		{
-			get { return this.GetLazyReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ParentProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Operation.ParentProperty, value); }
-		}
-	
-		
-		public bool IsOneway
-		{
-			get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.Operation.IsOnewayProperty); }
-			set { this.SetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.Operation.IsOnewayProperty, value); }
-		}
-		
-		public Func<bool> IsOnewayLazy
-		{
-			get { return this.GetLazyValue<bool>(global::MetaDslx.Soal.SoalDescriptor.Operation.IsOnewayProperty); }
-			set { this.SetLazyValue(SoalDescriptor.Operation.IsOnewayProperty, value); }
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.Operation.ActionProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Operation.ActionProperty, value); }
 		}
 	
 		
-		public SoalTypeBuilder ReturnType
+		public global::MetaDslx.Core.MutableModelList<InputParameterBuilder> Parameters
 		{
-			get { return this.GetReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ReturnTypeProperty); }
-			set { this.SetReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ReturnTypeProperty, value); }
-		}
-		
-		public Func<SoalTypeBuilder> ReturnTypeLazy
-		{
-			get { return this.GetLazyReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ReturnTypeProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Operation.ReturnTypeProperty, value); }
+			get { return this.GetList<InputParameterBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ParametersProperty, ref parameters0); }
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<ParameterBuilder> Parameters
+		public OutputParameterBuilder Result
 		{
-			get { return this.GetList<ParameterBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ParametersProperty, ref parameters0); }
+			get { return this.GetReference<OutputParameterBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ResultProperty); }
+		}
+		
+		public Func<OutputParameterBuilder> ResultLazy
+		{
+			get { return this.GetLazyReference<OutputParameterBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ResultProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Operation.ResultProperty, value); }
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<ExceptionBuilder> Exceptions
+		public global::MetaDslx.Core.MutableModelList<StructBuilder> Exceptions
 		{
-			get { return this.GetList<ExceptionBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ExceptionsProperty, ref exceptions0); }
+			get { return this.GetList<StructBuilder>(global::MetaDslx.Soal.SoalDescriptor.Operation.ExceptionsProperty, ref exceptions0); }
 		}
 	}
 	
-	internal class ParameterId : global::MetaDslx.Core.SymbolId
+	internal class InputParameterId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.Parameter.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(Parameter); } }
-		public override global::System.Type MutableType { get { return typeof(ParameterBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.InputParameter.ModelSymbolInfo; } }
+		public override global::System.Type ImmutableType { get { return typeof(InputParameter); } }
+		public override global::System.Type MutableType { get { return typeof(InputParameterBuilder); } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
-			return new ParameterImpl(this, model);
+			return new InputParameterImpl(this, model);
 		}
 	
 		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
 		{
-			return new ParameterBuilderImpl(this, model, creating);
+			return new InputParameterBuilderImpl(this, model, creating);
 		}
 	}
 	
-	internal class ParameterImpl : global::MetaDslx.Core.ImmutableSymbolBase, Parameter
+	internal class InputParameterImpl : global::MetaDslx.Core.ImmutableSymbolBase, InputParameter
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoalType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Operation operation0;
 	
-		internal ParameterImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
+		internal InputParameterImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
 		{
 		}
@@ -6074,17 +6884,27 @@ namespace MetaDslx.Soal.Internal
 	
 		public override global::MetaDslx.Core.MetaClass MMetaClass
 		{
-			get { return SoalInstance.Parameter; }
+			get { return SoalInstance.InputParameter; }
 		}
 	
-		public new ParameterBuilder ToMutable()
+		public new InputParameterBuilder ToMutable()
 		{
-			return (ParameterBuilder)base.ToMutable();
+			return (InputParameterBuilder)base.ToMutable();
 		}
 	
-		public new ParameterBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
+		public new InputParameterBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
-			return (ParameterBuilder)base.ToMutable(model);
+			return (InputParameterBuilder)base.ToMutable(model);
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
 		}
 	
 		TypedElementBuilder TypedElement.ToMutable()
@@ -6108,6 +6928,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public SoalType Type
 		{
 		    get { return this.GetReference<SoalType>(global::MetaDslx.Soal.SoalDescriptor.TypedElement.TypeProperty, ref type0); }
@@ -6120,23 +6946,48 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public Operation Operation
+		bool AnnotatedElement.HasAnnotation(string name)
 		{
-		    get { return this.GetReference<Operation>(global::MetaDslx.Soal.SoalDescriptor.Parameter.OperationProperty, ref operation0); }
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
 		}
 	}
 	
-	internal class ParameterBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, ParameterBuilder
+	internal class InputParameterBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, InputParameterBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
-		internal ParameterBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
+		internal InputParameterBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
 	
 		protected override void MInit()
 		{
-			SoalImplementationProvider.Implementation.Parameter(this);
+			SoalImplementationProvider.Implementation.InputParameter(this);
 		}
 	
 		public override global::MetaDslx.Core.MetaModel MMetaModel
@@ -6146,17 +6997,27 @@ namespace MetaDslx.Soal.Internal
 	
 		public override global::MetaDslx.Core.MetaClass MMetaClass
 		{
-			get { return SoalInstance.Parameter; }
+			get { return SoalInstance.InputParameter; }
 		}
 	
-		public new Parameter ToImmutable()
+		public new InputParameter ToImmutable()
 		{
-			return (Parameter)base.ToImmutable();
+			return (InputParameter)base.ToImmutable();
 		}
 	
-		public new Parameter ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		public new InputParameter ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
-			return (Parameter)base.ToImmutable(model);
+			return (InputParameter)base.ToImmutable(model);
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
 		}
 	
 		TypedElement TypedElementBuilder.ToImmutable()
@@ -6177,6 +7038,12 @@ namespace MetaDslx.Soal.Internal
 		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -6204,18 +7071,212 @@ namespace MetaDslx.Soal.Internal
 			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
 			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
+	}
+	
+	internal class OutputParameterId : global::MetaDslx.Core.SymbolId
+	{
+		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.OutputParameter.ModelSymbolInfo; } }
+		public override global::System.Type ImmutableType { get { return typeof(OutputParameter); } }
+		public override global::System.Type MutableType { get { return typeof(OutputParameterBuilder); } }
+	
+		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return new OutputParameterImpl(this, model);
+		}
+	
+		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
+		{
+			return new OutputParameterBuilderImpl(this, model, creating);
+		}
+	}
+	
+	internal class OutputParameterImpl : global::MetaDslx.Core.ImmutableSymbolBase, OutputParameter
+	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private SoalType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool isOneway0;
+	
+		internal OutputParameterImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
+			: base(id, model)
+		{
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.OutputParameter; }
+		}
+	
+		public new OutputParameterBuilder ToMutable()
+		{
+			return (OutputParameterBuilder)base.ToMutable();
+		}
+	
+		public new OutputParameterBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return (OutputParameterBuilder)base.ToMutable(model);
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		TypedElementBuilder TypedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		TypedElementBuilder TypedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
 	
 		
-		public OperationBuilder Operation
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
 		{
-			get { return this.GetReference<OperationBuilder>(global::MetaDslx.Soal.SoalDescriptor.Parameter.OperationProperty); }
-			set { this.SetReference<OperationBuilder>(global::MetaDslx.Soal.SoalDescriptor.Parameter.OperationProperty, value); }
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
+		public SoalType Type
+		{
+		    get { return this.GetReference<SoalType>(global::MetaDslx.Soal.SoalDescriptor.TypedElement.TypeProperty, ref type0); }
+		}
+	
+		
+		public bool IsOneway
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.OutputParameter.IsOnewayProperty, ref isOneway0); }
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
+	}
+	
+	internal class OutputParameterBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, OutputParameterBuilder
+	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
+	
+		internal OutputParameterBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
+			: base(id, model, creating)
+		{
+		}
+	
+		protected override void MInit()
+		{
+			SoalImplementationProvider.Implementation.OutputParameter(this);
+		}
+	
+		public override global::MetaDslx.Core.MetaModel MMetaModel
+		{
+			get { return global::MetaDslx.Soal.SoalInstance.MetaModel; }
+		}
+	
+		public override global::MetaDslx.Core.MetaClass MMetaClass
+		{
+			get { return SoalInstance.OutputParameter; }
+		}
+	
+		public new OutputParameter ToImmutable()
+		{
+			return (OutputParameter)base.ToImmutable();
+		}
+	
+		public new OutputParameter ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return (OutputParameter)base.ToImmutable(model);
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		TypedElement TypedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		TypedElement TypedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
+		public SoalTypeBuilder Type
+		{
+			get { return this.GetReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.TypedElement.TypeProperty); }
+			set { this.SetReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.TypedElement.TypeProperty, value); }
 		}
 		
-		public Func<OperationBuilder> OperationLazy
+		public Func<SoalTypeBuilder> TypeLazy
 		{
-			get { return this.GetLazyReference<OperationBuilder>(global::MetaDslx.Soal.SoalDescriptor.Parameter.OperationProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Parameter.OperationProperty, value); }
+			get { return this.GetLazyReference<SoalTypeBuilder>(global::MetaDslx.Soal.SoalDescriptor.TypedElement.TypeProperty); }
+			set { this.SetLazyReference(SoalDescriptor.TypedElement.TypeProperty, value); }
+		}
+	
+		
+		public bool IsOneway
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.OutputParameter.IsOnewayProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.OutputParameter.IsOnewayProperty, value); }
+		}
+		
+		public Func<bool> IsOnewayLazy
+		{
+			get { return this.GetLazyValue<bool>(global::MetaDslx.Soal.SoalDescriptor.OutputParameter.IsOnewayProperty); }
+			set { this.SetLazyValue(SoalDescriptor.OutputParameter.IsOnewayProperty, value); }
 		}
 	}
 	
@@ -6239,9 +7300,9 @@ namespace MetaDslx.Soal.Internal
 	internal class ComponentImpl : global::MetaDslx.Core.ImmutableSymbolBase, Component
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6249,11 +7310,13 @@ namespace MetaDslx.Soal.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Port> ports0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Service> services0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Reference> references0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Property> properties1;
+		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Implementation implementation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6284,12 +7347,12 @@ namespace MetaDslx.Soal.Internal
 			return (ComponentBuilder)base.ToMutable(model);
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -6300,16 +7363,6 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -6325,16 +7378,15 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		global::MetaDslx.Core.ImmutableModelList<Property> StructuredType.Properties
+		public string Name
 		{
-		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -6356,6 +7408,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Port> Ports
+		{
+		    get { return this.GetList<Port>(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty, ref ports0); }
+		}
+	
+		
 		public global::MetaDslx.Core.ImmutableModelList<Service> Services
 		{
 		    get { return this.GetList<Service>(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, ref services0); }
@@ -6370,7 +7428,7 @@ namespace MetaDslx.Soal.Internal
 		
 		public global::MetaDslx.Core.ImmutableModelList<Property> Properties
 		{
-		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties1); }
+		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties0); }
 		}
 	
 		
@@ -6384,14 +7442,45 @@ namespace MetaDslx.Soal.Internal
 		{
 		    get { return this.GetReference<Language>(global::MetaDslx.Soal.SoalDescriptor.Component.LanguageProperty, ref language0); }
 		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
 	}
 	
 	internal class ComponentBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, ComponentBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
+		private global::MetaDslx.Core.MutableModelList<PortBuilder> ports0;
 		private global::MetaDslx.Core.MutableModelList<ServiceBuilder> services0;
 		private global::MetaDslx.Core.MutableModelList<ReferenceBuilder> references0;
-		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties1;
+		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
 	
 		internal ComponentBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -6423,12 +7512,12 @@ namespace MetaDslx.Soal.Internal
 			return (Component)base.ToImmutable(model);
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6439,16 +7528,6 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6464,6 +7543,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public string Name
 		{
 			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
@@ -6474,13 +7559,6 @@ namespace MetaDslx.Soal.Internal
 		{
 			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
 			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		global::MetaDslx.Core.MutableModelList<PropertyBuilder> StructuredTypeBuilder.Properties
-		{
-			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
 		}
 	
 		
@@ -6523,6 +7601,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.MutableModelList<PortBuilder> Ports
+		{
+			get { return this.GetList<PortBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty, ref ports0); }
+		}
+	
+		
 		public global::MetaDslx.Core.MutableModelList<ServiceBuilder> Services
 		{
 			get { return this.GetList<ServiceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, ref services0); }
@@ -6537,7 +7621,7 @@ namespace MetaDslx.Soal.Internal
 		
 		public global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties
 		{
-			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties1); }
+			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties0); }
 		}
 	
 		
@@ -6587,9 +7671,9 @@ namespace MetaDslx.Soal.Internal
 	internal class CompositeImpl : global::MetaDslx.Core.ImmutableSymbolBase, Composite
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6597,11 +7681,13 @@ namespace MetaDslx.Soal.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Port> ports0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Service> services0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Reference> references0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Property> properties1;
+		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Implementation implementation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6636,12 +7722,12 @@ namespace MetaDslx.Soal.Internal
 			return (CompositeBuilder)base.ToMutable(model);
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -6652,16 +7738,6 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -6687,16 +7763,15 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		global::MetaDslx.Core.ImmutableModelList<Property> StructuredType.Properties
+		public string Name
 		{
-		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -6718,6 +7793,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Port> Ports
+		{
+		    get { return this.GetList<Port>(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty, ref ports0); }
+		}
+	
+		
 		public global::MetaDslx.Core.ImmutableModelList<Service> Services
 		{
 		    get { return this.GetList<Service>(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, ref services0); }
@@ -6732,7 +7813,7 @@ namespace MetaDslx.Soal.Internal
 		
 		public global::MetaDslx.Core.ImmutableModelList<Property> Properties
 		{
-		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties1); }
+		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties0); }
 		}
 	
 		
@@ -6758,14 +7839,45 @@ namespace MetaDslx.Soal.Internal
 		{
 		    get { return this.GetList<Wire>(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty, ref wires0); }
 		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
 	}
 	
 	internal class CompositeBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, CompositeBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
+		private global::MetaDslx.Core.MutableModelList<PortBuilder> ports0;
 		private global::MetaDslx.Core.MutableModelList<ServiceBuilder> services0;
 		private global::MetaDslx.Core.MutableModelList<ReferenceBuilder> references0;
-		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties1;
+		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
 		private global::MetaDslx.Core.MutableModelList<ComponentBuilder> components0;
 		private global::MetaDslx.Core.MutableModelList<WireBuilder> wires0;
 	
@@ -6799,12 +7911,12 @@ namespace MetaDslx.Soal.Internal
 			return (Composite)base.ToImmutable(model);
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6815,16 +7927,6 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6850,6 +7952,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public string Name
 		{
 			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
@@ -6860,13 +7968,6 @@ namespace MetaDslx.Soal.Internal
 		{
 			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
 			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		global::MetaDslx.Core.MutableModelList<PropertyBuilder> StructuredTypeBuilder.Properties
-		{
-			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
 		}
 	
 		
@@ -6909,6 +8010,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.MutableModelList<PortBuilder> Ports
+		{
+			get { return this.GetList<PortBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty, ref ports0); }
+		}
+	
+		
 		public global::MetaDslx.Core.MutableModelList<ServiceBuilder> Services
 		{
 			get { return this.GetList<ServiceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, ref services0); }
@@ -6923,7 +8030,7 @@ namespace MetaDslx.Soal.Internal
 		
 		public global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties
 		{
-			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties1); }
+			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties0); }
 		}
 	
 		
@@ -6985,9 +8092,9 @@ namespace MetaDslx.Soal.Internal
 	internal class AssemblyImpl : global::MetaDslx.Core.ImmutableSymbolBase, Assembly
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6995,11 +8102,13 @@ namespace MetaDslx.Soal.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Port> ports0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Service> services0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Reference> references0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Property> properties1;
+		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Implementation implementation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7034,12 +8143,12 @@ namespace MetaDslx.Soal.Internal
 			return (AssemblyBuilder)base.ToMutable(model);
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -7050,16 +8159,6 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		StructuredTypeBuilder StructuredType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -7095,16 +8194,15 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		global::MetaDslx.Core.ImmutableModelList<Property> StructuredType.Properties
+		public string Name
 		{
-		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -7126,6 +8224,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.ImmutableModelList<Port> Ports
+		{
+		    get { return this.GetList<Port>(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty, ref ports0); }
+		}
+	
+		
 		public global::MetaDslx.Core.ImmutableModelList<Service> Services
 		{
 		    get { return this.GetList<Service>(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, ref services0); }
@@ -7140,7 +8244,7 @@ namespace MetaDslx.Soal.Internal
 		
 		public global::MetaDslx.Core.ImmutableModelList<Property> Properties
 		{
-		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties1); }
+		    get { return this.GetList<Property>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties0); }
 		}
 	
 		
@@ -7166,14 +8270,45 @@ namespace MetaDslx.Soal.Internal
 		{
 		    get { return this.GetList<Wire>(global::MetaDslx.Soal.SoalDescriptor.Composite.WiresProperty, ref wires0); }
 		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
 	}
 	
 	internal class AssemblyBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, AssemblyBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
+		private global::MetaDslx.Core.MutableModelList<PortBuilder> ports0;
 		private global::MetaDslx.Core.MutableModelList<ServiceBuilder> services0;
 		private global::MetaDslx.Core.MutableModelList<ReferenceBuilder> references0;
-		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties1;
+		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
 		private global::MetaDslx.Core.MutableModelList<ComponentBuilder> components0;
 		private global::MetaDslx.Core.MutableModelList<WireBuilder> wires0;
 	
@@ -7207,12 +8342,12 @@ namespace MetaDslx.Soal.Internal
 			return (Assembly)base.ToImmutable(model);
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -7223,16 +8358,6 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		StructuredType StructuredTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -7268,6 +8393,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		public string Name
 		{
 			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
@@ -7278,13 +8409,6 @@ namespace MetaDslx.Soal.Internal
 		{
 			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
 			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		global::MetaDslx.Core.MutableModelList<PropertyBuilder> StructuredTypeBuilder.Properties
-		{
-			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.StructuredType.PropertiesProperty, ref properties0); }
 		}
 	
 		
@@ -7327,6 +8451,12 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public global::MetaDslx.Core.MutableModelList<PortBuilder> Ports
+		{
+			get { return this.GetList<PortBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.PortsProperty, ref ports0); }
+		}
+	
+		
 		public global::MetaDslx.Core.MutableModelList<ServiceBuilder> Services
 		{
 			get { return this.GetList<ServiceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.ServicesProperty, ref services0); }
@@ -7341,7 +8471,7 @@ namespace MetaDslx.Soal.Internal
 		
 		public global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties
 		{
-			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties1); }
+			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Soal.SoalDescriptor.Component.PropertiesProperty, ref properties0); }
 		}
 	
 		
@@ -7403,9 +8533,9 @@ namespace MetaDslx.Soal.Internal
 	internal class WireImpl : global::MetaDslx.Core.ImmutableSymbolBase, Wire
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private InterfaceReference source0;
+		private Port source0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private InterfaceReference target0;
+		private Port target0;
 	
 		internal WireImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -7433,15 +8563,15 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public InterfaceReference Source
+		public Port Source
 		{
-		    get { return this.GetReference<InterfaceReference>(global::MetaDslx.Soal.SoalDescriptor.Wire.SourceProperty, ref source0); }
+		    get { return this.GetReference<Port>(global::MetaDslx.Soal.SoalDescriptor.Wire.SourceProperty, ref source0); }
 		}
 	
 		
-		public InterfaceReference Target
+		public Port Target
 		{
-		    get { return this.GetReference<InterfaceReference>(global::MetaDslx.Soal.SoalDescriptor.Wire.TargetProperty, ref target0); }
+		    get { return this.GetReference<Port>(global::MetaDslx.Soal.SoalDescriptor.Wire.TargetProperty, ref target0); }
 		}
 	}
 	
@@ -7479,51 +8609,53 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public InterfaceReferenceBuilder Source
+		public PortBuilder Source
 		{
-			get { return this.GetReference<InterfaceReferenceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.SourceProperty); }
-			set { this.SetReference<InterfaceReferenceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.SourceProperty, value); }
+			get { return this.GetReference<PortBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.SourceProperty); }
+			set { this.SetReference<PortBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.SourceProperty, value); }
 		}
 		
-		public Func<InterfaceReferenceBuilder> SourceLazy
+		public Func<PortBuilder> SourceLazy
 		{
-			get { return this.GetLazyReference<InterfaceReferenceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.SourceProperty); }
+			get { return this.GetLazyReference<PortBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.SourceProperty); }
 			set { this.SetLazyReference(SoalDescriptor.Wire.SourceProperty, value); }
 		}
 	
 		
-		public InterfaceReferenceBuilder Target
+		public PortBuilder Target
 		{
-			get { return this.GetReference<InterfaceReferenceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.TargetProperty); }
-			set { this.SetReference<InterfaceReferenceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.TargetProperty, value); }
+			get { return this.GetReference<PortBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.TargetProperty); }
+			set { this.SetReference<PortBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.TargetProperty, value); }
 		}
 		
-		public Func<InterfaceReferenceBuilder> TargetLazy
+		public Func<PortBuilder> TargetLazy
 		{
-			get { return this.GetLazyReference<InterfaceReferenceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.TargetProperty); }
+			get { return this.GetLazyReference<PortBuilder>(global::MetaDslx.Soal.SoalDescriptor.Wire.TargetProperty); }
 			set { this.SetLazyReference(SoalDescriptor.Wire.TargetProperty, value); }
 		}
 	}
 	
-	internal class InterfaceReferenceId : global::MetaDslx.Core.SymbolId
+	internal class PortId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(InterfaceReference); } }
-		public override global::System.Type MutableType { get { return typeof(InterfaceReferenceBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Soal.SoalDescriptor.Port.ModelSymbolInfo; } }
+		public override global::System.Type ImmutableType { get { return typeof(Port); } }
+		public override global::System.Type MutableType { get { return typeof(PortBuilder); } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
-			return new InterfaceReferenceImpl(this, model);
+			return new PortImpl(this, model);
 		}
 	
 		public override global::MetaDslx.Core.MutableSymbolBase CreateMutable(global::MetaDslx.Core.MutableModel model, bool creating)
 		{
-			return new InterfaceReferenceBuilderImpl(this, model, creating);
+			return new PortBuilderImpl(this, model, creating);
 		}
 	}
 	
-	internal class InterfaceReferenceImpl : global::MetaDslx.Core.ImmutableSymbolBase, InterfaceReference
+	internal class PortImpl : global::MetaDslx.Core.ImmutableSymbolBase, Port
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Component component0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7533,7 +8665,7 @@ namespace MetaDslx.Soal.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Binding binding0;
 	
-		internal InterfaceReferenceImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
+		internal PortImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
 		{
 		}
@@ -7545,55 +8677,61 @@ namespace MetaDslx.Soal.Internal
 	
 		public override global::MetaDslx.Core.MetaClass MMetaClass
 		{
-			get { return SoalInstance.InterfaceReference; }
+			get { return SoalInstance.Port; }
 		}
 	
-		public new InterfaceReferenceBuilder ToMutable()
+		public new PortBuilder ToMutable()
 		{
-			return (InterfaceReferenceBuilder)base.ToMutable();
+			return (PortBuilder)base.ToMutable();
 		}
 	
-		public new InterfaceReferenceBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
+		public new PortBuilder ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
-			return (InterfaceReferenceBuilder)base.ToMutable(model);
+			return (PortBuilder)base.ToMutable(model);
+		}
+	
+		
+		public Component Component
+		{
+		    get { return this.GetReference<Component>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty, ref component0); }
 		}
 	
 		
 		public string Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.NameProperty, ref name0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty, ref name0); }
 		}
 	
 		
 		public string OptionalName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty, ref optionalName0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty, ref optionalName0); }
 		}
 	
 		
 		public Interface Interface
 		{
-		    get { return this.GetReference<Interface>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty, ref interface0); }
+		    get { return this.GetReference<Interface>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty, ref interface0); }
 		}
 	
 		
 		public Binding Binding
 		{
-		    get { return this.GetReference<Binding>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty, ref binding0); }
+		    get { return this.GetReference<Binding>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty, ref binding0); }
 		}
 	}
 	
-	internal class InterfaceReferenceBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, InterfaceReferenceBuilder
+	internal class PortBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, PortBuilder
 	{
 	
-		internal InterfaceReferenceBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
+		internal PortBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
 		{
 		}
 	
 		protected override void MInit()
 		{
-			SoalImplementationProvider.Implementation.InterfaceReference(this);
+			SoalImplementationProvider.Implementation.Port(this);
 		}
 	
 		public override global::MetaDslx.Core.MetaModel MMetaModel
@@ -7603,68 +8741,81 @@ namespace MetaDslx.Soal.Internal
 	
 		public override global::MetaDslx.Core.MetaClass MMetaClass
 		{
-			get { return SoalInstance.InterfaceReference; }
+			get { return SoalInstance.Port; }
 		}
 	
-		public new InterfaceReference ToImmutable()
+		public new Port ToImmutable()
 		{
-			return (InterfaceReference)base.ToImmutable();
+			return (Port)base.ToImmutable();
 		}
 	
-		public new InterfaceReference ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		public new Port ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
-			return (InterfaceReference)base.ToImmutable(model);
+			return (Port)base.ToImmutable(model);
+		}
+	
+		
+		public ComponentBuilder Component
+		{
+			get { return this.GetReference<ComponentBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty); }
+			set { this.SetReference<ComponentBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty, value); }
+		}
+		
+		public Func<ComponentBuilder> ComponentLazy
+		{
+			get { return this.GetLazyReference<ComponentBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.ComponentProperty, value); }
 		}
 	
 		
 		public string Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.NameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty); }
 		}
 		
 		public Func<string> NameLazy
 		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.NameProperty, value); }
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.NameProperty, value); }
 		}
 	
 		
 		public string OptionalName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty, value); }
 		}
 		
 		public Func<string> OptionalNameLazy
 		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.OptionalNameProperty, value); }
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.OptionalNameProperty, value); }
 		}
 	
 		
 		public InterfaceBuilder Interface
 		{
-			get { return this.GetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty); }
-			set { this.SetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty, value); }
+			get { return this.GetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty); }
+			set { this.SetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty, value); }
 		}
 		
 		public Func<InterfaceBuilder> InterfaceLazy
 		{
-			get { return this.GetLazyReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.InterfaceProperty, value); }
+			get { return this.GetLazyReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.InterfaceProperty, value); }
 		}
 	
 		
 		public BindingBuilder Binding
 		{
-			get { return this.GetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty); }
-			set { this.SetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty, value); }
+			get { return this.GetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty); }
+			set { this.SetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty, value); }
 		}
 		
 		public Func<BindingBuilder> BindingLazy
 		{
-			get { return this.GetLazyReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.BindingProperty, value); }
+			get { return this.GetLazyReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.BindingProperty, value); }
 		}
 	}
 	
@@ -7687,6 +8838,8 @@ namespace MetaDslx.Soal.Internal
 	
 	internal class ServiceImpl : global::MetaDslx.Core.ImmutableSymbolBase, Service
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Component component0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7721,38 +8874,44 @@ namespace MetaDslx.Soal.Internal
 			return (ServiceBuilder)base.ToMutable(model);
 		}
 	
-		InterfaceReferenceBuilder InterfaceReference.ToMutable()
+		PortBuilder Port.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		InterfaceReferenceBuilder InterfaceReference.ToMutable(global::MetaDslx.Core.MutableModel model)
+		PortBuilder Port.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
+		public Component Component
+		{
+		    get { return this.GetReference<Component>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty, ref component0); }
+		}
+	
+		
 		public string Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.NameProperty, ref name0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty, ref name0); }
 		}
 	
 		
 		public string OptionalName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty, ref optionalName0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty, ref optionalName0); }
 		}
 	
 		
 		public Interface Interface
 		{
-		    get { return this.GetReference<Interface>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty, ref interface0); }
+		    get { return this.GetReference<Interface>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty, ref interface0); }
 		}
 	
 		
 		public Binding Binding
 		{
-		    get { return this.GetReference<Binding>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty, ref binding0); }
+		    get { return this.GetReference<Binding>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty, ref binding0); }
 		}
 	}
 	
@@ -7789,65 +8948,78 @@ namespace MetaDslx.Soal.Internal
 			return (Service)base.ToImmutable(model);
 		}
 	
-		InterfaceReference InterfaceReferenceBuilder.ToImmutable()
+		Port PortBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		InterfaceReference InterfaceReferenceBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Port PortBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
+		public ComponentBuilder Component
+		{
+			get { return this.GetReference<ComponentBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty); }
+			set { this.SetReference<ComponentBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty, value); }
+		}
+		
+		public Func<ComponentBuilder> ComponentLazy
+		{
+			get { return this.GetLazyReference<ComponentBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.ComponentProperty, value); }
+		}
+	
+		
 		public string Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.NameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty); }
 		}
 		
 		public Func<string> NameLazy
 		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.NameProperty, value); }
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.NameProperty, value); }
 		}
 	
 		
 		public string OptionalName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty, value); }
 		}
 		
 		public Func<string> OptionalNameLazy
 		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.OptionalNameProperty, value); }
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.OptionalNameProperty, value); }
 		}
 	
 		
 		public InterfaceBuilder Interface
 		{
-			get { return this.GetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty); }
-			set { this.SetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty, value); }
+			get { return this.GetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty); }
+			set { this.SetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty, value); }
 		}
 		
 		public Func<InterfaceBuilder> InterfaceLazy
 		{
-			get { return this.GetLazyReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.InterfaceProperty, value); }
+			get { return this.GetLazyReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.InterfaceProperty, value); }
 		}
 	
 		
 		public BindingBuilder Binding
 		{
-			get { return this.GetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty); }
-			set { this.SetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty, value); }
+			get { return this.GetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty); }
+			set { this.SetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty, value); }
 		}
 		
 		public Func<BindingBuilder> BindingLazy
 		{
-			get { return this.GetLazyReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.BindingProperty, value); }
+			get { return this.GetLazyReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.BindingProperty, value); }
 		}
 	}
 	
@@ -7870,6 +9042,8 @@ namespace MetaDslx.Soal.Internal
 	
 	internal class ReferenceImpl : global::MetaDslx.Core.ImmutableSymbolBase, Reference
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Component component0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7904,38 +9078,44 @@ namespace MetaDslx.Soal.Internal
 			return (ReferenceBuilder)base.ToMutable(model);
 		}
 	
-		InterfaceReferenceBuilder InterfaceReference.ToMutable()
+		PortBuilder Port.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		InterfaceReferenceBuilder InterfaceReference.ToMutable(global::MetaDslx.Core.MutableModel model)
+		PortBuilder Port.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
+		public Component Component
+		{
+		    get { return this.GetReference<Component>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty, ref component0); }
+		}
+	
+		
 		public string Name
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.NameProperty, ref name0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty, ref name0); }
 		}
 	
 		
 		public string OptionalName
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty, ref optionalName0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty, ref optionalName0); }
 		}
 	
 		
 		public Interface Interface
 		{
-		    get { return this.GetReference<Interface>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty, ref interface0); }
+		    get { return this.GetReference<Interface>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty, ref interface0); }
 		}
 	
 		
 		public Binding Binding
 		{
-		    get { return this.GetReference<Binding>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty, ref binding0); }
+		    get { return this.GetReference<Binding>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty, ref binding0); }
 		}
 	}
 	
@@ -7972,65 +9152,78 @@ namespace MetaDslx.Soal.Internal
 			return (Reference)base.ToImmutable(model);
 		}
 	
-		InterfaceReference InterfaceReferenceBuilder.ToImmutable()
+		Port PortBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		InterfaceReference InterfaceReferenceBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Port PortBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
+		public ComponentBuilder Component
+		{
+			get { return this.GetReference<ComponentBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty); }
+			set { this.SetReference<ComponentBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty, value); }
+		}
+		
+		public Func<ComponentBuilder> ComponentLazy
+		{
+			get { return this.GetLazyReference<ComponentBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.ComponentProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.ComponentProperty, value); }
+		}
+	
+		
 		public string Name
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.NameProperty); }
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty); }
 		}
 		
 		public Func<string> NameLazy
 		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.NameProperty, value); }
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.NameProperty, value); }
 		}
 	
 		
 		public string OptionalName
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty, value); }
 		}
 		
 		public Func<string> OptionalNameLazy
 		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.OptionalNameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.OptionalNameProperty, value); }
+			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.Port.OptionalNameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.OptionalNameProperty, value); }
 		}
 	
 		
 		public InterfaceBuilder Interface
 		{
-			get { return this.GetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty); }
-			set { this.SetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty, value); }
+			get { return this.GetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty); }
+			set { this.SetReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty, value); }
 		}
 		
 		public Func<InterfaceBuilder> InterfaceLazy
 		{
-			get { return this.GetLazyReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.InterfaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.InterfaceProperty, value); }
+			get { return this.GetLazyReference<InterfaceBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.InterfaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.InterfaceProperty, value); }
 		}
 	
 		
 		public BindingBuilder Binding
 		{
-			get { return this.GetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty); }
-			set { this.SetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty, value); }
+			get { return this.GetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty); }
+			set { this.SetReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty, value); }
 		}
 		
 		public Func<BindingBuilder> BindingLazy
 		{
-			get { return this.GetLazyReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.InterfaceReference.BindingProperty); }
-			set { this.SetLazyReference(SoalDescriptor.InterfaceReference.BindingProperty, value); }
+			get { return this.GetLazyReference<BindingBuilder>(global::MetaDslx.Soal.SoalDescriptor.Port.BindingProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Port.BindingProperty, value); }
 		}
 	}
 	
@@ -8296,6 +9489,8 @@ namespace MetaDslx.Soal.Internal
 	internal class DeploymentImpl : global::MetaDslx.Core.ImmutableSymbolBase, Deployment
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
@@ -8329,6 +9524,16 @@ namespace MetaDslx.Soal.Internal
 			return (DeploymentBuilder)base.ToMutable(model);
 		}
 	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -8347,6 +9552,12 @@ namespace MetaDslx.Soal.Internal
 		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -8372,10 +9583,41 @@ namespace MetaDslx.Soal.Internal
 		{
 		    get { return this.GetList<Wire>(global::MetaDslx.Soal.SoalDescriptor.Deployment.WiresProperty, ref wires0); }
 		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
 	}
 	
 	internal class DeploymentBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, DeploymentBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<EnvironmentBuilder> environments0;
 		private global::MetaDslx.Core.MutableModelList<WireBuilder> wires0;
 	
@@ -8409,6 +9651,16 @@ namespace MetaDslx.Soal.Internal
 			return (Deployment)base.ToImmutable(model);
 		}
 	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -8427,6 +9679,12 @@ namespace MetaDslx.Soal.Internal
 		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -8781,6 +10039,8 @@ namespace MetaDslx.Soal.Internal
 	internal class BindingImpl : global::MetaDslx.Core.ImmutableSymbolBase, Binding
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
@@ -8816,6 +10076,16 @@ namespace MetaDslx.Soal.Internal
 			return (BindingBuilder)base.ToMutable(model);
 		}
 	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -8834,6 +10104,12 @@ namespace MetaDslx.Soal.Internal
 		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -8865,10 +10141,41 @@ namespace MetaDslx.Soal.Internal
 		{
 		    get { return this.GetList<ProtocolBindingElement>(global::MetaDslx.Soal.SoalDescriptor.Binding.ProtocolsProperty, ref protocols0); }
 		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
 	}
 	
 	internal class BindingBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, BindingBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<EncodingBindingElementBuilder> encodings0;
 		private global::MetaDslx.Core.MutableModelList<ProtocolBindingElementBuilder> protocols0;
 	
@@ -8902,6 +10209,16 @@ namespace MetaDslx.Soal.Internal
 			return (Binding)base.ToImmutable(model);
 		}
 	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -8920,6 +10237,12 @@ namespace MetaDslx.Soal.Internal
 		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -8994,6 +10317,8 @@ namespace MetaDslx.Soal.Internal
 	internal class EndpointImpl : global::MetaDslx.Core.ImmutableSymbolBase, Endpoint
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
@@ -9029,6 +10354,16 @@ namespace MetaDslx.Soal.Internal
 			return (EndpointBuilder)base.ToMutable(model);
 		}
 	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -9047,6 +10382,12 @@ namespace MetaDslx.Soal.Internal
 		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -9078,10 +10419,41 @@ namespace MetaDslx.Soal.Internal
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.Endpoint.AddressProperty, ref address0); }
 		}
+	
+		
+		bool AnnotatedElement.HasAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotation(this, name);
+		}
+	
+		
+		Annotation AnnotatedElement.GetAnnotation(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotation(this, name);
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement.GetAnnotations(string name)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotations(this, name);
+		}
+	
+		
+		bool AnnotatedElement.HasAnnotationProperty(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_HasAnnotationProperty(this, annotationName, propertyName);
+		}
+	
+		
+		object AnnotatedElement.GetAnnotationPropertyValue(string annotationName, string propertyName)
+		{
+		    return global::MetaDslx.Soal.Internal.SoalImplementationProvider.Implementation.AnnotatedElement_GetAnnotationPropertyValue(this, annotationName, propertyName);
+		}
 	}
 	
 	internal class EndpointBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, EndpointBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal EndpointBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -9113,6 +10485,16 @@ namespace MetaDslx.Soal.Internal
 			return (Endpoint)base.ToImmutable(model);
 		}
 	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -9131,6 +10513,12 @@ namespace MetaDslx.Soal.Internal
 		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Soal.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -9764,6 +11152,10 @@ namespace MetaDslx.Soal.Internal
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool ssl0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool clientAuthentication0;
 	
 		internal HttpTransportBindingElementImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -9824,6 +11216,18 @@ namespace MetaDslx.Soal.Internal
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public bool Ssl
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.SslProperty, ref ssl0); }
+		}
+	
+		
+		public bool ClientAuthentication
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty, ref clientAuthentication0); }
 		}
 	}
 	
@@ -9901,6 +11305,32 @@ namespace MetaDslx.Soal.Internal
 		{
 			get { return this.GetLazyReference<string>(global::MetaDslx.Soal.SoalDescriptor.NamedElement.NameProperty); }
 			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public bool Ssl
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.SslProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.SslProperty, value); }
+		}
+		
+		public Func<bool> SslLazy
+		{
+			get { return this.GetLazyValue<bool>(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.SslProperty); }
+			set { this.SetLazyValue(SoalDescriptor.HttpTransportBindingElement.SslProperty, value); }
+		}
+	
+		
+		public bool ClientAuthentication
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty, value); }
+		}
+		
+		public Func<bool> ClientAuthenticationLazy
+		{
+			get { return this.GetLazyValue<bool>(global::MetaDslx.Soal.SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty); }
+			set { this.SetLazyValue(SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty, value); }
 		}
 	}
 	
@@ -10248,9 +11678,11 @@ namespace MetaDslx.Soal.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private SoapEncodingStyle style0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoapVersion version0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private bool mtomEnabled0;
+		private bool mtom0;
 	
 		internal SoapEncodingBindingElementImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -10314,15 +11746,21 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public SoapEncodingStyle Style
+		{
+		    get { return this.GetValue<SoapEncodingStyle>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.StyleProperty, ref style0); }
+		}
+	
+		
 		public SoapVersion Version
 		{
 		    get { return this.GetValue<SoapVersion>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.VersionProperty, ref version0); }
 		}
 	
 		
-		public bool MtomEnabled
+		public bool Mtom
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomEnabledProperty, ref mtomEnabled0); }
+		    get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomProperty, ref mtom0); }
 		}
 	}
 	
@@ -10403,6 +11841,19 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
+		public SoapEncodingStyle Style
+		{
+			get { return this.GetValue<SoapEncodingStyle>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.StyleProperty); }
+			set { this.SetValue<SoapEncodingStyle>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.StyleProperty, value); }
+		}
+		
+		public Func<SoapEncodingStyle> StyleLazy
+		{
+			get { return this.GetLazyValue<SoapEncodingStyle>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.StyleProperty); }
+			set { this.SetLazyValue(SoalDescriptor.SoapEncodingBindingElement.StyleProperty, value); }
+		}
+	
+		
 		public SoapVersion Version
 		{
 			get { return this.GetValue<SoapVersion>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.VersionProperty); }
@@ -10416,16 +11867,16 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 		
-		public bool MtomEnabled
+		public bool Mtom
 		{
-			get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomEnabledProperty); }
-			set { this.SetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomEnabledProperty, value); }
+			get { return this.GetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomProperty, value); }
 		}
 		
-		public Func<bool> MtomEnabledLazy
+		public Func<bool> MtomLazy
 		{
-			get { return this.GetLazyValue<bool>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomEnabledProperty); }
-			set { this.SetLazyValue(SoalDescriptor.SoapEncodingBindingElement.MtomEnabledProperty, value); }
+			get { return this.GetLazyValue<bool>(global::MetaDslx.Soal.SoalDescriptor.SoapEncodingBindingElement.MtomProperty); }
+			set { this.SetLazyValue(SoalDescriptor.SoapEncodingBindingElement.MtomProperty, value); }
 		}
 	}
 	
@@ -11101,17 +12552,85 @@ namespace MetaDslx.Soal.Internal
 		private bool created;
 		internal global::MetaDslx.Core.MetaModelBuilder MetaModel;
 		internal global::MetaDslx.Core.MutableModel Model;
+		internal global::MetaDslx.Core.MutableModelGroup ModelGroup;
 	
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "object", Nullable = true };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder Object = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "string", Nullable = true };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder String = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "int" };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder Int = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "long" };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder Long = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "float" };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder Float = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "double" };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder Double = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "byte" };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder Byte = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "bool" };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder Bool = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "void" };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder Void = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "Date" };
+		 * </summary>
+		 */
+		internal PrimitiveTypeBuilder Date = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "Time" };
+		 * </summary>
+		 */
+		internal PrimitiveTypeBuilder Time = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "DateTime" };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder DateTime = null;
+		/**
+		 * <summary>
+		 * = new PrimitiveType() { Name = "TimeSpan" };
+		 * </summary>
+		 */
 		internal PrimitiveTypeBuilder TimeSpan = null;
 	
 		private global::MetaDslx.Core.MetaNamespaceBuilder __tmp1;
@@ -11128,123 +12647,153 @@ namespace MetaDslx.Soal.Internal
 		private global::MetaDslx.Core.MetaConstantBuilder __tmp12;
 		private global::MetaDslx.Core.MetaConstantBuilder __tmp13;
 		private global::MetaDslx.Core.MetaConstantBuilder __tmp14;
+		private global::MetaDslx.Core.MetaConstantBuilder __tmp15;
+		private global::MetaDslx.Core.MetaConstantBuilder __tmp16;
+		internal global::MetaDslx.Core.MetaClassBuilder AnnotatedElement;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp17;
+		internal global::MetaDslx.Core.MetaPropertyBuilder AnnotatedElement_Annotations;
+		private global::MetaDslx.Core.MetaOperationBuilder __tmp18;
+		private global::MetaDslx.Core.MetaParameterBuilder __tmp19;
+		private global::MetaDslx.Core.MetaOperationBuilder __tmp20;
+		private global::MetaDslx.Core.MetaParameterBuilder __tmp21;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp22;
+		private global::MetaDslx.Core.MetaOperationBuilder __tmp23;
+		private global::MetaDslx.Core.MetaParameterBuilder __tmp24;
+		private global::MetaDslx.Core.MetaOperationBuilder __tmp25;
+		private global::MetaDslx.Core.MetaParameterBuilder __tmp26;
+		private global::MetaDslx.Core.MetaParameterBuilder __tmp27;
+		private global::MetaDslx.Core.MetaOperationBuilder __tmp28;
+		private global::MetaDslx.Core.MetaParameterBuilder __tmp29;
+		private global::MetaDslx.Core.MetaParameterBuilder __tmp30;
+		internal global::MetaDslx.Core.MetaClassBuilder Annotation;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Annotation_AnnotatedElement;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp31;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Annotation_Properties;
+		private global::MetaDslx.Core.MetaOperationBuilder __tmp32;
+		private global::MetaDslx.Core.MetaParameterBuilder __tmp33;
+		private global::MetaDslx.Core.MetaOperationBuilder __tmp34;
+		private global::MetaDslx.Core.MetaParameterBuilder __tmp35;
+		private global::MetaDslx.Core.MetaOperationBuilder __tmp36;
+		private global::MetaDslx.Core.MetaParameterBuilder __tmp37;
+		internal global::MetaDslx.Core.MetaClassBuilder AnnotationProperty;
+		internal global::MetaDslx.Core.MetaPropertyBuilder AnnotationProperty_Value;
 		internal global::MetaDslx.Core.MetaClassBuilder NamedElement;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp15;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp38;
 		internal global::MetaDslx.Core.MetaPropertyBuilder NamedElement_Name;
 		internal global::MetaDslx.Core.MetaClassBuilder TypedElement;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp16;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp39;
 		internal global::MetaDslx.Core.MetaPropertyBuilder TypedElement_Type;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp17;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp40;
 		internal global::MetaDslx.Core.MetaClassBuilder SoalType;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp18;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp41;
 		internal global::MetaDslx.Core.MetaClassBuilder Namespace;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp19;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp20;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Namespace_Uri;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Namespace_Prefix;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Namespace_FullName;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp42;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp43;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Namespace_Declarations;
 		internal global::MetaDslx.Core.MetaClassBuilder Declaration;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Declaration_Namespace;
 		internal global::MetaDslx.Core.MetaClassBuilder ArrayType;
 		internal global::MetaDslx.Core.MetaPropertyBuilder ArrayType_InnerType;
-		internal global::MetaDslx.Core.MetaPropertyBuilder ArrayType_Namespace;
 		internal global::MetaDslx.Core.MetaClassBuilder NullableType;
 		internal global::MetaDslx.Core.MetaPropertyBuilder NullableType_InnerType;
-		internal global::MetaDslx.Core.MetaPropertyBuilder NullableType_Namespace;
+		internal global::MetaDslx.Core.MetaClassBuilder NonNullableType;
+		internal global::MetaDslx.Core.MetaPropertyBuilder NonNullableType_InnerType;
 		internal global::MetaDslx.Core.MetaClassBuilder PrimitiveType;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp21;
+		internal global::MetaDslx.Core.MetaPropertyBuilder PrimitiveType_Nullable;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp44;
 		internal global::MetaDslx.Core.MetaClassBuilder Enum;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp22;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp23;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp45;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Enum_BaseType;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp46;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp47;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Enum_EnumLiterals;
 		internal global::MetaDslx.Core.MetaClassBuilder EnumLiteral;
 		internal global::MetaDslx.Core.MetaPropertyBuilder EnumLiteral_Enum;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp24;
-		internal global::MetaDslx.Core.MetaClassBuilder StructuredType;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp25;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp26;
-		internal global::MetaDslx.Core.MetaPropertyBuilder StructuredType_Properties;
 		internal global::MetaDslx.Core.MetaClassBuilder Property;
-		internal global::MetaDslx.Core.MetaPropertyBuilder Property_Parent;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp48;
 		internal global::MetaDslx.Core.MetaClassBuilder Struct;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp27;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp49;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Struct_BaseType;
-		internal global::MetaDslx.Core.MetaClassBuilder Exception;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp28;
-		internal global::MetaDslx.Core.MetaPropertyBuilder Exception_BaseType;
-		internal global::MetaDslx.Core.MetaClassBuilder Entity;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp29;
-		internal global::MetaDslx.Core.MetaPropertyBuilder Entity_BaseType;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp30;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp50;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp51;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Struct_Properties;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp52;
 		internal global::MetaDslx.Core.MetaClassBuilder Interface;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp31;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp32;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp53;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp54;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Interface_Operations;
 		internal global::MetaDslx.Core.MetaClassBuilder Database;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp33;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp34;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp55;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp56;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Database_Entities;
 		internal global::MetaDslx.Core.MetaClassBuilder Operation;
-		internal global::MetaDslx.Core.MetaPropertyBuilder Operation_Parent;
-		internal global::MetaDslx.Core.MetaPropertyBuilder Operation_IsOneway;
-		internal global::MetaDslx.Core.MetaPropertyBuilder Operation_ReturnType;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp35;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Operation_Action;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp57;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Operation_Parameters;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp36;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Operation_Result;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp58;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Operation_Exceptions;
-		internal global::MetaDslx.Core.MetaClassBuilder Parameter;
-		internal global::MetaDslx.Core.MetaPropertyBuilder Parameter_Operation;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp37;
+		internal global::MetaDslx.Core.MetaClassBuilder InputParameter;
+		internal global::MetaDslx.Core.MetaClassBuilder OutputParameter;
+		internal global::MetaDslx.Core.MetaPropertyBuilder OutputParameter_IsOneway;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp59;
 		internal global::MetaDslx.Core.MetaClassBuilder Component;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp38;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp60;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Component_BaseComponent;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Component_IsAbstract;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp39;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp40;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp61;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp62;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Component_Ports;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp63;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Component_Services;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp41;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp42;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp64;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Component_References;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp43;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp44;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp65;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp66;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Component_Properties;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Component_Implementation;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Component_Language;
 		internal global::MetaDslx.Core.MetaClassBuilder Composite;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp45;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp46;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp67;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp68;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Composite_Components;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp47;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp69;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Composite_Wires;
 		internal global::MetaDslx.Core.MetaClassBuilder Assembly;
 		internal global::MetaDslx.Core.MetaClassBuilder Wire;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Wire_Source;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Wire_Target;
-		internal global::MetaDslx.Core.MetaClassBuilder InterfaceReference;
-		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp48;
-		internal global::MetaDslx.Core.MetaPropertyBuilder InterfaceReference_Name;
-		internal global::MetaDslx.Core.MetaPropertyBuilder InterfaceReference_OptionalName;
-		internal global::MetaDslx.Core.MetaPropertyBuilder InterfaceReference_Interface;
-		internal global::MetaDslx.Core.MetaPropertyBuilder InterfaceReference_Binding;
+		internal global::MetaDslx.Core.MetaClassBuilder Port;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Port_Component;
+		private global::MetaDslx.Core.MetaAnnotationBuilder __tmp70;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Port_Name;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Port_OptionalName;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Port_Interface;
+		internal global::MetaDslx.Core.MetaPropertyBuilder Port_Binding;
 		internal global::MetaDslx.Core.MetaClassBuilder Service;
 		internal global::MetaDslx.Core.MetaClassBuilder Reference;
 		internal global::MetaDslx.Core.MetaClassBuilder Implementation;
 		internal global::MetaDslx.Core.MetaClassBuilder Language;
 		internal global::MetaDslx.Core.MetaClassBuilder Deployment;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp49;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp71;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Deployment_Environments;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp50;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp72;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Deployment_Wires;
 		internal global::MetaDslx.Core.MetaClassBuilder Environment;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Environment_Runtime;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp51;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp73;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Environment_Databases;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp52;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp74;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Environment_Assemblies;
 		internal global::MetaDslx.Core.MetaClassBuilder Runtime;
 		internal global::MetaDslx.Core.MetaClassBuilder Binding;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Binding_Transport;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp53;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp75;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Binding_Encodings;
-		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp54;
+		private global::MetaDslx.Core.MetaCollectionTypeBuilder __tmp76;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Binding_Protocols;
 		internal global::MetaDslx.Core.MetaClassBuilder Endpoint;
 		internal global::MetaDslx.Core.MetaPropertyBuilder Endpoint_Interface;
@@ -11255,14 +12804,22 @@ namespace MetaDslx.Soal.Internal
 		internal global::MetaDslx.Core.MetaClassBuilder EncodingBindingElement;
 		internal global::MetaDslx.Core.MetaClassBuilder ProtocolBindingElement;
 		internal global::MetaDslx.Core.MetaClassBuilder HttpTransportBindingElement;
+		internal global::MetaDslx.Core.MetaPropertyBuilder HttpTransportBindingElement_Ssl;
+		internal global::MetaDslx.Core.MetaPropertyBuilder HttpTransportBindingElement_ClientAuthentication;
 		internal global::MetaDslx.Core.MetaClassBuilder RestTransportBindingElement;
 		internal global::MetaDslx.Core.MetaClassBuilder WebSocketTransportBindingElement;
 		internal global::MetaDslx.Core.MetaEnumBuilder SoapVersion;
-		private global::MetaDslx.Core.MetaEnumLiteralBuilder __tmp55;
-		private global::MetaDslx.Core.MetaEnumLiteralBuilder __tmp56;
+		private global::MetaDslx.Core.MetaEnumLiteralBuilder __tmp77;
+		private global::MetaDslx.Core.MetaEnumLiteralBuilder __tmp78;
+		internal global::MetaDslx.Core.MetaEnumBuilder SoapEncodingStyle;
+		private global::MetaDslx.Core.MetaEnumLiteralBuilder __tmp79;
+		private global::MetaDslx.Core.MetaEnumLiteralBuilder __tmp80;
+		private global::MetaDslx.Core.MetaEnumLiteralBuilder __tmp81;
+		private global::MetaDslx.Core.MetaEnumLiteralBuilder __tmp82;
 		internal global::MetaDslx.Core.MetaClassBuilder SoapEncodingBindingElement;
+		internal global::MetaDslx.Core.MetaPropertyBuilder SoapEncodingBindingElement_Style;
 		internal global::MetaDslx.Core.MetaPropertyBuilder SoapEncodingBindingElement_Version;
-		internal global::MetaDslx.Core.MetaPropertyBuilder SoapEncodingBindingElement_MtomEnabled;
+		internal global::MetaDslx.Core.MetaPropertyBuilder SoapEncodingBindingElement_Mtom;
 		internal global::MetaDslx.Core.MetaClassBuilder XmlEncodingBindingElement;
 		internal global::MetaDslx.Core.MetaClassBuilder JsonEncodingBindingElement;
 		internal global::MetaDslx.Core.MetaClassBuilder WsProtocolBindingElement;
@@ -11270,7 +12827,9 @@ namespace MetaDslx.Soal.Internal
 	
 		internal SoalBuilderInstance()
 		{
-			this.Model = new global::MetaDslx.Core.MutableModel();
+			this.ModelGroup = new global::MetaDslx.Core.MutableModelGroup();
+			this.ModelGroup.AddReference(global::MetaDslx.Core.MetaInstance.Model.ToMutable(true));
+			this.Model = this.ModelGroup.CreateModel();
 		}
 	
 		internal void Create()
@@ -11313,123 +12872,153 @@ namespace MetaDslx.Soal.Internal
 			__tmp12 = factory.MetaConstant();
 			__tmp13 = factory.MetaConstant();
 			__tmp14 = factory.MetaConstant();
+			__tmp15 = factory.MetaConstant();
+			__tmp16 = factory.MetaConstant();
+			AnnotatedElement = factory.MetaClass();
+			__tmp17 = factory.MetaCollectionType();
+			AnnotatedElement_Annotations = factory.MetaProperty();
+			__tmp18 = factory.MetaOperation();
+			__tmp19 = factory.MetaParameter();
+			__tmp20 = factory.MetaOperation();
+			__tmp21 = factory.MetaParameter();
+			__tmp22 = factory.MetaCollectionType();
+			__tmp23 = factory.MetaOperation();
+			__tmp24 = factory.MetaParameter();
+			__tmp25 = factory.MetaOperation();
+			__tmp26 = factory.MetaParameter();
+			__tmp27 = factory.MetaParameter();
+			__tmp28 = factory.MetaOperation();
+			__tmp29 = factory.MetaParameter();
+			__tmp30 = factory.MetaParameter();
+			Annotation = factory.MetaClass();
+			Annotation_AnnotatedElement = factory.MetaProperty();
+			__tmp31 = factory.MetaCollectionType();
+			Annotation_Properties = factory.MetaProperty();
+			__tmp32 = factory.MetaOperation();
+			__tmp33 = factory.MetaParameter();
+			__tmp34 = factory.MetaOperation();
+			__tmp35 = factory.MetaParameter();
+			__tmp36 = factory.MetaOperation();
+			__tmp37 = factory.MetaParameter();
+			AnnotationProperty = factory.MetaClass();
+			AnnotationProperty_Value = factory.MetaProperty();
 			NamedElement = factory.MetaClass();
-			__tmp15 = factory.MetaAnnotation();
+			__tmp38 = factory.MetaAnnotation();
 			NamedElement_Name = factory.MetaProperty();
 			TypedElement = factory.MetaClass();
-			__tmp16 = factory.MetaAnnotation();
+			__tmp39 = factory.MetaAnnotation();
 			TypedElement_Type = factory.MetaProperty();
-			__tmp17 = factory.MetaAnnotation();
+			__tmp40 = factory.MetaAnnotation();
 			SoalType = factory.MetaClass();
-			__tmp18 = factory.MetaAnnotation();
+			__tmp41 = factory.MetaAnnotation();
 			Namespace = factory.MetaClass();
-			__tmp19 = factory.MetaAnnotation();
-			__tmp20 = factory.MetaCollectionType();
+			Namespace_Uri = factory.MetaProperty();
+			Namespace_Prefix = factory.MetaProperty();
+			Namespace_FullName = factory.MetaProperty();
+			__tmp42 = factory.MetaAnnotation();
+			__tmp43 = factory.MetaCollectionType();
 			Namespace_Declarations = factory.MetaProperty();
 			Declaration = factory.MetaClass();
 			Declaration_Namespace = factory.MetaProperty();
 			ArrayType = factory.MetaClass();
 			ArrayType_InnerType = factory.MetaProperty();
-			ArrayType_Namespace = factory.MetaProperty();
 			NullableType = factory.MetaClass();
 			NullableType_InnerType = factory.MetaProperty();
-			NullableType_Namespace = factory.MetaProperty();
+			NonNullableType = factory.MetaClass();
+			NonNullableType_InnerType = factory.MetaProperty();
 			PrimitiveType = factory.MetaClass();
-			__tmp21 = factory.MetaAnnotation();
+			PrimitiveType_Nullable = factory.MetaProperty();
+			__tmp44 = factory.MetaAnnotation();
 			Enum = factory.MetaClass();
-			__tmp22 = factory.MetaAnnotation();
-			__tmp23 = factory.MetaCollectionType();
+			__tmp45 = factory.MetaAnnotation();
+			Enum_BaseType = factory.MetaProperty();
+			__tmp46 = factory.MetaAnnotation();
+			__tmp47 = factory.MetaCollectionType();
 			Enum_EnumLiterals = factory.MetaProperty();
 			EnumLiteral = factory.MetaClass();
 			EnumLiteral_Enum = factory.MetaProperty();
-			__tmp24 = factory.MetaAnnotation();
-			StructuredType = factory.MetaClass();
-			__tmp25 = factory.MetaAnnotation();
-			__tmp26 = factory.MetaCollectionType();
-			StructuredType_Properties = factory.MetaProperty();
 			Property = factory.MetaClass();
-			Property_Parent = factory.MetaProperty();
+			__tmp48 = factory.MetaAnnotation();
 			Struct = factory.MetaClass();
-			__tmp27 = factory.MetaAnnotation();
+			__tmp49 = factory.MetaAnnotation();
 			Struct_BaseType = factory.MetaProperty();
-			Exception = factory.MetaClass();
-			__tmp28 = factory.MetaAnnotation();
-			Exception_BaseType = factory.MetaProperty();
-			Entity = factory.MetaClass();
-			__tmp29 = factory.MetaAnnotation();
-			Entity_BaseType = factory.MetaProperty();
-			__tmp30 = factory.MetaAnnotation();
+			__tmp50 = factory.MetaAnnotation();
+			__tmp51 = factory.MetaCollectionType();
+			Struct_Properties = factory.MetaProperty();
+			__tmp52 = factory.MetaAnnotation();
 			Interface = factory.MetaClass();
-			__tmp31 = factory.MetaAnnotation();
-			__tmp32 = factory.MetaCollectionType();
+			__tmp53 = factory.MetaAnnotation();
+			__tmp54 = factory.MetaCollectionType();
 			Interface_Operations = factory.MetaProperty();
 			Database = factory.MetaClass();
-			__tmp33 = factory.MetaAnnotation();
-			__tmp34 = factory.MetaCollectionType();
+			__tmp55 = factory.MetaAnnotation();
+			__tmp56 = factory.MetaCollectionType();
 			Database_Entities = factory.MetaProperty();
 			Operation = factory.MetaClass();
-			Operation_Parent = factory.MetaProperty();
-			Operation_IsOneway = factory.MetaProperty();
-			Operation_ReturnType = factory.MetaProperty();
-			__tmp35 = factory.MetaCollectionType();
+			Operation_Action = factory.MetaProperty();
+			__tmp57 = factory.MetaCollectionType();
 			Operation_Parameters = factory.MetaProperty();
-			__tmp36 = factory.MetaCollectionType();
+			Operation_Result = factory.MetaProperty();
+			__tmp58 = factory.MetaCollectionType();
 			Operation_Exceptions = factory.MetaProperty();
-			Parameter = factory.MetaClass();
-			Parameter_Operation = factory.MetaProperty();
-			__tmp37 = factory.MetaAnnotation();
+			InputParameter = factory.MetaClass();
+			OutputParameter = factory.MetaClass();
+			OutputParameter_IsOneway = factory.MetaProperty();
+			__tmp59 = factory.MetaAnnotation();
 			Component = factory.MetaClass();
-			__tmp38 = factory.MetaAnnotation();
+			__tmp60 = factory.MetaAnnotation();
 			Component_BaseComponent = factory.MetaProperty();
 			Component_IsAbstract = factory.MetaProperty();
-			__tmp39 = factory.MetaAnnotation();
-			__tmp40 = factory.MetaCollectionType();
+			__tmp61 = factory.MetaAnnotation();
+			__tmp62 = factory.MetaCollectionType();
+			Component_Ports = factory.MetaProperty();
+			__tmp63 = factory.MetaCollectionType();
 			Component_Services = factory.MetaProperty();
-			__tmp41 = factory.MetaAnnotation();
-			__tmp42 = factory.MetaCollectionType();
+			__tmp64 = factory.MetaCollectionType();
 			Component_References = factory.MetaProperty();
-			__tmp43 = factory.MetaAnnotation();
-			__tmp44 = factory.MetaCollectionType();
+			__tmp65 = factory.MetaAnnotation();
+			__tmp66 = factory.MetaCollectionType();
 			Component_Properties = factory.MetaProperty();
 			Component_Implementation = factory.MetaProperty();
 			Component_Language = factory.MetaProperty();
 			Composite = factory.MetaClass();
-			__tmp45 = factory.MetaAnnotation();
-			__tmp46 = factory.MetaCollectionType();
+			__tmp67 = factory.MetaAnnotation();
+			__tmp68 = factory.MetaCollectionType();
 			Composite_Components = factory.MetaProperty();
-			__tmp47 = factory.MetaCollectionType();
+			__tmp69 = factory.MetaCollectionType();
 			Composite_Wires = factory.MetaProperty();
 			Assembly = factory.MetaClass();
 			Wire = factory.MetaClass();
 			Wire_Source = factory.MetaProperty();
 			Wire_Target = factory.MetaProperty();
-			InterfaceReference = factory.MetaClass();
-			__tmp48 = factory.MetaAnnotation();
-			InterfaceReference_Name = factory.MetaProperty();
-			InterfaceReference_OptionalName = factory.MetaProperty();
-			InterfaceReference_Interface = factory.MetaProperty();
-			InterfaceReference_Binding = factory.MetaProperty();
+			Port = factory.MetaClass();
+			Port_Component = factory.MetaProperty();
+			__tmp70 = factory.MetaAnnotation();
+			Port_Name = factory.MetaProperty();
+			Port_OptionalName = factory.MetaProperty();
+			Port_Interface = factory.MetaProperty();
+			Port_Binding = factory.MetaProperty();
 			Service = factory.MetaClass();
 			Reference = factory.MetaClass();
 			Implementation = factory.MetaClass();
 			Language = factory.MetaClass();
 			Deployment = factory.MetaClass();
-			__tmp49 = factory.MetaCollectionType();
+			__tmp71 = factory.MetaCollectionType();
 			Deployment_Environments = factory.MetaProperty();
-			__tmp50 = factory.MetaCollectionType();
+			__tmp72 = factory.MetaCollectionType();
 			Deployment_Wires = factory.MetaProperty();
 			Environment = factory.MetaClass();
 			Environment_Runtime = factory.MetaProperty();
-			__tmp51 = factory.MetaCollectionType();
+			__tmp73 = factory.MetaCollectionType();
 			Environment_Databases = factory.MetaProperty();
-			__tmp52 = factory.MetaCollectionType();
+			__tmp74 = factory.MetaCollectionType();
 			Environment_Assemblies = factory.MetaProperty();
 			Runtime = factory.MetaClass();
 			Binding = factory.MetaClass();
 			Binding_Transport = factory.MetaProperty();
-			__tmp53 = factory.MetaCollectionType();
+			__tmp75 = factory.MetaCollectionType();
 			Binding_Encodings = factory.MetaProperty();
-			__tmp54 = factory.MetaCollectionType();
+			__tmp76 = factory.MetaCollectionType();
 			Binding_Protocols = factory.MetaProperty();
 			Endpoint = factory.MetaClass();
 			Endpoint_Interface = factory.MetaProperty();
@@ -11440,14 +13029,22 @@ namespace MetaDslx.Soal.Internal
 			EncodingBindingElement = factory.MetaClass();
 			ProtocolBindingElement = factory.MetaClass();
 			HttpTransportBindingElement = factory.MetaClass();
+			HttpTransportBindingElement_Ssl = factory.MetaProperty();
+			HttpTransportBindingElement_ClientAuthentication = factory.MetaProperty();
 			RestTransportBindingElement = factory.MetaClass();
 			WebSocketTransportBindingElement = factory.MetaClass();
 			SoapVersion = factory.MetaEnum();
-			__tmp55 = factory.MetaEnumLiteral();
-			__tmp56 = factory.MetaEnumLiteral();
+			__tmp77 = factory.MetaEnumLiteral();
+			__tmp78 = factory.MetaEnumLiteral();
+			SoapEncodingStyle = factory.MetaEnum();
+			__tmp79 = factory.MetaEnumLiteral();
+			__tmp80 = factory.MetaEnumLiteral();
+			__tmp81 = factory.MetaEnumLiteral();
+			__tmp82 = factory.MetaEnumLiteral();
 			SoapEncodingBindingElement = factory.MetaClass();
+			SoapEncodingBindingElement_Style = factory.MetaProperty();
 			SoapEncodingBindingElement_Version = factory.MetaProperty();
-			SoapEncodingBindingElement_MtomEnabled = factory.MetaProperty();
+			SoapEncodingBindingElement_Mtom = factory.MetaProperty();
 			XmlEncodingBindingElement = factory.MetaClass();
 			JsonEncodingBindingElement = factory.MetaClass();
 			WsProtocolBindingElement = factory.MetaClass();
@@ -11473,6 +13070,11 @@ namespace MetaDslx.Soal.Internal
 			__tmp2.Declarations.AddLazy(() => __tmp12);
 			__tmp2.Declarations.AddLazy(() => __tmp13);
 			__tmp2.Declarations.AddLazy(() => __tmp14);
+			__tmp2.Declarations.AddLazy(() => __tmp15);
+			__tmp2.Declarations.AddLazy(() => __tmp16);
+			__tmp2.Declarations.AddLazy(() => AnnotatedElement);
+			__tmp2.Declarations.AddLazy(() => Annotation);
+			__tmp2.Declarations.AddLazy(() => AnnotationProperty);
 			__tmp2.Declarations.AddLazy(() => NamedElement);
 			__tmp2.Declarations.AddLazy(() => TypedElement);
 			__tmp2.Declarations.AddLazy(() => SoalType);
@@ -11480,23 +13082,22 @@ namespace MetaDslx.Soal.Internal
 			__tmp2.Declarations.AddLazy(() => Declaration);
 			__tmp2.Declarations.AddLazy(() => ArrayType);
 			__tmp2.Declarations.AddLazy(() => NullableType);
+			__tmp2.Declarations.AddLazy(() => NonNullableType);
 			__tmp2.Declarations.AddLazy(() => PrimitiveType);
 			__tmp2.Declarations.AddLazy(() => Enum);
 			__tmp2.Declarations.AddLazy(() => EnumLiteral);
-			__tmp2.Declarations.AddLazy(() => StructuredType);
 			__tmp2.Declarations.AddLazy(() => Property);
 			__tmp2.Declarations.AddLazy(() => Struct);
-			__tmp2.Declarations.AddLazy(() => Exception);
-			__tmp2.Declarations.AddLazy(() => Entity);
 			__tmp2.Declarations.AddLazy(() => Interface);
 			__tmp2.Declarations.AddLazy(() => Database);
 			__tmp2.Declarations.AddLazy(() => Operation);
-			__tmp2.Declarations.AddLazy(() => Parameter);
+			__tmp2.Declarations.AddLazy(() => InputParameter);
+			__tmp2.Declarations.AddLazy(() => OutputParameter);
 			__tmp2.Declarations.AddLazy(() => Component);
 			__tmp2.Declarations.AddLazy(() => Composite);
 			__tmp2.Declarations.AddLazy(() => Assembly);
 			__tmp2.Declarations.AddLazy(() => Wire);
-			__tmp2.Declarations.AddLazy(() => InterfaceReference);
+			__tmp2.Declarations.AddLazy(() => Port);
 			__tmp2.Declarations.AddLazy(() => Service);
 			__tmp2.Declarations.AddLazy(() => Reference);
 			__tmp2.Declarations.AddLazy(() => Implementation);
@@ -11514,6 +13115,7 @@ namespace MetaDslx.Soal.Internal
 			__tmp2.Declarations.AddLazy(() => RestTransportBindingElement);
 			__tmp2.Declarations.AddLazy(() => WebSocketTransportBindingElement);
 			__tmp2.Declarations.AddLazy(() => SoapVersion);
+			__tmp2.Declarations.AddLazy(() => SoapEncodingStyle);
 			__tmp2.Declarations.AddLazy(() => SoapEncodingBindingElement);
 			__tmp2.Declarations.AddLazy(() => XmlEncodingBindingElement);
 			__tmp2.Declarations.AddLazy(() => JsonEncodingBindingElement);
@@ -11525,59 +13127,227 @@ namespace MetaDslx.Soal.Internal
 			__tmp3.NamespaceLazy = () => __tmp2;
 			__tmp4.MetaModelLazy = () => __tmp3;
 			__tmp4.NamespaceLazy = () => __tmp2;
-			__tmp4.Documentation = null;
+			__tmp4.Documentation = "= new PrimitiveType() { Name = \"object\", Nullable = true };";
 			__tmp4.Name = "Object";
 			__tmp4.TypeLazy = () => PrimitiveType;
 			__tmp5.MetaModelLazy = () => __tmp3;
 			__tmp5.NamespaceLazy = () => __tmp2;
-			__tmp5.Documentation = null;
+			__tmp5.Documentation = "= new PrimitiveType() { Name = \"string\", Nullable = true };";
 			__tmp5.Name = "String";
 			__tmp5.TypeLazy = () => PrimitiveType;
 			__tmp6.MetaModelLazy = () => __tmp3;
 			__tmp6.NamespaceLazy = () => __tmp2;
-			__tmp6.Documentation = null;
+			__tmp6.Documentation = "= new PrimitiveType() { Name = \"int\" };";
 			__tmp6.Name = "Int";
 			__tmp6.TypeLazy = () => PrimitiveType;
 			__tmp7.MetaModelLazy = () => __tmp3;
 			__tmp7.NamespaceLazy = () => __tmp2;
-			__tmp7.Documentation = null;
+			__tmp7.Documentation = "= new PrimitiveType() { Name = \"long\" };";
 			__tmp7.Name = "Long";
 			__tmp7.TypeLazy = () => PrimitiveType;
 			__tmp8.MetaModelLazy = () => __tmp3;
 			__tmp8.NamespaceLazy = () => __tmp2;
-			__tmp8.Documentation = null;
+			__tmp8.Documentation = "= new PrimitiveType() { Name = \"float\" };";
 			__tmp8.Name = "Float";
 			__tmp8.TypeLazy = () => PrimitiveType;
 			__tmp9.MetaModelLazy = () => __tmp3;
 			__tmp9.NamespaceLazy = () => __tmp2;
-			__tmp9.Documentation = null;
+			__tmp9.Documentation = "= new PrimitiveType() { Name = \"double\" };";
 			__tmp9.Name = "Double";
 			__tmp9.TypeLazy = () => PrimitiveType;
 			__tmp10.MetaModelLazy = () => __tmp3;
 			__tmp10.NamespaceLazy = () => __tmp2;
-			__tmp10.Documentation = null;
+			__tmp10.Documentation = "= new PrimitiveType() { Name = \"byte\" };";
 			__tmp10.Name = "Byte";
 			__tmp10.TypeLazy = () => PrimitiveType;
 			__tmp11.MetaModelLazy = () => __tmp3;
 			__tmp11.NamespaceLazy = () => __tmp2;
-			__tmp11.Documentation = null;
+			__tmp11.Documentation = "= new PrimitiveType() { Name = \"bool\" };";
 			__tmp11.Name = "Bool";
 			__tmp11.TypeLazy = () => PrimitiveType;
 			__tmp12.MetaModelLazy = () => __tmp3;
 			__tmp12.NamespaceLazy = () => __tmp2;
-			__tmp12.Documentation = null;
+			__tmp12.Documentation = "= new PrimitiveType() { Name = \"void\" };";
 			__tmp12.Name = "Void";
 			__tmp12.TypeLazy = () => PrimitiveType;
 			__tmp13.MetaModelLazy = () => __tmp3;
 			__tmp13.NamespaceLazy = () => __tmp2;
-			__tmp13.Documentation = null;
-			__tmp13.Name = "DateTime";
+			__tmp13.Documentation = "= new PrimitiveType() { Name = \"Date\" };";
+			__tmp13.Name = "Date";
 			__tmp13.TypeLazy = () => PrimitiveType;
 			__tmp14.MetaModelLazy = () => __tmp3;
 			__tmp14.NamespaceLazy = () => __tmp2;
-			__tmp14.Documentation = null;
-			__tmp14.Name = "TimeSpan";
+			__tmp14.Documentation = "= new PrimitiveType() { Name = \"Time\" };";
+			__tmp14.Name = "Time";
 			__tmp14.TypeLazy = () => PrimitiveType;
+			__tmp15.MetaModelLazy = () => __tmp3;
+			__tmp15.NamespaceLazy = () => __tmp2;
+			__tmp15.Documentation = "= new PrimitiveType() { Name = \"DateTime\" };";
+			__tmp15.Name = "DateTime";
+			__tmp15.TypeLazy = () => PrimitiveType;
+			__tmp16.MetaModelLazy = () => __tmp3;
+			__tmp16.NamespaceLazy = () => __tmp2;
+			__tmp16.Documentation = "= new PrimitiveType() { Name = \"TimeSpan\" };";
+			__tmp16.Name = "TimeSpan";
+			__tmp16.TypeLazy = () => PrimitiveType;
+			AnnotatedElement.MetaModelLazy = () => __tmp3;
+			AnnotatedElement.NamespaceLazy = () => __tmp2;
+			AnnotatedElement.Documentation = null;
+			AnnotatedElement.Name = "AnnotatedElement";
+			AnnotatedElement.IsAbstract = true;
+			AnnotatedElement.Properties.AddLazy(() => AnnotatedElement_Annotations);
+			AnnotatedElement.Operations.AddLazy(() => __tmp18);
+			AnnotatedElement.Operations.AddLazy(() => __tmp20);
+			AnnotatedElement.Operations.AddLazy(() => __tmp23);
+			AnnotatedElement.Operations.AddLazy(() => __tmp25);
+			AnnotatedElement.Operations.AddLazy(() => __tmp28);
+			// AnnotatedElement.Constructor = null;
+			__tmp17.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp17.InnerTypeLazy = () => Annotation;
+			AnnotatedElement_Annotations.TypeLazy = () => __tmp17;
+			AnnotatedElement_Annotations.Name = "Annotations";
+			AnnotatedElement_Annotations.Documentation = null;
+			AnnotatedElement_Annotations.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
+			AnnotatedElement_Annotations.ClassLazy = () => AnnotatedElement;
+			AnnotatedElement_Annotations.OppositeProperties.AddLazy(() => Annotation_AnnotatedElement);
+			__tmp18.ReturnTypeLazy = () => global::MetaDslx.Core.MetaInstance.Bool.ToMutable();
+			__tmp18.Parameters.AddLazy(() => __tmp19);
+			// TODO: __tmp18.Type
+			// TODO: __tmp18.Type
+			__tmp18.Documentation = "Annotation AddAnnotation(string name);";
+			__tmp18.Name = "HasAnnotation";
+			__tmp18.ParentLazy = () => AnnotatedElement;
+			__tmp19.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			__tmp19.Name = "name";
+			__tmp19.Documentation = null;
+			__tmp19.FunctionLazy = () => __tmp18;
+			__tmp20.ReturnTypeLazy = () => Annotation;
+			__tmp20.Parameters.AddLazy(() => __tmp21);
+			// TODO: __tmp20.Type
+			// TODO: __tmp20.Type
+			__tmp20.Documentation = null;
+			__tmp20.Name = "GetAnnotation";
+			__tmp20.ParentLazy = () => AnnotatedElement;
+			__tmp21.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			__tmp21.Name = "name";
+			__tmp21.Documentation = null;
+			__tmp21.FunctionLazy = () => __tmp20;
+			__tmp22.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp22.InnerTypeLazy = () => Annotation;
+			__tmp23.ReturnTypeLazy = () => __tmp22;
+			__tmp23.Parameters.AddLazy(() => __tmp24);
+			// TODO: __tmp23.Type
+			// TODO: __tmp23.Type
+			__tmp23.Documentation = null;
+			__tmp23.Name = "GetAnnotations";
+			__tmp23.ParentLazy = () => AnnotatedElement;
+			__tmp24.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			__tmp24.Name = "name";
+			__tmp24.Documentation = null;
+			__tmp24.FunctionLazy = () => __tmp23;
+			__tmp25.ReturnTypeLazy = () => global::MetaDslx.Core.MetaInstance.Bool.ToMutable();
+			__tmp25.Parameters.AddLazy(() => __tmp26);
+			__tmp25.Parameters.AddLazy(() => __tmp27);
+			// TODO: __tmp25.Type
+			// TODO: __tmp25.Type
+			__tmp25.Documentation = null;
+			__tmp25.Name = "HasAnnotationProperty";
+			__tmp25.ParentLazy = () => AnnotatedElement;
+			__tmp26.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			__tmp26.Name = "annotationName";
+			__tmp26.Documentation = null;
+			__tmp26.FunctionLazy = () => __tmp25;
+			__tmp27.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			__tmp27.Name = "propertyName";
+			__tmp27.Documentation = null;
+			__tmp27.FunctionLazy = () => __tmp25;
+			__tmp28.ReturnTypeLazy = () => global::MetaDslx.Core.MetaInstance.Object.ToMutable();
+			__tmp28.Parameters.AddLazy(() => __tmp29);
+			__tmp28.Parameters.AddLazy(() => __tmp30);
+			// TODO: __tmp28.Type
+			// TODO: __tmp28.Type
+			__tmp28.Documentation = null;
+			__tmp28.Name = "GetAnnotationPropertyValue";
+			__tmp28.ParentLazy = () => AnnotatedElement;
+			__tmp29.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			__tmp29.Name = "annotationName";
+			__tmp29.Documentation = null;
+			__tmp29.FunctionLazy = () => __tmp28;
+			__tmp30.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			__tmp30.Name = "propertyName";
+			__tmp30.Documentation = null;
+			__tmp30.FunctionLazy = () => __tmp28;
+			Annotation.MetaModelLazy = () => __tmp3;
+			Annotation.NamespaceLazy = () => __tmp2;
+			Annotation.Documentation = null;
+			Annotation.Name = "Annotation";
+			// Annotation.IsAbstract = null;
+			Annotation.SuperClasses.AddLazy(() => NamedElement);
+			Annotation.Properties.AddLazy(() => Annotation_AnnotatedElement);
+			Annotation.Properties.AddLazy(() => Annotation_Properties);
+			Annotation.Operations.AddLazy(() => __tmp32);
+			Annotation.Operations.AddLazy(() => __tmp34);
+			Annotation.Operations.AddLazy(() => __tmp36);
+			// Annotation.Constructor = null;
+			Annotation_AnnotatedElement.TypeLazy = () => AnnotatedElement;
+			Annotation_AnnotatedElement.Name = "AnnotatedElement";
+			Annotation_AnnotatedElement.Documentation = null;
+			// Annotation_AnnotatedElement.Kind = null;
+			Annotation_AnnotatedElement.ClassLazy = () => Annotation;
+			Annotation_AnnotatedElement.OppositeProperties.AddLazy(() => AnnotatedElement_Annotations);
+			__tmp31.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp31.InnerTypeLazy = () => AnnotationProperty;
+			Annotation_Properties.TypeLazy = () => __tmp31;
+			Annotation_Properties.Name = "Properties";
+			Annotation_Properties.Documentation = null;
+			Annotation_Properties.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
+			Annotation_Properties.ClassLazy = () => Annotation;
+			__tmp32.ReturnTypeLazy = () => global::MetaDslx.Core.MetaInstance.Bool.ToMutable();
+			__tmp32.Parameters.AddLazy(() => __tmp33);
+			// TODO: __tmp32.Type
+			// TODO: __tmp32.Type
+			__tmp32.Documentation = null;
+			__tmp32.Name = "HasProperty";
+			__tmp32.ParentLazy = () => Annotation;
+			__tmp33.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			__tmp33.Name = "name";
+			__tmp33.Documentation = null;
+			__tmp33.FunctionLazy = () => __tmp32;
+			__tmp34.ReturnTypeLazy = () => AnnotationProperty;
+			__tmp34.Parameters.AddLazy(() => __tmp35);
+			// TODO: __tmp34.Type
+			// TODO: __tmp34.Type
+			__tmp34.Documentation = null;
+			__tmp34.Name = "GetProperty";
+			__tmp34.ParentLazy = () => Annotation;
+			__tmp35.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			__tmp35.Name = "name";
+			__tmp35.Documentation = null;
+			__tmp35.FunctionLazy = () => __tmp34;
+			__tmp36.ReturnTypeLazy = () => global::MetaDslx.Core.MetaInstance.Object.ToMutable();
+			__tmp36.Parameters.AddLazy(() => __tmp37);
+			// TODO: __tmp36.Type
+			// TODO: __tmp36.Type
+			__tmp36.Documentation = null;
+			__tmp36.Name = "GetPropertyValue";
+			__tmp36.ParentLazy = () => Annotation;
+			__tmp37.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			__tmp37.Name = "name";
+			__tmp37.Documentation = null;
+			__tmp37.FunctionLazy = () => __tmp36;
+			AnnotationProperty.MetaModelLazy = () => __tmp3;
+			AnnotationProperty.NamespaceLazy = () => __tmp2;
+			AnnotationProperty.Documentation = null;
+			AnnotationProperty.Name = "AnnotationProperty";
+			// AnnotationProperty.IsAbstract = null;
+			AnnotationProperty.SuperClasses.AddLazy(() => NamedElement);
+			AnnotationProperty.Properties.AddLazy(() => AnnotationProperty_Value);
+			// AnnotationProperty.Constructor = null;
+			AnnotationProperty_Value.TypeLazy = () => global::MetaDslx.Core.MetaInstance.Object.ToMutable();
+			AnnotationProperty_Value.Name = "Value";
+			AnnotationProperty_Value.Documentation = null;
+			// AnnotationProperty_Value.Kind = null;
+			AnnotationProperty_Value.ClassLazy = () => AnnotationProperty;
 			NamedElement.MetaModelLazy = () => __tmp3;
 			NamedElement.NamespaceLazy = () => __tmp2;
 			NamedElement.Documentation = null;
@@ -11585,9 +13355,9 @@ namespace MetaDslx.Soal.Internal
 			NamedElement.IsAbstract = true;
 			NamedElement.Properties.AddLazy(() => NamedElement_Name);
 			// NamedElement.Constructor = null;
-			__tmp15.Name = "Name";
-			__tmp15.Documentation = null;
-			NamedElement_Name.Annotations.AddLazy(() => __tmp15);
+			__tmp38.Name = "Name";
+			__tmp38.Documentation = null;
+			NamedElement_Name.Annotations.AddLazy(() => __tmp38);
 			NamedElement_Name.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
 			NamedElement_Name.Name = "Name";
 			NamedElement_Name.Documentation = null;
@@ -11600,40 +13370,59 @@ namespace MetaDslx.Soal.Internal
 			TypedElement.IsAbstract = true;
 			TypedElement.Properties.AddLazy(() => TypedElement_Type);
 			// TypedElement.Constructor = null;
-			__tmp16.Name = "Type";
-			__tmp16.Documentation = null;
-			TypedElement_Type.Annotations.AddLazy(() => __tmp16);
+			__tmp39.Name = "Type";
+			__tmp39.Documentation = null;
+			TypedElement_Type.Annotations.AddLazy(() => __tmp39);
 			TypedElement_Type.TypeLazy = () => SoalType;
 			TypedElement_Type.Name = "Type";
 			TypedElement_Type.Documentation = null;
 			// TypedElement_Type.Kind = null;
 			TypedElement_Type.ClassLazy = () => TypedElement;
-			__tmp17.Name = "Type";
-			__tmp17.Documentation = null;
+			TypedElement_Type.RedefiningProperties.AddLazy(() => EnumLiteral_Enum);
+			__tmp40.Name = "Type";
+			__tmp40.Documentation = null;
 			SoalType.MetaModelLazy = () => __tmp3;
 			SoalType.NamespaceLazy = () => __tmp2;
 			SoalType.Documentation = null;
 			SoalType.Name = "SoalType";
-			SoalType.Annotations.AddLazy(() => __tmp17);
+			SoalType.Annotations.AddLazy(() => __tmp40);
 			SoalType.IsAbstract = true;
 			// SoalType.Constructor = null;
-			__tmp18.Name = "Scope";
-			__tmp18.Documentation = null;
+			__tmp41.Name = "Scope";
+			__tmp41.Documentation = null;
 			Namespace.MetaModelLazy = () => __tmp3;
 			Namespace.NamespaceLazy = () => __tmp2;
 			Namespace.Documentation = null;
 			Namespace.Name = "Namespace";
-			Namespace.Annotations.AddLazy(() => __tmp18);
+			Namespace.Annotations.AddLazy(() => __tmp41);
 			// Namespace.IsAbstract = null;
 			Namespace.SuperClasses.AddLazy(() => Declaration);
+			Namespace.Properties.AddLazy(() => Namespace_Uri);
+			Namespace.Properties.AddLazy(() => Namespace_Prefix);
+			Namespace.Properties.AddLazy(() => Namespace_FullName);
 			Namespace.Properties.AddLazy(() => Namespace_Declarations);
 			// Namespace.Constructor = null;
-			__tmp19.Name = "ScopeEntry";
-			__tmp19.Documentation = null;
-			__tmp20.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp20.InnerTypeLazy = () => Declaration;
-			Namespace_Declarations.Annotations.AddLazy(() => __tmp19);
-			Namespace_Declarations.TypeLazy = () => __tmp20;
+			Namespace_Uri.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			Namespace_Uri.Name = "Uri";
+			Namespace_Uri.Documentation = null;
+			// Namespace_Uri.Kind = null;
+			Namespace_Uri.ClassLazy = () => Namespace;
+			Namespace_Prefix.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			Namespace_Prefix.Name = "Prefix";
+			Namespace_Prefix.Documentation = null;
+			// Namespace_Prefix.Kind = null;
+			Namespace_Prefix.ClassLazy = () => Namespace;
+			Namespace_FullName.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			Namespace_FullName.Name = "FullName";
+			Namespace_FullName.Documentation = null;
+			Namespace_FullName.Kind = global::MetaDslx.Core.MetaPropertyKind.Derived;
+			Namespace_FullName.ClassLazy = () => Namespace;
+			__tmp42.Name = "ScopeEntry";
+			__tmp42.Documentation = null;
+			__tmp43.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp43.InnerTypeLazy = () => Declaration;
+			Namespace_Declarations.Annotations.AddLazy(() => __tmp42);
+			Namespace_Declarations.TypeLazy = () => __tmp43;
 			Namespace_Declarations.Name = "Declarations";
 			Namespace_Declarations.Documentation = null;
 			Namespace_Declarations.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
@@ -11645,6 +13434,7 @@ namespace MetaDslx.Soal.Internal
 			Declaration.Name = "Declaration";
 			Declaration.IsAbstract = true;
 			Declaration.SuperClasses.AddLazy(() => NamedElement);
+			Declaration.SuperClasses.AddLazy(() => AnnotatedElement);
 			Declaration.Properties.AddLazy(() => Declaration_Namespace);
 			// Declaration.Constructor = null;
 			Declaration_Namespace.TypeLazy = () => Namespace;
@@ -11660,18 +13450,12 @@ namespace MetaDslx.Soal.Internal
 			// ArrayType.IsAbstract = null;
 			ArrayType.SuperClasses.AddLazy(() => SoalType);
 			ArrayType.Properties.AddLazy(() => ArrayType_InnerType);
-			ArrayType.Properties.AddLazy(() => ArrayType_Namespace);
 			// ArrayType.Constructor = null;
 			ArrayType_InnerType.TypeLazy = () => SoalType;
 			ArrayType_InnerType.Name = "InnerType";
-			ArrayType_InnerType.Documentation = "ArrayType()\r\n{\r\nNamespace = InnerType is Declaration ? ((Declaration)InnerType).Namespace : null;\r\n}";
+			ArrayType_InnerType.Documentation = null;
 			// ArrayType_InnerType.Kind = null;
 			ArrayType_InnerType.ClassLazy = () => ArrayType;
-			ArrayType_Namespace.TypeLazy = () => Namespace;
-			ArrayType_Namespace.Name = "Namespace";
-			ArrayType_Namespace.Documentation = null;
-			ArrayType_Namespace.Kind = global::MetaDslx.Core.MetaPropertyKind.Derived;
-			ArrayType_Namespace.ClassLazy = () => ArrayType;
 			NullableType.MetaModelLazy = () => __tmp3;
 			NullableType.NamespaceLazy = () => __tmp2;
 			NullableType.Documentation = null;
@@ -11679,44 +13463,66 @@ namespace MetaDslx.Soal.Internal
 			// NullableType.IsAbstract = null;
 			NullableType.SuperClasses.AddLazy(() => SoalType);
 			NullableType.Properties.AddLazy(() => NullableType_InnerType);
-			NullableType.Properties.AddLazy(() => NullableType_Namespace);
 			// NullableType.Constructor = null;
 			NullableType_InnerType.TypeLazy = () => SoalType;
 			NullableType_InnerType.Name = "InnerType";
-			NullableType_InnerType.Documentation = "NullableType()\r\n{\r\nNamespace = InnerType is Declaration ? ((Declaration)InnerType).Namespace : null;\r\n}";
+			NullableType_InnerType.Documentation = null;
 			// NullableType_InnerType.Kind = null;
 			NullableType_InnerType.ClassLazy = () => NullableType;
-			NullableType_Namespace.TypeLazy = () => Namespace;
-			NullableType_Namespace.Name = "Namespace";
-			NullableType_Namespace.Documentation = null;
-			NullableType_Namespace.Kind = global::MetaDslx.Core.MetaPropertyKind.Derived;
-			NullableType_Namespace.ClassLazy = () => NullableType;
+			NonNullableType.MetaModelLazy = () => __tmp3;
+			NonNullableType.NamespaceLazy = () => __tmp2;
+			NonNullableType.Documentation = null;
+			NonNullableType.Name = "NonNullableType";
+			// NonNullableType.IsAbstract = null;
+			NonNullableType.SuperClasses.AddLazy(() => SoalType);
+			NonNullableType.Properties.AddLazy(() => NonNullableType_InnerType);
+			// NonNullableType.Constructor = null;
+			NonNullableType_InnerType.TypeLazy = () => SoalType;
+			NonNullableType_InnerType.Name = "InnerType";
+			NonNullableType_InnerType.Documentation = null;
+			// NonNullableType_InnerType.Kind = null;
+			NonNullableType_InnerType.ClassLazy = () => NonNullableType;
 			PrimitiveType.MetaModelLazy = () => __tmp3;
 			PrimitiveType.NamespaceLazy = () => __tmp2;
 			PrimitiveType.Documentation = null;
 			PrimitiveType.Name = "PrimitiveType";
 			// PrimitiveType.IsAbstract = null;
 			PrimitiveType.SuperClasses.AddLazy(() => SoalType);
-			PrimitiveType.SuperClasses.AddLazy(() => NamedElement);
+			PrimitiveType.SuperClasses.AddLazy(() => Declaration);
+			PrimitiveType.Properties.AddLazy(() => PrimitiveType_Nullable);
 			// PrimitiveType.Constructor = null;
-			__tmp21.Name = "Scope";
-			__tmp21.Documentation = null;
+			PrimitiveType_Nullable.TypeLazy = () => global::MetaDslx.Core.MetaInstance.Bool.ToMutable();
+			PrimitiveType_Nullable.Name = "Nullable";
+			PrimitiveType_Nullable.Documentation = null;
+			// PrimitiveType_Nullable.Kind = null;
+			PrimitiveType_Nullable.ClassLazy = () => PrimitiveType;
+			__tmp44.Name = "Scope";
+			__tmp44.Documentation = null;
 			Enum.MetaModelLazy = () => __tmp3;
 			Enum.NamespaceLazy = () => __tmp2;
 			Enum.Documentation = null;
 			Enum.Name = "Enum";
-			Enum.Annotations.AddLazy(() => __tmp21);
+			Enum.Annotations.AddLazy(() => __tmp44);
 			// Enum.IsAbstract = null;
 			Enum.SuperClasses.AddLazy(() => SoalType);
 			Enum.SuperClasses.AddLazy(() => Declaration);
+			Enum.Properties.AddLazy(() => Enum_BaseType);
 			Enum.Properties.AddLazy(() => Enum_EnumLiterals);
 			// Enum.Constructor = null;
-			__tmp22.Name = "ScopeEntry";
-			__tmp22.Documentation = null;
-			__tmp23.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp23.InnerTypeLazy = () => EnumLiteral;
-			Enum_EnumLiterals.Annotations.AddLazy(() => __tmp22);
-			Enum_EnumLiterals.TypeLazy = () => __tmp23;
+			__tmp45.Name = "InheritedScope";
+			__tmp45.Documentation = null;
+			Enum_BaseType.Annotations.AddLazy(() => __tmp45);
+			Enum_BaseType.TypeLazy = () => Enum;
+			Enum_BaseType.Name = "BaseType";
+			Enum_BaseType.Documentation = null;
+			// Enum_BaseType.Kind = null;
+			Enum_BaseType.ClassLazy = () => Enum;
+			__tmp46.Name = "ScopeEntry";
+			__tmp46.Documentation = null;
+			__tmp47.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp47.InnerTypeLazy = () => EnumLiteral;
+			Enum_EnumLiterals.Annotations.AddLazy(() => __tmp46);
+			Enum_EnumLiterals.TypeLazy = () => __tmp47;
 			Enum_EnumLiterals.Name = "EnumLiterals";
 			Enum_EnumLiterals.Documentation = null;
 			Enum_EnumLiterals.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
@@ -11729,37 +13535,16 @@ namespace MetaDslx.Soal.Internal
 			// EnumLiteral.IsAbstract = null;
 			EnumLiteral.SuperClasses.AddLazy(() => NamedElement);
 			EnumLiteral.SuperClasses.AddLazy(() => TypedElement);
+			EnumLiteral.SuperClasses.AddLazy(() => AnnotatedElement);
 			EnumLiteral.Properties.AddLazy(() => EnumLiteral_Enum);
 			// EnumLiteral.Constructor = null;
 			EnumLiteral_Enum.TypeLazy = () => Enum;
 			EnumLiteral_Enum.Name = "Enum";
-			EnumLiteral_Enum.Documentation = "EnumLiteral()\r\n{\r\nType = Enum;\r\n}";
+			EnumLiteral_Enum.Documentation = null;
 			// EnumLiteral_Enum.Kind = null;
 			EnumLiteral_Enum.ClassLazy = () => EnumLiteral;
 			EnumLiteral_Enum.OppositeProperties.AddLazy(() => Enum_EnumLiterals);
-			__tmp24.Name = "Scope";
-			__tmp24.Documentation = null;
-			StructuredType.MetaModelLazy = () => __tmp3;
-			StructuredType.NamespaceLazy = () => __tmp2;
-			StructuredType.Documentation = null;
-			StructuredType.Name = "StructuredType";
-			StructuredType.Annotations.AddLazy(() => __tmp24);
-			StructuredType.IsAbstract = true;
-			StructuredType.SuperClasses.AddLazy(() => SoalType);
-			StructuredType.SuperClasses.AddLazy(() => Declaration);
-			StructuredType.Properties.AddLazy(() => StructuredType_Properties);
-			// StructuredType.Constructor = null;
-			__tmp25.Name = "ScopeEntry";
-			__tmp25.Documentation = null;
-			__tmp26.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp26.InnerTypeLazy = () => Property;
-			StructuredType_Properties.Annotations.AddLazy(() => __tmp25);
-			StructuredType_Properties.TypeLazy = () => __tmp26;
-			StructuredType_Properties.Name = "Properties";
-			StructuredType_Properties.Documentation = null;
-			StructuredType_Properties.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
-			StructuredType_Properties.ClassLazy = () => StructuredType;
-			StructuredType_Properties.OppositeProperties.AddLazy(() => Property_Parent);
+			EnumLiteral_Enum.RedefinedProperties.AddLazy(() => TypedElement_Type);
 			Property.MetaModelLazy = () => __tmp3;
 			Property.NamespaceLazy = () => __tmp2;
 			Property.Documentation = null;
@@ -11767,85 +13552,61 @@ namespace MetaDslx.Soal.Internal
 			// Property.IsAbstract = null;
 			Property.SuperClasses.AddLazy(() => NamedElement);
 			Property.SuperClasses.AddLazy(() => TypedElement);
-			Property.Properties.AddLazy(() => Property_Parent);
+			Property.SuperClasses.AddLazy(() => AnnotatedElement);
 			// Property.Constructor = null;
-			Property_Parent.TypeLazy = () => StructuredType;
-			Property_Parent.Name = "Parent";
-			Property_Parent.Documentation = null;
-			// Property_Parent.Kind = null;
-			Property_Parent.ClassLazy = () => Property;
-			Property_Parent.OppositeProperties.AddLazy(() => StructuredType_Properties);
+			__tmp48.Name = "Scope";
+			__tmp48.Documentation = null;
 			Struct.MetaModelLazy = () => __tmp3;
 			Struct.NamespaceLazy = () => __tmp2;
 			Struct.Documentation = null;
 			Struct.Name = "Struct";
+			Struct.Annotations.AddLazy(() => __tmp48);
 			// Struct.IsAbstract = null;
-			Struct.SuperClasses.AddLazy(() => StructuredType);
+			Struct.SuperClasses.AddLazy(() => SoalType);
+			Struct.SuperClasses.AddLazy(() => Declaration);
 			Struct.Properties.AddLazy(() => Struct_BaseType);
+			Struct.Properties.AddLazy(() => Struct_Properties);
 			// Struct.Constructor = null;
-			__tmp27.Name = "InheritedScope";
-			__tmp27.Documentation = null;
-			Struct_BaseType.Annotations.AddLazy(() => __tmp27);
+			__tmp49.Name = "InheritedScope";
+			__tmp49.Documentation = null;
+			Struct_BaseType.Annotations.AddLazy(() => __tmp49);
 			Struct_BaseType.TypeLazy = () => Struct;
 			Struct_BaseType.Name = "BaseType";
 			Struct_BaseType.Documentation = null;
 			// Struct_BaseType.Kind = null;
 			Struct_BaseType.ClassLazy = () => Struct;
-			Exception.MetaModelLazy = () => __tmp3;
-			Exception.NamespaceLazy = () => __tmp2;
-			Exception.Documentation = null;
-			Exception.Name = "Exception";
-			// Exception.IsAbstract = null;
-			Exception.SuperClasses.AddLazy(() => StructuredType);
-			Exception.Properties.AddLazy(() => Exception_BaseType);
-			// Exception.Constructor = null;
-			__tmp28.Name = "InheritedScope";
-			__tmp28.Documentation = null;
-			Exception_BaseType.Annotations.AddLazy(() => __tmp28);
-			Exception_BaseType.TypeLazy = () => Exception;
-			Exception_BaseType.Name = "BaseType";
-			Exception_BaseType.Documentation = null;
-			// Exception_BaseType.Kind = null;
-			Exception_BaseType.ClassLazy = () => Exception;
-			Entity.MetaModelLazy = () => __tmp3;
-			Entity.NamespaceLazy = () => __tmp2;
-			Entity.Documentation = null;
-			Entity.Name = "Entity";
-			// Entity.IsAbstract = null;
-			Entity.SuperClasses.AddLazy(() => StructuredType);
-			Entity.Properties.AddLazy(() => Entity_BaseType);
-			// Entity.Constructor = null;
-			__tmp29.Name = "InheritedScope";
-			__tmp29.Documentation = null;
-			Entity_BaseType.Annotations.AddLazy(() => __tmp29);
-			Entity_BaseType.TypeLazy = () => Entity;
-			Entity_BaseType.Name = "BaseType";
-			Entity_BaseType.Documentation = null;
-			// Entity_BaseType.Kind = null;
-			Entity_BaseType.ClassLazy = () => Entity;
-			__tmp30.Name = "Scope";
-			__tmp30.Documentation = null;
+			__tmp50.Name = "ScopeEntry";
+			__tmp50.Documentation = null;
+			__tmp51.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp51.InnerTypeLazy = () => Property;
+			Struct_Properties.Annotations.AddLazy(() => __tmp50);
+			Struct_Properties.TypeLazy = () => __tmp51;
+			Struct_Properties.Name = "Properties";
+			Struct_Properties.Documentation = null;
+			Struct_Properties.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
+			Struct_Properties.ClassLazy = () => Struct;
+			__tmp52.Name = "Scope";
+			__tmp52.Documentation = null;
 			Interface.MetaModelLazy = () => __tmp3;
 			Interface.NamespaceLazy = () => __tmp2;
 			Interface.Documentation = null;
 			Interface.Name = "Interface";
-			Interface.Annotations.AddLazy(() => __tmp30);
+			Interface.Annotations.AddLazy(() => __tmp52);
 			// Interface.IsAbstract = null;
 			Interface.SuperClasses.AddLazy(() => SoalType);
 			Interface.SuperClasses.AddLazy(() => Declaration);
 			Interface.Properties.AddLazy(() => Interface_Operations);
 			// Interface.Constructor = null;
-			__tmp31.Name = "ScopeEntry";
-			__tmp31.Documentation = null;
-			__tmp32.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp32.InnerTypeLazy = () => Operation;
-			Interface_Operations.Annotations.AddLazy(() => __tmp31);
-			Interface_Operations.TypeLazy = () => __tmp32;
+			__tmp53.Name = "ScopeEntry";
+			__tmp53.Documentation = null;
+			__tmp54.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp54.InnerTypeLazy = () => Operation;
+			Interface_Operations.Annotations.AddLazy(() => __tmp53);
+			Interface_Operations.TypeLazy = () => __tmp54;
 			Interface_Operations.Name = "Operations";
 			Interface_Operations.Documentation = null;
 			Interface_Operations.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
 			Interface_Operations.ClassLazy = () => Interface;
-			Interface_Operations.OppositeProperties.AddLazy(() => Operation_Parent);
 			Database.MetaModelLazy = () => __tmp3;
 			Database.NamespaceLazy = () => __tmp2;
 			Database.Documentation = null;
@@ -11854,12 +13615,12 @@ namespace MetaDslx.Soal.Internal
 			Database.SuperClasses.AddLazy(() => Interface);
 			Database.Properties.AddLazy(() => Database_Entities);
 			// Database.Constructor = null;
-			__tmp33.Name = "ScopeEntry";
-			__tmp33.Documentation = null;
-			__tmp34.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp34.InnerTypeLazy = () => Entity;
-			Database_Entities.Annotations.AddLazy(() => __tmp33);
-			Database_Entities.TypeLazy = () => __tmp34;
+			__tmp55.Name = "ScopeEntry";
+			__tmp55.Documentation = null;
+			__tmp56.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp56.InnerTypeLazy = () => Struct;
+			Database_Entities.Annotations.AddLazy(() => __tmp55);
+			Database_Entities.TypeLazy = () => __tmp56;
 			Database_Entities.Name = "Entities";
 			Database_Entities.Documentation = null;
 			// Database_Entities.Kind = null;
@@ -11870,79 +13631,80 @@ namespace MetaDslx.Soal.Internal
 			Operation.Name = "Operation";
 			// Operation.IsAbstract = null;
 			Operation.SuperClasses.AddLazy(() => NamedElement);
-			Operation.Properties.AddLazy(() => Operation_Parent);
-			Operation.Properties.AddLazy(() => Operation_IsOneway);
-			Operation.Properties.AddLazy(() => Operation_ReturnType);
+			Operation.SuperClasses.AddLazy(() => AnnotatedElement);
+			Operation.Properties.AddLazy(() => Operation_Action);
 			Operation.Properties.AddLazy(() => Operation_Parameters);
+			Operation.Properties.AddLazy(() => Operation_Result);
 			Operation.Properties.AddLazy(() => Operation_Exceptions);
 			// Operation.Constructor = null;
-			Operation_Parent.TypeLazy = () => Interface;
-			Operation_Parent.Name = "Parent";
-			Operation_Parent.Documentation = null;
-			// Operation_Parent.Kind = null;
-			Operation_Parent.ClassLazy = () => Operation;
-			Operation_Parent.OppositeProperties.AddLazy(() => Interface_Operations);
-			Operation_IsOneway.TypeLazy = () => global::MetaDslx.Core.MetaInstance.Bool.ToMutable();
-			Operation_IsOneway.Name = "IsOneway";
-			Operation_IsOneway.Documentation = null;
-			// Operation_IsOneway.Kind = null;
-			Operation_IsOneway.ClassLazy = () => Operation;
-			Operation_ReturnType.TypeLazy = () => SoalType;
-			Operation_ReturnType.Name = "ReturnType";
-			Operation_ReturnType.Documentation = null;
-			// Operation_ReturnType.Kind = null;
-			Operation_ReturnType.ClassLazy = () => Operation;
-			__tmp35.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp35.InnerTypeLazy = () => Parameter;
-			Operation_Parameters.TypeLazy = () => __tmp35;
+			Operation_Action.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			Operation_Action.Name = "Action";
+			Operation_Action.Documentation = null;
+			// Operation_Action.Kind = null;
+			Operation_Action.ClassLazy = () => Operation;
+			__tmp57.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp57.InnerTypeLazy = () => InputParameter;
+			Operation_Parameters.TypeLazy = () => __tmp57;
 			Operation_Parameters.Name = "Parameters";
 			Operation_Parameters.Documentation = null;
 			Operation_Parameters.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
 			Operation_Parameters.ClassLazy = () => Operation;
-			Operation_Parameters.OppositeProperties.AddLazy(() => Parameter_Operation);
-			__tmp36.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp36.InnerTypeLazy = () => Exception;
-			Operation_Exceptions.TypeLazy = () => __tmp36;
+			Operation_Result.TypeLazy = () => OutputParameter;
+			Operation_Result.Name = "Result";
+			Operation_Result.Documentation = null;
+			Operation_Result.Kind = global::MetaDslx.Core.MetaPropertyKind.Readonly;
+			Operation_Result.ClassLazy = () => Operation;
+			__tmp58.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp58.InnerTypeLazy = () => Struct;
+			Operation_Exceptions.TypeLazy = () => __tmp58;
 			Operation_Exceptions.Name = "Exceptions";
 			Operation_Exceptions.Documentation = null;
 			// Operation_Exceptions.Kind = null;
 			Operation_Exceptions.ClassLazy = () => Operation;
-			Parameter.MetaModelLazy = () => __tmp3;
-			Parameter.NamespaceLazy = () => __tmp2;
-			Parameter.Documentation = null;
-			Parameter.Name = "Parameter";
-			// Parameter.IsAbstract = null;
-			Parameter.SuperClasses.AddLazy(() => NamedElement);
-			Parameter.SuperClasses.AddLazy(() => TypedElement);
-			Parameter.Properties.AddLazy(() => Parameter_Operation);
-			// Parameter.Constructor = null;
-			Parameter_Operation.TypeLazy = () => Operation;
-			Parameter_Operation.Name = "Operation";
-			Parameter_Operation.Documentation = null;
-			// Parameter_Operation.Kind = null;
-			Parameter_Operation.ClassLazy = () => Parameter;
-			Parameter_Operation.OppositeProperties.AddLazy(() => Operation_Parameters);
-			__tmp37.Name = "Scope";
-			__tmp37.Documentation = null;
+			InputParameter.MetaModelLazy = () => __tmp3;
+			InputParameter.NamespaceLazy = () => __tmp2;
+			InputParameter.Documentation = null;
+			InputParameter.Name = "InputParameter";
+			// InputParameter.IsAbstract = null;
+			InputParameter.SuperClasses.AddLazy(() => NamedElement);
+			InputParameter.SuperClasses.AddLazy(() => TypedElement);
+			InputParameter.SuperClasses.AddLazy(() => AnnotatedElement);
+			// InputParameter.Constructor = null;
+			OutputParameter.MetaModelLazy = () => __tmp3;
+			OutputParameter.NamespaceLazy = () => __tmp2;
+			OutputParameter.Documentation = null;
+			OutputParameter.Name = "OutputParameter";
+			// OutputParameter.IsAbstract = null;
+			OutputParameter.SuperClasses.AddLazy(() => TypedElement);
+			OutputParameter.SuperClasses.AddLazy(() => AnnotatedElement);
+			OutputParameter.Properties.AddLazy(() => OutputParameter_IsOneway);
+			// OutputParameter.Constructor = null;
+			OutputParameter_IsOneway.TypeLazy = () => global::MetaDslx.Core.MetaInstance.Bool.ToMutable();
+			OutputParameter_IsOneway.Name = "IsOneway";
+			OutputParameter_IsOneway.Documentation = null;
+			// OutputParameter_IsOneway.Kind = null;
+			OutputParameter_IsOneway.ClassLazy = () => OutputParameter;
+			__tmp59.Name = "Scope";
+			__tmp59.Documentation = null;
 			Component.MetaModelLazy = () => __tmp3;
 			Component.NamespaceLazy = () => __tmp2;
 			Component.Documentation = null;
 			Component.Name = "Component";
-			Component.Annotations.AddLazy(() => __tmp37);
+			Component.Annotations.AddLazy(() => __tmp59);
 			// Component.IsAbstract = null;
 			Component.SuperClasses.AddLazy(() => Declaration);
-			Component.SuperClasses.AddLazy(() => StructuredType);
 			Component.Properties.AddLazy(() => Component_BaseComponent);
 			Component.Properties.AddLazy(() => Component_IsAbstract);
+			Component.Properties.AddLazy(() => Component_Ports);
 			Component.Properties.AddLazy(() => Component_Services);
 			Component.Properties.AddLazy(() => Component_References);
 			Component.Properties.AddLazy(() => Component_Properties);
 			Component.Properties.AddLazy(() => Component_Implementation);
 			Component.Properties.AddLazy(() => Component_Language);
 			// Component.Constructor = null;
-			__tmp38.Name = "InheritedScope";
-			__tmp38.Documentation = null;
-			Component_BaseComponent.Annotations.AddLazy(() => __tmp38);
+			__tmp60.Name = "InheritedScope";
+			__tmp60.Documentation = null;
+			Component_BaseComponent.Annotations.AddLazy(() => __tmp60);
 			Component_BaseComponent.TypeLazy = () => Component;
 			Component_BaseComponent.Name = "BaseComponent";
 			Component_BaseComponent.Documentation = null;
@@ -11953,32 +13715,41 @@ namespace MetaDslx.Soal.Internal
 			Component_IsAbstract.Documentation = null;
 			// Component_IsAbstract.Kind = null;
 			Component_IsAbstract.ClassLazy = () => Component;
-			__tmp39.Name = "ScopeEntry";
-			__tmp39.Documentation = null;
-			__tmp40.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp40.InnerTypeLazy = () => Service;
-			Component_Services.Annotations.AddLazy(() => __tmp39);
-			Component_Services.TypeLazy = () => __tmp40;
+			__tmp61.Name = "ScopeEntry";
+			__tmp61.Documentation = null;
+			__tmp62.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp62.InnerTypeLazy = () => Port;
+			Component_Ports.Annotations.AddLazy(() => __tmp61);
+			Component_Ports.TypeLazy = () => __tmp62;
+			Component_Ports.Name = "Ports";
+			Component_Ports.Documentation = null;
+			Component_Ports.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
+			Component_Ports.ClassLazy = () => Component;
+			Component_Ports.OppositeProperties.AddLazy(() => Port_Component);
+			Component_Ports.SubsettingProperties.AddLazy(() => Component_Services);
+			Component_Ports.SubsettingProperties.AddLazy(() => Component_References);
+			__tmp63.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp63.InnerTypeLazy = () => Service;
+			Component_Services.TypeLazy = () => __tmp63;
 			Component_Services.Name = "Services";
 			Component_Services.Documentation = null;
 			Component_Services.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
 			Component_Services.ClassLazy = () => Component;
-			__tmp41.Name = "ScopeEntry";
-			__tmp41.Documentation = null;
-			__tmp42.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp42.InnerTypeLazy = () => Reference;
-			Component_References.Annotations.AddLazy(() => __tmp41);
-			Component_References.TypeLazy = () => __tmp42;
+			Component_Services.SubsettedProperties.AddLazy(() => Component_Ports);
+			__tmp64.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp64.InnerTypeLazy = () => Reference;
+			Component_References.TypeLazy = () => __tmp64;
 			Component_References.Name = "References";
 			Component_References.Documentation = null;
 			Component_References.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
 			Component_References.ClassLazy = () => Component;
-			__tmp43.Name = "ScopeEntry";
-			__tmp43.Documentation = null;
-			__tmp44.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp44.InnerTypeLazy = () => Property;
-			Component_Properties.Annotations.AddLazy(() => __tmp43);
-			Component_Properties.TypeLazy = () => __tmp44;
+			Component_References.SubsettedProperties.AddLazy(() => Component_Ports);
+			__tmp65.Name = "ScopeEntry";
+			__tmp65.Documentation = null;
+			__tmp66.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp66.InnerTypeLazy = () => Property;
+			Component_Properties.Annotations.AddLazy(() => __tmp65);
+			Component_Properties.TypeLazy = () => __tmp66;
 			Component_Properties.Name = "Properties";
 			Component_Properties.Documentation = null;
 			Component_Properties.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
@@ -12002,19 +13773,19 @@ namespace MetaDslx.Soal.Internal
 			Composite.Properties.AddLazy(() => Composite_Components);
 			Composite.Properties.AddLazy(() => Composite_Wires);
 			// Composite.Constructor = null;
-			__tmp45.Name = "ScopeEntry";
-			__tmp45.Documentation = null;
-			__tmp46.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp46.InnerTypeLazy = () => Component;
-			Composite_Components.Annotations.AddLazy(() => __tmp45);
-			Composite_Components.TypeLazy = () => __tmp46;
+			__tmp67.Name = "ScopeEntry";
+			__tmp67.Documentation = null;
+			__tmp68.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp68.InnerTypeLazy = () => Component;
+			Composite_Components.Annotations.AddLazy(() => __tmp67);
+			Composite_Components.TypeLazy = () => __tmp68;
 			Composite_Components.Name = "Components";
 			Composite_Components.Documentation = null;
 			// Composite_Components.Kind = null;
 			Composite_Components.ClassLazy = () => Composite;
-			__tmp47.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp47.InnerTypeLazy = () => Wire;
-			Composite_Wires.TypeLazy = () => __tmp47;
+			__tmp69.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp69.InnerTypeLazy = () => Wire;
+			Composite_Wires.TypeLazy = () => __tmp69;
 			Composite_Wires.Name = "Wires";
 			Composite_Wires.Documentation = null;
 			Composite_Wires.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
@@ -12034,62 +13805,69 @@ namespace MetaDslx.Soal.Internal
 			Wire.Properties.AddLazy(() => Wire_Source);
 			Wire.Properties.AddLazy(() => Wire_Target);
 			// Wire.Constructor = null;
-			Wire_Source.TypeLazy = () => InterfaceReference;
+			Wire_Source.TypeLazy = () => Port;
 			Wire_Source.Name = "Source";
 			Wire_Source.Documentation = null;
 			// Wire_Source.Kind = null;
 			Wire_Source.ClassLazy = () => Wire;
-			Wire_Target.TypeLazy = () => InterfaceReference;
+			Wire_Target.TypeLazy = () => Port;
 			Wire_Target.Name = "Target";
 			Wire_Target.Documentation = null;
 			// Wire_Target.Kind = null;
 			Wire_Target.ClassLazy = () => Wire;
-			InterfaceReference.MetaModelLazy = () => __tmp3;
-			InterfaceReference.NamespaceLazy = () => __tmp2;
-			InterfaceReference.Documentation = null;
-			InterfaceReference.Name = "InterfaceReference";
-			// InterfaceReference.IsAbstract = null;
-			InterfaceReference.Properties.AddLazy(() => InterfaceReference_Name);
-			InterfaceReference.Properties.AddLazy(() => InterfaceReference_OptionalName);
-			InterfaceReference.Properties.AddLazy(() => InterfaceReference_Interface);
-			InterfaceReference.Properties.AddLazy(() => InterfaceReference_Binding);
-			// InterfaceReference.Constructor = null;
-			__tmp48.Name = "Name";
-			__tmp48.Documentation = null;
-			InterfaceReference_Name.Annotations.AddLazy(() => __tmp48);
-			InterfaceReference_Name.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
-			InterfaceReference_Name.Name = "Name";
-			InterfaceReference_Name.Documentation = "InterfaceReference()\r\n{\r\n// this.Name = this.OptionalName != \"\" ? this.OptionalName : this.Interface.Name;\r\n}";
-			InterfaceReference_Name.Kind = global::MetaDslx.Core.MetaPropertyKind.Derived;
-			InterfaceReference_Name.ClassLazy = () => InterfaceReference;
-			InterfaceReference_OptionalName.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
-			InterfaceReference_OptionalName.Name = "OptionalName";
-			InterfaceReference_OptionalName.Documentation = null;
-			// InterfaceReference_OptionalName.Kind = null;
-			InterfaceReference_OptionalName.ClassLazy = () => InterfaceReference;
-			InterfaceReference_Interface.TypeLazy = () => Interface;
-			InterfaceReference_Interface.Name = "Interface";
-			InterfaceReference_Interface.Documentation = null;
-			// InterfaceReference_Interface.Kind = null;
-			InterfaceReference_Interface.ClassLazy = () => InterfaceReference;
-			InterfaceReference_Binding.TypeLazy = () => Binding;
-			InterfaceReference_Binding.Name = "Binding";
-			InterfaceReference_Binding.Documentation = null;
-			// InterfaceReference_Binding.Kind = null;
-			InterfaceReference_Binding.ClassLazy = () => InterfaceReference;
+			Port.MetaModelLazy = () => __tmp3;
+			Port.NamespaceLazy = () => __tmp2;
+			Port.Documentation = null;
+			Port.Name = "Port";
+			// Port.IsAbstract = null;
+			Port.Properties.AddLazy(() => Port_Component);
+			Port.Properties.AddLazy(() => Port_Name);
+			Port.Properties.AddLazy(() => Port_OptionalName);
+			Port.Properties.AddLazy(() => Port_Interface);
+			Port.Properties.AddLazy(() => Port_Binding);
+			// Port.Constructor = null;
+			Port_Component.TypeLazy = () => Component;
+			Port_Component.Name = "Component";
+			Port_Component.Documentation = null;
+			// Port_Component.Kind = null;
+			Port_Component.ClassLazy = () => Port;
+			Port_Component.OppositeProperties.AddLazy(() => Component_Ports);
+			__tmp70.Name = "Name";
+			__tmp70.Documentation = null;
+			Port_Name.Annotations.AddLazy(() => __tmp70);
+			Port_Name.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			Port_Name.Name = "Name";
+			Port_Name.Documentation = null;
+			Port_Name.Kind = global::MetaDslx.Core.MetaPropertyKind.Derived;
+			Port_Name.ClassLazy = () => Port;
+			Port_OptionalName.TypeLazy = () => global::MetaDslx.Core.MetaInstance.String.ToMutable();
+			Port_OptionalName.Name = "OptionalName";
+			Port_OptionalName.Documentation = null;
+			// Port_OptionalName.Kind = null;
+			Port_OptionalName.ClassLazy = () => Port;
+			Port_Interface.TypeLazy = () => Interface;
+			Port_Interface.Name = "Interface";
+			Port_Interface.Documentation = null;
+			// Port_Interface.Kind = null;
+			Port_Interface.ClassLazy = () => Port;
+			Port_Binding.TypeLazy = () => Binding;
+			Port_Binding.Name = "Binding";
+			Port_Binding.Documentation = null;
+			// Port_Binding.Kind = null;
+			Port_Binding.ClassLazy = () => Port;
 			Service.MetaModelLazy = () => __tmp3;
 			Service.NamespaceLazy = () => __tmp2;
 			Service.Documentation = null;
 			Service.Name = "Service";
 			// Service.IsAbstract = null;
-			Service.SuperClasses.AddLazy(() => InterfaceReference);
+			Service.SuperClasses.AddLazy(() => Port);
 			// Service.Constructor = null;
 			Reference.MetaModelLazy = () => __tmp3;
 			Reference.NamespaceLazy = () => __tmp2;
 			Reference.Documentation = null;
 			Reference.Name = "Reference";
 			// Reference.IsAbstract = null;
-			Reference.SuperClasses.AddLazy(() => InterfaceReference);
+			Reference.SuperClasses.AddLazy(() => Port);
 			// Reference.Constructor = null;
 			Implementation.MetaModelLazy = () => __tmp3;
 			Implementation.NamespaceLazy = () => __tmp2;
@@ -12114,16 +13892,16 @@ namespace MetaDslx.Soal.Internal
 			Deployment.Properties.AddLazy(() => Deployment_Environments);
 			Deployment.Properties.AddLazy(() => Deployment_Wires);
 			// Deployment.Constructor = null;
-			__tmp49.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp49.InnerTypeLazy = () => Environment;
-			Deployment_Environments.TypeLazy = () => __tmp49;
+			__tmp71.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp71.InnerTypeLazy = () => Environment;
+			Deployment_Environments.TypeLazy = () => __tmp71;
 			Deployment_Environments.Name = "Environments";
 			Deployment_Environments.Documentation = null;
 			Deployment_Environments.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
 			Deployment_Environments.ClassLazy = () => Deployment;
-			__tmp50.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp50.InnerTypeLazy = () => Wire;
-			Deployment_Wires.TypeLazy = () => __tmp50;
+			__tmp72.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp72.InnerTypeLazy = () => Wire;
+			Deployment_Wires.TypeLazy = () => __tmp72;
 			Deployment_Wires.Name = "Wires";
 			Deployment_Wires.Documentation = null;
 			Deployment_Wires.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
@@ -12143,16 +13921,16 @@ namespace MetaDslx.Soal.Internal
 			Environment_Runtime.Documentation = null;
 			Environment_Runtime.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
 			Environment_Runtime.ClassLazy = () => Environment;
-			__tmp51.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp51.InnerTypeLazy = () => Database;
-			Environment_Databases.TypeLazy = () => __tmp51;
+			__tmp73.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp73.InnerTypeLazy = () => Database;
+			Environment_Databases.TypeLazy = () => __tmp73;
 			Environment_Databases.Name = "Databases";
 			Environment_Databases.Documentation = null;
 			// Environment_Databases.Kind = null;
 			Environment_Databases.ClassLazy = () => Environment;
-			__tmp52.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp52.InnerTypeLazy = () => Assembly;
-			Environment_Assemblies.TypeLazy = () => __tmp52;
+			__tmp74.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp74.InnerTypeLazy = () => Assembly;
+			Environment_Assemblies.TypeLazy = () => __tmp74;
 			Environment_Assemblies.Name = "Assemblies";
 			Environment_Assemblies.Documentation = null;
 			// Environment_Assemblies.Kind = null;
@@ -12179,16 +13957,16 @@ namespace MetaDslx.Soal.Internal
 			Binding_Transport.Documentation = null;
 			Binding_Transport.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
 			Binding_Transport.ClassLazy = () => Binding;
-			__tmp53.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp53.InnerTypeLazy = () => EncodingBindingElement;
-			Binding_Encodings.TypeLazy = () => __tmp53;
+			__tmp75.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp75.InnerTypeLazy = () => EncodingBindingElement;
+			Binding_Encodings.TypeLazy = () => __tmp75;
 			Binding_Encodings.Name = "Encodings";
 			Binding_Encodings.Documentation = null;
 			Binding_Encodings.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
 			Binding_Encodings.ClassLazy = () => Binding;
-			__tmp54.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
-			__tmp54.InnerTypeLazy = () => ProtocolBindingElement;
-			Binding_Protocols.TypeLazy = () => __tmp54;
+			__tmp76.Kind = global::MetaDslx.Core.MetaCollectionKind.List;
+			__tmp76.InnerTypeLazy = () => ProtocolBindingElement;
+			Binding_Protocols.TypeLazy = () => __tmp76;
 			Binding_Protocols.Name = "Protocols";
 			Binding_Protocols.Documentation = null;
 			Binding_Protocols.Kind = global::MetaDslx.Core.MetaPropertyKind.Containment;
@@ -12252,7 +14030,19 @@ namespace MetaDslx.Soal.Internal
 			HttpTransportBindingElement.Name = "HttpTransportBindingElement";
 			// HttpTransportBindingElement.IsAbstract = null;
 			HttpTransportBindingElement.SuperClasses.AddLazy(() => TransportBindingElement);
+			HttpTransportBindingElement.Properties.AddLazy(() => HttpTransportBindingElement_Ssl);
+			HttpTransportBindingElement.Properties.AddLazy(() => HttpTransportBindingElement_ClientAuthentication);
 			// HttpTransportBindingElement.Constructor = null;
+			HttpTransportBindingElement_Ssl.TypeLazy = () => global::MetaDslx.Core.MetaInstance.Bool.ToMutable();
+			HttpTransportBindingElement_Ssl.Name = "Ssl";
+			HttpTransportBindingElement_Ssl.Documentation = null;
+			// HttpTransportBindingElement_Ssl.Kind = null;
+			HttpTransportBindingElement_Ssl.ClassLazy = () => HttpTransportBindingElement;
+			HttpTransportBindingElement_ClientAuthentication.TypeLazy = () => global::MetaDslx.Core.MetaInstance.Bool.ToMutable();
+			HttpTransportBindingElement_ClientAuthentication.Name = "ClientAuthentication";
+			HttpTransportBindingElement_ClientAuthentication.Documentation = null;
+			// HttpTransportBindingElement_ClientAuthentication.Kind = null;
+			HttpTransportBindingElement_ClientAuthentication.ClassLazy = () => HttpTransportBindingElement;
 			RestTransportBindingElement.MetaModelLazy = () => __tmp3;
 			RestTransportBindingElement.NamespaceLazy = () => __tmp2;
 			RestTransportBindingElement.Documentation = null;
@@ -12271,35 +14061,65 @@ namespace MetaDslx.Soal.Internal
 			SoapVersion.NamespaceLazy = () => __tmp2;
 			SoapVersion.Documentation = null;
 			SoapVersion.Name = "SoapVersion";
-			SoapVersion.EnumLiterals.AddLazy(() => __tmp55);
-			SoapVersion.EnumLiterals.AddLazy(() => __tmp56);
-			__tmp55.TypeLazy = () => SoapVersion;
-			__tmp55.Name = "Soap11";
-			__tmp55.Documentation = null;
-			__tmp55.EnumLazy = () => SoapVersion;
-			__tmp56.TypeLazy = () => SoapVersion;
-			__tmp56.Name = "Soap12";
-			__tmp56.Documentation = null;
-			__tmp56.EnumLazy = () => SoapVersion;
+			SoapVersion.EnumLiterals.AddLazy(() => __tmp77);
+			SoapVersion.EnumLiterals.AddLazy(() => __tmp78);
+			__tmp77.TypeLazy = () => SoapVersion;
+			__tmp77.Name = "Soap11";
+			__tmp77.Documentation = null;
+			__tmp77.EnumLazy = () => SoapVersion;
+			__tmp78.TypeLazy = () => SoapVersion;
+			__tmp78.Name = "Soap12";
+			__tmp78.Documentation = null;
+			__tmp78.EnumLazy = () => SoapVersion;
+			SoapEncodingStyle.MetaModelLazy = () => __tmp3;
+			SoapEncodingStyle.NamespaceLazy = () => __tmp2;
+			SoapEncodingStyle.Documentation = null;
+			SoapEncodingStyle.Name = "SoapEncodingStyle";
+			SoapEncodingStyle.EnumLiterals.AddLazy(() => __tmp79);
+			SoapEncodingStyle.EnumLiterals.AddLazy(() => __tmp80);
+			SoapEncodingStyle.EnumLiterals.AddLazy(() => __tmp81);
+			SoapEncodingStyle.EnumLiterals.AddLazy(() => __tmp82);
+			__tmp79.TypeLazy = () => SoapEncodingStyle;
+			__tmp79.Name = "DocumentWrapped";
+			__tmp79.Documentation = null;
+			__tmp79.EnumLazy = () => SoapEncodingStyle;
+			__tmp80.TypeLazy = () => SoapEncodingStyle;
+			__tmp80.Name = "DocumentLiteral";
+			__tmp80.Documentation = null;
+			__tmp80.EnumLazy = () => SoapEncodingStyle;
+			__tmp81.TypeLazy = () => SoapEncodingStyle;
+			__tmp81.Name = "RpcLiteral";
+			__tmp81.Documentation = null;
+			__tmp81.EnumLazy = () => SoapEncodingStyle;
+			__tmp82.TypeLazy = () => SoapEncodingStyle;
+			__tmp82.Name = "RpcEncoded";
+			__tmp82.Documentation = null;
+			__tmp82.EnumLazy = () => SoapEncodingStyle;
 			SoapEncodingBindingElement.MetaModelLazy = () => __tmp3;
 			SoapEncodingBindingElement.NamespaceLazy = () => __tmp2;
 			SoapEncodingBindingElement.Documentation = null;
 			SoapEncodingBindingElement.Name = "SoapEncodingBindingElement";
 			// SoapEncodingBindingElement.IsAbstract = null;
 			SoapEncodingBindingElement.SuperClasses.AddLazy(() => EncodingBindingElement);
+			SoapEncodingBindingElement.Properties.AddLazy(() => SoapEncodingBindingElement_Style);
 			SoapEncodingBindingElement.Properties.AddLazy(() => SoapEncodingBindingElement_Version);
-			SoapEncodingBindingElement.Properties.AddLazy(() => SoapEncodingBindingElement_MtomEnabled);
+			SoapEncodingBindingElement.Properties.AddLazy(() => SoapEncodingBindingElement_Mtom);
 			// SoapEncodingBindingElement.Constructor = null;
+			SoapEncodingBindingElement_Style.TypeLazy = () => SoapEncodingStyle;
+			SoapEncodingBindingElement_Style.Name = "Style";
+			SoapEncodingBindingElement_Style.Documentation = null;
+			// SoapEncodingBindingElement_Style.Kind = null;
+			SoapEncodingBindingElement_Style.ClassLazy = () => SoapEncodingBindingElement;
 			SoapEncodingBindingElement_Version.TypeLazy = () => SoapVersion;
 			SoapEncodingBindingElement_Version.Name = "Version";
 			SoapEncodingBindingElement_Version.Documentation = null;
 			// SoapEncodingBindingElement_Version.Kind = null;
 			SoapEncodingBindingElement_Version.ClassLazy = () => SoapEncodingBindingElement;
-			SoapEncodingBindingElement_MtomEnabled.TypeLazy = () => global::MetaDslx.Core.MetaInstance.Bool.ToMutable();
-			SoapEncodingBindingElement_MtomEnabled.Name = "MtomEnabled";
-			SoapEncodingBindingElement_MtomEnabled.Documentation = null;
-			// SoapEncodingBindingElement_MtomEnabled.Kind = null;
-			SoapEncodingBindingElement_MtomEnabled.ClassLazy = () => SoapEncodingBindingElement;
+			SoapEncodingBindingElement_Mtom.TypeLazy = () => global::MetaDslx.Core.MetaInstance.Bool.ToMutable();
+			SoapEncodingBindingElement_Mtom.Name = "Mtom";
+			SoapEncodingBindingElement_Mtom.Documentation = null;
+			// SoapEncodingBindingElement_Mtom.Kind = null;
+			SoapEncodingBindingElement_Mtom.ClassLazy = () => SoapEncodingBindingElement;
 			XmlEncodingBindingElement.MetaModelLazy = () => __tmp3;
 			XmlEncodingBindingElement.NamespaceLazy = () => __tmp2;
 			XmlEncodingBindingElement.Documentation = null;
@@ -12349,6 +14169,136 @@ namespace MetaDslx.Soal.Internal
 		internal virtual void SoalBuilderInstance(SoalBuilderInstance _this)
 		{
 		}
+	
+		/// <summary>
+		/// Implements the constructor: AnnotatedElement()
+		/// </summary>
+		public virtual void AnnotatedElement(AnnotatedElementBuilder _this)
+		{
+			this.CallAnnotatedElementSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of AnnotatedElement
+		/// </summary>
+		protected virtual void CallAnnotatedElementSuperConstructors(AnnotatedElementBuilder _this)
+		{
+		}
+	
+		/// <summary>
+		/// Implements the operation: AnnotatedElement.HasAnnotation()
+		/// </summary>
+		public virtual bool AnnotatedElement_HasAnnotation(AnnotatedElement _this, string name)
+		{
+			throw new NotImplementedException();
+		}
+	
+		/// <summary>
+		/// Implements the operation: AnnotatedElement.GetAnnotation()
+		/// </summary>
+		public virtual Annotation AnnotatedElement_GetAnnotation(AnnotatedElement _this, string name)
+		{
+			throw new NotImplementedException();
+		}
+	
+		/// <summary>
+		/// Implements the operation: AnnotatedElement.GetAnnotations()
+		/// </summary>
+		public virtual global::MetaDslx.Core.ImmutableModelList<Annotation> AnnotatedElement_GetAnnotations(AnnotatedElement _this, string name)
+		{
+			throw new NotImplementedException();
+		}
+	
+		/// <summary>
+		/// Implements the operation: AnnotatedElement.HasAnnotationProperty()
+		/// </summary>
+		public virtual bool AnnotatedElement_HasAnnotationProperty(AnnotatedElement _this, string annotationName, string propertyName)
+		{
+			throw new NotImplementedException();
+		}
+	
+		/// <summary>
+		/// Implements the operation: AnnotatedElement.GetAnnotationPropertyValue()
+		/// </summary>
+		public virtual object AnnotatedElement_GetAnnotationPropertyValue(AnnotatedElement _this, string annotationName, string propertyName)
+		{
+			throw new NotImplementedException();
+		}
+	
+	
+		/// <summary>
+		/// Implements the constructor: Annotation()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>NamedElement</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>NamedElement</li>
+		/// </ul>
+		public virtual void Annotation(AnnotationBuilder _this)
+		{
+			this.CallAnnotationSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of Annotation
+		/// </summary>
+		protected virtual void CallAnnotationSuperConstructors(AnnotationBuilder _this)
+		{
+			this.NamedElement(_this);
+		}
+	
+		/// <summary>
+		/// Implements the operation: Annotation.HasProperty()
+		/// </summary>
+		public virtual bool Annotation_HasProperty(Annotation _this, string name)
+		{
+			throw new NotImplementedException();
+		}
+	
+		/// <summary>
+		/// Implements the operation: Annotation.GetProperty()
+		/// </summary>
+		public virtual AnnotationProperty Annotation_GetProperty(Annotation _this, string name)
+		{
+			throw new NotImplementedException();
+		}
+	
+		/// <summary>
+		/// Implements the operation: Annotation.GetPropertyValue()
+		/// </summary>
+		public virtual object Annotation_GetPropertyValue(Annotation _this, string name)
+		{
+			throw new NotImplementedException();
+		}
+	
+	
+		/// <summary>
+		/// Implements the constructor: AnnotationProperty()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>NamedElement</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>NamedElement</li>
+		/// </ul>
+		public virtual void AnnotationProperty(AnnotationPropertyBuilder _this)
+		{
+			this.CallAnnotationPropertySuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of AnnotationProperty
+		/// </summary>
+		protected virtual void CallAnnotationPropertySuperConstructors(AnnotationPropertyBuilder _this)
+		{
+			this.NamedElement(_this);
+		}
+	
 	
 		/// <summary>
 		/// Implements the constructor: NamedElement()
@@ -12407,8 +14357,13 @@ namespace MetaDslx.Soal.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
+		/// </ul>
+		/// Initializes the following derived properties:
+		/// <ul>
+		///     <li>FullName</li>
 		/// </ul>
 		public virtual void Namespace(NamespaceBuilder _this)
 		{
@@ -12420,6 +14375,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallNamespaceSuperConstructors(NamespaceBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
 			this.Declaration(_this);
 		}
@@ -12431,9 +14387,11 @@ namespace MetaDslx.Soal.Internal
 		/// Direct superclasses: 
 		/// <ul>
 		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void Declaration(DeclarationBuilder _this)
@@ -12446,6 +14404,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallDeclarationSuperConstructors(DeclarationBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
 		}
 	
@@ -12460,10 +14419,6 @@ namespace MetaDslx.Soal.Internal
 		/// All superclasses:
 		/// <ul>
 		///     <li>SoalType</li>
-		/// </ul>
-		/// Initializes the following derived properties:
-		/// <ul>
-		///     <li>Namespace</li>
 		/// </ul>
 		public virtual void ArrayType(ArrayTypeBuilder _this)
 		{
@@ -12490,10 +14445,6 @@ namespace MetaDslx.Soal.Internal
 		/// <ul>
 		///     <li>SoalType</li>
 		/// </ul>
-		/// Initializes the following derived properties:
-		/// <ul>
-		///     <li>Namespace</li>
-		/// </ul>
 		public virtual void NullableType(NullableTypeBuilder _this)
 		{
 			this.CallNullableTypeSuperConstructors(_this);
@@ -12509,16 +14460,43 @@ namespace MetaDslx.Soal.Internal
 	
 	
 		/// <summary>
+		/// Implements the constructor: NonNullableType()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>SoalType</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>SoalType</li>
+		/// </ul>
+		public virtual void NonNullableType(NonNullableTypeBuilder _this)
+		{
+			this.CallNonNullableTypeSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of NonNullableType
+		/// </summary>
+		protected virtual void CallNonNullableTypeSuperConstructors(NonNullableTypeBuilder _this)
+		{
+			this.SoalType(_this);
+		}
+	
+	
+		/// <summary>
 		/// Implements the constructor: PrimitiveType()
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
 		///     <li>SoalType</li>
-		///     <li>NamedElement</li>
+		///     <li>Declaration</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
+		///     <li>Declaration</li>
 		///     <li>SoalType</li>
 		/// </ul>
 		public virtual void PrimitiveType(PrimitiveTypeBuilder _this)
@@ -12531,7 +14509,9 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallPrimitiveTypeSuperConstructors(PrimitiveTypeBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
+			this.Declaration(_this);
 			this.SoalType(_this);
 		}
 	
@@ -12546,6 +14526,7 @@ namespace MetaDslx.Soal.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
 		///     <li>SoalType</li>
@@ -12560,6 +14541,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallEnumSuperConstructors(EnumBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
 			this.Declaration(_this);
 			this.SoalType(_this);
@@ -12573,9 +14555,11 @@ namespace MetaDslx.Soal.Internal
 		/// <ul>
 		///     <li>NamedElement</li>
 		///     <li>TypedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>TypedElement</li>
 		///     <li>NamedElement</li>
 		/// </ul>
@@ -12589,38 +14573,9 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallEnumLiteralSuperConstructors(EnumLiteralBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.TypedElement(_this);
 			this.NamedElement(_this);
-		}
-	
-	
-		/// <summary>
-		/// Implements the constructor: StructuredType()
-		/// </summary>
-		/// Direct superclasses: 
-		/// <ul>
-		///     <li>SoalType</li>
-		///     <li>Declaration</li>
-		/// </ul>
-		/// All superclasses:
-		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>Declaration</li>
-		///     <li>SoalType</li>
-		/// </ul>
-		public virtual void StructuredType(StructuredTypeBuilder _this)
-		{
-			this.CallStructuredTypeSuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of StructuredType
-		/// </summary>
-		protected virtual void CallStructuredTypeSuperConstructors(StructuredTypeBuilder _this)
-		{
-			this.NamedElement(_this);
-			this.Declaration(_this);
-			this.SoalType(_this);
 		}
 	
 	
@@ -12631,9 +14586,11 @@ namespace MetaDslx.Soal.Internal
 		/// <ul>
 		///     <li>NamedElement</li>
 		///     <li>TypedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>TypedElement</li>
 		///     <li>NamedElement</li>
 		/// </ul>
@@ -12647,6 +14604,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallPropertySuperConstructors(PropertyBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.TypedElement(_this);
 			this.NamedElement(_this);
 		}
@@ -12657,14 +14615,15 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>StructuredType</li>
+		///     <li>SoalType</li>
+		///     <li>Declaration</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
 		///     <li>SoalType</li>
-		///     <li>StructuredType</li>
 		/// </ul>
 		public virtual void Struct(StructBuilder _this)
 		{
@@ -12676,72 +14635,10 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallStructSuperConstructors(StructBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
 			this.Declaration(_this);
 			this.SoalType(_this);
-			this.StructuredType(_this);
-		}
-	
-	
-		/// <summary>
-		/// Implements the constructor: Exception()
-		/// </summary>
-		/// Direct superclasses: 
-		/// <ul>
-		///     <li>StructuredType</li>
-		/// </ul>
-		/// All superclasses:
-		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>Declaration</li>
-		///     <li>SoalType</li>
-		///     <li>StructuredType</li>
-		/// </ul>
-		public virtual void Exception(ExceptionBuilder _this)
-		{
-			this.CallExceptionSuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of Exception
-		/// </summary>
-		protected virtual void CallExceptionSuperConstructors(ExceptionBuilder _this)
-		{
-			this.NamedElement(_this);
-			this.Declaration(_this);
-			this.SoalType(_this);
-			this.StructuredType(_this);
-		}
-	
-	
-		/// <summary>
-		/// Implements the constructor: Entity()
-		/// </summary>
-		/// Direct superclasses: 
-		/// <ul>
-		///     <li>StructuredType</li>
-		/// </ul>
-		/// All superclasses:
-		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>Declaration</li>
-		///     <li>SoalType</li>
-		///     <li>StructuredType</li>
-		/// </ul>
-		public virtual void Entity(EntityBuilder _this)
-		{
-			this.CallEntitySuperConstructors(_this);
-		}
-	
-		/// <summary>
-		/// Calls the super constructors of Entity
-		/// </summary>
-		protected virtual void CallEntitySuperConstructors(EntityBuilder _this)
-		{
-			this.NamedElement(_this);
-			this.Declaration(_this);
-			this.SoalType(_this);
-			this.StructuredType(_this);
 		}
 	
 	
@@ -12755,6 +14652,7 @@ namespace MetaDslx.Soal.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
 		///     <li>SoalType</li>
@@ -12769,6 +14667,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallInterfaceSuperConstructors(InterfaceBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
 			this.Declaration(_this);
 			this.SoalType(_this);
@@ -12784,6 +14683,7 @@ namespace MetaDslx.Soal.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
 		///     <li>SoalType</li>
@@ -12799,6 +14699,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallDatabaseSuperConstructors(DatabaseBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
 			this.Declaration(_this);
 			this.SoalType(_this);
@@ -12812,10 +14713,16 @@ namespace MetaDslx.Soal.Internal
 		/// Direct superclasses: 
 		/// <ul>
 		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
+		/// </ul>
+		/// Initializes the following readonly properties:
+		/// <ul>
+		///     <li>Result</li>
 		/// </ul>
 		public virtual void Operation(OperationBuilder _this)
 		{
@@ -12827,35 +14734,67 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallOperationSuperConstructors(OperationBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
 		}
 	
 	
 		/// <summary>
-		/// Implements the constructor: Parameter()
+		/// Implements the constructor: InputParameter()
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
 		///     <li>NamedElement</li>
 		///     <li>TypedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>TypedElement</li>
 		///     <li>NamedElement</li>
 		/// </ul>
-		public virtual void Parameter(ParameterBuilder _this)
+		public virtual void InputParameter(InputParameterBuilder _this)
 		{
-			this.CallParameterSuperConstructors(_this);
+			this.CallInputParameterSuperConstructors(_this);
 		}
 	
 		/// <summary>
-		/// Calls the super constructors of Parameter
+		/// Calls the super constructors of InputParameter
 		/// </summary>
-		protected virtual void CallParameterSuperConstructors(ParameterBuilder _this)
+		protected virtual void CallInputParameterSuperConstructors(InputParameterBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.TypedElement(_this);
 			this.NamedElement(_this);
+		}
+	
+	
+		/// <summary>
+		/// Implements the constructor: OutputParameter()
+		/// </summary>
+		/// Direct superclasses: 
+		/// <ul>
+		///     <li>TypedElement</li>
+		///     <li>AnnotatedElement</li>
+		/// </ul>
+		/// All superclasses:
+		/// <ul>
+		///     <li>AnnotatedElement</li>
+		///     <li>TypedElement</li>
+		/// </ul>
+		public virtual void OutputParameter(OutputParameterBuilder _this)
+		{
+			this.CallOutputParameterSuperConstructors(_this);
+		}
+	
+		/// <summary>
+		/// Calls the super constructors of OutputParameter
+		/// </summary>
+		protected virtual void CallOutputParameterSuperConstructors(OutputParameterBuilder _this)
+		{
+			this.AnnotatedElement(_this);
+			this.TypedElement(_this);
 		}
 	
 	
@@ -12865,13 +14804,11 @@ namespace MetaDslx.Soal.Internal
 		/// Direct superclasses: 
 		/// <ul>
 		///     <li>Declaration</li>
-		///     <li>StructuredType</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>SoalType</li>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
-		///     <li>StructuredType</li>
 		///     <li>Declaration</li>
 		/// </ul>
 		public virtual void Component(ComponentBuilder _this)
@@ -12884,9 +14821,8 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallComponentSuperConstructors(ComponentBuilder _this)
 		{
-			this.SoalType(_this);
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
-			this.StructuredType(_this);
 			this.Declaration(_this);
 		}
 	
@@ -12900,9 +14836,8 @@ namespace MetaDslx.Soal.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>SoalType</li>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
-		///     <li>StructuredType</li>
 		///     <li>Declaration</li>
 		///     <li>Component</li>
 		/// </ul>
@@ -12916,9 +14851,8 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallCompositeSuperConstructors(CompositeBuilder _this)
 		{
-			this.SoalType(_this);
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
-			this.StructuredType(_this);
 			this.Declaration(_this);
 			this.Component(_this);
 		}
@@ -12933,9 +14867,8 @@ namespace MetaDslx.Soal.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>SoalType</li>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
-		///     <li>StructuredType</li>
 		///     <li>Declaration</li>
 		///     <li>Component</li>
 		///     <li>Composite</li>
@@ -12950,9 +14883,8 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallAssemblySuperConstructors(AssemblyBuilder _this)
 		{
-			this.SoalType(_this);
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
-			this.StructuredType(_this);
 			this.Declaration(_this);
 			this.Component(_this);
 			this.Composite(_this);
@@ -12976,21 +14908,21 @@ namespace MetaDslx.Soal.Internal
 	
 	
 		/// <summary>
-		/// Implements the constructor: InterfaceReference()
+		/// Implements the constructor: Port()
 		/// </summary>
 		/// Initializes the following derived properties:
 		/// <ul>
 		///     <li>Name</li>
 		/// </ul>
-		public virtual void InterfaceReference(InterfaceReferenceBuilder _this)
+		public virtual void Port(PortBuilder _this)
 		{
-			this.CallInterfaceReferenceSuperConstructors(_this);
+			this.CallPortSuperConstructors(_this);
 		}
 	
 		/// <summary>
-		/// Calls the super constructors of InterfaceReference
+		/// Calls the super constructors of Port
 		/// </summary>
-		protected virtual void CallInterfaceReferenceSuperConstructors(InterfaceReferenceBuilder _this)
+		protected virtual void CallPortSuperConstructors(PortBuilder _this)
 		{
 		}
 	
@@ -13000,11 +14932,11 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>InterfaceReference</li>
+		///     <li>Port</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>InterfaceReference</li>
+		///     <li>Port</li>
 		/// </ul>
 		public virtual void Service(ServiceBuilder _this)
 		{
@@ -13016,7 +14948,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallServiceSuperConstructors(ServiceBuilder _this)
 		{
-			this.InterfaceReference(_this);
+			this.Port(_this);
 		}
 	
 	
@@ -13025,11 +14957,11 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		/// Direct superclasses: 
 		/// <ul>
-		///     <li>InterfaceReference</li>
+		///     <li>Port</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>InterfaceReference</li>
+		///     <li>Port</li>
 		/// </ul>
 		public virtual void Reference(ReferenceBuilder _this)
 		{
@@ -13041,7 +14973,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallReferenceSuperConstructors(ReferenceBuilder _this)
 		{
-			this.InterfaceReference(_this);
+			this.Port(_this);
 		}
 	
 	
@@ -13104,6 +15036,7 @@ namespace MetaDslx.Soal.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
 		/// </ul>
@@ -13117,6 +15050,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallDeploymentSuperConstructors(DeploymentBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
 			this.Declaration(_this);
 		}
@@ -13181,6 +15115,7 @@ namespace MetaDslx.Soal.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
 		/// </ul>
@@ -13194,6 +15129,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallBindingSuperConstructors(BindingBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
 			this.Declaration(_this);
 		}
@@ -13208,6 +15144,7 @@ namespace MetaDslx.Soal.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
 		/// </ul>
@@ -13221,6 +15158,7 @@ namespace MetaDslx.Soal.Internal
 		/// </summary>
 		protected virtual void CallEndpointSuperConstructors(EndpointBuilder _this)
 		{
+			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
 			this.Declaration(_this);
 		}
@@ -13566,6 +15504,7 @@ namespace MetaDslx.Soal.Internal
 		}
 	
 	
+	
 	}
 
 	internal class SoalImplementationProvider
@@ -13580,3 +15519,4 @@ namespace MetaDslx.Soal.Internal
 		}
 	}
 }
+

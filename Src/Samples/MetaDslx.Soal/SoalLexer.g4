@@ -2,11 +2,13 @@
 
                                                               
 KNamespace : 'namespace';
+KEnum : 'enum';
 KException : 'exception';
 KStruct : 'struct';
 KInterface : 'interface';
 KThrows : 'throws';
 KOneway : 'oneway';
+KReturn : 'return';
 KBinding : 'binding';
 KTransport : 'transport';
 KEncoding : 'encoding';
@@ -33,8 +35,6 @@ KNull : 'null';
 KTrue : 'true';
 KFalse : 'false';
 
-KDateTime : 'DateTime';
-KTimeSpan : 'TimeSpan';
 KObject : 'object';
 KString : 'string';
 KInt : 'int';
@@ -45,6 +45,7 @@ KByte : 'byte';
 KBool : 'bool';
 KAny : 'any';
 KVoid : 'void';
+KTypeof : 'typeof';
 
 
 TSemicolon : ';';
@@ -92,7 +93,21 @@ TAmpersandAssign : '&=';
 THatAssign : '^=';
 TBarAssign : '|=';
 
-
+IDate : 'Date';
+ITime : 'Time';
+IDateTime : 'DateTime';
+ITimeSpan : 'TimeSpan';
+IVersion : 'Version';
+IStyle : 'Style';
+IMTOM : 'MTOM';
+ISSL : 'SSL';
+IHTTP : 'HTTP';
+IREST : 'REST';
+IWebSocket : 'WebSocket';
+ISOAP : 'SOAP';
+IXML : 'XML';
+IJSON : 'JSON';
+IClientAuthentication : 'ClientAuthentication';
 
                                    
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;

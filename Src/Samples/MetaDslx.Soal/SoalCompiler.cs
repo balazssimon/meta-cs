@@ -12,6 +12,7 @@ namespace MetaDslx.Soal
         public SoalCompiler(string source, string fileName)
             : base(source, fileName)
         {
+            this.Factory = new SoalFactory(this.Model);
             MutableModel soalInstance = SoalInstance.Model.ToMutable(true);
             this.ModelGroup.AddReference(soalInstance);
             this.GlobalScope.BuiltInEntries.Add(SoalInstance.Object.ToMutable(soalInstance));
@@ -23,6 +24,8 @@ namespace MetaDslx.Soal
             this.GlobalScope.BuiltInEntries.Add(SoalInstance.Byte.ToMutable(soalInstance));
             this.GlobalScope.BuiltInEntries.Add(SoalInstance.Bool.ToMutable(soalInstance));
             this.GlobalScope.BuiltInEntries.Add(SoalInstance.Void.ToMutable(soalInstance));
+            this.GlobalScope.BuiltInEntries.Add(SoalInstance.Date.ToMutable(soalInstance));
+            this.GlobalScope.BuiltInEntries.Add(SoalInstance.Time.ToMutable(soalInstance));
             this.GlobalScope.BuiltInEntries.Add(SoalInstance.DateTime.ToMutable(soalInstance));
             this.GlobalScope.BuiltInEntries.Add(SoalInstance.TimeSpan.ToMutable(soalInstance));
         }

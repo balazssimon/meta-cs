@@ -13,33 +13,64 @@ qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
 qualifiedNameList : qualifiedName (TComma qualifiedName)*;
 
+annotationList : annotation+;
+
+returnAnnotationList : returnAnnotation+;
+
+                      
+                   
+annotation : TOpenBracket annotationBody TCloseBracket;
+
+                      
+                   
+returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
+
+annotationBody :                        identifier annotationProperties?;
+
+annotationProperties : TOpenParen annotationPropertyList? TCloseParen;
+
+annotationPropertyList : annotationProperty (TComma annotationProperty)*;
+
+                     
+                           
+annotationProperty :                        identifier TAssign                  annotationPropertyValue;
+
+annotationPropertyValue
+	: constantValue
+	| typeofValue
+	;
+
                                                                       
-namespaceDeclaration: KNamespace qualifiedName TOpenBrace declaration* TCloseBrace;
+namespaceDeclaration: annotationList? KNamespace qualifiedName TAssign (                         identifier TColon)?                       stringLiteral TOpenBrace declaration* TCloseBrace;
 
                        
-declaration : structDeclaration | exceptionDeclaration | entityDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
+declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | assemblyDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
 
+// Enums
+
+              
+enumDeclaration : annotationList? KEnum identifier (TColon                                                                                  qualifiedName)? TOpenBrace enumLiterals? TCloseBrace;
+
+enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
+
+                       
+                     
+enumLiteral : annotationList? identifier;
 
 // Structs and exceptions
 
                 
-structDeclaration : KStruct identifier (TColon                                                                                    qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
-
-                   
-exceptionDeclaration : KException identifier (TColon                                                                                       qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
-
-                
-entityDeclaration : KEntity identifier (TColon                                                                                    qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : annotationList? KStruct identifier (TColon                                                                                    qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
 
                      
                   
-propertyDeclaration :                 typeReference identifier TSemicolon;
+propertyDeclaration : annotationList?                          typeReference identifier TSemicolon;
 
 
 // Database
 
                   
-databaseDeclaration : KDatabase identifier TOpenBrace entityReference* operationDeclaration* TCloseBrace;
+databaseDeclaration : annotationList? KDatabase identifier TOpenBrace entityReference* operationDeclaration* TCloseBrace;
 
                    
 entityReference : KEntity                  qualifiedName TSemicolon;
@@ -48,18 +79,21 @@ entityReference : KEntity                  qualifiedName TSemicolon;
 // Interface
 
                    
-interfaceDeclaration : KInterface identifier TOpenBrace operationDeclaration* TCloseBrace;
+interfaceDeclaration : annotationList? KInterface identifier TOpenBrace operationDeclaration* TCloseBrace;
 
                      
                    
-operationDeclaration : (returnType|onewayType) identifier TOpenParen parameterList? TCloseParen (KThrows                                           qualifiedNameList)? TSemicolon;
+operationDeclaration : annotationList? operationResult identifier TOpenParen parameterList? TCloseParen (KThrows                                        qualifiedNameList)? TSemicolon;
 
 parameterList : parameter (',' parameter)*;
 
                      
-                   
-parameter :                 typeReference identifier;
+                        
+parameter : annotationList?                          typeReference identifier;
 
+                 
+                        
+operationResult : returnAnnotationList? (                         returnType| onewayType);
 
 // Component
 
@@ -92,7 +126,7 @@ componentServiceOrReferenceElement
 
                      
                   
-componentProperty : typeReference identifier TSemicolon;
+componentProperty :          typeReference identifier TSemicolon;
 
                          
                         
@@ -102,8 +136,11 @@ componentImplementation : KImplementation identifier TSemicolon;
                   
 componentLanguage : KLanguage identifier TSemicolon;
 
-        
-compositeDeclaration : (                      KAssembly |                        KComposite) identifier (TColon                                                                                                         qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+                   
+compositeDeclaration : KComposite identifier (TColon                                                                                                         qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+
+                  
+assemblyDeclaration : KAssembly identifier (TColon                                                                                                         qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
 
 compositeElements : compositeElement+;
 
@@ -117,14 +154,15 @@ compositeElement
 	| compositeWire
 	;
 
-compositeComponent : KComponent                                           qualifiedName TSemicolon;
+                     
+compositeComponent : KComponent                     qualifiedName TSemicolon;
 
                 
              
 compositeWire : KWire wireSource KTo wireTarget TSemicolon;
 
-wireSource :                                                qualifiedName;
-wireTarget :                                                qualifiedName;
+wireSource :                                  qualifiedName;
+wireTarget :                                  qualifiedName;
 
                     
 deploymentDeclaration : KDeployment identifier TOpenBrace deploymentElements? TCloseBrace;
@@ -162,25 +200,59 @@ bindingDeclaration : KBinding identifier TOpenBrace bindingLayers? TCloseBrace;
 
 bindingLayers : transportLayer encodingLayer+ protocolLayer*;
 
-                    
-       
-transportLayer : KTransport transportLayerKind TSemicolon;
-
-transportLayerKind :
-	                                                                
-	                                                                
-	                                                                          
-	identifier;
 
                     
-       
-encodingLayer : KEncoding encodingLayerKind TSemicolon;
+transportLayer 
+	: httpTransportLayer 
+	| restTransportLayer 
+	| webSocketTransportLayer
+	;
 
-encodingLayerKind : 
-	                                                               
-	                                                             
-	                                                               
-	identifier;
+                                     
+httpTransportLayer : KTransport IHTTP (TSemicolon | TOpenBrace httpTransportLayerProperties* TCloseBrace);
+                                     
+restTransportLayer : KTransport IREST (TSemicolon | TOpenBrace TCloseBrace);
+                                          
+webSocketTransportLayer : KTransport IWebSocket (TSemicolon | TOpenBrace TCloseBrace);
+
+httpTransportLayerProperties
+	: httpSslProperty
+	| httpClientAuthenticationProperty
+	;
+
+              
+httpSslProperty : ISSL TAssign        booleanLiteral TSemicolon;
+                               
+httpClientAuthenticationProperty : IClientAuthentication TAssign        booleanLiteral TSemicolon;
+
+                    
+encodingLayer 
+	: soapEncodingLayer
+	| xmlEncodingLayer
+	| jsonEncodingLayer
+	;
+
+                                    
+soapEncodingLayer : KEncoding ISOAP (TSemicolon | TOpenBrace soapEncodingProperties* TCloseBrace);
+                                   
+xmlEncodingLayer : KEncoding IXML (TSemicolon | TOpenBrace TCloseBrace);
+                                    
+jsonEncodingLayer : KEncoding IJSON (TSemicolon | TOpenBrace TCloseBrace);
+
+soapEncodingProperties
+	: soapVersionProperty
+	| soapMtomProperty
+	| soapStyleProperty
+	;
+
+                  
+soapVersionProperty : IVersion TAssign                         identifier TSemicolon;
+
+               
+soapMtomProperty : IMTOM TAssign        booleanLiteral TSemicolon;
+
+                
+soapStyleProperty : IStyle TAssign                               identifier TSemicolon;
 
                     
        
@@ -207,18 +279,23 @@ endpointAddressProperty : KAddress                           stringLiteral TSemi
 
 // Types
 
-                     
-        
-returnType : typeReference | voidType;
-
-        
-typeReference 
-	: arrayType
-	| simpleType
+returnType 
+	: typeReference
+	| voidType
 	;
 
-        
-simpleType : primitiveType | objectType | nullableType | qualifiedName;
+typeReference 
+	: nonNullableArrayType
+	| arrayType
+	| simpleType
+	| nulledType
+	;
+
+simpleType : valueType | objectType | qualifiedName;
+
+nulledType : nullableType | nonNullableType;
+
+referenceType : objectType | qualifiedName;
 
      
 objectType 
@@ -226,37 +303,63 @@ objectType
 	| KString
 	;
      
-primitiveType 
+valueType 
 	: KInt 
 	| KLong 
 	| KFloat 
 	| KDouble 
 	| KByte 
 	| KBool
+	| IDate
+	| ITime
+	| IDateTime
+	| ITimeSpan
 	;
      
 voidType 
 	: KVoid
 	;
                                    
-                                                  
+                                            
 onewayType
 	: KOneway
 	;
 
                       
-nullableType :                      primitiveType TQuestion;
+nullableType :                               valueType TQuestion;
+
+                         
+nonNullableType :                               referenceType TExclamation;
+
+                         
+nonNullableArrayType :                               arrayType TExclamation;
+
+arrayType
+	: simpleArrayType
+	| nulledArrayType
+	;
 
                    
-arrayType :                      simpleType TOpenBracket TCloseBracket;
+simpleArrayType :                               simpleType TOpenBracket TCloseBracket;
 
+                   
+nulledArrayType :                               nulledType TOpenBracket TCloseBracket;
+
+
+constantValue
+	: literal
+	| identifier
+	;
+
+typeofValue : KTypeof TOpenParen          returnType TCloseParen;
 
 // Identifiers
      
            
 identifier 
 	: IdentifierNormal 
-	| IdentifierVerbatim;
+	| IdentifierVerbatim
+	| contextualKeywords;
 
 // Literals
 literal 
@@ -284,3 +387,21 @@ stringLiteral
 	: RegularStringLiteral 
 	| SingleQuoteVerbatimStringLiteral 
 	| DoubleQuoteVerbatimStringLiteral;
+
+contextualKeywords
+	: IDate
+	| ITime
+	| IDateTime
+	| ITimeSpan
+	| IVersion
+	| IStyle
+	| IMTOM
+	| ISSL
+	| IHTTP
+	| IREST
+	| IWebSocket
+	| ISOAP
+	| IXML
+	| IJSON
+	| IClientAuthentication
+	;

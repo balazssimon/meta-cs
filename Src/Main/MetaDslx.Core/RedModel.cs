@@ -33,6 +33,7 @@ namespace MetaDslx.Core
         bool MIsType { get; }
 
         object MGet(ModelProperty property);
+        bool MHasConcreteValue(ModelProperty property);
         bool MIsSet(ModelProperty property);
 
         MutableSymbol ToMutable();
@@ -64,6 +65,7 @@ namespace MetaDslx.Core
         bool MIsType { get; }
 
         object MGet(ModelProperty property);
+        bool MHasConcreteValue(ModelProperty property);
         bool MIsSet(ModelProperty property);
         void MSet(ModelProperty property, object value);
         void MSetLazy(ModelProperty property, Func<object> value);
@@ -167,6 +169,10 @@ namespace MetaDslx.Core
         public bool MIsSet(ModelProperty property)
         {
             return this.model.MIsSet(this.id, property);
+        }
+        public bool MHasConcreteValue(ModelProperty property)
+        {
+            return this.model.MHasConcreteValue(this.id, property);
         }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
@@ -349,6 +355,10 @@ namespace MetaDslx.Core
         public object MGet(ModelProperty property)
         {
             return this.model.MGet(this, property);
+        }
+        public bool MHasConcreteValue(ModelProperty property)
+        {
+            return this.model.MHasConcreteValue(this.id, property);
         }
         public bool MIsSet(ModelProperty property)
         {
@@ -785,6 +795,29 @@ namespace MetaDslx.Core
             }
         }
 
+        internal bool MHasConcreteValue(SymbolId sid, ModelProperty property)
+        {
+            if (property.IsCollection)
+            {
+                return true;
+            }
+            else
+            {
+                GreenSymbol greenSymbol;
+                if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+                {
+                    object greenValue;
+                    ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                    if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
+                    if (greenSymbol.Properties.TryGetValue(property, out greenValue))
+                    {
+                        return greenValue != GreenSymbol.Unassigned && !(greenValue is GreenLazyValue) && !(greenValue is GreenDerivedValue);
+                    }
+                }
+                return false;
+            }
+        }
+
         internal bool MIsSet(SymbolId sid, ModelProperty property)
         {
             if (property.IsCollection)
@@ -1209,6 +1242,29 @@ namespace MetaDslx.Core
                 value = ctx.Updater.GetValue(this.id, sid, property, true);
             } while (!this.EndUpdate(ctx));
             return this.ToRedValue(value);
+        }
+
+        internal bool MHasConcreteValue(SymbolId sid, ModelProperty property)
+        {
+            if (property.IsCollection)
+            {
+                return true;
+            }
+            else
+            {
+                GreenSymbol greenSymbol;
+                if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
+                {
+                    object greenValue;
+                    ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                    if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
+                    if (greenSymbol.Properties.TryGetValue(property, out greenValue))
+                    {
+                        return greenValue != GreenSymbol.Unassigned && !(greenValue is GreenLazyValue) && !(greenValue is GreenDerivedValue);
+                    }
+                }
+                return false;
+            }
         }
 
         internal bool MIsSet(SymbolId sid, ModelProperty property)
@@ -1891,9 +1947,20 @@ namespace MetaDslx.Core
         {
             if (reference.ModelGroup != null)
             {
-                throw new NotImplementedException("Referencing a model contained by a group not yet supported.");
+                GreenModelGroup gmg = reference.ModelGroup.Green;
+                foreach (var greenReference in gmg.References)
+                {
+                    this.AddReference(greenReference.Value);
+                }
+                foreach (var greenModel in gmg.Models)
+                {
+                    this.AddReference(greenModel.Value);
+                }
             }
-            this.AddReference(reference.Green);
+            else
+            {
+                this.AddReference(reference.Green);
+            }
         }
 
         public void AddModel(ImmutableModel model)

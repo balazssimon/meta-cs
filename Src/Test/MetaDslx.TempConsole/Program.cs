@@ -1,5 +1,6 @@
 ﻿using MetaDslx.Compiler;
 using MetaDslx.Core;
+using MetaDslx.Soal;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,21 +61,22 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Samples\MetaDslx.Soal\Soal.cs"
                     );
                 //*/
-                /*
+                //*
                 string source = "";
-                string fileName = @"SoalTest1.soal";
+                string fileName = @"HelloWorld.soal";
                 using (StreamReader reader = new StreamReader(@"..\..\" + fileName))
                 {
                     source = reader.ReadToEnd();
                 }
-                SoalCompiler compiler = new SoalCompiler(source, ".", fileName);
+                SoalCompiler compiler = new SoalCompiler(source, fileName);
                 compiler.Compile();
                 foreach (var msg in compiler.Diagnostics.GetMessages(true))
                 {
                     Console.WriteLine(msg);
                 }
                 Console.WriteLine("----");
-                foreach (var symbol in compiler.Data.GetSymbols())
+                ImmutableModel immutableModel = compiler.Model.ToImmutable();
+                foreach (var symbol in immutableModel.Symbols)
                 {
                     Declaration decl = symbol as Declaration;
                     if (decl != null)

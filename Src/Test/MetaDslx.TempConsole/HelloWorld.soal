@@ -1,0 +1,101 @@
+﻿namespace HelloNs = hw:"http://www.hello.org/HelloNs"
+{
+
+	[All]
+	[Type(name="Möré")]
+	struct More
+	{
+		[Element(items="iii")]
+		int?[]! Integers;
+		[Element(wrapped=true, items="cplx")]
+		Complex![]! Complexes;
+		string! Name;
+	}
+	
+	struct MathFault
+	{
+		int ErrorCode;
+		string ErrorMessage;
+	}
+
+	[Choice]
+	struct Complex
+	{
+		CalcNs.Complex cc;
+		double Re;
+		double Im;
+		Time Time;
+	}
+
+
+	enum SeatStatus
+	{
+		Free,
+		Locked,
+		Reserved
+	}
+
+	//[NoWrap]
+	//[Rpc]
+	interface IHello
+	{
+		string SayHello(string name);
+		string SayHello2(Complex cplx1, More cplx2);
+		byte[] Abc(int[] i1, [Element(wrapped=true, items="iiiii")] int[] i2);
+		[return: Element(wrapped=true, items="jjjjj")]
+		int[] Abc2(byte[] i1, byte[] i2);
+		int[] Abc3([Element(wrapped=true)] int[] i1, int[] i2);
+		double Divide(double left, double right) throws MathFault;
+		Complex DivideComplex(Complex left, Complex right) throws MathFault;
+		oneway DivideO(double left, double right) throws MathFault;
+	}
+	
+	binding HttpSoap11
+	{
+		transport HTTP;
+		encoding SOAP;// { Style = RpcEncoded; } // { Style = RpcLiteral; } { Style = DocumentLiteral; }
+		protocol WsAddressing;
+	}
+
+	endpoint HelloService : IHello
+	{
+		binding HttpSoap11;
+		address "http://www.tempuri.org";
+	}
+
+	database HelloDB
+	{
+		entity Complex;
+	}
+
+	component UserDB
+	{
+		service HelloDB;
+		implementation JPA;
+	}
+	component UserLogic
+	{
+		reference IHello;
+		reference HelloDB;
+		service IHello;
+		implementation EJB; // implementation DotNet;
+	}
+	composite CinemaApp
+	{
+		component UserDB;
+		component UserLogic; 
+		wire UserDB.HelloDB to UserLogic.HelloDB; // TODO: Cannot resolve name 'HelloDB' (circular lazy evaluation)
+	}
+}
+
+namespace CalcNs = c:"http://www.hello.org/CalcNs"
+{
+	[Choice]
+	struct Complex
+	{
+		HelloNs.Complex hc;
+		double Im;
+		Time Time;
+	}
+
+}
