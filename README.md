@@ -13,9 +13,11 @@ MetaDslx supports the following features:
 
 The documentation of the MetaDslx framework can be accessed here: [The MetaDslx Framework](https://github.com/balazssimon/meta-cs/wiki/The-MetaDslx-Framework)
 
-# Instructions for users
+# Installation instructions
 
-## Installation
+## Instructions for users
+
+### Installation
 
 These are the installation instructions if you would like to use the MetaDslx framework for creating your own DSLs. For an example DSL see the [SOAL language](https://github.com/balazssimon/soal-cs).
 
@@ -27,14 +29,14 @@ Installation steps:
 2. Run **install64.bat** on 64-bit systems, or **install32.bat** on 32-bit systems to install the MetaDslx DLLs to the GAC.
 3. Run the **MetaDslx.VisualStudio.vsix** to install the Visual Studio 2015 plugin.
 
-## Uninstallation
+### Uninstallation
 
 1. In Visual Studio open the **Tools / Extensions and Updates...** menu, look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
 2. Run **uninstall64.bat** on 64-bit systems, or **uninstall32.bat** on 32-bit systems to remove the MetaDslx DLLs from the GAC.
 
-# Instructions for developers
+## Instructions for developers
 
-## Installation
+### Installation
 
 These are the installation instructions if you would like to build the MetaDslx framework from source.
 
@@ -52,7 +54,7 @@ Installation steps:
  * Start Options / Command line arguments: **/rootsuffix Exp**
 7. Right click on the **MetaDslx** solution and choose **Build Solution**.
 
-## Uninstallation
+### Uninstallation
 
 1. In Visual Studio open the **Tools / Extensions and Updates...** menu, look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
 2. Run **uninstall64antlr.bat** on 64-bit systems, or **uninstall32antlr.bat** on 32-bit systems to remove the ANTLR4 runtime DLL from the GAC.
