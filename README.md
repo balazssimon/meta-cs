@@ -9,6 +9,8 @@ MetaDslx supports the following features:
 * creating user friendly template-based code generators
 * generating syntax highlighters for Visual Studio
 
+# Documentation
+
 The documentation of the MetaDslx framework can be accessed here: [The MetaDslx Framework](https://github.com/balazssimon/meta-cs/wiki/The-MetaDslx-Framework)
 
 # Instructions for users
